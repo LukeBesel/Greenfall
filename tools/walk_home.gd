@@ -54,6 +54,10 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		return
 	EventBus.toast.connect(func(t: String, _k: String) -> void: _toasts.append(t))
 	_base_state()
+	for k: int in 1200:  # [v9a] WREN's brief reveals the card (subtitle clock: slow on a slow runner)
+		if ob.revealed:
+			break
+		await tree.create_timer(0.25).timeout
 	await tree.create_timer(1.0).timeout
 	var only: String = DevHooks.get_s("walk-home-only", "")  # dev: --walk-home-only=hex2,base2 (iterating)
 	for part: String in ["hex2", "hex3", "garden", "hex10", "base2", "haul", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:
@@ -71,13 +75,13 @@ static func _bind(p_so: SliceOrbit) -> void:
 
 
 static func _wait_world() -> bool:
-	for k: int in 480:  # the world is whole
+	for k: int in 4800:  # the world is whole (the build counts frames: long at a low frame rate)
 		if is_instance_valid(w) and not bool(w.get("building")) and w.get("objectives") != null and w.get("upgrades") != null and w.get("fleet") != null and w.get("hud") != null:
 			break
 		await tree.create_timer(0.5).timeout
 	ob = w.get("objectives") as Objectives
 	p = w.get("patch") as Patch
-	return ob != null and p != null
+	return ob != null and p != null and not bool(w.get("building"))
 
 
 # --- [v9b] Save and reload through the real path, and compare ----------------------------------
@@ -86,7 +90,9 @@ static func _wait_world() -> bool:
 ## the bench row it opens on, where the beam points.
 static func _snap() -> Dictionary:
 	return {"step": _step_id(), "card": _card(), "pr": ob.progress(), "hex": ob.target_hex,
-		"frac": ob.hex_fraction() if ob.target_hex >= 0 else -1.0, "row": ob.bench_row(), "way": ob.waypoint_target()}
+		"frac": ob.hex_fraction() if ob.target_hex >= 0 else -1.0, "row": ob.bench_row(), "way": ob.waypoint_target(),
+		"_cubes": GameState.get_currency("cubes").to_float(), "_parts": GameState.get_currency("parts").to_float(),
+		"_pos": p.global_position if p else Vector3.ZERO, "_hub": GameState.current_hub, "_price": ob._step_price()}
 
 
 ## Saves and loads the game the way a player does, then checks the step came back the same.
@@ -104,15 +110,33 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var tower0: bool = w.get_node_or_null("SignalTower") != null
 	var a: Dictionary = _snap()
 	var ea: Dictionary = extra.call() if extra.is_valid() else {}
+	var saved_at: float = Time.get_unix_time_from_system()
+	var fl0: Fleet = w.get("fleet") as Fleet
+	var bots: bool = fl0 != null and fl0.robot_total() > 0
 	_reloads += 1
 	var kill: bool = _reloads % 2 == 0
 	DevHooks.args.erase("fresh")  # from now on the game loads its save, as Continue does
 	DevHooks.args["menu"] = "1"  # dev flags skip the title; with --menu it shows, Continue and all
 	_reborn = null
 	if kill:  # the autosave writes, then the game is gone without a quit save
+		# Wait for the autosave itself, not for frames: on a slow runner several physics frames
+		# pass inside one process frame (where the autosave fires), and Continue then loaded the
+		# save before this one (CI: the step's count and outlined hex from the base3 reload).
+		var saved: Array = [false]
+		var on_saved: Callable = func() -> void: saved[0] = true
+		EventBus.game_saved.connect(on_saved)
 		SaveManager.set("_timer", SaveManager.AUTOSAVE_INTERVAL)
-		await _frames(3)
-		SaveManager.finish_write()
+		var pf: int = 0
+		var phys0: int = Engine.get_physics_frames()
+		for k: int in 600:
+			if bool(saved[0]):
+				break
+			await tree.process_frame
+			pf += 1
+			SaveManager.finish_write()
+		EventBus.game_saved.disconnect(on_saved)
+		print("[walk-home] note: %s: the autosave landed after %d process / %d physics frames" % [tag, pf, Engine.get_physics_frames() - phys0])
+		_check(bool(saved[0]), "%s: the autosave wrote before the game went (kill)" % tag)
 		Loader.goto(PauseMenu.TITLE_SCENE)
 	else:  # the pause key, then Quit
 		await _tap("pause")
@@ -169,15 +193,28 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var cb: String = digits.sub(str((b["card"] as Array).slice(0, 2)), "#", true)
 	if ca != cb:  # the count: below, with the bar
 		diff.append("card %s -> %s" % [str(a["card"]), str(b["card"])])
+	# [v9a] Back after more than OrbitCrews.AWAY_MIN_S with robots out, the game pays their offline
+	# work on load (cubes up, cells cleaned): by design. On a slow runner the quit-title-Continue
+	# round trip itself takes that long (CI: "5.5 / 600 -> done", the outline on another hex).
+	var away: float = Time.get_unix_time_from_system() - saved_at
+	var paid: bool = bots and away > OrbitCrews.AWAY_MIN_S and float(b["_cubes"]) > float(a["_cubes"]) + 1.0
+	if paid:
+		print("[walk-home] note: %s: back after %.0f s with robots out: offline pay %.0f cubes (count and outline may move on)" % [tag, away, float(b["_cubes"]) - float(a["_cubes"])])
 	var pa: Array = a["pr"]
 	var pb: Array = b["pr"]
-	if absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
+	if paid and float(pb[0]) >= float(pa[0]) - 0.01:
+		pass  # more money or more cleaned: the pay
+	elif absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
 		diff.append("count %s -> %s" % [str(pa), str(pb)])
 	# The outline is picked afresh on load (the most-cleared hex near Lumi): another hex is fine if
 	# the old one kept its progress and the new one is at least as far along.
 	var kept: float = (so.globe.field as HexField).removed_fraction(int(a["hex"])) if int(a["hex"]) >= 0 else 0.0
 	if int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and int(b["hex"]) >= 0 and absf(kept - float(a["frac"])) <= 0.05 and float(b["frac"]) >= float(a["frac"]) - 0.01:
 		print("[walk-home] note: %s: the outline moved to hex %d (%.0f%%); hex %d kept %.0f%%" % [tag, int(b["hex"]), float(b["frac"]) * 100.0, int(a["hex"]), kept * 100.0])
+	elif paid:
+		pass  # offline work cleaned cells: the outline may be on another hex
+	elif int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and kept >= 0.95:
+		print("[walk-home] note: %s: hex %d finished (%.0f%%); the outline moved on to hex %d (%.0f%%)" % [tag, int(a["hex"]), kept * 100.0, int(b["hex"]), float(b["frac"]) * 100.0])
 	elif int(a["hex"]) >= 0 and (int(b["hex"]) < 0 or float(b["frac"]) < float(a["frac"]) - 0.05):  # [v9d] robots may have cleaned on meanwhile: more is fine
 		diff.append("outlined hex %d %.0f%% -> %d %.0f%%" % [int(a["hex"]), float(a["frac"]) * 100.0, int(b["hex"]), float(b["frac"]) * 100.0])
 	# [v9d] On a cleaning step the beam joins the outline only while the hex is far or off screen (the
@@ -196,6 +233,9 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 				diff.append("%s %s -> %s" % [k, str(va), str(vb)])
 		elif str(va) != str(vb):
 			diff.append("%s %s -> %s" % [k, str(va), str(vb)])
+	if not diff.is_empty():  # [v9a] what moved underneath (CI flake hunt)
+		print("[walk-home] debug %s: cubes %.1f -> %.1f, parts %.1f -> %.1f, Lumi moved %.1f m, hub %d -> %d, price %s -> %s, old hex kept %.2f" % [tag,
+			float(a["_cubes"]), float(b["_cubes"]), float(a["_parts"]), float(b["_parts"]), (a["_pos"] as Vector3).distance_to(b["_pos"]), int(a["_hub"]), int(b["_hub"]), str(a["_price"]), str(b["_price"]), kept])
 	_check(diff.is_empty(), "%s: saved and loaded (%s): the same card, count, marker and bench row%s" % [tag, "kill" if kill else "Quit", "" if diff.is_empty() else ": " + "; ".join(diff)])
 	return true
 
@@ -295,6 +335,10 @@ static func _goto(id: String) -> bool:
 	GameState.flags["objective_step"] = idx
 	ob.changed.emit(idx)
 	await tree.create_timer(0.8).timeout
+	for k: int in 240:  # the card draws (and fades in) on its own refresh: wait for it, not a time
+		if _card()[0] != "" and (ob.target_hex >= 0 or not bool(ob.current().get("hex", false))):
+			break
+		await tree.create_timer(0.25).timeout
 	return true
 
 
@@ -524,10 +568,10 @@ static func _plant_on_slope() -> void:
 	var at: Vector3 = Vector3.ZERO
 	for cd: Array in cands.slice(0, 12):  # the steepest clean ground a seed takes (not road or pad)
 		var c: Vector3 = f.hex_center(int(cd[1]))
-		for k: int in 4:
-			var off: Vector3 = SphereGrid.frame(c.normalized()) * Vector3(cos(k * 1.57), 0.0, sin(k * 1.57)) * 2.5
+		for k: int in 24:  # [v9a] 8 directions x 3 distances: which hexes are clean varies run to run
+			var off: Vector3 = SphereGrid.frame(c.normalized()) * Vector3(cos(k * 0.785), 0.0, sin(k * 0.785)) * [2.5, 1.5, 3.5][k / 8]
 			_stand(c + off, c + off + _north(c) * 3.0)
-			await _frames(2)
+			await _pframes(3)
 			if g.free_slot_near(p.global_position, p.forward()) >= 0:
 				steep = float(cd[0])
 				at = c + off
@@ -789,7 +833,11 @@ static func _part_base2() -> void:
 	_check(hub.level == 1, "base2: a click while short builds nothing")
 	_set_money(1500.0, 150.0)
 	await tree.create_timer(0.4).timeout
-	await _click(_price_tag(ld, "hub_level"))
+	for k: int in 3:  # the row turns from short to ready on the bench's next refresh
+		await _click(_price_tag(ld, "hub_level"))
+		if hub.level == 2:
+			break
+		await tree.create_timer(0.5).timeout
 	_check(hub.level == 2, "base2: clicking the price tag builds level 2 (level %d)" % hub.level)
 	await _close_bench()
 	var moved: bool = await _wait_step_not("base2", 4.0)
@@ -1065,10 +1113,18 @@ static func _price_tag(ld: ListDetail, id: String) -> Control:
 
 
 ## A left click (press and release) at the control's place on screen, through the window.
+## [v9a] Process frames: the GUI picks the hovered control and presses buttons on process frames;
+## at a low frame rate several physics frames pass inside one, and a click went in before the
+## pointer had registered (CI, --fixed-fps 10).
+static func _pframes(n: int) -> void:
+	for k: int in n:
+		await tree.process_frame
+
+
 static func _click(c: Control) -> void:
 	if c == null:
 		return
-	await _frames(2)
+	await _pframes(2)
 	var vp: Viewport = c.get_viewport()
 	var at: Vector2 = (c.get_global_transform_with_canvas() * (c.size * 0.5))
 	var win: Vector2 = tree.root.get_final_transform() * at
@@ -1077,7 +1133,7 @@ static func _click(c: Control) -> void:
 	mv.global_position = win
 	Input.parse_input_event(mv)
 	Input.flush_buffered_events()
-	await _frames(1)
+	await _pframes(2)
 	var hov: Control = vp.gui_get_hovered_control()
 	if hov != c and not c.is_ancestor_of(hov) and not (hov != null and hov.is_ancestor_of(c) and hov.mouse_filter == Control.MOUSE_FILTER_PASS):
 		print("[walk-home] note: the mouse over %s finds %s" % [c.name, str(hov.get_path()) if hov else "nothing"])
@@ -1089,7 +1145,7 @@ static func _click(c: Control) -> void:
 		ev.global_position = win
 		Input.parse_input_event(ev)  # once, through the window as a real click (it also sets the button state rows read)
 		Input.flush_buffered_events()
-		await _frames(2)
+		await _pframes(2)
 	await tree.create_timer(0.3).timeout
 
 
@@ -1159,3 +1215,5 @@ static func _stand(pos: Vector3, look: Vector3) -> void:
 
 static func _north(at: Vector3) -> Vector3:
 	return -SphereGrid.frame(at.normalized()).z
+
+

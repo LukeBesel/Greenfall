@@ -446,14 +446,14 @@ static func _robot() -> void:
 static func _bind(so: SliceOrbit) -> bool:
 	_so = so
 	_w = so.w
-	for k: int in 400:
+	for k: int in 4800:  # the build counts frames: long at a low frame rate
 		if is_instance_valid(_w) and not bool(_w.get("building")) and _w.get("objectives") != null and _w.get("patch") != null:
 			break
 		await _tree.create_timer(0.5, true, false, true).timeout
 	_p = _w.get("patch") as Patch
 	_ob = _w.get("objectives") as Objectives
 	_reach = null  # a new world: a new field
-	return _p != null and _ob != null
+	return _p != null and _ob != null and not bool(_w.get("building"))
 
 
 ## Quits and comes back as a player does. how "menu": Esc, the pause menu's Quit (saves, then the
@@ -538,18 +538,27 @@ static func _reload(label: String) -> void:
 		return
 	await _secs(2.5)  # a step that just started picks its hex on the card's next refresh
 	var a: Dictionary = _snap()
+	var saved_at: float = Time.get_unix_time_from_system()
 	await _quit_and_continue(label, "menu")
 	if _quit_skipped:
 		_check(false, "reload at %s: Esc opens no pause menu, so there is no way to quit and save here" % label)
 		return
 	var b: Dictionary = _snap()
 	var diff: Array[String] = []
+	# Back after more than OrbitCrews.AWAY_MIN_S with a robot out, the game pays its offline work on
+	# load (by design): on a slow runner the round trip itself takes that long. Money may then go up.
+	var away: float = Time.get_unix_time_from_system() - saved_at
+	var paid: bool = int(a["robots"]) > 0 and away > OrbitCrews.AWAY_MIN_S and float(b["cubes"]) > float(a["cubes"]) + 1.0
+	if paid:
+		print("%s note: %s: back after %.0f s with a robot out: offline pay %.0f cubes" % [TAG, label, away, float(b["cubes"]) - float(a["cubes"])])
 	for k: String in a:
 		var x: Variant = a[k]
 		var y: Variant = b[k]
 		var same: bool = x == y
 		if k in ["cubes", "parts"]:
-			same = absf(float(x) - float(y)) < 1.0
+			same = absf(float(x) - float(y)) < 1.0 or (paid and float(y) >= float(x))
+		elif paid and k in ["count", "hex", "clean", "beam", "to"]:
+			continue
 		elif k == "chest":
 			same = absf(float(x) - float(y)) < 0.35
 		elif k == "beam":
