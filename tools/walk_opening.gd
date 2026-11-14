@@ -382,7 +382,7 @@ static func _hex() -> void:
 	var t0: float = _gt()
 	var resets: int = 0
 	var mid: bool = false
-	while int(GameState.stats.get("hexes_cleaned", 0)) < 1 and _gt() - t0 < 300.0:
+	while int(GameState.stats.get("hexes_cleaned", 0)) < 1 and _gt() - t0 < 600.0:
 		if not mid and f.removed_fraction(h) > 0.4:
 			mid = true
 			await _reload("hex, %d%% clean" % int(f.removed_fraction(h) * 100.0))
@@ -773,15 +773,16 @@ static func _scoop_load(frac: float, max_s: float) -> void:
 
 
 static var _unstick: bool = false
+static var _unstick_to: Vector3
 
 
 static func _scoop_piece(f: HexField, pid: int) -> void:
 	var at: Vector3 = f.piece_pos[pid]
 	await _walk_to(func() -> Vector3: return at, func() -> bool: return _p.global_position.distance_to(at) < 1.3, "a piece", 1.0, 8.0, true)
-	if _unstick:  # wedged (the shore corner west of the bin): back out onto the pad first, as a player turns round
+	if _unstick:  # wedged (the lakeside by the bin bay): go back the way he came, as a player turns round
 		_unstick = false
-		var c: Vector3 = (_so.globe.sites[0]["transform"] as Transform3D).origin
-		await _walk_to(func() -> Vector3: return c, func() -> bool: return _flat(c - _p.global_position).length() < 4.0, "the pad (backing out)", 0.0, 15.0)
+		var c: Vector3 = _unstick_to
+		await _walk_to(func() -> Vector3: return c, func() -> bool: return _flat(c - _p.global_position).length() < 1.5, "where he came from (backing out)", 0.0, 30.0)
 		return
 	_hold_action("scoop", true)
 	var t0: float = _gt()
@@ -1017,6 +1018,8 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 	var side_dir: int = 1
 	var tries: int = 0
 	var detour: Vector3 = Vector3.ZERO
+	var best_d: float = INF
+	var from_pos: Vector3 = _p.global_position
 	while not bool(arrived.call()):
 		if _gt() - t0 > max_s:
 			_release_all()
@@ -1027,6 +1030,7 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 				for pid: int in f.pieces_within(at, 5.0):
 					_skip[pid] = true
 				_unstick = true
+				_unstick_to = from_pos
 				return
 			_check(false, "walk: could not get to %s in %.0f s with the keys (%.1f m left, stuck at %s, target %s; put there)" % [what, max_s, _flat(at - _p.global_position).length(), _yard(_p.global_position), _yard(at)])
 			_stand(at - _flat(at - _p.global_position).normalized() * maxf(stop_m, 1.0), at)
@@ -1063,12 +1067,17 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 		_hold_action("move_forward", z < -n * 0.4)
 		_hold_action("scoop", scoop and d.length() < 3.0)
 		await _frames(3)
-		var moved: float = _p.global_position.distance_to(last)
+		# Stuck is no progress toward the target (pushing on a thin post he jitters a few mm a tick).
+		var dist: float = _flat(to.call() - _p.global_position).length()
+		if dist < best_d - 0.3:
+			best_d = dist
+			still = 0.0
+		else:
+			still += 0.05
 		last = _p.global_position
-		still = still + 0.05 if moved < 0.01 else 0.0
-		if still > 0.6 and side <= 0.0:
+		if still > 1.0 and side <= 0.0:
 			tries += 1
-			side = 0.6 + 0.4 * tries  # longer each time, alternating sides
+			side = minf(0.6 + 0.3 * tries, 1.5)  # a bit longer each time (capped), alternating sides
 			side_dir = -side_dir
 			still = 0.0
 	_release_all()
