@@ -163,8 +163,10 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 		if str(a[k]) != str(b[k]):
 			diff.append("%s %s -> %s" % [k, str(a[k]), str(b[k])])
 	var digits := RegEx.create_from_string("[0-9.,]+[KMB]?")
-	var ca: String = digits.sub(str((a["card"] as Array).slice(0, 3)), "#", true)  # numbers in a price line tick on
-	var cb: String = digits.sub(str((b["card"] as Array).slice(0, 3)), "#", true)
+	# [v9d] Title and reason: the hint line is the moment's situation (a full chest, a heavy piece
+	# just aimed at), held a few seconds on the card; a reload starts without it.
+	var ca: String = digits.sub(str((a["card"] as Array).slice(0, 2)), "#", true)  # numbers in a price line tick on
+	var cb: String = digits.sub(str((b["card"] as Array).slice(0, 2)), "#", true)
 	if ca != cb:  # the count: below, with the bar
 		diff.append("card %s -> %s" % [str(a["card"]), str(b["card"])])
 	var pa: Array = a["pr"]
@@ -178,7 +180,12 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 		print("[walk-home] note: %s: the outline moved to hex %d (%.0f%%); hex %d kept %.0f%%" % [tag, int(b["hex"]), float(b["frac"]) * 100.0, int(a["hex"]), kept * 100.0])
 	elif int(a["hex"]) >= 0 and (int(b["hex"]) < 0 or absf(float(a["frac"]) - float(b["frac"])) > 0.05):
 		diff.append("outlined hex %d %.0f%% -> %d %.0f%%" % [int(a["hex"]), float(a["frac"]) * 100.0, int(b["hex"]), float(b["frac"]) * 100.0])
-	if (a["way"] is Vector3) != (b["way"] is Vector3) or (a["way"] is Vector3 and (a["way"] as Vector3).distance_to(b["way"]) > 4.0):
+	# [v9d] On a cleaning step the beam joins the outline only while the hex is far or off screen (the
+	# camera after a load differs, and the outline is picked afresh), so the beam is judged by the outline.
+	var hex_step: bool = int(a["hex"]) >= 0 or int(b["hex"]) >= 0
+	if hex_step:
+		pass  # the outline check above covers it (the beam follows the outlined or nearest finishable hex)
+	elif (a["way"] is Vector3) != (b["way"] is Vector3) or (a["way"] is Vector3 and (a["way"] as Vector3).distance_to(b["way"]) > 4.0):
 		diff.append("beam %s -> %s" % [str(a["way"]), str(b["way"])])
 	for k: String in ea:
 		var va: Variant = ea[k]
