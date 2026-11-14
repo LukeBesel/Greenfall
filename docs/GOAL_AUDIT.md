@@ -65,9 +65,39 @@ reaches every one of these prices by playing (first robot at 15.6 bot min, 300+ 
 Other checks in the walk: the first-minutes key strip (M map, V lens, G goals) shows the keys that are
 bound, and each does what it says (M opens the map; M or Esc closes it and Lumi moves again).
 
-Not verified: renders of each step's start (only headless state: beam target, outline, card text);
-the controller mapping; save and reload in the middle of a step; a full real-input grind (cubes past
-two loads or bales are a top-up).
+**Save and reload (follow-up).** The walk quits and comes back at 15 points: the intro (a window
+close: Esc skips the film, there is no pause menu), WREN's first brief, checklist 3 with a full
+chest, dump3 after 2 loads, compartment and scoop_size with the price in hand and just bought, the
+Baler while saving, power with 1 bale sold and one carried, tower, Glim while saving, the hex at
+~65%, bench2, and the first robot just built. Each is Esc, Quit (saves) to the title, Continue. Card,
+count, beam, chest, the carried bale, cubes, Parts, upgrades and the step's state come back the same,
+Lumi stands where he was, and the walk finishes the opening from there: all pass. Quit during the
+intro: the intro plays again from the start (it had saved intro_done=false); quit during the brief:
+the card is up after Continue. The Glim repair is instant, so there is no mid-repair state.
+
+**Found and fixed in the follow-up:**
+- A bale lying by the bench: E picked it up, the next E put it down, the bench never opened (the walk
+  hit it after the bench2 reload). At the bench with empty hands, E and its prompt are the bench's.
+- A buried part lay 1 m from the bench on the start seed, so a new player's first E at the bench
+  dug. Buried parts now keep 3.5 m from every yard E spot (bench, bin, scale, pod, rocket and the
+  build anchors) on every seed; the hex audit (in check_exit) and `--yard-probe` fail if a part or
+  two E spots are too close (measured along the ground). That check found the telescope's door 2.1 m
+  from the signal tower's E spot (3 m is the yard's rule): the tower anchor moved 1.4 m east.
+- Walk stability (CI and local flakes): every wait counted wall-clock time; the walker chose
+  lakeside junk across the water by the bin bay and wedged in the shore corner between the lake, the
+  scale's post and the bin body (the probe's flood shows the spot gets out: a sticky corner for a
+  walker that keeps pushing, not a closed trap; not changed). Waits count physics frames now; the
+  walker backs out onto the pad and may wade out of water.
+
+**Renders** (one batch, checklist + steps 0-9, 960x540 and 1500x1000, Lumi 12 m from the target,
+facing it: screenshots/v9/open_sheet_*.png, step_*_960.png / _1500.png). Card text, count and
+reason read at both sizes; nothing covers the card; the M / V / G strip reads when no WREN line is up;
+the bench beam is unmistakable. Two things for the card owner, not changed here: the checklist's
+"Buy an upgrade: press E at the…" is cut off on the new card; the hex outline is a faint cyan line
+at 12 m in daylight (it reads on the card's "Clear the outline", less in the world).
+
+Not verified: the controller mapping (a `--walk-opening-pad` draft is in the walk, not run to the
+end); a full real-input grind with no top-ups (`--walk-opening-full` draft, not run).
 
 ## Travel (rocket, stations, leaving)
 
