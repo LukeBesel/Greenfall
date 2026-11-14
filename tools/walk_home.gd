@@ -148,6 +148,12 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 		_check(false, "%s: the loaded world has its card and Lumi" % tag)
 		return await _fatal(tag)
 	await tree.create_timer(3.0).timeout  # the card fades in
+	# [main] The new card shows a step's reason first and its hint a few seconds later (ui/objective_card.gd):
+	# give the loaded card that long to show the same lines before comparing.
+	for k: int in 40:
+		if str(_card().slice(0, 3)) == str((a["card"] as Array).slice(0, 3)):
+			break
+		await tree.create_timer(0.3).timeout
 	var b: Dictionary = _snap()
 	if GameState.current_hub != hub0 or (w.get_node_or_null("SignalTower") != null) != tower0:
 		print("[walk-home] note: %s: current hub %d -> %d, tower node %s -> %s" % [tag, hub0, GameState.current_hub, str(tower0), str(w.get_node_or_null("SignalTower") != null)])

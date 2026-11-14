@@ -57,6 +57,9 @@ func setup(p_so: SliceOrbit) -> void:
 func _ready() -> void:
 	get_tree().node_added.connect(_on_added)
 	get_tree().node_removed.connect(_on_removed)
+	if DevHooks.has("bld-yard-views"):
+		_yard_views.call_deferred()
+		return
 	_plan.call_deferred()
 
 
@@ -520,3 +523,36 @@ func _finish() -> void:
 		"PASS" if ok else "FAIL", max_flips, FLIP_MAX, built_late, BUILD_MAX_S])
 	if DevHooks.has("bld-watch-quit"):
 		get_tree().quit(0 if ok else 1)
+
+
+# --- [v9bld] Yard views -------------------------------------------------------------------------
+
+## [v9bld] --bld-yard-views[=DIR] (rendered): Lumi stands at the start yard's bench facing north,
+## east, south and west in turn, and each view is saved as DIR/view_N.png: the town as the player
+## first sees it, for before/after comparisons of the buildings round the yard. (A colour probe was
+## tried: on the Low preset a building's dark side and a facade in shade are too close in brightness
+## to tell apart reliably, so the check for dark facades is geometric: tests/test_v8bld_zfight.gd.)
+func _yard_views() -> void:
+	var tree: SceneTree = get_tree()
+	for k: int in 60:
+		await tree.process_frame
+	var dir: String = DevHooks.get_s("bld-yard-views", "screenshots/yard_views")
+	if dir == "" or dir == "true":
+		dir = "screenshots/yard_views"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://" + dir))
+	var lumi: Patch = _lumi()
+	var at: Vector3 = so.bench_position()
+	var up: Vector3 = at.normalized()
+	var hub_xf: Transform3D = so.globe.sites[0]["transform"]
+	var dirs: Array[Vector3] = [-hub_xf.basis.z, hub_xf.basis.x, hub_xf.basis.z, -hub_xf.basis.x]
+	for vi: int in dirs.size():
+		var f: Vector3 = dirs[vi]
+		f = (f - up * f.dot(up)).normalized()
+		lumi.place_on_sphere(so.globe.terrain.ground(at.normalized()), f)
+		so.cam.reset_frame(f)
+		for k2: int in 45:
+			await tree.process_frame
+		get_viewport().get_texture().get_image().save_png(ProjectSettings.globalize_path("res://%s/view_%d.png" % [dir, vi]))
+	print("[bldw] yard views saved to %s" % dir)
+	if DevHooks.has("bld-watch-quit"):
+		tree.quit(0)

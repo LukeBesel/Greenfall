@@ -68,10 +68,28 @@ func report() -> Array:
 	var n_hex: int = 0
 	var stuck: int = 0
 	var lakes: int = 0
+	# [v9c] Far stations: judged with the Lift a player has there (--hex-audit-lift=L, default the
+	# game's own), not the start area's Lift 0 rule, and each pad must have the station's count of
+	# finishable land hexes (HubPlan chain "clean") within --hex-audit-hub-r m (default 100).
+	var far_lift: int = int(DevHooks.get_f("hex-audit-lift", float(Pace.lift_class())))
+	var hub_r: float = DevHooks.get_f("hex-audit-hub-r", 100.0)
+	var short: int = 0
 	for hi: int in hubs:
 		var site: Dictionary = g.sites[hi]
 		var inv: Transform3D = (site["transform"] as Transform3D).affine_inverse()
 		var c0: int = int(site["cell"])
+		if hi > 0:
+			var fin: Array = HexAudit.far_hub(hl, g, f, hi, c0, hub_r, far_lift, inv, lines)
+			var need: int = 0
+			for st: Dictionary in HubPlan.chain(str(g.get("planet_id")) if g.get("planet_id") != null else "verdance", hi):
+				if str(st.get("do", "")) == "clean":
+					need = int(st.get("hexes", 0))
+			var plan: bool = not HubPlan.entry(str(g.get("planet_id")) if g.get("planet_id") != null else "verdance", hi).is_empty()
+			lines.append("[hexaudit] hub%d: %d finishable of %d dirty land hexes within %.0f m of the pad (lift %d)%s" % [hi, fin[0], fin[1], hub_r, far_lift,
+				(", needs %d%s" % [need, " SHORT" if fin[0] < need else ""]) if plan and need > 0 else ""])
+			if plan and fin[0] < need:
+				short += 1
+			continue
 		for c: int in g.grid.cells_within(g.grid.centers[c0], r_m, c0):
 			if f.hex_hub[c] == 1 or f.hex_clean[c] == 1:
 				continue
@@ -107,8 +125,46 @@ func report() -> Array:
 	var big: PackedStringArray = StartArea.big_things(g, w)
 	for s: String in big:
 		lines.append("[hexaudit] big " + s)
-	lines.append("[hexaudit] RESULT hexes=%d stuck=%d big=%d lakes=%d (r=%.0fm, hubs=%d)" % [n_hex, stuck, big.size(), lakes, r_m, hubs.size()])
-	return [lines, stuck + big.size()]
+	lines.append("[hexaudit] RESULT hexes=%d stuck=%d big=%d lakes=%d (r=%.0fm, hubs=%d)%s" % [n_hex, stuck, big.size(), lakes, r_m, hubs.size(),
+		" stations_short=%d" % short if hubs.size() > 1 else ""])
+	return [lines, stuck + big.size() + short]
+
+
+## [v9c] A far station: [finishable, dirty] land hexes within r_m of its pad, with Lift `lift`
+## (a hex is finishable when what Lumi can't take there is at most the clear threshold's rest, or
+## it reaches the leftover rule with only unfindable pieces left). Colliders aren't loaded there:
+## only the lift, buildings and reach count.
+static func far_hub(hl: HexLeftovers, g: OrbitPlanet, f: SphereField, hi: int, c0: int, r_m: float, lift: int, inv: Transform3D, lines: PackedStringArray) -> Array:
+	var fin: int = 0
+	var dirty: int = 0
+	for c: int in g.grid.cells_within(g.grid.centers[c0], r_m, c0):
+		if f.hex_hub[c] == 1 or f.hex_clean[c] == 1 or f.hex_water[c] == 1:
+			continue
+		f.materialize(c)
+		f.relocate_blocked(c)
+		dirty += 1
+		var left: float = 0.0
+		var big: float = 0.0
+		for pid: int in f.pieces_in(c):
+			if f.piece_alive[pid] == 0:
+				continue
+			var k: String = hl.why(pid, true, false, lift)
+			if k == "big":
+				big += f.piece_vol[pid]
+			elif k != "":
+				left += f.piece_vol[pid]
+		var tot: float = maxf(f.hex_total[c], 0.001)
+		# The 95% rule: all that is left (too heavy, or stuck where it lies) within the threshold's rest.
+		# The leftover rule: past leftover_from with only unfindable pieces left; a piece over the lift
+		# still counts as findable outside the start area (HexLeftovers.findable), so none may be left.
+		var ok: bool = (big + left) / tot <= 1.0 - f.clean_threshold + 0.0005 \
+			or (big < 0.0001 and left / tot <= 1.0 - f.leftover_from + 0.0005)
+		fin += 1 if ok else 0
+		if DevHooks.has("hex-audit-all"):
+			var lp: Vector3 = inv * g.terrain.ground(g.grid.centers[c])
+			lines.append("[hexaudit] hub%d hex %d at (%.0f, %.0f) d=%.0fm: over lift %.1f%%, stuck %.1f%% %s" % [hi, c, lp.x, lp.z, Vector2(lp.x, lp.z).length(),
+				100.0 * big / tot, 100.0 * left / tot, "ok" if ok else "NOT FINISHABLE"])
+	return [fin, dirty]
 
 
 ## What Lumi with the starter tools can take of hex c, and what would be left (a fraction of its total).

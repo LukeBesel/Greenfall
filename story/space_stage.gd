@@ -9,6 +9,8 @@ extends SubViewportContainer
 ## Free it to drop everything; nothing outside it is touched.
 
 const PLANET_R := 420.0
+## [v9intro] The glow shell's radius over the planet's (the shader needs the same number).
+const ATMO_K := 1.07
 const VAULT_AT := Vector3(0, 0, 4000)
 const GARDEN_AT := Vector3(0, 0, -4000)
 
@@ -40,6 +42,20 @@ var _planet_mat: ShaderMaterial
 var _alarm: float = 0.0
 var _t: float = 0.0
 var _vault_lights: Array[OmniLight3D] = []
+## [v9intro] Warm bounce light off the planet (fills the ark's belly, which was black on black).
+var fill: DirectionalLight3D
+## [v9intro] Drifting specks around the camera in the space set: they give speed and depth to a
+## shot (stars are too far to move). motes_on shows them; they hang still in space (a moving
+## camera streams past them) unless motes_vel gives them a speed of their own, in m/s.
+var motes_vel := Vector3.ZERO
+var motes_on: bool = false
+var _motes: MultiMeshInstance3D
+var _mote_pos: PackedVector3Array = PackedVector3Array()
+const MOTES: int = 110
+const MOTE_BOX: float = 46.0
+const GLOW_SHADER := preload("res://art/shaders/cine_glow.gdshader")
+const PUFF_SHADER := preload("res://art/shaders/cine_puff.gdshader")
+const TRAIL_SHADER := preload("res://art/shaders/cine_trail.gdshader")
 
 
 func _ready() -> void:
@@ -59,7 +75,7 @@ func _ready() -> void:
 	var sky := Sky.new()
 	var pano := PanoramaSkyMaterial.new()
 	pano.panorama = _stars()
-	pano.energy_multiplier = 1.4
+	pano.energy_multiplier = 2.3  # [v9intro] was 1.4: the stars barely showed
 	sky.sky_material = pano
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
@@ -98,6 +114,8 @@ func show_set(id: String) -> void:
 	for k: String in _sets:
 		(_sets[k] as Node3D).visible = k == id
 	sun.visible = id != "vault"
+	if fill:
+		fill.visible = id == "space"
 	match id:
 		"space":
 			env.background_energy_multiplier = 1.0
@@ -128,6 +146,13 @@ func _build_space() -> void:
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 200.0
 	vp.add_child(sun)
+	fill = DirectionalLight3D.new()  # [v9intro] planet bounce, from below
+	fill.rotation_degrees = Vector3(62, -150, 0)
+	fill.light_color = Color(0.85, 0.66, 0.5)
+	fill.light_energy = 0.55
+	fill.shadow_enabled = false
+	vp.add_child(fill)
+	_build_motes(root)
 	planet = MeshInstance3D.new()
 	var sm := SphereMesh.new()
 	sm.radius = PLANET_R
@@ -143,13 +168,15 @@ func _build_space() -> void:
 	root.add_child(planet)
 	atmo = MeshInstance3D.new()
 	var am := SphereMesh.new()
-	am.radius = PLANET_R * 1.035
-	am.height = PLANET_R * 2.07
+	am.radius = PLANET_R * ATMO_K
+	am.height = PLANET_R * ATMO_K * 2.0
 	am.radial_segments = 128
 	am.rings = 64
 	atmo.mesh = am
 	var amat := ShaderMaterial.new()
 	amat.shader = preload("res://art/shaders/space_atmosphere.gdshader")
+	amat.set_shader_parameter("shell", ATMO_K)
+	amat.set_shader_parameter("sun_dir", sun.global_basis.z)
 	atmo.material_override = amat
 	atmo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	planet.add_child(atmo)
@@ -461,42 +488,89 @@ func aim(pos: Vector3, look: Vector3, fov: float = 50.0) -> void:
 	cam.fov = fov
 
 
+## [v9intro] Put the camera exactly here (the caller animates it every frame).
+func set_cam(xf: Transform3D, fov: float) -> void:
+	_dur = -1.0
+	cam.global_transform = xf
+	cam.fov = fov
+
+
 func set_alarm(a: float) -> void:
 	_alarm = a
 	ark.alarm = a
 
 
 # --- Effects ----------------------------------------------------------------------------
+# [v9intro] Every effect here is soft: it is born small and faint, and dies by fading, never by
+# being cut off, and none of them shows a hard disc or a stick (the old blast was a solid white
+# ball, the puffs flat circles, the meteors a ball on an orange rod).
 
-## A meteor streaking from a to b over dur seconds (glowing head + long tail).
+static func glow_mat(col: Color, power: float = 2.2, strength: float = 1.0) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = GLOW_SHADER
+	m.set_shader_parameter("tint", col)
+	m.set_shader_parameter("power", power)
+	m.set_shader_parameter("strength", strength)
+	return m
+
+
+static func puff_mat(col: Color) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = PUFF_SHADER
+	m.set_shader_parameter("tint", col)
+	m.set_shader_parameter("seed", randf() * 40.0)
+	return m
+
+
+## A streaming fire / light trail material for an open CylinderMesh (its side UVs run 0..0.5).
+static func trail_mat(hot: Color, cool: Color, strength: float = 1.0, head_at_top: bool = false, speed: float = 3.0) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = TRAIL_SHADER
+	m.set_shader_parameter("hot", hot)
+	m.set_shader_parameter("cool", cool)
+	m.set_shader_parameter("strength", strength)
+	m.set_shader_parameter("head_at_top", 1.0 if head_at_top else 0.0)
+	m.set_shader_parameter("speed", speed)
+	m.set_shader_parameter("v_scale", 2.0)
+	return m
+
+
+## A meteor streaking from a to b over dur seconds: a dark rock in a soft white-hot glow, with a
+## long tapering tail of fire behind it.
 func meteor(a: Vector3, b: Vector3, dur: float, size_: float = 1.0) -> void:
 	var n := Node3D.new()
 	_sets["space"].add_child(n)
-	var head := MeshInstance3D.new()
-	head.mesh = ProcMesh.sphere(0.6 * size_, 10, 6)
-	head.material_override = Mats.lamp(Color(1.0, 0.75, 0.45), 8.0)
-	n.add_child(head)
 	var rock := MeshInstance3D.new()
 	rock.mesh = ProcMesh.sphere(0.5 * size_, 7, 4)
 	var rm := StandardMaterial3D.new()
-	rm.albedo_color = Color(0.2, 0.17, 0.15)
+	rm.albedo_color = Color(0.16, 0.13, 0.12)
+	rm.emission_enabled = true
+	rm.emission = Color(1.0, 0.45, 0.15)
+	rm.emission_energy_multiplier = 0.6
 	rock.material_override = rm
+	rock.scale = Vector3(1.0, 0.8, 1.25)
+	rock.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	n.add_child(rock)
+	var head := MeshInstance3D.new()
+	head.mesh = ProcMesh.sphere(1.0, 16, 10)
+	head.material_override = glow_mat(Color(1.0, 0.8, 0.55), 2.6, 1.5)
+	head.scale = Vector3.ONE * 1.7 * size_
+	head.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	n.add_child(head)
 	var tail := MeshInstance3D.new()
 	var tm := CylinderMesh.new()
-	tm.top_radius = 0.02
-	tm.bottom_radius = 0.55 * size_
-	tm.height = 22.0 * size_
-	tm.radial_segments = 8
+	tm.top_radius = 0.03
+	tm.bottom_radius = 0.6 * size_
+	tm.height = 30.0 * size_
+	tm.radial_segments = 12
+	tm.rings = 6
+	tm.cap_top = false
+	tm.cap_bottom = false
 	tail.mesh = tm
-	var tmat := StandardMaterial3D.new()
-	tmat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	tmat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	tmat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
-	tmat.albedo_color = Color(1.0, 0.55, 0.2, 0.7)
-	tail.material_override = tmat
-	tail.rotation.x = -PI * 0.5
-	tail.position = Vector3(0, 0, 11.0 * size_)
+	tail.material_override = trail_mat(Color(1.0, 0.9, 0.7), Color(1.0, 0.38, 0.1), 1.25, false, 5.0)
+	tail.rotation.x = PI * 0.5  # the thin end trails behind (+Z), the wide end sits on the head
+	tail.position = Vector3(0, 0, 15.0 * size_)
+	tail.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	n.add_child(tail)
 	n.position = a
 	n.look_at_from_position(a, b, Vector3.UP if absf((b - a).normalized().y) < 0.95 else Vector3.RIGHT)
@@ -505,37 +579,50 @@ func meteor(a: Vector3, b: Vector3, dur: float, size_: float = 1.0) -> void:
 	tw.tween_callback(n.queue_free)
 
 
-## A bright flash with a shock shell, a light pulse and flying debris.
+## A flash with a shock shell, a light pulse and flying debris: a white-hot core that swells and
+## fades, a slower orange bloom behind it and a thin ring racing outward.
 func blast(pos: Vector3, scale_k: float = 1.0, col: Color = Color(1.0, 0.7, 0.35)) -> void:
 	var holder: Node3D = _sets[_set] if _sets.has(_set) else _sets["space"]
 	var n := Node3D.new()
 	holder.add_child(n)
 	n.global_position = pos
-	var ball := MeshInstance3D.new()
-	ball.mesh = ProcMesh.sphere(1.0, 16, 8)
-	var m := StandardMaterial3D.new()
-	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
-	m.albedo_color = Color(col.r, col.g, col.b, 1.0) * 2.0
-	ball.material_override = m
-	ball.scale = Vector3.ONE * 0.2 * scale_k
-	n.add_child(ball)
+	var tw := n.create_tween().set_parallel(true)
+	for k: int in 2:
+		var ball := MeshInstance3D.new()
+		ball.mesh = ProcMesh.sphere(1.0, 20, 12)
+		var c: Color = Color(1.0, 0.96, 0.88) if k == 0 else col
+		var m: ShaderMaterial = glow_mat(c, 1.5 if k == 0 else 2.4, 2.6 if k == 0 else 1.5)
+		ball.material_override = m
+		ball.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		ball.scale = Vector3.ONE * 0.3 * scale_k
+		n.add_child(ball)
+		var grow: float = (3.2 if k == 0 else 5.5) * scale_k
+		var life: float = 0.55 if k == 0 else 1.3
+		tw.tween_property(ball, "scale", Vector3.ONE * grow, life).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+		tw.tween_property(m, "shader_parameter/strength", 0.0, life).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE)
+	var ring := MeshInstance3D.new()
+	ring.mesh = ProcMesh.torus(0.975, 1.0, 48, 6)
+	var rmat: ShaderMaterial = glow_mat(Color(1.0, 0.85, 0.65), 0.6, 0.55)
+	ring.material_override = rmat
+	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	ring.scale = Vector3.ONE * 0.5 * scale_k
+	n.add_child(ring)
+	ring.look_at(cam.global_position, Vector3.UP)
+	ring.rotate_object_local(Vector3.RIGHT, PI * 0.5)  # the torus lies in XZ: face it to the camera
+	tw.tween_property(ring, "scale", Vector3.ONE * 9.0 * scale_k, 0.9).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tw.tween_property(rmat, "shader_parameter/strength", 0.0, 0.9)
 	var light := OmniLight3D.new()
 	light.light_color = col
 	light.light_energy = 12.0
 	light.omni_range = 30.0 * scale_k
 	n.add_child(light)
-	var tw := n.create_tween().set_parallel(true)
-	tw.tween_property(ball, "scale", Vector3.ONE * 4.0 * scale_k, 0.7).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
-	tw.tween_property(m, "albedo_color:a", 0.0, 0.9)
-	tw.tween_property(light, "light_energy", 0.0, 1.0)
+	tw.tween_property(light, "light_energy", 0.0, 1.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	tw.chain().tween_callback(n.queue_free)
-	debris(pos, 14, 8.0 * scale_k, scale_k)
+	debris(pos, 14, 8.0 * scale_k, 0.6 * scale_k)
 	shake = maxf(shake, 0.6 * scale_k)
 
 
-## Chunks of hull flying outward and tumbling.
+## Chunks of hull flying outward and tumbling (they shrink away at the end, they don't pop).
 func debris(pos: Vector3, count: int, speed: float, size_: float = 1.0, dir := Vector3.ZERO) -> void:
 	var holder: Node3D = _sets[_set] if _sets.has(_set) else _sets["space"]
 	var hull_m := StandardMaterial3D.new()
@@ -548,22 +635,22 @@ func debris(pos: Vector3, count: int, speed: float, size_: float = 1.0, dir := V
 		holder.add_child(d)
 		d.global_position = pos
 		var v: Vector3 = (Vector3(randf_range(-1, 1), randf_range(-1, 1), randf_range(-1, 1)).normalized() + dir).normalized() * speed * randf_range(0.4, 1.2)
-		_fx.append({"node": d, "vel": v, "spin": Vector3(randf_range(-6, 6), randf_range(-6, 6), randf_range(-6, 6)), "life": randf_range(2.0, 4.0)})
+		var life: float = randf_range(2.0, 4.0)
+		_fx.append({"node": d, "vel": v, "spin": Vector3(randf_range(-6, 6), randf_range(-6, 6), randf_range(-6, 6)), "life": life, "life0": life})
 
 
-## Soft white puffs (venting air / smoke) drifting along vel.
+## Soft puffs (venting air, smoke, heat) drifting along vel. They swell from small, and fade.
 func puff(pos: Vector3, vel: Vector3, col: Color = Color(0.9, 0.92, 0.95, 0.5), size_: float = 1.0) -> void:
 	var holder: Node3D = _sets[_set] if _sets.has(_set) else _sets["space"]
 	var p := MeshInstance3D.new()
-	p.mesh = ProcMesh.sphere(0.5 * size_, 8, 5)
-	var m := StandardMaterial3D.new()
-	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	m.albedo_color = col
+	p.mesh = ProcMesh.sphere(0.5 * size_, 12, 8)
+	var m: ShaderMaterial = puff_mat(Color(col.r, col.g, col.b, 0.0))
 	p.material_override = m
+	p.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	holder.add_child(p)
 	p.global_position = pos
-	_fx.append({"node": p, "vel": vel, "spin": Vector3.ZERO, "life": 1.6, "grow": 1.8 * size_, "fade": m})
+	p.scale = Vector3.ONE * 0.45
+	_fx.append({"node": p, "vel": vel, "spin": Vector3.ZERO, "life": 1.6, "life0": 1.6, "grow": 1.5 * size_, "fade": m, "col": col})
 
 
 ## Musical notes drifting up from Lumi while it hums.
@@ -579,10 +666,69 @@ func note(pos: Vector3) -> void:
 	_sets["vault"].add_child(l)
 	l.global_position = pos
 	var tw := l.create_tween().set_parallel(true)
-	tw.tween_property(l, "position", l.position + Vector3(randf_range(-0.25, 0.25), 0.9, randf_range(-0.1, 0.1)), 2.2)
+	tw.tween_property(l, "position", l.position + Vector3(randf_range(-0.25, 0.25), 0.9, randf_range(-0.1, 0.1)), 2.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_SINE)
 	tw.tween_property(l, "modulate:a", 0.9, 0.5)
 	tw.chain().tween_property(l, "modulate:a", 0.0, 0.8)
 	tw.chain().tween_callback(l.queue_free)
+
+
+# --- [v9intro] Drifting specks ------------------------------------------------------------
+
+func _build_motes(root: Node3D) -> void:
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	var sm := SphereMesh.new()
+	sm.radius = 0.5
+	sm.height = 1.0
+	sm.radial_segments = 6
+	sm.rings = 3
+	mm.mesh = sm
+	mm.instance_count = MOTES
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 77
+	for i: int in MOTES:
+		_mote_pos.append(Vector3(rng.randf_range(-1, 1), rng.randf_range(-1, 1), rng.randf_range(-1, 1)) * MOTE_BOX)
+	_motes = MultiMeshInstance3D.new()
+	_motes.multimesh = mm
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.albedo_color = Color(0.5, 0.52, 0.56)
+	_motes.material_override = m
+	_motes.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_motes.visible = false
+	_motes.top_level = true
+	root.add_child(_motes)
+
+
+func _update_motes(delta: float) -> void:
+	var on: bool = _set == "space" and motes_on
+	_motes.visible = on
+	if not on:
+		return
+	var mm: MultiMesh = _motes.multimesh
+	var c: Vector3 = cam.global_position
+	var stretch: float = clampf(motes_vel.length() * 0.008, 0.0, 1.0)
+	var along: Vector3 = motes_vel.normalized()
+	var b := Basis()
+	if stretch > 0.05:  # fast: each speck smears into a short streak along its path
+		var side: Vector3 = along.cross(Vector3.UP if absf(along.y) < 0.9 else Vector3.RIGHT).normalized()
+		b = Basis(side, along.cross(side), along)
+	for i: int in MOTES:
+		var p: Vector3 = _mote_pos[i] + motes_vel * delta
+		# Keep every speck in a box round the camera: one that leaves comes back on the far side.
+		p.x = c.x + wrapf(p.x - c.x, -MOTE_BOX, MOTE_BOX)
+		p.y = c.y + wrapf(p.y - c.y, -MOTE_BOX, MOTE_BOX)
+		p.z = c.z + wrapf(p.z - c.z, -MOTE_BOX, MOTE_BOX)
+		_mote_pos[i] = p
+		var sz: float = 0.05 + 0.07 * float(i % 5) / 4.0
+		if p.distance_squared_to(c) < 64.0:
+			sz = 0.0  # never a big blob right in front of the lens
+		mm.set_instance_transform(i, Transform3D(b.scaled(Vector3(sz, sz, sz * (1.0 + stretch * 9.0))), p))
+
+
+## Smooth camera shake: a few slow sines, so it rumbles instead of buzzing.
+static func shake_offset(t: float, amount: float) -> Vector3:
+	return Vector3(sin(t * 23.0) + sin(t * 37.3 + 1.3) * 0.6, sin(t * 29.1 + 0.7) + sin(t * 41.7) * 0.6, sin(t * 19.7 + 2.1)) * amount
 
 
 func _process(delta: float) -> void:
@@ -594,15 +740,17 @@ func _process(delta: float) -> void:
 		cam.global_transform = _from.interpolate_with(_to, e)
 		cam.fov = lerpf(_fov_from, _fov_to, e)
 	if shake > 0.0:
-		cam.global_position += Vector3(randf_range(-1, 1), randf_range(-1, 1), randf_range(-1, 1)) * shake * 0.25
-		cam.rotate_object_local(Vector3(0, 0, 1), randf_range(-1, 1) * shake * 0.01)
+		var o: Vector3 = shake_offset(_t, shake)
+		cam.global_position += o * 0.12
+		cam.rotate_object_local(Vector3(0, 0, 1), o.z * 0.006)
 		shake = maxf(0.0, shake - delta * 0.8)
-	# Vault alarm: a rotating red beacon and dimming cyan lights.
+	_update_motes(delta)
+	# Vault alarm: a sweeping red beacon and the cyan lights breathing toward red.
 	if alarm_light:
 		alarm_light.light_energy = _alarm * 9.0
-		alarm_light.rotation = Vector3(-0.9, _t * 5.0, 0)
+		alarm_light.rotation = Vector3(-0.9, _t * 3.4, 0)
 		for i: int in _vault_lights.size():
-			_vault_lights[i].light_color = (Color(0.55, 1.0, 0.6) if i == 0 else CradleShip.CYAN).lerp(CradleShip.ALARM, _alarm * (0.5 + 0.5 * sin(_t * 9.0)))
+			_vault_lights[i].light_color = (Color(0.55, 1.0, 0.6) if i == 0 else CradleShip.CYAN).lerp(CradleShip.ALARM, _alarm * (0.6 + 0.3 * sin(_t * 4.2)))
 	var i: int = _fx.size() - 1
 	while i >= 0:
 		var f: Dictionary = _fx[i]
@@ -616,8 +764,14 @@ func _process(delta: float) -> void:
 			continue
 		n.position += (f["vel"] as Vector3) * delta
 		n.rotation += (f["spin"] as Vector3) * delta
+		var life: float = float(f["life"])
+		var age: float = float(f.get("life0", life)) - life
 		if f.has("grow"):
 			n.scale += Vector3.ONE * float(f["grow"]) * delta
-			var fm: StandardMaterial3D = f["fade"]
-			fm.albedo_color.a = maxf(0.0, fm.albedo_color.a - delta * 0.35)
+			var fm: ShaderMaterial = f["fade"]
+			var col: Color = f["col"]
+			col.a *= clampf(age / 0.18, 0.0, 1.0) * clampf(life / (float(f["life0"]) * 0.7), 0.0, 1.0)
+			fm.set_shader_parameter("tint", col)
+		elif life < 0.4:
+			n.scale = Vector3.ONE * (life / 0.4)
 		i -= 1

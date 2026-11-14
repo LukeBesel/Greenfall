@@ -815,6 +815,12 @@ func _start_intro_or_place_pod() -> void:
 		var at: Vector3 = yard_point("pod")
 		return Intro.site_for_anchor(Transform3D(SphereGrid.frame(at.normalized()), at))
 	intro.place_pod_fn = _place_pod
+	intro.yard_fn = func(anchor: String) -> Variant:  # [v9intro] the film frames the old station by name
+		var sp: SitePrefab = globe.site_manager.prefab(0) if globe.site_manager else null
+		return yard_point(anchor) if sp and sp.anchor_names().has(anchor) else null
+	if DevHooks.has("intro"):
+		var sp0: SitePrefab = globe.site_manager.prefab(0) if globe.site_manager else null
+		print("[intro] yard anchors: %s" % (str(sp0.anchor_names()) if sp0 else "-"))
 	intro.cam_reset_fn = func() -> void:
 		var patch: Patch = w.get("patch")
 		cam.reset_frame(patch.forward())

@@ -33,6 +33,7 @@ var _t: float = 0.0
 static func attach(parent: Node, the_pod: Node3D, at: Vector3, yaw: float) -> CrashSite:
 	var site := CrashSite.new()
 	site.name = "CrashSite"
+	site.add_to_group("crash_site")  # [v9intro] the opening film hides a stand-in pod until its own pod lands
 	parent.add_child(site)
 	site.global_position = at
 	if the_pod.get_parent():
