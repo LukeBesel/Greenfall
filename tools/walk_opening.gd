@@ -553,7 +553,9 @@ static func _reload(label: String) -> void:
 		elif k == "chest":
 			same = absf(float(x) - float(y)) < 0.35
 		elif k == "beam":
-			same = (x == null and y == null) or (x is Vector3 and y is Vector3 and (x as Vector3).distance_to(y) < 2.5)
+			# On a cleaning step the marker is the outlined hex ("hex", compared above); its beam to
+			# the nearest finishable hex comes and goes with where Lumi stands (main, v9d).
+			same = str(a["to"]) == "hex" or (x == null and y == null) or (x is Vector3 and y is Vector3 and (x as Vector3).distance_to(y) < 2.5)
 		elif k == "pos":
 			continue
 		if not same:
