@@ -270,3 +270,11 @@ Step-marker limits: the frames are from the start world (targets are the start's
 near the pod, the bench beam); the rocket and station markers of later steps need a later world.
 Renders: before screenshots/v9/before/card_*.png, after screenshots/v9/after/card_*.png
 (960x540 and 1500x1000), all steps at 960x540 in screenshots/v9/after960/ and after_sheet_N.png.
+
+### Follow-up 2 (14 Nov)
+- Workbench detail (ui/list_detail.gd): the level goes up by the name, there is ONE "now → next" line with the row's picture, the one missing need ("Need 1.5K more cubes."), cost chips, and the price and buy button are pinned under the scrolling info. `--ui-audit` flags a primary button cut by its panel; scrolling lists may cut rows. Render: screenshots/v9/after/bench_960_base2.png and bench_1500_base2.png.
+- Floating lines (art/vfx.gd): the same words are never drawn twice nearby, and other lines stack above each other. The "Too heavy" floater is gone: the piece's "Needs Lift N" mark and the card's hint (with a lock picture) say it once.
+- Ledger: the act 1/2 lines, coupons, drone warnings and jam lines are rewritten in plain words (short, cold, a bit funny), in all 6 languages.
+- Cleaning steps: when nothing near Lumi can be outlined, the beam goes to the nearest dirty hex Lumi can finish with his Lift (up to 14 rings out). An outlined hex also gets the beam when it is over 15 m away or off screen. `--walk-home` passes.
+- Card pictures: research steps show a book, Requests a check mark, and the hint has its own picture (lock, chest, bale, house, scoop).
+- Birds closer than 3-6 m to the camera fade out (fauna/fauna.gd).

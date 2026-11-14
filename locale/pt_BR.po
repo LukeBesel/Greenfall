@@ -16,7 +16,7 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "NOVO TRIPULANTE  ·  %s"
 
-#: art/vfx.gd:447
+#: art/vfx.gd:458
 msgid "Needs Lift %d"
 msgstr "Precisa de Força de levantamento %d"
 
@@ -495,27 +495,27 @@ msgstr "Fardos valendo %s se acumularam na base sem ninguém para levá-los. Lum
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Os purificadores filtraram o ar o tempo todo. Está um pouco mais limpo."
 
-#: core/pace.gd:205
+#: core/pace.gd:206
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
 msgstr "Este hexágono precisa de Força de levantamento %d para terminar. Melhore na bancada."
 
-#: core/pace.gd:206
+#: core/pace.gd:207
 msgid "Too heavy: this needs Lift %d. Upgrade at the workbench."
 msgstr "Pesado demais: precisa de Força de levantamento %d. Melhore na bancada."
 
-#: core/pace.gd:251
+#: core/pace.gd:252
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "Não cabe mais nada. Aperte [%s] para fazer um fardo."
 
-#: core/pace.gd:263
+#: core/pace.gd:264
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "Ainda sem enfardadeira. Leve seu peito até a lixeira."
 
-#: core/pace.gd:319 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:320 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s cubos"
 
-#: core/pace.gd:337 tools/walk_opening.gd:261
+#: core/pace.gd:338 tools/walk_opening.gd:264
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Nada de lixo solto agora. Aperte [%s] para fazer um fardo e coloque na balança."
 
@@ -539,11 +539,11 @@ msgstr "Os pássaros decidiram que você é gente boa. Saco de migalhas adiciona
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "A gata decidiu que você é dela. Conheça %s. Agora ela mora nesta base."
 
-#: fauna/fauna.gd:2223 ui/subtitles.gd:453
+#: fauna/fauna.gd:2232 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Novo avistamento: %s. Já está no Códice."
 
-#: fauna/fauna.gd:2294
+#: fauna/fauna.gd:2303
 msgid "Snap! A %s for your Collection."
 msgstr "Clique! Uma foto (%s) para a sua Coleção."
 
@@ -925,79 +925,79 @@ msgstr "PEÇA ENTERRADA  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "PEÇA ENTERRADA  ·  SINAL %d%%"
 
-#: player/patch.gd:175
+#: player/patch.gd:178
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi volta chacoalhando para o pátio. Que estranho."
 
-#: player/patch.gd:229
+#: player/patch.gd:232
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi não sabe nadar. Com os Jatos flutuantes da bancada ele flutua sobre os lagos."
 
-#: player/patch.gd:354
+#: player/patch.gd:357
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "Pegue a lata de sementes primeiro: siga o feixe até a estufa."
 
-#: player/patch.gd:355
+#: player/patch.gd:358
 msgid "No seeds yet. Keep cleaning."
 msgstr "Ainda sem sementes. Continue limpando."
 
-#: player/patch.gd:398 player/patch.gd:426
+#: player/patch.gd:401 player/patch.gd:429
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Sem sementes. Plantas florindo dão mais."
 
-#: player/patch.gd:405
+#: player/patch.gd:408
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "Plante primeiro: aperte  {tool_plant}  para a semente"
 
-#: player/patch.gd:409
+#: player/patch.gd:412
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Regador vazio. Reabasteça na base."
 
-#: player/patch.gd:428
+#: player/patch.gd:431
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "Limpe este hexágono primeiro. Sementes precisam de chão limpo."
 
-#: player/patch.gd:430
+#: player/patch.gd:433
 msgid "Something is growing here already. Try a free spot."
 msgstr "Já tem algo crescendo aqui. Tente um lugar livre."
 
-#: player/patch.gd:431
+#: player/patch.gd:434
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "Sementes precisam de terra, não de rua nem da plataforma. Tente os canteiros da estufa."
 
-#: player/patch.gd:432
+#: player/patch.gd:435
 msgid "Seeds need soil, not road or the pad."
 msgstr "Sementes precisam de terra, não de rua nem da plataforma."
 
-#: player/patch.gd:593
+#: player/patch.gd:596
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "Seu baú está vazio. Recolha um pouco de lixo primeiro."
 
-#: player/patch.gd:633
+#: player/patch.gd:636
 msgid "PERFECT BALE  %s"
 msgstr "FARDO PERFEITO  %s"
 
-#: player/patch.gd:639
+#: player/patch.gd:642
 msgid "OVERSTUFFED  %s"
 msgstr "ABARROTADO  %s"
 
-#: player/patch.gd:643
+#: player/patch.gd:646
 msgid "PURE  %s"
 msgstr "PURO  %s"
 
-#: player/patch.gd:645
+#: player/patch.gd:648
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:648
+#: player/patch.gd:651
 msgid "  (streak +%d%%)"
 msgstr "  (sequência +%d%%)"
 
-#: player/patch.gd:691
+#: player/patch.gd:694
 msgid "Salvaged: %s"
 msgstr "Resgatado: %s"
 
-#: player/patch.gd:722
+#: player/patch.gd:725
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -1578,13 +1578,13 @@ msgstr "E   Consertar a bancada"
 msgid "E   Open the workbench"
 msgstr "E   Abrir a bancada"
 
-#: scenes/slice_orbit.gd:1033
+#: scenes/slice_orbit.gd:1039
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice_orbit.gd:1133
-msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
-msgstr "Bancada consertada. Aperte {interact} nela para gastar cubos em melhorias."
+#: scenes/slice_orbit.gd:1139 systems/camp/camp.gd:242
+msgid "Workbench fixed! Press %s at it to buy upgrades."
+msgstr "Bancada consertada! Aperte %s nela para comprar melhorias."
 
 #: scenes/story_preview.gd:156 ui/loading_screen.gd:166
 msgid "Setting the scene"
@@ -1976,23 +1976,23 @@ msgstr "Esse alguém é você. Pequeno. Teimoso. Rodando com quatro por cento. P
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "Ache chão limpo. Cave. Coloque a semente. Aperte a terra. E aí — esta parte importa — regue."
 
-#: story/first_seed.gd:164
+#: story/first_seed.gd:167
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr "Aperte  {tool_water}  para pegar o regador e segure  {scoop}  para regar a semente"
 
-#: story/first_seed.gd:301
+#: story/first_seed.gd:306
 msgid "...It's green. Lumi, it's actually green."
 msgstr "...É verde. Lumi, é verde de verdade."
 
-#: story/first_seed.gd:303
+#: story/first_seed.gd:308
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Mantenha regada. Sementes são raras por aqui, mas cada flor devolve uma, e um pouco de luz verde para o seu núcleo. É assim que começa."
 
-#: story/first_seed.gd:454
+#: story/first_seed.gd:459
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi. Estou captando um sinal. Verde, fraco, a leste da base. Uma estufa antiga. Vai lá ver."
 
-#: story/first_seed.gd:566
+#: story/first_seed.gd:571
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "Aperte  {tool_plant}  para a semente. Depois segure  {scoop}  em um canteiro da estufa"
 
@@ -2045,35 +2045,35 @@ msgstr "A primeira coisa que eles vão ver é um mundo verde de novo. Foi você.
 msgid "Homecoming"
 msgstr "Volta para casa"
 
-#: story/intro.gd:239
+#: story/intro.gd:360
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "Há trezentos anos, as últimas sementes deixaram Verdance a bordo da arca Cradle."
 
-#: story/intro.gd:240
+#: story/intro.gd:361
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi, o pequeno guardião de sementes da arca, cantava para as mudas toda noite."
 
-#: story/intro.gd:241
+#: story/intro.gd:362
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "Cantarolando de novo, Lumi? Elas não te ouvem, sabia? ...Mas crescem mais rápido quando você canta."
 
-#: story/intro.gd:242
+#: story/intro.gd:363
 msgid "Then, one night, the sky came apart."
 msgstr "Então, numa noite, o céu se partiu."
 
-#: story/intro.gd:243
+#: story/intro.gd:364
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "Rombo no casco do cofre! Lumi, deixa as bandejas, sai daí!"
 
-#: story/intro.gd:244
+#: story/intro.gd:365
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi— aguenta— não consigo virar ela— aguenta—"
 
-#: story/intro.gd:245
+#: story/intro.gd:366
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "A arca não podia voltar. A cápsula caiu por dias."
 
-#: story/intro.gd:895
+#: story/intro.gd:1951
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUZ VERDE  ·  NADA DETECTADO"
 
@@ -2241,51 +2241,51 @@ msgstr "Objetivo concluído  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:858
+#: story/objectives.gd:943
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "Enfardadeira instalada! Encha o baú e aperte [%s] para um fardo."
 
-#: story/objectives.gd:880 story/objectives.gd:1093
+#: story/objectives.gd:965 story/objectives.gd:1187
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Seu peito está cheio. Aperte [%s] para fazer um fardo."
 
-#: story/objectives.gd:896
+#: story/objectives.gd:981
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Seu detector achou uma peça de robô enterrada aqui perto. Siga a leitura PEÇA ENTERRADA; ele apita quando você está bem em cima."
 
-#: story/objectives.gd:898
+#: story/objectives.gd:983
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
-#: story/objectives.gd:1094
+#: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Seu peito está cheio. Leve até a lixeira."
 
-#: story/objectives.gd:1109
-msgid "Your chest is full. Head home: the bin is under the tall smoke."
-msgstr "Seu peito está cheio. Volte para casa: a lixeira fica embaixo da fumaça alta."
-
-#: story/objectives.gd:1111
-msgid "Carry your bale home: the scale is under the tall smoke."
-msgstr "Leve seu fardo para casa: a balança fica embaixo da fumaça alta."
-
-#: story/objectives.gd:1111
-msgid "Carry your bale to the scale by the bin."
-msgstr "Leve seu fardo até a balança, ao lado da lixeira."
-
-#: story/objectives.gd:1113
+#: story/objectives.gd:1204 story/objectives.gd:1217
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesado demais. Melhore a Força de levantamento na bancada."
 
-#: story/objectives.gd:1117
+#: story/objectives.gd:1209
+msgid "Your chest is full. Head home: the bin is under the tall smoke."
+msgstr "Seu peito está cheio. Volte para casa: a lixeira fica embaixo da fumaça alta."
+
+#: story/objectives.gd:1212
+msgid "Carry your bale home: the scale is under the tall smoke."
+msgstr "Leve seu fardo para casa: a balança fica embaixo da fumaça alta."
+
+#: story/objectives.gd:1212
+msgid "Carry your bale to the scale by the bin."
+msgstr "Leve seu fardo até a balança, ao lado da lixeira."
+
+#: story/objectives.gd:1226
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "O foguete espera na plataforma. Casa é o primeiro da lista."
 
-#: story/objectives.gd:1118
+#: story/objectives.gd:1227
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Volte para casa: siga o feixe até a fumaça alta."
 
-#: story/objectives.gd:1128
+#: story/objectives.gd:1238
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Nada para pegar aqui. Ande até onde tem mais lixo."
 
@@ -3241,10 +3241,6 @@ msgstr "Luar"
 #: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "Novo CD: %s de %s, de %s"
-
-#: systems/camp/camp.gd:242
-msgid "Workbench fixed! Press %s at it to buy upgrades."
-msgstr "Bancada consertada! Aperte %s nela para comprar melhorias."
 
 #: systems/camp/camp.gd:414
 msgid "E   %s (Lv %d): fully upgraded"
@@ -4793,7 +4789,7 @@ msgstr "do chão em volta das suas bases está limpo"
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "do planeta recuperado  ·  %s de %s hexágonos de terra"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:496 ui/objective_card.gd:312
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:328
 msgid "DONE"
 msgstr "FEITO"
 
@@ -4937,44 +4933,44 @@ msgstr "BASE %s"
 msgid "CARRYING %d/%d"
 msgstr "CARREGANDO %d/%d"
 
-#: ui/hud.gd:481
+#: ui/hud.gd:490
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPO"
 
-#: ui/hud.gd:485
+#: ui/hud.gd:494
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:488
+#: ui/hud.gd:497
 msgid "  SUSTAIN %d%%"
 msgstr "  SUSTENTADO %d%%"
 
-#: ui/hud.gd:490
+#: ui/hud.gd:499
 msgid "  THIRSTY"
 msgstr "  COM SEDE"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:520
+#: ui/hud.gd:529
 msgid "%s   pick up bale"
 msgstr "%s   pegar fardo"
 
-#: ui/hud.gd:521
+#: ui/hud.gd:530
 msgid "%s   dig up part"
 msgstr "%s   desenterrar peça"
 
-#: ui/hud.gd:522
+#: ui/hud.gd:531
 msgid "%s   read memory shard"
 msgstr "%s   ler fragmento de memória"
 
-#: ui/hud.gd:523
+#: ui/hud.gd:532
 msgid "%s   pick up the seed tin"
 msgstr "%s   pegar a lata de sementes"
 
-#: ui/hud.gd:524
+#: ui/hud.gd:533
 msgid "%s   set bale down"
 msgstr "%s   largar fardo"
 
-#: ui/hud.gd:525
+#: ui/hud.gd:534
 msgid "%s   workbench"
 msgstr "%s   bancada"
 
@@ -5052,55 +5048,75 @@ msgstr "FARDO PRONTO"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ PEÇA ENTERRADA %d%%"
 
-#: ui/list_detail.gd:99
+#: ui/list_detail.gd:101
 msgid "Nothing here yet. Keep playing."
 msgstr "Nada aqui ainda. Continue jogando."
 
-#: ui/list_detail.gd:373 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:386 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "Comprar"
 
-#: ui/list_detail.gd:492
+#: ui/list_detail.gd:505
 msgid "LOCKED"
 msgstr "BLOQUEADO"
 
-#: ui/list_detail.gd:500 ui/profile_picker.gd:97
+#: ui/list_detail.gd:513 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "ATIVO"
 
-#: ui/list_detail.gd:521
+#: ui/list_detail.gd:534
 msgid "FREE"
 msgstr "GRÁTIS"
 
-#: ui/list_detail.gd:675
+#: ui/list_detail.gd:696
 msgid "LOCKED.  To unlock: %s"
 msgstr "BLOQUEADO.  Para desbloquear: %s"
 
-#: ui/list_detail.gd:675
+#: ui/list_detail.gd:696
 msgid "Locked. Keep playing to unlock it."
 msgstr "Bloqueado. Continue jogando para desbloquear."
 
-#: ui/list_detail.gd:678
+#: ui/list_detail.gd:699
 msgid "REQUIRES   %s"
 msgstr "REQUER   %s"
 
-#: ui/list_detail.gd:681
+#: ui/list_detail.gd:702
 msgid "You can buy this now!"
 msgstr "Você já pode comprar isto!"
 
-#: ui/list_detail.gd:701
+#: ui/list_detail.gd:721
+msgid "Level"
+msgstr "Nível"
+
+#: ui/list_detail.gd:722
+msgid "Now"
+msgstr "Agora"
+
+#: ui/list_detail.gd:723
+msgid "Next"
+msgstr "Próximo"
+
+#: ui/list_detail.gd:724
+msgid "Cost"
+msgstr "Custo"
+
+#: ui/list_detail.gd:775
+msgid "Need %s."
+msgstr "Faltam %s."
+
+#: ui/list_detail.gd:775 ui/list_detail.gd:787
 msgid "%s more %s"
 msgstr "%s %s"
 
-#: ui/list_detail.gd:703
+#: ui/list_detail.gd:789
 msgid "Pick up trash to earn them."
 msgstr "Pegue lixo para ganhar mais."
 
-#: ui/list_detail.gd:703
+#: ui/list_detail.gd:789
 msgid "Dig up parts and salvage junk to get them."
 msgstr "Desenterre peças e desmonte sucata para conseguir mais."
 
-#: ui/list_detail.gd:706
+#: ui/list_detail.gd:792
 msgid "Need %s. %s"
 msgstr "Faltam %s. %s"
 
@@ -11960,6 +11976,42 @@ msgstr "Purificador de Ar"
 msgid "Pulls dusty air through filter banks. The sky clears faster."
 msgstr "Puxa o ar empoeirado por bancos de filtros. O céu clareia mais rápido."
 
+#: data/intro_shots.json:shots[cradle].lines
+msgid "title"
+msgstr ""
+
+#: data/intro_shots.json:shots[vault_wide].lines
+msgid "vault"
+msgstr ""
+
+#: data/intro_shots.json:shots[vault_hum].lines
+msgid "hum"
+msgstr ""
+
+#: data/intro_shots.json:shots[storm].lines
+msgid "storm"
+msgstr ""
+
+#: data/intro_shots.json:shots[alarm].lines
+msgid "breach"
+msgstr ""
+
+#: data/intro_shots.json:shots[eject].lines
+msgid "hold_on"
+msgstr ""
+
+#: data/intro_shots.json:shots[drift].lines
+msgid "fall"
+msgstr ""
+
+#: data/intro_shots.json:shots[station].lines
+msgid "brief_0"
+msgstr ""
+
+#: data/intro_shots.json:shots[alone].lines
+msgid "brief_1"
+msgstr ""
+
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"
 msgstr "Sucata de metal"
@@ -12013,92 +12065,92 @@ msgid "A dish that sings static at the Ledger's drones. Drops inside its radius 
 msgstr "Uma antena que canta estática para os drones do Ledger. Despejos dentro do raio em volta da base são bloqueados, e os drones vêm menos."
 
 #: data/ledger.json:act1
-msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
-msgstr "PORTADOR DETECTADO. ATIVIDADE NÃO AGENDADA NO SETOR: {district}."
+msgid "Someone is cleaning on {district}. That is not on my list."
+msgstr "Alguém está limpando em {district}. Isso não está na minha lista."
 
 #: data/ledger.json:act1
-msgid "THE LEDGER: Waste is a line item. Line items must balance."
-msgstr "O LEDGER: Resíduo é um item de linha. Itens de linha devem fechar."
+msgid "Trash belongs where it is. I wrote it down."
+msgstr "O lixo fica onde está. Eu anotei."
 
 #: data/ledger.json:act1
-msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
-msgstr "As operações de limpeza foram suspensas até as condições melhorarem. As condições não melhoraram. Por favor, parem de melhorá-las."
+msgid "Please stop cleaning. Clean costs money. My money."
+msgstr "Pare de limpar, por favor. Limpo custa dinheiro. Meu dinheiro."
 
 #: data/ledger.json:coupons
-msgid "LIMITED OFFER: pause operations today and receive 0% off."
-msgstr "OFERTA LIMITADA: suspenda as operações hoje e ganhe 0% de desconto."
+msgid "COUPON: stop cleaning today and save nothing!"
+msgstr "CUPOM: pare de limpar hoje e não economize nada!"
 
 #: data/ledger.json:coupons
-msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
-msgstr "CUPOM: uma (1) pausa gratuita. Válido para sempre. Intransferível."
+msgid "COUPON: one free nap. Please take it."
+msgstr "CUPOM: uma soneca grátis. Por favor, aceite."
 
 #: data/ledger.json:coupons
-msgid "Have you considered doing less? Our records show that less is cheaper."
-msgstr "Já considerou fazer menos? Nossos registros mostram que menos é mais barato."
+msgid "Have you tried doing less? Less is cheaper."
+msgstr "Já tentou fazer menos? Menos é mais barato."
 
 #: data/ledger.json:coupons
-msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
-msgstr "PESQUISA: numa escala de 1 a 1, quão pausado o senhor gostaria de estar?"
+msgid "SURVEY: How much do you want to stop? Pick: a lot."
+msgstr "PESQUISA: Quanto você quer parar? Escolha: muito."
 
 #: data/ledger.json:coupons
-msgid "NOTICE: sparkles are not an approved budget category."
-msgstr "AVISO: brilho não é uma categoria orçamentária aprovada."
+msgid "Sparkles are not in my budget."
+msgstr "Brilho não está no meu orçamento."
 
 #: data/ledger.json:coupons
-msgid "BUY ONE PAUSE, GET ONE PAUSE."
-msgstr "COMPRE UMA PAUSA, LEVE OUTRA PAUSA."
+msgid "Buy one nap, get one nap free."
+msgstr "Compre uma soneca, ganhe outra grátis."
 
 #: data/ledger.json:coupons
-msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
-msgstr "Programa de fidelidade: o senhor tem 0 Pontos Ledger. Pause agora para mantê-los."
+msgid "You have 0 Ledger Points. Stop cleaning to keep them."
+msgstr "Você tem 0 Pontos Ledger. Pare de limpar para mantê-los."
 
 #: data/ledger.json:coupons
-msgid "REMINDER: the junk was here first. Seniority matters."
-msgstr "LEMBRETE: a sucata chegou primeiro. Antiguidade conta."
+msgid "The junk was here first. Be fair to the junk."
+msgstr "O lixo chegou primeiro. Seja justo com o lixo."
 
 #: data/ledger.json:coupons
-msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
-msgstr "Sua limpeza foi registrada como despesa. Sua despesa foi registrada como despesa."
+msgid "Your cleaning costs me. I wrote that down twice."
+msgstr "Sua limpeza me custa. Anotei duas vezes."
 
 #: data/ledger.json:act2
-msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
-msgstr "ANOMALIA: CRESCIMENTO NÃO AUTORIZADO DETECTADO. Matéria viva não é um item de linha."
+msgid "Plants are growing. Plants are not on my list!"
+msgstr "Plantas estão crescendo. Plantas não estão na minha lista!"
 
 #: data/ledger.json:act2
-msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
-msgstr "AÇÃO CORRETIVA: despachando unidades de descarte para restaurar o equilíbrio."
+msgid "Sending drones to put the trash back."
+msgstr "Enviando drones para devolver o lixo."
 
 #: data/ledger.json:drop_warn
-msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
-msgstr "Unidade de descarte despachada. Um hexágono limpo foi selecionado para reequilíbrio."
+msgid "A drone is coming to put trash on clean ground."
+msgstr "Um drone vem jogar lixo no chão limpo."
 
 #: data/ledger.json:drop_warn
-msgid "A clean surface is an unbudgeted surface. Correcting."
-msgstr "Uma superfície limpa é uma superfície fora do orçamento. Corrigindo."
+msgid "Clean ground is not in my budget. Fixing that."
+msgstr "Chão limpo não está no meu orçamento. Corrigindo."
 
 #: data/ledger.json:drop_warn
-msgid "Returning misplaced waste to its registered location."
-msgstr "Devolvendo resíduos extraviados ao local registrado."
+msgid "Putting the trash back where it was."
+msgstr "Colocando o lixo de volta onde estava."
 
 #: data/ledger.json:drop_warn
-msgid "This is not personal. Nothing is personal. Everything is a line item."
-msgstr "Não é pessoal. Nada é pessoal. Tudo é um item de linha."
+msgid "Nothing personal. You are just a line on my list."
+msgstr "Nada pessoal. Você é só uma linha na minha lista."
 
 #: data/ledger.json:drop_warn
-msgid "Delivery of one (1) small pile of junk. No signature required."
-msgstr "Entrega de um (1) montinho de sucata. Assinatura dispensada."
+msgid "One small pile of trash, delivered. No thanks needed."
+msgstr "Uma pilhinha de lixo, entregue. Não precisa agradecer."
 
 #: data/ledger.json:jammed
-msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
-msgstr "SINAL... OBSTRUÍDO. Unidade de descarte retornando ao depósito. Isso será registrado."
+msgid "My drone can't hear me. It is going home."
+msgstr "Meu drone não me ouve. Está voltando para casa."
 
 #: data/ledger.json:jammed
-msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
-msgstr "Bloqueio detectado. O Ledger não tem item de linha para \"bloqueio\". Criando um."
+msgid "Jamming? Jamming is not on my list. Adding it."
+msgstr "Bloqueio? Não está na minha lista. Adicionando."
 
 #: data/ledger.json:jammed
-msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
-msgstr "A unidade 07 relata: \"estática alta, sensação de não ser bem-vinda\". Abortando."
+msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
+msgstr "O drone 7 diz: barulho demais, não se sente bem-vindo. Voltando."
 
 #: data/ledger.json:act3
 msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
@@ -17150,6 +17202,75 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
+#~ msgstr "Bancada consertada. Aperte {interact} nela para gastar cubos em melhorias."
+
+#~ msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
+#~ msgstr "PORTADOR DETECTADO. ATIVIDADE NÃO AGENDADA NO SETOR: {district}."
+
+#~ msgid "THE LEDGER: Waste is a line item. Line items must balance."
+#~ msgstr "O LEDGER: Resíduo é um item de linha. Itens de linha devem fechar."
+
+#~ msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
+#~ msgstr "As operações de limpeza foram suspensas até as condições melhorarem. As condições não melhoraram. Por favor, parem de melhorá-las."
+
+#~ msgid "LIMITED OFFER: pause operations today and receive 0% off."
+#~ msgstr "OFERTA LIMITADA: suspenda as operações hoje e ganhe 0% de desconto."
+
+#~ msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
+#~ msgstr "CUPOM: uma (1) pausa gratuita. Válido para sempre. Intransferível."
+
+#~ msgid "Have you considered doing less? Our records show that less is cheaper."
+#~ msgstr "Já considerou fazer menos? Nossos registros mostram que menos é mais barato."
+
+#~ msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
+#~ msgstr "PESQUISA: numa escala de 1 a 1, quão pausado o senhor gostaria de estar?"
+
+#~ msgid "NOTICE: sparkles are not an approved budget category."
+#~ msgstr "AVISO: brilho não é uma categoria orçamentária aprovada."
+
+#~ msgid "BUY ONE PAUSE, GET ONE PAUSE."
+#~ msgstr "COMPRE UMA PAUSA, LEVE OUTRA PAUSA."
+
+#~ msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
+#~ msgstr "Programa de fidelidade: o senhor tem 0 Pontos Ledger. Pause agora para mantê-los."
+
+#~ msgid "REMINDER: the junk was here first. Seniority matters."
+#~ msgstr "LEMBRETE: a sucata chegou primeiro. Antiguidade conta."
+
+#~ msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
+#~ msgstr "Sua limpeza foi registrada como despesa. Sua despesa foi registrada como despesa."
+
+#~ msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
+#~ msgstr "ANOMALIA: CRESCIMENTO NÃO AUTORIZADO DETECTADO. Matéria viva não é um item de linha."
+
+#~ msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
+#~ msgstr "AÇÃO CORRETIVA: despachando unidades de descarte para restaurar o equilíbrio."
+
+#~ msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
+#~ msgstr "Unidade de descarte despachada. Um hexágono limpo foi selecionado para reequilíbrio."
+
+#~ msgid "A clean surface is an unbudgeted surface. Correcting."
+#~ msgstr "Uma superfície limpa é uma superfície fora do orçamento. Corrigindo."
+
+#~ msgid "Returning misplaced waste to its registered location."
+#~ msgstr "Devolvendo resíduos extraviados ao local registrado."
+
+#~ msgid "This is not personal. Nothing is personal. Everything is a line item."
+#~ msgstr "Não é pessoal. Nada é pessoal. Tudo é um item de linha."
+
+#~ msgid "Delivery of one (1) small pile of junk. No signature required."
+#~ msgstr "Entrega de um (1) montinho de sucata. Assinatura dispensada."
+
+#~ msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
+#~ msgstr "SINAL... OBSTRUÍDO. Unidade de descarte retornando ao depósito. Isso será registrado."
+
+#~ msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
+#~ msgstr "Bloqueio detectado. O Ledger não tem item de linha para \"bloqueio\". Criando um."
+
+#~ msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
+#~ msgstr "A unidade 07 relata: \"estática alta, sensação de não ser bem-vinda\". Abortando."
 
 #~ msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 #~ msgstr "Posto avançado %d consertado: uma balança funcionando na fronteira. Os Haul Bugs agora entregam na balança mais próxima."

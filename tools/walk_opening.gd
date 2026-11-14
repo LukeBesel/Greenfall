@@ -642,6 +642,15 @@ static func _card(why: bool = false) -> String:
 	return "" if def.is_empty() else Objectives.texts(def)[1 if why else 0]
 
 
+## [main] The price as the card shows it: cost chips ("cubes 35 / 80  parts 2 / 10"), whatever the
+## hint line says (the new card keeps the price as chips and lets the chest / bale line have the hint).
+static func _card_costs() -> String:
+	var hud: Node = _w.get("hud")
+	var gp: Node = hud.get("goals") as Node if hud else null
+	var oc: ObjectiveCard = gp.get("objective") as ObjectiveCard if gp else null
+	return str(oc.read()[2]) if oc else ""
+
+
 static func _progress_label() -> String:
 	return str(_ob.progress()[1])
 
@@ -736,11 +745,11 @@ static func _make_and_sell_bale(reload_label: String = "") -> void:
 	var price: Dictionary = _ob._step_price()
 	if not price.is_empty() and not GameState.can_afford_all(price):
 		await _secs(0.6)
-		_check(_ob.situation.begins_with("Need"), "%s: saving up with a bale on the ground, the card still says what is missing (%s)" % [str(_ob.current().get("id", "")), _ob.situation])
+		_check(_card_costs().contains(" / "), "%s: saving up with a bale on the ground, the card still shows what is missing (%s)" % [str(_ob.current().get("id", "")), _card_costs()])
 	await _tap("interact")
 	if not price.is_empty() and not GameState.can_afford_all(price):
 		await _secs(0.6)
-		_check(_ob.situation.begins_with("Need"), "%s: carrying a bale while saving up, the card keeps the price line (%s)" % [str(_ob.current().get("id", "")), _ob.situation])
+		_check(_card_costs().contains(" / "), "%s: carrying a bale while saving up, the card keeps the price (%s)" % [str(_ob.current().get("id", "")), _card_costs()])
 	_check(not _p.carried.is_empty(), "bale: E picks it up (bale %s m away)" % ("%.1f" % _flat(bale.global_position - _p.global_position).length() if bale else "none"))
 	if reload_label != "" and not _p.carried.is_empty():
 		await _reload(reload_label)

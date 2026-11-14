@@ -16,7 +16,7 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "新船员  ·  %s"
 
-#: art/vfx.gd:447
+#: art/vfx.gd:458
 msgid "Needs Lift %d"
 msgstr "需要举升力 %d"
 
@@ -495,27 +495,27 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:205
+#: core/pace.gd:206
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
 msgstr "这个六边形需要举升力 %d 才能清完。去工作台升级吧。"
 
-#: core/pace.gd:206
+#: core/pace.gd:207
 msgid "Too heavy: this needs Lift %d. Upgrade at the workbench."
 msgstr "太重了：需要举升力 %d。去工作台升级吧。"
 
-#: core/pace.gd:251
+#: core/pace.gd:252
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "这里装不下了。按 [%s] 压一个捆包。"
 
-#: core/pace.gd:263
+#: core/pace.gd:264
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 
-#: core/pace.gd:319 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:320 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: core/pace.gd:337 tools/walk_opening.gd:261
+#: core/pace.gd:338 tools/walk_opening.gd:264
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "现在不收散装垃圾了。按 [%s] 压一个垃圾块，再把它放到秤上。"
 
@@ -539,11 +539,11 @@ msgstr "鸟儿们觉得你还不错。面包屑袋已加入你的收藏。"
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
-#: fauna/fauna.gd:2223 ui/subtitles.gd:453
+#: fauna/fauna.gd:2232 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新发现：%s。已收入图鉴。"
 
-#: fauna/fauna.gd:2294
+#: fauna/fauna.gd:2303
 msgid "Snap! A %s for your Collection."
 msgstr "咔嚓！一张%s的照片，收进你的收藏。"
 
@@ -924,79 +924,79 @@ msgstr "埋藏零件  %s  ·  %.1f 米"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋藏零件  ·  信号 %d%%"
 
-#: player/patch.gd:175
+#: player/patch.gd:178
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi 哐啷哐啷地回到了院子里。真奇怪。"
 
-#: player/patch.gd:229
+#: player/patch.gd:232
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi 不会游泳。在工作台装上悬浮喷口，他就能飘过湖面。"
 
-#: player/patch.gd:354
+#: player/patch.gd:357
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "先去拿种子罐：跟着光束走到温室。"
 
-#: player/patch.gd:355
+#: player/patch.gd:358
 msgid "No seeds yet. Keep cleaning."
 msgstr "还没有种子。继续清理吧。"
 
-#: player/patch.gd:398 player/patch.gd:426
+#: player/patch.gd:401 player/patch.gd:429
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:405
+#: player/patch.gd:408
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "先种下：按  {tool_plant}  拿出种子"
 
-#: player/patch.gd:409
+#: player/patch.gd:412
 msgid "Watering can is empty. Refill at the hub."
 msgstr "水壶空了。回基地补水。"
 
-#: player/patch.gd:428
+#: player/patch.gd:431
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "先把这个六边形清理干净。种子需要干净的土地。"
 
-#: player/patch.gd:430
+#: player/patch.gd:433
 msgid "Something is growing here already. Try a free spot."
 msgstr "这里已经长着东西了。换个空位试试。"
 
-#: player/patch.gd:431
+#: player/patch.gd:434
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "种子要种在泥土里，不能种在路上或平台上。试试温室的苗床。"
 
-#: player/patch.gd:432
+#: player/patch.gd:435
 msgid "Seeds need soil, not road or the pad."
 msgstr "种子要种在泥土里，不能种在路上或平台上。"
 
-#: player/patch.gd:593
+#: player/patch.gd:596
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "你的箱子是空的。先去捡些垃圾。"
 
-#: player/patch.gd:633
+#: player/patch.gd:636
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:639
+#: player/patch.gd:642
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:643
+#: player/patch.gd:646
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:645
+#: player/patch.gd:648
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:648
+#: player/patch.gd:651
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:691
+#: player/patch.gd:694
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:722
+#: player/patch.gd:725
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1572,13 +1572,13 @@ msgstr "E   修理工作台"
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1033
+#: scenes/slice_orbit.gd:1039
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1133
-msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
-msgstr "工作台修好了。在它旁边按 {interact}，用方块购买升级。"
+#: scenes/slice_orbit.gd:1139 systems/camp/camp.gd:242
+msgid "Workbench fixed! Press %s at it to buy upgrades."
+msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
 #: scenes/story_preview.gd:156 ui/loading_screen.gd:166
 msgid "Setting the scene"
@@ -1970,23 +1970,23 @@ msgstr "那个人就是你。小小的。倔强的。只剩百分之四的电。
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
 
-#: story/first_seed.gd:164
+#: story/first_seed.gd:167
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr "按  {tool_water}  拿起洒水壶，然后按住  {scoop}  给种子浇水"
 
-#: story/first_seed.gd:301
+#: story/first_seed.gd:306
 msgid "...It's green. Lumi, it's actually green."
 msgstr "……是绿色的。Lumi，真的是绿色的。"
 
-#: story/first_seed.gd:303
+#: story/first_seed.gd:308
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
-#: story/first_seed.gd:454
+#: story/first_seed.gd:459
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
 
-#: story/first_seed.gd:566
+#: story/first_seed.gd:571
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "按  {tool_plant}  拿出种子。然后在温室苗床上按住  {scoop}"
 
@@ -2039,35 +2039,35 @@ msgstr "他们看到的第一样东西，会是一个重新变绿的世界。是
 msgid "Homecoming"
 msgstr "归乡"
 
-#: story/intro.gd:239
+#: story/intro.gd:360
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "三百年前，最后的种子乘着方舟 Cradle号离开了 Verdance。"
 
-#: story/intro.gd:240
+#: story/intro.gd:361
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi，方舟上的小小守种者，每晚都为幼苗唱歌。"
 
-#: story/intro.gd:241
+#: story/intro.gd:362
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "又在哼歌了，Lumi？它们听不见的，你知道吧。……不过你唱的时候，它们确实长得更快。"
 
-#: story/intro.gd:242
+#: story/intro.gd:363
 msgid "Then, one night, the sky came apart."
 msgstr "然后，某天夜里，天空碎裂了。"
 
-#: story/intro.gd:243
+#: story/intro.gd:364
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "种子库舱段船体破裂！Lumi，别管托盘了，快离开！"
 
-#: story/intro.gd:244
+#: story/intro.gd:365
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi——坚持住——我没法让它调头——坚持住——"
 
-#: story/intro.gd:245
+#: story/intro.gd:366
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "方舟无法回头。逃生舱坠落了好几天。"
 
-#: story/intro.gd:895
+#: story/intro.gd:1951
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "绿光  ·  未检测到"
 
@@ -2235,51 +2235,51 @@ msgstr "目标完成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:858
+#: story/objectives.gd:943
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "打包机装好了！装满箱子，然后按 [%s] 打包。"
 
-#: story/objectives.gd:880 story/objectives.gd:1093
+#: story/objectives.gd:965 story/objectives.gd:1187
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:896
+#: story/objectives.gd:981
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:898
+#: story/objectives.gd:983
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:1094
+#: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:1109
-msgid "Your chest is full. Head home: the bin is under the tall smoke."
-msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
-
-#: story/objectives.gd:1111
-msgid "Carry your bale home: the scale is under the tall smoke."
-msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
-
-#: story/objectives.gd:1111
-msgid "Carry your bale to the scale by the bin."
-msgstr "把捆包搬到垃圾桶旁边的秤上。"
-
-#: story/objectives.gd:1113
+#: story/objectives.gd:1204 story/objectives.gd:1217
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
-#: story/objectives.gd:1117
+#: story/objectives.gd:1209
+msgid "Your chest is full. Head home: the bin is under the tall smoke."
+msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
+
+#: story/objectives.gd:1212
+msgid "Carry your bale home: the scale is under the tall smoke."
+msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
+
+#: story/objectives.gd:1212
+msgid "Carry your bale to the scale by the bin."
+msgstr "把捆包搬到垃圾桶旁边的秤上。"
+
+#: story/objectives.gd:1226
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
-#: story/objectives.gd:1118
+#: story/objectives.gd:1227
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:1128
+#: story/objectives.gd:1238
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -3229,10 +3229,6 @@ msgstr "月光"
 #: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "新CD：%s，演奏：%s，来自%s"
-
-#: systems/camp/camp.gd:242
-msgid "Workbench fixed! Press %s at it to buy upgrades."
-msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
 #: systems/camp/camp.gd:414
 msgid "E   %s (Lv %d): fully upgraded"
@@ -4777,7 +4773,7 @@ msgstr "基地周围的土地已清理干净"
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:496 ui/objective_card.gd:312
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:328
 msgid "DONE"
 msgstr "完成"
 
@@ -4921,44 +4917,44 @@ msgstr "%s  基地"
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:481
+#: ui/hud.gd:490
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:485
+#: ui/hud.gd:494
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:488
+#: ui/hud.gd:497
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:490
+#: ui/hud.gd:499
 msgid "  THIRSTY"
 msgstr "  缺水"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:520
+#: ui/hud.gd:529
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:521
+#: ui/hud.gd:530
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:522
+#: ui/hud.gd:531
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:523
+#: ui/hud.gd:532
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:524
+#: ui/hud.gd:533
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:525
+#: ui/hud.gd:534
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
@@ -5036,55 +5032,75 @@ msgstr "捆包就绪"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ 埋藏零件 %d%%"
 
-#: ui/list_detail.gd:99
+#: ui/list_detail.gd:101
 msgid "Nothing here yet. Keep playing."
 msgstr "这里还什么都没有。继续游戏吧。"
 
-#: ui/list_detail.gd:373 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:386 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "购买"
 
-#: ui/list_detail.gd:492
+#: ui/list_detail.gd:505
 msgid "LOCKED"
 msgstr "未解锁"
 
-#: ui/list_detail.gd:500 ui/profile_picker.gd:97
+#: ui/list_detail.gd:513 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "进行中"
 
-#: ui/list_detail.gd:521
+#: ui/list_detail.gd:534
 msgid "FREE"
 msgstr "免费"
 
-#: ui/list_detail.gd:675
+#: ui/list_detail.gd:696
 msgid "LOCKED.  To unlock: %s"
 msgstr "未解锁。  解锁方法：%s"
 
-#: ui/list_detail.gd:675
+#: ui/list_detail.gd:696
 msgid "Locked. Keep playing to unlock it."
 msgstr "未解锁。继续玩就能解锁。"
 
-#: ui/list_detail.gd:678
+#: ui/list_detail.gd:699
 msgid "REQUIRES   %s"
 msgstr "需要   %s"
 
-#: ui/list_detail.gd:681
+#: ui/list_detail.gd:702
 msgid "You can buy this now!"
 msgstr "现在可以买了！"
 
-#: ui/list_detail.gd:701
+#: ui/list_detail.gd:721
+msgid "Level"
+msgstr "等级"
+
+#: ui/list_detail.gd:722
+msgid "Now"
+msgstr "当前"
+
+#: ui/list_detail.gd:723
+msgid "Next"
+msgstr "下一级"
+
+#: ui/list_detail.gd:724
+msgid "Cost"
+msgstr "费用"
+
+#: ui/list_detail.gd:775
+msgid "Need %s."
+msgstr "还需要 %s。"
+
+#: ui/list_detail.gd:775 ui/list_detail.gd:787
 msgid "%s more %s"
 msgstr "%s %s"
 
-#: ui/list_detail.gd:703
+#: ui/list_detail.gd:789
 msgid "Pick up trash to earn them."
 msgstr "捡垃圾就能赚到。"
 
-#: ui/list_detail.gd:703
+#: ui/list_detail.gd:789
 msgid "Dig up parts and salvage junk to get them."
 msgstr "挖出零件、拆解废料就能得到。"
 
-#: ui/list_detail.gd:706
+#: ui/list_detail.gd:792
 msgid "Need %s. %s"
 msgstr "还差 %s。%s"
 
@@ -11943,6 +11959,42 @@ msgstr "空气净化器"
 msgid "Pulls dusty air through filter banks. The sky clears faster."
 msgstr "让多尘的空气通过过滤组。天空清澈得更快。"
 
+#: data/intro_shots.json:shots[cradle].lines
+msgid "title"
+msgstr ""
+
+#: data/intro_shots.json:shots[vault_wide].lines
+msgid "vault"
+msgstr ""
+
+#: data/intro_shots.json:shots[vault_hum].lines
+msgid "hum"
+msgstr ""
+
+#: data/intro_shots.json:shots[storm].lines
+msgid "storm"
+msgstr ""
+
+#: data/intro_shots.json:shots[alarm].lines
+msgid "breach"
+msgstr ""
+
+#: data/intro_shots.json:shots[eject].lines
+msgid "hold_on"
+msgstr ""
+
+#: data/intro_shots.json:shots[drift].lines
+msgid "fall"
+msgstr ""
+
+#: data/intro_shots.json:shots[station].lines
+msgid "brief_0"
+msgstr ""
+
+#: data/intro_shots.json:shots[alone].lines
+msgid "brief_1"
+msgstr ""
+
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"
 msgstr "废金属"
@@ -11996,92 +12048,92 @@ msgid "A dish that sings static at the Ledger's drones. Drops inside its radius 
 msgstr "一面对着 Ledger 无人机唱噪音的天线盘。基地周围其半径内的倾倒会被阻止，无人机也来得更少。"
 
 #: data/ledger.json:act1
-msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
-msgstr "检测到载体。扇区内存在计划外活动：{district}。"
+msgid "Someone is cleaning on {district}. That is not on my list."
+msgstr "有人在 {district} 打扫。我的清单上没有这一项。"
 
 #: data/ledger.json:act1
-msgid "THE LEDGER: Waste is a line item. Line items must balance."
-msgstr "LEDGER：废料即为账目条款。账目条款必须平衡。"
+msgid "Trash belongs where it is. I wrote it down."
+msgstr "垃圾就该待在原地。我记下了。"
 
 #: data/ledger.json:act1
-msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
-msgstr "清理作业已暂停，直至条件改善。条件并未改善。请停止改善条件。"
+msgid "Please stop cleaning. Clean costs money. My money."
+msgstr "请停止打扫。干净要花钱。我的钱。"
 
 #: data/ledger.json:coupons
-msgid "LIMITED OFFER: pause operations today and receive 0% off."
-msgstr "限时优惠：今日暂停作业，即享 0% 折扣。"
+msgid "COUPON: stop cleaning today and save nothing!"
+msgstr "优惠券：今天停止打扫，什么也省不到！"
 
 #: data/ledger.json:coupons
-msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
-msgstr "优惠券：一（1）次免费暂停。永久有效。不可转让。"
+msgid "COUPON: one free nap. Please take it."
+msgstr "优惠券：免费小睡一次。请收下。"
 
 #: data/ledger.json:coupons
-msgid "Have you considered doing less? Our records show that less is cheaper."
-msgstr "您是否考虑过少做一些？我方记录显示，少即是省。"
+msgid "Have you tried doing less? Less is cheaper."
+msgstr "你试过少做点吗？少做更便宜。"
 
 #: data/ledger.json:coupons
-msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
-msgstr "调查：在 1 到 1 的范围内，您希望暂停到何种程度？"
+msgid "SURVEY: How much do you want to stop? Pick: a lot."
+msgstr "调查：你有多想停下？请选：非常想。"
 
 #: data/ledger.json:coupons
-msgid "NOTICE: sparkles are not an approved budget category."
-msgstr "通知：闪亮不属于已批准的预算类别。"
+msgid "Sparkles are not in my budget."
+msgstr "闪光不在我的预算里。"
 
 #: data/ledger.json:coupons
-msgid "BUY ONE PAUSE, GET ONE PAUSE."
-msgstr "买一次暂停，送一次暂停。"
+msgid "Buy one nap, get one nap free."
+msgstr "买一次小睡，送一次小睡。"
 
 #: data/ledger.json:coupons
-msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
-msgstr "忠诚奖励：您有 0 Ledger 积分。立即暂停以保留积分。"
+msgid "You have 0 Ledger Points. Stop cleaning to keep them."
+msgstr "你有 0 账本积分。停止打扫就能保住它们。"
 
 #: data/ledger.json:coupons
-msgid "REMINDER: the junk was here first. Seniority matters."
-msgstr "提醒：废料先来的。资历很重要。"
+msgid "The junk was here first. Be fair to the junk."
+msgstr "垃圾先来的。对垃圾公平点。"
 
 #: data/ledger.json:coupons
-msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
-msgstr "您的清理已记为一项支出。您的支出已记为一项支出。"
+msgid "Your cleaning costs me. I wrote that down twice."
+msgstr "你的打扫让我破费。我记了两遍。"
 
 #: data/ledger.json:act2
-msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
-msgstr "异常：检测到未经授权的生长。生物不属于账目条款。"
+msgid "Plants are growing. Plants are not on my list!"
+msgstr "植物在长。植物不在我的清单上！"
 
 #: data/ledger.json:act2
-msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
-msgstr "纠正措施：正在派遣处置单元以恢复平衡。"
+msgid "Sending drones to put the trash back."
+msgstr "派无人机把垃圾放回去。"
 
 #: data/ledger.json:drop_warn
-msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
-msgstr "处置单元已派出。已选定一个干净的六角格进行再平衡。"
+msgid "A drone is coming to put trash on clean ground."
+msgstr "一架无人机要来把垃圾倒在干净的地上。"
 
 #: data/ledger.json:drop_warn
-msgid "A clean surface is an unbudgeted surface. Correcting."
-msgstr "干净的表面属于预算外表面。正在纠正。"
+msgid "Clean ground is not in my budget. Fixing that."
+msgstr "干净的地面不在预算里。正在修正。"
 
 #: data/ledger.json:drop_warn
-msgid "Returning misplaced waste to its registered location."
-msgstr "正在将错放的废料归还至其登记位置。"
+msgid "Putting the trash back where it was."
+msgstr "把垃圾放回原处。"
 
 #: data/ledger.json:drop_warn
-msgid "This is not personal. Nothing is personal. Everything is a line item."
-msgstr "这不是针对个人。没有什么是针对个人的。一切都是账目条款。"
+msgid "Nothing personal. You are just a line on my list."
+msgstr "不针对你。你只是我清单上的一行。"
 
 #: data/ledger.json:drop_warn
-msgid "Delivery of one (1) small pile of junk. No signature required."
-msgstr "递送一（1）小堆废料。无需签收。"
+msgid "One small pile of trash, delivered. No thanks needed."
+msgstr "一小堆垃圾，已送达。不用谢。"
 
 #: data/ledger.json:jammed
-msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
-msgstr "信号……受阻。处置单元正在返回仓库。此事将被记录在案。"
+msgid "My drone can't hear me. It is going home."
+msgstr "我的无人机听不到我了。它回家了。"
 
 #: data/ledger.json:jammed
-msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
-msgstr "检测到干扰。Ledger 没有“干扰”这一账目条款。正在创建。"
+msgid "Jamming? Jamming is not on my list. Adding it."
+msgstr "干扰？清单上没有干扰。正在添加。"
 
 #: data/ledger.json:jammed
-msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
-msgstr "07 号单元报告：“噪音很大，有种不受欢迎的感觉”。中止。"
+msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
+msgstr "7 号无人机报告：太吵了，感觉不受欢迎。正在返航。"
 
 #: data/ledger.json:act3
 msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
@@ -17133,6 +17185,75 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
+#~ msgstr "工作台修好了。在它旁边按 {interact}，用方块购买升级。"
+
+#~ msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
+#~ msgstr "检测到载体。扇区内存在计划外活动：{district}。"
+
+#~ msgid "THE LEDGER: Waste is a line item. Line items must balance."
+#~ msgstr "LEDGER：废料即为账目条款。账目条款必须平衡。"
+
+#~ msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
+#~ msgstr "清理作业已暂停，直至条件改善。条件并未改善。请停止改善条件。"
+
+#~ msgid "LIMITED OFFER: pause operations today and receive 0% off."
+#~ msgstr "限时优惠：今日暂停作业，即享 0% 折扣。"
+
+#~ msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
+#~ msgstr "优惠券：一（1）次免费暂停。永久有效。不可转让。"
+
+#~ msgid "Have you considered doing less? Our records show that less is cheaper."
+#~ msgstr "您是否考虑过少做一些？我方记录显示，少即是省。"
+
+#~ msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
+#~ msgstr "调查：在 1 到 1 的范围内，您希望暂停到何种程度？"
+
+#~ msgid "NOTICE: sparkles are not an approved budget category."
+#~ msgstr "通知：闪亮不属于已批准的预算类别。"
+
+#~ msgid "BUY ONE PAUSE, GET ONE PAUSE."
+#~ msgstr "买一次暂停，送一次暂停。"
+
+#~ msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
+#~ msgstr "忠诚奖励：您有 0 Ledger 积分。立即暂停以保留积分。"
+
+#~ msgid "REMINDER: the junk was here first. Seniority matters."
+#~ msgstr "提醒：废料先来的。资历很重要。"
+
+#~ msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
+#~ msgstr "您的清理已记为一项支出。您的支出已记为一项支出。"
+
+#~ msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
+#~ msgstr "异常：检测到未经授权的生长。生物不属于账目条款。"
+
+#~ msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
+#~ msgstr "纠正措施：正在派遣处置单元以恢复平衡。"
+
+#~ msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
+#~ msgstr "处置单元已派出。已选定一个干净的六角格进行再平衡。"
+
+#~ msgid "A clean surface is an unbudgeted surface. Correcting."
+#~ msgstr "干净的表面属于预算外表面。正在纠正。"
+
+#~ msgid "Returning misplaced waste to its registered location."
+#~ msgstr "正在将错放的废料归还至其登记位置。"
+
+#~ msgid "This is not personal. Nothing is personal. Everything is a line item."
+#~ msgstr "这不是针对个人。没有什么是针对个人的。一切都是账目条款。"
+
+#~ msgid "Delivery of one (1) small pile of junk. No signature required."
+#~ msgstr "递送一（1）小堆废料。无需签收。"
+
+#~ msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
+#~ msgstr "信号……受阻。处置单元正在返回仓库。此事将被记录在案。"
+
+#~ msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
+#~ msgstr "检测到干扰。Ledger 没有“干扰”这一账目条款。正在创建。"
+
+#~ msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
+#~ msgstr "07 号单元报告：“噪音很大，有种不受欢迎的感觉”。中止。"
 
 #~ msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 #~ msgstr "前哨站 %d 已修复：边境上有了一台能用的磅秤。Haul Bug 现在会送往最近的磅秤。"

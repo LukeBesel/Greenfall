@@ -207,6 +207,10 @@ static func layout(roots: Array, view: Rect2, ignore_overlap: Callable = Callabl
 		rects.append(seen)
 		if seen.size.x <= 0.5 or seen.size.y <= 0.5:
 			continue  # scrolled out of sight: fine
+		var spb: ScrollContainer = _scroll_parent(c)
+		var can_scroll: bool = spb != null and spb.get_child_count() > 0 and (spb.get_child(0) as Control).size.y > spb.size.y + TOL
+		if c is Button and (not can_scroll or c.has_meta("primary_action")) and (seen.size.y < r.size.y - TOL or seen.size.x < r.size.x - TOL):  # [v9d] a button half cut by its panel (a list that scrolls is fine)
+			out.append(_issue("clipped", c, r, "button cut by its panel (%d of %d px shown)" % [roundi(seen.size.y), roundi(r.size.y)]))
 		var sp: ScrollContainer = _scroll_parent(c)
 		if sp:
 			var sr: Rect2 = rect_of(sp)

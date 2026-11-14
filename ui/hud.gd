@@ -467,11 +467,20 @@ func _update_context(delta: float, minimal: bool) -> void:
 	var base: Rect2 = _prompt.get_global_rect()
 	base.position.y += _prompt_lift * sc
 	var want_lift: float = 0.0
-	if cov.size.y > 0.0 and _prompt.text.strip_edges() != "" and cov.intersects(base):
-		want_lift = (base.end.y - cov.position.y + 6.0) / sc
+	var bar: Rect2 = cov
+	var sub: Subtitles = Subtitles.current if Subtitles.current and is_instance_valid(Subtitles.current) else null
+	if sub and sub.pill() and sub.pill().is_visible_in_tree() and sub.pill().modulate.a > 0.05:
+		bar = sub.pill().get_global_rect()  # the bar as drawn (the cover rect can lag its slide)
+	if bar.size.y > 0.0 and _prompt.text.strip_edges() != "" and bar.grow(4.0).intersects(base):
+		want_lift = (base.end.y - bar.position.y + 10.0) / sc
 	_prompt_lift = want_lift if want_lift > _prompt_lift else move_toward(_prompt_lift, want_lift, delta * 400.0)
 	_prompt_mc.add_theme_constant_override("margin_bottom", 168 + int(round(_prompt_lift)))
 	_prompt.self_modulate.a = 1.0
+
+
+## [v9d] How far (canvas px) the interact prompt is lifted over the subtitle bar right now.
+func prompt_lift_px() -> float:
+	return _prompt_lift * maxf(_prompt_mc.get_global_transform().get_scale().y, 0.01) if _prompt_mc else 0.0
 
 
 ## [vqa] "GROWING", "PLANTED  THIRSTY", "GROWING  SUSTAIN 60%": the hex level in a few words.
