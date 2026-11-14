@@ -46,7 +46,9 @@ static func run_dev(so: SliceOrbit) -> void:
 		return
 	EventBus.toast.connect(func(t: String, _k: String) -> void: _toasts.append(t))
 	await _intro()
-	await _wait(func() -> bool: return _ob.revealed and _input_on(), 40.0)
+	# WREN's brief plays first after a skip (its lines run on the subtitle clock): wait on the
+	# condition, long, not a tight time.
+	await _wait(func() -> bool: return _ob.revealed and _input_on(), 300.0)
 	_check(_ob.revealed and _input_on(), "after the intro: the card is up and Lumi takes input")
 	await _key_strip()
 	await _checklist()
@@ -70,7 +72,8 @@ static func run_dev(so: SliceOrbit) -> void:
 static func _intro() -> void:
 	var intro: Intro = _w.get("intro") as Intro
 	if intro != null and DevHooks.has("intro"):  # it starts once the world is up
-		await _wait(func() -> bool: return intro.running, 30.0)
+		# It starts after the loading screen's fade (wall clock): wait for it, not for a time.
+		await _wait(func() -> bool: return intro.running or bool(GameState.flags.get("intro_done", false)), 900.0)
 	if intro == null or not intro.running:
 		print("%s note: no intro this run (--no-intro or a save)" % TAG)
 		return
@@ -313,16 +316,25 @@ static func _hex() -> void:
 	_check(ol != null and ol.is_visible_in_tree(), "hex: its outline shows on the ground")
 	_check(_progress_label().ends_with("%"), "hex: the card shows the %% cleaned (%s)" % _progress_label())
 	var f: HexField = _w.get("field") as HexField
-	var t0: int = Time.get_ticks_msec()
-	while int(GameState.stats.get("hexes_cleaned", 0)) < 1 and Time.get_ticks_msec() - t0 < 300000:
+	var t0: float = _gt()
+	var resets: int = 0
+	while int(GameState.stats.get("hexes_cleaned", 0)) < 1 and _gt() - t0 < 300.0:
 		if _p.compartment.fill >= _p.capacity() * 0.9:
 			await _tap("cube")  # a bale, left behind
 			await _secs(2.0)
 		var pid: int = _liftable(f, h)
+		if pid < 0 and resets < 3:  # every piece left was skipped once: try them again (other angles)
+			resets += 1
+			_skip.clear()
+			continue
 		if pid < 0:
 			break
 		await _scoop_piece(f, pid)
-	_check(int(GameState.stats.get("hexes_cleaned", 0)) >= 1, "hex: holding LMB on the outlined hex's junk cleans it (%d%%)" % int(f.removed_fraction(h) * 100.0))
+	var left: Array[String] = []
+	for q: int in f.hex_pieces[h]:
+		if f.piece_alive[q] == 1:
+			left.append("%s %s" % [_yard(f.piece_pos[q]).split(" =")[0], "liftable" if Pace.can_lift(f, q) else "too big"])
+	_check(int(GameState.stats.get("hexes_cleaned", 0)) >= 1, "hex: holding LMB on the outlined hex's junk cleans it (%d%%%s)" % [int(f.removed_fraction(h) * 100.0), "" if int(GameState.stats.get("hexes_cleaned", 0)) >= 1 else "; left: " + ", ".join(left.slice(0, 8))])
 	await _done("hex")
 
 
@@ -466,13 +478,25 @@ static func _make_and_sell_bale() -> void:
 	_check(int(GameState.stats.get("cubes_made", 0)) > made0, "bale: RMB presses a bale")
 	# [main] The bale leaves the press some frames after the count moves; a fixed second was too
 	# short on a slow runner (CI: "bale none m away"). Wait for the new bale itself.
+	# Cube nodes can be reused, so "a node not there before" can miss it: the loose cube nearest
+	# Lumi counts too. Pressed on the scale's plate, a bale sells at once.
+	var cashed_at_press: int = int(GameState.stats.get("cubes_cashed", 0))
 	var fresh: Callable = func() -> JunkCube:
 		for n: Node in _tree.get_nodes_in_group("junk_cube"):
-			if not (n in before) and n is JunkCube and is_instance_valid(n):
+			if not (n in before) and n is JunkCube and is_instance_valid(n) and not (n as JunkCube).carried:
+				return n as JunkCube
+		var c: JunkCube = _p.nearest_loose_cube()
+		if c:
+			return c
+		for n: Node in _tree.get_nodes_in_group("junk_cube"):
+			if n is JunkCube and is_instance_valid(n) and not (n as JunkCube).carried and _flat((n as Node3D).global_position - _p.global_position).length() < 4.0:
 				return n as JunkCube
 		return null
-	await _wait(func() -> bool: return fresh.call() != null, 12.0)
+	await _wait(func() -> bool: return fresh.call() != null or int(GameState.stats.get("cubes_cashed", 0)) > cashed_at_press, 12.0)
 	await _secs(1.0)
+	if fresh.call() == null and int(GameState.stats.get("cubes_cashed", 0)) > cashed_at_press:
+		print("%s note: the bale was pressed on the scale and sold at once" % TAG)
+		return
 	var bale: JunkCube = fresh.call()
 	if bale and _p.nearest_loose_cube() != bale:  # pressed out behind him: turn round to it
 		await _walk_to(func() -> Vector3: return bale.global_position, func() -> bool: return _p.nearest_loose_cube() == bale, "the bale", 0.9)
@@ -499,8 +523,8 @@ static func _make_and_sell_bale() -> void:
 ## Scoops (walking to the nearest liftable piece, LMB held) until the chest is `frac` full.
 static func _scoop_load(frac: float, max_s: float) -> void:
 	var f: HexField = _w.get("field") as HexField
-	var t0: int = Time.get_ticks_msec()
-	while _p.compartment.fill < _p.capacity() * frac * 0.98 and Time.get_ticks_msec() - t0 < max_s * 1000.0:
+	var t0: float = _gt()
+	while _p.compartment.fill < _p.capacity() * frac * 0.98 and _gt() - t0 < max_s:
 		var pid: int = _liftable(f, -1)
 		if pid < 0:
 			_check(false, "nothing liftable near Lumi")
@@ -509,12 +533,20 @@ static func _scoop_load(frac: float, max_s: float) -> void:
 	_check(_p.compartment.fill >= _p.capacity() * frac * 0.9, "scoop: LMB held on the junk fills the chest (%.1f / %.1f, Lumi at %s)" % [_p.compartment.fill, _p.capacity(), _yard(_p.global_position)])
 
 
+static var _unstick: bool = false
+
+
 static func _scoop_piece(f: HexField, pid: int) -> void:
 	var at: Vector3 = f.piece_pos[pid]
-	await _walk_to(func() -> Vector3: return at, func() -> bool: return _p.global_position.distance_to(at) < 1.3, "a piece", 1.0, 12.0, true)
+	await _walk_to(func() -> Vector3: return at, func() -> bool: return _p.global_position.distance_to(at) < 1.3, "a piece", 1.0, 8.0, true)
+	if _unstick:  # wedged (the shore corner west of the bin): back out onto the pad first, as a player turns round
+		_unstick = false
+		var c: Vector3 = (_so.globe.sites[0]["transform"] as Transform3D).origin
+		await _walk_to(func() -> Vector3: return c, func() -> bool: return _flat(c - _p.global_position).length() < 4.0, "the pad (backing out)", 0.0, 15.0)
+		return
 	_hold_action("scoop", true)
-	var t0: int = Time.get_ticks_msec()
-	while f.piece_alive[pid] == 1 and Time.get_ticks_msec() - t0 < 3000 and _p.compartment.can_accept(_p.capacity()):
+	var t0: float = _gt()
+	while f.piece_alive[pid] == 1 and _gt() - t0 < 3.0 and _p.compartment.can_accept(_p.capacity()):
 		await _frames(3)
 	_hold_action("scoop", false)
 	if f.piece_alive[pid] == 1 and _p.compartment.can_accept(_p.capacity()):
@@ -528,13 +560,20 @@ static var _stopped: bool = false
 
 ## The nearest liftable piece (in hex `h` if >= 0) that Lumi can see from where he stands (a
 ## player goes for the junk in view, not the piece behind the bin's wall).
+static var _reach: TargetReach
+
+
 static func _liftable(f: HexField, h: int) -> int:
+	if _reach == null:
+		_reach = TargetReach.for_world(_w)
 	var cand: Array = []
 	var pool: PackedInt32Array = f.hex_pieces[h] if h >= 0 else f.pieces_within(_p.global_position, 30.0)
 	for pid: int in pool:
 		if f.piece_alive[pid] != 1 or _skip.has(pid) or f.locked.has(f.piece_hex[pid]) or not Pace.can_lift(f, pid):
 			continue
 		if f.is_water(f.piece_hex[pid]) or bool(_p.call("_water_at", f.piece_pos[pid])):  # floating junk: for later (the lake by the bin)
+			continue
+		if _reach and _reach.why_ground(f.piece_pos[pid].normalized()) == "water":  # in the lake's water though its hex is land (by the bin bay)
 			continue
 		cand.append([f.piece_pos[pid].distance_to(_p.global_position), pid])
 	cand.sort_custom(func(x: Array, y: Array) -> bool: return float(x[0]) < float(y[0]))
@@ -650,16 +689,32 @@ static func _click(c: Control) -> void:
 	var vp: Viewport = c.get_viewport()
 	# A headless run has no window (size 0), so the window-to-viewport mapping drops mouse events
 	# before the GUI sees them; then the same events go straight into the viewport, in its own
-	# coordinates (the GUI's real picking, gui_input and button press from there on).
+	# coordinates (the GUI's real picking, gui_input and button press from there on). The pointer
+	# is aimed again until it is over the control: the bench's hologram may still be unfolding.
 	var local: bool = vp.gui_get_hovered_control() == null
-	var lp: Vector2 = c.get_global_transform_with_canvas() * (c.size * 0.5)
-	if local:
-		var lm := InputEventMouseMotion.new()
-		lm.position = lp
-		lm.global_position = lp
-		vp.push_input(lm, true)
+	var lp: Vector2 = Vector2.ZERO
+	var hov: Control = null
+	var t0: float = _gt()
+	while true:
+		pos = c.get_screen_transform() * (c.size * 0.5)
+		lp = c.get_global_transform_with_canvas() * (c.size * 0.5)
+		if local:
+			var lm := InputEventMouseMotion.new()
+			lm.position = lp
+			lm.global_position = lp
+			vp.push_input(lm, true)
+		else:
+			var gm := InputEventMouseMotion.new()
+			gm.position = pos
+			gm.global_position = pos
+			Input.parse_input_event(gm)
 		await _frames(2)
-	var hov: Control = vp.gui_get_hovered_control()
+		hov = vp.gui_get_hovered_control()
+		if (hov != null and (hov == c or c.is_ancestor_of(hov))) or _gt() - t0 > 3.0:
+			break
+		await _frames(4)
+		if hov == null and not local:
+			local = true
 	if hov == null or not (hov == c or c.is_ancestor_of(hov)):
 		_check(false, "click: the pointer over %s lands on %s (something covers it)" % [c.name, str(hov)])
 	for down: bool in [true, false]:
@@ -685,7 +740,7 @@ static func _click(c: Control) -> void:
 ## Walks Lumi with W/A/S/D (camera frame) toward `to` until `arrived`. Sidesteps when blocked;
 ## after `max_s` he is put there (a FAIL: the walker could not get there).
 static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: float = 0.0, max_s: float = 40.0, scoop: bool = false) -> void:
-	var t0: int = Time.get_ticks_msec()
+	var t0: float = _gt()
 	var last: Vector3 = _p.global_position
 	var still: float = 0.0
 	var side: float = 0.0
@@ -693,11 +748,15 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 	var tries: int = 0
 	var detour: Vector3 = Vector3.ZERO
 	while not bool(arrived.call()):
-		if Time.get_ticks_msec() - t0 > max_s * 1000.0:
+		if _gt() - t0 > max_s:
 			_release_all()
 			var at: Vector3 = to.call()
-			if what == "a piece":  # one piece wedged somewhere: a player takes another one
-				print("%s note: a piece at %s out of the walker's way, took another" % [TAG, _yard(at)])
+			if what == "a piece":  # wedged somewhere (across the bin bay's shore): a player goes elsewhere
+				print("%s note: a piece at %s out of the walker's way, took junk elsewhere" % [TAG, _yard(at)])
+				var f: HexField = _w.get("field") as HexField
+				for pid: int in f.pieces_within(at, 5.0):
+					_skip[pid] = true
+				_unstick = true
 				return
 			_check(false, "walk: could not get to %s in %.0f s with the keys (%.1f m left, stuck at %s, target %s; put there)" % [what, max_s, _flat(at - _p.global_position).length(), _yard(_p.global_position), _yard(at)])
 			_stand(at - _flat(at - _p.global_position).normalized() * maxf(stop_m, 1.0), at)
@@ -733,7 +792,7 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 		_hold_action("move_back", z > n * 0.4)
 		_hold_action("move_forward", z < -n * 0.4)
 		_hold_action("scoop", scoop and d.length() < 3.0)
-		await _tree.create_timer(0.05, true, false, true).timeout
+		await _frames(3)
 		var moved: float = _p.global_position.distance_to(last)
 		last = _p.global_position
 		still = still + 0.05 if moved < 0.01 else 0.0
@@ -749,9 +808,11 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 static func _steer(dir: Vector3, ahead: float, prefer: int) -> Vector3:
 	var space: PhysicsDirectSpaceState3D = _p.get_world_3d().direct_space_state
 	var u: Vector3 = _p.global_position.normalized()
+	var in_water: bool = bool(_p.call("_water_at", _p.global_position))
 	for k: int in [0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5]:
 		var dd: Vector3 = dir.rotated(u, deg_to_rad(25.0) * k * prefer)
-		var free: bool = not bool(_p.call("_water_at", _p.global_position + dd * maxf(ahead, 0.9)))  # he stops at the shore
+		# On land he stops at the shore (water ahead is a wall); in the water he can always wade out.
+		var free: bool = in_water or not bool(_p.call("_water_at", _p.global_position + dd * maxf(ahead, 0.9)))
 		for h: float in ([0.35, 0.9] if free else []):
 			var from: Vector3 = _p.global_position + u * h
 			var q := PhysicsRayQueryParameters3D.create(from, from + dd * maxf(ahead, 0.6), _p.collision_mask)
@@ -825,7 +886,7 @@ static func _release_all() -> void:
 static func _tap(action: String) -> void:
 	await _tree.physics_frame
 	_send(action, true)
-	await _tree.create_timer(0.1, true, false, true).timeout
+	await _frames(6)
 	_send(action, false)
 	await _frames(3)
 
@@ -838,7 +899,7 @@ static func _key_tap(code: Key) -> void:
 		ev.pressed = down
 		Input.parse_input_event(ev)
 		Input.flush_buffered_events()
-		await _tree.create_timer(0.1, true, false, true).timeout
+		await _frames(6)
 	await _frames(3)
 
 
@@ -873,13 +934,20 @@ static func _check(ok: bool, what: String) -> void:
 
 
 static func _wait(cond: Callable, secs: float) -> void:
-	var t0: int = Time.get_ticks_msec()
-	while not bool(cond.call()) and Time.get_ticks_msec() - t0 < secs * 1000.0 / maxf(Engine.time_scale, 1.0):
-		await _tree.create_timer(0.25, true, false, true).timeout
+	var t0: float = _gt()
+	while not bool(cond.call()) and _gt() - t0 < secs:
+		await _frames(6)
 
 
+## Game seconds waited by physics frames (a slow or busy machine runs the same game time; a
+## wall-clock wait gave it fewer frames, and the walk lost a CI run that way).
 static func _secs(s: float) -> void:
-	await _tree.create_timer(s, true, false, true).timeout
+	await _frames(maxi(1, int(ceil(s * float(Engine.physics_ticks_per_second)))))
+
+
+## Game seconds since start (physics frames).
+static func _gt() -> float:
+	return float(Engine.get_physics_frames()) / float(Engine.physics_ticks_per_second)
 
 
 static func _frames(n: int) -> void:
