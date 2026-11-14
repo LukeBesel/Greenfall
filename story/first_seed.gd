@@ -31,6 +31,7 @@ var _letterbox: CanvasLayer
 var _bars: Array[ColorRect] = []
 var _waiting_sprout: bool = false
 var _hint_water: bool = false  # [first]
+var _water_card: String = ""  # [v9b] the water card's text while it shows
 var _card: String = ""  # [v7play] the first-seed card text up now ("" none): hidden while Lumi is at another station
 var _card_away: bool = false
 
@@ -58,6 +59,11 @@ func setup() -> void:
 	_add_beds()
 	if GameState.flags.get("seeds_unlocked", false) and int(GameState.stats.get("plants_planted", 0)) == 0:
 		_resume_planting()  # [v8seed] a save sitting on "plant the first seed" (the owner's)
+	elif int(GameState.stats.get("plants_planted", 0)) > 0 and not GameState.flags.get("first_sprout", false):
+		# [v9b] Saved after planting, before the first sprout: the water card and the sprout moment
+		# were lost on load (only in memory), so the player had no word on what to do with the seed.
+		_hint_water = true
+		_waiting_sprout = true
 	if _globe and DevHooks.has("seed-probe"):  # [v4grow]
 		_probe()
 
@@ -154,7 +160,14 @@ func _process(delta: float) -> void:
 		_tin.rotation.y += delta * 0.5
 	if _hint_water and int(GameState.stats.get("plants_planted", 0)) > 0:  # [first]
 		_hint_water = false
-		_show_card(Tutorial.glyphs_bb(tr("{tool_water}  then hold  {scoop}  to water it")))
+		# [v9b] One thing, in words: "3 then hold LMB" read as a riddle (no verb on the first key).
+		_water_card = Tutorial.glyphs_bb(tr("Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"))
+		if not _seed_watered():
+			_show_card(_water_card)
+	if _card != "" and _card == _water_card and _seed_watered():  # [v9b] done what it said: off the card
+		_card = ""
+		_water_card = ""
+		EventBus.tutorial_changed.emit("")
 	if _card != "" and _away() != _card_away:  # [v7play] owner-style one card: the seed is at home, not at a far station
 		_card_away = not _card_away
 		EventBus.tutorial_changed.emit("" if _card_away else _card)
@@ -164,6 +177,17 @@ func _process(delta: float) -> void:
 				_waiting_sprout = false
 				_sprout_moment(world.garden.slot_pos[s])
 				break
+
+
+## [v9b] A planted slot has water in it.
+func _seed_watered() -> bool:
+	var g: Garden = world.get("garden") as Garden if world else null
+	if g == null:
+		return false
+	for sl: int in g.slot_species.size():
+		if g.slot_species[sl] >= 0 and g.slot_water[sl] > 0.0:
+			return true
+	return false
 
 
 func near_tin(pos: Vector3) -> bool:

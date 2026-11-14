@@ -1101,7 +1101,7 @@ func situation_hint(dt: float = 0.0) -> String:
 	if not p.carried.is_empty():
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
 	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
-		return tr("Too heavy. Upgrade Lift at the bench.")
+		return Pace.heavy_line() if Pace.heavy_need > 0 else tr("Too heavy. Upgrade Lift at the bench.")  # [v9b] which Lift
 	var bench_here: bool = field_bench() is Vector3 and str(step_target(current()).get("to", "")) == "bench"  # [v6pace]
 	if far and needs_home() and not bench_here:
 		if away_rocket() is Vector3:
