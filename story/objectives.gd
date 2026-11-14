@@ -508,12 +508,20 @@ func _complete_goal() -> void:
 
 func _hex_ok(h: int) -> bool:
 	var f: HexField = world.field
+	# [v9c] A hex whose pieces aren't laid yet looked finishable to Pace.hex_clearable (no pieces, so
+	# nothing too heavy): the card could outline a far hex a third full of junk over Lumi's lift.
+	var mz: Variant = f.get("materialized")
+	if mz is PackedByteArray and h >= 0 and h < (mz as PackedByteArray).size() and (mz as PackedByteArray)[h] == 0:
+		return false
 	return h >= 0 and h < f.hex_count() and not f.is_clean(h) and f.hex_hub[h] == 0 and not f.is_water(h) and not f.locked.has(h) and Pace.hex_clearable(f, h)  # [v2feel] clearable now
 
 
 ## The hex to finish: kept while it is unfinished, so the outline doesn't flicker as Lumi walks.
 ## Moves to the hex Lumi is working on once that one is clearly further along, or when Lumi has
 ## wandered off; otherwise the most-cleared unfinished hex near him.
+var _none_near: bool = false  # [v9c] _pick_hex looked 6 rings out and found no finishable hex
+
+
 func _pick_hex() -> int:
 	var f: HexField = world.field
 	var p: Patch = world.patch
@@ -543,18 +551,31 @@ func _pick_hex() -> int:
 					h = hid
 			if h < 0:  # [v9c] a far station's pad stands in its town: its junk starts 4+ hexes out, so look wider (nearest first)
 				var bd: float = INF
+				var lay: int = -1  # the nearest candidate whose pieces aren't laid yet
+				var lay_d: float = INF
+				var mz: Variant = f.get("materialized")
 				for hid: int in f.hexes_near(at, 6):
+					var dd: float = OrbitUp.ground_dist(at, f.hex_center(hid))
+					if mz is PackedByteArray and (mz as PackedByteArray)[hid] == 0:
+						if dd < lay_d and not f.is_clean(hid) and f.hex_hub[hid] == 0 and not f.is_water(hid) and not f.locked.has(hid):
+							lay_d = dd
+							lay = hid
+						continue
 					if not _hex_ok(hid):
 						continue
-					var dd: float = OrbitUp.ground_dist(at, f.hex_center(hid))
 					if dd < bd:
 						bd = dd
 						h = hid
+				_none_near = h < 0 and lay < 0  # every hex round here is laid and none can be finished now
+				if h < 0 and lay >= 0 and f.has_method("materialize_step"):
+					f.call("materialize_step", lay, 2500)  # lay it a little each refresh: then it can be judged
 	return h
 
 
 func _set_hex(h: int) -> void:
 	target_hex = h
+	if h >= 0:
+		_none_near = false
 	if outline:
 		outline.set_hex(h)
 	if h < 0 and marker:
@@ -855,7 +876,7 @@ func _narrate() -> void:
 
 ## Owner 2026-11-08 #21: after the Baler there was no word on how to make a bale.
 static func bale_howto() -> String:
-	return TranslationServer.translate("Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale.") % Settings.glyph("cube")
+	return TranslationServer.translate("Baler in! Fill your chest, then press [%s] for a bale.") % Settings.glyph("cube")
 
 
 func _on_upgrade_bought(id: String, lv: int) -> void:
@@ -943,6 +964,8 @@ const EMPTY_S: float = 6.0
 const HEAVY_MS: int = 6000
 
 var situation: String = ""
+## [v9d] The situation line is only the step's price ("Need N more cubes..."): the card shows chips instead.
+var situation_price: bool = false
 var _empty_t: float = 0.0
 var _was_full: bool = false
 
@@ -973,6 +996,11 @@ func is_lost() -> bool:
 	return p != null and h is Vector3 and OrbitUp.ground_dist(p.global_position, h) > LOST_M
 
 
+## [v9d] The current step's price ({} when it has none): the objective card shows it as chips.
+func step_price() -> Dictionary:
+	return _step_price()
+
+
 ## The bench item the current step wants, when its price can't be paid yet: {cubes: n, ...}.
 func _step_price() -> Dictionary:
 	var def: Dictionary = current()
@@ -999,6 +1027,13 @@ func _step_price() -> Dictionary:
 		if hub.level < int(def.get("target", 2)):
 			return (hub.level_def(hub.level + 1).get("cost", {}) as Dictionary).duplicate()
 	if typ == "stat" and world != null and value_of(def) < target_of(def):
+		# [v9c] At a far station on its outpost step, the price to show is the outpost's repair (it
+		# showed the wake's: "Need 42 more parts" while the outpost asked for 26).
+		var os2: OrbitSites = OrbitSites.of(world) if key == "hubs_woken" else null
+		if os2 and os2.purpose and os2.purpose.site > 0 and str(os2.purpose.current_step(os2.purpose.site).get("do", "")) == "outposts":
+			var opm: Variant = world.get("outposts")
+			if opm is Outposts and (opm as Outposts).hub_index == os2.purpose.site:
+				return (opm as Outposts).repair_cost(0).duplicate()
 		var arc: Dictionary = arc_price(world, key)  # [v6pace] the hub, wake, rocket and drive steps
 		if not arc.is_empty():
 			return arc
@@ -1075,6 +1110,7 @@ static func arc_price(w: Node, key: String) -> Dictionary:
 
 
 func situation_hint(dt: float = 0.0) -> String:
+	situation_price = false
 	var p: Patch = _patch()
 	if p == null or p.compartment == null:
 		return ""
@@ -1093,14 +1129,21 @@ func situation_hint(dt: float = 0.0) -> String:
 	# robot, a base level) the line flipped every few seconds between "Need N more cubes" and the
 	# chest / bale line as Lumi worked. The price is what blocks the step: it wins. (Lumi still
 	# hears "Your chest is full" over his head the moment it fills.)
+	# [main] Aiming at a piece that is too heavy is the thing in front of the player right now: for
+	# those few seconds it comes before the step's price (v9b's "Needs Lift N" met v9a's price rule).
+	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
+		return Pace.heavy_line() if Pace.heavy_need > 0 else tr("Too heavy. Upgrade Lift at the bench.")  # [v9b] which Lift
 	var price: Dictionary = _step_price()
 	if not price.is_empty() and not GameState.can_afford_all(price):
+		situation_price = true  # [v9d] the card shows this as cost chips
 		return ListDetail.short_text(price)
 	if full:
 		return tr("Your chest is full. Head home: the bin is under the tall smoke.") if far and not press else full_line
 	if not p.carried.is_empty():
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
-	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
+	# [v9c] At a far station with no hex the card can outline (none finishable with this Lift): say so.
+	if target_hex < 0 and _none_near and str(step_target(current()).get("to", "")) == "hex" and Pace.lift_class() < Pace.SIZE_LARGE \
+			and (field_bench() is Vector3 or away_rocket() is Vector3) and _hold <= 0.0:
 		return tr("Too heavy. Upgrade Lift at the bench.")
 	var bench_here: bool = field_bench() is Vector3 and str(step_target(current()).get("to", "")) == "bench"  # [v6pace]
 	if far and needs_home() and not bench_here:

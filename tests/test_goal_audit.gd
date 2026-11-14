@@ -24,3 +24,10 @@ func test_every_card_step_has_a_picture() -> void:
 	for g: Variant in GoalAudit.verdance_goals():
 		assert_ne(ObjectiveCard.icon_of(g as Dictionary), "", "goal %s has a picture" % str((g as Dictionary).get("id", "")))
 	assert_gt(kinds.size(), 4, "the story steps use several pictures, not one for all: %s" % str(kinds.keys()))
+
+
+func test_design_card_docks_clear_of_the_objective_card() -> void:  # [v9d]
+	var corner := Rect2(640, 20, 300, 160)
+	var x: float = DesignToast.dock_x(960.0, 360.0, corner)
+	assert_lte(x + 360.0, corner.position.x - 15.0, "left of the card")
+	assert_eq(DesignToast.dock_x(1920.0, 360.0, Rect2(1600, 20, 300, 160)), 780.0, "centred when there is room")

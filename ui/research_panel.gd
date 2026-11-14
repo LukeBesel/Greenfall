@@ -217,6 +217,7 @@ func _on_card_pressed(id: String) -> void:
 		c.pop()
 	else:
 		Audio.play("buzz", 1.2, -8.0)
+		Refuse.say(Research.reason(id))  # [v9d] say why
 		c.shake()
 	refresh()
 

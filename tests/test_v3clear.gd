@@ -50,7 +50,8 @@ func test_card_shows_the_situation_hint_under_the_why() -> void:  # [v6story] th
 	assert_eq(card._hint.get_theme_color("font_color"), ObjectiveCard.HINT)
 	assert_true(card._why.text.begins_with("Hold"), "the reason stays on the card")
 	o.situation = ""
-	card._process(0.1)
+	card._process(ObjectiveCard.HINT_HOLD_S)  # [v9d] a hint holds a moment, then goes
+	card._process(2.0)
 	assert_false(card._hint.visible)
 	assert_true(card._why.text.begins_with("Hold"))
 	o.free()

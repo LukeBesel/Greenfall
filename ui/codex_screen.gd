@@ -651,7 +651,7 @@ func _show_trinket(t: Dictionary) -> void:
 static func _trinket_hint(t: Dictionary) -> String:
 	match str(t.get("source", "")):
 		"wildlife_visit": return TranslationServer.translate("Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera.")
-		"animal_photos": return TranslationServer.translate("Hint: animals come back as the ground heals. Photograph them in photo mode (P).")  # [wild]
+		"animal_photos": return Objectives.glyphs(TranslationServer.translate("Hint: animals come back as the ground heals. Photograph them in photo mode ({photo_mode})."))  # [wild]
 		"contracts": return TranslationServer.translate("Hint: finish %d requests (Requests tab at the workbench).") % int(t.get("milestone", 1))
 		"capsule": return TranslationServer.translate("Hint: Curio Capsules, on the Requests reward track at the workbench.")
 		"streak": return TranslationServer.translate("Hint: keep scooping without stopping until the streak meter is full.")

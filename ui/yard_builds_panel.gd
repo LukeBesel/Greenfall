@@ -97,6 +97,7 @@ func _row(id: String) -> VBoxContainer:
 			EventBus.ui_modal_changed.emit(false)
 		else:
 			Audio.play("buzz", 1.2, -8.0)
+			Refuse.say("")  # [v9d] say why
 		var hp: HubPanel = _hub_panel()
 		if hp:
 			hp.refresh()

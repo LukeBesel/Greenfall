@@ -286,3 +286,56 @@ once, when its way onward opens (`data/homeward.json` `planets[k].leave`, else r
 new planet needs only its block (keyed by its id in `data/homeward.json`). After changing text, run
 `python3 tools/extract_strings.py` and fill the six languages (docs/LOCALIZATION.md). Check with
 `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_story_arc.gd -gexit`.
+
+## The opening film (v9intro)
+
+The film a new game opens with is a shot table: `data/intro_shots.json`. `story/intro.gd` plays
+it; nothing about timing or cameras is in code. Shots play in the order they are listed.
+
+| To change | Edit in `data/intro_shots.json` |
+|---|---|
+| How long a shot lasts | its `dur` (seconds). A shot grows by itself when a language's subtitle lines need longer to read, so `dur` is the shortest it can be |
+| Where the camera starts and ends, and what it looks at | `cam.from` / `cam.to` and `cam.look_from` / `cam.look_to`: `[x, y, z]` offsets from `cam.anchor` / `cam.look_anchor` (`""` the set's origin, `ark`, `pod`, `lumi`, `glim`, or a yard anchor such as `bench`, `bin`). `"frame": "pod"` turns the offsets with the landed pod (x right of the door, -z out of the door) |
+| How the move feels | `cam.ease`: `linear`, `in`, `out`, `inout`, `in_cubic`, `out_cubic`, `out_quint`, `inout_cubic`, `smoother` |
+| The lens | `cam.fov` `[start, end]` in degrees (a push-in is a smaller end value) |
+| Hand-held sway, a tilted horizon, a lagging aim | `cam.hand` (degrees), `cam.roll` `[start, end]`, `cam.look_lag` (seconds the aim trails a moving subject) |
+| A cut, a dip to black, a fade to white | `fade_in` / `fade_out` seconds and `fade_col` `[r, g, b]`; none = a hard cut |
+| When a story line is said | `lines`: `[[second, key]]`; the keys are `Intro.lines()` (the brief's two lines come from `data/objectives.json` `brief`) |
+| A sound | `sfx`: `[[second, sound, pitch, dB]]` |
+| When something happens in a shot | `cues`: `[[second, name]]` runs `_cue_<name>` in `story/intro.gd`; a negative second counts back from the shot's end |
+| Numbers a shot's code reads (speeds, start points, when the hatch opens) | the shot's `p` block |
+| Where Lumi stops outside the door, where the game starts, and what Lumi faces there | top level `door_spot`, `end_spot` (pod frame) and `end_face` (a yard anchor; `bench` = the old workbench, the first job) |
+| The letterbox | top level `letterbox_px` |
+
+Two camera modes do more than a straight move: `"mode": "orbit"` circles `center` (`angle`
+`[start, end]` in degrees from its front, 180 = behind it; `radius`, `height`, `look_up`, `ahead`),
+and `"mode": "handoff"` ends exactly on the game's own camera (keep it last: it is what makes the
+hand-over to play seamless). After editing, run `python3 tools/intro_table_fmt.py` to keep the
+file's layout.
+
+A new shot needs a row in the table and, in `story/intro.gd`, `_in_<id>()` (sets the shot up from
+nothing) and, if things move, `_run_<id>(lt, u, delta)`. Rules the tests hold
+(`tests/test_intro_film.gd`): every line of `Intro.lines()` is said once and in order; no shot goes
+back off-world after the first `world` shot (the game's own pod is placed at the crash); the last
+shot is the hand-off.
+
+See it (nobody can watch it in real time in the cloud box, so it is rendered as frames):
+
+- Off-world shots, no planet needed (about 8 minutes for all of them):
+  `xvfb-run -a -s "-screen 0 960x540x24" godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 res://tools/intro_preview.tscn -- --intro --quality=1 --intro-frames=screenshots/v9/intro/x --intro-every=2`
+- The whole film, or from one shot on, in the real game (one render at a time):
+  `... godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 -- --fresh --orbit --intro --intro-shot=sky --quality=1 --intro-frames=screenshots/v9/intro/x --intro-every=2`
+  (`--intro-at=SECONDS` starts anywhere; `--intro-to-t=SECONDS` stops the capture; `--fixed-fps`
+  makes every frame the same slice of film time however slow the renderer is.)
+- Contact sheets: `python3 tools/intro_sheet.py screenshots/v9/intro/x screenshots/v9/intro/sheet --cols 6 --rows 5`
+- The shot times for the current language: any run with `--intro` prints `[intro] shot <id> <start> - <end> s`.
+- Skipping must leave the same world as watching: `tools/check_intro.sh` (five headless runs:
+  watched, skipped at the start, mid-fall, just before the crash, at the hatch; `--quick` runs
+  two and is part of `tools/check_exit.sh`).
+
+The film's effects (meteors, blasts, puffs, the re-entry fire, the drifting specks) live in
+`story/space_stage.gd` and three small shaders (`art/shaders/cine_glow`, `cine_puff`,
+`cine_trail`); they are additive or alpha-blended, unshaded, with no screen-space tricks, so they
+look the same on Forward+ and Compatibility. The planet seen from space is
+`art/shaders/space_planet.gdshader` (its trash mottle, haze and sea) with its air in
+`art/shaders/space_atmosphere.gdshader`.

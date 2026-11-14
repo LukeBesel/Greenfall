@@ -9,7 +9,10 @@ extends Node3D
 const CYAN := Color(0.5, 0.88, 1.0)
 const GREEN := Color(0.55, 1.0, 0.7)
 const STEP_M: float = 0.25  ## contour grid spacing
-const WIDTH_M: float = 0.22  ## the ribbon (the bright core in the shader is ~1/4 of it)
+const WIDTH_M: float = 0.4  ## the ribbon (the bright core in the shader is ~1/4 of it) [v9d] was 0.22: hard to see from 12 m
+## [v9d] A low glowing curtain stands on the border of the objective's hex (not the dimmer focus
+## outline), so the target reads from across the street, over the junk (step frames, 13 Nov).
+const CURTAIN_M: float = 1.1
 const WASH_M: float = 0.7  ## the inner wash band
 const LIFT_M: float = 0.045
 const MIN_LOOP_M: float = 2.0  ## drop warp islands smaller than this
@@ -24,14 +27,17 @@ uniform float energy = 2.1;
 uniform float run = 1.0;
 void fragment() {
 	float a;
-	if (COLOR.a > 0.5) {
+	if (COLOR.a > 0.75) {
 		float d = abs(UV.y - 0.5) * 2.0;
 		float core = 1.0 - smoothstep(0.12, 0.3, d);
 		float halo = exp(-d * d * 7.0) * 0.28;
 		float runner = pow(0.5 + 0.5 * sin(UV.x * 0.55 - TIME * 1.6), 14.0) * run;
 		a = (core + halo) * (0.72 + 0.6 * runner);
+	} else if (COLOR.a > 0.25) {
+		float runner2 = pow(0.5 + 0.5 * sin(UV.x * 0.55 - TIME * 1.6), 8.0) * run;
+		a = pow(1.0 - UV.y, 1.8) * (0.32 + 0.25 * runner2);
 	} else {
-		a = pow(1.0 - UV.y, 2.2) * 0.05;
+		a = pow(1.0 - UV.y, 2.2) * 0.1;
 	}
 	ALBEDO = tint.rgb * energy;
 	ALPHA = clamp(a * alpha, 0.0, 1.0);
@@ -207,6 +213,8 @@ func _mesh(f: HexField) -> void:
 			var seg: float = loop[i].distance_to(loop[j])
 			_quad(st, loop, ys, i, dist, dist + seg, inw, true)
 			_quad(st, loop, ys, i, dist, dist + seg, inw, false)
+			if strength >= 1.0:
+				_curtain(st, loop, ys, i, dist, dist + seg)
 			dist += seg
 	_mi.mesh = st.commit()
 
@@ -237,6 +245,17 @@ func _quad(st: SurfaceTool, loop: PackedVector2Array, ys: PackedFloat32Array, i:
 	var col := Color(1, 1, 1, 1.0 if line else 0.0)
 	for k: int in [0, 1, 2, 0, 2, 3]:
 		st.set_color(col)
+		st.set_uv(uv[k])
+		st.add_vertex(v[k])
+
+
+## [v9d] One segment of the standing glow on the border (UV.y 0 at the ground, 1 at the top).
+func _curtain(st: SurfaceTool, loop: PackedVector2Array, ys: PackedFloat32Array, i: int, u0: float, u1: float) -> void:
+	var j: int = (i + 1) % loop.size()
+	var v: Array[Vector3] = [_v3(loop[i], ys[i]), _v3(loop[i], ys[i] + CURTAIN_M), _v3(loop[j], ys[j] + CURTAIN_M), _v3(loop[j], ys[j])]
+	var uv: Array[Vector2] = [Vector2(u0, 0.0), Vector2(u0, 1.0), Vector2(u1, 1.0), Vector2(u1, 0.0)]
+	for k: int in [0, 1, 2, 0, 2, 3]:
+		st.set_color(Color(1, 1, 1, 0.5))
 		st.set_uv(uv[k])
 		st.add_vertex(v[k])
 

@@ -95,3 +95,44 @@ func test_town_visibility_ranges_have_hysteresis() -> void:
 			for k: int in range(i, mini(i + 3, lines.size())):
 				ok = ok or "margin" in lines[k]
 			assert_true(ok, "%s:%d sets a visibility range without a margin" % [path, i + 1])
+
+
+func test_detailed_buildings_show_facades_not_their_dark_core() -> void:
+	# [v9bld] The town's near buildings (CityView detail ring: kit facade in front, a dark box behind
+	# the windows, a procedural facade shell on the other sides). The dark box stood 2 cm OUTSIDE the
+	# shell, so the sides and backs facing the start yard were flat black slabs. A ray from outside
+	# onto any side or back must hit facade, never the dark core.
+	var cv := CityView.new()
+	cv._kit = {CityView.APT: {}, CityView.FAC: {}}
+	var lay := CityLayout.new(4471, 80.0)
+	var n: int = 0
+	var bad: Array = []
+	for key: Vector2i in lay.blocks:
+		for bd: Dictionary in lay.blocks[key]["buildings"]:
+			cv._body = BuildingDetail.Geo.new()
+			cv._det = BuildingDetail.Geo.new()
+			cv._build_building(key, bd)
+			var g: BuildingDetail.Geo = cv._body
+			var r: Rect2 = bd["rect"]
+			var face: Vector2 = bd["face"]
+			var c: Vector2 = r.get_center()
+			for side: Vector2 in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
+				if side == face:
+					continue  # the kit front: the dark core shows through its windows on purpose
+				for y: float in [1.5, float(bd["floors"]) * 1.5]:
+					var from := Vector3(c.x + side.x * (r.size.x * 0.5 + 2.0), y, c.y + side.y * (r.size.y * 0.5 + 2.0))
+					var dir := Vector3(-side.x, 0, -side.y)
+					var best: float = INF
+					var kind: int = -1
+					for t: int in range(0, g.v.size(), 3):
+						var hit: Variant = Geometry3D.ray_intersects_triangle(from, dir, g.v[t], g.v[t + 1], g.v[t + 2])
+						if hit != null and from.distance_to(hit) < best:
+							best = from.distance_to(hit)
+							kind = int(g.c[t].a * 16.0)
+					n += 1
+					if kind == BuildingDetail.K_DARK and bad.size() < 5:
+						bad.append("%s face %s side %s y %.1f" % [str(r), str(face), str(side), y])
+	cv.free()
+	gut.p("%d side rays" % n)
+	assert_gt(n, 50)
+	assert_eq(bad.size(), 0, "a near building shows its dark core: %s" % str(bad))

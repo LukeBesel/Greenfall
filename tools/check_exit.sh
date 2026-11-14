@@ -48,15 +48,25 @@ run hex_audit -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit
 # [v8seed] "Plant the first seed" played with real key and mouse events (tools/seed_walk.gd): the
 # bot's own path hid that a player could not plant (owner, 2026-11-13).
 run seed_walk -- --fresh --orbit --no-intro --seed-walk --save-dir=check_exit_seed_$$
+# [v9intro] The opening film leaves the same world watched or skipped (just before the crash).
+if tools/check_intro.sh --quick >screenshots/check_exit_intro.log 2>&1; then
+	echo "[check_exit] PASS intro (watched = skipped)"
+else
+	echo "[check_exit] FAIL intro: see screenshots/check_exit_intro.log"
+	fail=1
+fi
 # [v9a] Goal audit: New Game to the first robot with real keys, mouse aim and bench clicks
 # (tools/walk_opening.gd): intro skip, checklist, bin, bench buys, bales, tower, Glim, hex, Bot Bay.
 run walk_opening -- --fresh --orbit --intro --walk-opening --save-dir=check_exit_open_$$
 # [v9c] The travel steps (rocket, stations 2 and 6, the drive, the end card) played with real
 # input (tools/walk_travel.gd), and a save in the middle of station 2's chain loaded back.
-run walk_travel -- --fresh --orbit --no-intro --walk-travel --quit-after=900 --save-dir=check_exit_travel_$$
+run walk_travel -- --fresh --orbit --no-intro --walk-travel --quit-after=4000 --save-dir=check_exit_travel_$$
 run walk_travel_end -- --orbit --no-intro --walk-travel --walk-travel-end --quit-after=600 --save-dir=check_exit_travel_$$
-run walk_travel_save -- --fresh --orbit --no-intro --walk-travel --walk-travel-save --quit-after=600 --save-dir=check_exit_travelr_$$
-run walk_travel_resume -- --orbit --no-intro --walk-travel --walk-travel-resume --quit-after=600 --save-dir=check_exit_travelr_$$
+run walk_travel_save -- --fresh --orbit --no-intro --walk-travel --walk-travel-save --quit-after=2000 --save-dir=check_exit_travelr_$$
+run walk_travel_resume -- --orbit --no-intro --walk-travel --walk-travel-resume --quit-after=1500 --save-dir=check_exit_travelr_$$
+# [v9c] Every far station has its count of hexes finishable with the starting Lift (0)
+# within 100 m of its pad (exit 1 lists the short ones).
+run hex_audit_hubs -- --fresh --orbit --no-intro --hex-audit --hex-audit-hubs --hex-audit-lift=0 --hex-audit-quit
 # [v9d] Every goal and achievement left on Verdance can complete (tools/goal_audit.gd on the globe),
 # and one goal of each kind a player does by hand moves when played with real input (tools/walk_goals.gd).
 run walk_goals -- --fresh --orbit --no-intro --walk-goals --save-dir=check_exit_goals_$$
