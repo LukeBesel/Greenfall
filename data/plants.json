@@ -1,0 +1,33 @@
+{
+  "_doc": "Meadow species planted from seed. plant_scale = game-scale size of every plant (the Poly Haven clumps are life-size, ~20-40 cm, too small to read from the game camera). stage_scale = model scale per stage (seed, sprout, young, mature, bloom). grow_s = seconds per stage while watered. water_s = how long one watering lasts. seed_yield = seeds dropped when it blooms. requires_research = research node that unlocks the species (locked species are never picked; new species go last so a locked roll falls back to the first species). biomes = only planted in those frontier districts (planet/frontiers.gd). cold_hardy = can grow outdoors in the Frozen Port once Cold-Hardy Seeds is researched (others need a greenhouse there). globe_heights = [v4grow] on the globe, the height in metres of a plant per stage (times its scale; 0 = only the sprout on its soil mound shows, plants/garden_marks.gd), no wider than globe_max_width.",
+  "slot_spacing": 2.3,
+  "plant_scale": 1.4,
+  "globe_heights": [0.0, 0.0, 0.55, 0.8, 1.05],
+  "globe_max_width": 1.7,
+  "restored_life": 0.8,
+  "species": [
+    {"id": "grass", "model": "grass_medium_01", "weight": 4, "scale": 0.9, "grow_s": 60, "water_s": 120, "seed_yield": 0.3},
+    {"id": "grass2", "model": "grass_medium_02", "weight": 3, "scale": 0.9, "grow_s": 60, "water_s": 120, "seed_yield": 0.3},
+    {"id": "celandine", "model": "celandine_01", "weight": 2, "scale": 1.2, "grow_s": 80, "water_s": 100, "seed_yield": 0.6},
+    {"id": "gazania", "model": "flower_gazania", "weight": 1.5, "scale": 1.1, "grow_s": 90, "water_s": 100, "seed_yield": 0.6},
+    {"id": "heliophila", "model": "flower_heliophila", "weight": 1.5, "scale": 1.0, "grow_s": 90, "water_s": 100, "seed_yield": 0.6},
+    {"id": "dandelion", "model": "dandelion_01", "weight": 1.5, "scale": 1.0, "grow_s": 70, "water_s": 110, "seed_yield": 0.9},
+    {"id": "fern", "model": "fern_02", "weight": 1, "scale": 0.8, "grow_s": 120, "water_s": 140, "seed_yield": 0.3, "cold_hardy": true},
+    {"id": "shrub", "model": "shrub_01", "weight": 0.6, "scale": 0.7, "grow_s": 180, "water_s": 160, "seed_yield": 0.6},
+    {"id": "nettle", "model": "nettle_plant", "weight": 1.5, "scale": 0.9, "grow_s": 35, "water_s": 150, "seed_yield": 1.0, "requires_research": "hardy_weeds", "cold_hardy": true},
+    {"id": "mint", "model": "weed_plant_02", "weight": 1.5, "scale": 0.9, "grow_s": 40, "water_s": 120, "seed_yield": 1.2, "requires_research": "wild_mint"},
+    {"id": "hedge", "model": "shrub_02", "weight": 0.8, "scale": 0.7, "grow_s": 80, "water_s": 160, "seed_yield": 1.0, "requires_research": "hedgerows"},
+    {"id": "pine", "model": "pine_sapling_small", "weight": 0.6, "scale": 0.8, "grow_s": 110, "water_s": 200, "seed_yield": 1.5, "requires_research": "evergreens", "cold_hardy": true},
+    {"id": "iceplant", "model": "crystalline_iceplant", "weight": 3, "scale": 1.5, "grow_s": 55, "water_s": 260, "seed_yield": 0.7, "biomes": ["dust_flats"]},
+    {"id": "rooibos", "model": "wild_rooibos_bush", "weight": 1.5, "scale": 0.8, "grow_s": 90, "water_s": 320, "seed_yield": 0.8, "biomes": ["dust_flats", "cradle_landing"]},
+    {"id": "ursinia", "model": "flower_ursinia", "weight": 2, "scale": 1.1, "grow_s": 60, "water_s": 220, "seed_yield": 0.9, "biomes": ["dust_flats", "cradle_landing"]},
+    {"id": "periwinkle", "model": "periwinkle_plant", "weight": 2.5, "scale": 1.0, "grow_s": 70, "water_s": 180, "seed_yield": 0.7, "biomes": ["frozen_port", "cradle_landing"], "cold_hardy": true},
+    {"id": "frost_moss", "model": "moss_01", "weight": 3, "scale": 3.2, "grow_s": 60, "water_s": 200, "seed_yield": 0.6, "biomes": ["frozen_port"], "cold_hardy": true},
+    {"id": "reed", "model": "grass_medium_01", "weight": 3, "scale": 1.5, "grow_s": 45, "water_s": 90, "seed_yield": 0.6, "biomes": ["sunken_city"]},
+    {"id": "marsh_mint", "model": "weed_plant_02", "weight": 2, "scale": 1.1, "grow_s": 55, "water_s": 100, "seed_yield": 0.8, "biomes": ["sunken_city", "cradle_landing"]}
+  ],
+  "stage_scale": [0.12, 0.3, 0.55, 0.82, 1.0],
+  "water_tank": 30,
+  "first_seed": {"hexes_needed": 7, "seeds_given": 1},
+  "seed_finds": {"chance": 0.006, "organic_mult": 2.5, "cooldown_s": 60}
+}

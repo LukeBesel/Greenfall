@@ -1,0 +1,584 @@
+class_name FirstSeed
+extends Node3D
+## Act 3 opener: the ruined greenhouse, the Settler seed tin, the long cinematic with WREN's story,
+## the first planting and the first sprout. Runs once.
+
+const GREENHOUSE_POS := Vector3(15.0, 0.0, -9.0)
+## [v8seed] The beds' soil top over the greenhouse floor, and how far they reach under it.
+const BED_TOP: float = 0.35
+const BED_SKIRT: float = 0.8
+## [v8seed] Where the bed slots sit (greenhouse-local, on the beds' tops): the first seed goes here.
+const BED_SPOTS: Array[Vector3] = [Vector3(1.4, BED_TOP, 0.3), Vector3(1.4, BED_TOP, -2.4), Vector3(1.4, BED_TOP, 2.6),
+	Vector3(-1.4, BED_TOP, 0.3), Vector3(-1.4, BED_TOP, 2.6)]
+# l10n:begin
+const LINES: Array[Array] = [
+	["Wait. Hold it up to the light.", 3.5],
+	["That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush.", 5.0],
+	["When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi.", 6.0],
+	["The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall.", 7.5],
+	["Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky.", 5.5],
+	["Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground.", 6.0],
+	["That somebody is you. Small. Stubborn. Running on four percent. Perfect.", 4.5],
+	["Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it.", 6.0],
+]
+# l10n:end
+
+var world: Node
+var _tin: Node3D
+var _tin_light: OmniLight3D
+var _active: bool = false
+var _letterbox: CanvasLayer
+var _bars: Array[ColorRect] = []
+var _waiting_sprout: bool = false
+var _hint_water: bool = false  # [first]
+var _water_card: String = ""  # [v9b] the water card's text while it shows
+var _card: String = ""  # [v7play] the first-seed card text up now ("" none): hidden while Lumi is at another station
+var _card_away: bool = false
+
+
+func setup() -> void:
+	_build_greenhouse()
+	if GameState.flags.get("seeds_unlocked", false):
+		_tin.visible = false
+	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _check())
+	_letterbox = CanvasLayer.new()
+	_letterbox.layer = 25
+	add_child(_letterbox)
+	for top: bool in [true, false]:
+		var r := ColorRect.new()
+		r.color = Color.BLACK
+		r.anchor_right = 1.0
+		r.anchor_top = 0.0 if top else 1.0
+		r.anchor_bottom = 0.0 if top else 1.0
+		r.offset_bottom = 0.0
+		r.offset_top = 0.0
+		r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_letterbox.add_child(r)
+		_bars.append(r)
+	_check.call_deferred()
+	_add_beds()
+	if GameState.flags.get("seeds_unlocked", false) and int(GameState.stats.get("plants_planted", 0)) == 0:
+		_resume_planting()  # [v8seed] a save sitting on "plant the first seed" (the owner's)
+	elif int(GameState.stats.get("plants_planted", 0)) > 0 and not GameState.flags.get("first_sprout", false):
+		# [v9b] Saved after planting, before the first sprout: the water card and the sprout moment
+		# were lost on load (only in memory), so the player had no word on what to do with the seed.
+		# [main] ...but only while the seed has never had water. Once it has been watered the player
+		# knows; a later load (the water long dried, the seed not up yet) put the water card over the
+		# current step's card (seen at base level 2).
+		_hint_water = not GameState.flags.get("first_seed_watered", false)
+		_waiting_sprout = true
+	if _globe and DevHooks.has("seed-probe"):  # [v4grow]
+		_probe()
+
+
+func _build_greenhouse() -> void:
+	var gh := Node3D.new()
+	add_child(gh)
+	gh.position = GREENHOUSE_POS
+	var frame: StandardMaterial3D = Mats.metal("dark_steel")
+	var glass: StandardMaterial3D = Mats.glass(Color(0.6, 0.75, 0.75, 0.25), 0.1)
+	var parts: Array = []
+	for i: int in 5:
+		var z: float = -4.0 + i * 2.0
+		for x: float in [-2.5, 2.5]:
+			parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.08, 2.4, 0.08)), ProcMesh.xf(Vector3(x, 1.2, z))))
+		parts.append(ProcMesh.part(ProcMesh.box(Vector3(2.9, 0.08, 0.08)), ProcMesh.xf(Vector3(-1.3, 2.9, z), Vector3(0, 0, 22))))
+		if i != 2:  # a collapsed bay
+			parts.append(ProcMesh.part(ProcMesh.box(Vector3(2.9, 0.08, 0.08)), ProcMesh.xf(Vector3(1.3, 2.9, z), Vector3(0, 0, -22))))
+	var fm := MeshInstance3D.new()
+	fm.mesh = ProcMesh.merge(parts)
+	fm.material_override = frame
+	gh.add_child(fm)
+	for spec: Array in [[Vector3(-1.3, 2.9, -3.0), Vector3(0, 0, 22)], [Vector3(1.3, 2.9, 1.0), Vector3(0, 0, -22)], [Vector3(-2.5, 1.3, 2.0), Vector3(0, 0, 0)]]:
+		var g := MeshInstance3D.new()
+		g.mesh = ProcMesh.box(Vector3(2.8, 0.02, 1.9) if spec[0].y > 2.0 else Vector3(0.02, 2.2, 1.9))
+		g.material_override = glass
+		g.position = spec[0]
+		g.rotation_degrees = spec[1]
+		gh.add_child(g)
+	# Dry planting beds.
+	# [v8seed] Each bed reaches BED_SKIRT below the ground: on uneven ground it never shows a gap.
+	for x: float in [-1.4, 1.4]:
+		var bed := MeshInstance3D.new()
+		bed.mesh = ProcMesh.box(Vector3(1.4, BED_TOP + BED_SKIRT, 7.0))
+		bed.material_override = AssetLib.pbr_material("dry_ground_rocks", 0.6, Color(0.52, 0.38, 0.27), true)  # [v8seed] read as soil (it was pale as sand)
+		bed.position = Vector3(x, (BED_TOP - BED_SKIRT) * 0.5, 0)
+		gh.add_child(bed)
+	var tray := MeshInstance3D.new()
+	tray.mesh = AssetLib.model_mesh_lite("seeding_tray_01", 3000)
+	tray.position = Vector3(-1.4, 0.36, -2.0)
+	gh.add_child(tray)
+	# The seed tin.
+	_tin = Node3D.new()
+	_tin.position = Vector3(1.4, 0.36, 0.5)
+	gh.add_child(_tin)
+	var tin := MeshInstance3D.new()
+	tin.mesh = AssetLib.model_mesh_lite("oil_tin", 2000)
+	tin.scale = Vector3.ONE * 0.7
+	_tin.add_child(tin)
+	_tin_light = OmniLight3D.new()
+	_tin_light.light_color = Color(0.6, 1.0, 0.6)
+	_tin_light.light_energy = 0.0
+	_tin_light.omni_range = 3.0
+	_tin_light.position = Vector3(0, 0.4, 0)
+	_tin.add_child(_tin_light)
+	var sb := StaticBody3D.new()
+	for x: float in [-1.4, 1.4]:
+		var cs := CollisionShape3D.new()
+		var bs := BoxShape3D.new()
+		bs.size = Vector3(1.4, BED_TOP + BED_SKIRT, 7.0)  # [v8seed]
+		cs.shape = bs
+		cs.position = Vector3(x, (BED_TOP - BED_SKIRT) * 0.5, 0)
+		sb.add_child(cs)
+	gh.add_child(sb)
+	# [world2] The frame posts and the standing glass side are solid too (the roof is overhead).
+	var pb: StaticBody3D = PropColliders.body(gh, "Props")
+	for i: int in 5:
+		for x: float in [-2.5, 2.5]:
+			PropColliders.add_cyl(pb, GREENHOUSE_POS + Vector3(x, 0, -4.0 + i * 2.0), 0.08, 2.4)
+	# [v6feel] The glass side's collider runs post to post (z 0..4): its ends left 0.97 m gaps to the
+	# next posts, narrower than Lumi, and he wedged in the V between glass and post.
+	PropColliders.add_box(pb, Transform3D(Basis(), GREENHOUSE_POS + Vector3(-2.5, 1.1, 2.0)), Vector3(0.1, 2.2, 4.0))
+	if _globe:  # [orbB] the shapes are in this node's space (the world on the flat game)
+		pb.global_transform = global_transform
+
+
+func ready_to_find() -> bool:
+	if GameState.flags.get("seeds_unlocked", false):
+		return false
+	if GameState.flags.get("seed_signal", false):  # [v4grow] a signal given early (the hint timer) holds
+		return true
+	return world.field.cleaned_count >= int(world.garden.cfg.get("first_seed", {}).get("hexes_needed", 5))
+
+
+func _check() -> void:
+	if ready_to_find() and not GameState.flags.get("seed_signal", false):
+		give_signal()  # [v4grow]
+
+
+func _process(delta: float) -> void:
+	_hint_tick(delta)  # [v4grow]
+	if _tin and _tin.visible and ready_to_find():
+		_tin_light.light_energy = 1.2 + sin(Time.get_ticks_msec() * 0.004) * 0.6
+		_tin.rotation.y += delta * 0.5
+	if _hint_water and int(GameState.stats.get("plants_planted", 0)) > 0:  # [first]
+		_hint_water = false
+		# [v9b] One thing, in words: "3 then hold LMB" read as a riddle (no verb on the first key).
+		_water_card = Tutorial.glyphs_bb(tr("Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"))
+		if not _seed_watered():
+			_show_card(_water_card)
+	if not GameState.flags.get("first_seed_watered", false) and int(GameState.stats.get("plants_planted", 0)) > 0 and _seed_watered():
+		GameState.flags["first_seed_watered"] = true  # [main] saved: see the load branch in _ready
+	if _card != "" and _card == _water_card and _seed_watered():  # [v9b] done what it said: off the card
+		_card = ""
+		_water_card = ""
+		EventBus.tutorial_changed.emit("")
+	if _card != "" and _away() != _card_away:  # [v7play] owner-style one card: the seed is at home, not at a far station
+		_card_away = not _card_away
+		EventBus.tutorial_changed.emit("" if _card_away else _card)
+	if _waiting_sprout:
+		for s: int in world.garden.slot_species.size():
+			if world.garden.slot_species[s] >= 0 and world.garden.slot_stage[s] >= 1:
+				_waiting_sprout = false
+				_sprout_moment(world.garden.slot_pos[s])
+				break
+
+
+## [v9b] A planted slot has water in it.
+func _seed_watered() -> bool:
+	var g: Garden = world.get("garden") as Garden if world else null
+	if g == null:
+		return false
+	for sl: int in g.slot_species.size():
+		if g.slot_species[sl] >= 0 and g.slot_water[sl] > 0.0:
+			return true
+	return false
+
+
+func near_tin(pos: Vector3) -> bool:
+	return _tin != null and _tin.visible and ready_to_find() and _tin.global_position.distance_to(pos) < 2.2
+
+
+func take_tin() -> void:
+	if _active:
+		return
+	_active = true
+	_tin.visible = false
+	var cfg: Dictionary = world.garden.cfg.get("first_seed", {})
+	_cinematic()
+	await get_tree().create_timer(_total_time() + 1.0).timeout
+	GameState.flags["seeds_unlocked"] = true
+	GameState.add_currency("seeds", BigNum.from_float(float(cfg.get("seeds_given", 1))))
+	world.patch.water = world.patch.water_cap()
+	world.patch.set_tool(Patch.Tool.PLANT)
+	# [first] One instruction at a time on the checklist card: plant, then water.
+	_show_card(plant_card_text())  # [v8seed]
+	_hint_water = true
+	_waiting_sprout = true
+	_active = false
+
+
+func _total_time() -> float:
+	var t: float = 0.0
+	for l: Array in LINES:
+		t += float(l[1])
+	return t
+
+
+func _cinematic() -> void:
+	if world.get("music") != null:
+		world.music.set_cinematic(true)
+	var cam: Object = world.cam if world.get("cam") != null else (world.orbit as SliceOrbit).cam  # [orbB] SphereCam on the globe
+	var hud: CanvasLayer = world.hud
+	hud.visible = false
+	cam.set("input_enabled", false)
+	if world.patch.input is PlayerInput:
+		(world.patch.input as PlayerInput).enabled = false
+	for i: int in _bars.size():
+		var r: ColorRect = _bars[i]
+		var tw := create_tween()
+		if i == 0:
+			tw.tween_property(r, "offset_bottom", 90.0, 0.8)
+		else:
+			tw.tween_property(r, "offset_top", -90.0, 0.8)
+	Audio.play("fanfare", 0.6, -10.0)
+	var start_yaw: float = float(cam.get("yaw")) if not _globe else 0.0
+	var dist0: float = cam.get("distance")
+	var pitch0: float = cam.get("pitch")
+	cam.set("distance", 3.4)
+	var total: float = _total_time()
+	var tw2 := create_tween()
+	var last := [0.0]
+	tw2.tween_method(func(v: float) -> void:
+		if _globe:  # [orbB] SphereCam turns by increments in Lumi's frame
+			cam.call("add_yaw", (v - float(last[0])) * 1.6)
+			last[0] = v
+		else:
+			cam.set("yaw", start_yaw + v * 1.6)
+		cam.set("pitch", lerpf(-0.18, -0.42, v)), 0.0, 1.0, total)
+	for l: Array in LINES:
+		world.wren.line_started.emit(str(l[0]), 1)
+		await get_tree().create_timer(float(l[1])).timeout
+	for i: int in _bars.size():
+		var r: ColorRect = _bars[i]
+		var tw := create_tween()
+		if i == 0:
+			tw.tween_property(r, "offset_bottom", 0.0, 0.8)
+		else:
+			tw.tween_property(r, "offset_top", 0.0, 0.8)
+	cam.set("distance", dist0)
+	if _globe:
+		cam.set("pitch", pitch0)
+	hud.visible = true
+	cam.set("input_enabled", true)
+	if world.patch.input is PlayerInput:
+		(world.patch.input as PlayerInput).enabled = true
+
+
+## [v7play] Shows a first-seed step on the card, unless Lumi is at another station (then on return).
+func _show_card(text: String) -> void:
+	_card = text
+	_card_away = _away()
+	if not _card_away:
+		EventBus.tutorial_changed.emit(text)
+
+
+## [v7play] True while Lumi is at a far station: the seed and its greenhouse are at home.
+func _away() -> bool:
+	var os_: OrbitSites = OrbitSites.of(world) if world else null
+	return os_ != null and os_.purpose != null and os_.purpose.site > 0
+
+
+func _sprout_moment(pos: Vector3) -> void:
+	EventBus.hitstop_requested.emit(1.2, 0.3)
+	var flash := OmniLight3D.new()
+	flash.light_color = Color(0.7, 1.0, 0.6)
+	flash.light_energy = 8.0
+	flash.omni_range = 8.0
+	add_child(flash)
+	flash.global_position = pos + OrbitUp.up(pos) * 0.6  # [orbB] (Vector3.UP on the flat game)
+	var tw := create_tween()
+	tw.tween_property(flash, "light_energy", 0.0, 2.5)
+	tw.tween_callback(flash.queue_free)
+	Vfx.burst("big_sparkle", pos + OrbitUp.up(pos) * 0.3, Color(0.7, 1.0, 0.6))
+	Audio.play("chime", 0.7, -2.0)
+	Audio.play("fanfare", 0.8, -6.0)
+	world.wren.line_started.emit(tr("...It's green. Lumi, it's actually green."), 1)
+	await get_tree().create_timer(4.5).timeout
+	world.wren.line_started.emit(tr("Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."), 1)
+	_card = ""  # [v7play]
+	EventBus.tutorial_changed.emit("")
+	GameState.flags["first_sprout"] = true
+	Audio.music_sting("first_sprout")
+	if world.get("music") != null:
+		world.music.set_cinematic(false)
+
+
+# --- [orbB] The globe: the greenhouse east of the start yard ------------------------------------
+
+var _globe: bool = false
+
+
+## Where the greenhouse stands (the objective's waypoint): GREENHOUSE_POS on the flat game.
+func greenhouse_point() -> Vector3:
+	return to_global(GREENHOUSE_POS)
+
+
+## Seats this node so the flat greenhouse (at GREENHOUSE_POS in this node's space) lands on a free
+## spot east of the start yard, upright on the ground there. Call before setup().
+func place_on_globe(so: SliceOrbit) -> void:
+	_globe = true
+	var site: Transform3D = so.globe.sites[0]["transform"]
+	var spot: Transform3D = find_spot(so, site)
+	global_transform = spot * Transform3D(Basis.IDENTITY, -GREENHOUSE_POS)
+	print("[first_seed] greenhouse at site-local (%.1f, %.1f)" % [(site.affine_inverse() * spot.origin).x, (site.affine_inverse() * spot.origin).z])
+
+
+## The first clear 7 x 10 m patch east of the yard (rings 16-70 m, within 65 degrees of east,
+## nearest first): open ground (no collider of the site's blocks), level within 0.6 m, dry, clear
+## of the yard's anchors. Faces back toward the hub. Deterministic per site.
+static func find_spot(so: SliceOrbit, site: Transform3D) -> Transform3D:
+	var f: SphereField = so.globe.field
+	var space: PhysicsDirectSpaceState3D = so.w.get_world_3d().direct_space_state
+	var anchors: Array[Vector3] = []
+	for nm: String in LedgerArc.YARD_ANCHORS + ["shack", "generator", "composter", "fabricator", "camera_bot"]:
+		anchors.append(site.affine_inverse() * so.yard_point(nm))
+	var box := BoxShape3D.new()
+	box.size = Vector3(6.6, 2.2, 9.6)
+	var best := Transform3D(site.basis, site * Vector3(GREENHOUSE_POS.x, 0.0, GREENHOUSE_POS.z))
+	# [v8seed] Off the town's paving first (owner 2026-11-13: it stood on the road and crosswalk by the
+	# pad, its beds hanging over the kerb); a second pass takes the old rules if no such spot is free.
+	var g: Garden = so.w.get("garden") as Garden
+	var towns: Array = g._towns() if g else []
+	for strict: bool in [true, false]:
+		var t: Variant = _find_spot_pass(so, site, f, space, anchors, box, towns if strict else [])
+		if t is Transform3D:
+			return t
+	return best
+
+
+## [v8seed] True when any point of the greenhouse's footprint (site-local centre c, turned by lb)
+## lies on a loaded town's paving (streets, sidewalks, kerbs, the pad, building footprints).
+static func _on_paving(site: Transform3D, c: Vector3, lb: Basis, towns: Array) -> bool:
+	for t: Array in towns:
+		var vs: VerdanceSite = t[0]
+		for ox: float in [-3.3, 0.0, 3.3]:
+			for oz: float in [-4.8, -2.4, 0.0, 2.4, 4.8]:
+				var loc: Vector3 = (t[1] as Transform3D) * (site * (c + lb * Vector3(ox, 0, oz)))
+				if Garden.paved(vs.layout, loc.x, loc.z):
+					return true
+	return false
+
+
+static func _find_spot_pass(so: SliceOrbit, site: Transform3D, f: SphereField, space: PhysicsDirectSpaceState3D,
+		anchors: Array[Vector3], box: BoxShape3D, towns: Array) -> Variant:
+	for r: float in range(16, 100 if not towns.is_empty() else 72, 3):
+		for k: int in 15:
+			var a: float = deg_to_rad(-65.0 + k * (130.0 / 14.0))  # 0 = east (+x), -: north (-z)
+			var c := Vector3(cos(a) * r, 0.0, sin(a) * r)
+			if c.x < 7.0:  # clear of the lane north out of the yard (|x| < 2.5 m) and its edges
+				continue
+			var clash: bool = false
+			for an: Vector3 in anchors:
+				if Vector2(an.x - c.x, an.z - c.z).length() < 7.5:
+					clash = true
+					break
+			if clash:
+				continue
+			var yaw: float = atan2(c.x, c.z)  # local +z toward the hub
+			var lb := Basis(Vector3.UP, yaw)
+			if not towns.is_empty() and _on_paving(site, c, lb, towns):
+				continue
+			var lo: float = INF
+			var hi: float = -INF
+			var wet: bool = false
+			for o: Vector3 in [Vector3.ZERO, Vector3(3.3, 0, 4.8), Vector3(-3.3, 0, 4.8), Vector3(3.3, 0, -4.8), Vector3(-3.3, 0, -4.8)]:
+				var gp: Vector3 = f.terrain.ground((site * (c + lb * o)).normalized())
+				var h: float = (site.affine_inverse() * gp).y
+				lo = minf(lo, h)
+				hi = maxf(hi, h)
+				var cell: int = f.hex_at(gp)
+				wet = wet or cell < 0 or f.is_water(cell)
+				var ko: Object = f.keep_out.get_object() if f.keep_out.is_valid() else null  # [v4world] #55: not in a town building
+				wet = wet or (ko is YardKeepOut and (ko as YardKeepOut).in_building(gp))
+			if wet or hi - lo > 0.6:
+				continue
+			var tr_: TargetReach = TargetReach.for_field(f)  # [v4world] #55: the way in isn't walled off
+			if tr_ and tr_.reach(site * c) != "":
+				continue
+			c.y = (lo + hi) * 0.5
+			var wc: Vector3 = site * c
+			var up: Vector3 = wc.normalized()
+			var q := PhysicsShapeQueryParameters3D.new()
+			q.shape = box
+			q.transform = Transform3D(site.basis.orthonormalized() * lb, wc + up * 1.5)
+			q.collision_mask = 1 | PhysLayers.PROP
+			if not space.intersect_shape(q, 1).is_empty():
+				continue
+			var bas: Basis = Basis(Quaternion(site.basis.y.normalized(), up)) * site.basis.orthonormalized() * lb
+			return Transform3D(bas, wc)
+	return null
+
+
+# --- [v4grow] Owner playtest 3 #48: the first seed is hard to find ------------------------------
+# On the "Plant the first seed" step the beacon and trail stand on the tin once its signal is in.
+# The signal used to wait for 7 clean hexes, so a player who reached the step with fewer had no
+# marker at all, only "Keep cleaning". After HINT_AFTER_S on the step without the signal, WREN
+# picks it up anyway and the beacon leads to the greenhouse.
+
+const HINT_AFTER_S: float = 3.0  # [v8seed] was 75 s: the step must be doable the moment it appears
+var _seed_step_t: float = 0.0
+
+
+## The point the objective's beacon stands on: the tin while it is there, else the greenhouse.
+func tin_point() -> Vector3:
+	return _tin.global_position if _tin != null and _tin.visible else greenhouse_point()
+
+
+## Seconds on the seed step (paused while a modal or the cinematic runs); at HINT_AFTER_S without
+## the signal, the signal comes on its own.
+func _hint_tick(delta: float) -> void:
+	if _active or GameState.flags.get("seeds_unlocked", false) or GameState.flags.get("seed_signal", false):
+		return
+	var ob: Objectives = world.get("objectives") as Objectives if world else null
+	if ob == null or str(ob.current().get("id", "")) != "seed":
+		return
+	if world.has_method("any_modal_open") and bool(world.call("any_modal_open")):
+		return
+	_seed_step_t += delta
+	if _seed_step_t >= HINT_AFTER_S:
+		give_signal()  # [v8seed] right as the step starts: WREN's first line about the greenhouse
+
+
+## Turns the tin's signal on (the glow, the beacon on the seed step), with WREN's line.
+func give_signal(line: String = "") -> void:
+	if GameState.flags.get("seed_signal", false) or GameState.flags.get("seeds_unlocked", false):
+		return
+	GameState.flags["seed_signal"] = true
+	if world.get("wren") != null:
+		world.wren.line_started.emit(line if line != "" else tr("Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."), 1)
+	Audio.play("detector", 0.7, -6.0)
+
+
+# --- [v4grow] Dev probe: is the greenhouse reachable and visible? ---------------------------------
+
+## --seed-probe: once the world has streamed in, prints where the greenhouse stands, what overlaps
+## its footprint (other than its own bodies), what is overhead of the tin, wet cells under it, and
+## what stands in the way on the straight line from the bench.
+func _probe() -> void:
+	await get_tree().create_timer(DevHooks.get_f("seed-probe", 6.0)).timeout
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit
+	if so == null:
+		return
+	var site: Transform3D = so.globe.sites[0]["transform"]
+	var gh: Vector3 = greenhouse_point()
+	var loc: Vector3 = site.affine_inverse() * gh
+	var bench: Vector3 = so.bench_position()
+	print("[seed-probe] greenhouse site-local (%.1f, %.1f) ground %.1f m from the bench, %.1f m from Lumi" % [loc.x, loc.z,
+		OrbitUp.ground_dist(bench, gh), OrbitUp.ground_dist(world.patch.global_position, gh)])
+	for l: String in blockers():
+		print("[seed-probe] blocked: %s" % l)
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var own: Array[RID] = _own_rids()
+	var tin: Vector3 = _tin.global_position
+	var f: SphereField = so.globe.field
+	var wet: int = 0
+	for o: Vector3 in [Vector3.ZERO, Vector3(3, 0, 4), Vector3(-3, 0, 4), Vector3(3, 0, -4), Vector3(-3, 0, -4)]:
+		var c: int = f.hex_at(to_global(GREENHOUSE_POS + o))
+		if c < 0 or f.is_water(c):
+			wet += 1
+	print("[seed-probe] wet corners: %d, tin altitude %.2f m" % [wet, so.globe.surface.altitude(tin)])
+	var block: Array[String] = []
+	var n: int = int(OrbitUp.ground_dist(bench, gh))
+	var sq := PhysicsShapeQueryParameters3D.new()
+	var sph := SphereShape3D.new()
+	sph.radius = 0.5
+	sq.shape = sph
+	sq.collision_mask = PhysLayers.SOLID
+	sq.exclude = own
+	for i: int in range(3, n - 4):
+		var d: Vector3 = bench.normalized().slerp(gh.normalized(), float(i) / n)
+		var gp: Vector3 = so.globe.terrain.ground(d)
+		sq.transform = Transform3D(Basis(), gp + d * 0.9)
+		for h: Dictionary in space.intersect_shape(sq, 4):
+			var nm: String = str((h["collider"] as Node).name) if h["collider"] is Node else "?"
+			if not nm in block:
+				block.append("%s@%dm" % [nm, i])
+	print("[seed-probe] on the line from the bench: %s" % str(block))
+	print("[seed-probe] cleaned_count %d junk_hex_count %d ready %s signal %s" % [f.cleaned_count, f.junk_hex_count, str(ready_to_find()), str(GameState.flags.get("seed_signal", false))])
+
+
+func _own_rids() -> Array[RID]:
+	var own: Array[RID] = []
+	for b: Node in find_children("*", "CollisionObject3D", true, false):
+		own.append((b as CollisionObject3D).get_rid())
+	return own
+
+
+## What keeps Lumi from the tin (empty when it is reachable and seen): solid colliders in the
+## greenhouse's footprint other than its own, and anything overhead of the tin (a building, a heap).
+func blockers() -> Array[String]:
+	var out: Array[String] = []
+	if _tin == null or not is_inside_tree():
+		return out
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var own: Array[RID] = _own_rids()
+	var gh: Vector3 = greenhouse_point()
+	var up: Vector3 = OrbitUp.up(gh)
+	var q := PhysicsShapeQueryParameters3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(6.6, 2.2, 9.6)
+	q.shape = box
+	q.transform = Transform3D(global_basis.orthonormalized(), gh + up * 1.5)
+	q.collision_mask = PhysLayers.SOLID
+	q.exclude = own
+	for h: Dictionary in space.intersect_shape(q, 8):
+		out.append("footprint: %s" % (str((h["collider"] as Node).get_path()) if h["collider"] is Node else "?"))
+	var tin: Vector3 = _tin.global_position
+	var rq := PhysicsRayQueryParameters3D.create(tin + up * 60.0, tin + up * 0.2, PhysLayers.SOLID | PhysLayers.MOUND)
+	rq.exclude = own
+	var over: Dictionary = space.intersect_ray(rq)
+	if not over.is_empty():
+		out.append("overhead: %s" % (str((over["collider"] as Node).get_path()) if over["collider"] is Node else "?"))
+	return out
+
+
+# --- [v8seed] The first seed goes in the greenhouse beds ---------------------------------------------
+# Owner, 2026-11-13: "It wont let me plant in the dirt... i cant plant the first seed". The beds were
+# props: holding the button on them did nothing. Now they are soil (Garden.add_bed), the card says
+# which key picks the seed and where to hold the button, and the beacon stands on the beds.
+
+var bed_slots := PackedInt32Array()
+
+
+func _add_beds() -> void:
+	var g: Garden = world.get("garden") as Garden if world else null
+	if g == null or not _globe or not bed_slots.is_empty():
+		return
+	var pts := PackedVector3Array()
+	for p: Vector3 in BED_SPOTS:
+		pts.append(to_global(GREENHOUSE_POS + p))
+	bed_slots = g.add_bed(pts)
+
+
+## A bed spot (world space) for the beacon while the first seed waits.
+func bed_point() -> Vector3:
+	return to_global(GREENHOUSE_POS + BED_SPOTS[0])
+
+
+## The card's planting line: the key for the seed tool, where, what to hold.
+func plant_card_text() -> String:
+	return Tutorial.glyphs_bb(tr("Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"))
+
+
+## An old save on "plant the first seed" with the tin already taken: the card, the seed tool and a
+## seed (a save could sit at none), so planting works on load.
+func _resume_planting() -> void:
+	if not GameState.can_afford("seeds", BigNum.from_float(1.0)):
+		GameState.add_currency("seeds", BigNum.from_float(1.0))
+	_hint_water = true
+	_waiting_sprout = true
+	(func() -> void:
+		if world and world.get("patch") is Patch:
+			(world.patch as Patch).set_tool(Patch.Tool.PLANT)
+		_show_card(plant_card_text())).call_deferred()

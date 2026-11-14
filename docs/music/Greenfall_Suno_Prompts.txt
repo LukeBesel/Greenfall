@@ -1,0 +1,319 @@
+Greenfall: Suno prompts (copy one paragraph at a time)
+
+1. Greenfall (Main Theme)  (Story themes, Title screen)
+Title theme for a game about a small robot bringing a dead, trash-buried world back to life. Hopeful and a little lonely, with a melody you hum afterwards. Warm felt piano carries the tune over soft strings and gentle synth pads, building slowly to a wide, uplifting swell. Instrumental, 85 bpm.
+  or (shorter): Warm piano ballad with soft strings, hopeful and a little lonely, memorable simple melody that grows into a gentle orchestral lift, cinematic video game title theme, instrumental, 80 bpm
+
+2. The Fall of LM-1  (Story themes, Opening cutscene)
+A giant ark ship is torn apart by a meteor storm and one tiny escape pod falls toward a planet covered in trash. Big tense strings, pounding taiko and choir swells with alarm-like rhythms, then everything drops away to a quiet, lonely piano as the pod lands. Cinematic, instrumental.
+  or (shorter): Dramatic space disaster score, urgent strings and big drums, falling and crashing, then silence and a single soft piano melody, emotional, instrumental
+
+3. The Ledger  (Story themes, Villain theme)
+Villain theme for the Ledger, a cold mining corporation that stripped a whole star system and left it buried in junk, still sending glitchy messages and drones. Dark corporate synthwave, ticking-clock percussion, detuned bass, stuttering arpeggios. Sinister and stylish rather than scary. Instrumental, 100 bpm.
+  or (shorter): Sinister corporate villain theme, cold synth bass, clock ticking, robotic arpeggios, dark and sleek, instrumental, 95 bpm
+
+4. Signal Found  (Story themes, Story: first message after the tower)
+A faint radio signal breaks through static after a long silence. Gentle synth arpeggio slowly joined by warm strings, hopeful and emotional, goosebumps moment. Instrumental, 76 bpm.
+
+5. What the Ledger Took  (Story themes, Story: memory shards)
+Haunting music box over low drones and distant choir, uncovering what happened to an abandoned world. Sad, eerie and beautiful. Instrumental, 62 bpm.
+
+6. Drone Sweep  (Story themes, Story: Ledger drones nearby)
+Tense stealth music, ticking hi-hats, pulsing bass, cold synth stabs, something mechanical is watching. Suspenseful, not too loud. Instrumental, 96 bpm.
+
+7. Small Robot, Big Sky  (Story themes, Story: launching to a new planet)
+Soaring uplifting anthem, driving drums, bright synth lead and big strings, leaving home for the stars. Triumphant and catchy. Instrumental, 124 bpm.
+
+8. Sprout Step  (Verdance, Playlist, upbeat)
+Bright and bouncy, for scooping junk off city streets and pressing it into bales. Glockenspiel and plucky piano melody, round synth bass, light drums with handclaps. Cheerful and motivating, steady enough to loop for hours. Instrumental, 115 bpm.
+  or (shorter): Happy upbeat video game music, bouncy piano and xylophone, light drums, catchy and positive, loopable, instrumental, 118 bpm
+
+9. Clean Sweep  (Verdance, Playlist, upbeat)
+Sunny indie-pop groove for a little robot sweeping an abandoned city back to life. Whistled lead melody, ukulele strums, claps and warm synth bass. Optimistic and catchy, loops without getting tiring. Instrumental, 120 bpm.
+  or (shorter): Feel-good indie pop instrumental, whistling melody, acoustic guitar, handclaps, sunny and catchy, 122 bpm
+
+10. Little Helpers  (Verdance, Playlist, upbeat)
+A crew of small worker robots buzzing around a junkyard base. Toy-box chiptune with a square-wave lead, bouncy bass and light 8-bit drums. Playful and busy, like a workshop full of gadgets. Instrumental, 125 bpm.
+  or (shorter): Cute retro 8-bit chiptune, bouncy and busy, little robots working, playful arcade melody, instrumental, 128 bpm
+
+11. Neon Gutters  (Verdance, Playlist, groovy)
+Rusty neon signs flicker over trash-filled streets at sunset. Dreamy retro synthpop with warm analog arpeggios, soft gated drums and a nostalgic lead. Upbeat but relaxed, a steady loop for long work sessions. Instrumental, 108 bpm.
+  or (shorter): Retro 80s synthwave, warm and nostalgic, sunset drive feel, steady beat, instrumental, 105 bpm
+
+12. Morning Shift  (Verdance, Playlist, bright)
+Early light over a city half-buried in junk as the first robots head out to work. Fresh acoustic folk: fingerpicked guitar, soft mandolin, gentle shaker. Bright and hopeful, easy to hear on repeat. Instrumental, 100 bpm.
+  or (shorter): Bright acoustic folk instrumental, fingerpicked guitar and mandolin, fresh morning energy, simple and warm, 98 bpm
+
+13. Bale by Bale  (Verdance, Playlist, chill)
+Focus music for steady, repetitive cleanup work. Mellow lofi hip hop with rhodes chords, vinyl crackle, soft kick and snare and a small melodic hook. Calm and warm, loops for hours. Instrumental, 85 bpm.
+  or (shorter): Chill lofi hip hop instrumental, mellow keys, soft beat, vinyl crackle, study and work music, 84 bpm
+
+14. Rust and Ribbons  (Verdance, Playlist, calm)
+Wandering alone through quiet ruined streets while plants push up through the cracks. Sparse nostalgic piano with soft reverb over a warm analog pad, long gentle pauses between phrases. Peaceful, open-world exploration feel. Instrumental, 75 bpm.
+  or (shorter): Calm ambient piano, sparse and nostalgic, quiet exploration through ruins, peaceful, instrumental, 72 bpm
+
+15. Old Town at Rest  (Verdance, Playlist, calm)
+Home base at the end of a long day: a repaired workbench, a humming generator, a few robots parked nearby. Gentle piano and soft ambient pads, slow and sparse. Warm and quiet. Instrumental, 70 bpm.
+  or (shorter): Soft evening piano and warm pads, peaceful and slow, end of a long day, instrumental, 68 bpm
+
+16. Verdance Night  (Verdance, Night)
+Night falls over the junk city and only a few street lamps still glow. Music-box melody, soft cricket-like textures, warm low pads. Sleepy and calm, loops smoothly. Instrumental, 60 bpm.
+  or (shorter): Sleepy lullaby music box, soft night ambience, gentle and calm, instrumental, 60 bpm
+
+17. Verdance in Bloom  (Verdance, Restored planet)
+The once trash-covered city is green again: gardens on every corner, birds back in the trees. Joyful orchestral pop with bright strings, a flute melody and birdsong-like trills. Spring celebration that still loops well. Instrumental, 105 bpm.
+  or (shorter): Joyful spring orchestral music, bright flute and strings, birds and flowers, celebration, instrumental, 108 bpm
+
+18. Dumpster Disco  (Verdance, Playlist, bop)
+Funky disco groove, slap bass, four-on-the-floor kick, chopped strings, a robot dancing through a junkyard. Catchy and fun. Instrumental, 118 bpm.
+
+19. Pocket Full of Bolts  (Verdance, Playlist, bop)
+Bubbly synth pop with a whistled hook, plucky bass and snappy claps, carefree and silly, impossible not to nod along. Instrumental, 120 bpm.
+
+20. Tin Can Parade  (Verdance, Playlist, lighthearted)
+Quirky marching band of kitchen-pot percussion, kazoo-like synth and tuba bass, a goofy little parade of robots. Instrumental, 112 bpm.
+
+21. Cardboard Kingdom  (Verdance, Playlist, lighthearted)
+Playful toy piano and pizzicato strings, a kid's imagination turning junk into castles. Light and charming. Instrumental, 104 bpm.
+
+22. Rain on Rust  (Verdance, Playlist, lost in it)
+Rainy-day lofi, soft rain texture, muted electric piano, slow brushed drums, cosy and introspective. Instrumental, 76 bpm.
+
+23. Streetlight Memory  (Verdance, Playlist, feely)
+Nostalgic synth ballad, warm pads, a simple lonely melody remembering the city when its lights were on. Bittersweet. Instrumental, 84 bpm.
+
+24. The Last Bus Stop  (Verdance, Playlist, emotional)
+Slow piano and cello, an empty bus stop where someone waited for a bus that never came. Heartfelt and quiet. Instrumental, 66 bpm.
+
+25. Something in the Alley  (Verdance, Night, spooky)
+Creepy but playful night music, plucked strings, low clarinet, footsteps-like percussion, a shadow in the junk turns out to be a cat. Instrumental, 88 bpm.
+
+26. Green Again  (Verdance, Restored, bop)
+Feel-good summer groove, bright guitar riff, bouncy bass and handclaps, the city is alive again. Catchy celebration. Instrumental, 116 bpm.
+
+27. Dawn Patrol  (Verdance, Playlist, lost in it)
+Ambient electronic with a slow rising pulse, soft bells, first sunlight over a quiet city, drifting and peaceful. Instrumental, 90 bpm.
+
+28. Sunbaked  (Ochre, Playlist, upbeat)
+Two blazing suns over orange dunes and a giant abandoned strip mine. Upbeat desert adventure with marimba and oud melody, hand drums and warm plucks. Energetic and sunny, built to loop while working. Instrumental, 118 bpm.
+  or (shorter): Energetic desert adventure music, hand drums, plucked oud, sunny and fast, video game travel theme, instrumental, 120 bpm
+
+29. Strip Mine Shuffle  (Ochre, Playlist, funky)
+Hauling scrap out of a terraced mining pit under a white-hot sky. Funky desert groove: slap bass, darbuka, hand claps, wah guitar licks. Playful heat-haze swagger. Instrumental, 112 bpm.
+  or (shorter): Funky groove, slap bass, wah guitar, desert percussion, playful and cool, instrumental, 110 bpm
+
+30. Dune Caravan  (Ochre, Playlist, steady)
+A long line of robots crossing rolling dunes, carrying scrap home. Rolling groove with frame drum, kalimba arpeggios and warm bass. Hopeful travelling feel. Instrumental, 105 bpm.
+  or (shorter): Steady travelling desert groove, frame drum and kalimba, warm and hopeful, instrumental, 104 bpm
+
+31. Glass Dunes  (Ochre, Playlist, bright)
+Wind has polished the sand into glittering glass ridges. Shimmering ambient electronic with plucked kanun arpeggios and a soft pulse beat. Bright and hopeful. Instrumental, 96 bpm.
+  or (shorter): Shimmering electronic ambient with plucked strings, bright and sparkling desert heat, instrumental, 95 bpm
+
+32. Sandglass  (Ochre, Playlist, chill)
+A slow hot afternoon, steady work in the shade of a rusted mining crane. Chill lofi beat with oud samples, dusty drums and warm bass. Relaxed and loop-friendly. Instrumental, 84 bpm.
+  or (shorter): Lofi chill beat with middle eastern samples, dusty drums, relaxed hot afternoon, instrumental, 82 bpm
+
+33. Twin Noon  (Ochre, Playlist, calm)
+Midday under two suns, heat shimmering over empty land. Slow western-style ambient: reverb twang guitar, soft harmonica pads, wide open space. Calm and sunbaked. Instrumental, 72 bpm.
+  or (shorter): Slow spaghetti western ambient, twangy reverb guitar, wide open desert, calm, instrumental, 70 bpm
+
+34. Mirage Night  (Ochre, Night)
+Desert night, warm wind, the mine's silhouette against the stars. Hazy ambient with soft duduk, shimmering pads and a slow heat-wave pulse. Mysterious and calm. Instrumental, 65 bpm.
+  or (shorter): Mysterious desert night ambient, soft duduk flute, warm wind, slow and dreamy, instrumental, 64 bpm
+
+35. Oasis Terraces  (Ochre, Restored planet)
+The old mine pit has become terraced gardens around a bright blue oasis. Flowing strings, kalimba and gentle hand percussion, water and life returning. Warm and joyful, still loopable. Instrumental, 100 bpm.
+  or (shorter): Uplifting world music, flowing strings and kalimba, water returning to the desert, joyful, instrumental, 100 bpm
+
+36. Cactus Cowbot  (Ochre, Playlist, bop)
+Upbeat western swing with a robot twist, twangy guitar, shuffling drums, harmonica hook, cheeky and fun. Instrumental, 122 bpm.
+
+37. Heatwave Hustle  (Ochre, Playlist, bop)
+Groovy afrobeat-inspired rhythm, bright marimba hook, hand percussion, sunny desert energy. Danceable. Instrumental, 115 bpm.
+
+38. Mirage Market  (Ochre, Playlist, lighthearted)
+Bouncy bazaar music, plucky oud riff, darbuka, little flute runs, a busy market that is just a mirage. Playful. Instrumental, 108 bpm.
+
+39. Endless Sand  (Ochre, Playlist, lost in it)
+Hypnotic slow desert groove, repeating kalimba pattern, deep frame drum, warm drones, easy to get lost in. Instrumental, 86 bpm.
+
+40. Letters in the Pit  (Ochre, Playlist, emotional)
+Tender guitar and strings, notes left by miners who missed their families, warm and sad. Instrumental, 72 bpm.
+
+41. Sandstorm Warning  (Ochre, Playlist, tense)
+Driving tense desert percussion, low drones, wind swells, a storm rolling in. Urgent but controlled. Instrumental, 104 bpm.
+
+42. Bones of the Excavator  (Ochre, Night, eerie)
+Eerie desert night, slow metallic creaks, low bowed strings, a giant rusted machine sleeping in the dark. Haunting. Instrumental, 60 bpm.
+
+43. First Rain on Ochre  (Ochre, Restored, feely)
+Gentle rain sounds over warm piano and strings, the desert drinking its first rain in years. Emotional and hopeful. Instrumental, 80 bpm.
+
+44. Tradewinds  (Tidewell, Playlist, upbeat)
+Hovering over a turquoise ocean between tiny islands, scooping floating junk out of the waves. Breezy tropical track with steel-drum arpeggios, a light shuffle beat and ukulele. Sunny adventure that loops easily. Instrumental, 112 bpm.
+  or (shorter): Breezy tropical steel drum music, sunny island adventure, light shuffle beat, instrumental, 112 bpm
+
+45. Hover Hop  (Tidewell, Playlist, upbeat)
+Skimming fast across open water from island to island. Summery chiptune pop with bright arpeggios, bouncy synth bass and splashy drums. Playful and energetic. Instrumental, 126 bpm.
+  or (shorter): Upbeat summer chiptune pop, fast and splashy, playful, instrumental, 126 bpm
+
+46. Skipping Stones  (Tidewell, Playlist, playful)
+Sun on the water, gulls overhead, junk bobbing in the surf. Bouncy island pop with marimba, whistles and a light bossa groove. Carefree and catchy. Instrumental, 120 bpm.
+  or (shorter): Carefree island pop instrumental, marimba and whistling, light bossa beat, 118 bpm
+
+47. Salt and Sails  (Tidewell, Playlist, cheerful)
+Old harbour wrecks and rusty buoys along a windy coast. Sea-shanty flavoured tune with accordion, fiddle and soft stomps. Warm, cheerful and breezy. Instrumental, 104 bpm.
+  or (shorter): Cheerful sea shanty instrumental, accordion and fiddle, stomping rhythm, windy coast, 104 bpm
+
+48. Low Tide Lofi  (Tidewell, Playlist, chill)
+Slow work on a quiet beach at low tide. Chill lofi beat with soft guitar loops, ocean-wave texture and mellow keys. Lazy afternoon feel, made for long loops. Instrumental, 82 bpm.
+  or (shorter): Lofi beach beat, soft guitar, ocean waves, lazy relaxing afternoon, instrumental, 80 bpm
+
+49. Glass Lagoon  (Tidewell, Playlist, calm)
+A clear shallow lagoon with coral visible under still water. Airy tropical ambient with vibraphone melody and a soft bossa nova rhythm. Calm, sunny and spacious. Instrumental, 90 bpm.
+  or (shorter): Calm tropical bossa nova, vibraphone melody, clear blue water, sunny and relaxed, instrumental, 90 bpm
+
+50. Tidepools  (Tidewell, Night)
+Night on the ocean planet, bioluminescent glow in the waves. Calm underwater ambient with soft bells, flowing pads and gentle wave textures. Dreamy deep blue. Instrumental, 62 bpm.
+  or (shorter): Underwater ambient, soft bells and bubbles, deep blue and dreamy, slow, instrumental, 60 bpm
+
+51. Kelp Garden  (Tidewell, Restored planet)
+The seas are clean again: kelp forests, schools of fish, floating island gardens. Uplifting orchestral piece with harp glissandos, warm strings and gentle steel pan. Sparkling and alive. Instrumental, 98 bpm.
+  or (shorter): Uplifting ocean orchestral, harp and strings, sparkling sea life returning, instrumental, 96 bpm
+
+52. Bubble Pop  (Tidewell, Playlist, bop)
+Bright bubbly synth pop, popping plucks, bouncy bass and claps, playful underwater fun. Catchy hook. Instrumental, 124 bpm.
+
+53. Pier Pressure  (Tidewell, Playlist, bop)
+Surf rock instrumental, reverb guitar riff, punchy drums, sunny boardwalk energy. Fun and catchy. Instrumental, 130 bpm.
+
+54. Crab Shuffle  (Tidewell, Playlist, lighthearted)
+Silly sideways shuffle beat, marimba and ukulele, little xylophone runs, crabs dancing on the sand. Instrumental, 110 bpm.
+
+55. Drifting Raft  (Tidewell, Playlist, lost in it)
+Dreamy ambient guitar with long delays, slow waves, floating on a calm sea at sunset. Instrumental, 78 bpm.
+
+56. Message in a Bottle  (Tidewell, Playlist, emotional)
+Soft piano and acoustic guitar, a child's letter washed ashore, gentle and touching. Instrumental, 70 bpm.
+
+57. The Deep Below  (Tidewell, Playlist, tense)
+Mysterious deep-sea suspense, low pulsing synths, sonar pings, distant whale-like calls, something huge below. Instrumental, 72 bpm.
+
+58. Lighthouse Ghost  (Tidewell, Night, spooky)
+Haunting sea night music, slow music box, wind and creaking wood, a lighthouse that blinks on its own. Eerie but gentle. Instrumental, 58 bpm.
+
+59. Coral Comeback  (Tidewell, Restored, bop)
+Joyful tropical house groove, steel drums, bright plucks, colourful reef bursting back to life. Catchy and uplifting. Instrumental, 118 bpm.
+
+60. Snowplow  (Rime, Playlist, upbeat)
+Pushing through fresh snow on a frozen moon, digging out buried scrap. Crisp indie pop with sleigh-bell shimmer, bright piano and bouncy bass. Cheerful winter energy that loops well. Instrumental, 118 bpm.
+  or (shorter): Upbeat winter indie pop, sleigh bells and bright piano, crisp snowy energy, instrumental, 116 bpm
+
+61. Hoarfrost  (Rime, Playlist, steady)
+Glassy blue ice plains under a huge ringed planet. Crystalline ambient electronic: glass-bell melody, soft pulsing synth, light glitch percussion. Cold but beautiful. Instrumental, 96 bpm.
+  or (shorter): Crystalline electronic ambient, glass bells, cold and beautiful, steady pulse, instrumental, 94 bpm
+
+62. Crunch Ice  (Rime, Playlist, chill)
+Steady work inside a heated dome while snow blows outside. Chill downtempo with crunchy glitch beats, icy plucks and warm bass. Focused and warm against the cold. Instrumental, 90 bpm.
+  or (shorter): Chill downtempo beat, icy plucks, warm bass, focused and cozy indoors, instrumental, 88 bpm
+
+63. Aurora Drift  (Rime, Playlist, dreamy)
+Green and violet aurora rippling over frozen ridges. Dreamy icy synthpop with a celesta melody, airy pads and a slow warm build. Wonder and stillness. Instrumental, 88 bpm.
+  or (shorter): Dreamy synthpop with celesta, northern lights, slow airy build, instrumental, 86 bpm
+
+64. Ringlight  (Rime, Playlist, calm)
+A giant ringed gas planet hangs over a frozen crater. Minimal ambient electronic with music-box arpeggios and a soft sub pulse. Vast and quietly amazed. Instrumental, 84 bpm.
+  or (shorter): Minimal space ambient, music box, giant planet in the sky, wonder, instrumental, 82 bpm
+
+65. Frozen Harbor  (Rime, Playlist, calm)
+An abandoned drilling port locked in ice, snow falling softly. Slow nostalgic piano with cold reverb and soft string pads. Peaceful and reflective. Instrumental, 68 bpm.
+  or (shorter): Slow sad piano with soft strings, snow falling on an empty harbor, reflective, instrumental, 66 bpm
+
+66. Long Night  (Rime, Night)
+The long night on an ice moon far from its suns. Sparse frozen ambient with distant piano notes and wind-like pads. Lonely and still. Instrumental, 55 bpm.
+  or (shorter): Lonely frozen ambient, distant piano notes, wind, very slow and still, instrumental, 55 bpm
+
+67. Thaw  (Rime, Restored planet)
+Warmth returns from deep underground: frozen pools become steaming hot springs and moss spreads over the ice. A warm melody over icy bells, strings melting in, gentle drums arriving. Spring after a long winter, emotional build. Instrumental, 92 bpm.
+  or (shorter): Hopeful emotional build, icy bells to warm strings and soft drums, spring after winter, instrumental, 90 bpm
+
+68. Penguin Bot Waddle  (Rime, Playlist, lighthearted)
+Goofy waddling bassoon and pizzicato melody, sleigh bells, a clumsy little robot sliding on ice. Cute and funny. Instrumental, 106 bpm.
+
+69. Ice Rink Lights  (Rime, Playlist, bop)
+Upbeat electro pop, sparkly arpeggios, punchy beat, skating under coloured lights. Catchy. Instrumental, 122 bpm.
+
+70. Snow Globe  (Rime, Playlist, lost in it)
+Delicate music box and soft pads, slowly swirling snowflakes, dreamy and calm, easy to drift away to. Instrumental, 76 bpm.
+
+71. The Long Way Home  (Rime, Playlist, emotional)
+Slow emotional piano with warm strings, missing home in the coldest place, building to a hopeful swell. Instrumental, 68 bpm.
+
+72. Whiteout  (Rime, Playlist, tense)
+Tense blizzard music, howling wind, icy high strings, low pulsing drums, can't see anything. Instrumental, 98 bpm.
+
+73. Frozen Voices  (Rime, Night, scary)
+Creepy frozen ambience, cracking ice, whispery pads, a distant choir that might be the wind. Scary but quiet. Instrumental, 54 bpm.
+
+74. Hot Spring Hangout  (Rime, Playlist, lighthearted)
+Chill bossa lounge, warm keys, soft brushes, relaxing in a steaming hot spring among the snow. Instrumental, 92 bpm.
+
+75. Spring Under Ice  (Rime, Restored, feely)
+Gentle rising strings and harp, ice cracking open to reveal green below, warm emotional release. Instrumental, 84 bpm.
+
+76. Red Engine  (Anvil, Playlist, dark and driving)
+A red Mars-like foundry world of iron towers and lava rivers, home of the Ledger. Driving dark synthwave with distorted bass arpeggios and clanging metal percussion. Gritty and heavy but groovy enough to loop. Instrumental, 110 bpm.
+  or (shorter): Dark synthwave, heavy distorted bass, metallic percussion, gritty red planet, instrumental, 110 bpm
+
+77. Slag Run  (Anvil, Playlist, dark and driving)
+Hauling scrap past roaring furnaces and rivers of molten slag. Dark industrial techno: pounding kick, gritty hi-hats, hammer-on-anvil hits. Relentless and driving. Instrumental, 126 bpm.
+  or (shorter): Dark industrial techno, pounding kick, hammer hits, relentless and heavy, instrumental, 128 bpm
+
+78. Foundry Heart  (Anvil, Playlist, dark and groovy)
+Deep inside an abandoned volcanic foundry, like walking through an underworld. Dark ambient groove with a heartbeat kick, deep pulsing sub bass, eerie choir pads and metallic hits. Ominous and hypnotic. Instrumental, 90 bpm.
+  or (shorter): Ominous underworld ambient groove, heartbeat drum, deep bass, eerie choir pads, hypnotic, instrumental, 88 bpm
+
+79. Ember Market  (Anvil, Playlist, mysterious)
+A ruined forge city lit by drifting embers. Mysterious dark-fantasy groove with a low cello ostinato, frame drums and an eerie flute. Ancient and strange. Instrumental, 98 bpm.
+  or (shorter): Dark fantasy groove, low cello, frame drums, eerie flute, mysterious ancient city, instrumental, 96 bpm
+
+80. Red Dust Waltz  (Anvil, Playlist, eerie)
+A dust storm rolls over rusted machines on a red planet. Eerie music-box waltz with detuned piano, low drones and howling wind. Sad and beautiful. Instrumental, 80 bpm.
+  or (shorter): Eerie music box waltz, detuned piano, howling wind, sad and beautiful, instrumental, 78 bpm
+
+81. Magma Crawl  (Anvil, Playlist, heavy and slow)
+Lava slowly creeping across black rock under a blood-red sky. Slow heavy dark ambient with deep sub drones, distant metallic clangs and crackling fire textures. Menacing and huge. Instrumental, 70 bpm.
+  or (shorter): Heavy dark ambient, deep rumbling drones, fire crackle, slow and menacing, instrumental, 68 bpm
+
+82. Ash Choir  (Anvil, Night)
+Ash drifts through red light as night falls on the volcanic world. Haunting dark ambient with a low wordless choir, distant bells and rumbling drones. Mysterious and slow. Instrumental, 60 bpm.
+  or (shorter): Haunting dark ambient with low choir pads and distant bells, slow volcanic night, instrumental, 58 bpm
+
+83. Iron Bloom  (Anvil, Restored planet)
+The foundry world restored: flowers growing between cooled lava flows, iron towers wrapped in vines. Hopeful cinematic piano and strings over a soft industrial pulse, warm choir swell. Darkness turning to light, triumphant ending. Instrumental, 95 bpm.
+  or (shorter): Triumphant cinematic piano and strings, darkness turning to light, warm and hopeful finale, instrumental, 94 bpm
+
+84. Molten Groove  (Anvil, Playlist, bop)
+Heavy funky rock groove, chunky distorted guitar riff, big drums, red hot and catchy. Instrumental, 114 bpm.
+
+85. Forge Stomp  (Anvil, Playlist, bop)
+Stomping industrial pop beat, anvil hits, chanting-style synth stabs, catchy dark energy. Instrumental, 120 bpm.
+
+86. Lava Lamp Lounge  (Anvil, Playlist, lighthearted)
+Retro lounge funk, warm Rhodes, wah guitar, lava-lamp glow, surprisingly chill on a volcanic world. Instrumental, 96 bpm.
+
+87. Ember Drift  (Anvil, Playlist, lost in it)
+Slow dark ambient groove, glowing embers drifting upward, deep bass pulse, hypnotic and moody. Instrumental, 80 bpm.
+
+88. The Clerk's Regret  (Anvil, Playlist, emotional)
+Sad cello and slow piano, a Ledger clerk who wrote down every ton taken, regret and quiet hope. Instrumental, 64 bpm.
+
+89. Furnace Heartbeat  (Anvil, Playlist, tense)
+Ominous rising tension, heartbeat drum, grinding machinery, low brass, something waking in the foundry. Instrumental, 90 bpm.
+
+90. Shadows in the Smelter  (Anvil, Night, scary)
+Dark horror-tinged ambience, distant metal scrapes, low choir, creaking chains, scary but not overwhelming. Instrumental, 56 bpm.
+
+91. Cool Stone  (Anvil, Restored, feely)
+Warm hopeful piano over soft synth pads, lava cooling into fertile ground, peaceful after the fire. Instrumental, 78 bpm.

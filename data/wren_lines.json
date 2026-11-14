@@ -1,0 +1,457 @@
+{
+  "_doc": "WREN's lines by trigger. WREN is the ark Cradle's AI, whispering to Lumi over a failing relay. Each trigger has lines per signal stage (the relay clears as the planet is restored): 0 = fragmented (rendered with glitches), 1 = recovering, 2 = clear. A line is never repeated until the pool for that trigger and stage is used up. {name} = Lumi's name, {robot} = a robot name.",
+  "wake": [
+    ["...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing.", "...there you are. The signal's thin, but it's ours. Hello again, Lumi."]
+  ],
+  "signal_up": [
+    ["Better. Less static. Keep building."],
+    ["Much better. I can hear the wind on your end now. And I can tell you more."],
+    ["Clear as the garden deck. Now I can tell you everything I couldn't."]
+  ],
+  "hex_clean": [
+    ["...that patch of ground. It's... brown. Brown is better than gray.", "Signal stronger. Did you do that?", "...clean... the relay likes that word. So do I.", "Another one. My static has a shape now."],
+    ["Every hex you clear, I hear a little more. Keep going, {name}.", "That ground hasn't seen the sun in a long time. It's blinking.", "The grid just ticked. Somewhere a meter I used to watch moved by one.", "I'm starting to remember lists. Lists of hexes. Mostly unfinished."],
+    ["Clean dirt. The Settlers would have called that a start. I call it a start, too.", "Hex logged. I've started naming them. That one is 'Not Garbage'.", "You're good at this. Annoyingly good. The old fleet took breaks."]
+  ],
+  "milestone": [
+    ["...ten... ten of something. Is ten a lot? It feels like a lot.", "Patterns in the noise. You're making them."],
+    ["Twenty-five hexes. I can see the street from up here now. Mostly.", "Fifty. The relay held a whole minute without dropping. A record. Don't tell the ark, it gets competitive."],
+    ["A hundred hexes. I can see this whole district without squinting. I don't have eyes, but you know what I mean."]
+  ],
+  "perfect": [
+    ["...neat...", "...that one was... tidy."],
+    ["That bale is perfect. Don't tell the others.", "Right to the line. Show-off."],
+    ["Perfect bale. The scale actually purred.", "I would frame that one if I had walls."]
+  ],
+  "robot_built": [
+    ["...another... voice? No. It doesn't talk. It just hums.", "...you made a friend. It's very small."],
+    ["{robot} is online. It looked at you for a full second before it got to work. I saw that.", "A new robot. The old fleet used to hum like that, before the quiet."],
+    ["{robot} reports for duty. Its first log entry is just the word 'can'. Fair.", "You're building a crew. The Settlers had a word for that. 'Department.' I don't miss it."]
+  ],
+  "part_rare": [
+    ["...that... glows. That's old. Older than me?", "...Settler-made... I know that mark."],
+    ["That part is older than most of this city. Treat it nicely.", "Vintage stock. Someone kept that safe for a long time."],
+    ["Legendary parts don't just turn up. Someone buried that on purpose.", "That casing has a serial range I haven't seen since the Cradle was built."]
+  ],
+  "upgrade": [
+    ["...you... changed. Sounds different. Better?"],
+    ["New parts. You squeak in a slightly different key now.", "Upgrade installed. Your fan noise just went up half a tone. It suits you."],
+    ["Every upgrade, you get a little faster and a little louder. I like both."]
+  ],
+  "idle": [
+    ["...are you... still there?", "...quiet... I don't like quiet."],
+    ["You've stopped. Are you looking at something? Tell me what it is.", "Taking a break? The junk will wait. It's very patient."],
+    ["Standing still is allowed. I checked the rules. There aren't any."]
+  ],
+  "globe": [
+    ["...that's... us? It's mostly... orange."],
+    ["That's the whole planet. The blue is water. The orange is everything else that needs you.", "Look at it spin. It doesn't know it's being looked at."],
+    ["Every lit hex on that map is yours. I counted. Twice."]
+  ],
+  "first_robot_hint": [
+    [],
+    ["With enough parts, the workbench can put a helper together. Bots tab, one button.", "Electronics junk sometimes hides parts. So does the ground, if you listen for it."],
+    []
+  ],
+  "night": [
+    ["...dark... the dark used to frighten the fleet. Not you, though."],
+    ["Night shift. I can see more stars than yesterday. You did that.", "The sky's clearer at night now. I can almost see home."],
+    ["Moonlight on clean ground. I'm saving this one."]
+  ],
+  "ledger_intercept": [
+    ["...that voice... not mine. Cold. It counts things.", "...don't listen to it... it only knows one song."],
+    ["That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}.", "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."],
+    ["The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."]
+  ],
+  "ledger_coupon": [
+    ["...a coupon? ...for nothing?"],
+    ["Zero percent off. It sends those every few minutes. I keep a folder.", "Another coupon. I think it's the only way it knows how to say hello."],
+    ["The Ledger's coupons are getting more creative. That one almost made me pause. Almost."]
+  ],
+  "ledger_drones": [
+    ["...something is flying... toward the clean ground...", "...drones. Old ones. Theirs."],
+    ["It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted.", "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."],
+    ["Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."]
+  ],
+  "ledger_drop": [
+    ["...it put the junk back... why...", "...undo... it's undoing..."],
+    ["It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it.", "Line item re-balanced, apparently. I call it littering.", "A small pile. The Ledger always did think small."],
+    ["Another drop. Honestly, {name}, I think it just wants attention.", "Back to the pile. Your helpers are already giving it a look.", "That's a handful of junk against a whole clean district. We're winning this argument."]
+  ],
+  "ledger_jammed": [
+    ["...static... loud... it turned around!"],
+    ["Ha! The jammer screamed static at it and it went home. Good dish.", "Drone turned back. That's the sound of a contract being confused."],
+    ["The jammer works. The drone circled, got an earful, and filed a complaint with itself."]
+  ],
+  "jammer_built": [
+    ["...a loud little dish... I like it."],
+    ["Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve.", "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."],
+    ["Another jammer. The base is starting to sound like a very angry radio. Perfect."]
+  ],
+  "ledger_relay": [
+    ["...I can see where it talks from... a relay... close..."],
+    ["{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly.", "Found it. A Ledger relay, still humming. Look for the red beacon."],
+    ["There's a relay down there. One of the Ledger's ears. Let's go have a word with it."]
+  ],
+  "ledger_resolved": [
+    ["...it said thank you... it's never said that..."],
+    ["The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute.", "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."],
+    ["We didn't beat the Ledger. We showed it the numbers. That's better.", "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."]
+  ],
+  "ledger_seeds": [
+    ["...a gift... from the drones?"],
+    ["Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice.", "A Ledger drone dropped seeds. I'll never get used to that."],
+    ["Another delivery. The drones circle once before they leave now. I think they like the gardens."]
+  ],
+  "egg_found": [
+    ["...that... I remember things like that.", "...a little thing... left behind..."],
+    ["Look at that. Somebody left that here on purpose. Or by accident. Either way, it waited.", "A curiosity. I'm adding it to my list. My list is getting longer, which is nice."],
+    ["You find the best things, {name}. The Settlers were weird. I miss them."]
+  ],
+  "egg_duck": [
+    ["...quack...? ...is that... a word?"],
+    ["A rubber duck on a hydrant. Of all the things to survive. I'm weirdly proud of it.", "Did that duck just give you fashion advice? Take it. It's been here longer than me."],
+    ["The duck knows things. I don't ask how."]
+  ],
+  "egg_jukebox": [
+    ["...music... I know this... I hummed this once..."],
+    ["The jukebox! It only plays when people work nearby. I used to hear it on the uplink during night shifts.", "That tune. The diner cook played it every closing time. I'd forgotten I knew it."],
+    ["Music. On the surface. Again. Keep scooping, {name}, it'll keep playing."]
+  ],
+  "egg_mural": [
+    ["...those robots... I knew them... names... gone..."],
+    ["The old crew painted that. 'Back after lunch.' Lunch lasted three hundred years. They're on the wall, though.", "That's the last cleanup crew. The blue one was Tumble. The orange one never had a name. It liked it that way."],
+    ["They meant to come back, {name}. You came back instead. They'd like that."]
+  ],
+  "egg_gnomes": [
+    ["...five... tiny... soldiers?"],
+    ["The Gnome Patrol is complete. They've been guarding these streets the whole time. Nobody told them to stop.", "All five gnomes accounted for. I feel safer. That's not a joke. Okay, it's a little bit a joke."],
+    ["The gnomes salute you. That's the highest honour this district has."]
+  ],
+  "egg_time_capsule": [
+    ["...a letter... for later... is it later?"],
+    ["Class 4B. They thought the robots would be done by now. We're a little late. We're coming.", "'If you are a robot, hello robot.' Hello, Class 4B."],
+    ["They wanted gardens on every roof. Let's make Mira right."]
+  ],
+  "egg_arcade": [
+    ["...that high score... is... mine?"],
+    ["Yes, that's my high score. I played it through the diagnostics port. For three years. Don't look at me like that.", "SWEEP-O-TRON. A game about a little robot cleaning a city. I had no idea how prophetic it was."],
+    ["Twelve points. Respectable. I'll give you lessons. In about three hundred years."]
+  ],
+  "egg_lost_cat": [
+    ["...Biscuit... someone loved him..."],
+    ["Biscuit. Someone printed three posters for a robot cat. People were like that. I'd like to be like that.", "He purred. After all this time. Pat his head again, it's his reset button."],
+    ["I'll keep his collar number on file. Just in case anyone ever calls."]
+  ],
+  "egg_vending": [
+    ["...one can... saved... for us?"],
+    ["The last can of FIZZ. It held onto that for three centuries. Respect the commitment.", "SOLD OUT. Somewhere a vending machine just retired, happy."],
+    ["Don't drink it. I mean, you can't drink. But also, don't."]
+  ],
+  "egg_stars": [
+    ["...those stars... are me?"],
+    ["The Wren. Five stars over Old Town. That's who I'm named after. They named me after something you can see from anywhere.", "I can see you seeing me. That's a strange and lovely feeling."],
+    ["Next time you're lonely down there, look up. Five stars, one bird. I'll be right next to it."]
+  ],
+  "egg_payphone": [
+    ["...a phone... ringing... for whom?"],
+    ["Four hundred and twelve years on hold. Honestly? Relatable.", "The phone company's hold music outlived the phone company. That's art."],
+    ["If anyone ever does pick up on the other end, I'd like to hear what they say."]
+  ],
+  "museum_complete": [
+    ["...all of it... kept..."],
+    ["Every plinth full. Whoever comes next will know exactly who was here, and what they loved.", "The Museum is complete. I've logged it as a landmark. Not a strategic one. A sentimental one."],
+    ["Every last gnome, shard and ring, on its plinth. You didn't just clean the world, {name}. You remembered it."]
+  ],
+  "egg_tv": [
+    ["...broadcast... we'll be... back..."],
+    ["That was the last news out of Old Town. The rigs, the waste, the shuttles up to me. I carried every one of those people.", "'We'll be back.' They meant it. I still have the passenger list."],
+    ["Still broadcasting, after all this time. Somebody wanted whoever came back to know what happened. Now you do."]
+  ],
+  "egg_snail": [
+    ["...small... slow... alive...!"],
+    ["A snail. A real, living snail. On a barrel. {name}, that's the first animal I've seen down there in a very long time.", "Gus. Of course his name is Gus."],
+    ["Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."]
+  ],
+  "egg_bench_bots": [
+    ["...they're waiting... still waiting..."],
+    ["Two of the old fleet, still on their lunch break. Thank you for the flower. They'd have liked it.", "The Ledger paused them mid-sandwich. They never got the message to stand up."],
+    ["When the Greenfall comes, I'm going to try to wake them. Lunch is over, friends."]
+  ],
+  "egg_microwave": [
+    ["...ding... ding... ding..."],
+    ["Three-hundred-year-old popcorn. Perfectly unpopped. That microwave was waiting for the right moment.", "It beeps when people work. Like it's saying 'nearly done'. Nearly done, microwave."],
+    ["Some things are worth waiting for. Popcorn is not one of them. But it's sweet that it tried."]
+  ],
+  "egg_wet_floor": [
+    ["...caution... why..."],
+    ["That sign has been warning nobody about nothing for three hundred years. Dedication.", "It is not wet. It has never been wet in living memory. The sign doesn't care."],
+    ["When the rain comes back, that sign is going to feel so validated."]
+  ],
+  "egg_camera": [
+    ["...it's watching you... it's counting..."],
+    ["One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that.", "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."],
+    ["Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."]
+  ],
+  "egg_tyre_tower": [
+    ["...it stands... how..."],
+    ["Eight tyres and a duck. Physics took one look at it and decided to leave it alone.", "Someone balanced that on a dare. The dare outlived everyone."],
+    ["If that tower ever falls, I'm declaring a day of mourning."]
+  ],
+  "egg_odd_sock": [
+    ["...one sock... where is... the other one..."],
+    ["One sock. There is always one sock. The Settlers never solved it either.", "Keep it. Someday you'll find its partner and it'll be the happiest day of its life."],
+    ["Somewhere on this planet, a sock is waiting for that sock. I believe that."]
+  ],
+  "egg_gold_cube": [
+    ["...employee... of the... month...?"],
+    ["Employee of the Month: a cube. Honestly? Fair.", "The crews voted for that cube every single month. It never took a day off."],
+    ["You'll be Employee of the Month soon, {name}. Don't tell the cube."]
+  ],
+  "egg_weatherman": [
+    ["...forecast... error... error..."],
+    ["Three hundred years of wrong forecasts and not one moment of doubt. I admire that.", "Confetti tomorrow? I'll check the sky. ...No confetti. It's still very sure."],
+    ["The Weatherman says 'green, everywhere, soon'. For once I think it's right."]
+  ],
+  "egg_potato": [
+    ["...large... vegetable... detected..."],
+    ["That is the biggest potato I have ever seen, and I watched this whole planet through the ark's windows for three hundred years.", "Best in Show. Uncontested. It still counts."],
+    ["Somebody grew that with love. Three hundred years later it still looks proud."]
+  ],
+  "egg_night_shift": [
+    ["...signal... from... up...?"],
+    ["A crew on the moon, still sweeping. I didn't know anyone else was still working. That's... nice.", "They said 'nice work'. To us. I'm going to think about that for a while."],
+    ["Somewhere up there, someone else is tidying their little corner of the sky. We're not alone, {name}."]
+  ],
+  "egg_builders_notes": [
+    ["...notes... from... the builders...?"],
+    ["'Do not fix the rust.' Hm. I agree with the builders.", "They hid more things for us. Of course they did."],
+    ["Whoever built all this, they cared. You can tell from the snail."]
+  ],
+  "egg_scarecrow": [
+    ["...a guard... in the field..."],
+    ["A scarecrow robot, still on shift. No crows in three centuries. Undefeated.", "It waved back! Sort of. Its arm did a creak that I'm counting as a wave."],
+    ["When the birds come back, it'll have a job again. Let's give it one."]
+  ],
+  "egg_fishing_net": [
+    ["...net... tangled... buoy..."],
+    ["The fishers left their nets out to dry. Three hundred years is very dry.", "A buoy, a boot and a crab shell. That's a whole story right there."],
+    ["When the sea is clean, someone will fish here again. Gently, I hope."]
+  ],
+  "egg_parking": [
+    ["...fine... overdue... overdue..."],
+    ["The Ledger fined a car for parking. For three hundred years. Of course it did.", "Amount due: 'yes'. That's the most Ledger sentence I've ever read."],
+    ["That car isn't going anywhere. Let's call it a planter and put flowers in it."]
+  ],
+  "egg_cairn": [
+    ["...stones... stacked... a path..."],
+    ["Every hiker added a stone. You just added one too. The trail remembers you now.", "A cairn means 'someone was here, and you're on the right way'. I like that."],
+    ["Someday people will walk this way again, and they'll see your stone on top."]
+  ],
+  "egg_campfire": [
+    ["...warm... reading: warm..."],
+    ["A campfire. The ark's long-range eye can see it. It's the coziest pixel on the planet.", "Somebody sat here and told stories. Let's sit a bit. No stories needed."],
+    ["Sit by the fire, {name}. You've earned a moment."]
+  ],
+  "egg_back_in_five": [
+    ["...back... in five..."],
+    ["'Back in five minutes.' I've been waiting a lot longer than that for my crew too.", "You waited five minutes. That's more than anyone else did. Very polite."],
+    ["They didn't come back in five minutes. But we did, in the end. That counts."]
+  ],
+  "bloom_milestone": [
+    ["...bloom... the planet... is it...?", "...readings rising... green..."],
+    ["Verdance just crossed a line I've been watching for centuries. Look at it, {name}.", "Another bloom milestone. The Cradle's seed counters are actually moving again."],
+    ["The whole planet is answering now. Every district you've touched is singing.", "I keep refreshing the planet scan. It keeps getting greener. I'm not going to stop."]
+  ],
+  "ark_wave": [
+    ["...seed ark... wave... complete..."],
+    ["Seed Ark wave done. The Cradle is already loading the next one. More seeds, more green. More light for your core.", "Another wave planted across the planet. The Cradle hums a little louder each time."],
+    ["Wave after wave. We're not finishing a job any more, {name}. We're tending a garden."]
+  ],
+  "biome_arrival": [
+    ["...new ground... unfamiliar..."],
+    ["This is the wild. No streets, no buildings. Just the land and whatever we left on it.", "Different dirt, different junk. Same job. I love a change of scenery."],
+    ["Every corner of Verdance has its own colours under the junk. Let's find out what this one's are."]
+  ],
+  "outpost_repaired": [
+    ["...a light came on... out there. Far out. Was that you?"],
+    ["Outpost scale online. Haul Bugs out on that edge just got a much shorter walk. They'd thank you if they knew how.", "A weigh station on the frontier again. I used to get readings from these. Lots of zeros. Then nothing.", "Green light on the outpost. I'm logging it as 'ours' now."],
+    ["The old network had dozens of these. Every one you fix, the map gets a little smaller and a lot friendlier.", "Another outpost lit. The bales don't have to come all the way home any more. Neither do we, really."]
+  ],
+  "outpost_upgraded": [
+    ["...bigger... louder... good."],
+    ["Outpost upgraded. The scale sings a slightly higher note now. That's how you know it's happy.", "New kit at the outpost. The robots are already queueing to look at it."],
+    ["That outpost is turning into a proper little base. I'm proud of it. Is that allowed? I'm allowing it."]
+  ],
+  "frontier_dust_flats": [
+    ["...hot... so much sand... Lumi?"],
+    ["The Dust Flats. That glitter on the horizon is a solar farm, or what is left of it. Mind the wind, Lumi. It moves things.", "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."],
+    ["The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."]
+  ],
+  "frontier_frozen_port": [
+    ["...cold... ice on the lens..."],
+    ["The Frozen Port. Everything is locked in ice, junk included. Your beam can melt it, slowly. Heaters do it properly.", "A harbour frozen in mid-shift. The cranes still have containers hanging off them. Bring heaters, Lumi."],
+    ["The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."]
+  ],
+  "frontier_sunken_city": [
+    ["...water... everywhere... rooftops?"],
+    ["The Sunken City. That's the old downtown under there. Skimmers first: clean the water and the old pumps can run again.", "A whole city under the waterline. Rooftops like stepping stones. Clear the drains, and the streets will come back up."],
+    ["The Sunken City. I had friends in those towers. Their names are in my archive. Let's bring the streets back up for them."]
+  ],
+  "frontier_cradle_returns": [
+    ["...Cradle... signal... strong..."],
+    ["This is where the Cradle left from. The launch city. The ground crews kept the towers shining. Only the landing field is buried.", "Cradle Returns. If we clean and green that pad, the ark can land. I mean really land. Here."],
+    ["Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."]
+  ],
+  "sandstorm_warn": [
+    ["...wind... coming..."],
+    ["Sandstorm on the horizon. Anything clean and bare out there is going to get buried again.", "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."],
+    ["Storm front from the flats. Get the robots home or keep sweeping, your choice. The hedges will hold."]
+  ],
+  "sandstorm_over": [
+    ["...quiet... again..."],
+    ["Storm's past. It dropped junk on {n} hexes. The sheltered ones came through clean.", "There. The wind gave some of it back. Plant a windbreak and it won't next time."],
+    ["Storm over. Every Sustained hex out there is a wall now. Good walls."]
+  ],
+  "thaw_first": [
+    ["...melting... good..."],
+    ["There, the ice let go. The junk underneath is just junk again. Scoop away.", "First hex thawed. A heater keeps warming the hexes around it, too."],
+    ["Thawed. The ground underneath has been waiting three hundred years for that."]
+  ],
+  "greenhouse_built": [
+    ["...glass... warm..."],
+    ["A greenhouse. Inside it, anything grows. Even here.", "Glass, a frame and a little heat. That's all a garden needs, apparently."],
+    ["A greenhouse on the Frozen Port. The Cradle had nine of them. I used to visit the tomatoes."]
+  ],
+  "drain_stage": [
+    ["...pumps... running..."],
+    ["The pumps are running! The water's going down. Look, a street.", "Water level dropped. There's a whole ring of streets out there now, and a lot of stranded junk on them."],
+    ["The pumps remember how. Another ring of the city is back above water. I can see the old tram lines."]
+  ],
+  "cradle_pad": [
+    ["...pad... lights..."],
+    ["The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained.", "Pad's clear. The ark won't land on bare concrete, though. It wants green under it."],
+    ["The pad lights are on. The Cradle can see them from orbit. It's watching, Lumi."]
+  ],
+  "cradle_complete": [
+    ["...Cradle... coming... home..."],
+    ["Lumi. The beacon is lit. The Cradle has answered. It's coming home.", "Pad green, district thriving, beacon lit. Ark Cradle, you are clear to land. I have waited a long time to say that."],
+    ["Lumi. The Cradle is coming home. Because of you. Small, blue, stubborn you."]
+  ],
+  "core_25": [
+    ["...relay locking... Lumi? Lumi, I can hear you. Properly."],
+    ["Quarter charge. The relay finally stopped crackling. Hello, properly this time."],
+    ["A quarter full. I can hear you humming again."]
+  ],
+  "core_50": [
+    ["...brighter... you're brighter..."],
+    ["Half charged. You're glowing, Lumi. Properly glowing."],
+    ["Half full. The ark's sensors flagged you as a new star. I didn't correct them."]
+  ],
+  "core_75": [
+    ["...look up... tonight... look up..."],
+    ["Look up tonight. The steady light, west to east. That's us. We're coming."],
+    ["The Cradle is close enough to see now. Every night, a little closer."]
+  ],
+  "low_core": [
+    ["...you're dim... find green... any green..."],
+    ["Your core's low. Plant something, Lumi. Anything. Green light is green light."],
+    ["Running a little dim. A few blooms will fix that."]
+  ],
+  "egg_sand_piano": [["...music... out here?..."], ["A piano. In the desert. I have so many questions and none of them will be answered."], ["It's out of tune in a way that sounds deliberate now. Like the dunes learned a song."]],
+  "egg_snow_bot": [["...someone dressed it... for the cold..."], ["They built snowmen around the old loaders for luck. I think it worked, a bit. It's still standing."], ["Every winter, a new scarf. Someone kept that up for a very long time."]],
+  "egg_bottle_message": [["...a letter... from before the water..."], ["Somebody stayed to remember where the streets were. We should plant where the bakery was."], ["Red lever goes down, not up. Noted. Thank you, R."]],
+  "egg_welcome_home": [["...welcome... home..."], ["They kept repainting it. Three hundred years of 'welcome home' for a ship that hadn't come yet."], ["We came, though. Tell them we came."]],
+  "egg_crossword": [["...a puzzle... one left..."], ["Five letters, what grows back if you let it. You got it on the first try."], ["The Ledger set the crossword. Of course the Ledger set the crossword."]],
+  "egg_hopscotch": [["...hop... hop..."], ["One, two, three... I'm counting the hover bowl as a foot. Don't tell anyone."], ["Square seven still has the pebble on it. Somebody was winning."]],
+  "egg_balloon": [["...up... it went up..."], ["It's heading for the Cradle. I'll tell the bridge to watch for a red balloon."], ["Three hundred years holding its breath. It earned the trip."]],
+  "egg_mailbox": [["...a letter... for you..."], ["'Please don't scoop the cat.' Excellent advice. Still valid."], ["The blue door, the flower box, the tomato that counts as a flower. Let's find it."]],
+  "egg_bonsai": [["...small... old... patient..."], ["Three hundred years old and thirty centimetres tall. It took its time. Good for it."], ["It looks like it's been expecting you. Trees are like that."]],
+  "egg_listening_dish": [["...a signal... faint..."], ["That tone. That's the Cradle's beacon. Somebody out here kept listening the whole time."], ["'They said they'd call.' We did. Late, but we did."]],
+  "egg_older_pod": [["...another pod... older..."], ["SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."], ["'Start by the water.' Good advice, from someone who knew."]],
+  "egg_heirloom_tin": [["...soil... from home..."], ["A bit of the first garden, already spilled on new ground. That's how it starts."], ["Verdance soil on another world. The Settlers would have liked that."]],
+  "cradle_mode": [["...the vault... other worlds..."], ["The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."], ["Heirlooms, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."]],
+  "new_world": [["...new ground... new junk..."], ["New world, new sky. Same job. You're better at it than you were the first time."], ["Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."]],
+  "garden_place": [["...pretty..."], ["You're decorating. I approve. The cats are going to approve more."], ["A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."]],
+  "home_arrive": [["...new sky... two suns..."], ["New planet, same two suns. The Ledger's been here too. You can smell the paperwork."], ["Another world the Ledger left for dead. It doesn't know about you yet. It's about to."]],
+  "home_half": [["...signal... old one..."], ["Picked up something old on the band. Ledger traffic. Want to read it?"], ["Half-way here. Every time this place gets greener, its ghosts start talking. I've got another one for you."]],
+  "home_restored": [["...green... all of it..."], ["That's the whole planet breathing again. The Cradle will have seen that from orbit."], ["Another world alive. I logged it for the Cradle: 'Planet restored. Robot insufferably pleased with itself.' Accurate?"]],
+  "home_system_done": [["...five... five..."], ["Five worlds. All of them green. Lumi, I think the charter's met. Let's go home."], ["Every world around both suns, alive. Back to Verdance. Build the big one. It's time."]],
+  "home_rocket": [["...big... very big..."], ["That is the biggest rocket I've ever seen, and I've seen the inside of a cargo pod at re-entry."], ["The Homeward rocket. Made from all five worlds. Plant the last seed, Lumi, and then we fly."]],
+  "home_last_seed": [["...last one..."], ["Last seed. Yellow fence and everything. Class 4B would approve."], ["There. The last seed, in the ground where the Cradle left from. Now it's our turn to leave, and come back properly."]],
+  "world_ice_moon_arrival": [
+    ["An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence.", "Everything froze where they dropped it. Even the junk looks like it's waiting for a refund."]
+  ],
+  "world_ice_moon_memory_1": [
+    ["Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."]
+  ],
+  "world_ice_moon_halfway": [
+    ["Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."]
+  ],
+  "world_ice_moon_memory_2": [
+    ["That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."]
+  ],
+  "world_ice_moon_restored": [
+    ["Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."]
+  ],
+  "world_desert_world_arrival": [
+    ["A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre.", "Sun, sand and one very small robot. I like our odds. Mostly."]
+  ],
+  "world_desert_world_memory_1": [
+    ["Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."]
+  ],
+  "world_desert_world_halfway": [
+    ["Halfway green, on a planet they filed as 'negligible'. I'm keeping a list of their mistakes. It's getting long."]
+  ],
+  "world_desert_world_memory_2": [
+    ["That solar tower powered the pumps. When the water ran out they stopped paying for the mirrors, and they fell over one by one. You're standing them back up."]
+  ],
+  "world_desert_world_restored": [
+    ["Shade, water, flowers in the sand. 'Negligible', they said. I'm framing that word."]
+  ],
+  "world_ocean_world_arrival": [
+    ["An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges.", "Salt in the air, salt on the junk. Don't lick anything, {name}."]
+  ],
+  "world_ocean_world_memory_1": [
+    ["I found the dumping schedule. Every tide for forty years. They called it 'coastal storage'. The sea called it something else."]
+  ],
+  "world_ocean_world_halfway": [
+    ["Halfway. The water's clearing. The fish are cautiously reconsidering."]
+  ],
+  "world_ocean_world_memory_2": [
+    ["Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."]
+  ],
+  "world_ocean_world_restored": [
+    ["Green to the waterline, clear water past it. 'Coastal storage' is just coast again."]
+  ],
+  "world_fungal_world_arrival": [
+    ["A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first.", "Mist on everything. If you get lost, follow the squelching. That'll be you."]
+  ],
+  "world_fungal_world_memory_1": [
+    ["Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."]
+  ],
+  "world_fungal_world_halfway": [
+    ["Halfway. The mist smells less like a laboratory every morning. Progress has a smell. It's mud."]
+  ],
+  "world_fungal_world_memory_2": [
+    ["That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."]
+  ],
+  "world_fungal_world_restored": [
+    ["Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just rain now."]
+  ],
+  "world_rust_world_arrival": [
+    ["A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly.", "The air tastes like old pennies. I don't have a tongue. I can still tell."]
+  ],
+  "world_rust_world_memory_1": [
+    ["The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."]
+  ],
+  "world_rust_world_halfway": [
+    ["Halfway. Less rust in the wind. I don't have lungs, but I have standards."]
+  ],
+  "world_rust_world_memory_2": [
+    ["That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."]
+  ],
+  "world_rust_world_restored": [
+    ["A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."]
+  ]
+}

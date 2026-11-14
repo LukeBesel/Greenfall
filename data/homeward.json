@@ -1,0 +1,77 @@
+{
+  "_doc": "[pace2] Leave early, come back later: tech = tools found on later planets (granted when that planet's restoration reaches `at`); a planet's needs_tech [[tech, cap], ...] caps its restoration at cap until the tech is found, so 100% needs return trips. Research nodes take requires_tech. Drives open from partial progress (requires_planet_pct [k, pct], requires_other_pct). [v6pace] planets[k].leave = that planet's own gate for moving on (owner note 58: not tied to cleaning the planet): hubs + hub_level = that many hubs there restored to that base level open the system and the next drive (owner note 61; Homeward.hubs_at_level); or base_level = one base at that level (replaces the drive's or_base_level for that planet); toast = what WREN says the moment it opens; pct_opens false = only the stations open it (the drive's requires_planet_pct is ignored on that planet); [v7play] chart: leave = the next planet is charted once this planet's exit beat has played (not only at chart_at). [home] Homeward: the campaign across the Verdance system (systems/homeward.gd). Five fixed planets in order (profile worlds; planet 0 = Verdance = world 0). A planet's restoration (0..1): Verdance = its Bloom Core charge (100% when the Cradle answers); other planets = w_thriving * min(1, thriving hexes / thriving) + w_bases * min(1, bases at level 5 / bases) + w_start * min(1, start-district Thriving share / start_ratio). It never drops (best value kept in the profile). System restoration = mean over the five. A restored planet (100%) gives its relic and one Heirloom pick. Drive tiers (Mk V-VII) are the rocket's interplanetary drive, kept in the profile and carried to every planet: a planet needs drive >= nav and its chart (the previous planet at chart_at). [v7arc] Mk VII needs requires_home: the home meters full (data/story_arc.json: fuel and power from every planet's exit beat), and Lumi at Verdance's Cradle Returns. requires_relics / requires_system (N relics, whole system restored) still work as drive gates but are no longer used: every planet at 100% is an optional extra (relics, Heirloom picks, the restored notes, and the greener Homecoming). Costs: cubes and parts.",
+  "weights": {"thriving": 0.5, "bases": 0.3, "start": 0.2},
+  "start_ratio": 0.6,
+  "chart_at": 0.5, "discover_at": 0.25,
+  "planets": [
+    {"id": "verdance", "name": "Verdance", "type": "verdance", "seed": 4471, "mods": [], "nav": 0, "needs_tech": [["deep_drill", 0.68], ["tide_pump", 0.8], ["heat_core", 0.9], ["cryo_beacon", 0.97]],
+      "leave": {"hubs": 6, "hub_level": 2, "chart": "leave", "pct_opens": false, "toast": "Six stations awake, Lumi. Their robots can look after Verdance now."},
+      "twist": "Home. The Settlers' world, buried under the Ledger's trash. Your robots keep cleaning it while you are away.",
+      "color": [0.24, 0.52, 0.3], "orbit": 1.0},
+    {"id": "ochre", "open": false, "name": "Ochre", "type": "desert_world", "seed": 51207, "mods": ["tailwinds", "rich_salvage"], "nav": 5, "needs_tech": [["tide_pump", 0.75], ["heat_core", 0.9]],
+      "arrival": {"research_tier": 3, "robots": ["scoopie", "scoopie", "haulbug", "seedling"], "cubes": 4000, "parts": 400},
+      "thriving": 110, "bases": 1, "relic": "ochre_glass",
+      "twist": "The Ledger's first strip mine: open pits and slag dunes. Rich salvage, steady wind, very little water.",
+      "color": [0.8, 0.62, 0.4], "orbit": 1.6},
+    {"id": "tidewell", "open": false, "name": "Tidewell", "type": "ocean_world", "seed": 66391, "mods": ["heavy_rain", "wild_bloom"], "nav": 5, "needs_tech": [["cryo_beacon", 0.75], ["heat_core", 0.9]],
+      "arrival": {"research_tier": 3, "robots": ["scoopie", "scoopie", "haulbug", "seedling", "drip"], "robot_tier": {"scoopie": 1}, "cubes": 5000, "parts": 500},
+      "thriving": 140, "bases": 2, "relic": "tidewell_pearl",
+      "twist": "An ocean the dredgers drained of minerals. Towns on islands, rain every hour, life desperate to come back.",
+      "color": [0.18, 0.4, 0.64], "orbit": 2.25},
+    {"id": "rime", "open": false, "name": "Rime", "type": "ice_moon", "seed": 70883, "mods": ["long_nights", "thin_soil"], "nav": 6, "needs_tech": [["heat_core", 0.8]],
+      "arrival": {"research_tier": 4, "robots": ["scoopie", "scoopie", "haulbug", "seedling", "seedling", "drip", "drip"], "robot_tier": {"scoopie": 1, "haulbug": 1, "seedling": 1, "drip": 2}, "cubes": 10000, "parts": 1000, "seeds": 80},
+      "thriving": 160, "bases": 2, "relic": "rime_core",
+      "twist": "A moon core-mined until its heat ran out and it froze. Long nights, thin soil, lakes under the ice.",
+      "color": [0.84, 0.9, 0.96], "orbit": 2.95},
+    {"id": "anvil", "open": false, "name": "Anvil", "type": "rust_world", "seed": 88019, "mods": ["heavy_junk", "long_nights"], "nav": 6, "needs_tech": [],
+      "arrival": {"research_tier": 5, "robots": ["scoopie", "scoopie", "scoopie", "haulbug", "seedling", "seedling", "seedling", "drip", "drip", "multibot"], "robot_tier": {"scoopie": 2, "haulbug": 2, "seedling": 3, "drip": 3}, "cubes": 15000, "parts": 1500, "seeds": 150},
+      "thriving": 200, "bases": 3, "relic": "anvil_ingot",
+      "twist": "The Ledger's foundry world and head office. Pole-to-pole rust, the heaviest scrap in the system, and a hollow core.",
+      "color": [0.55, 0.34, 0.22], "orbit": 3.7}
+  ],
+  "closed": {
+    "_doc": "[v7play] Release gate. A planet with \"open\": false (above) is not built for this release: the system map shows it with map_line, no launch goes there, the goals in hide_goals leave the chain and the Codex hides the achievements in hide_achievements and the workbench the builds in hide_builds (the Telescope: it watches crews on other worlds; one already built stays) while the next planet is closed, and when the Mk V drive is built WREN says drive_lines and the toast shows instead of the usual drive lines; when she is done the card (ui/to_be_continued.gd) shows once per save: card.title, the home meter (data/story_arc.json), card.line, card.hint. To open a planet, set its \"open\" to true (or delete the key). Dev: --open-planets opens them all.",
+    "map_line": "Coming in a future update",
+    "drive_lines": [
+      "The drive is ready, Lumi. But we can't reach Ochre yet. Its sky is still full of dust.",
+      "So we stay a while. Every town we clean makes Verdance greener for the Settlers."
+    ],
+    "toast": "To be continued: the trip to Ochre comes in a future update. Keep restoring Verdance!",
+    "hide_goals": ["home_land_1", "home_restore_2", "home_drive_6", "home_restore_4", "home_restore_5", "home_drive_7", "home_last_seed", "home_launch", "ark_1", "ark_3", "late_ark_5", "late_bridge", "late_heirloom_1", "late_heirloom_10", "late_world_1", "late_world_2"],
+    "card": {"title": "To be continued", "line": "Your robots keep cleaning while you wait. Stay as long as you like and keep making Verdance green.", "hint": "{interact}  continue"},
+    "hide_builds": ["telescope"],
+    "hide_achievements": ["home_answered", "home_landed", "home_planets_2", "home_planets_4", "home_planets_5", "home_relics", "home_drive_6", "home_homecoming", "late_bridge", "late_world_1", "late_world_3", "late_heirloom_1", "late_heirloom_20", "late_starseeds_100", "late_older_pod", "ark_1", "ark_10", "late_eggs_40"]
+  },
+  "tech": [
+    {"id": "deep_drill", "name": "Deep Drill", "planet": "ochre", "at": 0.25, "desc": "Ochre's miners bored through bedrock. On Verdance it breaks open the buried landfill of the Dust Flats."},
+    {"id": "tide_pump", "name": "Tide Pump", "planet": "tidewell", "at": 0.25, "desc": "Tidewell's sea pumps. On Verdance they drain the flooded streets of the Sunken City."},
+    {"id": "cryo_beacon", "name": "Cryo Beacon", "planet": "rime", "at": 0.25, "desc": "A beacon that sings through deep cold: what Verdance's Ark Beacon was missing."},
+    {"id": "heat_core", "name": "Heat Core", "planet": "anvil", "at": 0.25, "desc": "Anvil's forge heart. Wound into the beam, it melts the Frozen Port's ice on Verdance."}
+  ],
+  "relics": {
+    "ochre_glass": {"name": "Ochre Sun-Glass", "desc": "Slag fused clear by the dune winds. It holds a little of Ochre's light."},
+    "tidewell_pearl": {"name": "Tidewell Pearl", "desc": "The first pearl grown in Tidewell's sea in two hundred years."},
+    "rime_core": {"name": "Rime Heart-Ice", "desc": "A core sample from the thawed lakes, still faintly warm."},
+    "anvil_ingot": {"name": "Anvil Ingot", "desc": "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."}
+  },
+  "drive": [
+    {"tier": 5, "name": "Mk V Orbital", "desc": "Your hop rocket, rebuilt for space out of a mountain of cubes. It reaches the near planets, Ochre and Tidewell.", "cost": {"cubes": 500000, "parts": 300}, "requires_planet_pct": [0, 0.5], "or_base_level": 3},
+    {"tier": 6, "name": "Mk VI Interplanetary", "desc": "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil.", "cost": {"cubes": 1200000, "parts": 500}, "requires_other_pct": 0.5},
+    {"tier": 7, "name": "Mk VII Homeward", "desc": "A great green-light rocket, filled with the fuel and power of every world you woke. One trip: up to the Cradle.", "cost": {"cubes": 8000000, "parts": 2000}, "requires_home": true, "home_only": true}
+  ],
+  "homeward_frontier": "cradle_returns",
+  "docs": {
+    "ochre_arrive": {"kind": "memo", "header": "L E D G E R   ·   I N T E R N A L", "title": "Site closure notice, Ochre Open Pit 1", "body": "OCHRE OPEN PIT 1: CLOSED\n\nOre grade below threshold. All extraction ends at shift change.\nRemaining equipment: abandon in place (removal not cost-effective).\nWaste rock, slag and packaging: leave on site.\nResidents: none of our concern; contracts expired.\n\nThank you for your years of service.\n— The Ledger"},
+    "ochre_half": {"kind": "log", "title": "Haul truck log, unit OH-7", "body": "DAY 1,904\nLoad 41 to the slag dunes.\nDAY 1,905\nNo orders.\nDAY 1,906\nNo orders.\nDAY 3,000\nStill parked. The wind keeps burying my wheels. A lizard lives under my bumper now. I have named it Load 42."},
+    "ochre_restored": {"kind": "note", "title": "Chalk on a pit wall", "body": "[In big careful letters, on the old benches of the pit:]\n\nTHE GREEN CAME BACK.\n\n[Underneath, smaller, in WREN's handwriting font:] One down, Lumi. Four to go."},
+    "tidewell_arrive": {"kind": "memo", "header": "L E D G E R   ·   I N T E R N A L", "title": "Dredging schedule, final revision", "body": "TIDEWELL SEABED OPERATIONS\n\nNodules recovered: 100%.\nReef and kelp beds: 'overburden', removed.\nSilt plumes: within acceptable limits (limits revised).\nIsland towns: notified by post.\n\nNext quarter: none. Tidewell is closed for business."},
+    "tidewell_half": {"kind": "voicemail", "title": "Harbour radio, on a loop", "body": "...this is Tidewell harbour, still broadcasting. The water's gone grey and the fish have gone quiet. If anyone hears this, we planted mangroves along the north quay before we left. Check on them for us? They were only little..."},
+    "tidewell_restored": {"kind": "letter", "title": "A message in a bottle", "body": "To whoever finds this,\n\nThe sea used to be so green you could see it from the hill. Grandad said it would come back if someone gave it a reason.\n\nThank you for being the reason.\n\n— Pim, age 9, Tidewell"},
+    "rime_arrive": {"kind": "memo", "header": "L E D G E R   ·   I N T E R N A L", "title": "Core tap report, Rime", "body": "RIME DEEP CORE TAP\n\nHeat extracted and sold: all of it.\nSurface temperature: falling (expected).\nLakes: freezing (expected).\nPopulation: relocated (see invoice).\n\nNote from Finance: the moon was not ours to keep warm."},
+    "rime_half": {"kind": "log", "title": "Greenhouse keeper's diary", "body": "Day 1. The heaters are off. Moved the seedlings to the kitchen.\nDay 9. Kitchen's cold too. Wrapped them in my coat.\nDay 30. We're leaving on the last shuttle. I left the coat. And a note: please keep them warm. I know that's silly. You're a frozen moon."},
+    "rime_restored": {"kind": "note", "title": "A note pinned in a thawed greenhouse", "body": "[Under the note from Day 30, a new line in bright ink:]\n\nKept them warm. They're fine. They're more than fine.\n\n— LM-1 (and WREN, who wants it known she helped)"},
+    "anvil_arrive": {"kind": "contract", "header": "L E D G E R   ·   H E A D   O F F I C E", "title": "Board minutes, the final meeting", "body": "ITEM 1: The system is spent. Motion to dissolve: carried.\nITEM 2: Clean-up costs. Motion to not: carried.\nITEM 3: The Settlers' ark keeps asking about a 'charter'. Motion to ignore: carried.\nITEM 4: Audit drones to continue indefinitely, for form's sake.\n\nMeeting closed. Lights left on."},
+    "anvil_half": {"kind": "memo", "title": "The last audit", "body": "LEDGER AUDIT UNIT 0001\nSUBJECT: Anvil foundry district\nFINDING: Unauthorised gardens. 214 counts.\nFINDING: Unauthorised gardens. 215 counts.\nFINDING: ...\nRECOMMENDATION: Recommend we stop counting. It is rather nice."},
+    "anvil_restored": {"kind": "letter", "title": "From the Ledger's last clerk", "body": "Whoever you are,\n\nI kept the books for forty years. I wrote down every ton we took. I never wrote down what we left.\n\nIf you're reading this in a garden on Anvil, then someone finally balanced the account. Thank you.\n\n— T. Hale, Accounts"}
+  }
+}

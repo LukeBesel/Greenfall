@@ -1,0 +1,193 @@
+{
+ "_doc": "[v6sound] The mix and the ambience, per planet (autoload/Audio.gd, audio/ambience.gd). See docs/ADJUSTING.md, \"Music and sound\". volumes: where the five sliders in Settings start (0..1) for a new player. bus_trim_db: fixed trim of each bus under its slider. bus_of: sounds that do not play on the SFX bus: UI sounds follow the Interface slider, animal calls and wind follow the Ambience slider. sound_db: trim of one sound everywhere it is played; \"tag:sound\" (e.g. \"scoop:blip\") trims it only where the code plays it with that tag (scoop: the pieces flying into Lumi, lumi: start/stop squeak, sweep: litter sweep, lights: street lights coming on, robot: robots at work); -80 or lower mutes it. min_gap_s: the shortest time (game seconds) between two plays of the same sound; a play that comes sooner is dropped, so nothing can machine-gun or stack. duck: how far music and ambience dip while WREN speaks.",
+ "volumes": {
+  "master": 0.9,
+  "music": 0.55,
+  "ambience": 0.8,
+  "sfx": 0.9,
+  "ui": 0.8
+ },
+ "_doc_master_highpass": "[v8snd] master_highpass_hz: a high-pass on the Master bus, under the whole mix (Hz, 0 = off). Laptop and phone speakers can't play sub-bass and rattle on it; 60 keeps the kick and bass notes, takes out the rumble.",
+ "master_highpass_hz": 60.0,
+ "bus_trim_db": {
+  "Music": 0.0,
+  "Songs": 0.0,
+  "Ambience": 0.0,
+  "SFX": 0.0,
+  "UI": 0.0
+ },
+ "bus_of": {
+  "click": "UI",
+  "tick": "UI",
+  "buy": "UI",
+  "confirm": "UI",
+  "buzz": "UI",
+  "error": "UI",
+  "song": "Ambience",
+  "chirp": "Ambience",
+  "coo": "Ambience",
+  "gull": "Ambience",
+  "frog": "Ambience",
+  "flutter": "Ambience",
+  "quack": "Ambience",
+  "meow": "Ambience",
+  "seal": "Ambience",
+  "purr": "Ambience",
+  "bird": "Ambience"
+ },
+ "sound_db": {
+  "scoop:blip": -80.0
+ },
+ "min_gap_s": {
+  "_default": 0.04,
+  "scoop:clink": 0.07,
+  "scoop:servo": 0.5,
+  "scoop:sparkle": 0.7,
+  "scoop:whoosh": 0.7,
+  "scoop:pop": 0.35,
+  "purr": 6.0,
+  "lumi:squeak": 2.5,
+  "sweep:whoosh": 1.5,
+  "lights:clunk": 1.2,
+  "robot:clink": 1.5,
+  "robot:servo": 2.0
+ },
+ "_doc_variety": "[v9s] Repetition (owner 2026-11-13: \"super annoying to hear the same bird chirp so many times over and over ... lively but just peaceful\"). Every sound with more than one take never plays the same take twice running. Keys are \"sound\" or \"tag:sound\" (the tag wins), else \"_default\". max_voices: at most this many of the sound sounding at once (a new play is dropped). soften: [window s, dB, max dB]: a play within window s of the last one of the same key is dB softer per play in the run, at most max dB, so fast repeats are a patter, not a hammer; a pause longer than the window resets it. pitch_spread: the least random pitch spread (+- share, 0.05 = 5%). ladder_roots: semitones a new scoop combo's rising ladder starts on (one picked per combo, never the same twice running). Check: tools/check_audio.py --repeat (docs/ADJUSTING.md, Listen by numbers).",
+ "variety": {
+  "max_voices": {"chime": 2, "sparkle": 3, "fanfare": 1, "ding": 2},
+  "soften": {
+   "scoop:clink": [0.9, 1.0, 5.0],
+   "scoop:pop": [1.2, 1.5, 6.0],
+   "scoop:servo": [1.5, 1.5, 6.0],
+   "scoop:whoosh": [1.5, 1.5, 6.0],
+   "scoop:sparkle": [1.5, 1.5, 6.0],
+   "tick": [0.5, 0.7, 5.0],
+   "lumi:squeak": [12.0, 2.0, 6.0],
+   "sweep:whoosh": [8.0, 1.5, 4.5],
+   "thunk": [30.0, 1.0, 3.0],
+   "crunch": [30.0, 1.0, 3.0],
+   "coin": [30.0, 1.0, 3.0],
+   "chime": [20.0, 2.0, 6.0],
+   "sparkle": [10.0, 1.5, 4.5],
+   "ding": [8.0, 1.5, 4.5]
+  },
+  "pitch_spread": {"coin": 0.03, "thunk": 0.05, "crunch": 0.06, "hydraulic": 0.04, "groan": 0.05, "clunk": 0.05, "pop": 0.05},
+  "ladder_roots": [0, 2, -3, -5]
+ },
+ "_doc_wildlife": "[v9s] The wildlife's calls (fauna/fauna.gd), every planet. gap_s: [shortest, longest] seconds between two calls of a category: call (every bird call in the game shares one clock, also the life bed's birds; twice as long at night), flutter (a flock's wings), frog (all frogs share one clock, mostly near the short end with now and then a long hush; frog_night_mult at night). species_gap_s: one kind of call never twice within about this many seconds. calls_per_min: at most this many bird calls in any minute. While Lumi stands still the bird gap grows from 1x at still_after_s to still_mult at still_full_s. phrase: sound -> [chance, shortest s, longest s]: after a call the same bird calls once more that much later (another take), then silence.",
+ "wildlife": {
+  "gap_s": {"call": [22.0, 50.0], "flutter": [5.0, 14.0], "frog": [14.0, 50.0]},
+  "frog_night_mult": 0.85,
+  "species_gap_s": {"song": 50.0, "chirp": 45.0, "coo": 60.0, "gull": 60.0, "quack": 45.0, "heron": 60.0},
+  "calls_per_min": 3,
+  "still_after_s": 45.0,
+  "still_full_s": 240.0,
+  "still_mult": 2.5,
+  "phrase": {"chirp": [0.45, 0.6, 1.8], "coo": [0.25, 1.2, 2.5], "song": [0.2, 1.8, 3.5]}
+ },
+ "duck": {
+  "music_db": -7.0,
+  "ambience_db": -4.5,
+  "attack_s": 0.25,
+  "release_s": 0.9
+ },
+ "_doc_planets": "One block per planet, all the same shape. theme: which built-in score and instruments the planet uses. ambience.level_db: trim of the whole bed. ambience.loops: id -> [level while ruined, level once restored]. ambience.events: [sound, shortest wait s, longest wait s, dB, pitch low, pitch high, chance while ruined, chance once restored].",
+ "planets": {
+  "_default": {"_doc": "[v7planet] A planet with no block here gets this (core/sound_cfg.gd). like: start from that planet's block; any key given here (theme, ambience) replaces its. A planet block can use like too, e.g. {\"like\": \"verdance\", \"theme\": \"ochre\"}.", "like": "verdance"},
+  "testworld": {"_doc": "[v7planet] Dev stub planet (docs/NEW_PLANET.md): Verdance's ambience and life bed under Ochre's score.", "like": "verdance", "theme": "ochre"},
+  "verdance": {
+   "theme": "verdance",
+   "ambience": {
+    "_note": "Verdance's bed is its wildlife (fauna/) and the dirty-to-clean bed of the town life (v6life). Loops and events listed here would play on top, like on the other planets.",
+    "level_db": 0.0,
+    "loops": {},
+    "events": [],
+    "life": {
+     "_doc": "[v6life] The bed that follows the ground round Lumi (audio/life_ambience.gd), not the planet's restoration. Any planet can have one. rings: rings of cells round Lumi it listens to (3 is about 30 m). fade_s: crossfade seconds. loops: id -> [dB at full weight, on]; on is dirty (mostly junk round Lumi), green (grass round Lumi) or always; an id is a built-in loop (wind_dust, wind_warm, wind_sea, wind_eerie, heat_buzz, waves, water, cicadas, leaves) or a res:// sound file. events: [sound, shortest wait s, longest wait s, dB, pitch low, pitch high, when, at least s between two]; when is dirty, green, green_day or always; sound is amb_creak, a game sound (song, chirp, coo, gull, frog, ...) or a res:// file. Bird calls also wait for the wildlife's shared bird clock.",
+     "_doc_mix": "mix: when the beds come in: dirty_from / dirty_full are the share of junk round Lumi where the dirty bed starts / is full; green_from / green_full the same for the mean green (0..1); dirty_hushes_green: how much junk quiets the green bed (0..1). when: the thresholds of the events' conditions (dirty: junk share, green: mean green, night: darkness 0..1 above which green_day is off). min_gap_floor_s: no one-shot plays twice within this many seconds, whatever its own numbers say (the owner wants birds and creaks rare: about once a minute at most). Loops are beds and do not count.",
+     "rings": 3,
+     "fade_s": 6.0,
+     "mix": {"dirty_from": 0.25, "dirty_full": 0.85, "green_from": 0.12, "green_full": 0.6, "dirty_hushes_green": 0.6},
+     "when": {"dirty": 0.6, "green": 0.3, "night": 0.3},
+     "min_gap_floor_s": 60.0,
+     "loops": {
+      "wind_dust": [-25.0, "dirty"],
+      "leaves": [-23.0, "green"]
+     },
+     "events": [
+      ["amb_creak", 60.0, 120.0, -27.0, 0.75, 1.05, "dirty", 60.0],
+      ["song", 70.0, 150.0, -25.0, 0.95, 1.1, "green_day", 70.0]
+     ]
+    }
+   }
+  },
+  "ochre": {
+   "theme": "ochre",
+   "ambience": {
+    "level_db": 0.0,
+    "loops": {
+     "wind_warm": [1.0, 0.55],
+     "heat_buzz": [0.3, 0.12],
+     "cicadas": [0.0, 0.5]
+    },
+    "events": [
+     ["whoosh", 8.0, 18.0, -15.0, 0.35, 0.5, 1.0, 0.4],
+     ["song", 5.0, 12.0, -19.0, 0.9, 1.1, 0.0, 1.0],
+     ["chirp", 4.0, 9.0, -21.0, 0.9, 1.15, 0.0, 0.8]
+    ]
+   }
+  },
+  "tidewell": {
+   "theme": "tidewell",
+   "ambience": {
+    "level_db": 0.0,
+    "loops": {
+     "waves": [1.0, 0.85],
+     "wind_sea": [0.45, 0.25],
+     "crickets": [0.0, 0.4],
+     "water": [0.0, 0.35]
+    },
+    "events": [
+     ["gull", 5.0, 12.0, -13.0, 0.9, 1.1, 1.0, 1.0],
+     ["amb_buoy", 9.0, 20.0, -17.0, 0.95, 1.05, 1.0, 0.6],
+     ["song", 6.0, 13.0, -20.0, 0.9, 1.1, 0.0, 0.9],
+     ["frog", 20.0, 45.0, -20.0, 0.9, 1.1, 0.0, 0.6]
+    ]
+   }
+  },
+  "rime": {
+   "theme": "rime",
+   "ambience": {
+    "level_db": 0.0,
+    "loops": {
+     "wind_eerie": [1.0, 0.5],
+     "water": [0.0, 0.65]
+    },
+    "events": [
+     ["amb_creak", 4.0, 11.0, -13.0, 0.8, 1.2, 1.0, 0.35],
+     ["amb_geyser", 14.0, 30.0, -12.0, 0.9, 1.1, 1.0, 0.6],
+     ["song", 6.0, 14.0, -21.0, 1.0, 1.2, 0.0, 0.7],
+     ["chirp", 5.0, 11.0, -22.0, 1.0, 1.2, 0.0, 0.6]
+    ]
+   }
+  },
+  "anvil": {
+   "theme": "anvil",
+   "ambience": {
+    "level_db": 0.0,
+    "loops": {
+     "wind_dust": [1.0, 0.5],
+     "water": [0.0, 0.55],
+     "crickets": [0.0, 0.45]
+    },
+    "events": [
+     ["groan", 7.0, 16.0, -13.0, 0.45, 0.65, 1.0, 0.2],
+     ["clunk", 10.0, 22.0, -21.0, 0.5, 0.7, 1.0, 0.2],
+     ["amb_devil", 15.0, 35.0, -11.0, 0.9, 1.1, 1.0, 0.3],
+     ["song", 5.0, 12.0, -19.0, 0.9, 1.1, 0.0, 1.0],
+     ["chirp", 4.0, 9.0, -21.0, 0.9, 1.15, 0.0, 0.8]
+    ]
+   }
+  }
+ }
+}

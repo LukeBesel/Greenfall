@@ -1,0 +1,358 @@
+# Decisions and assumptions
+
+Format: **Decision** — reason. Items marked *(assumption)* are unverified until tested; *(verified)* means tested here.
+
+## Engine and tooling
+- **Godot 4.7.2-stable (official)** — `godot --version` → `4.7.2.stable.official.ed1daf0bf` *(verified)*.
+- **Renderer: Forward+** for desktop. The cloud dev container has no GPU; Forward+ runs on Mesa lavapipe (software Vulkan) under Xvfb, so screenshots use the real renderer *(verified)*. Frame rates measured in the container are meaningless for performance targets; perf must be measured on real hardware.
+- **Test framework: GUT 9.7.1** — mature, pure-GDScript, simple headless CLI (`gut_cmdln.gd`), no C# or editor plugin needed to run in CI. gdUnit4 is stronger for scene testing but heavier; GUT is enough for economy/save/progression logic.
+- **No external art packs in M0-M1.** Kenney/Poly Pizza block automated downloads from the cloud container and Quaternius files are on Google Drive, which also blocks automated downloads. All art in the slice is procedural (code-built meshes + toon shader). If the owner uploads CC0 packs to `assets/incoming/`, they get recolored into the palette and logged in `docs/CREDITS.md`.
+- **`core/` folder added** (not in the brief's tree) for engine-agnostic classes like `BigNum` and hex math, shared by autoloads, sim and tests.
+
+## Design calls (brief was open)
+- **Perfect Cube rule**: junk pieces have different volumes; the compartment has a fill line at 100%. Scooping pulls pieces in one by one while held. Releasing so the press happens at 90-100% fill gives a Perfect Cube (x1.5). Over 100% (the last piece didn't fit cleanly) gives a Lumpy Cube (x0.8). Single junk type gives a Pure Cube (x2). Mixed gives a speckled Mixed Cube (x1). Skill beats idle, never required.
+- **Currency "Cubes" vs physical cubes**: physical cubes have a value; cashing them at the Depot adds that value to the Cubes counter. HUD shows the currency with a cube glyph.
+- **M1 test field is already a hex grid** (flat, axial coordinates) so the hex-flip moment and completion bonus are in the slice. M2 swaps the flat grid for the sphere but keeps the same per-hex ledger API.
+- **Patch's look** (original): squat teal-green box body with orange rust, a domed lid "head" fused to the body (no neck), one big round porthole lens on the front of the dome with a dilating iris, a mushroom-shaped antenna bulb, two stubby piston arms, chunky treads, a chest hatch with a fill gauge, one mismatched brass bolt, and a flower sticker on the side.
+
+## Art and tone override (owner, during M1) — supersedes the toon direction above
+- Grounded realism in the spirit of Potato Please: PBR everywhere, real-world scale, atmosphere first, dry dark humor. The toon shader, candy palette, squash/stretch and bouncy numbers from the first slice pass were removed.
+- **Rendering (Godot 4.7.2 Forward+)**: PhysicalSkyMaterial + directional sun, SDFGI, SSAO, SSIL, SSR (Ultra), volumetric fog, subtle glow, TAA, **AgX tonemapping** (available since 4.4). Quality presets Low/Medium/High/Ultra in `Settings.apply_render_quality`; Low (also used automatically on Mobile/Compatibility renderers) drops SDFGI, SSIL, SSR, volumetrics and SSAO and uses plain fog + MSAA.
+- **Assets**: CC0 from Poly Haven only (models + textures at 1k), fetched by `tools/fetch_assets.py` from `data/assets.json`; credits in `docs/CREDITS.md`. ambientCG was requested but its downloads redirect to a host outside the network allowlist, and Poly Haven covers the same needs.
+- Normal maps are imported with `compress/normal_map=1`; vendor textures VRAM-compressed with mipmaps (set in their `.import` files).
+- Ground: one shader over Texture2DArrays (albedo/normal/ARM, 8 layers) so it stays within 16 samplers for the Mobile tier.
+- The first slice's "Perfect/Pure/Lumpy" rules stay; their presentation is now restrained (small crisp text, sound, the bale's look).
+
+## Nov 2026 decisions
+- **Main character**: Aurora from the owner's concept sheet is P-47CH ("Patch"), the futuristic bot sent down from the Cradle. Other bots start rusty and modernise with Mk tiers. Colourways (Bolt, Sprout, Pixel, Nova, Patch) are unlockable cosmetics.
+- **Planet travel**: districts per base on a 40k-hex planet, travelled by rocket; seamless sphere walking deferred (scale and streaming cost on target hardware).
+- **Map**: a hologram Aurora holds in her claw (deliberately different from Moon Sweepers' console map); Command mode is a real overhead camera rather than a 2D map.
+- **Sustain** is done by watering robots and refill tanks, never sprinklers (owner request).
+- **Recycler vs. selling**: selling at the scale pays full cubes; recycling destroys junk for bolts/materials plus 25% cubes and clears the air.
+- **Hex levels never drop** (rewards are one-off); Ledger drops can make a clean, unplanted hex dirty again but never touch planted ground.
+- **Physics at 120 Hz** for smooth motion on high-refresh displays.
+- **Music** is synthesized at startup (no downloadable music source in the container).
+- **Nothing works when you land** (owner, Nov 8): no working street lamps, neon signs, string lights, billboards, traffic lights or lit windows at a fresh start; only broken-down things you fix with parts and cubes. The district's street lamps, shop neon and the string lights across streets start dead (cold glass, dark bulbs, some signs hanging off one bracket, more lamps bent; the bent ones stay dead) and come back with a stutter-then-on moment when their hex reaches Sustained, or round the base (30 m) at hub level 3 (`planet/street_power.gd`, `planet/power_fx.gd`, the neon shader's `power`). Yard lights are Hub builds (Yard Lamps, data/camp.json) and hub-level layers, which also flicker on when they arrive. State is derived from hex and hub levels, never saved, so old saves keep what they earned. Check: `tools/light_audit.tscn` (0 lit at a fresh start), `tests/test_dead_power.gd`. Lumi's crashed pod, ruined outposts' dying fault light, the Easter eggs and the Cradle (a working ship) are not the district's grid.
+
+## The hero: Lumi (LM-1)
+- Name: **Lumi**, designation LM-1 ("lumen"), the seed-keeper bot of the ark *Cradle*. Code identifiers stay `Patch`/`patch_*`; all player-facing text says Lumi.
+- Story: 300 years ago Verdance drowned in waste and its people left on the ark *Cradle* with the last seed vault. During a meteor storm a hull breach blew a cargo pod loose; Lumi had climbed in to save a tray of seedlings and was shot out, falling for days back to Verdance. The ark could not turn back; WREN (the ark AI) can only whisper over a failing relay. Lumi's core runs on photosynthetic "green light", and there is no green left, so its battery is dying. Every plant it grows feeds the core; to get home it must clean, grow enough life to charge a Bloom Core, and rebuild the launch sites so a rocket can reach the ark. Ending: the core is full, the planet is green again, and the ark comes home.
+- **Pad confirm/back are added to ui_accept / ui_cancel at startup** *(verified)*: Godot 4.7's defaults have keys only, so focused buttons ignored A and screens ignored B. B is also `drop` in play; no gameplay handler reads ui_cancel, so the two never clash.
+- **Auto-detected quality only on first launch** — a saved preset (any player choice) is never changed; the frame-rate probe runs once and only steps down. Ultra is never auto-picked.
+- **Font floor (12 px) is enforced globally** by a SceneTree `node_added` hook rather than per screen, so new screens inherit it; labels under 4 px are treated as deliberate.
+- **Batching keeps the look**: MultiMesh for repeated meshes (object-space data unchanged), merged meshes only for world-space / UV materials; the far skyline's unique roof slabs and masts use world-space triplanar copies (only the texture phase differs, 200+ m away in haze).
+
+## Frontier districts (wt/biomes)
+- **Four late-game frontier districts** (`data/frontiers.json`, `planet/frontiers.gd` rules, `planet/frontier_district.gd` live node, `planet/frontier_view.gd` visuals): Dust Flats, Frozen Port, Sunken City and the final Cradle Returns. Each is one extra hub on the planet, **appended after the ordinary hubs** (`PlanetData.frontier_hubs`, `base_hub_count`) so existing hub indices and saves never shift; the frontier biomes are appended to `PlanetData.BIOMES` for the same reason.
+- **Frontiers replace planet lakes with their own water** (`Frontiers.water_ids_for`): the Frozen Port harbour east of the quay, the Sunken City flood past the dry ring. Fields are radius 4 (61 hexes vs 37) with `pieces_mult`/`float_mult`/`vol_mult`; bales sell for `value_mult` more at the scale (`Depot.sell_factor`) and base levels cost `cost_mult` more cubes (`Hub.cost_mult`; materials stay as they are because a district's materials are finite).
+- **Unlocks are rocket destinations, not map clicks**: the Rockets tab has a FRONTIERS section (`ui/frontier_rockets.gd`) with each kind's checklist (research node + bases at level 5 + the previous frontier's base level); the globe's nearby list only shows ordinary hubs. `Frontiers.can_launch` also gates `slice._launch`. Once visited, a frontier stays open.
+- **Sandstorms re-dust with the Ledger's revive mechanism** (`HexField.revive_pieces`): saves (alive bits) just work, and the "never touch planted ground" rule from the Ledger applies. Sustained hexes shelter their neighbours (Dune Fences: two rings). No new junk is created.
+- **Ice is a per-hex lock**, `HexField.locked`, honoured by the scoop queries (`find_scoop_target`, `pieces_within`, `nearest_alive`) and by robots' work-hex choice. Thawing is heaters (E, cubes; they also warm neighbours) and Lumi's beam (slow); no new robot type, to keep the fleet readable.
+- **Cold**: in the Frozen Port only greenhouses (E with the seed tool) or Cold-Hardy Seeds (research) make a slot plantable (`Garden.plantable`, used by Lumi and Seedlings). Native seeds (`plants.json` `biomes`) grow only in their frontiers; ordinary districts never roll them.
+- **Draining the Sunken City turns water hexes into land in place** (`Frontiers.drain_hex`): pieces settle on the street; clean hexes get ~30% of their pieces back as stranded silt debris. Garden slots for drained hexes are made after the others, in drain order (`Garden.late_hexes`), so slot ids stay stable across saves. The city (CityView) sits `sink_m` lower while flooded and rises with each stage, so "rooftops poking out" become streets.
+- **The ark finale hook**: when the Cradle Returns landing pad (7 hexes) is clean and every pad hex is Sustained, and 70% of the district's land is Growing or better, `FrontierDistrict.complete()` sets `flags.cradle_returned`, plays the pylon beams and WREN line, and emits **`EventBus.cradle_district_complete(hub_index)` once per save**. The story cinematics (story/*, owned by another helper) should connect to this signal and play the ark-landing finale; `story/bloom_finale.gd` and `story/intro.gd` were not edited. Dev: `--frontier=cradle_returns --frontier-done=3` fires it.
+
+- **Frontier look pass (wt/biomes2)**: each frontier builds a heightfield terrain ring from the field edge to ~1.3 km (`FrontierView._build_terrain`, `art/shaders/terrain.gdshader`, 8 sector meshes, world-space texturing): transverse dunes with a crusted pan for the big solar farm, snowfields and ridged mountains with the harbour dropping under the sea ice, a drowned bay with green headlands, the Cradle's lawns and hills. FieldView skips its hemisphere horizon in frontiers (`skip_horizon`) and the ground shader stops at the terrain (`clip_r`). Props beyond the edge sit on the terrain (`_gy`). Grades now carry absolute clear-air targets (`fog_density`, `vol_density`, `turbidity`, `height_fog`, `sun`). The Sunken City's field water and flood use a deep, mirror-like teal (water.gdshader look uniforms). Ice sheets use `ice_slab.gdshader`. The saturated blue industrial drum is swapped out of the frontier junk palettes (same vol/weight), and frontier litter fades toward the biome's dust colour. Batched boxes now scale in their own axes (`Basis.scaled()` is a parent-space scale and skewed rotated boxes).
+- **Frontier boundaries follow the natural-border warp** (wt/biomes2): every frontier edge samples hex state at the same warped position as the junk (`HexField.border_warp_image` via `FrontierView._share_warp`): the Frozen Port ice is one dense sheet (`ice_slab.gdshader`, per-hex ice image, domes inside and thins to a glassy lip, melt holes as it thaws) instead of per-hex prisms; field water (`water.gdshader` `warp_amp`, frontier-only) and its lakebed (`ground_pbr` `lake_warp`) and the outer flood (`flood.gdshader`) share one shoreline. Ordinary districts keep hex-shaped lakes (opt-in uniforms default off). The field ground's terrain seam (`clip_r`) wanders with noise; the terrain tucks 0.3 m under it to avoid z-fighting.
+- **Frontier junk is weathered with an overlay, not new models** (`junk_coat.gdshader`, `FieldView.set_junk_overlay`): sand, frost or silt on up-facing faces mutes bright plastics without touching piece models, counts or saves. Clear air comes from `fog_aerial_perspective` (grade `aerial`) plus lower fog targets, so distance takes the sky's colour rather than a grey wash. The Sunken City turns on SSR at High so the flooded towers reflect.
+## Steam (Nov 2026)
+- **GodotSteam GDExtension, reached only through `Engine.get_singleton("Steam")`** so the game parses and runs with the addon missing (CI, tests, itch builds). Not vendored yet: the project moved to Codeberg, which the sandbox cannot reach.
+- **Cloud: Remote Storage API by default, newest save wins** using the `saved_unix` stamp inside the save (file mtimes change on copy); ties keep local; a replaced local save is kept as `.local_bak`. Auto-Cloud stays available with one setting.
+- **Demo = same build + `demo` feature tag**, one `Demo.is_demo()` check; separate save folder so a full-game save never opens in the demo, imported once by the full game.
+- **Told with animation** (story2): the opening cinematic (story/intro.gd) shows the ark *Cradle* in space (Blender model art/models/cradle), Lumi humming in the seed vault, the meteor storm, the pod blown loose, re-entry, the crash and the low-battery wake; off-world shots play in a SpaceStage (story/space_stage.gd, its own World3D in a SubViewport) so the game's sky and lights are untouched.
+- **Bloom Core charge** (story/core_charge.gd, flags.core_charge / core_beats): 4% at the start; blooms 16%, this district's hex levels 20%, progress toward the Verdance Bloom 60%. Never drops; reaches 100% exactly with the Verdance Bloom so "core full" and the ark-comes-home finale are one moment. Beats: 25% WREN's signal clears + garden-deck memory, 50% Lumi's glow brightens (PatchModel.core_glow), 75% the ark seen as a moving star at night (and every night after), 100% the finale (story/bloom_finale.gd: the ark descends, beams down, Lumi waves; it stays parked over the district). HUD shows a tiny self-contained ui/core_meter.gd (`set_charge(f)`).
+
+## Localization (wt/l10n)
+- **gettext PO via TranslationServer, English text as msgid** — translators' tools (Poedit, Weblate, Crowdin) read PO natively, Godot loads .po without import, and an untranslated string falls back to English. Keys like `MENU_NEW_GAME` were rejected: they would need a full English table and a rewrite of every data file.
+- **Data JSON stays English; translate at display** — `tr(str(def["name"]))` where text is shown, `tr()` before `%`/`.format()` for templated lines. Load-time caches built from data (fleet upgrade names) are translated once, in the startup language.
+- **Sinks translate too** (toasts, subtitles, Ledger, captions): raw data lines handed to them work even if a caller forgot; double translation is a no-op.
+- **Logic never reads translated text**: robots keep an English `status_text()` (Command view pip colours, tests) and show `status_label()`; prefix checks compare the translated prefix.
+- **"System default" only picks complete languages** (`Settings.SYSTEM_LOCALES`, English for now): the de/es samples are opt-in so a German OS never gets a half-German game.
+- **Pseudo-locale is generated, Latin-1/Extended-A only** — renders in every shipped font, so a tofu box in pseudo means a real font gap, not a pseudo artefact; the leading `E   ` of interaction prompts is kept because the HUD swaps it for the key glyph.
+- **World signage stays English** (shop signs, robot decals): it is part of the art, like painted text on a prop.
+
+## Wildlife (wt/wild)
+- **Procedural animals, not downloaded ones**: Poly Haven has one CC0 animal that fits (street_rat, used for rats); other CC0 sources were not reachable from the sandbox or not consistent in style. Soft ellipsoid/limb models with vertex colours match the toy-like props and stay cheap; one mesh per pose (cat standing/sitting/curled, bird perched/flying).
+- **Rig in the vertex shader**: per-vertex pivot + part id (CUSTOM0) and per-instance custom data (phase, gait, packed head yaw/pitch, packed coat + tail) let one MultiMesh per model animate legs, heads, tails and wings with no skeletons or nodes.
+- **Animals are pure visuals**: no colliders, no navigation; standing spots and wander targets (plus their midpoint) are checked against live junk pieces, mounds and building footprints. Robots and Lumi pass through them.
+- **The plan is stateless**: counts come from hex levels, biome, lake cleanliness and time of day, seeded per district/hex/species, so nothing about the animals needs saving except player-facing progress (sightings, photos, the adopted cat).
+- **Sightings need the animal in view and near Lumi**; photo credit needs the animal in the photo camera's frustum at >= ~4% of the frame height (no occlusion test).
+- **Real models after owner feedback (wt/fauna2)**: the primitive-built animals read as fake. Now: the cat is sculpted and rigged in Blender (`art/models/fauna/build_cat.py`: one remeshed seamless skin, coat masks in vertex colours, glossy eyes, 8 baked actions) and drawn as a skinned `FaunaRig` with a fur shader + fur shells near the camera; deer, stags and red foxes are Quaternius's CC0 animated animals (smoothed and recoloured by `build_quaternius.py`). Numerous animals (birds, ducks, rabbits, seals, fish) are sculpted in Blender as smooth parts (`build_small.py`) and assembled into the existing MultiMesh vertex-shader rig, so flocks stay cheap. Kenney and Poly Pizza were blocked by the proxy; the Quaternius Google Drive hit its download quota, so the three glTFs came from a public GitHub mirror of the same CC0 pack.
+- **Blender needs python3-numpy** for its glTF exporter (`apt-get install -y python3-numpy`); the environment setup script doesn't install it yet.
+- **Two-part wings**: the outer wing carries a second pivot (CUSTOM1 = shoulder) so the hand can lag and fold on the upstroke; one rigid wing per side read as a "paper plane".
+- **Spacing without colliders**: animals still have no physics bodies. Every place one stands is checked against other animals (body radius per species, including where they're heading), a prop grid stamped from prop-sized meshes (catches the many props that have no collider), one physics shape query on the static layer, fence lines, the yard and outposts. The grid is rebuilt every 90 s rather than tracked live.
+- **Perches come from geometry**: the top of any tall, slim mesh (lamp posts, roof crowns, trees) is a perch, read from the mesh's highest vertices, so new props become perches without data.
+
+## Whole game (wt/beat, Nov 7)
+- **The Cradle is the true ending.** The Verdance Bloom milestone (finale, Bloom Core 100%, Seed Ark)
+  is met by `cradle_returned` (or 2% of the planet), no longer by "three districts in bloom": that
+  path could play the finale early in an ordinary district, after which the Cradle Returns frontier
+  ended in a dud, and the Cradle path never opened the Seed Ark.
+- **The finale is only "seen" once it has played through** (`flags.bloom_finale_seen` set at the end);
+  quitting mid-cinematic replays it on the next load. The end credits (ui/credits_roll.gd, built from
+  docs/CREDITS.md, skippable) roll once after the first finale; the game then simply carries on.
+- **Bloom Core charge follows the critical path** (`CoreCharge.campaign_progress`): bases at 5,
+  frontiers visited / levelled / Growing, the Cradle pad and district. 100% only at the Cradle.
+- **Garden ramp at ~1 h** through research (Seedling/Drip blueprints dearer, Pollinator Survey adds
+  `plant_growth` / `seed_yield`), not through timers: a player who researches botany early gets it early.
+- **Finished districts keep paying** (stipend cap 900/min, Thriving hexes give a little Data), so the
+  late base levels and research never stall for good.
+- **Goal chain covers the whole game** (144 goals): new types research / bases_l5 / frontier_base /
+  frontier_growing. District-relative goals (hex_level, hub_level) are placed where the player is in
+  the district they mean.
+
+## Lumi designs (wt/skins, Nov 7)
+- **Designs are data + one model**: one PatchModel body with per-design paint/glow and add-on parts from a second GLB (`designs.glb`) built by the same Blender script, so every design shares the hero's rig, animation and quality. Add-ons bake AO against the hero alone (the hero bakes without them), so the default look is unchanged.
+- **Buffs are slight and optional**: 5-10% on one themed stat, applied last in `Economy.stat` (after research), shown in the stat breakdown; "Looks only" turns them all off (per save, `flags.designs_looks_only`). Aurora's +8% detector range is on by default.
+- **Unlock conditions are any-of achievement conditions** (`Achievements.value_of` + `fleet_tier`), checked by the Achievements tick; old saves keep their earlier unlocks (`flags.skins_unlocked`).
+
+## Late game (wt/late, Nov 7)
+- **Worlds are save slots; the profile is the only shared state.** Each Cradle Mode world is a normal
+  save in its own slot (Verdance = slot 0), so every system persists per world for free and old worlds
+  stay playable. `profile.save` holds worlds, Starseeds and Heirlooms; `--fresh` keeps it in memory.
+- **Heirlooms reach the game through one hook** (`Economy.stat` -> `CradleMode.stat_mod`), together
+  with world modifiers and decor charm, so no system needs to know about worlds.
+- **World 0 is untouched**: Verdance keeps seed 4471 and an empty planet mix, so the campaign, tests
+  and existing saves generate exactly as before. New worlds land in their driest town.
+- **New Game erases every world and the Heirlooms** (it is a full restart; Heirlooms are permanent
+  across worlds, not across profiles). Achievements, Codex and skins carry into new worlds.
+- **Each world keeps its own story beats** (seed tin, Ledger, finale): Seed Vault adds seeds but does
+  not skip the tin (skipping it pulled the bot into hand-watering and made worlds slower).
+- **A world's look is data, applied after the district is built** (wt/worlds2): `data/world_looks.json`
+  per world type, read by CityView / StreetDressing for tints at build time and by `WorldLookView` for
+  sky, sky body, weathering overlay and landmark. The grade and weathering ease with the base level or
+  field progress but never fully go (a restored Ice Moon is still an ice moon). Frontier districts keep
+  their own grade and landmarks; the sky body and Long Nights carry over. Verdance gets no look at all.
+- **WREN is clear on new worlds**: she speaks over the ark's relay, so world-thread lines use signal
+  stage 2 from the first line instead of the campaign's glitched stage 0.
+- **Save profiles are folders** (`user://saves/p1..p3`): SaveManager.save_dir() is the active profile's
+  folder, so CradleMode, slots and every system stay unchanged; the Steam Cloud names carry the profile
+  as a prefix. Settings are shared across profiles.
+- **Planets own their art, the look stays data**: a planet with an env script in data/planets.json
+  draws its own landmarks and sky; the generic look keeps grade, tint and weathering.
+- **The profile syncs like a save**: it carries `saved_unix` so the Steam Cloud newest-wins rule applies
+  to it unchanged; the SteamService autoload syncs before CradleBoot reads it.
+- **Decorations refund in full** so moving costs nothing; their bonus is small and per district.
+  Wildlife integration is a group hook ("decor" + metas), no dependency either way.
+
+
+## Homeward: the Verdance system campaign (wt/home, Nov 7)
+Canon (consistent with Lumi LM-1, the seed-keeper; the ark *Cradle*; WREN; the Bloom Core; the Settlers; the Ledger):
+- **The Verdance system is a binary star**: Hearth (warm, yellow-white) and its small orange companion Ember. Every world sees both. From nearest to farthest: Ochre, Verdance, Tidewell, Anvil, Rime. Single source of truth: `data/solar_system.json` read through `SolarSystem.suns_for(id)` (systems/solar_system.gd). The sky director's DirectionalLight is Hearth (shadows, the PhysicalSky disc); `planet/binary_sun.gd` adds Ember (unshadowed warm fill and a soft disc with a thin halo) at the planet's separation, so the pair rises and sets together. Sizes go as 1/AU and light as 1/AU².
+- **The Ledger strip-mined the whole system**, not just Verdance: Ochre's sands (open pits), Tidewell's seabed (dredging), Rime's core heat (until it froze), Anvil (its foundry world and head office). When the ore ran out it dissolved itself and left five worlds under its trash; only the audit drones carried on. Each planet tells this in an arrival memo, a half-way intercept and a restored note (`data/homeward.json` docs, DocumentView + Codex "Homeward").
+- **The Settlers sleep aboard the Cradle.** Their charter, one line long: wake us when the system can feed us. Not one world, all five. So at Cradle Returns the ark comes and answers but will not land ("The Cradle Answers", story/cradle_answers.gd), which replaces the old ark finale at that point. Verdance alone isn't enough.
+- **The ending, "Homecoming"**: restore every planet, return to Verdance's Cradle Returns (the Homeward launch complex), build the Mk VII Homeward rocket from all five worlds (one relic from each), plant the last seed in a bed with a yellow fence (Class 4B's school garden), launch. In orbit the Cradle wakes and takes the rocket in; in the seed vault Lumi sets the seedling tray back on its pedestal, three hundred years after climbing into a pod to save it; below decks the Settlers wake. Then the existing ark finale (story/bloom_finale.gd) brings the Cradle down to Verdance ("welcome home"), and the credits roll. The game goes on.
+Mechanics:
+- **Planets are profile worlds with fixed seeds, names, types and modifiers** (`data/homeward.json`, `Homeward.make_planet_world`), so every system persists per planet through the existing slot machinery and worlds2's save slots. A record with `"planet": k` keeps its type when its mix is recomputed (`WorldGen.make(..., type_id)` from `CradleMode.current_full`). Verdance is world 0 / planet 0, unchanged.
+- **Random Cradle Mode worlds are kept as the post-game "beyond the system" mode**: the Ark Bridge's "Seed a new world" opens only after Homecoming (`CradleMode.unlocked()` is set by the ending). Every random world keeps its own finale (`Homeward.redirect_finale` only redirects on system planets, and only before the ending).
+- **Restoration per planet** (never drops, profile `homeward.pct`): Verdance = its Bloom Core charge (100% when the Cradle answers); the others = 0.5·thriving/target + 0.3·bases L5/target + 0.2·(landing district Thriving share / 60%). The targets are smaller than Verdance's campaign, growing from Ochre to Anvil. System % = mean of the five, shown on the solar map. A restored planet gives its relic and one **Heirloom pick** (Heirlooms become milestone unlocks, no Starseeds; `CradleMode.buy` spends a pick first).
+- **Rocket drive tiers are separate from the in-planet Mk I-IV** (`data/homeward.json` drive, profile `homeward.drive`, carried to every planet; the visible rocket keeps its Mk look, so `RocketTiers` and the rocket model are untouched): Mk V Orbital (after the Cradle answers; Ochre, Tidewell), Mk VI Interplanetary (one relic; Rime, Anvil), Mk VII Homeward (all relics, system 100%, built only at Cradle Returns). Priced in cubes and parts. **Per-planet nav**: a planet also needs its chart, i.e. the previous planet at 50%. The in-planet rocket tier is carried too (best of all planets).
+- **Travel**: the solar map's Launch (or the autoplay) runs the rocket's own launch sequence with a sentinel target (`Homeward.PLANET_BASE - k`, `HOME`); `automation/rocket.gd` hands the flight to `HomewardDirector.start_flight / travel`: the solar map shows the flight, then `Homeward.travel_to_planet` switches worlds and the rocket's arrival plays there (a new planet gets a rocket parked on the ground, so Lumi can always fly back).
+- **The solar map (ui/system_map.gd) is a 3D orrery** in its own World3D: the two suns circling, thin additive orbit lines, planets with restoration rings and labels (name, %, drive needed), two starfield shells for parallax. Selecting a planet glides the camera in; on the current planet "Choose a district" zooms in and hands over to the survey globe full screen (hubs and districts); closing the globe pulls back out. Other planets land at their last district (their PlanetData isn't generated until visited).
+- **Text**: all player-facing strings through tr(); data JSON stays English.
+
+## Planet audio (wt/sound, Nov 7)
+- **API** (all on the `Audio` autoload, all safe to call any time; unknown ids and NaN are ignored):
+  - `set_planet_theme(id) -> bool`: `"verdance"` (default), `"ochre"`, `"tidewell"`, `"rime"`, `"anvil"`.
+    Picks the planet's music track pool and its ambience bed; the first call for a planet synthesizes
+    its instruments and ambience (~0.2-0.6 s), so planet code calls it while the planet loads.
+  - `set_restoration(0..1)`: the planet's tracks switch to their restored variants past 0.55 (back
+    under 0.45; on a chord-cycle boundary) and their brightness / warm bloom lerp with it; the
+    ambience crossfades wind, groans and creaks into birds, insects and water. `MusicHooks` feeds it
+    every second from `world.planet.restored_fraction()`.
+  - `music_activity(amount)`: busy play (hexes cleaned, robots built, upgrades) favours the upbeat
+    tracks and pushes their drums; decays over about a minute. `MusicHooks` calls it.
+  - Mood `"homecoming"` (`set_music_mood`): the ending piece. It is sticky: `MusicHooks` never
+    replaces it; the ending code leaves it with another `set_music_mood()` call.
+  - Radio: `play_track(id)` loops one composed track with no gaps until `stop_track()`;
+    `music_track_ids(planet)`, `music_track_title(id)` (English; tr() at display), `get_music_track()`.
+    `hold_theme(id, restoration)` / `release_theme()` preview a whole planet (pool and bed).
+  - `duck(seconds)`: dips music -7 dB and ambience -4.5 dB; WREN's subtitles call it per line.
+  - `Audio.loop("hover_spray", level)`: Lumi hovering over water (Tidewell), built on first use.
+- **Composed tracks, not just ambient pads**: owner feedback asked for melodic, more upbeat music in
+  the spirit of a sandbox-game soundtrack (feel only, all compositions original). Each planet has a
+  rotating pool of 2-3 tracks (`audio/music_tracks.gd`) with a fixed motif re-fitted to each chord,
+  a groove and a form; pieces are separated by 8-55 s silence gaps (only the air bed plays).
+  Verdance keeps its generative score for calm moments and adds two upbeat cleaning tracks.
+- **Still synthesized at runtime**, no audio files: the new instruments (marimba, steel pan, hand
+  drums, choir pad, detuned synth, metal hits...) reuse `MusicSynth`'s pad and envelope helpers and
+  cost ~25-140 ms per planet, built lazily. Pre-rendered OGG loops were considered and not needed.
+- **Mix**: a hard limiter on Master (-0.5 dB) as well as Music (-1 dB); ambience on its own
+  "Ambience" bus that sends to SFX, so the SFX slider covers it; a slider at 0 mutes its bus.
+  Track loudness is kept within about +-2 dB of the generative explore piece (tools/render_music.gd).
+- **No new save state**: planet code re-sends the theme on load; restoration comes from the planet.
+
+## Three currencies (wt/money, Nov 7)
+- **Exactly three currencies: Cubes, Parts, Seeds** (owner: "keep it extremely low like 3 or less").
+  One source of truth: `data/currencies.json` + `core/currencies.gd` (ids, names, icons, colours,
+  legacy table). GameState stores only these three.
+- **Legacy alias layer, not a hard break**: `add_currency / get_currency / spend / can_afford` accept
+  the retired ids and map them at a fixed rate (bolts x5 parts, sheet metal / plastic / glass x1
+  parts, Data x10 cubes, compost x0.25 seeds, tokens x5 parts, trinkets x150 cubes, Settler Fragments
+  x25 parts), warning once per id in debug builds, so code from parallel branches keeps working
+  through merges. `Currencies.fold()` does the same for cost/reward dictionaries.
+- **Save v2** folds old balances at the same rates; old compost goes into the compost press's hopper
+  (a machine fill level, not a currency) and Settler Fragments into Parts. Nothing earned is lost.
+- **Research costs cubes (x10 the old Data) plus real time**; the old Data sources ("field notes":
+  hexes cleaned, restored, shards, robot bales, blooms) pay those cubes instead, so research paces as
+  it did. Thriving wildlife notes are a small cube trickle (6/min per hex, capped at 300/min).
+- ~~Robot part items stay items~~ [ui2, Nov 7]: superseded. The owner found the two "parts" confusing;
+  a found robot part now pays Parts at its rarity's value (save v4 converts held items), builds and
+  Mk tiers cost Parts + cubes. See "Simpler workbench" below.
+- **Contracts and World Events are one Requests board.** Requests pay cubes or parts; the token shop
+  became a reward track (liveries, Builder parts, Curio Capsules, rare robot parts at 2..20 finished
+  requests; a Vintage part every 5 after). Handled world events count as finished requests.
+- **Trinkets are only Collection finds.** Decorations that cost trinkets now need Collection finds
+  (`needs_finds`); old trinket rewards pay 150 cubes each.
+- **Heirlooms are milestone unlocks** (systems/heirloom_track.gd): the banked restoration score (the
+  old Starseed total) passes the old prices in a fixed cheapest-first order. Kept self-contained
+  because the "home" helper is replacing Cradle Mode's main flow.
+- **Base 2 and 3 ask 150 / 350 parts** (were 25 metal + 15 plastic / 90 metal + 60 plastic + 30
+  glass): with one pooled currency the per-type gates vanished; those amounts arrive at about the
+  minute the metal and glass used to. Frontier research costs x25 cubes (x10 below): late cubes are
+  plentiful where Data used to be the gate.
+- **The Ledger is quieter**: one uplink line per act; coupons and quips are small notify-stack
+  entries, coupons every 12-20 min (was 4-7).
+
+## Simpler workbench (wt/ui2, Nov 7)
+- **One parts**: robot part items became Parts at the rarity's old scrap value (10/25/60/150/450).
+  Keeping the rarity roll keeps the detector exciting (a Legendary find is a big Parts payout).
+- **Build cost = cubes + Parts** (Scoopie 70, Haul Bug 40, Seedling/Drip 45, Skimmer 60, Multibot
+  140; cubes x1.35 and Parts x1.2 per robot owned: a garden needs many Drips, and Haggle no longer
+  sells the missing parts for cubes). Mk steps: cubes as before + 200 / 700 / 2000 Parts; the rare
+  Restored+ Control Core used to be the gate. Tuned with the autoplay so robots and base levels
+  (which also want Parts) arrive about when they did. No rarity bonus any more.
+- **No trading**: Haggle's trade, scrap and swap are gone; Haggle survives only as a name in data
+  ids ("haggle" source = the Locker shop). His builder stall no longer rotates.
+- **Requests start themselves and never expire**: the owner found Accept / Pass / timers too much.
+- **Locker at hub level 3**; cosmetic parts are unlocks (owning one fits every robot). Robot Builder
+  parts lost their stat mods (pure cosmetics); the Settler set's +5% speed / +6% work is the one perk.
+- **Hub card shows "what you get"** computed from data (sell bonus, crew spots, the scrubber,
+  stations and Locker levels, the launch pad at 5).
+- **Playtest 2: futuristic, smaller, honest costs.** One holo style (BenchKit.holo) for workbench,
+  pause and settings. Affordable = green glow, otherwise dim with the missing amount in red. Tabs
+  are hidden (not locked) until their data condition holds (data/workbench.json), so the "pace"
+  helper can move unlocks without code. No Save button: autosave every minute and on quit; "Quit"
+  saves and returns to the title. Keepsakes opens the Codex Collection.
+
+## Keepsakes (wt/extras, Nov 7)
+- **One idle-gains entry point**: `Offline.simulate` (time cap, junk cap, `offline_units` bookkeeping) so the welcome card and any remote view (telescope) share one capped calculation; currency only moves in `Offline.apply`.
+- **Radio songs are MusicDirector moods** (same key and layers), so they crossfade like any mood; the override lives in Audio and is cleared when the district leaves the tree.
+- **Album pictures use a fixed camera over the base**, not the player's view, so before and after line up in the slider; the HUD never appears in them.
+- **The weekly challenge is a save slot, not a world**: `WeeklyChallenge.active` steers CradleMode's seed/mix/modifiers; it never banks Starseeds, and its record and chips sit next to the profile so they belong to the save profile, not to a world.
+
+## Planet globes (wt/globes, Nov 7)
+- **One reusable component for every planet seen from space**: `ui/planet_globe.gd` (`PlanetGlobe`,
+  a Node3D). `PlanetGlobe.new()`, `add_child`, `.setup(planet_id, restoration)`, later
+  `.set_restoration(f)`. Optional: `.radius` (the node itself is never scaled, so labels/markers
+  parented to it keep their size), `.track_suns(node_a, node_b)` (light from two sun nodes in the
+  same world, re-aimed every frame), `.set_sun_dirs(a, b)`, `.set_sun_colors(a, b)`, `.max_lod`,
+  `.set_lod(n)`, `.spin_scale`. Unknown ids get a generic rocky world tinted by the optional
+  third `setup()` argument.
+- **Procedural, unshaded shaders with their own binary-sun lighting** (`art/shaders/planet_*.gdshader`,
+  shared maths in `planet_lib.gdshaderinc`): 3D value noise with analytic derivatives, so the
+  domain-warped FBM / ridged / eroded FBM heights give real relief normals in one pass; the
+  non-smooth features (canyons, terraces, cracks, dunes) bump through screen-space derivatives.
+  The globe sets two sun directions and colours itself (SolarSystem.suns_for when present, else
+  data/solar_system.json, else the canon), so it looks the same in any 3D view whatever lights it
+  has. With no host directions the key light comes from the upper left of the active camera and
+  the companion sits the planet's sun separation (canon 14 degrees) beside it. Energies fall off
+  with orbit distance at half strength (a UI view: Rime still reads, Ochre doesn't blow out).
+- **Looks**: Verdance rust-brown junk continents turning green in spreading patches, murky seas
+  clearing to blue, smog clouds turning white, dusty rim turning blue; Ochre dunes, stratified
+  canyon networks, a giant terraced strip mine, dust ring + drifting grains; Tidewell island
+  chains, reef shelves, three storm spirals, a glint per sun; Rime cracked glassy ice plates with
+  glowing blue faults and lineae, polar caps, an orbiting ring of instanced ice spikes; Anvil rust
+  highlands, ridged ranges, a great rift, craters, thin lava/foundry seams, a fire ring of embers
+  and ash (thin, subtle). Rings and debris are MultiMeshes; motes are billboard quads.
+- **LOD**: by screen radius (under 48 px: 4 octaves, 40x20 spheres, 35% of the debris; under 190 px:
+  6 octaves; else 8). The telescope caps at 1 below the High preset.
+- **How "home" should use it in `ui/system_map.gd`** (not edited here; it lives on wt/home): replace
+  each planet's sphere mesh + material with
+  `var g := PlanetGlobe.new(); g.radius = <current sphere radius>; parent.add_child(g); g.setup(id, pct)`
+  where `pct` is 0..1 restoration (the current world: `world.planet.restored_fraction()`; others:
+  their saved share). If the map has sun nodes, call `g.track_suns(sun_a_node, sun_b_node)` so
+  each planet is lit from the real suns (otherwise it lights itself from the camera). Call
+  `g.set_restoration(pct)` when the value changes; don't rebuild. Keep picking/hover on the globe
+  node (add an Area3D child of radius `g.radius` if the map ray-picks meshes). Rings reach 2.5-3x
+  the radius on Ochre/Rime/Anvil, so leave orbit spacing for them. Remove the map's own planet
+  lights if they were only there for the spheres.
+- Not done: the Homecoming / Cradle Answers space shots (`story/space_stage.gd`) keep their
+  near-orbit planet shader: they frame a planet thousands of units wide from low orbit, which
+  needs a different detail scale than a globe; a later pass can drop a `PlanetGlobe` with
+  `radius = PLANET_R` there behind a check.
+- **One subtitle line, reading-time rule** (intro2, owner playtest #1): every story/WREN/Ledger line goes
+  through `ui/subtitles.gd`: one line at a time at the bottom, 55 ms per character + 1.2 s (min 2.5 s).
+  Readable words never scramble while up (a ~150 ms glitch on appearance only); heavy glitching is
+  reserved for spans marked `[glitch]`/`[REDACTED]`/`█` (owner: "heavy glitches on what is redacted").
+- **Every scene load goes through the loading screen** (`Loader.goto`), with a shader warm-up pass; the
+  default clear colour is near-black so nothing ever flashes purple.
+
+## Round planets (orbit, owner decisions Nov 8, 2026)
+Supersedes "Planet travel: districts per base on a 40k-hex planet" above.
+- **Each planet is one true-scale walkable globe, no curvature exaggeration** (owner: "not that curved, the planets are still super big", the Moon Sweepers feel). Ground looks almost flat near Lumi; the curve shows at the horizon and clearly from Command view or higher.
+- **Size: BIG.** GeoSphere level 7 = 163,842 hexes (hexes + 12 pentagons), hex circumradius 10 m, R ~ 1.84 km, 11.6 km around: ~42 min on foot, ~11 min on x4 boost *(verified: lap 11.58 km, back within 0.14 m)*. Cell ids are the survey PlanetData ids, so the hologram, the system map and the walkable globe share one state.
+- **Planet % is counted over the hub regions**, not the whole globe. The rest of the globe greens slowly on its own as hubs thrive. You can leave a planet at ~50% and come back later with tools and bots from other planets; 100% needs them.
+- **Planets differ in size, growing much larger as you go** (owner, Nov 8, revised): campaign order Verdance → Ochre → Tidewell → Rime → Anvil. Radius vs Verdance (hex size stays 10 m): Ochre 0.85x (a little smaller), Tidewell 1.3x, Rime 1.6x, Anvil 2.0x, so Anvil has about 4x Verdance's area (~655k hexes, frequency 256). Hubs: 10 / 8 / 12 / 16 / 20. Bigger planets never feel slower: Tidewell (3rd) unlocks the **Bot Fabricator**, a bot-building bot that builds robots on its own from cubes and parts, so fleets grow into the hundreds. Each later planet's tools, bots and drive upgrades speed the work up. Robots go out and work on their own (far crews), and a planet's fleet cap grows with its size. Per-planet size lives in data/planets.json `globe`; SphereGrid takes any frequency (cells = 10·f²+2).
+- **[orbB] The game's slice runs on the globe under `--orbit`** (phase B): `scenes/slice_orbit.gd` builds into the slice node (it stays `world` for Patch, the HUD and every system), and slice.gd routes a few calls there through `# [orbB]` hooks. Systems are ported by moving them off the "not ported yet" list. `SphereField` is the `field`, and `SphereJunkView` is the `view` (a FieldView subclass). The globe core is `OrbitPlanet` (planet/orbit/orbit_planet.gd), with `OrbitDay` (sky, orbE) and `OrbitCrews` (orbC) beside it. The phase A prototypes stay as `--orbit=globe` and `--orbit=v1`.
+- **[orbB] Grids of any frequency**: power-of-two f is the level grid (same ids, so level-6 ids are level-7 ids). Any other f is a class I lattice with slerped rows, which keeps cells as even as the level grids (spacing ratio 1.23 vs 1.20), with explicit `chunk_center`. The survey (PlanetData) runs on the same cells via `GeoSphere.from_grid`.
+- **[orbB] Field parity is per cell, made on materialize, deterministic per (seed, cell)**: parts at the flat chance per hex, heaps (cell-local Vector4), wrecks at the flat districts' rate, locked biome cells, and floating junk on lakes (lakes with junk are junk hexes). The globe's JunkLOD uses JunkLod's near/far scheme for a growing piece set, under a per-frame budget.
+- **[orbB] Frontier districts retire on the globe** (main, Nov 9): Dust Flats, Frozen Port, Sunken City and Cradle Returns become parts of the other planets rather than districts of Verdance's globe, so they are not ported to the orbit slice. Their flat code (planet/frontier_district.gd, planet/frontiers.gd, frontier views) stays untouched until phase F retires the flat game.
+- **[orbB] Flat systems on the globe**: per-hub state lives in the hub site's own dict (`GameState.use_orbit_world`; the flat district's dict is kept for saves); yard systems stand on the hub-0 prefab's anchors (`SliceOrbit.yard_slot` / `yard_point`, re-seated by `reseat_yard` when anchors move); flat code is made globe-aware line by line with `OrbitUp` (local up, distance along the ground, the hexes around a point), which returns exactly the flat values on the flat game; whole-field scans visit the hub region, never all cells; HexLevels and the garden run sparse (per cell, on demand). A piece's ledger volume is scaled for pacing; `HexField.visual_vol` says how big it looks.
+- **[orbB] Flat-yard systems run per hub in a HubFrame** (planet/orbit/hub_frame.gd): fauna, eggs, outposts, the Ledger arc and Garden Mode's decor are built under a node on the site transform of the hub Lumi is nearest (site-local metres, +Y up, so their flat coordinates and maths carry over), and they convert only at their edges. They are rebuilt when Lumi comes within 220 m of another hub and sleep beyond 320 m from every hub. Per-hub state stays in the start site's dict, keyed by hub (`orbit_outposts`, `orbit_decor`); hub 0 keeps the flat keys. Story state stays global (flags). Things far from the hub (outposts, the relay) are seated on the ground's own up, not the frame's. Physics checks on the globe include `PhysLayers.PROP`, because the site prefabs build with prop colliders.
+- **[orbB] The globe's save is its own key, `GameState.orbit`** (`core/save_orbit.gd`, schema 2). It holds the cells (packed), sites, hub states, paid hexes, sparse hex levels, and positions as direction + height. An orbit run never rewrites the flat state (`world` / `districts` / `planet_state`) until phase F. **Old flat saves migrate** (`core/save_orbit_migrate.gd`): the level-6 survey spreads exactly over the level-7 cells by hierarchy, base levels go to the nearest globe hub, and Lumi starts on the start site with his chest. Only Verdance's size takes a level-6 survey.
+- **Travel**: walk, the x4 hover-boost (Shift / LT), later a buyable ground vehicle or hover-sled. The rocket hops between far hubs (10 hubs, ~1.6-1.7 km apart); walking hub to hub is possible but impractically long.
+- **Day and night are real sides of the planet.** The two suns are fixed in space and light one side; the planet turns once every **24 minutes** (`--orbit-day=MIN` to tune, 20-30 min range), so walking far changes your local time and every spot gets a day/night cycle. Nights stay readable: lifted ambient and exposure, and a light on Lumi (Glim takes this over once found).
+- **Hubs are sites on the globe**: each a level pad (`SphereTerrain.reserve_site`, flat + blend radius) with its base and landmarks built as a site prefab in site-local metres (`build(site_root, stage, restoration)`, +Y up, y = 0 on the pad).
+- **Streaming**: only the ground near the camera, Lumi and working robots is 3D (threaded LOD chunks, collision within 70 m); scoopable junk exists only in a ~70 m ring per centre and is otherwise a number per hex (SphereCells); the rest of the globe is a low-detail shell reading the same per-hex state texture. Robots far from Lumi are data records advanced like offline progress.
+- **Phase A (`--orbit`, default off)**: the real Lumi (`player/patch.gd`) runs on the sphere through `Patch.enable_sphere()` + SphereMotor (hover, radial gravity, boost, jump, camera-frame input); the flat game is unchanged when it isn't called. Bales fall with radial gravity (a point-gravity Area3D); the Depot reads its pad in its own frame. `SphereField` (a HexField over SphereGrid cells) and `SphereJunkView` give Patch, the HUD and the Depot the APIs they already use.
+- **[world2] Props are solid, on their own layer**: street furniture, yard kit, sign posts, outposts,
+  eggs, the composter, greenhouse, pod, hub additions, future-layer posts and frontier ruins collide on
+  `PhysLayers.PROP` (`planet/phys_layers.gd`). Lumi, robots and bales mask it; the camera spring arm
+  does not (thin poles would yank the camera in). Simple boxes/cylinders with shared shapes
+  (`planet/prop_colliders.gd`); merged frontier geometry gets greedy-merged column boxes. Junk that
+  spawns inside a prop is nudged to its edge at load (deterministic; only alive bits are saved).
+  Tiny clutter (pots, weeds, paint, wires, junk, litter) stays non-solid. `tools/collider_audit.gd`
+  must report 0. Robots have no navmesh; their detour/stall logic handles the new obstacles.
+- **[world2] No yard fence**: the owner walked through it and it boxed Lumi in at the start. Lot fences
+  elsewhere are broken runs with gaps, each run solid.
+- **[world2] Junk gen 2 (new games)**: the only clear ground is what Lumi or the bots picked up. No
+  mid-road sparsity, a full ring around the base, landfill junk between the heaps, and the streets of
+  building-blocked hexes plus the hub hex outside the yard belong to the nearest junk hex
+  (`HexField.owner_hex`), so they are covered and clear with it. Each hex keeps gen 1's junk volume
+  (more, smaller pieces), so bales, cubes and hex flips pace as before. Old Town's field is radius 4
+  (was 3); past the field a static, non-interactive junk layer (`planet/far_junk.gd`) keeps the planet
+  covered, and WREN explains the survey line once. Saves without `junk_gen` keep gen 1 and radius 3.
+  Frontiers stay radius 4 (now the same hex count, still denser and tougher).
+- **[world2] Bales**: collider = the drawn bale (straps included; overstuffed bales get their wider,
+  flatter box), CCD on, lifted out of anything solid after a spawn or put-down, put down short of
+  walls, and junk mounds are solid for bales only (`PhysLayers.MOUND`, `planet/mound_colliders.gd`).
+  The bale shader is explicitly opaque, with desaturated per-item chunks, labels in the dominant junk's
+  accent colour and rough, sparse metal. **Root cause of the "transparent" bale**: its mesh,
+  `ProcMesh.rounded_box`, was inside-out (counter-clockwise from outside, so back-face culling showed
+  the far inner walls: a see-through box tinted by the pale-blue plastic colour). rounded_box (used by
+  ~130 props) and the junk-heap mesh now wind clockwise from outside; `tests/test_bale_rest.gd`
+  checks the winding.
+- **[world2] Playtest #2 follow-ups**: junk heaps are solid for Lumi and robots too (MOUND | PROP),
+  drawing in as the hex is cleaned, so piles are scooped from the edge, not vacuumed from inside.
+  Hub/blocked hexes' ground follows the junk hexes that own it (no clean-looking patches). Pieces
+  carry a size class (`HexField.piece_size`: SIZE_SMALL / SIZE_MEDIUM / SIZE_LARGE, from the
+  model's base volume, LARGE >= 2.5: tyres, TVs, microwaves, stoves), and the starting ring has no
+  large pieces (re-picked from the same type on their own RNG). Carried bales sit above Lumi's head
+  (`player/carry_point.gd`). The bale is a pillowed, lumpy pressed block with three straps one way
+  and two across.
+
+## Character Builder (wt/style, Nov 7)
+- **A style is a layer the hero model reads**, not a fork of it: `systems/lumi_style.gd` (data `data/style_parts.json`). Two tagged one-line hooks in `PatchModel._build` (`# [style]`): first line `var v: Dictionary = LumiStyle.variant_for(self, VARIANTS[variant])`, last line `LumiStyle.after_build(self)`. `variant_for` turns the style into a VARIANTS-shaped dict (so PatchModel builds its own native add-ons and colours); `after_build` recolours what VARIANTS has no key for and adds a `LumiStyleRig` child (`player/lumi_style_rig.gd`) for eye shapes and non-native add-ons. Hero rebuild: keep both hook lines, keep `_mats`, `_face_mat`, `_ring_mat`, `_float`, `_head`, `_arm_l` (with meta `wrist`), `_icon`, `_part()`, `_paint()`, `_load_parts()/_parts/_pivot()`; everything is read through get()/has_method() and degrades quietly if missing.
+- **The six designs are presets** read straight from `PatchModel.VARIANTS` (`LumiStyle.preset(id)`), so a preset reproduces the design exactly (tests/test_lumi_style.gd checks every VARIANTS key and acc id, and `unmapped_acc()` flags a renamed add-on).
+- **Bonus = worn design**: the style's `bonus` is written to `flags.patch_skin`, so `Designs.mult` and "Looks only" are unchanged; a custom look can take any unlocked design's bonus. A model of variant X shows the worn style only when its bonus is X, else X's preset (dev `--design=`, previews and lineups keep working).
+- **Eye shapes without touching bot_face**: crescent and happy arcs are native (happy = VARIANTS `happy` 1.0); round / visor bar / hearts are a `next_pass` (`art/shaders/lumi_eyes.gdshader`) on the face material, with bot_face's eyes hidden by `eye_radius = -1`; look/blink/wink/happy/energy/eye_color are copied each frame. If the hero adds native shapes later, drop them from `LumiStyle.OVERLAY_SHAPES`.
+- **Colours saved as [r,g,b] floats** (4 decimals) in `flags.lumi_style`, `flags.lumi_looks` (5), `flags.style_bought`; swatches are hex in the JSON. Off-swatch colours need the advanced picker (80 parts); the designs' own colours are always allowed once the design is unlocked.
+- **Unlocks trickle over the whole game**: free starters, Lumi Level, hub level, each design (its parts and colours), Collection finds, Requests, achievements (Alive Again, Gardener, Overachiever, A District in Bloom) and a few buys for parts/seeds only.
+- **Add-on names the applicator expects** (add-on library = aurora.glb + designs.glb mesh names; first found wins, else a procedural stand-in):
+  - native PatchModel acc ids (VARIANTS `acc`, built by PatchModel): `antenna` (fin), `acc_sprout`, `acc_catears`, `acc_pixel` (wing fins + heart lenses), `acc_pad_r`, `acc_pad_l`, `gear` (mesh `acc_gear`), `acc_toolbox` + `case` (mesh `acc_case`), `holo`, `butterfly` (meshes `acc_bfly_body`, `acc_wing`); chest icons `acc_icon_leaf`, `acc_icon_cross`.
+  - library meshes the builder picks up if the hero models them: `acc_antenna` (plain antenna, head-relative pivot like `antenna`), `acc_halo` (head-relative pivot), `acc_icon_heart` (same pivot as `acc_icon_leaf`), `acc_medkit`, `acc_watering_can` (left claw, origin at the grip), `acc_firefly`, `acc_drone` (companions, origin at the body centre, facing -Z).
+  - material slot `side` on the side-module plates (optional `_mats["side"]`): the side-module colour; until then side modules follow trim.
+- **Locked cosmetics are never shown** (owner playtest #2): locked designs are a dark silhouette (`LumiStyle.silhouette`, `DesignPreview.show_design(id, hidden)`) named "???" with only the unlock hint; locked presets, parts, swatches and bonuses in the builder are "???" cards / grey "?" swatches with the hint.
+- **Other dressable bots plug in through `CosmeticTargets`** (`systems/cosmetic_targets.gd`): `register(id, {name, order, editor: Callable(world) -> Control, unlocked: Callable -> bool, hint})`, `all()`, `make_editor(id, world)`, `display_name(id)` ("???" while locked). Lumi is built in (`LumiBuilder`). Part unlock rules can reuse `LumiStyle.unlock_met / unlock_progress / unlock_text / buy` with their own data.
+- **LumiBuilder is a hostable Control**: `var b := LumiBuilder.new(); b.world = world; parent.add_child(b)` (embedded: no backdrop, the host owns Esc and LB/RB, footer button "Wear look", signals `worn` / `closed`), or `LumiBuilder.open(world, parent)` for a full-screen overlay (CanvasLayer 100).

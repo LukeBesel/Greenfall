@@ -1,0 +1,66 @@
+{
+  "_doc": "Lumi's unlockable designs (systems/designs.gd; looks in PatchModel.VARIANTS, add-ons in art/models/aurora/designs.glb). buff: a small themed bonus while worn: stat = an Economy stat id (\"*.work_rate\" = every robot type), research_speed (Research), or streak_grace (cleaning streak hold time); amount = +fraction. Off with flags.designs_looks_only. unlock.any: met when ANY condition reaches its target; cond types are the achievement ones (stat, research, list, flag, ...) plus fleet_tier (best robot fleet Mk index, 2 = Mk III). Stats nothing writes yet (wildlife_petted) simply stay 0. Unlocks persist in flags.skins_unlocked, the worn design in flags.patch_skin.",
+  "designs": [
+    {
+      "id": "aurora",
+      "name": "Aurora",
+      "tagline": "Baseline / Explorer",
+      "desc": "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin.",
+      "buff": {"stat": "detector_range", "amount": 0.08, "text": "+8% detector range"}
+    },
+    {
+      "id": "bolt",
+      "name": "Bolt",
+      "tagline": "Industrial / Tough",
+      "desc": "Hazard-yellow plating, heavy shoulder pads and a spare gear for luck.",
+      "buff": {"stat": "cube_value_mult", "amount": 0.05, "text": "+5% bale value"},
+      "unlock": {"text": "Press 50 bales or build 5 robots", "any": [
+        {"type": "stat", "key": "cubes_made", "target": 50, "unit": "bales"},
+        {"type": "stat", "key": "robots_built", "target": 5, "unit": "robots"}
+      ]}
+    },
+    {
+      "id": "sprout",
+      "name": "Sprout",
+      "tagline": "Eco / Restoration",
+      "desc": "Moss-green and growing a seedling of its own.",
+      "buff": {"stat": "plant_growth", "amount": 0.08, "text": "+8% plant growth"},
+      "unlock": {"text": "Grow 20 plants to bloom", "any": [
+        {"type": "stat", "key": "plants_bloomed", "target": 20, "unit": "blooms"}
+      ]}
+    },
+    {
+      "id": "pixel",
+      "name": "Pixel",
+      "tagline": "Friendly / Cheerful",
+      "desc": "Red and white, all smiles, with a butterfly that won't leave.",
+      "buff": {"stat": "streak_grace", "amount": 0.1, "text": "+10% cleaning streak time"},
+      "unlock": {"text": "Pet 5 animals or find 5 Collection trinkets", "any": [
+        {"type": "stat", "key": "wildlife_petted", "target": 5, "unit": "animals"},
+        {"type": "stat", "key": "cats_petted", "target": 5, "unit": "cats"},
+        {"type": "stat", "key": "trinkets_found", "target": 5, "unit": "trinkets"}
+      ]}
+    },
+    {
+      "id": "nova",
+      "name": "Nova",
+      "tagline": "Analyst / Tech",
+      "desc": "Gunmetal, violet light and a holo screen always open.",
+      "buff": {"stat": "research_speed", "amount": 0.08, "text": "+8% research speed"},
+      "unlock": {"text": "Finish 10 research projects", "any": [
+        {"type": "research", "target": 10, "unit": "projects"}
+      ]}
+    },
+    {
+      "id": "patch",
+      "name": "Patch",
+      "tagline": "Utility / Support",
+      "desc": "Medic cross, tool box, and a case of spares for any bot in need.",
+      "buff": {"stat": "*.work_rate", "amount": 0.06, "text": "+6% robot work speed"},
+      "unlock": {"text": "Repair an outpost or upgrade a robot fleet to Mk III", "any": [
+        {"type": "stat", "key": "outposts_repaired", "target": 1, "unit": "outposts"},
+        {"type": "fleet_tier", "target": 2, "unit": "Mk"}
+      ]}
+    }
+  ]
+}

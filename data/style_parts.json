@@ -1,0 +1,679 @@
+{
+  "_doc": "Lumi's Character Builder (systems/lumi_style.gd, ui/lumi_builder.gd). A style is a dict of slots: colour slots (paint, trim, accent, eyes, side, glow, hover, laser) take any swatch the player has unlocked (or any colour once the advanced picker is unlocked); part slots pick one option id each. Option fields: acc = PatchModel-native add-on names (PatchModel.VARIANTS acc ids, built by PatchModel itself), parts = add-on mesh names looked up in the add-on library (aurora.glb + designs.glb, first one found wins; a procedural fallback named by build is used when none exists). unlock (absent = free): {design: id} unlocked with that design; {lumi_level: n}; {achievement: id}; {cond: achievement-style condition, text}; {cost: {parts|cubes|seeds: n}} bought once in the builder. The six designs are presets that fill every slot (LumiStyle.preset).",
+  "slots": [
+    {
+      "id": "paint",
+      "kind": "color",
+      "name": "Paint",
+      "group": "Colours"
+    },
+    {
+      "id": "trim",
+      "kind": "color",
+      "name": "Trim",
+      "group": "Colours"
+    },
+    {
+      "id": "accent",
+      "kind": "color",
+      "name": "Accent",
+      "group": "Colours"
+    },
+    {
+      "id": "side",
+      "kind": "color",
+      "name": "Side modules",
+      "group": "Colours"
+    },
+    {
+      "id": "wear",
+      "kind": "amount",
+      "name": "Wear",
+      "group": "Colours"
+    },
+    {
+      "id": "pattern",
+      "kind": "part",
+      "name": "Pattern",
+      "group": "Colours"
+    },
+    {
+      "id": "eye_shape",
+      "kind": "part",
+      "name": "Eyes",
+      "group": "Face"
+    },
+    {
+      "id": "eyes",
+      "kind": "color",
+      "name": "Eye colour",
+      "group": "Face"
+    },
+    {
+      "id": "glow",
+      "kind": "color",
+      "name": "Light strips",
+      "group": "Face"
+    },
+    {
+      "id": "head",
+      "kind": "part",
+      "name": "Head piece",
+      "group": "Add-ons"
+    },
+    {
+      "id": "chest",
+      "kind": "part",
+      "name": "Chest icon",
+      "group": "Add-ons"
+    },
+    {
+      "id": "shoulders",
+      "kind": "part",
+      "name": "Shoulders",
+      "group": "Add-ons"
+    },
+    {
+      "id": "held",
+      "kind": "part",
+      "name": "Held item",
+      "group": "Add-ons"
+    },
+    {
+      "id": "companion",
+      "kind": "part",
+      "name": "Companion",
+      "group": "Add-ons"
+    },
+    {
+      "id": "hover",
+      "kind": "color",
+      "name": "Hover glow",
+      "group": "Lights"
+    },
+    {
+      "id": "laser",
+      "kind": "color",
+      "name": "Pickup laser",
+      "group": "Lights"
+    },
+    {
+      "id": "bonus",
+      "kind": "bonus",
+      "name": "Bonus",
+      "group": "Bonus"
+    }
+  ],
+  "options": {
+    "pattern": [
+      {
+        "id": "plain",
+        "name": "Plain"
+      },
+      {
+        "id": "stripes",
+        "name": "Hazard stripes",
+        "unlock": {
+          "design": "bolt"
+        }
+      },
+      {
+        "id": "moss",
+        "name": "Moss patches",
+        "unlock": {
+          "design": "sprout"
+        }
+      }
+    ],
+    "eye_shape": [
+      {
+        "id": "crescent",
+        "name": "Crescent"
+      },
+      {
+        "id": "round",
+        "name": "Round",
+        "unlock": {
+          "lumi_level": 3
+        }
+      },
+      {
+        "id": "happy",
+        "name": "Happy arcs",
+        "unlock": {
+          "design": "pixel"
+        }
+      },
+      {
+        "id": "bar",
+        "name": "Visor bar",
+        "unlock": {
+          "design": "bolt"
+        }
+      },
+      {
+        "id": "heart",
+        "name": "Hearts",
+        "unlock": {
+          "cond": {
+            "type": "stat",
+            "key": "trinkets_found",
+            "target": 8,
+            "unit": "finds"
+          },
+          "text": "Find 8 Collection trinkets"
+        }
+      }
+    ],
+    "head": [
+      {
+        "id": "none",
+        "name": "None"
+      },
+      {
+        "id": "fin",
+        "name": "Fin",
+        "acc": [
+          "antenna"
+        ]
+      },
+      {
+        "id": "antenna",
+        "name": "Antenna",
+        "parts": [
+          "acc_antenna"
+        ],
+        "build": "antenna",
+        "unlock": {
+          "cond": {
+            "type": "hub_level",
+            "target": 2,
+            "unit": "hub level"
+          },
+          "text": "Upgrade a hub to level 2"
+        }
+      },
+      {
+        "id": "sprout",
+        "name": "Sprout leaf",
+        "acc": [
+          "acc_sprout"
+        ],
+        "unlock": {
+          "design": "sprout"
+        }
+      },
+      {
+        "id": "catears",
+        "name": "Cat ears",
+        "acc": [
+          "acc_catears"
+        ],
+        "unlock": {
+          "design": "nova"
+        }
+      },
+      {
+        "id": "wings",
+        "name": "Wing fins",
+        "acc": [
+          "acc_pixel"
+        ],
+        "unlock": {
+          "design": "pixel"
+        }
+      },
+      {
+        "id": "halo",
+        "name": "Halo",
+        "parts": [
+          "acc_halo"
+        ],
+        "build": "halo",
+        "unlock": {
+          "achievement": "restored_1"
+        }
+      }
+    ],
+    "chest": [
+      {
+        "id": "recycle",
+        "name": "Recycle"
+      },
+      {
+        "id": "leaf",
+        "name": "Leaf",
+        "unlock": {
+          "design": "sprout"
+        }
+      },
+      {
+        "id": "cross",
+        "name": "Medic cross",
+        "unlock": {
+          "design": "patch"
+        }
+      },
+      {
+        "id": "heart",
+        "name": "Heart",
+        "parts": [
+          "acc_icon_heart"
+        ],
+        "build": "icon_heart",
+        "unlock": {
+          "design": "pixel"
+        }
+      }
+    ],
+    "shoulders": [
+      {
+        "id": "none",
+        "name": "None"
+      },
+      {
+        "id": "pads",
+        "name": "Shoulder pads",
+        "acc": [
+          "acc_pad_r",
+          "acc_pad_l"
+        ],
+        "unlock": {
+          "design": "bolt"
+        }
+      }
+    ],
+    "held": [
+      {
+        "id": "none",
+        "name": "None"
+      },
+      {
+        "id": "gear",
+        "name": "Spare gear",
+        "acc": [
+          "gear"
+        ],
+        "unlock": {
+          "design": "bolt"
+        }
+      },
+      {
+        "id": "medkit",
+        "name": "Med kit",
+        "parts": [
+          "acc_medkit"
+        ],
+        "build": "medkit",
+        "unlock": {
+          "design": "patch"
+        }
+      },
+      {
+        "id": "toolbox",
+        "name": "Toolbox",
+        "acc": [
+          "acc_toolbox",
+          "case"
+        ],
+        "unlock": {
+          "design": "patch"
+        }
+      },
+      {
+        "id": "watering_can",
+        "name": "Watering can",
+        "parts": [
+          "acc_watering_can"
+        ],
+        "build": "watering_can",
+        "unlock": {
+          "achievement": "plant_100"
+        }
+      },
+      {
+        "id": "holo",
+        "name": "Holo screen",
+        "acc": [
+          "holo"
+        ],
+        "unlock": {
+          "design": "nova"
+        }
+      }
+    ],
+    "companion": [
+      {
+        "id": "none",
+        "name": "None"
+      },
+      {
+        "id": "butterfly",
+        "name": "Butterfly",
+        "acc": [
+          "butterfly"
+        ],
+        "unlock": {
+          "design": "pixel"
+        }
+      },
+      {
+        "id": "firefly",
+        "name": "Firefly",
+        "parts": [
+          "acc_firefly"
+        ],
+        "build": "firefly",
+        "unlock": {
+          "cond": {
+            "type": "stat",
+            "key": "contracts_done",
+            "target": 3,
+            "unit": "requests"
+          },
+          "text": "Finish 3 Requests"
+        }
+      },
+      {
+        "id": "drone",
+        "name": "Tiny drone",
+        "parts": [
+          "acc_drone"
+        ],
+        "build": "drone",
+        "unlock": {
+          "cost": {
+            "parts": 120
+          }
+        }
+      }
+    ]
+  },
+  "swatches": [
+    {
+      "id": "pearl",
+      "name": "Pearl",
+      "color": "#e6e0d4"
+    },
+    {
+      "id": "white",
+      "name": "Chalk",
+      "color": "#f2efe8",
+      "unlock": {
+        "lumi_level": 5
+      }
+    },
+    {
+      "id": "graphite",
+      "name": "Graphite",
+      "color": "#5c6169"
+    },
+    {
+      "id": "slate",
+      "name": "Slate",
+      "color": "#3a3f47"
+    },
+    {
+      "id": "cyan",
+      "name": "Cyan",
+      "color": "#4de0ff"
+    },
+    {
+      "id": "orange",
+      "name": "Orange",
+      "color": "#ff801f"
+    },
+    {
+      "id": "sky",
+      "name": "Sky",
+      "color": "#7fb8ff",
+      "unlock": {
+        "lumi_level": 2
+      }
+    },
+    {
+      "id": "mint",
+      "name": "Mint",
+      "color": "#6fe3b0",
+      "unlock": {
+        "cond": {
+          "type": "hub_level",
+          "target": 3,
+          "unit": "hub level"
+        },
+        "text": "Upgrade a hub to level 3"
+      }
+    },
+    {
+      "id": "hazard",
+      "name": "Hazard yellow",
+      "color": "#f2b31a",
+      "unlock": {
+        "design": "bolt"
+      }
+    },
+    {
+      "id": "soot",
+      "name": "Soot",
+      "color": "#52493d",
+      "unlock": {
+        "design": "bolt"
+      }
+    },
+    {
+      "id": "amber",
+      "name": "Amber",
+      "color": "#ffad2e",
+      "unlock": {
+        "design": "bolt"
+      }
+    },
+    {
+      "id": "olive",
+      "name": "Olive",
+      "color": "#78873b",
+      "unlock": {
+        "design": "sprout"
+      }
+    },
+    {
+      "id": "bark",
+      "name": "Bark",
+      "color": "#54593a",
+      "unlock": {
+        "design": "sprout"
+      }
+    },
+    {
+      "id": "leaf",
+      "name": "Leaf green",
+      "color": "#85ff5c",
+      "unlock": {
+        "design": "sprout"
+      }
+    },
+    {
+      "id": "honey",
+      "name": "Honey",
+      "color": "#db9e38",
+      "unlock": {
+        "design": "sprout"
+      }
+    },
+    {
+      "id": "cherry",
+      "name": "Cherry",
+      "color": "#cc2624",
+      "unlock": {
+        "design": "pixel"
+      }
+    },
+    {
+      "id": "pink",
+      "name": "Pink",
+      "color": "#ff5480",
+      "unlock": {
+        "design": "pixel"
+      }
+    },
+    {
+      "id": "cream",
+      "name": "Cream",
+      "color": "#ede8e0",
+      "unlock": {
+        "design": "pixel"
+      }
+    },
+    {
+      "id": "gunmetal",
+      "name": "Gunmetal",
+      "color": "#403e47",
+      "unlock": {
+        "design": "nova"
+      }
+    },
+    {
+      "id": "ink",
+      "name": "Ink",
+      "color": "#292630",
+      "unlock": {
+        "design": "nova"
+      }
+    },
+    {
+      "id": "violet",
+      "name": "Violet",
+      "color": "#b366ff",
+      "unlock": {
+        "design": "nova"
+      }
+    },
+    {
+      "id": "ivory",
+      "name": "Ivory",
+      "color": "#ebe6db",
+      "unlock": {
+        "design": "patch"
+      }
+    },
+    {
+      "id": "sunset",
+      "name": "Sunset",
+      "color": "#ffb342",
+      "unlock": {
+        "design": "patch"
+      }
+    },
+    {
+      "id": "seaglass",
+      "name": "Sea glass",
+      "color": "#8fe0d0",
+      "unlock": {
+        "cond": {
+          "type": "stat",
+          "key": "trinkets_found",
+          "target": 4,
+          "unit": "finds"
+        },
+        "text": "Find 4 Collection trinkets"
+      }
+    },
+    {
+      "id": "coral",
+      "name": "Coral",
+      "color": "#ff7f6b",
+      "unlock": {
+        "cond": {
+          "type": "stat",
+          "key": "trinkets_found",
+          "target": 12,
+          "unit": "finds"
+        },
+        "text": "Find 12 Collection trinkets"
+      }
+    },
+    {
+      "id": "royal",
+      "name": "Royal blue",
+      "color": "#3d63ff",
+      "unlock": {
+        "cond": {
+          "type": "stat",
+          "key": "contracts_done",
+          "target": 5,
+          "unit": "requests"
+        },
+        "text": "Finish 5 Requests"
+      }
+    },
+    {
+      "id": "lilac",
+      "name": "Lilac",
+      "color": "#c9a6ff",
+      "unlock": {
+        "cond": {
+          "type": "stat",
+          "key": "contracts_done",
+          "target": 15,
+          "unit": "requests"
+        },
+        "text": "Finish 15 Requests"
+      }
+    },
+    {
+      "id": "gold",
+      "name": "Gold",
+      "color": "#ffd34d",
+      "unlock": {
+        "achievement": "ach_25"
+      }
+    },
+    {
+      "id": "bloom",
+      "name": "Bloom green",
+      "color": "#5cffc8",
+      "unlock": {
+        "achievement": "bloom_district"
+      }
+    },
+    {
+      "id": "midnight",
+      "name": "Midnight",
+      "color": "#1b2233",
+      "unlock": {
+        "cost": {
+          "parts": 40
+        }
+      }
+    },
+    {
+      "id": "copper",
+      "name": "Copper",
+      "color": "#c27a4a",
+      "unlock": {
+        "cost": {
+          "parts": 60
+        }
+      }
+    },
+    {
+      "id": "rosegold",
+      "name": "Rose gold",
+      "color": "#e8a99a",
+      "unlock": {
+        "cost": {
+          "seeds": 25
+        }
+      }
+    }
+  ],
+  "advanced": {
+    "id": "advanced_picker",
+    "name": "Advanced colour picker",
+    "unlock": {
+      "cost": {
+        "parts": 80
+      }
+    }
+  }
+}

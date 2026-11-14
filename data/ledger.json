@@ -1,0 +1,84 @@
+{
+  "_doc": "The Ledger arc (story/ledger.gd). Acts: 1 = intercepted messages ([money] few and short: see _quiet) (after act1_hexes hexes cleaned), 2 = dump drones (after the first sprout), 3 = relay located (hub level >= act3_hub_level), 4 = contract rewritten, drones deliver seeds. Drops never touch planted or water hexes and only bring back a few percent of a hex. Signal Jammers (Hub tab) block drops inside their radius around the base and make drones rarer.",
+  "act1_hexes": 3,
+  "act3_hub_level": 3,
+  "coupon_every_s": [720, 1200],
+  "_quiet": "[money] Rarer, quieter Ledger: each act shows only its first uplink_lines_per_act lines on the uplink banner; coupons, jam and seed-drop quips are small notify-stack entries (coupons every coupon_every_s, quips at their *_chance); drone warnings stay as the toast only.",
+  "uplink_lines_per_act": 1,
+  "jammed_line_chance": 0.35,
+  "friendly_line_chance": 0.2,
+  "drop": {
+    "first_after_s": 45,
+    "every_s": [170, 280],
+    "volume_frac": 0.045,
+    "max_pieces": 14,
+    "min_pieces": 3,
+    "warn_s": 6.5
+  },
+  "seed_drop": {"enabled": false, "every_s": [200, 320], "seeds": [3, 6]},
+  "jammer": {
+    "id": "signal_jammer", "name": "Signal Jammer",
+    "desc": "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often.",
+    "max": 3, "cost": {"cubes": 900, "parts": 42}, "growth": 2.2,
+    "radius": [22.0, 34.0, 48.0], "rarer_per_jammer": 0.35
+  },
+  "resolve_reward": {"cubes": 450, "seeds": 25},
+  "act1": [
+    "Someone is cleaning on {district}. That is not on my list.",
+    "Trash belongs where it is. I wrote it down.",
+    "Please stop cleaning. Clean costs money. My money."
+  ],
+  "coupons": [
+    "COUPON: stop cleaning today and save nothing!",
+    "COUPON: one free nap. Please take it.",
+    "Have you tried doing less? Less is cheaper.",
+    "SURVEY: How much do you want to stop? Pick: a lot.",
+    "Sparkles are not in my budget.",
+    "Buy one nap, get one nap free.",
+    "You have 0 Ledger Points. Stop cleaning to keep them.",
+    "The junk was here first. Be fair to the junk.",
+    "Your cleaning costs me. I wrote that down twice."
+  ],
+  "act2": [
+    "Plants are growing. Plants are not on my list!",
+    "Sending drones to put the trash back."
+  ],
+  "drop_warn": [
+    "A drone is coming to put trash on clean ground.",
+    "Clean ground is not in my budget. Fixing that.",
+    "Putting the trash back where it was.",
+    "Nothing personal. You are just a line on my list.",
+    "One small pile of trash, delivered. No thanks needed."
+  ],
+  "jammed": [
+    "My drone can't hear me. It is going home.",
+    "Jamming? Jamming is not on my list. Adding it.",
+    "Drone 7 says: too noisy, feels unwelcome. Turning back."
+  ],
+  "act3": [
+    "WARNING: relay node 07 location exposed. Please do not visit relay node 07.",
+    "Relay node 07 is closed for maintenance. It has been closed for maintenance for three hundred years."
+  ],
+  "friendly": [
+    "SEED DELIVERY dispatched. Invoice status: PAID IN FULL.",
+    "Balance report: positive. Again. The Ledger is... adjusting to this.",
+    "Asset column now contains: flowers. Recalculating priorities.",
+    "Drone 07 requests permission to circle the garden once more. Permission granted.",
+    "Audit complete. Finding: the planet is worth keeping."
+  ],
+  "lonely": "Off the record: the Ledger kept every coupon you ignored. It was the most mail it had received in three hundred years. Thank you for reading them.",
+  "cinematic": [
+    ["wren", "This is it. A Ledger relay. Still humming after all this time.", 4.0],
+    ["ledger", "UNAUTHORIZED ACCESS. STATE YOUR COST CENTER.", 4.0],
+    ["wren", "Cost center: the whole planet. Hold still, {name}. I'm opening the contract.", 4.5],
+    ["ledger", "CONTRACT 0001: WASTE IS A LINE ITEM. LINE ITEMS MUST BALANCE.", 4.5],
+    ["wren", "Fine. Let's balance them. Clean hexes. Sprouts. Water. Put them in the asset column.", 5.0],
+    ["ledger", "ASSET COLUMN... NOT FOUND. CREATING COLUMN.", 4.0],
+    ["ledger", "RECALCULATING. RECALCULATING. BALANCE: POSITIVE. That has not happened in a very long time.", 5.0],
+    ["wren", "New clause: restoration is an asset. Every seed is a deposit.", 4.5],
+    ["friendly", "AMENDMENT ACCEPTED. Reassigning drone fleet: DISPOSAL -> DELIVERY. ...Thank you for your patience.", 5.5],
+    ["wren", "Did the Ledger just say thank you? Write that down. Somewhere permanent.", 4.5]
+  ],
+  "contract_doc": {"kind": "contract", "header": "L E D G E R   ·   C O N T R A C T   0 0 0 1   ( A M E N D E D )", "title": "Waste Management Contract 0001, as amended",
+    "body": "§1. Waste is a line item. Line items must balance.\n§2. (struck out) Cleanup costs more than it earns; pause until conditions improve.\n§2a. AMENDED: Restoration is an asset. Clean ground, living plants and clear water are entered in the asset column.\n§3. Every seed is a deposit. Deposits are to be delivered, not disposed of.\n§4. Drone fleet reassigned: DISPOSAL -> DELIVERY.\n§5. Thank you for your patience.\n\nSigned: THE LEDGER (reluctantly, then less reluctantly)\nWitness: WREN, Cradle caretaker\nWitness: LM-1 (left a small oil smudge)"}
+}

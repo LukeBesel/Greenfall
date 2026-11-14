@@ -1,0 +1,157 @@
+{
+  "_doc": "Junk types. value = Cubes per compartment unit. cube_color = dominant color a bale shows for this material (muted, real). models: Poly Haven ids with vol (compartment units), w (spawn weight within the type), lie (chance to lie on its side), s (scale jitter range).",
+  "types": [
+    {"id": "metal", "name": "Scrap Metal", "value": 1.0, "cube_color": "#8a7f74", "flecks": "#b5652f", "weight": 1.2,
+     "models": [
+       {"id": "can_rusted", "vol": 0.35, "w": 3.0, "lie": 0.7},
+       {"id": "russian_food_cans_01", "vol": 0.5, "w": 1.5, "lie": 0.2},
+       {"id": "oil_tin", "vol": 0.6, "w": 1.2, "lie": 0.5},
+       {"id": "lubricant_spray", "vol": 0.3, "w": 1.5, "lie": 0.8},
+       {"id": "spray_paint_bottles", "vol": 0.5, "w": 1.0, "lie": 0.3},
+       {"id": "metal_jerrycan", "vol": 1.8, "w": 0.8, "lie": 0.5},
+       {"id": "rusted_wheel_rim_01", "vol": 2.2, "w": 0.5, "lie": 0.9}
+     ]},
+    {"id": "plastic", "name": "Plastic", "value": 0.6, "cube_color": "#a9aca5", "flecks": "#d9c45a", "weight": 1.6,
+     "models": [
+       {"id": "plastic_bottle_gallon", "vol": 0.9, "w": 2.0, "lie": 0.7},
+       {"id": "bleach_bottle", "vol": 0.6, "w": 2.0, "lie": 0.7},
+       {"id": "multi_cleaner_bottle", "vol": 0.5, "w": 1.5, "lie": 0.7},
+       {"id": "multi_cleaner_5_litre", "vol": 1.0, "w": 1.0, "lie": 0.5},
+       {"id": "drain_cleaner", "vol": 0.5, "w": 1.2, "lie": 0.7},
+       {"id": "all_purpose_cleaner", "vol": 0.5, "w": 1.2, "lie": 0.7},
+       {"id": "plastic_jerrycan", "vol": 1.6, "w": 0.8, "lie": 0.4},
+       {"id": "trashbag", "vol": 1.4, "w": 1.6, "lie": 0.0},
+       {"id": "plastic_crate_01", "vol": 2.0, "w": 0.6, "lie": 0.3},
+       {"id": "WetFloorSign_01", "vol": 1.2, "w": 0.4, "lie": 0.8}
+     ]},
+    {"id": "glass", "name": "Glass", "value": 0.85, "cube_color": "#5f7a5e", "flecks": "#a9c9c0", "weight": 0.7,
+     "models": [
+       {"id": "wine_bottles_01", "vol": 1.2, "w": 1.0, "lie": 0.85},
+       {"id": "jug_01", "vol": 0.8, "w": 1.0, "lie": 0.6}
+     ]},
+    {"id": "rubber", "name": "Rubber", "value": 0.75, "cube_color": "#2e2c2b", "flecks": "#5a5450", "weight": 0.7,
+     "models": [
+       {"id": "old_tyre", "vol": 3.0, "w": 2.0, "lie": 0.85},
+       {"id": "rubber_boots", "vol": 0.9, "w": 1.0, "lie": 0.5},
+       {"id": "rubber_duck_toy", "vol": 0.2, "w": 0.3, "lie": 0.3},
+       {"id": "dirty_football", "vol": 0.8, "w": 0.8, "lie": 0.0}
+     ]},
+    {"id": "electronics", "name": "Electronics", "value": 1.6, "cube_color": "#4a5a4c", "flecks": "#c8a24a", "weight": 0.45,
+     "models": [
+       {"id": "circuit_board", "vol": 0.3, "w": 2.0, "lie": 0.0},
+       {"id": "boombox", "vol": 1.5, "w": 1.0, "lie": 0.3},
+       {"id": "classic_laptop", "vol": 1.0, "w": 0.8, "lie": 0.2},
+       {"id": "Television_01", "vol": 3.5, "w": 0.5, "lie": 0.4},
+       {"id": "vintage_microwave", "vol": 3.0, "w": 0.4, "lie": 0.2}
+     ]},
+    {"id": "paper", "name": "Paper & Fabric", "value": 0.5, "cube_color": "#8c7a5c", "flecks": "#b9a98a", "weight": 0.9,
+     "models": [
+       {"id": "cardboard_box_01", "vol": 1.0, "w": 2.0, "lie": 0.3},
+       {"id": "cement_bag", "vol": 1.2, "w": 1.0, "lie": 0.0},
+       {"id": "compost_bag_02", "vol": 1.2, "w": 1.0, "lie": 0.0},
+       {"id": "garden_gloves_01", "vol": 0.2, "w": 1.0, "lie": 0.0},
+       {"id": "long_life_food", "vol": 0.4, "w": 1.0, "lie": 0.3}
+     ]}
+  ],
+  "landmarks": [
+    {"id": "covered_car", "count": 3},
+    {"id": "concrete_road_barrier", "count": 6},
+    {"id": "exterior_aircon_unit", "count": 3},
+    {"id": "electric_stove", "count": 3},
+    {"id": "Barrel_01", "count": 8},
+    {"id": "metal_trash_can", "count": 4},
+    {"id": "propane_tank", "count": 3},
+    {"id": "plastic_monobloc_chair_01", "count": 4},
+    {"id": "dead_tree_trunk", "count": 4}
+  ],
+  "biomes_doc": "Wilderness districts (hubs outside cities) take the set for their planet biome. swap: chance a piece trades its model for one from models[type] (same junk type, so cubes and saves stay the same); shore/shore_swap: the same for hexes next to water. landmarks replace the default list. ground_tint = [r, g, b, amount] (dirt and clean ground lean to this colour), grass_tint = [r, g, b] (restored grass), coat = [r, g, b, a] (a sand/frost/moss film over the big wrecks), hills = [r, g, b] tint for the horizon dunes/ridges, horizon = props scattered on them.",
+  "biomes": {
+    "rustlands": {"name": "Rustlands", "swap": 0.4,
+      "models": {
+        "metal": [{"id": "rusted_wheel_rim_02", "vol": 2.2, "w": 1.5, "lie": 0.9}, {"id": "tire_pump", "vol": 0.8, "w": 1.0, "lie": 0.6}, {"id": "rusted_spade_01", "vol": 0.7, "w": 1.2, "lie": 0.95}, {"id": "hand_truck", "vol": 2.0, "w": 0.6, "lie": 0.85}, {"id": "metal_toolbox", "vol": 1.0, "w": 0.8, "lie": 0.3}],
+        "rubber": [{"id": "old_tyre", "vol": 3.0, "w": 3.0, "lie": 0.9}],
+        "paper": [{"id": "wooden_crate_02", "vol": 2.0, "w": 1.0, "lie": 0.2}]
+      },
+      "shore_swap": 0.5, "shore": {"rubber": [{"id": "rubber_boots", "vol": 0.9, "w": 1.0, "lie": 0.6}], "plastic": [{"id": "plastic_crate_01", "vol": 2.0, "w": 1.0, "lie": 0.3}]},
+      "landmarks": [{"id": "old_drill_press", "count": 3}, {"id": "old_military_compressor", "count": 3}, {"id": "tree_stump_01", "count": 6}, {"id": "dead_tree_trunk", "count": 6}, {"id": "covered_car", "count": 2}, {"id": "Barrel_01", "count": 5}, {"id": "propane_tank", "count": 2}],
+      "ground_tint": [0.6, 0.47, 0.33, 0.3], "grass_tint": [0.92, 1.05, 0.82], "coat": [0.45, 0.25, 0.12, 0.18], "hills": [0.82, 0.68, 0.55],
+      "horizon": ["tree_stump_01", "dead_tree_trunk", "old_tyre", "old_drill_press", "Barrel_01", "rusted_wheel_rim_02"]},
+    "dust_dunes": {"name": "Dust Dunes", "swap": 0.35,
+      "models": {
+        "metal": [{"id": "rusted_wheel_rim_02", "vol": 2.2, "w": 2.0, "lie": 0.9}, {"id": "rusted_wheel_rim_01", "vol": 2.2, "w": 1.5, "lie": 0.9}, {"id": "metal_jerrycan", "vol": 1.8, "w": 1.5, "lie": 0.7}, {"id": "barrel_03", "vol": 2.4, "w": 0.6, "lie": 0.7}],
+        "plastic": [{"id": "plastic_jerrycan", "vol": 1.6, "w": 2.0, "lie": 0.6}, {"id": "plastic_bottle_gallon", "vol": 0.9, "w": 1.0, "lie": 0.8}],
+        "rubber": [{"id": "old_tyre", "vol": 3.0, "w": 2.0, "lie": 0.95}]
+      },
+      "landmarks": [{"id": "covered_car", "count": 8}, {"id": "concrete_road_barrier", "count": 4}, {"id": "barrel_03", "count": 5}, {"id": "propane_tank", "count": 3}, {"id": "dead_tree_trunk", "count": 4}],
+      "ground_tint": [0.98, 0.8, 0.52, 0.62], "grass_tint": [1.05, 1.0, 0.72], "coat": [0.86, 0.7, 0.46, 0.45], "hills": [1.25, 1.02, 0.72],
+      "horizon": ["covered_car", "old_tyre", "barrel_03", "concrete_road_barrier", "metal_jerrycan"]},
+    "neon_coast": {"name": "Neon Coast", "swap": 0.3,
+      "models": {
+        "plastic": [{"id": "plastic_crate_01", "vol": 2.0, "w": 1.5, "lie": 0.3}, {"id": "plastic_bottle_gallon", "vol": 0.9, "w": 2.0, "lie": 0.8}],
+        "rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 1.5, "lie": 0.95}, {"id": "rubber_duck_toy", "vol": 0.2, "w": 1.5, "lie": 0.3}, {"id": "rubber_boots", "vol": 0.9, "w": 1.0, "lie": 0.6}],
+        "paper": [{"id": "wooden_crate_02", "vol": 2.0, "w": 1.5, "lie": 0.25}]
+      },
+      "shore_swap": 0.6, "shore": {"rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 2.0, "lie": 0.95}, {"id": "rubber_duck_toy", "vol": 0.2, "w": 1.0, "lie": 0.3}], "plastic": [{"id": "plastic_crate_01", "vol": 2.0, "w": 1.0, "lie": 0.3}], "paper": [{"id": "wooden_crate_02", "vol": 2.0, "w": 1.0, "lie": 0.25}], "metal": [{"id": "barrel_03", "vol": 2.4, "w": 1.0, "lie": 0.8}]},
+      "landmarks": [{"id": "ocean_buoy", "count": 5}, {"id": "wooden_crate_02", "count": 4}, {"id": "Barrel_01", "count": 3}, {"id": "covered_car", "count": 1}, {"id": "plastic_monobloc_chair_01", "count": 4}],
+      "ground_tint": [0.97, 0.88, 0.68, 0.5], "grass_tint": [1.0, 1.05, 0.8], "coat": [0.92, 0.86, 0.72, 0.25], "hills": [1.2, 1.08, 0.86],
+      "horizon": ["ocean_buoy", "wooden_crate_02", "lifebuoy", "Barrel_01", "plastic_crate_01"]},
+    "frostcap": {"name": "Frostcap", "swap": 0.35,
+      "models": {
+        "metal": [{"id": "metal_toolbox", "vol": 1.0, "w": 1.5, "lie": 0.4}, {"id": "propane_tank", "vol": 2.0, "w": 0.6, "lie": 0.8}, {"id": "tire_pump", "vol": 0.8, "w": 0.8, "lie": 0.6}],
+        "rubber": [{"id": "rubber_boots", "vol": 0.9, "w": 2.0, "lie": 0.6}],
+        "paper": [{"id": "wooden_crate_02", "vol": 2.0, "w": 1.0, "lie": 0.2}]
+      },
+      "landmarks": [{"id": "old_military_compressor", "count": 4}, {"id": "propane_tank", "count": 4}, {"id": "Barrel_01", "count": 4}, {"id": "dead_tree_trunk", "count": 5}, {"id": "covered_car", "count": 2}],
+      "ground_tint": [0.86, 0.92, 1.0, 0.55], "grass_tint": [0.85, 1.0, 0.95], "coat": [0.92, 0.96, 1.0, 0.4], "hills": [1.35, 1.4, 1.5],
+      "horizon": ["dead_tree_trunk", "old_military_compressor", "Barrel_01", "covered_car"]},
+    "fungal_marsh": {"name": "Fungal Marsh", "swap": 0.35,
+      "models": {
+        "metal": [{"id": "barrel_03", "vol": 2.4, "w": 2.0, "lie": 0.7}, {"id": "Barrel_01", "vol": 2.6, "w": 0.8, "lie": 0.7}],
+        "rubber": [{"id": "rubber_boots", "vol": 0.9, "w": 2.0, "lie": 0.6}, {"id": "old_tyre", "vol": 3.0, "w": 1.0, "lie": 0.9}]
+      },
+      "landmarks": [{"id": "Barrel_01", "count": 6}, {"id": "barrel_03", "count": 6}, {"id": "tree_stump_01", "count": 5}, {"id": "dead_tree_trunk", "count": 5}],
+      "ground_tint": [0.42, 0.5, 0.36, 0.45], "grass_tint": [0.8, 1.05, 0.85], "coat": [0.3, 0.42, 0.22, 0.25], "hills": [0.7, 0.8, 0.62],
+      "horizon": ["tree_stump_01", "dead_tree_trunk", "barrel_03", "Barrel_01"]},
+    "dust_flats": {"name": "Dust Flats", "swap": 0.45,
+      "models": {
+        "metal": [{"id": "rusted_wheel_rim_01", "vol": 2.2, "w": 1.5, "lie": 0.9}, {"id": "metal_jerrycan", "vol": 1.8, "w": 1.5, "lie": 0.7}, {"id": "Barrel_01", "vol": 2.4, "w": 0.8, "lie": 0.7}, {"id": "small_lpg_tank", "vol": 2.0, "w": 0.5, "lie": 0.85}],
+        "plastic": [{"id": "plastic_jerrycan", "vol": 1.6, "w": 2.0, "lie": 0.6}, {"id": "plastic_bottle_gallon", "vol": 0.9, "w": 1.5, "lie": 0.8}, {"id": "jug_01", "vol": 2.4, "w": 0.5, "lie": 0.5}],
+        "electronics": [{"id": "circuit_board", "vol": 0.3, "w": 3.0, "lie": 0.0}, {"id": "classic_laptop", "vol": 1.0, "w": 1.0, "lie": 0.2}],
+        "rubber": [{"id": "old_tyre", "vol": 3.0, "w": 2.0, "lie": 0.95}]
+      },
+      "landmarks": [{"id": "covered_car", "count": 6}, {"id": "dead_quiver_trunk", "count": 5}, {"id": "namaqualand_rocks_01", "count": 6}, {"id": "barrel_03", "count": 4}, {"id": "concrete_road_barrier", "count": 3}],
+      "ground_tint": [1.0, 0.82, 0.55, 0.66], "grass_tint": [1.06, 1.0, 0.7], "coat": [0.9, 0.74, 0.5, 0.5], "hills": [1.3, 1.05, 0.74],
+      "horizon": ["covered_car", "dead_quiver_trunk", "namaqualand_rocks_01", "barrel_03", "old_tyre"]},
+    "frozen_port": {"name": "Frozen Port", "swap": 0.4,
+      "models": {
+        "metal": [{"id": "small_lpg_tank", "vol": 2.0, "w": 1.0, "lie": 0.8}, {"id": "propane_tank", "vol": 2.0, "w": 0.8, "lie": 0.8}, {"id": "metal_toolbox", "vol": 1.0, "w": 1.0, "lie": 0.4}, {"id": "barrel_03", "vol": 2.4, "w": 1.0, "lie": 0.7}],
+        "plastic": [{"id": "multi_cleaner_5_litre", "vol": 2.4, "w": 1.0, "lie": 0.4}, {"id": "plastic_crate_01", "vol": 2.0, "w": 1.5, "lie": 0.3}],
+        "rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 1.0, "lie": 0.95}, {"id": "rubber_boots", "vol": 0.9, "w": 1.5, "lie": 0.6}],
+        "paper": [{"id": "wooden_crate_02", "vol": 2.0, "w": 1.5, "lie": 0.2}]
+      },
+      "shore_swap": 0.6, "shore": {"rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 2.0, "lie": 0.95}], "metal": [{"id": "barrel_03", "vol": 2.4, "w": 1.0, "lie": 0.8}], "plastic": [{"id": "plastic_crate_01", "vol": 2.0, "w": 1.0, "lie": 0.3}]},
+      "landmarks": [{"id": "old_military_compressor", "count": 3}, {"id": "small_lpg_tank", "count": 4}, {"id": "propane_tank", "count": 3}, {"id": "Barrel_01", "count": 4}, {"id": "ocean_buoy", "count": 3}, {"id": "covered_car", "count": 2}],
+      "ground_tint": [0.88, 0.93, 1.0, 0.6], "grass_tint": [0.82, 1.0, 0.95], "coat": [0.93, 0.96, 1.0, 0.5], "hills": [0.95, 1.0, 1.08],
+      "horizon": ["small_lpg_tank", "Barrel_01", "ocean_buoy", "wooden_crate_02", "old_military_compressor"]},
+    "sunken_city": {"name": "Sunken City", "swap": 0.35,
+      "models": {
+        "metal": [{"id": "Barrel_01", "vol": 2.4, "w": 0.5, "lie": 0.8}, {"id": "metal_trash_can", "vol": 2.0, "w": 0.8, "lie": 0.8}],
+        "plastic": [{"id": "plastic_crate_01", "vol": 2.0, "w": 1.5, "lie": 0.3}, {"id": "plastic_jerrycan", "vol": 2.4, "w": 0.6, "lie": 0.5}],
+        "rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 1.5, "lie": 0.95}, {"id": "rubber_boots", "vol": 0.9, "w": 1.0, "lie": 0.6}],
+        "paper": [{"id": "wooden_crate_02", "vol": 2.0, "w": 1.5, "lie": 0.25}]
+      },
+      "shore_swap": 0.6, "shore": {"rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 2.0, "lie": 0.95}, {"id": "rubber_duck_toy", "vol": 0.2, "w": 1.0, "lie": 0.3}], "plastic": [{"id": "plastic_crate_01", "vol": 2.0, "w": 1.0, "lie": 0.3}], "metal": [{"id": "metal_trash_can", "vol": 2.4, "w": 1.0, "lie": 0.8}]},
+      "landmarks": [{"id": "ocean_buoy", "count": 4}, {"id": "covered_car", "count": 3}, {"id": "metal_trash_can", "count": 3}, {"id": "concrete_road_barrier", "count": 3}],
+      "ground_tint": [0.62, 0.6, 0.52, 0.45], "grass_tint": [0.85, 1.05, 0.88], "coat": [0.35, 0.4, 0.32, 0.35], "hills": [0.75, 0.8, 0.78],
+      "horizon": ["ocean_buoy", "wooden_crate_02", "lifebuoy", "Barrel_01"]},
+    "cradle_landing": {"name": "Cradle Returns", "swap": 0.5,
+      "models": {
+        "metal": [{"id": "metal_toolbox", "vol": 1.0, "w": 1.0, "lie": 0.3}, {"id": "small_lpg_tank", "vol": 2.0, "w": 1.0, "lie": 0.85}, {"id": "propane_tank", "vol": 2.0, "w": 0.8, "lie": 0.8}],
+        "electronics": [{"id": "circuit_board", "vol": 0.3, "w": 2.0, "lie": 0.0}, {"id": "classic_laptop", "vol": 1.0, "w": 1.2, "lie": 0.2}, {"id": "boombox", "vol": 1.5, "w": 0.6, "lie": 0.3}],
+        "plastic": [{"id": "plastic_monobloc_chair_01", "vol": 2.4, "w": 1.0, "lie": 0.4}]
+      },
+      "landmarks": [{"id": "old_military_compressor", "count": 3}, {"id": "portable_generator", "count": 3}, {"id": "utility_box_01", "count": 3}, {"id": "concrete_road_barrier_02", "count": 4}],
+      "ground_tint": [0.92, 0.93, 0.9, 0.35], "grass_tint": [0.95, 1.08, 0.9], "coat": [0.92, 0.93, 0.95, 0.2], "hills": [0.8, 1.0, 0.78],
+      "horizon": ["utility_box_01", "portable_generator", "concrete_road_barrier_02", "old_military_compressor"]}
+  }
+}

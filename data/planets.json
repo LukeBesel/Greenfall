@@ -1,0 +1,679 @@
+{
+  "_doc": "Campaign planets, keyed by planet id (see planet/planets/planet_envs.gd). env: script with static apply(world, field, kind) and optional dev_hub / prepare_field / dress_view. sky: the env's own sky preset values; fog / sun / ambient: daytime light (night is the env's own); palette: key colours; junk_tint: the frost/dust coat on junk; music_mood: key for the sound helper. Suns come from data/solar_system.json (SolarSystem.suns_for) when present; sun here is the fallback. Optional: junk_biome (Ochre: its biome set is registered by the env), no_lakes (no planet lakes in the field), pieces_mult (junk per hex).",
+  "_default": {
+    "_doc": "[v7planet] What every planet gets when its own block leaves a key out (core/planet_cfg.gd, docs/NEW_PLANET.md). A planet block repeats only what it changes; dictionaries merge key by key, lists replace. site_kit: how hubs are built, towns (VerdanceSite: towns, hinterland, harbours, the start yard; hubs[] names each town's look and landmark) or prefab (the planet's own site scripts in sites); an entry that lists sites is prefab unless it says otherwise. hinterland: the land between hub towns (towns kit only). look.ground: the globe's ground textures (data/assets.json Poly Haven ids) and colour multipliers ([r, g, b], 1 = as is) for trashed ground (dirt), cleaned ground (clean) and grass. dev: true marks a test planet, reachable only by --orbit-planet=<id>, never in data/homeward.json. hub_steps: shared (the card's hub steps are the ones in data/objectives.json and data/goals.json, written for Verdance) or generated (made from this planet's hubs[], story/planet_steps.gd).",
+    "site_kit": "towns",
+    "hinterland": true,
+    "hub_steps": "generated",
+    "globe": {"radius": 1.0, "frequency": 128, "hub_count": 10},
+    "look": {
+      "ground": {
+        "dirt_tex": "dry_ground_rocks", "rubble_tex": "rubble", "clean_tex": "dirty_concrete", "grass_tex": "sparse_grass",
+        "dirt": [1.0, 1.0, 1.0], "clean": [1.0, 1.0, 1.0], "grass": [1.0, 1.0, 1.0]
+      }
+    },
+    "hub_defaults": {
+      "main_path": 6,
+      "clean_hexes": 8,
+      "outposts": 0,
+      "level_at": [0.2, 0.45, 0.75],
+      "hop": {"leg_s": 2.8, "leg_m": 260.0, "cruise_alt_m": 45.0, "fade_s": 0.6, "skip_after_s": 0.35, "approach_pitch": -0.16, "approach_dist_m": 20.0, "title_in_s": 0.5, "title_hold_s": 4.0, "title_out_s": 0.9, "arrive_sting": "motif"}
+    }
+  },
+  "verdance": {
+    "name": "Verdance",
+    "hub_steps": "shared",
+    "globe": {"radius": 1.0, "frequency": 128, "hub_count": 10},
+    "hub_defaults": {
+      "_doc": "[v6hubs] Every hub's purpose (planet/sites/hub_plan.gd, hub_purpose.gd; docs/ADJUSTING.md). main_path: how many hubs (the start hub included) are the planet's main path; the rest are optional extras. clean_hexes: hexes to clean at a far hub before its landmark can be woken ([v6pace] 4 on Verdance: with the first tools a bot run took 25 bot minutes for 8). outposts: outposts to repair there first (0 = none). level_at: the hub's clean share at which a woken hub rises to level 3, 4 and 5 (the wake itself is level 2). A hub's own chain overrides the default chain. The wake price is data/hub.json far_hub_cost (Hub.far_cost).",
+      "main_path": 6,
+      "clean_hexes": 4,
+      "outposts": 0,
+      "level_at": [0.2, 0.45, 0.75],
+    "hop": {"_doc": "[v6hubs] The rocket hop between hubs (planet/sites/hub_hop.gd) and the arrival (hub_purpose.gd show_title). leg_s: seconds of each visible leg (out, then in); leg_m: ground covered per leg; cruise_alt_m: flight height; fade_s: the sky veil's fade while the town builds; skip_after_s: E / jump skips the flight after this; approach_pitch / approach_dist_m: the camera on the way in. title_in_s / title_hold_s / title_out_s: the town's name, type and why we came; arrive_sting: the music sting on the first arrival at a hub ('' for none).", "leg_s": 2.8, "leg_m": 260.0, "cruise_alt_m": 45.0, "fade_s": 0.6, "skip_after_s": 0.35, "approach_pitch": -0.16, "approach_dist_m": 20.0, "title_in_s": 0.5, "title_hold_s": 4.0, "title_out_s": 0.9, "arrive_sting": "motif"}
+    },
+    "hubs": [
+      {"_doc": "[v6hubs] One entry per hub. site: SiteManager index (0 = start). order: place on the main path. town: the town's look (oldtown, downtown, suburb, industrial; VerdanceSite builds it, except where the lake reaches into the town, which is always a harbour). landmark.kind: StreetDressing landmark (water_tower, crane, ferris_wheel, radio_mast, smokestack, old_bus, windpump, lighthouse). desc: the picker's 'why go'. piece: the rocket piece the wake gives (flags rocket_piece_<id>, rocket_pieces). gift: cubes / parts / seeds / research (a node granted free) / design (a Lumi design) / flag. boosts (optional, none on Verdance: the per-hub multiplier is data/hub.json far_hub.sell_growth): stat multipliers while the hub is woken, [{stat, mult, text}] (Economy.stat ids; '*.speed' = every robot type). hint: the arrival line. chain: steps {do: clean, hexes} / {do: outposts, count} / {do: wake}.",
+       "site": 0, "order": 1, "id": "landing_yard", "home": true, "name": "Landing Yard", "town": "oldtown",
+       "landmark": {"kind": "water_tower", "name": "Water Tower"},
+       "desc": "Home. The pod, the workbench and your first robots."},
+      {"site": 9, "order": 2, "id": "garden_row", "name": "Garden Row", "town": "suburb",
+       "landmark": {"kind": "windpump", "name": "Windpump"},
+       "desc": "The Settlers' seed store: seeds to take to the next world.",
+       "piece": {"id": "seeds", "name": "Seed Stock"},
+       "gift": {"seeds": 30, "research": "wild_mint"},
+       "hint": "The old gardens. The Windpump still holds a sealed seed store."},
+      {"site": 7, "order": 3, "id": "gantry_works", "name": "Gantry Works", "town": "industrial",
+       "landmark": {"kind": "crane", "name": "Gantry Crane"},
+       "desc": "Hull plates, so the rocket can stand the cold of space.",
+       "piece": {"id": "plates", "name": "Hull Plates"},
+       "gift": {"parts": 150},
+       "hint": "The shipyard. The Gantry Crane can lift the hull plates the rocket needs.",
+       "chain": [{"do": "clean", "hexes": 4}, {"do": "outposts", "count": 1}, {"do": "wake"}]},
+      {"site": 8, "order": 4, "id": "signal_heights", "name": "Signal Heights", "town": "downtown",
+       "landmark": {"kind": "radio_mast", "name": "Signal Mast"},
+       "desc": "The Settlers' star chart: it shows where the rocket can fly.",
+       "piece": {"id": "chart", "name": "Star Chart"},
+       "gift": {"cubes": 12000},
+       "hint": "The city centre. The Signal Mast kept the star chart of every route out."},
+      {"site": 2, "order": 5, "id": "fairground", "name": "Fairground", "town": "oldtown",
+       "landmark": {"kind": "ferris_wheel", "name": "Big Wheel"},
+       "desc": "A power cell that lasts a long flight. A new look for Lumi.",
+       "piece": {"id": "cell", "name": "Power Cell"},
+       "gift": {"design": "pixel"},
+       "hint": "The fairground. The Big Wheel's motor ran on a power cell that never ran down."},
+      {"site": 4, "order": 6, "id": "stack_works", "name": "Stack Works", "town": "industrial",
+       "landmark": {"kind": "smokestack", "name": "Tall Stack"},
+       "desc": "Fuel for the rocket: the last piece.",
+       "piece": {"id": "fuel", "name": "Rocket Fuel"},
+       "gift": {"parts": 400},
+       "hint": "The fuel works. The tanks under the Tall Stack are still full."},
+      {"site": 5, "order": 7, "id": "bus_depot", "name": "Bus Depot", "town": "oldtown",
+       "landmark": {"kind": "old_bus", "name": "Last Bus"},
+       "desc": "An old station off the route. Wake it for Parts.", "gift": {"parts": 250}},
+      {"site": 1, "order": 8, "id": "crane_court", "name": "Crane Court", "town": "downtown",
+       "landmark": {"kind": "tower_crane", "name": "Tower Crane"},
+       "desc": "An old station off the route. Wake it for Cubes.", "gift": {"cubes": 20000}},
+      {"site": 3, "order": 9, "id": "tank_hill", "name": "Tank Hill", "town": "suburb",
+       "landmark": {"kind": "water_tower", "name": "Hill Tank"},
+       "desc": "An old station off the route. Wake it for Seeds.", "gift": {"seeds": 120}},
+      {"site": 6, "order": 10, "id": "lake_light", "name": "Lake Light", "town": "suburb",
+       "landmark": {"kind": "lighthouse", "name": "Lighthouse"},
+       "desc": "An old station off the route. Wake it for Cubes.", "gift": {"cubes": 30000}}
+    ]
+  },
+  "rime": {
+    "globe": {"radius": 1.6, "frequency": 205, "hub_count": 16},
+    "name": "Rime",
+    "world_type": "ice_moon",
+    "tagline": "An ice moon, core-mined until it froze.",
+    "env": "res://planet/planets/rime/env.gd",
+    "biome": "rime",
+    "sky": {
+      "shader": "res://planet/planets/rime/rime_sky.gdshader",
+      "zenith": [0.004, 0.008, 0.026],
+      "horizon": [0.1, 0.19, 0.32],
+      "stars_day": 0.8,
+      "giant_dir": [-0.36, 0.38, -0.85],
+      "giant_radius_deg": 6.5,
+      "ring_tilt_deg": 0.0,
+      "aurora": 0.55,
+      "giant_fade": 0.18,
+      "night_zenith": [0.004, 0.008, 0.022]
+    },
+    "fog": {
+      "color": [0.55, 0.68, 0.9],
+      "density": 0.0006,
+      "aerial": 0.35,
+      "height": 1.6,
+      "height_density": 0.006
+    },
+    "sun": {
+      "color": [0.95, 0.96, 1.0],
+      "energy": 1.9,
+      "size_mult": 0.32,
+      "energy_mult": 0.62
+    },
+    "ambient": {
+      "color": [0.6, 0.72, 0.92],
+      "energy": 1.0,
+      "sky_contribution": 0.4
+    },
+    "palette": {
+      "ice": [0.3, 0.55, 0.78],
+      "ice_deep": [0.06, 0.2, 0.42],
+      "snow": [0.93, 0.96, 1.0],
+      "crevasse": [0.3, 0.7, 1.0],
+      "rust": [0.42, 0.24, 0.16],
+      "ledger_paint": [0.86, 0.42, 0.12],
+      "moss": [0.3, 0.42, 0.17],
+      "pool": [0.16, 0.62, 0.66],
+      "lantern": [1.0, 0.78, 0.5],
+      "future_line": [0.62, 0.9, 1.0]
+    },
+    "junk_tint": [0.86, 0.93, 1.0, 0.6],
+    "music_mood": "rime_ice",
+    "night": {
+      "giantshine": 1.05,
+      "ambient": 1.0,
+      "exposure": 1.95,
+      "ambient_color": [0.4, 0.5, 0.74]
+    },
+    "sites": {
+      "_doc": "[p_seas] Placeable hub-site prefabs (planet/planets/rime/rime_site.gd): RimeHubSite.place(id, root, stage 0-2, restoration 0-1, {radius, seed}); a local ice patch about 80-90 m across (walkable trimesh, PROP colliders on every structure). Preview: res://planet/planets/rime/site_preview.tscn -- --site=<id>.",
+      "script": "res://planet/planets/rime/rime_site.gd",
+      "hub_camp": {"kind": "hub", "name": "Drill Camp", "size_m": 88, "desc": "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."},
+      "derrick": {"kind": "landmark", "name": "Frozen Derrick", "size_m": 84, "desc": "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."},
+      "borehole": {"kind": "landmark", "name": "The Borehole", "size_m": 92, "desc": "The shaft under its headframe and winder house; cold mist, then a warm glow."},
+      "hot_springs": {"kind": "landmark", "name": "Hot Springs", "size_m": 80, "desc": "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."}
+    }
+  },
+  "ochre": {
+    "globe": {"radius": 0.85, "frequency": 109, "hub_count": 8},
+    "id": "ochre",
+    "name": "Ochre",
+    "world_type": "desert",
+    "order": 1,
+    "junk_biome": "ochre_pit",
+    "prefer_biome": "dust_dunes",
+    "music_mood": "desert_heat",
+    "sky": {
+      "horizon_ruined": [0.96, 0.72, 0.46],
+      "horizon_restored": [1.0, 0.78, 0.48],
+      "zenith_ruined": [0.36, 0.5, 0.74],
+      "zenith_restored": [0.2, 0.45, 0.9],
+      "haze": [0.98, 0.6, 0.3],
+      "night_zenith": [0.02, 0.025, 0.06],
+      "night_horizon": [0.12, 0.07, 0.07],
+      "sun_separation_deg": 24.0,
+      "sun_a_size": 2.0,
+      "sun_b_size": 1.15,
+      "halo": 0.35,
+      "energy": 0.75
+    },
+    "fog": {
+      "color_ruined": [0.86, 0.6, 0.38],
+      "color_restored": [0.7, 0.76, 0.86],
+      "density_ruined": 0.00035,
+      "density_restored": 0.00012,
+      "aerial": 0.12,
+      "height_fog": [-14.0, 0.0008]
+    },
+    "sun": {
+      "color": [1.0, 0.94, 0.8],
+      "energy": 3.4,
+      "b_color": [1.0, 0.6, 0.36],
+      "b_energy": 0.9
+    },
+    "ambient": {
+      "energy": 0.7,
+      "color": [1.0, 0.88, 0.7]
+    },
+    "palette": {
+      "ochre": [0.86, 0.5, 0.19],
+      "terracotta": [0.68, 0.24, 0.12],
+      "cream": [0.94, 0.83, 0.62],
+      "plum": [0.4, 0.2, 0.23],
+      "salt": [0.8, 0.77, 0.7],
+      "oasis": [0.1, 0.55, 0.54],
+      "leaf": [0.36, 0.55, 0.22],
+      "ledger_yellow": [0.86, 0.62, 0.12],
+      "line": [0.78, 0.94, 1.0]
+    },
+    "junk_tint": [0.82, 0.58, 0.36, 0.45],
+    "ground_tint": [0.8, 0.55, 0.32, 0.62],
+    "env": "res://planet/planets/ochre/env.gd",
+    "biome": "ochre_pit",
+    "tagline": "The Ledger's first open-pit strip mine, closest to the twin suns.",
+    "no_lakes": true,
+    "pieces_mult": 1.6,
+    "exposure": 0.82,
+    "sites": {
+      "script": "res://planet/planets/ochre/sites.gd",
+      "api": "OchreSites.build(id, root, stage 1..5, restoration 0..1) -> Node3D, local +Y up, origin at the site centre",
+      "list": {
+        "hub_base": {
+          "name": "Ledger Haul Depot",
+          "diameter_m": 92
+        },
+        "toppled_excavator": {
+          "name": "The Fallen Wheel",
+          "diameter_m": 96
+        },
+        "pit_fragment": {
+          "name": "Bench Cut",
+          "diameter_m": 100
+        },
+        "oasis": {
+          "name": "Spring Terraces",
+          "diameter_m": 80
+        }
+      }
+    }
+  },
+  "tidewell": {
+    "globe": {"radius": 1.3, "frequency": 166, "hub_count": 12},
+    "name": "Tidewell",
+    "world_type": "ocean_world",
+    "env": "res://planet/planets/tidewell/env.gd",
+    "tagline": "An ocean world. The Ledger's dredging rigs still stand in the shallows.",
+    "district": {
+      "id": "tidewell",
+      "name": "Tidewell",
+      "biome": "tidewell",
+      "dressing_biome": "neon_coast",
+      "layout": "wild",
+      "radius": 4,
+      "pieces_mult": 0.9,
+      "float_mult": 2.3,
+      "vol_mult": 1.35,
+      "value_mult": 6.0,
+      "cost_mult": 6.0,
+      "litter_mult": 0.35,
+      "ground_layers": {
+        "4": "damp_sand",
+        "5": "sand_01",
+        "6": "damp_sand"
+      },
+      "fx": [
+        0.25,
+        0.0,
+        0.6,
+        0.0
+      ],
+      "skip_horizon": true
+    },
+    "sky": {
+      "ruined": {
+        "fog": [
+          0.6,
+          0.66,
+          0.64
+        ],
+        "fog_amt": 0.45,
+        "fog_mult": 0.8,
+        "rayleigh": [
+          0.3,
+          0.45,
+          0.62
+        ],
+        "mie": [
+          0.82,
+          0.84,
+          0.8
+        ],
+        "sky_amt": 0.75,
+        "sat": 0.96,
+        "exposure": 1.0,
+        "fog_density": 0.0006,
+        "vol_density": 0.0009,
+        "turbidity": 3.6,
+        "mie_coef": 0.0035,
+        "fog_sky": 0.15,
+        "aerial": 0.4,
+        "contrast": 1.08,
+        "sun": [
+          0.95,
+          0.93,
+          0.86
+        ],
+        "height_fog": [
+          1.0,
+          0.006
+        ]
+      },
+      "restored": {
+        "fog": [
+          0.7,
+          0.86,
+          0.98
+        ],
+        "fog_amt": 0.5,
+        "fog_mult": 0.5,
+        "rayleigh": [
+          0.16,
+          0.44,
+          1.0
+        ],
+        "mie": [
+          1.0,
+          0.96,
+          0.9
+        ],
+        "sky_amt": 0.7,
+        "sat": 1.06,
+        "exposure": 1.02,
+        "fog_density": 0.0003,
+        "vol_density": 0.0005,
+        "turbidity": 2.0,
+        "mie_coef": 0.0018,
+        "fog_sky": 0.06,
+        "aerial": 0.6,
+        "contrast": 1.08,
+        "sun": [
+          1.0,
+          0.96,
+          0.88
+        ],
+        "height_fog": [
+          0.8,
+          0.004
+        ]
+      }
+    },
+    "fog": {
+      "ruined_density": 0.0006,
+      "restored_density": 0.0003,
+      "height_fog": [
+        1.0,
+        0.006
+      ]
+    },
+    "sun": {
+      "color": [
+        1.0,
+        0.95,
+        0.85
+      ],
+      "pitch": -55.0,
+      "yaw": -35.0,
+      "orbit": "mid"
+    },
+    "ambient": {
+      "energy": 1.2,
+      "color": [
+        0.62,
+        0.78,
+        0.86
+      ]
+    },
+    "palette": {
+      "deep": [
+        0.01,
+        0.1,
+        0.18
+      ],
+      "shallow": [
+        0.06,
+        0.5,
+        0.52
+      ],
+      "lagoon": [
+        0.25,
+        0.75,
+        0.7
+      ],
+      "murky": [
+        0.09,
+        0.2,
+        0.17
+      ],
+      "oil": [
+        0.04,
+        0.05,
+        0.05
+      ],
+      "foam": [
+        0.94,
+        0.97,
+        0.98
+      ],
+      "sand": [
+        0.72,
+        0.66,
+        0.52
+      ],
+      "rust": [
+        0.45,
+        0.24,
+        0.13
+      ],
+      "ledger_paint": [
+        0.86,
+        0.62,
+        0.16
+      ],
+      "future_white": [
+        0.93,
+        0.95,
+        0.96
+      ],
+      "light": [
+        0.68,
+        0.92,
+        1.0
+      ]
+    },
+    "junk_tint": [
+      0.36,
+      0.4,
+      0.36,
+      0.55
+    ],
+    "music_mood": "tidewell_swell",
+    "biome": "tidewell",
+    "sites": {
+      "_doc": "Placeable site prefabs for the walkable globe (planet/planets/tidewell/sites.gd): TideSite.place(id, root, stage 0-2, restoration 0-1, {water_radius, seed}); a local flat patch about 60-100 m across, sea level at y = 0.14, no world-origin assumptions. Preview: res://planet/planets/tidewell/site_preview.tscn -- --site=<id>.",
+      "script": "res://planet/planets/tidewell/sites.gd",
+      "hub_raft": {
+        "kind": "hub",
+        "name": "Anchored Raft",
+        "size_m": 92,
+        "desc": "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+      },
+      "hub_stilts": {
+        "kind": "hub",
+        "name": "Stilt Yard",
+        "size_m": 96,
+        "desc": "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+      },
+      "wreck": {
+        "kind": "landmark",
+        "name": "Ore Barge Wreck",
+        "size_m": 100,
+        "desc": "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+      },
+      "dredge_rig": {
+        "kind": "landmark",
+        "name": "Dredge Rig",
+        "size_m": 88,
+        "desc": "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+      },
+      "reef_garden": {
+        "kind": "landmark",
+        "name": "Reef Garden",
+        "size_m": 84,
+        "desc": "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+      },
+      "buoy_field": {
+        "kind": "landmark",
+        "name": "Buoy Field",
+        "size_m": 80,
+        "desc": "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
+      }
+    }
+  },
+  "anvil": {
+    "globe": {"radius": 2.0, "frequency": 256, "hub_count": 20},
+    "id": "anvil",
+    "name": "Anvil",
+    "world_type": "rust",
+    "env": "res://planet/planets/anvil/env.gd",
+    "district_name": "Anvil Foundry Flats",
+    "sky": {
+      "rayleigh": [
+        0.9,
+        0.4,
+        0.25
+      ],
+      "rayleigh_coef": 1.4,
+      "mie": [
+        0.62,
+        0.74,
+        0.98
+      ],
+      "mie_eccentricity": 0.9,
+      "sky_amt": 0.85,
+      "turbidity": 4.0,
+      "mie_coef": 0.004,
+      "ground": [
+        0.42,
+        0.2,
+        0.12
+      ],
+      "sat": 1.15,
+      "exposure": 1.0,
+      "contrast": 1.18
+    },
+    "fog": {
+      "color": [
+        0.5,
+        0.18,
+        0.1
+      ],
+      "amt": 0.7,
+      "mult": 0.35,
+      "aerial": 0.15,
+      "fog_sky": 0.2,
+      "height_fog": [
+        2.0,
+        0.0
+      ]
+    },
+    "sun": {
+      "elev_max_deg": 52,
+      "energy_mult": 0.82,
+      "tint": [
+        1.0,
+        0.93,
+        0.84
+      ],
+      "fallback_size": 0.72,
+      "fallback_b_energy": 0.2,
+      "fallback_sep_deg": 11.0
+    },
+    "ambient": {
+      "energy_mult": 0.95
+    },
+    "restored": {
+      "_doc": "sky/fog targets at full restore: the dust sky clears to a pale terraformed blue",
+      "rayleigh": [
+        0.26,
+        0.5,
+        1.0
+      ],
+      "rayleigh_coef": 2.6,
+      "mie": [
+        1.0,
+        0.88,
+        0.78
+      ],
+      "sky_amt": 0.9,
+      "turbidity": 3.0,
+      "sat": 1.12,
+      "fog": [
+        0.62,
+        0.74,
+        0.92
+      ],
+      "fog_mult": 0.5,
+      "height_fog": 0.002
+    },
+    "palette": {
+      "dust": [
+        0.56,
+        0.2,
+        0.1
+      ],
+      "rock": [
+        0.3,
+        0.11,
+        0.07
+      ],
+      "band": [
+        0.6,
+        0.24,
+        0.12
+      ],
+      "soot": [
+        0.06,
+        0.05,
+        0.045
+      ],
+      "ember": [
+        1.0,
+        0.36,
+        0.12
+      ],
+      "lichen": [
+        0.44,
+        0.54,
+        0.3
+      ],
+      "redleaf": [
+        0.62,
+        0.12,
+        0.1
+      ],
+      "green": [
+        0.3,
+        0.52,
+        0.2
+      ],
+      "line": [
+        1.0,
+        0.88,
+        0.7
+      ]
+    },
+    "junk_tint": [
+      0.5,
+      0.18,
+      0.08,
+      0.55
+    ],
+    "music_mood": "anvil_foundry",
+    "night": {
+      "_doc": "night floor so the play area stays readable (ambient energy, warm ember-tinted fog light)",
+      "ambient_min": 0.85,
+      "fog": [
+        0.32,
+        0.14,
+        0.1
+      ]
+    },
+    "sites": [
+      {
+        "id": "foundry_yard",
+        "kind": "hub",
+        "name": "Foundry Yard",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 96,
+        "clear_core_m": 12,
+        "desc": "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, ember slag tip, buried hauler"
+      },
+      {
+        "id": "foundry_tower",
+        "kind": "landmark",
+        "name": "Ledger Foundry Tower",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 84,
+        "desc": "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+      },
+      {
+        "id": "lava_forge",
+        "kind": "landmark",
+        "name": "Lava Forge",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 92,
+        "desc": "running furnace pouring molten slag down a channel to a pool; ladle crane; cools as restored"
+      },
+      {
+        "id": "ruined_smelter",
+        "kind": "landmark",
+        "name": "Ruined Smelter",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 84,
+        "desc": "collapsed smelter hall frame, tipped and spilled pots, a toppled stack; restored as a planted pergola"
+      }
+    ],
+    "sites_api": "AnvilSites.build(site_root: Node3D, site_id, stage 1..5, restoration 0..1) -> Node3D; local +Y up, locally flat patch at the root's origin"
+  },
+  "testworld": {
+    "_doc": "[v7planet] Dev-only stub planet, data only (docs/NEW_PLANET.md, the worked example). Never shown to players: not in data/homeward.json, reachable only with --orbit-planet=testworld. Half Verdance's size (f 64, about 920 m), two hubs, a red-earth palette, a radio mast at home instead of a water tower. Check: tools/planet_smoke.sh testworld.",
+    "name": "Testworld",
+    "dev": true,
+    "globe": {"radius": 0.5, "frequency": 64, "hub_count": 2},
+    "look": {
+      "ground": {"dirt_tex": "red_laterite_soil_stones", "clean_tex": "sand_01", "dirt": [1.1, 0.85, 0.75], "clean": [1.05, 0.95, 0.85], "grass": [0.9, 1.05, 0.8]}
+    },
+    "hub_defaults": {"main_path": 2, "clean_hexes": 4},
+    "hubs": [
+      {"site": 0, "order": 1, "id": "test_yard", "home": true, "name": "Test Yard", "town": "suburb",
+       "landmark": {"kind": "radio_mast", "name": "Test Mast"}, "desc": "Home on the test planet."},
+      {"site": 1, "order": 2, "id": "test_works", "name": "Test Works", "town": "industrial",
+       "landmark": {"kind": "smokestack", "name": "Test Stack"}, "desc": "The second test hub.",
+       "gift": {"cubes": 100}, "hint": "The test works. Wake the stack."}
+    ]
+  }
+}

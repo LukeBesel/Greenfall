@@ -1,0 +1,117 @@
+name: Build game
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, "claude/**"]
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false  # let a build finish so the rolling "latest" release is published; newer pushes queue
+
+permissions:
+  contents: write  # publish the rolling "latest" release (tools/update-greenfall-mac.sh)
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GODOT_VERSION: 4.7.2
+    steps:
+      - uses: actions/checkout@v4
+
+      # Cache the engine and templates: the download from GitHub releases sometimes times out (wget exit 4).
+      - name: Cache Godot downloads
+        uses: actions/cache@v4
+        with:
+          path: godot-dl
+          key: godot-${{ env.GODOT_VERSION }}
+
+      - name: Install Godot and export templates
+        run: |
+          mkdir -p godot-dl
+          base=https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable
+          for f in Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip Godot_v${GODOT_VERSION}-stable_export_templates.tpz; do
+            [ -s godot-dl/$f ] || wget -q --tries=6 --waitretry=15 --retry-connrefused --timeout=120 -O godot-dl/$f "$base/$f" || { rm -f godot-dl/$f; exit 1; }
+            cp godot-dl/$f .
+          done
+          unzip -q Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
+          mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          unzip -q Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+          mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
+          rm -f *.zip *.tpz
+
+      - name: Import project
+        run: ./godot --headless --path . --import || true
+
+      # [health] Unit tests plus the save/load round trip; fails on a crash at quit (exit code 134).
+      - name: Tests and clean exit
+        run: PATH="$PWD:$PATH" tools/run_tests.sh
+
+      - name: Export Windows and Linux
+        run: |
+          mkdir -p build/windows build/linux build/macos
+          ./godot --headless --path . --export-release "Windows Desktop" build/windows/Greenfall.exe
+          ./godot --headless --path . --export-release "Linux" build/linux/Greenfall.x86_64
+
+      - name: Export macOS
+        continue-on-error: true
+        run: ./godot --headless --path . --export-release "macOS" build/macos/Greenfall.zip
+
+      # [steam] Demo builds: same game with the "demo" feature tag (steam/demo.gd).
+      - name: Export Windows and Linux demo
+        run: |
+          mkdir -p build/demo/windows build/demo/linux build/demo/macos
+          ./godot --headless --path . --export-release "Windows Desktop Demo" build/demo/windows/GreenfallDemo.exe
+          ./godot --headless --path . --export-release "Linux Demo" build/demo/linux/GreenfallDemo.x86_64
+
+      - name: Export macOS demo
+        continue-on-error: true
+        run: ./godot --headless --path . --export-release "macOS Demo" build/demo/macos/GreenfallDemo.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Greenfall-Windows
+          path: build/windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Greenfall-Linux
+          path: build/linux
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Greenfall-macOS
+          path: build/macos
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GreenfallDemo-Windows
+          path: build/demo/windows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GreenfallDemo-Linux
+          path: build/demo/linux
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: GreenfallDemo-macOS
+          path: build/demo/macos
+
+      # One stable place for the newest build: a rolling "latest" pre-release, replaced on every push
+      # to the development branch. tools/update-greenfall-mac.sh downloads from it (no browser, so
+      # macOS never quarantines the app and no "Open Anyway" step is needed).
+      - name: Publish rolling "latest" release
+        if: github.event_name == 'push' && success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release
+          [ -f build/macos/Greenfall.zip ] && cp build/macos/Greenfall.zip release/Greenfall-macOS.zip
+          (cd build/windows && zip -qr ../../release/Greenfall-Windows.zip .)
+          (cd build/linux && zip -qr ../../release/Greenfall-Linux.zip .)
+          cp tools/update-greenfall-mac.sh release/update-greenfall.sh
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest release/* --prerelease --target "$GITHUB_SHA" \
+            --title "Greenfall (latest build)" \
+            --notes "Newest build of ${GITHUB_REF_NAME} at ${GITHUB_SHA::7}. Mac: run update-greenfall.sh to install or update without security prompts."

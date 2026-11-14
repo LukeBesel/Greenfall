@@ -1,0 +1,1 @@
+[l10n-audit] locale=pseudo  untranslated texts on screen: 0
