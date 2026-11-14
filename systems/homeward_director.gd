@@ -56,6 +56,16 @@ func _setup() -> void:
 	tbc = ToBeContinued.new()  # [v7play]
 	tbc.name = "ToBeContinued"
 	add_child(tbc)
+	# [v9c] Lumi's input is off while the card is up and comes back through the modal close, so the
+	# key that closes the card can't also act in the world (E by the rocket opened its list at once).
+	tbc.opened.connect(func() -> void:
+		var orb: Variant = world.get("orbit") if world else null
+		if orb is SliceOrbit:
+			(orb as SliceOrbit).set_input(false))
+	tbc.closed.connect(func() -> void:
+		var orb: Variant = world.get("orbit") if world else null
+		if orb is SliceOrbit:
+			(orb as SliceOrbit).on_modal_closed())
 	if DevHooks.get_s("open", "") == "tbc":  # dev: --open=tbc shows the card
 		tbc.open_card.call_deferred()
 	# Saves from before Homeward that already reached the Cradle: the answer counts as heard.

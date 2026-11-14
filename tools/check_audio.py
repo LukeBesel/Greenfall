@@ -23,7 +23,52 @@ import os
 import sys
 import wave
 
-import numpy as np
+try:
+    import numpy as np
+except ImportError:  # the CI runner has no numpy: --repeat (in tools/check_exit.sh) only needs these few
+    import math
+    import statistics
+
+    class _Np:
+        """The handful of numpy calls the repetition check uses, in plain Python. The waveform
+        checks (dumps, --wav) need real numpy and say so."""
+
+        @staticmethod
+        def array(v):
+            return list(v)
+
+        @staticmethod
+        def mean(v):
+            v = list(v)
+            return sum(v) / len(v) if v else 0.0
+
+        @staticmethod
+        def std(v):
+            v = list(v)
+            return statistics.pstdev(v) if len(v) > 1 else 0.0
+
+        @staticmethod
+        def median(v):
+            v = list(v)
+            return statistics.median(v) if v else 0.0
+
+        @staticmethod
+        def sqrt(x):
+            return math.sqrt(x)
+
+        @staticmethod
+        def percentile(v, q):  # linear interpolation, as numpy's default
+            v = sorted(v)
+            if not v:
+                return 0.0
+            k = (len(v) - 1) * q / 100.0
+            lo, hi = int(math.floor(k)), int(math.ceil(k))
+            return v[lo] + (v[hi] - v[lo]) * (k - lo)
+
+        def __getattr__(self, name):
+            sys.exit("check_audio.py: this check needs numpy (pip install numpy); only --repeat runs without it")
+
+    np = _Np()
 
 # Limits. "bed": loops that play for minutes (ambience beds, beam hum); "note": score instruments
 # (short, transposed); "shot": one-shot SFX.

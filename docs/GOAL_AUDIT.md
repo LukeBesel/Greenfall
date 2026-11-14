@@ -35,6 +35,93 @@ Walk note: in one full run (before the main merge) the research project's price-
 start it; it passed in the three runs since (alone and full). The walk prints the row state and
 Research.reason when that check fails, if it comes back.
 
+## Opening (to the first robot)
+
+Walk: `--walk-opening` (tools/walk_opening.gd): `godot --headless --path . -- --fresh --orbit --intro --walk-opening`.
+From a fresh game: the intro (Space pauses, Space resumes, Esc skips), the first-minutes key strip,
+the restart checklist, then every story step to the first robot. Lumi walks with W/A/S/D in the
+camera's frame (to the bench, the bin, the scale, each piece of junk, a buried part), scoops with
+LMB held, presses bales with RMB, picks them up with E, opens the bench with E and closes it with Tab,
+and buys by clicking the price square or the detail panel's button. Saving up past one or two real
+loads or bales is a dev top-up to the step's price (logged as `note: top-up`); the autoplay run
+reaches every one of these prices by playing (first robot at 15.6 bot min, 300+ Parts by then).
+
+| step id | card text | completable by real input | stuck risks found | visual marker | refusal reasons | verdict | note |
+|---|---|---|---|---|---|---|---|
+| intro | (cinematic) | yes: Space pauses, Space resumes, Esc skips; the card comes and Lumi moves | the Esc that skips does not also open the pause menu | letterbox, "Space pause / Esc skip" hint | - | OK | headless runs need `--intro` |
+| checklist | Fix the bench (E) / Pick up trash (hold LMB) / Bring your chest to the trash bin / Buy an upgrade | yes | **the bin did not take the chest where the beam points** (see dump3); **the beam stayed on the bench** while the card already said "Bring your chest to the trash bin" (it was only refreshed once WREN's brief revealed the card) | beam on the bench, then none while picking up, then on the bin; count 3 / 8 | - | FIXED | "Buy an upgrade" needs a few loads first (no upgrade costs less than 35 cubes); the card shows dump3 meanwhile. "Workbench fixed" named a fixed E on the globe: it uses the bound key now |
+| dump3 | Fill the trash bin 3 times | yes | **blocker:** the globe has no trash-bin node, so the chest emptied only within 1.7 m of the scale's centre, while the beam stands on the bin body 3.3 m away. Walking up to the bin (stopped at 1.0 m by its body) did nothing unless the player crossed the scale | beam on the bin while the chest is full, else the dirty-hex outline; 1 / 3 | - | FIXED | `automation/depot.gd` also empties the chest within `Pace.BIN_RADIUS` of the bin body |
+| compartment | Buy a bigger chest | yes: click on the price square | spending the cubes on something else first (Scoop Speed): the card then says "Need 35 more cubes. Pick up trash to earn them.", points out to the junk, shows 0.97 / 35, and the bin still pays | beam on the bench once affordable; the bench opens on Chest Size, its row framed cyan | a click on a price you can't pay buys nothing, buzzes, and the detail says "Need N more cubes" | OK | a buried part lies by the bench on this seed: there E digs first (the prompt says "dig"), the next E opens the bench |
+| scoop_size | Buy Scoop Size | yes: the detail panel's Install button | as above | as above | as above | OK | |
+| baler | Save up for the Baler | yes | as above | as above | as above | OK | the buy says how to make a bale (toast) |
+| power | Sell 3 bales | yes: RMB presses, E picks up, walk onto the scale | **after the Baler a chest walked to the bin got no word at all** (the bin takes no loose trash then) | beam on the scale while a bale is carried; "1 / 3"; the card names RMB | now "No loose trash now. Press [RMB] for a bale, then put it on the scale." | FIXED | bales always earn more, so no cube state blocks the later prices |
+| tower | Build the signal tower | yes: Build tab, click | can be built early (it's in the Build tab from the start): the step is then skipped | beam on the bench once affordable; the bench opens on Build, Signal Tower | short price: as above | OK | |
+| glim | Repair Glim | yes: Build tab, click; the repair plays and control comes back | **saving up showed no price, no count and no "need" line** (only "Build tab" and a hex outline): 80 cubes and 10 Parts with nothing saying so. On this and every step with a price (Bot Bay, first robot) **the hint flipped** between "Need N more cubes" and "Carry your bale to the scale": the missing price wins now | beam on the bench once affordable | now "Need N more cubes / parts ..." and "20 / 80" | FIXED | Parts: E on the detector's spot digs one up (+10, played) |
+| hex | Clean the glowing hex | yes: LMB held on the outlined hex's junk to 100% (bales pressed with RMB when full) | none found: the start-area audit (`--hex-audit`) passes | the hex outline on the ground and its % on the card | - | OK | |
+| bench2 | Add a Bot Bay to the bench | yes: click | before a clean hex the row is locked with "Clean 1 hex first." | beam on the bench; cubes / price on the card | locked reason, short price as above | OK | the 40-Part robot kit is paid and the Bots tab opens |
+| robot | Build your first robot | yes: Bots tab, click on the Scoopie's price | Parts spent elsewhere: the card says how many are missing and how to get them | beam on the bench; the bench opens on Bots, Scoopie | as above | OK | the next step (Clean 2 hexes) comes at once |
+
+Other checks in the walk: the first-minutes key strip (M map, V lens, G goals) shows the keys that are
+bound, and each does what it says (M opens the map; M or Esc closes it and Lumi moves again).
+
+Not verified: renders of each step's start (only headless state: beam target, outline, card text);
+the controller mapping; save and reload in the middle of a step; a full real-input grind (cubes past
+two loads or bales are a top-up).
+
+## Travel (rocket, stations, leaving)
+
+Walk: `--walk-travel` (tools/walk_travel.gd). How the start states are made (dev, said in the file):
+the card is set to the step, the price the step asks for is given (or half of it, to test the
+refusal), the workbench is fixed and the tutorial is done. For the late part, stations 3-5 are woken
+for free, Mk II is set and the home base is at level 5, as the card has them at that point. The
+action under test is always real input: interact at the rocket, a left click on the row's Fly
+button, interact to skip the flight, the scoop button held at the station's junk, interact at the
+landmark, the outpost and the bench, clicks on "Upgrade the rocket", "Other planets" and "Build the
+drive", Esc, and the key that closes the end card. Every click first checks that its button is in
+view (on screen and inside its scrolling list). `--walk-travel-save` then `--walk-travel-resume`
+reloads in the middle of station 2's chain. `--walk-travel-end` loads the save made after the end
+card (Continue). All four runs are in tools/check_exit.sh. The full chain to the end on Verdance:
+objectives hub_fly_2, hub_wake_2, (hex10, base2), hub_fly_3, hub_wake_3, (... hex20), rocket_tier_2,
+(base3), hub_fly_4, hub_wake_4; goals hub_fly_5, hub_wake_5, (plant_25), rocket_tier_3, (drip_1,
+base_5), hub_fly_6, hub_wake_6, home_drive_5, then the "to be continued" card. After that the goals go
+on (perfect_1 ...) and the goals for other planets are hidden (data/homeward.json closed.hide_goals).
+
+| step id | card text | completable by real input | stuck risks found | visual marker | refusal reasons | verdict | note |
+|---|---|---|---|---|---|---|---|
+| hub_fly_2 | Fly to the next station | yes: E at the rocket, a click on Fly by NEXT STOP, E skips the flight; control comes back 5 m from the pad; arrival title with the reason | **BLOCKER: E at the rocket did nothing** (its interact entry was registered before the yard's Interactables existed; the bot and the hub walkthrough call hop_to). Short of the station's price: no beam, so the player goes and earns. Flights are free, so a player is never stranded (flown home with 0 cubes) | beam on the parked rocket once the price is there; NEXT STOP tag in the list | card: "Need 300 more cubes, 30 more parts. Pick up trash to earn them." | FIXED | c6eb106: registration retried until it takes |
+| hub_wake_2 | Wake station 2 of 6 (station card "Clean hexes here: n / 4") | yes: real scoops at the station take its junk (12-13 pieces in a few s); the rest by the crews' cell clean (dev); E at the landmark | **no hex was outlined and the beam stood on the landmark** during "clean 4 hexes" (the pad's town has no junk within 2 hexes; the card's hex search looked 2 rings out). **A Ledger dump on a cleaned hex took the count back** (3/4 after 4/4; the Ledger drops in the region Lumi is in). Save + reload mid-chain: back at Garden Row, card, count 2/4, rocket on its pad: OK | the hex to clean outlined (search goes out to 6 rings when 2 has none); beam on the landmark once the hexes are done; station card count; wake prompt "E   Wake the Windpump (600 cubes · 30 parts)" | E without the price: "Waking the Windpump needs 600 cubes · 30 parts." | FIXED | 56 of 66 dirty hexes within 6 rings of the pad can be outlined with Lift 0 (the walk checks at least 4 at each station it lands at) |
+| hub_fly_3 / hub_wake_3 | Fly to the next station / Wake station 3 of 6 (+ "Repair an outpost here") | yes (same as station 2): fly by click; the outpost repaired by E once its hex is cleared, with the price | the outpost step had no beam (the beam stood on the landmark) | beam on the nearest ruined outpost; outpost prompt with its price | outpost prompt "clear its hex first (n% / 90%)", "(need more)" | FIXED | walked: beam on the outpost's kiosk, E with the price repairs it, then the landmark |
+| hub_fly_4 / hub_wake_4, hub_fly_5 / hub_wake_5 | Fly to the next station / Wake station N of 6 | same code and data as stations 2 and 6 (HubPurpose chain from hub_defaults; no own chain); not walked by input | as station 2 | as station 2 | as station 2 | OK (audit) | `--hub-walkthrough` PASS: every station's town, landmark (39-58 m from the pad), open ground at its foot, E prompt, wake, gift, field bench, HUD 2/6..6/6 |
+| rocket_tier_2 | Upgrade the rocket to Mk II | same code as rocket_tier_3 (story objective id branch); not walked | station 4 locked until Mk II | bench row (fixed) | the station's Fly button is off, with "Upgrade the rocket first" in its row | FIXED (audit) | |
+| rocket_tier_3 | Upgrade the rocket to Mk III | yes: E at the bench opens on the rocket's row, a click on "Upgrade the rocket" | **the step had no target at all** (a goals.json stat step with key rocket_tier fell to "hex": no beam, no bench row); **the bench didn't open on the rocket's row** when that row appeared after the last fill (ListDetail.select_id used the stale list) | bench beam, rocket row selected | at Mk II the last station's Fly is off with "Upgrade the rocket first"; "Not enough cubes or parts" on the row | FIXED | |
+| hub_fly_6 / hub_wake_6 | Fly to the next station / Wake station 6 of 6 | yes: as station 2 (rocket click, outline, landmark E) | as station 2 | as station 2 | "Waking the Tall Stack needs 200K cubes · 60 parts." | OK | |
+| (station card after 6/6) | "All 6 bases stand. Fly home and make the rocket ready to leave." | - | **two instructions at odds**: the card said fly home while the beam stood on this station's rocket (the drive is built from any rocket) | - | - | FIXED | now "All 6 bases stand. Build the drive at the rocket." (6 languages) |
+| home_drive_5 | Build the Mk V Orbital drive | yes: E at the rocket, click "Other planets", click "Build the drive" in the system map, Esc | **"Other planets" sat at the bottom of the scrolling hub list, out of view** once every station is listed. **The map opened on Verdance with no Build button** (the drive row showed only on the next planet, and Ochre is charted only after WREN's exit beat) | beam on the rocket; Build the drive button on the map | drive button shows its blocker in place of "Build the drive" | FIXED | Launch home / Other planets now under the list; the drive row shows on the current planet from the rocket, and the next planet is selected once charted |
+| (end) | "To be continued" card | yes: it comes once WREN is done; E closes it; the next goal comes up (perfect_1); Lumi can move | **the E that closed the card also opened the rocket's list** (the card paused the game but never turned Lumi's input off) | full-screen card with the rocket and the home meters | - | FIXED | Continue (the post-end save loaded): no second card, drive and stations kept, Lumi by the rocket at Stack Works, can move |
+| (arrival) | title: name, town and landmark, why we came | - | (clarity read) 3-4 toasts and a WREN line landed in the same 6 s on arriving and on getting home, so lines scrolled off | the title, then the station card and its marker | - | FIXED | cut: the hub's `hint` toast (it repeated the title's reason), "Home. The workbench is by the pod." and "The rocket waits on the pad. Home is first on its list." (the list shows HOME first). Kept: the title, and on a return visit one "N% clean, up M% while you were away" line. The rocket's how-to line uses the interact key's glyph, not a hard-coded E. A machine's reveal toast no longer says "Follow the light to it." (the light could be gone by the time the bench closed) |
+| (travel between, home) | - | yes: home is always listed first (HOME), flown with 0 cubes | the rocket stays on the last pad; walking home leaves it there (the beam then has no rocket to point at until Lumi walks back) | - | - | OK | not walked |
+| (base keepers) | arrival toast "N% clean, up M% while you were away" | not walked (BaseKeepers clears cells of woken stations while Lumi is elsewhere) | - | - | - | OK (code read) | not verified by a run |
+
+Audits: `--hub-walkthrough` PASS (5 stations); `--target-reach` PASS. `--hex-audit-hubs` (r=110 m)
+counts most far-station hexes as "stuck" only because it treats every piece over Lift 0 as stuck,
+which is the start area's rule (HexLeftovers: big pieces count only where the hex should have none).
+The card only outlines hexes the current Lift can clear (Pace.hex_clearable), and the walk checks
+that at least four of those lie within 6 rings of each pad it lands at (Lift 0, stricter than a real
+player at station 6). Colliders (junk under or inside things) are only loaded round Lumi, so they
+were not audited for the far stations.
+
+Renders (one rendered run of the walk, `--walk-travel-shots`; it runs at about 2 fps, so its own
+checks time out and only the pictures count; screenshots/v9/travel_*.png in the v9c worktree): the
+arrival at Garden Row reads well (big name, town and landmark, the reason, the rocket parked beside
+Lumi). By the Windpump the station card shows "Wake the Windpump (600 cubes · 30 parts)", but **the
+landmark's E prompt sits under WREN's subtitle bar** when she speaks (OPEN, the HUD layout is the
+clarity helper's). After a wake that gives a design, the "New design unlocked" panel covers the
+station card for a few seconds (OPEN, minor).
+
+Not verified here: stations 4 and 5 and
+rocket_tier_2 by input (same code, audited); the outpost repair on a station other than Gantry
+Works; a controller; walking (not flying) home from a far station; the base keepers by a run;
+the "Launch home" (Homeward) path, which is hidden while Ochre is closed.
 ## Side goals and clarity
 
 Tools: `--walk-goals` (tools/walk_goals.gd, in tools/check_exit.sh), tools/goal_audit.gd

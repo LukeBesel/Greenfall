@@ -387,7 +387,7 @@ func progress() -> Array:
 			return [have / need, "%s / %s" % [Settings.fmt(BigNum.from_float(have)), Settings.fmt(BigNum.from_float(need))]]
 	var tgt: float = target_of(def)
 	var v: float = minf(value_of(def), tgt)
-	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower"]:
+	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower", "flag"]:
 		# [v6pace] Saving up for the step's price: cubes toward it, a number that goes up (owner: a
 		# visible goal with a number at all times). Once it's covered, the step's own count again.
 		var pc: Dictionary = _step_price()
@@ -420,6 +420,13 @@ func _process(delta: float) -> void:
 	if gl and not gl.driven:
 		gl.driven = true  # [v1guide] the card drives the goals: one step at a time
 	if not revealed:
+		# [v9a] Goal audit: before the card shows (WREN's brief), the restart checklist runs and its
+		# beam must follow it; the waypoint was only refreshed after the reveal, so it stayed on the
+		# bench while the checklist said "Bring your chest to the trash bin".
+		_t -= delta
+		if _t <= 0.0:
+			_t = REFRESH_S
+			waypoint.set_target(waypoint_target())
 		return
 	_explain_signal()
 	_narrate()  # [v2guide]
@@ -534,6 +541,15 @@ func _pick_hex() -> int:
 				if score > best:
 					best = score
 					h = hid
+			if h < 0:  # [v9c] a far station's pad stands in its town: its junk starts 4+ hexes out, so look wider (nearest first)
+				var bd: float = INF
+				for hid: int in f.hexes_near(at, 6):
+					if not _hex_ok(hid):
+						continue
+					var dd: float = OrbitUp.ground_dist(at, f.hex_center(hid))
+					if dd < bd:
+						bd = dd
+						h = hid
 	return h
 
 
@@ -621,6 +637,8 @@ func step_target(def: Dictionary) -> Dictionary:
 					out = {"to": "bench" if GameState.can_afford_all(BenchTiers.next_cost()) else "hex", "row": ["patch", "bench_tier"]}
 			"base2", "base3":
 				out = {"to": "bench", "row": ["patch", "hub_level"]}
+			"rocket_tier_2", "rocket_tier_3":  # [v9c] the bench opens on the rocket's row (it opened on nothing)
+				out = {"to": "bench", "row": ["patch", "rocket_tier"]}
 			"seed":
 				if GameState.flags.get("seed_signal", false) and not GameState.flags.get("seeds_unlocked", false):
 					out = {"to": "place", "pos": (world.first_seed as FirstSeed).tin_point() if world.get("first_seed") != null else FirstSeed.GREENHOUSE_POS, "row": []}  # [orbB] [v4grow] on the tin
@@ -661,7 +679,9 @@ func step_target(def: Dictionary) -> Dictionary:
 			else:
 				out["to"] = "hex"
 		"stat":
-			if key == "junk_dumps":  # [v2guide] the chest goes into the bin's body, not onto the scale
+			if key == "rocket_tier":  # [v9c] "Upgrade the rocket to Mk III": to the bench, on the rocket's row (no beam before)
+				out = {"to": "bench", "row": ["patch", "rocket_tier"]}
+			elif key == "junk_dumps":  # [v2guide] the chest goes into the bin's body, not onto the scale
 				out["to"] = "bin" if p and not p.compartment.is_empty() else "hex"
 			elif key in GROW_STATS:  # [v9d]
 				out = _grow_target(HexLevels.MAX_LEVEL)
@@ -968,6 +988,10 @@ func _step_price() -> Dictionary:
 		return BenchTiers.next_cost()
 	if typ == "tower" and SignalTower.tier() < int(def.get("target", 1)):
 		return SignalTower.next_cost()
+	# [v9a] "Repair Glim" (80 cubes, 10 Parts) is a flag step: it showed no price, no count and no
+	# "Need N more parts" while the player saved up, only "Build tab" and the hex outline.
+	if typ == "flag" and key == "glim_repaired" and not GameState.flags.get(key, false):
+		return (YardBuilds.def("glim").get("cost", {}) as Dictionary).duplicate()
 	# [v5play] Base levels and robots cost cubes and parts: say what is still missing for them too
 	# (the "Rebuild the base" steps gave no hint while the parts were short).
 	if typ == "hub_level" and world != null and world.get("hub") is Hub:
@@ -1011,6 +1035,15 @@ func _arc_beam(def: Dictionary, key: String) -> Variant:
 	if os_ == null or os_.purpose == null:
 		return null
 	if kind == "landmark":
+		# [v9c] At the far station, the beam follows its own chain: while it asks for clean hexes
+		# the hex to clean is outlined (the beam stood on the landmark, which the hexes don't need);
+		# while it asks for an outpost the beam stands on the ruined outpost; then on the landmark.
+		var st: String = str(os_.purpose.current_step(os_.purpose.site).get("do", "")) if os_.purpose.site > 0 else ""
+		if st == "clean":
+			return "hex"
+		if st == "outposts":
+			var op: Variant = os_.purpose.outpost_target()
+			return op if op is Vector3 else "hex"
 		var lm: Variant = os_.purpose.goal_target("landmark")
 		if lm is Vector3:
 			return lm
@@ -1056,15 +1089,19 @@ func situation_hint(dt: float = 0.0) -> String:
 		Audio.play("ding", 0.8, -8.0)
 	_was_full = full
 	var far: bool = is_lost()
+	# [v9a] Goal audit (clarity read-through): on a step with a price (Glim, the Bot Bay, the first
+	# robot, a base level) the line flipped every few seconds between "Need N more cubes" and the
+	# chest / bale line as Lumi worked. The price is what blocks the step: it wins. (Lumi still
+	# hears "Your chest is full" over his head the moment it fills.)
+	var price: Dictionary = _step_price()
+	if not price.is_empty() and not GameState.can_afford_all(price):
+		return ListDetail.short_text(price)
 	if full:
 		return tr("Your chest is full. Head home: the bin is under the tall smoke.") if far and not press else full_line
 	if not p.carried.is_empty():
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
 	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
 		return tr("Too heavy. Upgrade Lift at the bench.")
-	var price: Dictionary = _step_price()
-	if not price.is_empty() and not GameState.can_afford_all(price):
-		return ListDetail.short_text(price)
 	var bench_here: bool = field_bench() is Vector3 and str(step_target(current()).get("to", "")) == "bench"  # [v6pace]
 	if far and needs_home() and not bench_here:
 		if away_rocket() is Vector3:
