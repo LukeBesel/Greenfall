@@ -178,7 +178,7 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var kept: float = (so.globe.field as HexField).removed_fraction(int(a["hex"])) if int(a["hex"]) >= 0 else 0.0
 	if int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and int(b["hex"]) >= 0 and absf(kept - float(a["frac"])) <= 0.05 and float(b["frac"]) >= float(a["frac"]) - 0.01:
 		print("[walk-home] note: %s: the outline moved to hex %d (%.0f%%); hex %d kept %.0f%%" % [tag, int(b["hex"]), float(b["frac"]) * 100.0, int(a["hex"]), kept * 100.0])
-	elif int(a["hex"]) >= 0 and (int(b["hex"]) < 0 or absf(float(a["frac"]) - float(b["frac"])) > 0.05):
+	elif int(a["hex"]) >= 0 and (int(b["hex"]) < 0 or float(b["frac"]) < float(a["frac"]) - 0.05):  # [v9d] robots may have cleaned on meanwhile: more is fine
 		diff.append("outlined hex %d %.0f%% -> %d %.0f%%" % [int(a["hex"]), float(a["frac"]) * 100.0, int(b["hex"]), float(b["frac"]) * 100.0])
 	# [v9d] On a cleaning step the beam joins the outline only while the hex is far or off screen (the
 	# camera after a load differs, and the outline is picked afresh), so the beam is judged by the outline.
