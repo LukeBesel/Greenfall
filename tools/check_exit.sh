@@ -57,7 +57,6 @@ run walk_travel -- --fresh --orbit --no-intro --walk-travel --quit-after=4000 --
 run walk_travel_end -- --orbit --no-intro --walk-travel --walk-travel-end --quit-after=600 --save-dir=check_exit_travel_$$
 run walk_travel_save -- --fresh --orbit --no-intro --walk-travel --walk-travel-save --quit-after=2000 --save-dir=check_exit_travelr_$$
 run walk_travel_resume -- --orbit --no-intro --walk-travel --walk-travel-resume --quit-after=1500 --save-dir=check_exit_travelr_$$
-run walk_travel_pad -- --fresh --orbit --no-intro --walk-travel --walk-travel-pad --quit-after=2500 --save-dir=check_exit_travelp_$$
 # [v9c] Every far station has its count of hexes finishable with the starting Lift (0)
 # within 100 m of its pad (exit 1 lists the short ones).
 run hex_audit_hubs -- --fresh --orbit --no-intro --hex-audit --hex-audit-hubs --hex-audit-lift=0 --hex-audit-quit

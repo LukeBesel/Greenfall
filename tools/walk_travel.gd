@@ -692,6 +692,7 @@ static func _outpost_no_parts(so: SliceOrbit, site: int) -> void:
 	await _tap(tree, "interact")
 	await _wait(tree, 1.0)
 	_check(ops.level_of(k) == 0 and _said("not enough"), "no Parts: E at the outpost refused with a line (%s)" % _quote("not enough"))
+	_check(ob.situation.contains(str(int(ops.repair_cost(k).get("parts", 0)))), "no Parts: the card says how many the outpost needs ('%s')" % ob.situation)
 	print("%s   no Parts: station card '%s', objective card hint '%s', prompt '%s'" % [TAG, hp.card_text, ob.situation, so.interact_prompt(w.get("patch"))])
 	var have0: int = int(hp.current_step(site).get("have", 0))
 	var clean0: int = hp.cleaned_here(site)
