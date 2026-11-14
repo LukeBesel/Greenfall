@@ -17,9 +17,22 @@ const POD_CLEAR_M: float = 2.6
 ## Building footprints grow by this (their walls and steps stick out of the 0.8 x footprint).
 const FOOT_GROW_M: float = 1.0
 ## [v9a] Goal audit: a buried part lay by the bench, so a new player's first E at the bench dug
-## instead of opening it. Buried parts (an E prompt of their own: "dig") keep this far from every
-## yard spot with an E prompt or a job (bench, bin, scale, pod and the build anchors).
-const PART_CLEAR_M: float = 3.5
+## instead of opening it. A buried part (E digs it within the detector's dig_range) keeps clear of
+## every spot where E means something else: the spot's own E reach + the dig range + a margin, so
+## no place Lumi can press E for the bench, the bin, the rocket... also digs. (3.5 m flat was too
+## little: the bench answers E from 3.2 m, so a part 3.7 m away dug on CI.)
+const DIG_RANGE_M: float = 1.4  # data/parts.json detector.dig_range
+const PART_MARGIN_M: float = 0.4
+## The E reach (m) of the yard's spots: the bench (slice_orbit BENCH_RANGE), the rocket
+## (its interactable), everything else (Interactables radii in the yard are 1.6-3.4 m).
+const BENCH_REACH_M: float = 3.2
+const ROCKET_REACH_M: float = 6.5
+const OTHER_REACH_M: float = 3.4
+## The clearance for a spot of reach r.
+static func part_clear(r: float) -> float:
+	return r + DIG_RANGE_M + PART_MARGIN_M
+## Kept for callers: the smallest clearance.
+const PART_CLEAR_M: float = OTHER_REACH_M + DIG_RANGE_M + PART_MARGIN_M
 ## The yard anchors that carry an E prompt, or a job a player walks to (the scale).
 const E_ANCHORS: Array[String] = ["pod", "depot", "bin", "shack", "radio", "signal_tower", "telescope", "fabricator",
 	"generator", "composter", "locker", "nursery", "camera_bot"]
@@ -46,9 +59,9 @@ static func for_site(site: Dictionary, terrain: SphereTerrain) -> YardKeepOut:
 	k.discs.append(Vector3(pp.x, pp.z, POD_CLEAR_M))
 	for nm: String in E_ANCHORS:
 		var a: Vector3 = (VerdanceSite.START_YARD_ANCHORS[nm] as Array)[0]
-		k.e_points.append(Vector2(a.x, a.z))
-	k.e_points.append(BENCH_LOCAL)
-	k.e_points.append(ROCKET_LOCAL)
+		k.e_points.append(Vector3(a.x, a.z, OTHER_REACH_M))
+	k.e_points.append(Vector3(BENCH_LOCAL.x, BENCH_LOCAL.y, BENCH_REACH_M))
+	k.e_points.append(Vector3(ROCKET_LOCAL.x, ROCKET_LOCAL.y, ROCKET_REACH_M))
 	return k
 
 
@@ -56,16 +69,16 @@ static func for_site(site: Dictionary, terrain: SphereTerrain) -> YardKeepOut:
 const BENCH_LOCAL: Vector2 = Vector2(-8.0, 7.5)
 ## [v9a] The rocket on its pad (E at the rocket).
 const ROCKET_LOCAL: Vector2 = Vector2(0.0, -6.5)
-var e_points: Array[Vector2] = []  # site-local (x, z) of the yard's E spots
+var e_points: Array[Vector3] = []  # site-local (x, z, E reach) of the yard's E spots
 
 
 ## [v9a] Whether a buried part at this direction would lie within PART_CLEAR_M of a yard E spot.
 func near_e_point(dir: Vector3) -> bool:
 	var q: Vector2 = local(dir)
-	if q.length() > PAD_HALF_M + PART_CLEAR_M + 6.0:
+	if q.length() > PAD_HALF_M + part_clear(ROCKET_REACH_M) + 6.0:
 		return false
-	for e: Vector2 in e_points:
-		if q.distance_to(e) < PART_CLEAR_M:
+	for e: Vector3 in e_points:
+		if q.distance_to(Vector2(e.x, e.y)) < part_clear(e.z):
 			return true
 	return false
 

@@ -307,8 +307,8 @@ static func _power() -> void:
 	await _scoop_load(0.5, 40.0)
 	await _wait(func() -> bool: return _p.compartment.pending <= 0.0, 3.0)
 	print("%s note: power: chest for the bin test %.1f / %.1f" % [TAG, _p.compartment.fill, _p.capacity()])
-	var bin0: Vector3 = Objectives.bin_point(_w)
-	await _walk_to(func() -> Vector3: return bin0, func() -> bool: return _flat(_p.global_position - bin0).length() < 5.0, "near the bin")
+	var bin0: Vector3 = _bin_side(4.5)
+	await _walk_to(func() -> Vector3: return bin0, func() -> bool: return _flat(_p.global_position - bin0).length() < 1.5, "near the bin")
 	var fl0: int = _float_idx()
 	_toasts.clear()
 	var f0: float = _p.compartment.fill
@@ -814,6 +814,19 @@ static var _stopped: bool = false
 static var _reach: TargetReach
 
 
+## Whether the straight way from Lumi to `at` crosses water (sampled each metre). A player walks
+## to the junk in front of him; the walker went round the lake's edge by the bin bay and lost its
+## way back (CI: stuck 15 m west of the bin).
+static func _across_water(at: Vector3) -> bool:
+	var a: Vector3 = _p.global_position
+	var n: int = int(_flat(at - a).length())
+	for i: int in range(1, n):
+		var q: Vector3 = a.lerp(at, float(i) / float(n))
+		if bool(_p.call("_water_at", q)) or (_reach and _reach.why_ground(q.normalized()) == "water"):
+			return true
+	return false
+
+
 static func _liftable(f: HexField, h: int) -> int:
 	if _reach == null:
 		_reach = TargetReach.for_world(_w)
@@ -825,6 +838,8 @@ static func _liftable(f: HexField, h: int) -> int:
 		if f.is_water(f.piece_hex[pid]) or bool(_p.call("_water_at", f.piece_pos[pid])):  # floating junk: for later (the lake by the bin)
 			continue
 		if _reach and _reach.why_ground(f.piece_pos[pid].normalized()) == "water":  # in the lake's water though its hex is land (by the bin bay)
+			continue
+		if _across_water(f.piece_pos[pid]):  # the lakeside strip west of the bin bay: only through the shore corner
 			continue
 		cand.append([f.piece_pos[pid].distance_to(_p.global_position), pid])
 	cand.sort_custom(func(x: Array, y: Array) -> bool: return float(x[0]) < float(y[0]))
@@ -842,13 +857,27 @@ static func _liftable(f: HexField, h: int) -> int:
 
 ## Walks to where the beam points for "empty your chest" (the bin's body) until the chest empties
 ## or he stands against the bin. A player stops at the bin; so does this.
+## A point `m` metres from the bin body on the yard-centre side.
+static func _bin_side(m: float) -> Vector3:
+	var at: Vector3 = Objectives.bin_point(_w)
+	var c: Vector3 = (_so.globe.sites[0]["transform"] as Transform3D).origin
+	return at + _flat(c - at).normalized() * m
+
+
 static func _to_bin() -> void:
 	if _p.compartment.is_empty():
 		return
 	var at: Vector3 = Objectives.bin_point(_w)
 	var d0: int = int(GameState.stats.get("junk_dumps", 0))
 	var dumped: Callable = func() -> bool: return int(GameState.stats.get("junk_dumps", 0)) > d0
-	await _walk_to(func() -> Vector3: return at, dumped, "the bin", 1.3)
+	# From the yard side, as a player walks up to it (its lake side is the shore corner by the
+	# scale's post, where the walker wedged on CI): a staging point first if he is round the back.
+	var stage: Vector3 = _bin_side(4.0)
+	var c: Vector3 = (_so.globe.sites[0]["transform"] as Transform3D).origin
+	if _flat(_p.global_position - c).length() > _flat(stage - c).length() + 1.0:
+		await _walk_to(func() -> Vector3: return stage, func() -> bool: return bool(dumped.call()) or _flat(stage - _p.global_position).length() < 1.5, "the bin's yard side")
+	var front: Vector3 = _bin_side(1.4)
+	await _walk_to(func() -> Vector3: return front, dumped, "the bin", 0.6)
 	await _wait(dumped, 1.5)
 	if not bool(dumped.call()) and Pace.dump_allowed() and not _p.compartment.is_empty():
 		var dp: Node3D = _w.get("depot") as Node3D

@@ -54,11 +54,12 @@ static func e_clearance(p_so: Node) -> Array[String]:
 		if q.length() > 30.0:
 			continue
 		n += 1
-		for e: Vector2 in ko.e_points:
-			var d: float = q.distance_to(e)
-			worst = minf(worst, d)
-			if d < YardKeepOut.PART_CLEAR_M - 0.05:
-				out.append("[yardprobe] FAIL buried part %d at yard (%.1f, %.1f) is %.1f m from the E spot at (%.1f, %.1f) (keep %.1f m)" % [i, q.x, q.y, d, e.x, e.y, YardKeepOut.PART_CLEAR_M])
+		for e: Vector3 in ko.e_points:
+			var d: float = q.distance_to(Vector2(e.x, e.y))
+			var need: float = YardKeepOut.part_clear(e.z)
+			worst = minf(worst, d - need)
+			if d < need - 0.05:
+				out.append("[yardprobe] FAIL buried part %d at yard (%.1f, %.1f) is %.1f m from the E spot at (%.1f, %.1f) (keep %.1f m: its E reach %.1f + dig %.1f)" % [i, q.x, q.y, d, e.x, e.y, need, e.z, YardKeepOut.DIG_RANGE_M])
 	var w: Node = p_so.get("w")
 	var camp: Camp = w.get("camp") as Camp if w else null
 	if camp:  # (Camp.too_close compares world x/z: a flat-world measure, wrong on the globe)
@@ -69,7 +70,7 @@ static func e_clearance(p_so: Node) -> Array[String]:
 				var d2: float = OrbitUp.ground_dist(pts[i][1], pts[j][1])
 				if d2 < gap:
 					out.append("[yardprobe] FAIL yard E spots too close: %s-%s %.1f m (keep %.1f m)" % [pts[i][0], pts[j][0], d2, gap])
-	out.append("[yardprobe] E clearance: %d buried parts within 30 m of the yard, nearest %.1f m from an E spot (keep %.1f m)" % [n, worst, YardKeepOut.PART_CLEAR_M])
+	out.append("[yardprobe] E clearance: %d buried parts within 30 m of the yard, the closest %.1f m beyond its E spot's reach + dig range" % [n, worst])
 	return out
 
 
