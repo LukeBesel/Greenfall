@@ -515,7 +515,7 @@ msgstr "Noch keine Ballenpresse. Bring dein Brustfach zur Tonne."
 msgid "+%s cubes"
 msgstr "+%s Würfel"
 
-#: core/pace.gd:337 tools/walk_opening.gd:261
+#: core/pace.gd:337 tools/walk_opening.gd:264
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Jetzt kein loser Müll. Drück [%s] für einen Ballen und stell ihn auf die Waage."
 

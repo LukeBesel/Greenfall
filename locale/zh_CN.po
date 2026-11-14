@@ -515,7 +515,7 @@ msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: core/pace.gd:337 tools/walk_opening.gd:261
+#: core/pace.gd:337 tools/walk_opening.gd:264
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "现在不收散装垃圾了。按 [%s] 压一个垃圾块，再把它放到秤上。"
 
