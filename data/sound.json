@@ -76,7 +76,7 @@
  },
  "_doc_wildlife": "[v9s] The wildlife's calls (fauna/fauna.gd), every planet. gap_s: [shortest, longest] seconds between two calls of a category: call (every bird call in the game shares one clock, also the life bed's birds; twice as long at night), flutter (a flock's wings), frog (all frogs share one clock, mostly near the short end with now and then a long hush; frog_night_mult at night). species_gap_s: one kind of call never twice within about this many seconds. calls_per_min: at most this many bird calls in any minute. While Lumi stands still the bird gap grows from 1x at still_after_s to still_mult at still_full_s. phrase: sound -> [chance, shortest s, longest s]: after a call the same bird calls once more that much later (another take), then silence.",
  "wildlife": {
-  "gap_s": {"call": [22.0, 50.0], "flutter": [5.0, 14.0], "frog": [8.0, 40.0]},
+  "gap_s": {"call": [22.0, 50.0], "flutter": [5.0, 14.0], "frog": [14.0, 50.0]},
   "frog_night_mult": 0.85,
   "species_gap_s": {"song": 50.0, "chirp": 45.0, "coo": 60.0, "gull": 60.0, "quack": 45.0, "heron": 60.0},
   "calls_per_min": 3,
@@ -151,7 +151,7 @@
      ["gull", 5.0, 12.0, -13.0, 0.9, 1.1, 1.0, 1.0],
      ["amb_buoy", 9.0, 20.0, -17.0, 0.95, 1.05, 1.0, 0.6],
      ["song", 6.0, 13.0, -20.0, 0.9, 1.1, 0.0, 0.9],
-     ["frog", 7.0, 15.0, -20.0, 0.9, 1.1, 0.0, 0.6]
+     ["frog", 20.0, 45.0, -20.0, 0.9, 1.1, 0.0, 0.6]
     ]
    }
   },
