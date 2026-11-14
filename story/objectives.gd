@@ -1101,6 +1101,10 @@ func situation_hint(dt: float = 0.0) -> String:
 	# robot, a base level) the line flipped every few seconds between "Need N more cubes" and the
 	# chest / bale line as Lumi worked. The price is what blocks the step: it wins. (Lumi still
 	# hears "Your chest is full" over his head the moment it fills.)
+	# [main] Aiming at a piece that is too heavy is the thing in front of the player right now: for
+	# those few seconds it comes before the step's price (v9b's "Needs Lift N" met v9a's price rule).
+	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
+		return Pace.heavy_line() if Pace.heavy_need > 0 else tr("Too heavy. Upgrade Lift at the bench.")  # [v9b] which Lift
 	var price: Dictionary = _step_price()
 	if not price.is_empty() and not GameState.can_afford_all(price):
 		situation_price = true  # [v9d] the card shows this as cost chips
@@ -1109,8 +1113,6 @@ func situation_hint(dt: float = 0.0) -> String:
 		return tr("Your chest is full. Head home: the bin is under the tall smoke.") if far and not press else full_line
 	if not p.carried.is_empty():
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
-	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
-		return Pace.heavy_line() if Pace.heavy_need > 0 else tr("Too heavy. Upgrade Lift at the bench.")  # [v9b] which Lift
 	var bench_here: bool = field_bench() is Vector3 and str(step_target(current()).get("to", "")) == "bench"  # [v6pace]
 	if far and needs_home() and not bench_here:
 		if away_rocket() is Vector3:
