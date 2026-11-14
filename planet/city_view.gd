@@ -165,6 +165,7 @@ func _flush_batches() -> void:
 
 
 const FLAT_PIECE_M: float = 0.3
+const CORE_IN: float = 0.03  # [v9bld] the dark core inside the shell walls
 
 
 # --- Blocks -------------------------------------------------------------------------
@@ -398,10 +399,16 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 	var mass_h: float = float(maxi(ruin_from, 1) if ruin_from < floors else floors) * FLOOR_H
 	# Interior mass (dark rooms behind the windows), side/back walls with windows, and the
 	# roof (membrane, parapets, bulkheads, HVAC, tanks...) all go into the block's merged mesh.
+	# [v9bld] The dark core sits CORE_IN m inside the shell's side and back walls (its front stays just
+	# behind the kit facade). It used to stand 2 cm outside them, so every near building's sides and
+	# back were flat black slabs (the start yard looked straight at one).
+	var core_r: Rect2 = BuildingDetail._inset_front(mass_r.grow(-CORE_IN), face, -CORE_IN, 0.0)
 	_body.mat(BuildingDetail.K_DARK, Color(0.05, 0.045, 0.045))
-	_body.abox(Vector3(mass_r.position.x, 0.0, mass_r.position.y), Vector3(mass_r.size.x, mass_h - 0.05, mass_r.size.y))
+	_body.abox(Vector3(core_r.position.x, 0.0, core_r.position.y), Vector3(core_r.size.x, mass_h - 0.05, core_r.size.y))
 	var pal: Array = BuildingDetail.APT_PALETTE[(int(bd["seed"]) >> 3) % BuildingDetail.APT_PALETTE.size()]
-	var shell_r: Rect2 = BuildingDetail._inset_front(mass_r.grow(-0.02), face, 0.6, 0.0)
+	# The shell: the side and back walls on the footprint's edges, its front a little behind the
+	# core's (the core's front is what the kit windows show).
+	var shell_r: Rect2 = BuildingDetail._inset_front(r, face, inset + 0.05, 0.0)
 	_body.uv = BuildingDetail._bay_uv(r, int(bd["seed"]) & 0xffff)
 	_body.mat(BuildingDetail.K_FACADE, pal[1] * look_tint, pal[0], BuildingDetail.F_RIBBON if kit == FAC else 0)  # [worlds2] tint
 	_body.abox(Vector3(shell_r.position.x, 0.0, shell_r.position.y), Vector3(shell_r.size.x, height, shell_r.size.y), BuildingDetail.K_ROOF if ruin_from < floors else -2)
