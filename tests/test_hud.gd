@@ -103,16 +103,38 @@ func test_live_node_grants_and_levels() -> void:
 
 # --- Notifications, currency, goals -------------------------------------------------------------
 
-func test_notify_stack_caps_and_merges() -> void:
+func test_notify_stack_queues_and_merges() -> void:  # [v9d] one line at a time, nothing important dropped
 	var ns := NotifyStack.new()
 	add_child_autofree(ns)
 	for i: int in 5:
 		ns.push("Message %d" % i)
-	assert_eq(ns.count(), NotifyStack.MAX, "at most 3 rows")
+	assert_eq(ns.count(), 1, "a burst shows one line first")
+	assert_lte(ns.pending(), NotifyStack.QUEUE_MAX, "the rest wait their turn")
 	ns.push("Message 4")
-	assert_eq(ns.count(), NotifyStack.MAX, "a repeat refreshes its row instead of stacking")
+	assert_lte(ns.pending(), NotifyStack.QUEUE_MAX, "a repeat merges instead of queueing again")
 	ns.push("")
-	assert_eq(ns.count(), NotifyStack.MAX)
+	ns.push("A story line", "story")
+	for k: int in 40:
+		ns._process(0.25)
+	assert_eq(ns.pending(), 0, "the queue drains")
+	assert_lte(ns.count(), NotifyStack.MAX)
+
+
+func test_notify_burst_keeps_story_lines() -> void:
+	var ns := NotifyStack.new()
+	add_child_autofree(ns)
+	for i: int in 3:
+		ns.push("Story %d" % i, "story")
+	for i: int in 6:
+		ns.push("Info %d" % i, "info")
+	var seen: Dictionary = {}
+	for k: int in 80:
+		ns._process(0.25)
+		for r: Dictionary in ns._rows:
+			seen[str(r["text"])] = true
+	for i: int in 3:
+		assert_true(seen.has("Story %d" % i), "story line %d was shown" % i)
+	assert_gt(ns.skipped, 0, "extra info lines in a burst are skipped")
 
 
 func test_currency_chip_appears_on_change() -> void:

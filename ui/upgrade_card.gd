@@ -142,6 +142,7 @@ func _on_buy(n: int) -> void:
 	var got: int = Economy.buy_upgrade(upgrade_id, n)
 	if got <= 0:
 		Audio.play("buzz", 1.3, -8.0)
+		Refuse.say(Economy.lock_reason(upgrade_id) if not Economy.is_unlocked(upgrade_id) else ListDetail.short_text({"cubes": Economy.upgrade_cost(upgrade_id).to_float()}))  # [v9d] say why
 		var tw := create_tween()
 		tw.tween_property(self, "position:x", position.x + 8, 0.04)
 		tw.tween_property(self, "position:x", position.x - 8, 0.06)

@@ -224,7 +224,7 @@ func play() -> void:
 		print("[finale] credits rolling")
 		await roll.finished
 		print("[finale] credits done; the game goes on")
-	EventBus.toast.emit(tr("The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."), "story")
+	EventBus.toast.emit(tr("The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram ({open_globe})."), "story")
 	await get_tree().create_timer(1.0).timeout
 	queue_free()
 

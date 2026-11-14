@@ -100,6 +100,7 @@ func _ready() -> void:
 			Audio.play("buy", 1.0, -2.0)
 		else:
 			Audio.play("buzz", 1.2, -8.0)
+			Refuse.say("")  # [v9d] say why
 		refresh())
 	sr.add_child(_scrub_btn)
 	_scrub_cost = BenchKit.CostRow.new(20, 18)
@@ -138,6 +139,7 @@ func _ready() -> void:
 			Audio.play("buy", 1.1, -2.0)
 		else:
 			Audio.play("buzz", 1.2, -8.0)
+			Refuse.say("")  # [v9d] say why
 		refresh())
 	_jam_box.add_child(_jam_btn)
 	refresh()
@@ -154,6 +156,7 @@ func _on_upgrade() -> void:
 		EventBus.ui_modal_changed.emit(false)
 	else:
 		Audio.play("buzz", 1.2, -8.0)
+		Refuse.say("")  # [v9d] say why
 	refresh()
 
 

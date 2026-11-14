@@ -404,6 +404,7 @@ func _input_poll(delta: float) -> void:
 			do_scan(true)
 		elif _hold >= 0.0 and _cooldown > 0.0:
 			Audio.play("buzz", 1.6, -16.0)
+			Refuse.say(tr("Glim is still scanning. Try again in a moment."))  # [v9d] say why
 		_hold = -1.0
 
 
