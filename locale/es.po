@@ -515,7 +515,7 @@ msgstr "Aún no hay empacadora. Lleva tu pecho al cubo."
 msgid "+%s cubes"
 msgstr "+%s cubos"
 
-#: core/pace.gd:338 tools/walk_opening.gd:319
+#: core/pace.gd:338 tools/walk_opening.gd:323
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Ya no se tira basura suelta. Pulsa [%s] para hacer una bala y ponla en la báscula."
 
@@ -3571,7 +3571,7 @@ msgstr "Glim sigue escaneando. Inténtalo en un momento."
 msgid "Close"
 msgstr "Cerrar"
 
-#: tools/walk_opening.gd:483 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:573 ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "Salir"
 

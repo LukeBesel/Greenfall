@@ -515,7 +515,7 @@ msgstr "Ainda sem enfardadeira. Leve seu peito até a lixeira."
 msgid "+%s cubes"
 msgstr "+%s cubos"
 
-#: core/pace.gd:338 tools/walk_opening.gd:319
+#: core/pace.gd:338 tools/walk_opening.gd:323
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Nada de lixo solto agora. Aperte [%s] para fazer um fardo e coloque na balança."
 
@@ -3571,7 +3571,7 @@ msgstr "Glim ainda está escaneando. Tente de novo em instantes."
 msgid "Close"
 msgstr "Fechar"
 
-#: tools/walk_opening.gd:483 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:573 ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "Sair"
 
