@@ -925,79 +925,79 @@ msgstr "PEÇA ENTERRADA  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "PEÇA ENTERRADA  ·  SINAL %d%%"
 
-#: player/patch.gd:175
+#: player/patch.gd:178
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi volta chacoalhando para o pátio. Que estranho."
 
-#: player/patch.gd:229
+#: player/patch.gd:232
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi não sabe nadar. Com os Jatos flutuantes da bancada ele flutua sobre os lagos."
 
-#: player/patch.gd:354
+#: player/patch.gd:357
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "Pegue a lata de sementes primeiro: siga o feixe até a estufa."
 
-#: player/patch.gd:355
+#: player/patch.gd:358
 msgid "No seeds yet. Keep cleaning."
 msgstr "Ainda sem sementes. Continue limpando."
 
-#: player/patch.gd:398 player/patch.gd:426
+#: player/patch.gd:401 player/patch.gd:429
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Sem sementes. Plantas florindo dão mais."
 
-#: player/patch.gd:405
+#: player/patch.gd:408
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "Plante primeiro: aperte  {tool_plant}  para a semente"
 
-#: player/patch.gd:409
+#: player/patch.gd:412
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Regador vazio. Reabasteça na base."
 
-#: player/patch.gd:428
+#: player/patch.gd:431
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "Limpe este hexágono primeiro. Sementes precisam de chão limpo."
 
-#: player/patch.gd:430
+#: player/patch.gd:433
 msgid "Something is growing here already. Try a free spot."
 msgstr "Já tem algo crescendo aqui. Tente um lugar livre."
 
-#: player/patch.gd:431
+#: player/patch.gd:434
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "Sementes precisam de terra, não de rua nem da plataforma. Tente os canteiros da estufa."
 
-#: player/patch.gd:432
+#: player/patch.gd:435
 msgid "Seeds need soil, not road or the pad."
 msgstr "Sementes precisam de terra, não de rua nem da plataforma."
 
-#: player/patch.gd:593
+#: player/patch.gd:596
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "Seu baú está vazio. Recolha um pouco de lixo primeiro."
 
-#: player/patch.gd:633
+#: player/patch.gd:636
 msgid "PERFECT BALE  %s"
 msgstr "FARDO PERFEITO  %s"
 
-#: player/patch.gd:639
+#: player/patch.gd:642
 msgid "OVERSTUFFED  %s"
 msgstr "ABARROTADO  %s"
 
-#: player/patch.gd:643
+#: player/patch.gd:646
 msgid "PURE  %s"
 msgstr "PURO  %s"
 
-#: player/patch.gd:645
+#: player/patch.gd:648
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:648
+#: player/patch.gd:651
 msgid "  (streak +%d%%)"
 msgstr "  (sequência +%d%%)"
 
-#: player/patch.gd:691
+#: player/patch.gd:694
 msgid "Salvaged: %s"
 msgstr "Resgatado: %s"
 
-#: player/patch.gd:722
+#: player/patch.gd:725
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -1578,11 +1578,11 @@ msgstr "E   Consertar a bancada"
 msgid "E   Open the workbench"
 msgstr "E   Abrir a bancada"
 
-#: scenes/slice_orbit.gd:1033
+#: scenes/slice_orbit.gd:1039
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice_orbit.gd:1133
+#: scenes/slice_orbit.gd:1139
 msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
 msgstr "Bancada consertada. Aperte {interact} nela para gastar cubos em melhorias."
 
@@ -2045,35 +2045,35 @@ msgstr "A primeira coisa que eles vão ver é um mundo verde de novo. Foi você.
 msgid "Homecoming"
 msgstr "Volta para casa"
 
-#: story/intro.gd:239
+#: story/intro.gd:360
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "Há trezentos anos, as últimas sementes deixaram Verdance a bordo da arca Cradle."
 
-#: story/intro.gd:240
+#: story/intro.gd:361
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi, o pequeno guardião de sementes da arca, cantava para as mudas toda noite."
 
-#: story/intro.gd:241
+#: story/intro.gd:362
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "Cantarolando de novo, Lumi? Elas não te ouvem, sabia? ...Mas crescem mais rápido quando você canta."
 
-#: story/intro.gd:242
+#: story/intro.gd:363
 msgid "Then, one night, the sky came apart."
 msgstr "Então, numa noite, o céu se partiu."
 
-#: story/intro.gd:243
+#: story/intro.gd:364
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "Rombo no casco do cofre! Lumi, deixa as bandejas, sai daí!"
 
-#: story/intro.gd:244
+#: story/intro.gd:365
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi— aguenta— não consigo virar ela— aguenta—"
 
-#: story/intro.gd:245
+#: story/intro.gd:366
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "A arca não podia voltar. A cápsula caiu por dias."
 
-#: story/intro.gd:895
+#: story/intro.gd:1951
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUZ VERDE  ·  NADA DETECTADO"
 
@@ -2241,51 +2241,51 @@ msgstr "Objetivo concluído  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:858
+#: story/objectives.gd:879
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "Enfardadeira instalada! Encha o baú e aperte [%s] para um fardo."
 
-#: story/objectives.gd:880 story/objectives.gd:1093
+#: story/objectives.gd:901 story/objectives.gd:1121
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Seu peito está cheio. Aperte [%s] para fazer um fardo."
 
-#: story/objectives.gd:896
+#: story/objectives.gd:917
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Seu detector achou uma peça de robô enterrada aqui perto. Siga a leitura PEÇA ENTERRADA; ele apita quando você está bem em cima."
 
-#: story/objectives.gd:898
+#: story/objectives.gd:919
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
-#: story/objectives.gd:1094
+#: story/objectives.gd:1122
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Seu peito está cheio. Leve até a lixeira."
 
-#: story/objectives.gd:1109
-msgid "Your chest is full. Head home: the bin is under the tall smoke."
-msgstr "Seu peito está cheio. Volte para casa: a lixeira fica embaixo da fumaça alta."
-
-#: story/objectives.gd:1111
-msgid "Carry your bale home: the scale is under the tall smoke."
-msgstr "Leve seu fardo para casa: a balança fica embaixo da fumaça alta."
-
-#: story/objectives.gd:1111
-msgid "Carry your bale to the scale by the bin."
-msgstr "Leve seu fardo até a balança, ao lado da lixeira."
-
-#: story/objectives.gd:1113
+#: story/objectives.gd:1135 story/objectives.gd:1147
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesado demais. Melhore a Força de levantamento na bancada."
 
-#: story/objectives.gd:1117
+#: story/objectives.gd:1141
+msgid "Your chest is full. Head home: the bin is under the tall smoke."
+msgstr "Seu peito está cheio. Volte para casa: a lixeira fica embaixo da fumaça alta."
+
+#: story/objectives.gd:1143
+msgid "Carry your bale home: the scale is under the tall smoke."
+msgstr "Leve seu fardo para casa: a balança fica embaixo da fumaça alta."
+
+#: story/objectives.gd:1143
+msgid "Carry your bale to the scale by the bin."
+msgstr "Leve seu fardo até a balança, ao lado da lixeira."
+
+#: story/objectives.gd:1151
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "O foguete espera na plataforma. Casa é o primeiro da lista."
 
-#: story/objectives.gd:1118
+#: story/objectives.gd:1152
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Volte para casa: siga o feixe até a fumaça alta."
 
-#: story/objectives.gd:1128
+#: story/objectives.gd:1162
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Nada para pegar aqui. Ande até onde tem mais lixo."
 
@@ -11959,6 +11959,42 @@ msgstr "Purificador de Ar"
 #: data/hub.json:buildings[air_scrubber].desc
 msgid "Pulls dusty air through filter banks. The sky clears faster."
 msgstr "Puxa o ar empoeirado por bancos de filtros. O céu clareia mais rápido."
+
+#: data/intro_shots.json:shots[cradle].lines
+msgid "title"
+msgstr ""
+
+#: data/intro_shots.json:shots[vault_wide].lines
+msgid "vault"
+msgstr ""
+
+#: data/intro_shots.json:shots[vault_hum].lines
+msgid "hum"
+msgstr ""
+
+#: data/intro_shots.json:shots[storm].lines
+msgid "storm"
+msgstr ""
+
+#: data/intro_shots.json:shots[alarm].lines
+msgid "breach"
+msgstr ""
+
+#: data/intro_shots.json:shots[eject].lines
+msgid "hold_on"
+msgstr ""
+
+#: data/intro_shots.json:shots[drift].lines
+msgid "fall"
+msgstr ""
+
+#: data/intro_shots.json:shots[station].lines
+msgid "brief_0"
+msgstr ""
+
+#: data/intro_shots.json:shots[alone].lines
+msgid "brief_1"
+msgstr ""
 
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"
