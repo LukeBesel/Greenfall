@@ -488,23 +488,19 @@ msgstr "[Bàļéš ŵôŕţĥ %s ŵéŕé šţàçķéð àţ ţĥé ĥûb ŵî�
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: core/pace.gd:147 story/objectives.gd:1113
-msgid "Too heavy. Upgrade Lift at the bench."
-msgstr "[Ţôô ĥéàvý. Ûþĝŕàðé Ļîƒţ àţ ţĥé béñçĥ. ~~~~~~~~~~]"
-
-#: core/pace.gd:192
+#: core/pace.gd:191
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "[Ñôţĥîñĝ ĥéŕé ƒîţš. Þŕéšš [%s] ţô màķé à bàļé. ~~~~~~~~~~~~~]"
 
-#: core/pace.gd:204
+#: core/pace.gd:203
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "[Ñô Bàļéŕ ýéţ. Bŕîñĝ ýôûŕ çĥéšţ ţô ţĥé bîñ. ~~~~~~~~~~~~]"
 
-#: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:259 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
-#: core/pace.gd:278 tools/walk_opening.gd:261
+#: core/pace.gd:277 tools/walk_opening.gd:261
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "[Ñô ļôôšé ţŕàšĥ ñôŵ. Þŕéšš [%s] ƒôŕ à bàļé, ţĥéñ þûţ îţ ôñ ţĥé šçàļé. ~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -2261,6 +2257,10 @@ msgstr "[Çàŕŕý ýôûŕ bàļé ĥômé: ţĥé šçàļé îš ûñðéŕ 
 #: story/objectives.gd:1111
 msgid "Carry your bale to the scale by the bin."
 msgstr "[Çàŕŕý ýôûŕ bàļé ţô ţĥé šçàļé bý ţĥé bîñ. ~~~~~~~~~~~]"
+
+#: story/objectives.gd:1113
+msgid "Too heavy. Upgrade Lift at the bench."
+msgstr "[Ţôô ĥéàvý. Ûþĝŕàðé Ļîƒţ àţ ţĥé béñçĥ. ~~~~~~~~~~]"
 
 #: story/objectives.gd:1117
 msgid "The rocket waits on the pad. Home is first on its list."
@@ -4774,7 +4774,7 @@ msgstr "[ôƒ ţĥé ĝŕôûñð àŕôûñð ýôûŕ ĥûbš îš çļéàñ 
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "[ôƒ ţĥé þļàñéţ ŕéçļàîméð  ·  %s ôƒ %s ļàñð ĥéxéš ~~~~~~~~~~~~~]"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:498 ui/objective_card.gd:308
+#: ui/goals_panel.gd:231 ui/list_detail.gd:510 ui/objective_card.gd:308
 msgid "DONE"
 msgstr "[ÐÔÑÉ ~]"
 
@@ -5033,55 +5033,75 @@ msgstr "[BÀĻÉ ŔÉÀÐÝ ~]"
 msgid "◢ BURIED PART %d%%"
 msgstr "[◢ BÛŔÎÉÐ ÞÀŔŢ %d%% ~~~]"
 
-#: ui/list_detail.gd:99
+#: ui/list_detail.gd:101
 msgid "Nothing here yet. Keep playing."
 msgstr "[Ñôţĥîñĝ ĥéŕé ýéţ. Ķééþ þļàýîñĝ. ~~~~~~~~]"
 
-#: ui/list_detail.gd:375 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:387 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "[Bûý ~]"
 
-#: ui/list_detail.gd:494
+#: ui/list_detail.gd:506
 msgid "LOCKED"
 msgstr "[ĻÔÇĶÉÐ ~]"
 
-#: ui/list_detail.gd:502 ui/profile_picker.gd:97
+#: ui/list_detail.gd:514 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "[ÀÇŢÎVÉ ~]"
 
-#: ui/list_detail.gd:523
+#: ui/list_detail.gd:535
 msgid "FREE"
 msgstr "[FŔÉÉ ~]"
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:685
 msgid "LOCKED.  To unlock: %s"
 msgstr "[ĻÔÇĶÉÐ.  Ţô ûñļôçķ: %s ~~~~~]"
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:685
 msgid "Locked. Keep playing to unlock it."
 msgstr "[Ļôçķéð. Ķééþ þļàýîñĝ ţô ûñļôçķ îţ. ~~~~~~~~~]"
 
-#: ui/list_detail.gd:668
+#: ui/list_detail.gd:688
 msgid "REQUIRES   %s"
 msgstr "[ŔÉQÛÎŔÉŠ   %s ~~]"
 
-#: ui/list_detail.gd:671
+#: ui/list_detail.gd:691
 msgid "You can buy this now!"
 msgstr "[Ýôû çàñ bûý ţĥîš ñôŵ! ~~~~]"
 
-#: ui/list_detail.gd:691
+#: ui/list_detail.gd:710
+msgid "Level"
+msgstr "[Ļévéļ ~]"
+
+#: ui/list_detail.gd:711
+msgid "Now"
+msgstr "[Ñôŵ ~]"
+
+#: ui/list_detail.gd:712
+msgid "Next"
+msgstr "[Ñéxţ ~]"
+
+#: ui/list_detail.gd:713
+msgid "Cost"
+msgstr "[Çôšţ ~]"
+
+#: ui/list_detail.gd:764
+msgid "Need %s."
+msgstr "[Ñééð %s. ~]"
+
+#: ui/list_detail.gd:764 ui/list_detail.gd:776
 msgid "%s more %s"
 msgstr "[%s môŕé %s ~]"
 
-#: ui/list_detail.gd:693
+#: ui/list_detail.gd:778
 msgid "Pick up trash to earn them."
 msgstr "[Þîçķ ûþ ţŕàšĥ ţô éàŕñ ţĥém. ~~~~~~]"
 
-#: ui/list_detail.gd:693
+#: ui/list_detail.gd:778
 msgid "Dig up parts and salvage junk to get them."
 msgstr "[Ðîĝ ûþ þàŕţš àñð šàļvàĝé ĵûñķ ţô ĝéţ ţĥém. ~~~~~~~~~~~~]"
 
-#: ui/list_detail.gd:696
+#: ui/list_detail.gd:781
 msgid "Need %s. %s"
 msgstr "[Ñééð %s. %s ~]"
 
@@ -11994,92 +12014,92 @@ msgid "A dish that sings static at the Ledger's drones. Drops inside its radius 
 msgstr "[À ðîšĥ ţĥàţ šîñĝš šţàţîç àţ ţĥé Ļéðĝéŕ'š ðŕôñéš. Ðŕôþš îñšîðé îţš ŕàðîûš àŕôûñð ţĥé bàšé àŕé bļôçķéð, àñð ðŕôñéš çômé ļéšš ôƒţéñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/ledger.json:act1
-msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
-msgstr "[ÇÀŔŔÎÉŔ ÐÉŢÉÇŢÉÐ. ÛÑŠÇĤÉÐÛĻÉÐ ÀÇŢÎVÎŢÝ ÎÑ ŠÉÇŢÔŔ: {district}. ~~~~~~~~~~~~~~~~~~]"
+msgid "Someone is cleaning on {district}. That is not on my list."
+msgstr "[Šôméôñé îš çļéàñîñĝ ôñ {district}. Ţĥàţ îš ñôţ ôñ mý ļîšţ. ~~~~~~~~~~~~~~~~~]"
 
 #: data/ledger.json:act1
-msgid "THE LEDGER: Waste is a line item. Line items must balance."
-msgstr "[ŢĤÉ ĻÉÐĜÉŔ: Ŵàšţé îš à ļîñé îţém. Ļîñé îţémš mûšţ bàļàñçé. ~~~~~~~~~~~~~~~~~]"
+msgid "Trash belongs where it is. I wrote it down."
+msgstr "[Ţŕàšĥ béļôñĝš ŵĥéŕé îţ îš. Î ŵŕôţé îţ ðôŵñ. ~~~~~~~~~~~~]"
 
 #: data/ledger.json:act1
-msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
-msgstr "[Çļéàñûþ ôþéŕàţîôñš ŵéŕé þàûšéð ûñţîļ çôñðîţîôñš îmþŕôvé. Çôñðîţîôñš ĥàvé ñôţ îmþŕôvéð. Þļéàšé šţôþ îmþŕôvîñĝ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Please stop cleaning. Clean costs money. My money."
+msgstr "[Þļéàšé šţôþ çļéàñîñĝ. Çļéàñ çôšţš môñéý. Mý môñéý. ~~~~~~~~~~~~~~~]"
 
 #: data/ledger.json:coupons
-msgid "LIMITED OFFER: pause operations today and receive 0% off."
-msgstr "[ĻÎMÎŢÉÐ ÔFFÉŔ: þàûšé ôþéŕàţîôñš ţôðàý àñð ŕéçéîvé 0% oƒƒ. ~~~~~~~~~~~~~~~~~]"
+msgid "COUPON: stop cleaning today and save nothing!"
+msgstr "[ÇÔÛÞÔÑ: šţôþ çļéàñîñĝ ţôðàý àñð šàvé ñôţĥîñĝ! ~~~~~~~~~~~~~]"
 
 #: data/ledger.json:coupons
-msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
-msgstr "[ÇÔÛÞÔÑ: ôñé (1) çômþļîméñţàŕý þàûšé. Vàļîð ƒôŕévéŕ. Ñôñ-ţŕàñšƒéŕàbļé. ~~~~~~~~~~~~~~~~~~~~~]"
+msgid "COUPON: one free nap. Please take it."
+msgstr "[ÇÔÛÞÔÑ: ôñé ƒŕéé ñàþ. Þļéàšé ţàķé îţ. ~~~~~~~~~~]"
 
 #: data/ledger.json:coupons
-msgid "Have you considered doing less? Our records show that less is cheaper."
-msgstr "[Ĥàvé ýôû çôñšîðéŕéð ðôîñĝ ļéšš? Ôûŕ ŕéçôŕðš šĥôŵ ţĥàţ ļéšš îš çĥéàþéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Have you tried doing less? Less is cheaper."
+msgstr "[Ĥàvé ýôû ţŕîéð ðôîñĝ ļéšš? Ļéšš îš çĥéàþéŕ. ~~~~~~~~~~~~]"
 
 #: data/ledger.json:coupons
-msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
-msgstr "[ŠÛŔVÉÝ: ôñ à šçàļé ôƒ 1 ţô 1, ĥôŵ þàûšéð ŵôûļð ýôû ļîķé ţô bé? ~~~~~~~~~~~~~~~~~~~]"
+msgid "SURVEY: How much do you want to stop? Pick: a lot."
+msgstr "[ŠÛŔVÉÝ: Ĥôŵ mûçĥ ðô ýôû ŵàñţ ţô šţôþ? Þîçķ: à ļôţ. ~~~~~~~~~~~~~~~]"
 
 #: data/ledger.json:coupons
-msgid "NOTICE: sparkles are not an approved budget category."
-msgstr "[ÑÔŢÎÇÉ: šþàŕķļéš àŕé ñôţ àñ àþþŕôvéð bûðĝéţ çàţéĝôŕý. ~~~~~~~~~~~~~~~~]"
+msgid "Sparkles are not in my budget."
+msgstr "[Šþàŕķļéš àŕé ñôţ îñ mý bûðĝéţ. ~~~~~~~]"
 
 #: data/ledger.json:coupons
-msgid "BUY ONE PAUSE, GET ONE PAUSE."
-msgstr "[BÛÝ ÔÑÉ ÞÀÛŠÉ, ĜÉŢ ÔÑÉ ÞÀÛŠÉ. ~~~~~~~]"
+msgid "Buy one nap, get one nap free."
+msgstr "[Bûý ôñé ñàþ, ĝéţ ôñé ñàþ ƒŕéé. ~~~~~~~]"
 
 #: data/ledger.json:coupons
-msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
-msgstr "[Ļôýàļţý ŕéŵàŕð: ýôû ĥàvé 0 Ļéðĝéŕ Þôîñţš. Þàûšé ñôŵ ţô ķééþ ţĥém. ~~~~~~~~~~~~~~~~~~~~]"
+msgid "You have 0 Ledger Points. Stop cleaning to keep them."
+msgstr "[Ýôû ĥàvé 0 Ļéðĝéŕ Þôîñţš. Šţôþ çļéàñîñĝ ţô ķééþ ţĥém. ~~~~~~~~~~~~~~~~]"
 
 #: data/ledger.json:coupons
-msgid "REMINDER: the junk was here first. Seniority matters."
-msgstr "[ŔÉMÎÑÐÉŔ: ţĥé ĵûñķ ŵàš ĥéŕé ƒîŕšţ. Šéñîôŕîţý màţţéŕš. ~~~~~~~~~~~~~~~~]"
+msgid "The junk was here first. Be fair to the junk."
+msgstr "[Ţĥé ĵûñķ ŵàš ĥéŕé ƒîŕšţ. Bé ƒàîŕ ţô ţĥé ĵûñķ. ~~~~~~~~~~~~~]"
 
 #: data/ledger.json:coupons
-msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
-msgstr "[Ýôûŕ çļéàñîñĝ ĥàš bééñ ļôĝĝéð àš àñ éxþéñšé. Ýôûŕ éxþéñšé ĥàš bééñ ļôĝĝéð àš àñ éxþéñšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Your cleaning costs me. I wrote that down twice."
+msgstr "[Ýôûŕ çļéàñîñĝ çôšţš mé. Î ŵŕôţé ţĥàţ ðôŵñ ţŵîçé. ~~~~~~~~~~~~~~]"
 
 #: data/ledger.json:act2
-msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
-msgstr "[ÀÑÔMÀĻÝ: ÛÑÀÛŢĤÔŔÎŽÉÐ ĜŔÔŴŢĤ ÐÉŢÉÇŢÉÐ. Ļîvîñĝ màţţéŕ îš ñôţ à ļîñé îţém. ~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Plants are growing. Plants are not on my list!"
+msgstr "[Þļàñţš àŕé ĝŕôŵîñĝ. Þļàñţš àŕé ñôţ ôñ mý ļîšţ! ~~~~~~~~~~~~~]"
 
 #: data/ledger.json:act2
-msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
-msgstr "[ÇÔŔŔÉÇŢÎVÉ ÀÇŢÎÔÑ: ðîšþàţçĥîñĝ ðîšþôšàļ ûñîţš ţô ŕéšţôŕé ţĥé bàļàñçé. ~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Sending drones to put the trash back."
+msgstr "[Šéñðîñĝ ðŕôñéš ţô þûţ ţĥé ţŕàšĥ bàçķ. ~~~~~~~~~~]"
 
 #: data/ledger.json:drop_warn
-msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
-msgstr "[Ðîšþôšàļ ûñîţ ðîšþàţçĥéð. À çļéàñ ĥéx ĥàš bééñ šéļéçţéð ƒôŕ ŕé-bàļàñçîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A drone is coming to put trash on clean ground."
+msgstr "[À ðŕôñé îš çômîñĝ ţô þûţ ţŕàšĥ ôñ çļéàñ ĝŕôûñð. ~~~~~~~~~~~~~]"
 
 #: data/ledger.json:drop_warn
-msgid "A clean surface is an unbudgeted surface. Correcting."
-msgstr "[À çļéàñ šûŕƒàçé îš àñ ûñbûðĝéţéð šûŕƒàçé. Çôŕŕéçţîñĝ. ~~~~~~~~~~~~~~~~]"
+msgid "Clean ground is not in my budget. Fixing that."
+msgstr "[Çļéàñ ĝŕôûñð îš ñôţ îñ mý bûðĝéţ. Fîxîñĝ ţĥàţ. ~~~~~~~~~~~~~]"
 
 #: data/ledger.json:drop_warn
-msgid "Returning misplaced waste to its registered location."
-msgstr "[Ŕéţûŕñîñĝ mîšþļàçéð ŵàšţé ţô îţš ŕéĝîšţéŕéð ļôçàţîôñ. ~~~~~~~~~~~~~~~~]"
+msgid "Putting the trash back where it was."
+msgstr "[Þûţţîñĝ ţĥé ţŕàšĥ bàçķ ŵĥéŕé îţ ŵàš. ~~~~~~~~~~]"
 
 #: data/ledger.json:drop_warn
-msgid "This is not personal. Nothing is personal. Everything is a line item."
-msgstr "[Ţĥîš îš ñôţ þéŕšôñàļ. Ñôţĥîñĝ îš þéŕšôñàļ. Évéŕýţĥîñĝ îš à ļîñé îţém. ~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Nothing personal. You are just a line on my list."
+msgstr "[Ñôţĥîñĝ þéŕšôñàļ. Ýôû àŕé ĵûšţ à ļîñé ôñ mý ļîšţ. ~~~~~~~~~~~~~~]"
 
 #: data/ledger.json:drop_warn
-msgid "Delivery of one (1) small pile of junk. No signature required."
-msgstr "[Ðéļîvéŕý ôƒ ôñé (1) šmàļļ þîļé ôƒ ĵûñķ. Ñô šîĝñàţûŕé ŕéqûîŕéð. ~~~~~~~~~~~~~~~~~~~]"
+msgid "One small pile of trash, delivered. No thanks needed."
+msgstr "[Ôñé šmàļļ þîļé ôƒ ţŕàšĥ, ðéļîvéŕéð. Ñô ţĥàñķš ñééðéð. ~~~~~~~~~~~~~~~~]"
 
 #: data/ledger.json:jammed
-msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
-msgstr "[ŠÎĜÑÀĻ... ÔBŠŢŔÛÇŢÉÐ. Ðîšþôšàļ ûñîţ ŕéţûŕñîñĝ ţô ðéþôţ. Ţĥîš ŵîļļ bé ñôţéð. ~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "My drone can't hear me. It is going home."
+msgstr "[Mý ðŕôñé çàñ'ţ ĥéàŕ mé. Îţ îš ĝôîñĝ ĥômé. ~~~~~~~~~~~]"
 
 #: data/ledger.json:jammed
-msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
-msgstr "[Ĵàmmîñĝ ðéţéçţéð. Ţĥé Ļéðĝéŕ ĥàš ñô ļîñé îţém ƒôŕ 'ĵàmmîñĝ'. Çŕéàţîñĝ ôñé. ~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Jamming? Jamming is not on my list. Adding it."
+msgstr "[Ĵàmmîñĝ? Ĵàmmîñĝ îš ñôţ ôñ mý ļîšţ. Àððîñĝ îţ. ~~~~~~~~~~~~~]"
 
 #: data/ledger.json:jammed
-msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
-msgstr "[Ûñîţ 07 ŕéþôŕţš: 'ļôûð šţàţîç, à ƒééļîñĝ ôƒ béîñĝ ûñŵéļçômé'. Àbôŕţîñĝ. ~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
+msgstr "[Ðŕôñé 7 šàýš: ţôô ñôîšý, ƒééļš ûñŵéļçômé. Ţûŕñîñĝ bàçķ. ~~~~~~~~~~~~~~~~]"
 
 #: data/ledger.json:act3
 msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."

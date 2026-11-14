@@ -491,23 +491,19 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:1113
-msgid "Too heavy. Upgrade Lift at the bench."
-msgstr "太重了。去工作台升级举升力。"
-
-#: core/pace.gd:192
+#: core/pace.gd:191
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "这里装不下了。按 [%s] 压一个捆包。"
 
-#: core/pace.gd:204
+#: core/pace.gd:203
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 
-#: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:259 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: core/pace.gd:278 tools/walk_opening.gd:261
+#: core/pace.gd:277 tools/walk_opening.gd:261
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "现在不收散装垃圾了。按 [%s] 压一个垃圾块，再把它放到秤上。"
 
@@ -2258,6 +2254,10 @@ msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 #: story/objectives.gd:1111
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
+
+#: story/objectives.gd:1113
+msgid "Too heavy. Upgrade Lift at the bench."
+msgstr "太重了。去工作台升级举升力。"
 
 #: story/objectives.gd:1117
 msgid "The rocket waits on the pad. Home is first on its list."
@@ -4761,7 +4761,7 @@ msgstr "基地周围的土地已清理干净"
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:498 ui/objective_card.gd:308
+#: ui/goals_panel.gd:231 ui/list_detail.gd:510 ui/objective_card.gd:308
 msgid "DONE"
 msgstr "完成"
 
@@ -5020,55 +5020,75 @@ msgstr "捆包就绪"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ 埋藏零件 %d%%"
 
-#: ui/list_detail.gd:99
+#: ui/list_detail.gd:101
 msgid "Nothing here yet. Keep playing."
 msgstr "这里还什么都没有。继续游戏吧。"
 
-#: ui/list_detail.gd:375 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:387 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "购买"
 
-#: ui/list_detail.gd:494
+#: ui/list_detail.gd:506
 msgid "LOCKED"
 msgstr "未解锁"
 
-#: ui/list_detail.gd:502 ui/profile_picker.gd:97
+#: ui/list_detail.gd:514 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "进行中"
 
-#: ui/list_detail.gd:523
+#: ui/list_detail.gd:535
 msgid "FREE"
 msgstr "免费"
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:685
 msgid "LOCKED.  To unlock: %s"
 msgstr "未解锁。  解锁方法：%s"
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:685
 msgid "Locked. Keep playing to unlock it."
 msgstr "未解锁。继续玩就能解锁。"
 
-#: ui/list_detail.gd:668
+#: ui/list_detail.gd:688
 msgid "REQUIRES   %s"
 msgstr "需要   %s"
 
-#: ui/list_detail.gd:671
+#: ui/list_detail.gd:691
 msgid "You can buy this now!"
 msgstr "现在可以买了！"
 
-#: ui/list_detail.gd:691
+#: ui/list_detail.gd:710
+msgid "Level"
+msgstr "等级"
+
+#: ui/list_detail.gd:711
+msgid "Now"
+msgstr "当前"
+
+#: ui/list_detail.gd:712
+msgid "Next"
+msgstr "下一级"
+
+#: ui/list_detail.gd:713
+msgid "Cost"
+msgstr "费用"
+
+#: ui/list_detail.gd:764
+msgid "Need %s."
+msgstr "还需要 %s。"
+
+#: ui/list_detail.gd:764 ui/list_detail.gd:776
 msgid "%s more %s"
 msgstr "%s %s"
 
-#: ui/list_detail.gd:693
+#: ui/list_detail.gd:778
 msgid "Pick up trash to earn them."
 msgstr "捡垃圾就能赚到。"
 
-#: ui/list_detail.gd:693
+#: ui/list_detail.gd:778
 msgid "Dig up parts and salvage junk to get them."
 msgstr "挖出零件、拆解废料就能得到。"
 
-#: ui/list_detail.gd:696
+#: ui/list_detail.gd:781
 msgid "Need %s. %s"
 msgstr "还差 %s。%s"
 
@@ -11980,92 +12000,92 @@ msgid "A dish that sings static at the Ledger's drones. Drops inside its radius 
 msgstr "一面对着 Ledger 无人机唱噪音的天线盘。基地周围其半径内的倾倒会被阻止，无人机也来得更少。"
 
 #: data/ledger.json:act1
-msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
-msgstr "检测到载体。扇区内存在计划外活动：{district}。"
+msgid "Someone is cleaning on {district}. That is not on my list."
+msgstr "有人在 {district} 打扫。我的清单上没有这一项。"
 
 #: data/ledger.json:act1
-msgid "THE LEDGER: Waste is a line item. Line items must balance."
-msgstr "LEDGER：废料即为账目条款。账目条款必须平衡。"
+msgid "Trash belongs where it is. I wrote it down."
+msgstr "垃圾就该待在原地。我记下了。"
 
 #: data/ledger.json:act1
-msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
-msgstr "清理作业已暂停，直至条件改善。条件并未改善。请停止改善条件。"
+msgid "Please stop cleaning. Clean costs money. My money."
+msgstr "请停止打扫。干净要花钱。我的钱。"
 
 #: data/ledger.json:coupons
-msgid "LIMITED OFFER: pause operations today and receive 0% off."
-msgstr "限时优惠：今日暂停作业，即享 0% 折扣。"
+msgid "COUPON: stop cleaning today and save nothing!"
+msgstr "优惠券：今天停止打扫，什么也省不到！"
 
 #: data/ledger.json:coupons
-msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
-msgstr "优惠券：一（1）次免费暂停。永久有效。不可转让。"
+msgid "COUPON: one free nap. Please take it."
+msgstr "优惠券：免费小睡一次。请收下。"
 
 #: data/ledger.json:coupons
-msgid "Have you considered doing less? Our records show that less is cheaper."
-msgstr "您是否考虑过少做一些？我方记录显示，少即是省。"
+msgid "Have you tried doing less? Less is cheaper."
+msgstr "你试过少做点吗？少做更便宜。"
 
 #: data/ledger.json:coupons
-msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
-msgstr "调查：在 1 到 1 的范围内，您希望暂停到何种程度？"
+msgid "SURVEY: How much do you want to stop? Pick: a lot."
+msgstr "调查：你有多想停下？请选：非常想。"
 
 #: data/ledger.json:coupons
-msgid "NOTICE: sparkles are not an approved budget category."
-msgstr "通知：闪亮不属于已批准的预算类别。"
+msgid "Sparkles are not in my budget."
+msgstr "闪光不在我的预算里。"
 
 #: data/ledger.json:coupons
-msgid "BUY ONE PAUSE, GET ONE PAUSE."
-msgstr "买一次暂停，送一次暂停。"
+msgid "Buy one nap, get one nap free."
+msgstr "买一次小睡，送一次小睡。"
 
 #: data/ledger.json:coupons
-msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
-msgstr "忠诚奖励：您有 0 Ledger 积分。立即暂停以保留积分。"
+msgid "You have 0 Ledger Points. Stop cleaning to keep them."
+msgstr "你有 0 账本积分。停止打扫就能保住它们。"
 
 #: data/ledger.json:coupons
-msgid "REMINDER: the junk was here first. Seniority matters."
-msgstr "提醒：废料先来的。资历很重要。"
+msgid "The junk was here first. Be fair to the junk."
+msgstr "垃圾先来的。对垃圾公平点。"
 
 #: data/ledger.json:coupons
-msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
-msgstr "您的清理已记为一项支出。您的支出已记为一项支出。"
+msgid "Your cleaning costs me. I wrote that down twice."
+msgstr "你的打扫让我破费。我记了两遍。"
 
 #: data/ledger.json:act2
-msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
-msgstr "异常：检测到未经授权的生长。生物不属于账目条款。"
+msgid "Plants are growing. Plants are not on my list!"
+msgstr "植物在长。植物不在我的清单上！"
 
 #: data/ledger.json:act2
-msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
-msgstr "纠正措施：正在派遣处置单元以恢复平衡。"
+msgid "Sending drones to put the trash back."
+msgstr "派无人机把垃圾放回去。"
 
 #: data/ledger.json:drop_warn
-msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
-msgstr "处置单元已派出。已选定一个干净的六角格进行再平衡。"
+msgid "A drone is coming to put trash on clean ground."
+msgstr "一架无人机要来把垃圾倒在干净的地上。"
 
 #: data/ledger.json:drop_warn
-msgid "A clean surface is an unbudgeted surface. Correcting."
-msgstr "干净的表面属于预算外表面。正在纠正。"
+msgid "Clean ground is not in my budget. Fixing that."
+msgstr "干净的地面不在预算里。正在修正。"
 
 #: data/ledger.json:drop_warn
-msgid "Returning misplaced waste to its registered location."
-msgstr "正在将错放的废料归还至其登记位置。"
+msgid "Putting the trash back where it was."
+msgstr "把垃圾放回原处。"
 
 #: data/ledger.json:drop_warn
-msgid "This is not personal. Nothing is personal. Everything is a line item."
-msgstr "这不是针对个人。没有什么是针对个人的。一切都是账目条款。"
+msgid "Nothing personal. You are just a line on my list."
+msgstr "不针对你。你只是我清单上的一行。"
 
 #: data/ledger.json:drop_warn
-msgid "Delivery of one (1) small pile of junk. No signature required."
-msgstr "递送一（1）小堆废料。无需签收。"
+msgid "One small pile of trash, delivered. No thanks needed."
+msgstr "一小堆垃圾，已送达。不用谢。"
 
 #: data/ledger.json:jammed
-msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
-msgstr "信号……受阻。处置单元正在返回仓库。此事将被记录在案。"
+msgid "My drone can't hear me. It is going home."
+msgstr "我的无人机听不到我了。它回家了。"
 
 #: data/ledger.json:jammed
-msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
-msgstr "检测到干扰。Ledger 没有“干扰”这一账目条款。正在创建。"
+msgid "Jamming? Jamming is not on my list. Adding it."
+msgstr "干扰？清单上没有干扰。正在添加。"
 
 #: data/ledger.json:jammed
-msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
-msgstr "07 号单元报告：“噪音很大，有种不受欢迎的感觉”。中止。"
+msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
+msgstr "7 号无人机报告：太吵了，感觉不受欢迎。正在返航。"
 
 #: data/ledger.json:act3
 msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
@@ -17117,6 +17137,72 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
+#~ msgstr "检测到载体。扇区内存在计划外活动：{district}。"
+
+#~ msgid "THE LEDGER: Waste is a line item. Line items must balance."
+#~ msgstr "LEDGER：废料即为账目条款。账目条款必须平衡。"
+
+#~ msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
+#~ msgstr "清理作业已暂停，直至条件改善。条件并未改善。请停止改善条件。"
+
+#~ msgid "LIMITED OFFER: pause operations today and receive 0% off."
+#~ msgstr "限时优惠：今日暂停作业，即享 0% 折扣。"
+
+#~ msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
+#~ msgstr "优惠券：一（1）次免费暂停。永久有效。不可转让。"
+
+#~ msgid "Have you considered doing less? Our records show that less is cheaper."
+#~ msgstr "您是否考虑过少做一些？我方记录显示，少即是省。"
+
+#~ msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
+#~ msgstr "调查：在 1 到 1 的范围内，您希望暂停到何种程度？"
+
+#~ msgid "NOTICE: sparkles are not an approved budget category."
+#~ msgstr "通知：闪亮不属于已批准的预算类别。"
+
+#~ msgid "BUY ONE PAUSE, GET ONE PAUSE."
+#~ msgstr "买一次暂停，送一次暂停。"
+
+#~ msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
+#~ msgstr "忠诚奖励：您有 0 Ledger 积分。立即暂停以保留积分。"
+
+#~ msgid "REMINDER: the junk was here first. Seniority matters."
+#~ msgstr "提醒：废料先来的。资历很重要。"
+
+#~ msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
+#~ msgstr "您的清理已记为一项支出。您的支出已记为一项支出。"
+
+#~ msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
+#~ msgstr "异常：检测到未经授权的生长。生物不属于账目条款。"
+
+#~ msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
+#~ msgstr "纠正措施：正在派遣处置单元以恢复平衡。"
+
+#~ msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
+#~ msgstr "处置单元已派出。已选定一个干净的六角格进行再平衡。"
+
+#~ msgid "A clean surface is an unbudgeted surface. Correcting."
+#~ msgstr "干净的表面属于预算外表面。正在纠正。"
+
+#~ msgid "Returning misplaced waste to its registered location."
+#~ msgstr "正在将错放的废料归还至其登记位置。"
+
+#~ msgid "This is not personal. Nothing is personal. Everything is a line item."
+#~ msgstr "这不是针对个人。没有什么是针对个人的。一切都是账目条款。"
+
+#~ msgid "Delivery of one (1) small pile of junk. No signature required."
+#~ msgstr "递送一（1）小堆废料。无需签收。"
+
+#~ msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
+#~ msgstr "信号……受阻。处置单元正在返回仓库。此事将被记录在案。"
+
+#~ msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
+#~ msgstr "检测到干扰。Ledger 没有“干扰”这一账目条款。正在创建。"
+
+#~ msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
+#~ msgstr "07 号单元报告：“噪音很大，有种不受欢迎的感觉”。中止。"
 
 #~ msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 #~ msgstr "前哨站 %d 已修复：边境上有了一台能用的磅秤。Haul Bug 现在会送往最近的磅秤。"

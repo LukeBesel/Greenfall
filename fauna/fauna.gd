@@ -2056,12 +2056,21 @@ static func pack_custom(phase: float, gait: float, head_yaw: float, head_pitch: 
 	return Color(fmod(phase, TAU * 64.0), gait, hz, float(coat) * 2.0 + clampf(tail, 0.0, 1.95))
 
 
+## [v9d] Flying animals closer than this to the camera are not drawn (they fade over 3 m more).
+const NEAR_CAM_M: float = 3.0
+const NEAR_CAM_KINDS: Array[String] = ["bird", "soarer"]
+
+
 func _draw_all() -> void:
 	_counts.clear()
 	_glow_n = 0
 	var now: float = Time.get_ticks_msec() * 0.001
+	var cam: Camera3D = get_viewport().get_camera_3d() if is_inside_tree() else null
+	var cam_at: Vector3 = cam.global_position if cam else Vector3.INF
 	for a: Animal in animals:
 		var s: float = a.size * clampf(a.fade, 0.0, 1.0)
+		if a.kind in NEAR_CAM_KINDS and cam_at != Vector3.INF:  # [v9d] a bird crossing the lens: shrink away, never a black blot over the screen
+			s *= clampf((_w(a.pos).distance_to(cam_at) - NEAR_CAM_M) / 3.0, 0.0, 1.0)
 		if s <= 0.001:
 			if a.rig:
 				a.rig.visible = false

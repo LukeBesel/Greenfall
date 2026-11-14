@@ -550,7 +550,37 @@ func _pick_hex() -> int:
 					if dd < bd:
 						bd = dd
 						h = hid
+			if h < 0:  # [v9d] robots cleaned everything near: the nearest hex Lumi can finish, further out
+				var bd2: float = INF
+				for hid: int in f.hexes_near(at, HEX_FAR_RINGS):
+					if not _hex_ok(hid):
+						continue
+					var d2: float = OrbitUp.ground_dist(at, f.hex_center(hid))
+					if d2 < bd2:
+						bd2 = d2
+						h = hid
 	return h
+
+
+## [v9d] How far the cleaning steps look for a hex Lumi can finish when the near rings are clean.
+const HEX_FAR_RINGS: int = 14
+## [v9d] A cleaning step's outlined hex also gets the beam once it is this far or off screen.
+const HEX_BEAM_M: float = 15.0
+
+
+## [v9d] The outlined hex's centre when it needs the beam too (far, or not on screen), else null.
+func hex_beam() -> Variant:
+	var p: Patch = world.get("patch") as Patch if world else null
+	var f: HexField = world.get("field") as HexField if world else null
+	if p == null or f == null or target_hex < 0 or target_hex >= f.hex_count():
+		return null
+	var c: Vector3 = f.hex_center(target_hex)
+	if OrbitUp.ground_dist(p.global_position, c) > HEX_BEAM_M:
+		return c
+	var cam: Camera3D = p.get_viewport().get_camera_3d() if p.is_inside_tree() else null
+	if cam and (cam.is_position_behind(c) or not p.get_viewport().get_visible_rect().has_point(cam.unproject_position(c))):
+		return c
+	return null
 
 
 func _set_hex(h: int) -> void:
@@ -773,7 +803,10 @@ func waypoint_target() -> Variant:
 	if tut and not tut.done():  # #37: only places (bench, bin), never pieces
 		var tt: Dictionary = tut.target()
 		return tt.get("pos", null) if str(tt.get("kind", "")) in ["bench", "pad"] else null
-	var pos: Variant = step_target(current()).get("pos", null)
+	var stt: Dictionary = step_target(current())
+	var pos: Variant = stt.get("pos", null)
+	if pos == null and str(stt.get("to", "")) == "hex" and not (is_lost() and needs_home()):
+		pos = hex_beam()  # [v9d] a cleaning step always points somewhere: the outlined hex, when far or off screen
 	if pos == null and is_lost() and needs_home():  # [v3clear] lost on the way home: the beam stands on home (a place, owner #37)
 		pos = away_rocket() if away_rocket() is Vector3 else home_pos()  # [v6pace] from a far base home is a rocket hop
 	return pos
@@ -945,6 +978,8 @@ const HEAVY_MS: int = 6000
 var situation: String = ""
 ## [v9d] The situation line is only the step's price ("Need N more cubes..."): the card shows chips instead.
 var situation_price: bool = false
+## [v9d] The picture beside the situation line: chest, bale, lock (too heavy), house, scoop.
+var situation_kind: String = ""
 var _empty_t: float = 0.0
 var _was_full: bool = false
 
@@ -1101,21 +1136,30 @@ func situation_hint(dt: float = 0.0) -> String:
 	# robot, a base level) the line flipped every few seconds between "Need N more cubes" and the
 	# chest / bale line as Lumi worked. The price is what blocks the step: it wins. (Lumi still
 	# hears "Your chest is full" over his head the moment it fills.)
+	# [v9d] The objective card shows the price as cost chips (never as this sentence), so the chest /
+	# bale line can take the hint slot without flipping; the price sentence is the last resort.
 	var price: Dictionary = _step_price()
-	if not price.is_empty() and not GameState.can_afford_all(price):
-		situation_price = true  # [v9d] the card shows it as cost chips
-		return ListDetail.short_text(price)
+	var short: bool = not price.is_empty() and not GameState.can_afford_all(price)
+	situation_kind = "chest"
 	if full:
 		return tr("Your chest is full. Head home: the bin is under the tall smoke.") if far and not press else full_line
+	situation_kind = "bale"
 	if not p.carried.is_empty():
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
+	situation_kind = "lock"
 	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
 		return tr("Too heavy. Upgrade Lift at the bench.")
+	if short:
+		situation_price = true
+		situation_kind = ""
+		return ListDetail.short_text(price)
+	situation_kind = "house"
 	var bench_here: bool = field_bench() is Vector3 and str(step_target(current()).get("to", "")) == "bench"  # [v6pace]
 	if far and needs_home() and not bench_here:
 		if away_rocket() is Vector3:
 			return tr("The rocket waits on the pad. Home is first on its list.")  # [v6pace] a far base: fly home
 		return tr("Head home: follow the beam to the tall smoke.")
+	situation_kind = "scoop"
 	# Nothing to pick up nearby (away from home, on a cleaning step)
 	var home: Variant = home_pos()
 	var at_home: bool = home is Vector3 and OrbitUp.ground_dist(p.global_position, home) < 25.0

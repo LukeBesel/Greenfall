@@ -29,6 +29,8 @@ var _count: Label
 var _title: Label
 var _why: Label
 var _hint: Label
+var _hint_row: HBoxContainer
+var _hint_pic: StepIcons.Picture
 var _bar: Control
 var _pips: Control
 var _chips: HFlowContainer
@@ -111,7 +113,15 @@ func _ready() -> void:
 	_hint.max_lines_visible = 2
 	_hint.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_hint.visible = false
-	vb.add_child(_hint)
+	_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_hint.custom_minimum_size.x = tw - 24.0
+	_hint_row = HBoxContainer.new()  # [v9d] a small picture by the hint (lock = too heavy, chest, bale...)
+	_hint_row.add_theme_constant_override("separation", 6)
+	_hint_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hint_pic = StepIcons.Picture.new("star", 20.0, HINT)
+	_hint_row.add_child(_hint_pic)
+	_hint_row.add_child(_hint)
+	vb.add_child(_hint_row)
 	_why = UITheme.label("", 13, WHY)
 	_why.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_why.custom_minimum_size = Vector2(tw, 0)
@@ -181,6 +191,7 @@ func _set_texts(def: Dictionary) -> void:
 		_why.add_theme_color_override("font_color", HINT)
 		_why.visible = raw != ""
 		_hint.visible = false
+		_hint_row.visible = false
 		_chips.visible = false
 		return
 	_why.add_theme_color_override("font_color", WHY)
@@ -202,6 +213,11 @@ func _set_texts(def: Dictionary) -> void:
 				raw = ""
 	_hint.text = _hint_now
 	_hint.visible = _hint.text != ""
+	_hint_row.visible = _hint.visible
+	var hk: String = objectives.situation_kind if objectives and "situation_kind" in objectives else ""
+	_hint_pic.visible = hk != ""
+	if hk != "":
+		_hint_pic.set_kind(hk)
 
 
 ## The hint keeps one message at least HINT_HOLD_S, and goes away only once it has been gone a moment.
@@ -237,13 +253,13 @@ func read() -> Array[String]:
 const STEP_PICS: Dictionary = {
 	"dump3": "bin", "compartment": "chest", "scoop_size": "scoop", "baler": "press", "power": "bale",
 	"tower": "tower", "tower2": "tower", "glim": "lantern", "bench2": "gear", "robot": "bot",
-	"seed": "seed", "haul": "haulbug", "research1": "flask",
+	"seed": "seed", "haul": "haulbug", "research1": "book", "requests": "check",
 }
 const KEY_PICS: Dictionary = {
 	"hexes_cleaned": "hex", "junk_scooped": "scoop", "junk_dumps": "bin", "cubes_cashed": "bale",
 	"robot_bales": "bale", "cubes_made": "press", "perfect_cubes": "press", "plants_planted": "seed",
 	"seeds_unlocked": "seed", "plants_bloomed": "flower", "garden_stipend": "sprout", "hexes_restored": "sprout",
-	"research_done": "flask", "upgrades_bought": "gear", "robots_built": "bot", "shards_found": "book",
+	"research_done": "book", "upgrades_bought": "gear", "robots_built": "bot", "shards_found": "book",
 	"eggs_found": "star", "parts_found": "part", "hubs_seen": "rocket", "hubs_woken": "flag",
 	"rocket_tier": "rocket", "drive_tier": "rocket", "cats_petted": "heart", "seen_deer": "heart",
 	"bales_recycled": "recycle", "air_filtered": "recycle", "decor_placed": "flower", "decor_kinds": "flower",
@@ -276,7 +292,7 @@ static func picture_of(def: Dictionary) -> String:
 		"tier":
 			return "bot"
 		"research":
-			return "flask"
+			return "book"
 		"districts":
 			return "rocket"
 		"hex_level":

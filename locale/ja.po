@@ -491,23 +491,19 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:1113
-msgid "Too heavy. Upgrade Lift at the bench."
-msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
-
-#: core/pace.gd:192
+#: core/pace.gd:191
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "もう入らない。[%s] を押してベールを作ろう。"
 
-#: core/pace.gd:204
+#: core/pace.gd:203
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "ベーラーがまだない。胸のゴミをゴミ箱へ運ぼう。"
 
-#: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:259 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
-#: core/pace.gd:278 tools/walk_opening.gd:261
+#: core/pace.gd:277 tools/walk_opening.gd:261
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "もうバラのゴミは入れられないよ。[%s] でベールを作って、はかりにのせよう。"
 
@@ -2258,6 +2254,10 @@ msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。
 #: story/objectives.gd:1111
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
+
+#: story/objectives.gd:1113
+msgid "Too heavy. Upgrade Lift at the bench."
+msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
 #: story/objectives.gd:1117
 msgid "The rocket waits on the pad. Home is first on its list."
@@ -4761,7 +4761,7 @@ msgstr "基地のまわりの地面がきれいになった"
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "の土地を取り戻した  ·  陸のヘックス %s / %s"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:498 ui/objective_card.gd:308
+#: ui/goals_panel.gd:231 ui/list_detail.gd:510 ui/objective_card.gd:308
 msgid "DONE"
 msgstr "完了"
 
@@ -5020,55 +5020,75 @@ msgstr "ベール完成"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ 埋もれたパーツ %d%%"
 
-#: ui/list_detail.gd:99
+#: ui/list_detail.gd:101
 msgid "Nothing here yet. Keep playing."
 msgstr "まだ何もありません。プレイを続けよう。"
 
-#: ui/list_detail.gd:375 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:387 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "買う"
 
-#: ui/list_detail.gd:494
+#: ui/list_detail.gd:506
 msgid "LOCKED"
 msgstr "未解放"
 
-#: ui/list_detail.gd:502 ui/profile_picker.gd:97
+#: ui/list_detail.gd:514 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "進行中"
 
-#: ui/list_detail.gd:523
+#: ui/list_detail.gd:535
 msgid "FREE"
 msgstr "無料"
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:685
 msgid "LOCKED.  To unlock: %s"
 msgstr "ロック中。  解放するには：%s"
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:685
 msgid "Locked. Keep playing to unlock it."
 msgstr "ロック中。プレイを続けると解放されるよ。"
 
-#: ui/list_detail.gd:668
+#: ui/list_detail.gd:688
 msgid "REQUIRES   %s"
 msgstr "必要条件   %s"
 
-#: ui/list_detail.gd:671
+#: ui/list_detail.gd:691
 msgid "You can buy this now!"
 msgstr "いま買えるよ！"
 
-#: ui/list_detail.gd:691
+#: ui/list_detail.gd:710
+msgid "Level"
+msgstr "レベル"
+
+#: ui/list_detail.gd:711
+msgid "Now"
+msgstr "現在"
+
+#: ui/list_detail.gd:712
+msgid "Next"
+msgstr "次"
+
+#: ui/list_detail.gd:713
+msgid "Cost"
+msgstr "コスト"
+
+#: ui/list_detail.gd:764
+msgid "Need %s."
+msgstr "あと %s 必要。"
+
+#: ui/list_detail.gd:764 ui/list_detail.gd:776
 msgid "%s more %s"
 msgstr "%s %s"
 
-#: ui/list_detail.gd:693
+#: ui/list_detail.gd:778
 msgid "Pick up trash to earn them."
 msgstr "ゴミを拾うと手に入るよ。"
 
-#: ui/list_detail.gd:693
+#: ui/list_detail.gd:778
 msgid "Dig up parts and salvage junk to get them."
 msgstr "パーツを掘り出したり、ガラクタを分解したりすると手に入るよ。"
 
-#: ui/list_detail.gd:696
+#: ui/list_detail.gd:781
 msgid "Need %s. %s"
 msgstr "あと %s 必要。%s"
 
@@ -11980,92 +12000,92 @@ msgid "A dish that sings static at the Ledger's drones. Drops inside its radius 
 msgstr "Ledger のドローンにノイズを歌って聞かせるパラボラ。基地周辺の範囲内への投棄を防ぎ、ドローンが来る回数も減る。"
 
 #: data/ledger.json:act1
-msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
-msgstr "搬送体を検知。セクター内で予定外の活動：{district}。"
+msgid "Someone is cleaning on {district}. That is not on my list."
+msgstr "{district} で誰かが掃除している。それは私のリストにない。"
 
 #: data/ledger.json:act1
-msgid "THE LEDGER: Waste is a line item. Line items must balance."
-msgstr "THE LEDGER：廃棄物は計上項目です。計上項目は均衡しなければなりません。"
+msgid "Trash belongs where it is. I wrote it down."
+msgstr "ゴミはそこにあるべきだ。書き留めておいた。"
 
 #: data/ledger.json:act1
-msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
-msgstr "清掃作業は状況が改善するまで一時停止されました。状況は改善していません。改善するのをおやめください。"
+msgid "Please stop cleaning. Clean costs money. My money."
+msgstr "掃除をやめてください。きれいはお金がかかる。私のお金だ。"
 
 #: data/ledger.json:coupons
-msgid "LIMITED OFFER: pause operations today and receive 0% off."
-msgstr "期間限定：本日作業を停止すると 0% 割引となります。"
+msgid "COUPON: stop cleaning today and save nothing!"
+msgstr "クーポン：今日掃除をやめて、何も節約しよう！"
 
 #: data/ledger.json:coupons
-msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
-msgstr "クーポン：無料の一時停止1回分。無期限有効。譲渡不可。"
+msgid "COUPON: one free nap. Please take it."
+msgstr "クーポン：無料のお昼寝ひとつ。どうぞ使って。"
 
 #: data/ledger.json:coupons
-msgid "Have you considered doing less? Our records show that less is cheaper."
-msgstr "作業を減らすことをご検討いただけましたか？当方の記録では、少ないほど安価です。"
+msgid "Have you tried doing less? Less is cheaper."
+msgstr "もっと少なくやってみた？少ない方が安い。"
 
 #: data/ledger.json:coupons
-msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
-msgstr "アンケート：1から1の尺度で、どの程度停止をご希望ですか？"
+msgid "SURVEY: How much do you want to stop? Pick: a lot."
+msgstr "アンケート：どれくらいやめたい？選んで：とても。"
 
 #: data/ledger.json:coupons
-msgid "NOTICE: sparkles are not an approved budget category."
-msgstr "通知：きらめきは承認された予算区分ではありません。"
+msgid "Sparkles are not in my budget."
+msgstr "キラキラは予算に入っていない。"
 
 #: data/ledger.json:coupons
-msgid "BUY ONE PAUSE, GET ONE PAUSE."
-msgstr "一時停止をひとつお買い上げで、一時停止をもうひとつ。"
+msgid "Buy one nap, get one nap free."
+msgstr "お昼寝ひとつ買うと、もうひとつ無料。"
 
 #: data/ledger.json:coupons
-msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
-msgstr "ロイヤルティ特典：お客さまの Ledger ポイントは 0 です。保持するには、いますぐ停止してください。"
+msgid "You have 0 Ledger Points. Stop cleaning to keep them."
+msgstr "レジャーポイントは0。掃除をやめれば守れる。"
 
 #: data/ledger.json:coupons
-msgid "REMINDER: the junk was here first. Seniority matters."
-msgstr "お知らせ：ガラクタのほうが先に存在していました。年功は重要です。"
+msgid "The junk was here first. Be fair to the junk."
+msgstr "ゴミが先にいた。ゴミに公平に。"
 
 #: data/ledger.json:coupons
-msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
-msgstr "お客さまの清掃は経費として計上されました。お客さまの経費は経費として計上されました。"
+msgid "Your cleaning costs me. I wrote that down twice."
+msgstr "君の掃除は私の出費だ。二回書いておいた。"
 
 #: data/ledger.json:act2
-msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
-msgstr "異常：無許可の成長を検知。生体は計上項目ではありません。"
+msgid "Plants are growing. Plants are not on my list!"
+msgstr "植物が育っている。植物はリストにない！"
 
 #: data/ledger.json:act2
-msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
-msgstr "是正措置：均衡回復のため処分ユニットを派遣します。"
+msgid "Sending drones to put the trash back."
+msgstr "ドローンを送ってゴミを戻す。"
 
 #: data/ledger.json:drop_warn
-msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
-msgstr "処分ユニットを派遣しました。再均衡の対象として、きれいなヘックスが選定されました。"
+msgid "A drone is coming to put trash on clean ground."
+msgstr "ドローンがきれいな地面にゴミを置きに来る。"
 
 #: data/ledger.json:drop_warn
-msgid "A clean surface is an unbudgeted surface. Correcting."
-msgstr "きれいな表面は予算外の表面です。是正中。"
+msgid "Clean ground is not in my budget. Fixing that."
+msgstr "きれいな地面は予算外だ。直しておく。"
 
 #: data/ledger.json:drop_warn
-msgid "Returning misplaced waste to its registered location."
-msgstr "所在不明の廃棄物を登録地点へ返却しています。"
+msgid "Putting the trash back where it was."
+msgstr "ゴミを元の場所に戻す。"
 
 #: data/ledger.json:drop_warn
-msgid "This is not personal. Nothing is personal. Everything is a line item."
-msgstr "これは個人的なものではありません。何ひとつ個人的ではありません。すべては計上項目です。"
+msgid "Nothing personal. You are just a line on my list."
+msgstr "個人的な話じゃない。君はリストの一行にすぎない。"
 
 #: data/ledger.json:drop_warn
-msgid "Delivery of one (1) small pile of junk. No signature required."
-msgstr "ガラクタの小山1つ（1）をお届けします。署名は不要です。"
+msgid "One small pile of trash, delivered. No thanks needed."
+msgstr "小さなゴミの山、お届け。お礼はいらない。"
 
 #: data/ledger.json:jammed
-msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
-msgstr "シグナル……妨害。処分ユニットはデポへ帰還します。本件は記録されます。"
+msgid "My drone can't hear me. It is going home."
+msgstr "ドローンに声が届かない。帰らせる。"
 
 #: data/ledger.json:jammed
-msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
-msgstr "妨害を検知。Ledger には「妨害」の計上項目がありません。作成します。"
+msgid "Jamming? Jamming is not on my list. Adding it."
+msgstr "妨害？リストにない。追加しておく。"
 
 #: data/ledger.json:jammed
-msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
-msgstr "ユニット07の報告：「大きなノイズ、歓迎されていない感覚」。中止します。"
+msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
+msgstr "ドローン7より：うるさい、歓迎されていない気がする。引き返す。"
 
 #: data/ledger.json:act3
 msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
@@ -17117,6 +17137,72 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
+#~ msgstr "搬送体を検知。セクター内で予定外の活動：{district}。"
+
+#~ msgid "THE LEDGER: Waste is a line item. Line items must balance."
+#~ msgstr "THE LEDGER：廃棄物は計上項目です。計上項目は均衡しなければなりません。"
+
+#~ msgid "Cleanup operations were paused until conditions improve. Conditions have not improved. Please stop improving them."
+#~ msgstr "清掃作業は状況が改善するまで一時停止されました。状況は改善していません。改善するのをおやめください。"
+
+#~ msgid "LIMITED OFFER: pause operations today and receive 0% off."
+#~ msgstr "期間限定：本日作業を停止すると 0% 割引となります。"
+
+#~ msgid "COUPON: one (1) complimentary pause. Valid forever. Non-transferable."
+#~ msgstr "クーポン：無料の一時停止1回分。無期限有効。譲渡不可。"
+
+#~ msgid "Have you considered doing less? Our records show that less is cheaper."
+#~ msgstr "作業を減らすことをご検討いただけましたか？当方の記録では、少ないほど安価です。"
+
+#~ msgid "SURVEY: on a scale of 1 to 1, how paused would you like to be?"
+#~ msgstr "アンケート：1から1の尺度で、どの程度停止をご希望ですか？"
+
+#~ msgid "NOTICE: sparkles are not an approved budget category."
+#~ msgstr "通知：きらめきは承認された予算区分ではありません。"
+
+#~ msgid "BUY ONE PAUSE, GET ONE PAUSE."
+#~ msgstr "一時停止をひとつお買い上げで、一時停止をもうひとつ。"
+
+#~ msgid "Loyalty reward: you have 0 Ledger Points. Pause now to keep them."
+#~ msgstr "ロイヤルティ特典：お客さまの Ledger ポイントは 0 です。保持するには、いますぐ停止してください。"
+
+#~ msgid "REMINDER: the junk was here first. Seniority matters."
+#~ msgstr "お知らせ：ガラクタのほうが先に存在していました。年功は重要です。"
+
+#~ msgid "Your cleaning has been logged as an expense. Your expense has been logged as an expense."
+#~ msgstr "お客さまの清掃は経費として計上されました。お客さまの経費は経費として計上されました。"
+
+#~ msgid "ANOMALY: UNAUTHORIZED GROWTH DETECTED. Living matter is not a line item."
+#~ msgstr "異常：無許可の成長を検知。生体は計上項目ではありません。"
+
+#~ msgid "CORRECTIVE ACTION: dispatching disposal units to restore the balance."
+#~ msgstr "是正措置：均衡回復のため処分ユニットを派遣します。"
+
+#~ msgid "Disposal unit dispatched. A clean hex has been selected for re-balancing."
+#~ msgstr "処分ユニットを派遣しました。再均衡の対象として、きれいなヘックスが選定されました。"
+
+#~ msgid "A clean surface is an unbudgeted surface. Correcting."
+#~ msgstr "きれいな表面は予算外の表面です。是正中。"
+
+#~ msgid "Returning misplaced waste to its registered location."
+#~ msgstr "所在不明の廃棄物を登録地点へ返却しています。"
+
+#~ msgid "This is not personal. Nothing is personal. Everything is a line item."
+#~ msgstr "これは個人的なものではありません。何ひとつ個人的ではありません。すべては計上項目です。"
+
+#~ msgid "Delivery of one (1) small pile of junk. No signature required."
+#~ msgstr "ガラクタの小山1つ（1）をお届けします。署名は不要です。"
+
+#~ msgid "SIGNAL... OBSTRUCTED. Disposal unit returning to depot. This will be noted."
+#~ msgstr "シグナル……妨害。処分ユニットはデポへ帰還します。本件は記録されます。"
+
+#~ msgid "Jamming detected. The Ledger has no line item for 'jamming'. Creating one."
+#~ msgstr "妨害を検知。Ledger には「妨害」の計上項目がありません。作成します。"
+
+#~ msgid "Unit 07 reports: 'loud static, a feeling of being unwelcome'. Aborting."
+#~ msgstr "ユニット07の報告：「大きなノイズ、歓迎されていない感覚」。中止します。"
 
 #~ msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 #~ msgstr "前哨基地 %d を修理：辺境に使えるはかりができた。Haul Bug はいちばん近いはかりに運ぶようになる。"

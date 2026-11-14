@@ -143,8 +143,7 @@ static func heavy_hint(patch: Node3D, field: HexField, origin: Vector3, forward:
 		return
 	_hint_t = now
 	heavy_at = now  # [v3clear]
-	var at: Vector3 = field.piece_pos[pid]
-	Vfx.float_text(at + OrbitUp.up(at) * 1.0, TranslationServer.translate("Too heavy. Upgrade Lift at the bench."), Color(1.0, 0.75, 0.45), 0.4, 0.6)  # [v3clear] plain words, local up
+	# [v9d] No floating sentence: the piece's own label ("Needs Lift 2") and the card's hint say it once.
 	Audio.play("buzz", 0.8, -12.0)
 
 

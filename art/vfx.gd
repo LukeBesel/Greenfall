@@ -233,6 +233,17 @@ func _base_amount(kind: String) -> int:
 
 ## Floating text that drifts up and fades. size ~1 normal, 2 for big events.
 func float_text(pos: Vector3, text: String, color: Color = Color.WHITE, size: float = 1.0, rise: float = 1.4) -> void:
+	# [v9d] One floating line per spot: the same words already up are not drawn again, and another
+	# line starting near a visible one stacks above it instead of on top of it.
+	var lift: float = 0.0
+	for o: Label3D in _texts:
+		if not o.visible or o.modulate.a <= 0.05:
+			continue
+		if o.text == text and o.global_position.distance_to(pos) < 4.0:
+			return
+		if o.global_position.distance_to(pos + OrbitUp.up(pos) * lift) < 0.55 * maxf(size, o.scale.x):
+			lift += 0.55 * maxf(size, o.scale.x)
+	pos += OrbitUp.up(pos) * lift
 	var l: Label3D = _texts[_text_idx]
 	_text_idx = (_text_idx + 1) % _texts.size()
 	var tw_old: Variant = l.get_meta("tween") if l.has_meta("tween") else null
