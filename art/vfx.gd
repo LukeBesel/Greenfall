@@ -403,3 +403,68 @@ func pillar(pos: Vector3, color: Color, height: float = 6.0, duration: float = 1
 	tw.tween_interval(duration * 0.25)
 	tw.tween_property(m, "albedo_color:a", 0.0, duration * 0.45)
 	tw.tween_callback(mi.queue_free)
+
+
+# --- [v9b] Too heavy: a steady mark on the piece the scoop is aimed at but can't lift ------------
+
+## A red-amber ring round the piece and "Needs Lift N" over it, kept while the scoop keeps finding
+## it (call every pulse), gone HEAVY_HOLD_S after the last call. One at a time.
+const HEAVY_HOLD_S: float = 3.0  # long enough to see, between pulses and a step aside
+const HEAVY_COL: Color = Color(1.0, 0.42, 0.25)
+var heavy_node: Node3D
+var _heavy_label: Label3D
+var _heavy_ring: MeshInstance3D
+var _heavy_left: float = 0.0
+
+
+func heavy_mark(pos: Vector3, radius: float, need: int) -> void:
+	if heavy_node == null:
+		heavy_node = Node3D.new()
+		heavy_node.name = "HeavyMark"
+		_root.add_child(heavy_node)
+		_heavy_ring = MeshInstance3D.new()
+		var t := TorusMesh.new()
+		t.inner_radius = 0.86
+		t.outer_radius = 1.0
+		t.rings = 40
+		t.ring_segments = 4
+		var m := StandardMaterial3D.new()
+		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		m.no_depth_test = true
+		m.render_priority = 8
+		m.albedo_color = Color(HEAVY_COL, 0.9)
+		t.material = m
+		_heavy_ring.mesh = t
+		heavy_node.add_child(_heavy_ring)
+		_heavy_label = Label3D.new()
+		_heavy_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		_heavy_label.no_depth_test = true
+		_heavy_label.pixel_size = 0.006
+		_heavy_label.font_size = 44
+		_heavy_label.outline_size = 10
+		_heavy_label.outline_modulate = Color(0.05, 0.03, 0.02, 0.85)
+		_heavy_label.modulate = HEAVY_COL.lightened(0.25)
+		_heavy_label.render_priority = 10
+		_heavy_label.outline_render_priority = 9
+		heavy_node.add_child(_heavy_label)
+	var up: Vector3 = OrbitUp.up(pos)
+	heavy_node.global_position = pos
+	_heavy_ring.global_position = pos + up * 0.08
+	if JunkCube.planet_radius > 0.0:
+		_heavy_ring.quaternion = Quaternion(SphereGrid.frame(pos.normalized()))
+	_heavy_ring.scale = Vector3(radius, 0.04, radius)
+	_heavy_label.global_position = pos + up * (radius + 0.9)
+	_heavy_label.text = TranslationServer.translate("Needs Lift %d") % need
+	heavy_node.visible = true
+	_heavy_left = HEAVY_HOLD_S
+
+
+func _process(delta: float) -> void:
+	if heavy_node == null or not heavy_node.visible:
+		return
+	_heavy_left -= delta
+	var pulse: float = 0.7 + 0.3 * sin(Time.get_ticks_msec() * 0.008)
+	(_heavy_ring.mesh as TorusMesh).material.set("albedo_color", Color(HEAVY_COL, 0.9 * pulse))
+	if _heavy_left <= 0.0:
+		heavy_node.visible = false

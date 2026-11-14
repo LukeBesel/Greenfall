@@ -1148,7 +1148,7 @@ func situation_hint(dt: float = 0.0) -> String:
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
 	situation_kind = "lock"
 	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
-		return tr("Too heavy. Upgrade Lift at the bench.")
+		return Pace.heavy_line() if Pace.heavy_need > 0 else tr("Too heavy. Upgrade Lift at the bench.")  # [v9b] which Lift
 	if short:
 		situation_price = true
 		situation_kind = ""

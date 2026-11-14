@@ -16,6 +16,10 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "NOUVEL ÉQUIPIER  ·  %s"
 
+#: art/vfx.gd:458
+msgid "Needs Lift %d"
+msgstr "Force de levage %d requise"
+
 #: autoload/Economy.gd:72
 msgid "Every %s in the fleet."
 msgstr "Chaque %s de la flotte."
@@ -491,19 +495,27 @@ msgstr "Des balles d'une valeur de %s s'empilaient à la base sans personne pour
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Les épurateurs ont filtré l'air tout ce temps. Il est un peu plus clair."
 
-#: core/pace.gd:191
+#: core/pace.gd:206
+msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
+msgstr "Cet hex a besoin de la Force de levage %d pour être fini. Améliore-la à l'établi."
+
+#: core/pace.gd:207
+msgid "Too heavy: this needs Lift %d. Upgrade at the workbench."
+msgstr "Trop lourd : il faut la Force de levage %d. Améliore-la à l'établi."
+
+#: core/pace.gd:252
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "Plus rien ne rentre. Appuie sur [%s] pour faire un ballot."
 
-#: core/pace.gd:203
+#: core/pace.gd:264
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "Pas encore de presse à balles. Apporte ton coffre à la poubelle."
 
-#: core/pace.gd:259 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:320 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s cubes"
 
-#: core/pace.gd:277 tools/walk_opening.gd:261
+#: core/pace.gd:338 tools/walk_opening.gd:261
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Plus de déchets en vrac. Appuie sur [%s] pour une balle, puis pose-la sur la balance."
 
@@ -527,11 +539,11 @@ msgstr "Les oiseaux ont décidé que tu étais quelqu'un de bien. Sac de miettes
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "La chatte a décidé que tu étais à elle. Voici %s. Elle vit à cette base maintenant."
 
-#: fauna/fauna.gd:2223 ui/subtitles.gd:453
+#: fauna/fauna.gd:2232 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Nouvelle observation : %s. Elle est maintenant dans le Codex."
 
-#: fauna/fauna.gd:2294
+#: fauna/fauna.gd:2303
 msgid "Snap! A %s for your Collection."
 msgstr "Clic ! Une photo (%s) pour ta Collection."
 
@@ -1964,23 +1976,23 @@ msgstr "Ce quelqu'un, c'est toi. Petit. Têtu. Sur quatre pour cent de batterie.
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "Trouve un sol propre. Creuse. Dépose-la. Tasse. Et ensuite – c'est important – arrose."
 
-#: story/first_seed.gd:157
-msgid "{tool_water}  then hold  {scoop}  to water it"
-msgstr "{tool_water}  puis maintiens  {scoop}  pour arroser"
+#: story/first_seed.gd:164
+msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
+msgstr "Appuie sur  {tool_water}  pour l'arrosoir, puis maintiens  {scoop}  pour arroser la graine"
 
-#: story/first_seed.gd:277
+#: story/first_seed.gd:301
 msgid "...It's green. Lumi, it's actually green."
 msgstr "...C'est vert. Lumi, c'est vraiment vert."
 
-#: story/first_seed.gd:279
+#: story/first_seed.gd:303
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Garde-la bien arrosée. Les graines sont rares par ici, mais chaque floraison en rend une, et un peu de lumière verte pour ton cœur. C'est comme ça que tout commence."
 
-#: story/first_seed.gd:430
+#: story/first_seed.gd:454
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi. Je capte un signal. Vert, faible, à l'est de la base. Une vieille serre. Va voir."
 
-#: story/first_seed.gd:542
+#: story/first_seed.gd:566
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "Appuie sur  {tool_plant}  pour la graine. Puis maintiens  {scoop}  sur un bac de la serre"
 
@@ -2229,51 +2241,51 @@ msgstr "Objectif atteint  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:858
+#: story/objectives.gd:891
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "Presse installée ! Remplis ton coffre, puis appuie sur [%s] pour une balle."
 
-#: story/objectives.gd:880 story/objectives.gd:1093
+#: story/objectives.gd:913 story/objectives.gd:1128
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Ton coffre est plein. Appuie sur [%s] pour faire un ballot."
 
-#: story/objectives.gd:896
+#: story/objectives.gd:929
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Ton détecteur a trouvé une pièce de robot enterrée tout près. Suis l'indication PIÈCE ENTERRÉE ; il bipe quand tu es juste au-dessus."
 
-#: story/objectives.gd:898
+#: story/objectives.gd:931
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIÈCE ENTERRÉE : avance vers elle jusqu'au signal maximal, puis déterre-la."
 
-#: story/objectives.gd:1094
+#: story/objectives.gd:1129
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Ton coffre est plein. Apporte-le à la poubelle."
 
-#: story/objectives.gd:1109
+#: story/objectives.gd:1145
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Ton coffre est plein. Rentre à la maison : la poubelle est sous la grande fumée."
 
-#: story/objectives.gd:1111
+#: story/objectives.gd:1148
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Rapporte ton ballot à la maison : la balance est sous la grande fumée."
 
-#: story/objectives.gd:1111
+#: story/objectives.gd:1148
 msgid "Carry your bale to the scale by the bin."
 msgstr "Porte ton ballot à la balance, près de la poubelle."
 
-#: story/objectives.gd:1113
+#: story/objectives.gd:1151
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Trop lourd. Améliore la Force de levage à l'établi."
 
-#: story/objectives.gd:1117
+#: story/objectives.gd:1160
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "La fusée attend sur l'aire. La maison est en tête de sa liste."
 
-#: story/objectives.gd:1118
+#: story/objectives.gd:1161
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Rentre à la maison : suis le faisceau jusqu'à la grande fumée."
 
-#: story/objectives.gd:1128
+#: story/objectives.gd:1172
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Rien à ramasser ici. Va là où il y a plus de déchets."
 
@@ -3739,6 +3751,10 @@ msgstr "Histoire"
 msgid "Yard"
 msgstr "Cour"
 
+#: ui/bench_lists.gd:128 ui/frontier_rockets.gd:40
+msgid "Base level %d"
+msgstr "Base niveau %d"
+
 #: ui/bench_tiers.gd:93
 msgid "Build the signal tower first."
 msgstr "Construis d'abord la tour de signal."
@@ -4638,10 +4654,6 @@ msgid "FRONTIERS"
 msgstr "FRONTIÈRES"
 
 #: ui/frontier_rockets.gd:40
-msgid "Base level %d"
-msgstr "Base niveau %d"
-
-#: ui/frontier_rockets.gd:40
 msgid "Unexplored  ·  bales sell x%d here"
 msgstr "Inexploré  ·  les balles valent x%d ici"
 
@@ -4777,7 +4789,7 @@ msgstr "du sol autour de tes bases est propre"
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "de la planète reconquis  ·  %s sur %s hexagones de terre"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:510 ui/objective_card.gd:308
+#: ui/goals_panel.gd:231 ui/list_detail.gd:508 ui/objective_card.gd:328
 msgid "DONE"
 msgstr "FAIT"
 
@@ -5040,71 +5052,71 @@ msgstr "◢ PIÈCE ENTERRÉE %d%%"
 msgid "Nothing here yet. Keep playing."
 msgstr "Rien ici pour l'instant. Continue à jouer."
 
-#: ui/list_detail.gd:387 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:385 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "Acheter"
 
-#: ui/list_detail.gd:506
+#: ui/list_detail.gd:504
 msgid "LOCKED"
 msgstr "VERROUILLÉ"
 
-#: ui/list_detail.gd:514 ui/profile_picker.gd:97
+#: ui/list_detail.gd:512 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "ACTIF"
 
-#: ui/list_detail.gd:535
+#: ui/list_detail.gd:533
 msgid "FREE"
 msgstr "GRATUIT"
 
-#: ui/list_detail.gd:685
+#: ui/list_detail.gd:695
 msgid "LOCKED.  To unlock: %s"
 msgstr "VERROUILLÉ.  Pour débloquer : %s"
 
-#: ui/list_detail.gd:685
+#: ui/list_detail.gd:695
 msgid "Locked. Keep playing to unlock it."
 msgstr "Verrouillé. Continue à jouer pour le débloquer."
 
-#: ui/list_detail.gd:688
+#: ui/list_detail.gd:698
 msgid "REQUIRES   %s"
 msgstr "REQUIS   %s"
 
-#: ui/list_detail.gd:691
+#: ui/list_detail.gd:701
 msgid "You can buy this now!"
 msgstr "Tu peux l'acheter maintenant !"
 
-#: ui/list_detail.gd:710
+#: ui/list_detail.gd:720
 msgid "Level"
 msgstr "Niveau"
 
-#: ui/list_detail.gd:711
+#: ui/list_detail.gd:721
 msgid "Now"
 msgstr "Actuel"
 
-#: ui/list_detail.gd:712
+#: ui/list_detail.gd:722
 msgid "Next"
 msgstr "Suivant"
 
-#: ui/list_detail.gd:713
+#: ui/list_detail.gd:723
 msgid "Cost"
 msgstr "Coût"
 
-#: ui/list_detail.gd:764
+#: ui/list_detail.gd:774
 msgid "Need %s."
 msgstr "Il manque %s."
 
-#: ui/list_detail.gd:764 ui/list_detail.gd:776
+#: ui/list_detail.gd:774 ui/list_detail.gd:786
 msgid "%s more %s"
 msgstr "%s %s"
 
-#: ui/list_detail.gd:778
+#: ui/list_detail.gd:788
 msgid "Pick up trash to earn them."
 msgstr "Ramasse des déchets pour en gagner."
 
-#: ui/list_detail.gd:778
+#: ui/list_detail.gd:788
 msgid "Dig up parts and salvage junk to get them."
 msgstr "Déterre des pièces et démonte de la ferraille pour en avoir."
 
-#: ui/list_detail.gd:781
+#: ui/list_detail.gd:791
 msgid "Need %s. %s"
 msgstr "Il te manque encore %s. %s"
 
@@ -17155,6 +17167,9 @@ msgstr "Ce portique a mis la flotte du Ledger à la casse quand l'argent a manqu
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pieds. Les comptes sont clos, {name}. Nous les avons équilibrés."
 
+#~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
+#~ msgstr "Établi réparé. Appuie sur {interact} devant lui pour dépenser des cubes en améliorations."
+
 #~ msgid "CARRIER DETECTED. UNSCHEDULED ACTIVITY IN SECTOR: {district}."
 #~ msgstr "PORTEUR DÉTECTÉ. ACTIVITÉ NON PLANIFIÉE DANS LE SECTEUR : {district}."
 
@@ -17235,6 +17250,9 @@ msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pi
 
 #~ msgid "The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram (M). Build the Mk V Orbital drive to reach Ochre and Tidewell."
 #~ msgstr "Le Cradle reste en orbite. Restaure tout le système : la carte du système solaire est dans l'hologramme (M). Construis la propulsion Mk V Orbitale pour atteindre Ochre et Tidewell."
+
+#~ msgid "{tool_water}  then hold  {scoop}  to water it"
+#~ msgstr "{tool_water}  puis maintiens  {scoop}  pour arroser"
 
 #~ msgid "New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."
 #~ msgstr "Nouveau à l'établi, onglet Construire : Brouilleur. Il perturbe les drones du Ledger près de la base."

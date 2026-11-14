@@ -301,11 +301,9 @@ func set_category(cid: String) -> void:
 
 ## [v1guide] Shows row `id` (its category, selected). False when it isn't listed.
 func select_id(id: String) -> bool:
-	if _items.is_empty():
+	var it: Dictionary = {} if _items.is_empty() else _find(id)
+	if it.is_empty():  # [v9b] the rows may be old (read while a load was still building the yard): read them again
 		_items = provider.call() if provider.is_valid() else []
-	var it: Dictionary = _find(id)
-	if it.is_empty() and provider.is_valid():  # [v9c] a row that came since the last fill (the rocket's, after the first station)
-		_items = provider.call()
 		it = _find(id)
 	if it.is_empty():
 		return false
@@ -569,10 +567,22 @@ func _select(id: String) -> void:
 	_show_detail(_find(id))
 
 
+## [v9b] A double click on a price tag acted twice: on a research row the second click hit the
+## row's new action, "Cancel (refund)", so the project started and stopped at once. A second act
+## on the same row this soon is the same click.
+const REACT_MS: int = 450
+var _did_id: String = ""
+var _did_ms: int = -100000
+
+
 func _do(id: String) -> void:
 	var it: Dictionary = _find(id)
 	if it.is_empty():
 		return
+	if id == _did_id and Time.get_ticks_msec() - _did_ms < REACT_MS:
+		return
+	_did_id = id
+	_did_ms = Time.get_ticks_msec()
 	var act: Variant = it.get("act")
 	if str(it.get("state", "")) != "ready" or not (act is Callable) or not (act as Callable).is_valid():
 		Audio.play("buzz", 1.2, -10.0)

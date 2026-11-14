@@ -186,6 +186,10 @@ func _set_texts(def: Dictionary) -> void:
 	var raw: String = objectives.situation if objectives else ""
 	_price = {}
 	if substep != "":  # [v2guide]
+		# [v9b] A one-off instruction (water the seed) is the one thing on the card: the step's own
+		# price line ("Need 292 more cubes") has nothing to do with it, so it stays off.
+		if hint != "" and objectives and hint == ListDetail.short_text(objectives.call("_step_price")):
+			hint = ""
 		_title.text = substep
 		_why.text = raw
 		_why.add_theme_color_override("font_color", HINT)

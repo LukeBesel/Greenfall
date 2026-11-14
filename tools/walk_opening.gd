@@ -464,11 +464,16 @@ static func _make_and_sell_bale() -> void:
 	await _tap("cube")
 	await _wait(func() -> bool: return int(GameState.stats.get("cubes_made", 0)) > made0, 6.0)
 	_check(int(GameState.stats.get("cubes_made", 0)) > made0, "bale: RMB presses a bale")
+	# [main] The bale leaves the press some frames after the count moves; a fixed second was too
+	# short on a slow runner (CI: "bale none m away"). Wait for the new bale itself.
+	var fresh: Callable = func() -> JunkCube:
+		for n: Node in _tree.get_nodes_in_group("junk_cube"):
+			if not (n in before) and n is JunkCube and is_instance_valid(n):
+				return n as JunkCube
+		return null
+	await _wait(func() -> bool: return fresh.call() != null, 12.0)
 	await _secs(1.0)
-	var bale: JunkCube = null
-	for n: Node in _tree.get_nodes_in_group("junk_cube"):
-		if not (n in before):
-			bale = n as JunkCube
+	var bale: JunkCube = fresh.call()
 	if bale and _p.nearest_loose_cube() != bale:  # pressed out behind him: turn round to it
 		await _walk_to(func() -> Vector3: return bale.global_position, func() -> bool: return _p.nearest_loose_cube() == bale, "the bale", 0.9)
 	var price: Dictionary = _ob._step_price()
