@@ -515,7 +515,7 @@ msgstr "ベーラーがまだない。胸のゴミをゴミ箱へ運ぼう。"
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
-#: core/pace.gd:338 tools/walk_opening.gd:264
+#: core/pace.gd:338 tools/walk_opening.gd:319
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "もうバラのゴミは入れられないよ。[%s] でベールを作って、はかりにのせよう。"
 
@@ -992,11 +992,11 @@ msgstr "サージ  %s"
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:694
+#: player/patch.gd:700
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:725
+#: player/patch.gd:731
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -3559,6 +3559,10 @@ msgstr "Glim はまだスキャン中。少し待ってからもう一度。"
 msgid "Close"
 msgstr "閉じる"
 
+#: tools/walk_opening.gd:483 ui/main_menu.gd:368 ui/pause_menu.gd:72
+msgid "Quit"
+msgstr "終了"
+
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
 msgstr "割り当てボード   ·   MULTIBOT"
@@ -5309,10 +5313,6 @@ msgstr "プロフィール"
 #: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "設定"
-
-#: ui/main_menu.gd:368 ui/pause_menu.gd:72
-msgid "Quit"
-msgstr "終了"
 
 #: ui/main_menu.gd:375
 msgid "Made with Godot"

@@ -515,7 +515,7 @@ msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: core/pace.gd:338 tools/walk_opening.gd:264
+#: core/pace.gd:338 tools/walk_opening.gd:319
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "现在不收散装垃圾了。按 [%s] 压一个垃圾块，再把它放到秤上。"
 
@@ -992,11 +992,11 @@ msgstr "冲劲  %s"
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:694
+#: player/patch.gd:700
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:725
+#: player/patch.gd:731
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -3559,6 +3559,10 @@ msgstr "Glim 还在扫描。稍后再试。"
 msgid "Close"
 msgstr "关闭"
 
+#: tools/walk_opening.gd:483 ui/main_menu.gd:368 ui/pause_menu.gd:72
+msgid "Quit"
+msgstr "退出"
+
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
 msgstr "分配面板   ·   MULTIBOT"
@@ -5309,10 +5313,6 @@ msgstr "存档"
 #: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "设置"
-
-#: ui/main_menu.gd:368 ui/pause_menu.gd:72
-msgid "Quit"
-msgstr "退出"
 
 #: ui/main_menu.gd:375
 msgid "Made with Godot"

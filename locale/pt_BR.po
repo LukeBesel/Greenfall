@@ -515,7 +515,7 @@ msgstr "Ainda sem enfardadeira. Leve seu peito até a lixeira."
 msgid "+%s cubes"
 msgstr "+%s cubos"
 
-#: core/pace.gd:338 tools/walk_opening.gd:264
+#: core/pace.gd:338 tools/walk_opening.gd:319
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Nada de lixo solto agora. Aperte [%s] para fazer um fardo e coloque na balança."
 
@@ -993,11 +993,11 @@ msgstr "IMPULSO  %s"
 msgid "  (streak +%d%%)"
 msgstr "  (sequência +%d%%)"
 
-#: player/patch.gd:694
+#: player/patch.gd:700
 msgid "Salvaged: %s"
 msgstr "Resgatado: %s"
 
-#: player/patch.gd:725
+#: player/patch.gd:731
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -3571,6 +3571,10 @@ msgstr "Glim ainda está escaneando. Tente de novo em instantes."
 msgid "Close"
 msgstr "Fechar"
 
+#: tools/walk_opening.gd:483 ui/main_menu.gd:368 ui/pause_menu.gd:72
+msgid "Quit"
+msgstr "Sair"
+
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
 msgstr "QUADRO DE ALOCAÇÃO   ·   MULTIBOTS"
@@ -5326,10 +5330,6 @@ msgstr "Perfis"
 #: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "Configurações"
-
-#: ui/main_menu.gd:368 ui/pause_menu.gd:72
-msgid "Quit"
-msgstr "Sair"
 
 #: ui/main_menu.gd:375
 msgid "Made with Godot"

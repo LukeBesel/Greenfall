@@ -512,7 +512,7 @@ msgstr "[Ñô Bàļéŕ ýéţ. Bŕîñĝ ýôûŕ çĥéšţ ţô ţĥé bîñ.
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
-#: core/pace.gd:338 tools/walk_opening.gd:264
+#: core/pace.gd:338 tools/walk_opening.gd:319
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "[Ñô ļôôšé ţŕàšĥ ñôŵ. Þŕéšš [%s] ƒôŕ à bàļé, ţĥéñ þûţ îţ ôñ ţĥé šçàļé. ~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -990,11 +990,11 @@ msgstr "[ŠÛŔĜÉ  %s ~]"
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:694
+#: player/patch.gd:700
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:725
+#: player/patch.gd:731
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -3568,6 +3568,10 @@ msgstr "[Ĝļîm îš šţîļļ šçàññîñĝ. Ţŕý àĝàîñ îñ à mô
 msgid "Close"
 msgstr "[Çļôšé ~]"
 
+#: tools/walk_opening.gd:483 ui/main_menu.gd:368 ui/pause_menu.gd:72
+msgid "Quit"
+msgstr "[Qûîţ ~]"
+
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
 msgstr "[ÀĻĻÔÇÀŢÎÔÑ BÔÀŔÐ   ·   MÛĻŢÎBÔŢŠ ~~~~~~~~]"
@@ -5323,10 +5327,6 @@ msgstr "[Þŕôƒîļéš ~]"
 #: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "[Šéţţîñĝš ~]"
-
-#: ui/main_menu.gd:368 ui/pause_menu.gd:72
-msgid "Quit"
-msgstr "[Qûîţ ~]"
 
 #: ui/main_menu.gd:375
 msgid "Made with Godot"
