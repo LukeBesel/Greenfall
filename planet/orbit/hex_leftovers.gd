@@ -45,12 +45,14 @@ static func for_world(w: Node) -> HexLeftovers:
 ## Why piece pid can't be taken where it lies ("" when it can). big_counts: a piece above Lift
 ## Strength 0 counts as stuck (the start area holds none); else big pieces pass (Lumi sees them
 ## and comes back with more Lift Strength).
-func why(pid: int, big_counts: bool = true, phys: bool = true) -> String:
+## max_size: the biggest size class that counts as takeable when big_counts ([v9c] a far station's
+## audit passes the Lift a player has there; -1 = the start area's Lift 0).
+func why(pid: int, big_counts: bool = true, phys: bool = true, max_size: int = -1) -> String:
 	var f: SphereField = field
 	var c: int = f.piece_hex[pid]
 	if f.locked.has(c):
 		return "locked"
-	if big_counts and int(f.piece_size[pid]) > Pace.SIZE_SMALL:
+	if big_counts and int(f.piece_size[pid]) > (Pace.SIZE_SMALL if max_size < 0 else max_size):
 		return "big"
 	var p: Vector3 = f.piece_pos[pid]
 	var d: Vector3 = p.normalized()

@@ -106,6 +106,16 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 		var c0: int = start_cell()
 		for c: int in grid.cells_within(grid.centers[c0], StartArea.radius_m(), c0):  # [v8hex] data/start_area.json
 			field.small_only[c] = true
+		# [v9c] Round every far station's pad too (station_radius_m): its "clean N hexes here" step
+		# must be doable with the starting Lift (no step on the card asks for Lift; at Lift 0 not one
+		# hex within 100 m of any station could be finished).
+		var sr: float = StartArea.station_radius_m()
+		for i: int in range(1, sites.size()):
+			if sr <= 0.0:
+				break
+			var ci: int = int(sites[i]["cell"])
+			for c: int in grid.cells_within(grid.centers[ci], sr, ci):
+				field.small_only[c] = true
 	stats["field_ms"] = Time.get_ticks_msec() - tq
 	BuildBudget.lap("globe field")
 	await BuildBudget.check("globe field")  # [orbE]
