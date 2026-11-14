@@ -164,6 +164,7 @@ func _ready() -> void:
 		_detail.add_theme_constant_override("separation", 5)
 		_d_table.add_theme_constant_override("v_separation", 2)
 	_d_btn.pressed.connect(func() -> void: _do(_sel))
+	_d_btn.set_meta("primary_action", true)  # [v9d] tools/ui_audit.gd: never cut, scrolling or not
 	# [v9d] The price and the button sit under the scrolling info, always fully on screen.
 	var foot := VBoxContainer.new()
 	foot.add_theme_constant_override("separation", 4)
