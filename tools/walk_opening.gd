@@ -69,6 +69,10 @@ static func run_dev(so: SliceOrbit) -> void:
 		return
 	print("%s mode: %s" % [TAG, "full grind" if _full else ("controller" if _pad else ("reloads" if _reloads else "plain"))])
 	EventBus.toast.connect(func(t: String, _k: String) -> void: _toasts.append(t))
+	if DevHooks.has("walk-opening-spot"):
+		_reach = TargetReach.for_world(_w)
+		await _spot_test()
+		return
 	await _intro()
 	await _brief_reload()
 	# WREN's brief plays first after a skip (its lines run on the subtitle clock): wait on the
@@ -441,6 +445,92 @@ static func _robot() -> void:
 
 
 # --- Save, quit and Continue ------------------------------------------------------------------
+
+## [v9a] What holds Lumi when a walk fails (CI wedged twice by the lake west of the bin bay, where
+## a spot probe sees open ground): the body, the floor, the water, his contacts, the colliders round
+## him and a 0.5 m map at his body's height ('#' solid, 'j' junk, '~' water, '@' Lumi, 'T' target dir).
+static var _trail: Array[String] = []
+
+
+static func _stuck_report(what: String, target: Vector3) -> void:
+	print("%s stuck trail (each game s): %s" % [TAG, " ".join(_trail)])
+	var m: SphereMotor = _p.get("sphere_motor") as SphereMotor
+	var u: Vector3 = _p.global_position.normalized()
+	print("%s stuck %s: at %s, velocity %.2f m/s (tangent %.2f), motor hv %.2f grounded %s ground normal tilt %.0f deg, on floor %s, in water %s (reach: %s), cubing %.1f, carried %d, input %s" % [TAG, what, _yard(_p.global_position),
+		_p.velocity.length(), _flat(_p.velocity).length(), m.hv.length() if m else -1.0, str(m.grounded) if m else "-", rad_to_deg(acos(clampf(m.ground_normal.dot(u), -1.0, 1.0))) if m else -1.0,
+		str(_p.is_on_floor()), str(_p.call("_water_at", _p.global_position)), _reach.why_ground(u) if _reach else "-", float(_p.get("_cubing")), _p.carried.size(), str(_keys)])
+	if m:
+		for h: KinematicCollision3D in m.hits:
+			var co: Object = h.get_collider()
+			print("%s stuck contact: %s normal tilt %.0f deg, %.2f m off" % [TAG, str((co as Node).get_path()) if co is Node else str(co), rad_to_deg(acos(clampf(h.get_normal().dot(u), -1.0, 1.0))), _flat(h.get_position() - _p.global_position).length()])
+	var space: PhysicsDirectSpaceState3D = _p.get_world_3d().direct_space_state
+	var q := PhysicsShapeQueryParameters3D.new()
+	var sph := SphereShape3D.new()
+	sph.radius = 2.0
+	q.shape = sph
+	q.collision_mask = _p.collision_mask
+	q.transform = Transform3D(Basis(), _p.global_position + u * 0.6)
+	q.exclude = [_p.get_rid()]
+	var seen: Dictionary = {}
+	for hit: Dictionary in space.intersect_shape(q, 24):
+		var co2: Object = hit.get("collider")
+		var nm: String = str((co2 as Node).get_path()) if co2 is Node else str(co2)
+		if not seen.has(nm):
+			seen[nm] = true
+			print("%s stuck near: %s%s" % [TAG, nm, " (junk)" if co2 is JunkCube else ""])
+	var fr: Basis = SphereGrid.frame(u)
+	var box := BoxShape3D.new()
+	box.size = Vector3(0.45, 0.6, 0.45)
+	q.shape = box
+	var tdir: Vector3 = _flat(target - _p.global_position).normalized()
+	for zi: int in range(-6, 7):
+		var row: String = ""
+		for xi: int in range(-6, 7):
+			var at: Vector3 = _p.global_position + fr.x * (xi * 0.5) + fr.z * (zi * 0.5)
+			var ch: String = "."
+			if xi == 0 and zi == 0:
+				ch = "@"
+			elif bool(_p.call("_water_at", at)) or (_reach and _reach.why_ground(at.normalized()) == "water"):
+				ch = "~"
+			else:
+				q.transform = Transform3D(fr, at + u * 0.6)
+				for hit2: Dictionary in space.intersect_shape(q, 4):
+					ch = "j" if hit2.get("collider") is JunkCube else "#"
+					if ch == "#":
+						break
+			var o: Vector3 = (fr.x * xi + fr.z * zi).normalized() if (xi != 0 or zi != 0) else Vector3.ZERO
+			if ch == "." and o.dot(tdir) > 0.97 and abs(xi) + abs(zi) > 2:
+				ch = "T"
+			row += ch
+		print("%s stuck map %s" % [TAG, row])
+
+
+## Dev: --walk-opening-spot=x,z[;x,z...] (yard metres): after the card is up, Lumi is put at each
+## spot and walks (keys) to the bench and to the bin; a stuck prints the report above.
+static func _spot_test() -> void:
+	await _wait(func() -> bool: return _ob.revealed and _input_on(), 300.0)
+	_p.compartment.fill = _p.capacity()  # a full chest, as when he heads for the bin
+	var xf: Transform3D = _so.globe.sites[0]["transform"] as Transform3D
+	var spots: String = DevHooks.get_s("walk-opening-spot", "")
+	if not spots.contains(","):
+		spots = "-20.1,5.4;-21.3,5.6"  # the two CI wedges
+	for sp: String in spots.split(";"):
+		var xz: PackedStringArray = sp.split(",")
+		var at: Vector3 = _so.globe.terrain.ground((xf * Vector3(float(xz[0]), 0.0, float(xz[1]))).normalized())
+		for goal: String in ["bench", "bin"]:
+			_stand(at, _w.call("bench_pos"))
+			await _secs(1.0)
+			var tgt: Vector3 = _w.call("bench_pos") if goal == "bench" else Objectives.bin_point(_w)
+			var t0: float = _gt()
+			if goal == "bench":
+				await _walk_to(func() -> Vector3: return tgt, func() -> bool: return bool(_w.call("near_bench")), "the bench")
+			else:
+				await _to_bin()
+			print("%s spot %s -> %s: %.1f game s, ends %.1f m from it" % [TAG, sp, goal, _gt() - t0, _flat(tgt - _p.global_position).length()])
+			_p.compartment.fill = _p.capacity()
+	print("%s %s" % [TAG, "PASS" if _fails.is_empty() else "FAIL: " + "; ".join(_fails)])
+	_tree.quit(0 if _fails.is_empty() else 1)
+
 
 ## Binds the walk to a (re)built world once it is up.
 static func _bind(so: SliceOrbit) -> bool:
@@ -1069,6 +1159,8 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 	var detour: Vector3 = Vector3.ZERO
 	var best_d: float = INF
 	var from_pos: Vector3 = _p.global_position
+	_trail.clear()
+	var trail_t: float = 0.0
 	while not bool(arrived.call()):
 		if _gt() - t0 > max_s:
 			_release_all()
@@ -1081,6 +1173,7 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 				_unstick = true
 				_unstick_to = from_pos
 				return
+			_stuck_report(what, at)
 			_check(false, "walk: could not get to %s in %.0f s with the keys (%.1f m left, stuck at %s, target %s; put there)" % [what, max_s, _flat(at - _p.global_position).length(), _yard(_p.global_position), _yard(at)])
 			_stand(at - _flat(at - _p.global_position).normalized() * maxf(stop_m, 1.0), at)
 			await _frames(4)
@@ -1116,6 +1209,10 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 		_hold_action("move_forward", z < -n * 0.4)
 		_hold_action("scoop", scoop and d.length() < 3.0)
 		await _frames(3)
+		trail_t += 0.05
+		if trail_t >= 1.0:
+			trail_t = 0.0
+			_trail.append(_yard(_p.global_position).split(" =")[0].trim_prefix("yard "))
 		# Stuck is no progress toward the target (pushing on a thin post he jitters a few mm a tick).
 		var dist: float = _flat(to.call() - _p.global_position).length()
 		if dist < best_d - 0.3:
