@@ -164,7 +164,7 @@ func _process(delta: float) -> void:
 	if _first:
 		_first = false
 		if got.size() > 3:
-			EventBus.toast.emit(tr("%d achievements unlocked. See them in the Codex (K).") % got.size(), "story")
+			EventBus.toast.emit(tr("%d achievements unlocked. See them in the Codex ({open_codex}).") % got.size(), "story")
 			Audio.play("chime", 1.0, -4.0)
 			got.clear()
 		if found.size() > 3:

@@ -20065,6 +20065,229 @@ msgstr ""
 "Aperte  {tool_water}  para pegar o regador e segure  {scoop}  para regar a "
 "semente"
 
+#: automation/outposts.gd:412
+msgid "Outpost %d repaired: a new scale for your Haul Bugs."
+msgstr "Posto avançado %d consertado: uma balança nova para seus Haul Bugs."
+
+#: automation/telescope.gd:115
+msgid ""
+"Telescope built. Walk up to it and press {interact} to look across the "
+"system."
+msgstr ""
+"Telescópio construído. Chegue perto e aperte {interact} para olhar o "
+"sistema."
+
+#: scenes/slice_orbit.gd:1133
+msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
+msgstr ""
+"Bancada consertada. Aperte {interact} nela para gastar cubos em melhorias."
+
+#: story/bloom_finale.gd:227
+msgid ""
+"The Cradle is home. The Seed Ark is open: every bloom on Verdance counts "
+"toward the next wave. Progress shows on the hologram ({open_globe})."
+msgstr ""
+"A Cradle está em casa. A Arca de Sementes está aberta: cada flor em Verdance"
+" conta para a próxima onda. O progresso aparece no holograma ({open_globe})."
+
+#: story/cradle_answers.gd:81
+msgid ""
+"The Cradle is holding orbit. Restore the whole system: the solar map is on "
+"the hologram ({open_globe}). Build the Mk V Orbital drive to reach Ochre and"
+" Tidewell."
+msgstr ""
+"A Cradle está mantendo a órbita. Restaure o sistema inteiro: o mapa do "
+"sistema solar fica no holograma ({open_globe}). Construa o propulsor Mk V "
+"Orbital para chegar a Ochre e Tidewell."
+
+#: story/ledger.gd:162
+msgid "New build: Signal Jammer. It keeps Ledger drones away."
+msgstr ""
+"Nova construção: bloqueador de sinal. Mantém os drones do Ledger longe."
+
+#: story/ledger.gd:511
+msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
+msgstr "Um drone do Ledger está vindo (%s). Ele joga lixo no chão limpo."
+
+#: story/ledger.gd:649
+msgid "The drone dumped junk back. Scoop it up."
+msgstr "O drone jogou lixo de volta. Recolha."
+
+#: story/objectives.gd:851
+msgid "Baler in! Fill your chest, then press [%s] for a bale."
+msgstr "Enfardadeira instalada! Encha o baú e aperte [%s] para um fardo."
+
+#: systems/achievements.gd:167
+msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
+msgstr "%d conquistas desbloqueadas. Veja no Códice ({open_codex})."
+
+#: systems/collection.gd:53
+msgid "New for your Collection: %s. See it in the Codex ({open_codex})."
+msgstr "Novo na sua coleção: %s. Veja no Códice ({open_codex})."
+
+#: systems/homeward_director.gd:576
+msgid ""
+"The last seed is in the ground. Everything is ready. Press {interact} again "
+"here to launch home."
+msgstr ""
+"A última semente está na terra. Está tudo pronto. Aperte {interact} aqui de "
+"novo para decolar para casa."
+
+#: systems/late_director.gd:144
+msgid ""
+"Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark "
+"Bridge to see them and the Heirlooms your restoration has unlocked, or seed "
+"a new world. Garden Mode ({garden_mode}) is open too."
+msgstr ""
+"Modo Berço: o cofre de sementes da arca guarda sementes para outros mundos. "
+"Pausa > Ponte da Arca para vê-los e as relíquias que sua restauração "
+"liberou, ou semear um mundo novo. O Modo Jardim ({garden_mode}) também está "
+"aberto."
+
+#: systems/glim/glim_director.gd:407
+msgid "Glim is still scanning. Try again in a moment."
+msgstr "Glim ainda está escaneando. Tente de novo em instantes."
+
+#: ui/codex_screen.gd:654
+msgid ""
+"Hint: animals come back as the ground heals. Photograph them in photo mode "
+"({photo_mode})."
+msgstr ""
+"Dica: os animais voltam quando o chão se cura. Fotografe-os no modo foto "
+"({photo_mode})."
+
+#: ui/telescope_panel.gd:40
+msgid "Built. Walk up to it and press {interact}."
+msgstr "Construído. Chegue perto e aperte {interact}."
+
+#: data/events.json:events[supply_drop].toast
+msgid "Supply Drop! A crate landed %s of you. Clear the junk around it."
+msgstr "Suprimentos! Uma caixa caiu a %s de você. Limpe o lixo em volta."
+
+#: data/events.json:events[salvage_surge].toast
+msgid "Salvage Surge! A glowing hex %s of you: 3x cubes."
+msgstr "Onda de sucata! Um hexágono brilhante a %s de você: cubos x3."
+
+#: data/events.json:events[rain_shower].toast
+msgid "Rain! Your plants stay watered while it lasts."
+msgstr "Chuva! Suas plantas ficam regadas enquanto durar."
+
+#: data/events.json:events[robot_hiccup].toast
+msgid "%s has the hiccups. Walk over and press {interact}."
+msgstr "%s está com soluço. Vá até lá e aperte {interact}."
+
+#: data/events.json:events[wildlife_visit].toast
+msgid "A visitor %s of you! Sneak up, press {interact} for a photo."
+msgstr ""
+"Um visitante a %s de você! Chegue de mansinho e aperte {interact} para uma "
+"foto."
+
+#: data/events.json:events[rare_part_signal].toast
+msgid "Rare Part Signal %s of you! Follow the violet beam."
+msgstr "Peça rara a %s de você! Siga o feixe violeta."
+
+#: data/events.json:events[ledger_audit].toast
+msgid "Ledger Audit! Out-scoop the drone %s of you!"
+msgstr "Auditoria do Ledger! Recolha mais que o drone a %s de você!"
+
+#: data/goals.json:goals[scoop_15].short
+msgid "Pick up trash"
+msgstr "Recolha lixo"
+
+#: data/goals.json:goals[dump_1].short
+msgid "Empty chest in bin"
+msgstr "Esvazie o baú na lixeira"
+
+#: data/goals.json:goals[upgrade_1].short
+msgid "Buy an upgrade"
+msgstr "Compre uma melhoria"
+
+#: data/goals.json:goals[cash_1].short
+msgid "Sell a bale"
+msgstr "Venda um fardo"
+
+#: data/goals.json:goals[base_2].short
+#: data/objectives.json:objectives[base2].short
+msgid "Base to level 2"
+msgstr "Base para o nível 2"
+
+#: data/goals.json:goals[base_3].short
+#: data/objectives.json:objectives[base3].short
+msgid "Base to level 3"
+msgstr "Base para o nível 3"
+
+#: data/goals.json:goals[base_4].short
+msgid "Base to level 4"
+msgstr "Base para o nível 4"
+
+#: data/goals.json:goals[rocket_tier_3].short
+msgid "Rocket to Mk III"
+msgstr "Foguete para Mk III"
+
+#: data/goals.json:goals[base_5].short
+msgid "Base to level 5"
+msgstr "Base para o nível 5"
+
+#: data/goals.json:goals[home_drive_5].short
+msgid "Build the Mk V drive"
+msgstr "Construa o motor Mk V"
+
+#: data/goals.json:goals[skimmer_1].short
+msgid "Build a Skimmer"
+msgstr "Construa um Skimmer"
+
+#: data/goals.json:goals[extras_radio].short
+msgid "Pick a radio song"
+msgstr "Escolha uma música no rádio"
+
+#: data/goals.json:goals[builder_1].short
+msgid "Style a robot"
+msgstr "Personalize um robô"
+
+#: data/goals.json:goals[extras_retire].short
+msgid "Retire a robot"
+msgstr "Aposente um robô"
+
+#: data/goals.json:goals[tier_1].short
+msgid "A robot type to Mk II"
+msgstr "Um tipo de robô para Mk II"
+
+#: data/goals.json:goals[base2_3].short
+msgid "New base to level 3"
+msgstr "Nova base para o nível 3"
+
+#: data/goals.json:goals[late_garden_1].text
+msgid "Place a decoration ({garden_mode})"
+msgstr "Coloque uma decoração ({garden_mode})"
+
+#: data/goals.json:goals[late_charm_20].short
+msgid "Reach 20 charm"
+msgstr "Chegue a 20 de charme"
+
+#: data/objectives.json:objectives[dump3].short
+msgid "Fill the bin"
+msgstr "Encha a lixeira"
+
+#: data/objectives.json:objectives[bench2].short
+msgid "Add a Bot Bay"
+msgstr "Adicione uma baia de robôs"
+
+#: data/objectives.json:objectives[rocket_tier_2].short
+msgid "Rocket to Mk II"
+msgstr "Foguete para Mk II"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Gantry Crane: its hull plates shield the rocket."
+msgstr "Desperte o guindaste: suas placas protegem o foguete."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Signal Mast: it holds the star chart."
+msgstr "Desperte o mastro de sinal: ele guarda o mapa estelar."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Big Wheel: its power cell lasts the long flight."
+msgstr "Desperte a roda-gigante: sua célula de energia aguenta o voo longo."
+
 #~ msgid "Home. The workbench is by the pod."
 #~ msgstr "Em casa. A bancada fica ao lado da cápsula."
 

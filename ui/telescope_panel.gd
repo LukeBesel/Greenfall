@@ -20,6 +20,7 @@ func _ready() -> void:
 			EventBus.ui_modal_changed.emit(false)
 		else:
 			Audio.play("buzz", 1.2, -8.0)
+			Refuse.say("")  # [v9d] say why
 		refresh())
 	add_child(_btn)
 	refresh()
@@ -36,7 +37,7 @@ func refresh() -> void:
 	var reason: String = t.block_reason()
 	var status: String
 	if t.built():
-		status = tr("Built. Walk up to it and press E.")
+		status = Objectives.glyphs(tr("Built. Walk up to it and press {interact}."))
 	elif reason != "" and reason != tr("Not enough materials."):
 		status = reason
 	else:

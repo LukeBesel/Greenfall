@@ -201,7 +201,7 @@ func _assign(r: Dictionary, gi: int, animate: bool) -> void:
 		return
 	r["shown"] = _goals.progress(gi)
 	var title: Label = r["title"]
-	title.text = tr(str(_goals.chain[gi].get("text", "")))
+	title.text = Objectives.glyphs(tr(str(_goals.chain[gi].get("text", ""))))
 	title.add_theme_color_override("font_color", UITheme.CREAM)
 	if animate:
 		r["busy"] = true
@@ -254,7 +254,7 @@ func _on_completed(gi: int) -> void:
 		return
 	var reward: String = reward_text(_goals.reward_of(gi), 1.0)
 	if hud and hud.has_method("notify"):
-		hud.call("notify", tr("Goal complete  ·  %s%s") % [tr(str(_goals.chain[gi].get("text", ""))), ("    " + reward) if reward != "" else ""], "goal")
+		hud.call("notify", tr("Goal complete  ·  %s%s") % [Objectives.glyphs(tr(str(_goals.chain[gi].get("text", "")))), ("    " + reward) if reward != "" else ""], "goal")
 	Audio.play("ding", 1.35, -12.0)
 	for r: Dictionary in _rows:
 		if int(r["goal"]) == gi:

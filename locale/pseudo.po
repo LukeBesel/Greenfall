@@ -20776,3 +20776,246 @@ msgstr ""
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
 msgstr "[%s bûîļţ. Fôļļôŵ ţĥé ļîĝĥţ ţô îţ. ~~~~~~~~~]"
+
+#: automation/outposts.gd:412
+msgid "Outpost %d repaired: a new scale for your Haul Bugs."
+msgstr ""
+"[Ôûţþôšţ %d ŕéþàîŕéð: à ñéŵ šçàļé ƒôŕ ýôûŕ Ĥàûļ Bûĝš. ~~~~~~~~~~~~~~~]"
+
+#: automation/telescope.gd:115
+msgid ""
+"Telescope built. Walk up to it and press {interact} to look across the "
+"system."
+msgstr ""
+"[Ţéļéšçôþé bûîļţ. Ŵàļķ ûþ ţô îţ àñð þŕéšš {interact} ţô ļôôķ àçŕôšš ţĥé "
+"šýšţém. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: planet/sites/hub_plan.gd:294
+msgid "Everything sells for x%s now."
+msgstr "[Évéŕýţĥîñĝ šéļļš ƒôŕ x%s ñôŵ. ~~~~~~~]"
+
+#: scenes/slice_orbit.gd:1133
+msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
+msgstr ""
+"[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš {interact} àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. "
+"~~~~~~~~~~~~~~~~~~~~]"
+
+#: story/bloom_finale.gd:227
+msgid ""
+"The Cradle is home. The Seed Ark is open: every bloom on Verdance counts "
+"toward the next wave. Progress shows on the hologram ({open_globe})."
+msgstr ""
+"[Ţĥé Çŕàðļé îš ĥômé. Ţĥé Šééð Àŕķ îš ôþéñ: évéŕý bļôôm ôñ Véŕðàñçé çôûñţš "
+"ţôŵàŕð ţĥé ñéxţ ŵàvé. Þŕôĝŕéšš šĥôŵš ôñ ţĥé ĥôļôĝŕàm ({open_globe}). "
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: story/cradle_answers.gd:81
+msgid ""
+"The Cradle is holding orbit. Restore the whole system: the solar map is on "
+"the hologram ({open_globe}). Build the Mk V Orbital drive to reach Ochre and"
+" Tidewell."
+msgstr ""
+"[Ţĥé Çŕàðļé îš ĥôļðîñĝ ôŕbîţ. Ŕéšţôŕé ţĥé ŵĥôļé šýšţém: ţĥé šôļàŕ màþ îš ôñ "
+"ţĥé ĥôļôĝŕàm ({open_globe}). Bûîļð ţĥé Mķ V Ôŕbîţàļ ðŕîvé ţô ŕéàçĥ Ôçĥŕé àñð"
+" Ţîðéŵéļļ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: story/ledger.gd:162
+msgid "New build: Signal Jammer. It keeps Ledger drones away."
+msgstr ""
+"[Ñéŵ bûîļð: Šîĝñàļ Ĵàmméŕ. Îţ ķééþš Ļéðĝéŕ ðŕôñéš àŵàý. ~~~~~~~~~~~~~~~~]"
+
+#: story/ledger.gd:511
+msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
+msgstr ""
+"[À Ļéðĝéŕ ðŕôñé îš çômîñĝ (%s). Îţ ðûmþš ĵûñķ ôñ çļéàñ ĝŕôûñð. "
+"~~~~~~~~~~~~~~~~~~]"
+
+#: story/ledger.gd:649
+msgid "The drone dumped junk back. Scoop it up."
+msgstr "[Ţĥé ðŕôñé ðûmþéð ĵûñķ bàçķ. Šçôôþ îţ ûþ. ~~~~~~~~~~~]"
+
+#: story/objectives.gd:851
+msgid "Baler in! Fill your chest, then press [%s] for a bale."
+msgstr ""
+"[Bàļéŕ îñ! Fîļļ ýôûŕ çĥéšţ, ţĥéñ þŕéšš [%s] ƒôŕ à bàļé. ~~~~~~~~~~~~~~~~]"
+
+#: systems/achievements.gd:167
+msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
+msgstr ""
+"[%d àçĥîévéméñţš ûñļôçķéð. Šéé ţĥém îñ ţĥé Çôðéx ({open_codex}). "
+"~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/collection.gd:53
+msgid "New for your Collection: %s. See it in the Codex ({open_codex})."
+msgstr ""
+"[Ñéŵ ƒôŕ ýôûŕ Çôļļéçţîôñ: %s. Šéé îţ îñ ţĥé Çôðéx ({open_codex}). "
+"~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/homeward_director.gd:576
+msgid ""
+"The last seed is in the ground. Everything is ready. Press {interact} again "
+"here to launch home."
+msgstr ""
+"[Ţĥé ļàšţ šééð îš îñ ţĥé ĝŕôûñð. Évéŕýţĥîñĝ îš ŕéàðý. Þŕéšš {interact} àĝàîñ"
+" ĥéŕé ţô ļàûñçĥ ĥômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/late_director.gd:144
+msgid ""
+"Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark "
+"Bridge to see them and the Heirlooms your restoration has unlocked, or seed "
+"a new world. Garden Mode ({garden_mode}) is open too."
+msgstr ""
+"[Çŕàðļé Môðé: ţĥé àŕķ'š šééð vàûļţ ĥôļðš šééðš ƒôŕ ôţĥéŕ ŵôŕļðš. Þàûšé > Àŕķ"
+" Bŕîðĝé ţô šéé ţĥém àñð ţĥé Ĥéîŕļôômš ýôûŕ ŕéšţôŕàţîôñ ĥàš ûñļôçķéð, ôŕ šééð"
+" à ñéŵ ŵôŕļð. Ĝàŕðéñ Môðé ({garden_mode}) îš ôþéñ ţôô. "
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/glim/glim_director.gd:407
+msgid "Glim is still scanning. Try again in a moment."
+msgstr "[Ĝļîm îš šţîļļ šçàññîñĝ. Ţŕý àĝàîñ îñ à môméñţ. ~~~~~~~~~~~~~]"
+
+#: ui/codex_screen.gd:654
+msgid ""
+"Hint: animals come back as the ground heals. Photograph them in photo mode "
+"({photo_mode})."
+msgstr ""
+"[Ĥîñţ: àñîmàļš çômé bàçķ àš ţĥé ĝŕôûñð ĥéàļš. Þĥôţôĝŕàþĥ ţĥém îñ þĥôţô môðé "
+"({photo_mode}). ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/telescope_panel.gd:40
+msgid "Built. Walk up to it and press {interact}."
+msgstr "[Bûîļţ. Ŵàļķ ûþ ţô îţ àñð þŕéšš {interact}. ~~~~~~~~~~~~]"
+
+#: data/events.json:events[supply_drop].toast
+msgid "Supply Drop! A crate landed %s of you. Clear the junk around it."
+msgstr ""
+"[Šûþþļý Ðŕôþ! À çŕàţé ļàñðéð %s ôƒ ýôû. Çļéàŕ ţĥé ĵûñķ àŕôûñð îţ. "
+"~~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:events[salvage_surge].toast
+msgid "Salvage Surge! A glowing hex %s of you: 3x cubes."
+msgstr "[Šàļvàĝé Šûŕĝé! À ĝļôŵîñĝ ĥéx %s ôƒ ýôû: 3x çûbéš. ~~~~~~~~~~~~~~]"
+
+#: data/events.json:events[rain_shower].toast
+msgid "Rain! Your plants stay watered while it lasts."
+msgstr "[Ŕàîñ! Ýôûŕ þļàñţš šţàý ŵàţéŕéð ŵĥîļé îţ ļàšţš. ~~~~~~~~~~~~~]"
+
+#: data/events.json:events[robot_hiccup].toast
+msgid "%s has the hiccups. Walk over and press {interact}."
+msgstr "[%s ĥàš ţĥé ĥîççûþš. Ŵàļķ ôvéŕ àñð þŕéšš {interact}. ~~~~~~~~~~~~~~~]"
+
+#: data/events.json:events[wildlife_visit].toast
+msgid "A visitor %s of you! Sneak up, press {interact} for a photo."
+msgstr ""
+"[À vîšîţôŕ %s ôƒ ýôû! Šñéàķ ûþ, þŕéšš {interact} ƒôŕ à þĥôţô. "
+"~~~~~~~~~~~~~~~~~~]"
+
+#: data/events.json:events[rare_part_signal].toast
+msgid "Rare Part Signal %s of you! Follow the violet beam."
+msgstr "[Ŕàŕé Þàŕţ Šîĝñàļ %s ôƒ ýôû! Fôļļôŵ ţĥé vîôļéţ béàm. ~~~~~~~~~~~~~~~]"
+
+#: data/events.json:events[ledger_audit].toast
+msgid "Ledger Audit! Out-scoop the drone %s of you!"
+msgstr "[Ļéðĝéŕ Àûðîţ! Ôûţ-šçôôþ ţĥé ðŕôñé %s ôƒ ýôû! ~~~~~~~~~~~~]"
+
+#: data/goals.json:goals[scoop_15].short
+msgid "Pick up trash"
+msgstr "[Þîçķ ûþ ţŕàšĥ ~~]"
+
+#: data/goals.json:goals[dump_1].short
+msgid "Empty chest in bin"
+msgstr "[Émþţý çĥéšţ îñ bîñ ~~~]"
+
+#: data/goals.json:goals[upgrade_1].short
+msgid "Buy an upgrade"
+msgstr "[Bûý àñ ûþĝŕàðé ~~]"
+
+#: data/goals.json:goals[cash_1].short
+msgid "Sell a bale"
+msgstr "[Šéļļ à bàļé ~]"
+
+#: data/goals.json:goals[base_2].short
+#: data/objectives.json:objectives[base2].short
+msgid "Base to level 2"
+msgstr "[Bàšé ţô ļévéļ 2 ~~]"
+
+#: data/goals.json:goals[base_3].short
+#: data/objectives.json:objectives[base3].short
+msgid "Base to level 3"
+msgstr "[Bàšé ţô ļévéļ 3 ~~]"
+
+#: data/goals.json:goals[base_4].short
+msgid "Base to level 4"
+msgstr "[Bàšé ţô ļévéļ 4 ~~]"
+
+#: data/goals.json:goals[rocket_tier_3].short
+msgid "Rocket to Mk III"
+msgstr "[Ŕôçķéţ ţô Mķ ÎÎÎ ~~~]"
+
+#: data/goals.json:goals[base_5].short
+msgid "Base to level 5"
+msgstr "[Bàšé ţô ļévéļ 5 ~~]"
+
+#: data/goals.json:goals[home_drive_5].short
+msgid "Build the Mk V drive"
+msgstr "[Bûîļð ţĥé Mķ V ðŕîvé ~~~~]"
+
+#: data/goals.json:goals[skimmer_1].short
+msgid "Build a Skimmer"
+msgstr "[Bûîļð à Šķîmméŕ ~~]"
+
+#: data/goals.json:goals[extras_radio].short
+msgid "Pick a radio song"
+msgstr "[Þîçķ à ŕàðîô šôñĝ ~~~]"
+
+#: data/goals.json:goals[builder_1].short
+msgid "Style a robot"
+msgstr "[Šţýļé à ŕôbôţ ~~]"
+
+#: data/goals.json:goals[extras_retire].short
+msgid "Retire a robot"
+msgstr "[Ŕéţîŕé à ŕôbôţ ~~]"
+
+#: data/goals.json:goals[tier_1].short
+msgid "A robot type to Mk II"
+msgstr "[À ŕôbôţ ţýþé ţô Mķ ÎÎ ~~~~]"
+
+#: data/goals.json:goals[base2_3].short
+msgid "New base to level 3"
+msgstr "[Ñéŵ bàšé ţô ļévéļ 3 ~~~~]"
+
+#: data/goals.json:goals[late_garden_1].text
+msgid "Place a decoration ({garden_mode})"
+msgstr "[Þļàçé à ðéçôŕàţîôñ ({garden_mode}) ~~~~~~~~~]"
+
+#: data/goals.json:goals[late_charm_20].short
+msgid "Reach 20 charm"
+msgstr "[Ŕéàçĥ 20 çĥàŕm ~~]"
+
+#: data/objectives.json:objectives[dump3].short
+msgid "Fill the bin"
+msgstr "[Fîļļ ţĥé bîñ ~]"
+
+#: data/objectives.json:objectives[bench2].short
+msgid "Add a Bot Bay"
+msgstr "[Àðð à Bôţ Bàý ~~]"
+
+#: data/objectives.json:objectives[rocket_tier_2].short
+msgid "Rocket to Mk II"
+msgstr "[Ŕôçķéţ ţô Mķ ÎÎ ~~]"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Gantry Crane: its hull plates shield the rocket."
+msgstr ""
+"[Ŵàķé ţĥé Ĝàñţŕý Çŕàñé: îţš ĥûļļ þļàţéš šĥîéļð ţĥé ŕôçķéţ. "
+"~~~~~~~~~~~~~~~~~]"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Signal Mast: it holds the star chart."
+msgstr "[Ŵàķé ţĥé Šîĝñàļ Màšţ: îţ ĥôļðš ţĥé šţàŕ çĥàŕţ. ~~~~~~~~~~~~~]"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Big Wheel: its power cell lasts the long flight."
+msgstr ""
+"[Ŵàķé ţĥé Bîĝ Ŵĥééļ: îţš þôŵéŕ çéļļ ļàšţš ţĥé ļôñĝ ƒļîĝĥţ. "
+"~~~~~~~~~~~~~~~~~]"

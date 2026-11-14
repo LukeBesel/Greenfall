@@ -112,7 +112,7 @@ func build() -> bool:
 	_spawn(true)
 	GameState.inc_stat("telescopes_built")
 	Audio.play("buy", 0.85, -2.0)
-	EventBus.toast.emit(tr("Telescope built. Walk up to it and press E to look across the system."), "info")
+	EventBus.toast.emit(tr("Telescope built. Walk up to it and press {interact} to look across the system."), "info")
 	return true
 
 

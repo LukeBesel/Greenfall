@@ -18480,6 +18480,214 @@ msgid ""
 "seed"
 msgstr "按  {tool_water}  拿起洒水壶，然后按住  {scoop}  给种子浇水"
 
+#: automation/outposts.gd:412
+msgid "Outpost %d repaired: a new scale for your Haul Bugs."
+msgstr "前哨站 %d 已修复：Haul Bug 有了新秤。"
+
+#: automation/telescope.gd:115
+msgid ""
+"Telescope built. Walk up to it and press {interact} to look across the "
+"system."
+msgstr "望远镜已建成。走过去按 {interact}，眺望整个星系。"
+
+#: scenes/slice_orbit.gd:1133
+msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
+msgstr "工作台修好了。在它旁边按 {interact}，用方块购买升级。"
+
+#: story/bloom_finale.gd:227
+msgid ""
+"The Cradle is home. The Seed Ark is open: every bloom on Verdance counts "
+"toward the next wave. Progress shows on the hologram ({open_globe})."
+msgstr "Cradle号到家了。种子方舟已开启：Verdance 上的每一朵花都计入下一波。进度显示在全息图上（{open_globe}）。"
+
+#: story/cradle_answers.gd:81
+msgid ""
+"The Cradle is holding orbit. Restore the whole system: the solar map is on "
+"the hologram ({open_globe}). Build the Mk V Orbital drive to reach Ochre and"
+" Tidewell."
+msgstr ""
+"Cradle 号正在轨道上等待。恢复整个星系：太阳系地图在全息投影（{open_globe}）里。建造 Mk V 轨道推进器，就能前往 Ochre 和 "
+"Tidewell。"
+
+#: story/ledger.gd:162
+msgid "New build: Signal Jammer. It keeps Ledger drones away."
+msgstr "新建筑：信号干扰器。让账本无人机远离。"
+
+#: story/ledger.gd:511
+msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
+msgstr "账本无人机来了（%s）。它会把垃圾倒在干净的地面上。"
+
+#: story/ledger.gd:649
+msgid "The drone dumped junk back. Scoop it up."
+msgstr "无人机把垃圾倒回来了。把它捡起来。"
+
+#: story/objectives.gd:851
+msgid "Baler in! Fill your chest, then press [%s] for a bale."
+msgstr "打包机装好了！装满箱子，然后按 [%s] 打包。"
+
+#: systems/achievements.gd:167
+msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
+msgstr "已解锁 %d 个成就。在图鉴（{open_codex}）里查看。"
+
+#: systems/collection.gd:53
+msgid "New for your Collection: %s. See it in the Codex ({open_codex})."
+msgstr "收藏新增：%s。在图鉴（{open_codex}）里查看。"
+
+#: systems/homeward_director.gd:576
+msgid ""
+"The last seed is in the ground. Everything is ready. Press {interact} again "
+"here to launch home."
+msgstr "最后一颗种子已经入土。一切就绪。在这里再按一次 {interact} 就能发射回家。"
+
+#: systems/late_director.gd:144
+msgid ""
+"Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark "
+"Bridge to see them and the Heirlooms your restoration has unlocked, or seed "
+"a new world. Garden Mode ({garden_mode}) is open too."
+msgstr ""
+"摇篮模式：方舟的种子库里存着给其他世界的种子。暂停 > "
+"方舟舰桥可以查看它们和你的复原度解锁的传家宝，或者播种一个新世界。花园模式（{garden_mode}）也已开放。"
+
+#: systems/glim/glim_director.gd:407
+msgid "Glim is still scanning. Try again in a moment."
+msgstr "Glim 还在扫描。稍后再试。"
+
+#: ui/codex_screen.gd:654
+msgid ""
+"Hint: animals come back as the ground heals. Photograph them in photo mode "
+"({photo_mode})."
+msgstr "提示：大地恢复后，动物就会回来。用拍照模式（{photo_mode}）给它们拍照吧。"
+
+#: ui/telescope_panel.gd:40
+msgid "Built. Walk up to it and press {interact}."
+msgstr "已建成。走过去按 {interact}。"
+
+#: data/events.json:events[supply_drop].toast
+msgid "Supply Drop! A crate landed %s of you. Clear the junk around it."
+msgstr "空投！一个箱子落在你的%s边。清掉它周围的垃圾。"
+
+#: data/events.json:events[salvage_surge].toast
+msgid "Salvage Surge! A glowing hex %s of you: 3x cubes."
+msgstr "打捞热潮！你%s边有个发光的六角格：方块 3 倍。"
+
+#: data/events.json:events[rain_shower].toast
+msgid "Rain! Your plants stay watered while it lasts."
+msgstr "下雨了！雨停之前植物都不会缺水。"
+
+#: data/events.json:events[robot_hiccup].toast
+msgid "%s has the hiccups. Walk over and press {interact}."
+msgstr "%s 打嗝了。走过去按 {interact}。"
+
+#: data/events.json:events[wildlife_visit].toast
+msgid "A visitor %s of you! Sneak up, press {interact} for a photo."
+msgstr "你%s边来了个访客！悄悄靠近，按 {interact} 拍照。"
+
+#: data/events.json:events[rare_part_signal].toast
+msgid "Rare Part Signal %s of you! Follow the violet beam."
+msgstr "你%s边有稀有零件信号！跟着紫色光束走。"
+
+#: data/events.json:events[ledger_audit].toast
+msgid "Ledger Audit! Out-scoop the drone %s of you!"
+msgstr "账本审计！在你%s边比无人机捡得更多！"
+
+#: data/goals.json:goals[scoop_15].short
+msgid "Pick up trash"
+msgstr "捡垃圾"
+
+#: data/goals.json:goals[dump_1].short
+msgid "Empty chest in bin"
+msgstr "把箱子倒进垃圾桶"
+
+#: data/goals.json:goals[upgrade_1].short
+msgid "Buy an upgrade"
+msgstr "买一个升级"
+
+#: data/goals.json:goals[cash_1].short
+msgid "Sell a bale"
+msgstr "卖一个草包"
+
+#: data/goals.json:goals[base_2].short
+#: data/objectives.json:objectives[base2].short
+msgid "Base to level 2"
+msgstr "基地升到 2 级"
+
+#: data/goals.json:goals[base_3].short
+#: data/objectives.json:objectives[base3].short
+msgid "Base to level 3"
+msgstr "基地升到 3 级"
+
+#: data/goals.json:goals[base_4].short
+msgid "Base to level 4"
+msgstr "基地升到 4 级"
+
+#: data/goals.json:goals[rocket_tier_3].short
+msgid "Rocket to Mk III"
+msgstr "火箭升到 Mk III"
+
+#: data/goals.json:goals[base_5].short
+msgid "Base to level 5"
+msgstr "基地升到 5 级"
+
+#: data/goals.json:goals[home_drive_5].short
+msgid "Build the Mk V drive"
+msgstr "建造 Mk V 引擎"
+
+#: data/goals.json:goals[skimmer_1].short
+msgid "Build a Skimmer"
+msgstr "造一个 Skimmer"
+
+#: data/goals.json:goals[extras_radio].short
+msgid "Pick a radio song"
+msgstr "在收音机里选首歌"
+
+#: data/goals.json:goals[builder_1].short
+msgid "Style a robot"
+msgstr "装扮一个机器人"
+
+#: data/goals.json:goals[extras_retire].short
+msgid "Retire a robot"
+msgstr "让一个机器人退休"
+
+#: data/goals.json:goals[tier_1].short
+msgid "A robot type to Mk II"
+msgstr "一种机器人升到 Mk II"
+
+#: data/goals.json:goals[base2_3].short
+msgid "New base to level 3"
+msgstr "新基地升到 3 级"
+
+#: data/goals.json:goals[late_garden_1].text
+msgid "Place a decoration ({garden_mode})"
+msgstr "放置一件装饰（{garden_mode}）"
+
+#: data/goals.json:goals[late_charm_20].short
+msgid "Reach 20 charm"
+msgstr "达到 20 魅力"
+
+#: data/objectives.json:objectives[dump3].short
+msgid "Fill the bin"
+msgstr "装满垃圾桶"
+
+#: data/objectives.json:objectives[bench2].short
+msgid "Add a Bot Bay"
+msgstr "加装机器人舱"
+
+#: data/objectives.json:objectives[rocket_tier_2].short
+msgid "Rocket to Mk II"
+msgstr "火箭升到 Mk II"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Gantry Crane: its hull plates shield the rocket."
+msgstr "唤醒龙门吊：它的船体板保护火箭。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Signal Mast: it holds the star chart."
+msgstr "唤醒信号桅杆：星图在它那里。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Big Wheel: its power cell lasts the long flight."
+msgstr "唤醒摩天轮：它的能量电池撑得住长途飞行。"
+
 #~ msgid "Home. The workbench is by the pod."
 #~ msgstr "到家了。工作台就在逃生舱旁边。"
 

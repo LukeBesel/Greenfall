@@ -574,6 +574,8 @@ func _do(id: String) -> void:
 	var act: Variant = it.get("act")
 	if str(it.get("state", "")) != "ready" or not (act is Callable) or not (act as Callable).is_valid():
 		Audio.play("buzz", 1.2, -10.0)
+		var why: String = str(it.get("reason", ""))  # [v9d] say why
+		Refuse.say(why if why != "" else (ListDetail.short_text(it.get("price", {})) if it.get("price") is Dictionary else ""))
 		return
 	if bool((act as Callable).call()):
 		Audio.play("buy", 1.0, -3.0)
@@ -581,6 +583,7 @@ func _do(id: String) -> void:
 		acted.emit(id)
 	else:
 		Audio.play("buzz", 1.2, -8.0)
+		Refuse.say("")  # [v9d] say why
 	refresh()
 	_flash_row(id)  # [v3clear] the bought row lights up (the HUD is hidden behind the bench)
 

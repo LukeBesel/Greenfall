@@ -17,7 +17,7 @@
   "objectives": [
     {
       "id": "dump3",
-      "text": "Fill the trash bin 3 times",
+      "text": "Fill the trash bin 3 times", "short": "Fill the bin",
       "desc": "The bin turns trash into cubes. The bench builds with them.",
       "type": "stat",
       "key": "junk_dumps",
@@ -103,7 +103,7 @@
     },
     {
       "id": "bench2",
-      "text": "Add a Bot Bay to the bench",
+      "text": "Add a Bot Bay to the bench", "short": "Add a Bot Bay",
       "desc": "Upgrades tab. A planet is too big for one small robot.",
       "type": "bench",
       "target": 2,
@@ -184,7 +184,7 @@
     },
     {
       "id": "base2",
-      "text": "Rebuild the base to level 2",
+      "text": "Rebuild the base to level 2", "short": "Base to level 2",
       "desc": "Workbench, Upgrades tab. A bigger base powers more robots.",
       "type": "hub_level",
       "target": 2,
@@ -255,14 +255,14 @@
     },
     {
       "id": "rocket_tier_2",
-      "text": "Upgrade the rocket to Mk II",
+      "text": "Upgrade the rocket to Mk II", "short": "Rocket to Mk II",
       "type": "stat",
       "key": "rocket_tier",
       "target": 2
     },
     {
       "id": "base3",
-      "text": "Rebuild the base to level 3",
+      "text": "Rebuild the base to level 3", "short": "Base to level 3",
       "desc": "Upgrades tab. A stronger base runs bigger machines.",
       "type": "hub_level",
       "target": 3,

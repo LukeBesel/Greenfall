@@ -18525,6 +18525,215 @@ msgid ""
 "seed"
 msgstr "{tool_water}  でじょうろを持って、{scoop}  を長押しして種に水をやろう"
 
+#: automation/outposts.gd:412
+msgid "Outpost %d repaired: a new scale for your Haul Bugs."
+msgstr "前哨基地 %d を修理：Haul Bug の新しいはかりができた。"
+
+#: automation/telescope.gd:115
+msgid ""
+"Telescope built. Walk up to it and press {interact} to look across the "
+"system."
+msgstr "望遠鏡が完成した。近づいて {interact} を押すと、星系を見渡せる。"
+
+#: scenes/slice_orbit.gd:1133
+msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
+msgstr "作業台を修理した。作業台で {interact} を押すとキューブでアップグレードできる。"
+
+#: story/bloom_finale.gd:227
+msgid ""
+"The Cradle is home. The Seed Ark is open: every bloom on Verdance counts "
+"toward the next wave. Progress shows on the hologram ({open_globe})."
+msgstr ""
+"Cradle号が帰還した。シードアークが開いた：Verdance で咲く花はすべて次の波に数えられる。進行はホログラム（{open_globe}）で。"
+
+#: story/cradle_answers.gd:81
+msgid ""
+"The Cradle is holding orbit. Restore the whole system: the solar map is on "
+"the hologram ({open_globe}). Build the Mk V Orbital drive to reach Ochre and"
+" Tidewell."
+msgstr ""
+"Cradle は軌道上で待機中。星系をまるごと再生しよう。太陽系マップはホログラム（{open_globe}）にある。Mk V オービタル推進を造れば "
+"Ochre と Tidewell に行ける。"
+
+#: story/ledger.gd:162
+msgid "New build: Signal Jammer. It keeps Ledger drones away."
+msgstr "新しい建物：シグナルジャマー。レジャーのドローンを近づけない。"
+
+#: story/ledger.gd:511
+msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
+msgstr "レジャーのドローンが来る（%s）。きれいな地面にゴミを捨てる。"
+
+#: story/ledger.gd:649
+msgid "The drone dumped junk back. Scoop it up."
+msgstr "ドローンがゴミを戻した。拾い集めよう。"
+
+#: story/objectives.gd:851
+msgid "Baler in! Fill your chest, then press [%s] for a bale."
+msgstr "ベーラー設置！チェストを満たして [%s] でベールを作ろう。"
+
+#: systems/achievements.gd:167
+msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
+msgstr "実績を %d 個解除。図鑑（{open_codex}）で見られます。"
+
+#: systems/collection.gd:53
+msgid "New for your Collection: %s. See it in the Codex ({open_codex})."
+msgstr "コレクションに追加：%s。図鑑（{open_codex}）で見られます。"
+
+#: systems/homeward_director.gd:576
+msgid ""
+"The last seed is in the ground. Everything is ready. Press {interact} again "
+"here to launch home."
+msgstr "最後の種が土に入った。準備は全部できた。もう一度ここで {interact} を押すと、ふるさとへ発射する。"
+
+#: systems/late_director.gd:144
+msgid ""
+"Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark "
+"Bridge to see them and the Heirlooms your restoration has unlocked, or seed "
+"a new world. Garden Mode ({garden_mode}) is open too."
+msgstr ""
+"クレイドルモード：アークの種子庫には、ほかの世界のための種がある。ポーズ > "
+"アークブリッジで、それと復興で解放した家宝を見たり、新しい世界に種をまいたりできる。ガーデンモード（{garden_mode}）も開いている。"
+
+#: systems/glim/glim_director.gd:407
+msgid "Glim is still scanning. Try again in a moment."
+msgstr "Glim はまだスキャン中。少し待ってからもう一度。"
+
+#: ui/codex_screen.gd:654
+msgid ""
+"Hint: animals come back as the ground heals. Photograph them in photo mode "
+"({photo_mode})."
+msgstr "ヒント：地面が癒えると動物が戻ってくる。フォトモード（{photo_mode}）で撮影しよう。"
+
+#: ui/telescope_panel.gd:40
+msgid "Built. Walk up to it and press {interact}."
+msgstr "完成。近づいて {interact} を押そう。"
+
+#: data/events.json:events[supply_drop].toast
+msgid "Supply Drop! A crate landed %s of you. Clear the junk around it."
+msgstr "補給投下！君の%sに箱が落ちた。周りのゴミを片付けよう。"
+
+#: data/events.json:events[salvage_surge].toast
+msgid "Salvage Surge! A glowing hex %s of you: 3x cubes."
+msgstr "サルベージ・サージ！君の%sに光るヘックス：キューブ3倍。"
+
+#: data/events.json:events[rain_shower].toast
+msgid "Rain! Your plants stay watered while it lasts."
+msgstr "雨だ！降っている間、植物は水を切らさない。"
+
+#: data/events.json:events[robot_hiccup].toast
+msgid "%s has the hiccups. Walk over and press {interact}."
+msgstr "%s がしゃっくり中。近づいて {interact} を押そう。"
+
+#: data/events.json:events[wildlife_visit].toast
+msgid "A visitor %s of you! Sneak up, press {interact} for a photo."
+msgstr "君の%sに訪問者！そっと近づいて {interact} で写真を撮ろう。"
+
+#: data/events.json:events[rare_part_signal].toast
+msgid "Rare Part Signal %s of you! Follow the violet beam."
+msgstr "君の%sにレアパーツの信号！紫の光を追おう。"
+
+#: data/events.json:events[ledger_audit].toast
+msgid "Ledger Audit! Out-scoop the drone %s of you!"
+msgstr "レジャー監査！君の%sでドローンより多く集めよう！"
+
+#: data/goals.json:goals[scoop_15].short
+msgid "Pick up trash"
+msgstr "ゴミを拾う"
+
+#: data/goals.json:goals[dump_1].short
+msgid "Empty chest in bin"
+msgstr "チェストをゴミ箱へ"
+
+#: data/goals.json:goals[upgrade_1].short
+msgid "Buy an upgrade"
+msgstr "アップグレードを買う"
+
+#: data/goals.json:goals[cash_1].short
+msgid "Sell a bale"
+msgstr "ベールを売る"
+
+#: data/goals.json:goals[base_2].short
+#: data/objectives.json:objectives[base2].short
+msgid "Base to level 2"
+msgstr "基地をレベル2に"
+
+#: data/goals.json:goals[base_3].short
+#: data/objectives.json:objectives[base3].short
+msgid "Base to level 3"
+msgstr "基地をレベル3に"
+
+#: data/goals.json:goals[base_4].short
+msgid "Base to level 4"
+msgstr "基地をレベル4に"
+
+#: data/goals.json:goals[rocket_tier_3].short
+msgid "Rocket to Mk III"
+msgstr "ロケットを Mk III に"
+
+#: data/goals.json:goals[base_5].short
+msgid "Base to level 5"
+msgstr "基地をレベル5に"
+
+#: data/goals.json:goals[home_drive_5].short
+msgid "Build the Mk V drive"
+msgstr "Mk V ドライブを作る"
+
+#: data/goals.json:goals[skimmer_1].short
+msgid "Build a Skimmer"
+msgstr "Skimmer を作る"
+
+#: data/goals.json:goals[extras_radio].short
+msgid "Pick a radio song"
+msgstr "ラジオで曲を選ぶ"
+
+#: data/goals.json:goals[builder_1].short
+msgid "Style a robot"
+msgstr "ロボットを着せ替える"
+
+#: data/goals.json:goals[extras_retire].short
+msgid "Retire a robot"
+msgstr "ロボットを引退させる"
+
+#: data/goals.json:goals[tier_1].short
+msgid "A robot type to Mk II"
+msgstr "ロボットの型を Mk II に"
+
+#: data/goals.json:goals[base2_3].short
+msgid "New base to level 3"
+msgstr "新しい基地をレベル3に"
+
+#: data/goals.json:goals[late_garden_1].text
+msgid "Place a decoration ({garden_mode})"
+msgstr "飾りを置く（{garden_mode}）"
+
+#: data/goals.json:goals[late_charm_20].short
+msgid "Reach 20 charm"
+msgstr "魅力20に到達"
+
+#: data/objectives.json:objectives[dump3].short
+msgid "Fill the bin"
+msgstr "ゴミ箱を満たす"
+
+#: data/objectives.json:objectives[bench2].short
+msgid "Add a Bot Bay"
+msgstr "ボットベイを付ける"
+
+#: data/objectives.json:objectives[rocket_tier_2].short
+msgid "Rocket to Mk II"
+msgstr "ロケットを Mk II に"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Gantry Crane: its hull plates shield the rocket."
+msgstr "ガントリークレーンを起こそう：その外板がロケットを守る。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Signal Mast: it holds the star chart."
+msgstr "シグナルマストを起こそう：星図を持っている。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Big Wheel: its power cell lasts the long flight."
+msgstr "観覧車を起こそう：そのパワーセルは長旅でももつ。"
+
 #~ msgid "Home. The workbench is by the pod."
 #~ msgstr "ホームだ。作業台はポッドのそばにある。"
 
