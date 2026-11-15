@@ -28,8 +28,13 @@ func _init() -> void:
 			var text: String = JSON.stringify(d).to_lower()
 			var ok: bool = not text.contains("ledger") and int(d.get("version", 0)) >= 5
 			var st: Dictionary = d["stats"]
-			var moved: bool = float(st.get("time_played", 0.0)) > float((d["flags"] as Dictionary).get("ledger_check_time", 0.0))
-			print("[old-ledger] %s: version %d, Ledger keys left: %s, played on: %s" % [path.get_file(), int(d.get("version", 0)), "none" if not text.contains("ledger") else "SOME", str(moved)])
+			var moved: bool = float(st.get("time_played", 0.0)) > float((d["flags"] as Dictionary).get("old_arc_check_time", 0.0))
+			var left: Array[String] = []
+			var rx := RegEx.create_from_string("\"[^\"]*ledger[^\"]*\"")
+			for m: RegExMatch in rx.search_all(text):
+				if not left.has(m.get_string()):
+					left.append(m.get_string())
+			print("[old-ledger] %s: version %d, Ledger keys left: %s, played on: %s" % [path.get_file(), int(d.get("version", 0)), "none" if left.is_empty() else ", ".join(left), str(moved)])
 			if not ok or not moved:
 				bad += 1
 			continue
@@ -37,7 +42,7 @@ func _init() -> void:
 		fl["ledger_act"] = 3
 		fl["ledger_relay_hub"] = 0
 		fl["ledger_coupons"] = [0, 2, 5]
-		fl["ledger_check_time"] = float((d["stats"] as Dictionary).get("time_played", 0.0))
+		fl["old_arc_check_time"] = float((d["stats"] as Dictionary).get("time_played", 0.0))
 		var once: Dictionary = fl.get("once", {}) if fl.get("once") is Dictionary else {}
 		once["toast_ledger_note"] = true
 		once["wren_ledger_drop"] = true
