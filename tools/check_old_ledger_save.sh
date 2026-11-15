@@ -5,7 +5,7 @@
 # the save comes out without a Ledger key and with more play time. Exit 1 on a failure.
 cd "$(dirname "$0")/.."
 mkdir -p screenshots
-DIR="old_ledger_$$"
+DIR="old_arc_$$"  # (no "ledger" in the name: the run's log is searched for the word)
 LOG=screenshots/check_old_ledger_save.log
 godot --headless --path . -- --fresh --orbit --no-intro --autoplay --time-scale=8 --quit-after=60 --save-dir="$DIR" >"$LOG" 2>&1
 godot --headless --path . -s tools/ledger_old_save.gd -- --save-dir="$DIR" 2>&1 | grep "^\[old-ledger\]" | tee -a "$LOG"

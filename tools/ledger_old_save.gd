@@ -16,10 +16,11 @@ func _init() -> void:
 			verify = true
 	var files: Array[String] = []
 	_find(dir, files)
+	_find(dir + "_round", files)  # the globe's saves
 	var touched: int = 0
 	var bad: int = 0
 	for path: String in files:
-		var d: Dictionary = SaveManager.read_dict(path)
+		var d: Dictionary = _read(path)
 		if not (d.get("flags") is Dictionary and d.get("stats") is Dictionary):
 			continue  # not a world save (profile, settings)
 		touched += 1
@@ -60,13 +61,26 @@ func _init() -> void:
 		if d.get("world") is Dictionary:
 			(d["world"] as Dictionary)["ledger_jammers"] = 2
 		d["version"] = 4
-		SaveManager.write_dict(path, d)
+		_write(path, d)
 		print("[old-ledger] %s: Ledger state written (act 3, 2 jammers), version 4" % path.get_file())
 	if touched == 0:
 		print("[old-ledger] FAIL no world save under %s" % dir)
 		bad += 1
 	print("[old-ledger] %s" % ("PASS" if bad == 0 else "FAIL"))
 	quit(1 if bad > 0 else 0)
+
+
+## As SaveManager.read_dict / write_dict (autoloads are not there for a -s script).
+func _read(path: String) -> Dictionary:
+	var f := FileAccess.open_compressed(path, FileAccess.READ, FileAccess.COMPRESSION_ZSTD)
+	var parsed: Variant = JSON.parse_string(f.get_as_text()) if f else null
+	return parsed if parsed is Dictionary else {}
+
+
+func _write(path: String, d: Dictionary) -> void:
+	var f := FileAccess.open_compressed(path, FileAccess.WRITE, FileAccess.COMPRESSION_ZSTD)
+	f.store_string(JSON.stringify(d))
+	f.close()
 
 
 func _find(dir: String, out: Array[String]) -> void:

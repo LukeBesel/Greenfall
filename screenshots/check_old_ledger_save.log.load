@@ -1,0 +1,279 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[DevHooks] args: { "orbit": "1", "no-intro": "1", "autoplay": "1", "time-scale": "8", "clarity-log": "1", "quit-after": "90", "save-dir": "old_arc_24818" }
+[loader] loading res://scenes/slice.tscn
+[town] hub 0 start town: 22 blocks (types { 1: 17, 3: 1, 2: 3, 0: 1 }), 57 buildings up to 26 floors, 15 blocks left to the lake
+[town] hub 0 outskirts (start): { "tiles": 23, "buildings": 148, "skipped_wet": 469, "skipped_slope": 0, "lots": 51, "tallest": 29, "footprints": 148 }
+[sites] verdance hub 0 (start_yard): 0 junk cells under its buildings cleared
+[tunes] context play
+[tunes] 90 songs listed, 7 with a file, 83 waiting for one (skipped)
+[clarity]   1.1 min  bin body 0.00 m from its bay anchor
+[hubframe] hub 0
+[outposts] hub 0: 3 outposts hex152004@(-20,185) hex100362@(18,-181) hex152679@(176,-49) levels []
+[eggs] hub 0: 12 eggs, 19 props placed
+[first_seed] greenhouse at site-local (30.6, -5.0)
+[orbit] verdance f=128 near ring: pieces=8594 parts=18 landmarks=0 mounds=0
+[orbit] slice on the globe: R=1840m hexes=163842 around=11.6km hubs=10 (nearest hub mean 1706m, min 1594m) loaded=true built=23095ms planet=3044ms grid=159ms settle=1683ms junk_fill=3049ms
+[warmup] 471 materials across 2 viewports
+[clarity]   1.1 min  card: Buy Scoop Size | Workbench: grab more trash at once.
+[clarity]   1.1 min  scoopie: Locked · research Salvage Logic (bench tier 1)
+[clarity]   1.1 min  beam: bench
+[card] 1.1 min  scoop_size  "Buy Scoop Size"  price { "cubes": 55.0 }  cubes=2898 earned=53  planet 0.0% hubs 1 hexes 0 plants 0 base 1 income 0/min robots 0
+[clarity]   1.1 min  cut(reward): Relay signal 25%. WREN can reach you.
+[Autoplay]    1.1 min  signal_tower {"tier":1}
+[Autoplay] first_upgrade_s at 67.6s
+[Autoplay] baler_s at 67.6s
+[Campaign] baler_s at 1.1 min
+[clarity]   1.1 min  toast(hint): Baler in! Fill your chest, then press [RMB] for a bale.
+[clarity]   1.1 min  toast(story): Hub upgraded: Workshop.
+[loader] ready in 24680 ms, longest frame 1884 ms (ending in stage build) (res://scenes/slice.tscn)
+[lumi] level 2 at 1.1 min (+23 cubes)
+[clarity]   1.1 min  cut(story): Achievement: Home Improvements. Upgrade the hub.
+[clarity]   1.1 min  WREN: ...there you are. The signal's thin, but it's ours. Hello again, Lumi.
+[onboard] objective scoop_size done at 1.1 min
+[Autoplay]    1.1 min  goal {"id":"baler_1","n":4}
+[card] 1.1 min  baler  "Save up for the Baler"  cubes=1251 earned=91  planet 0.0% hubs 1 hexes 0 plants 0 base 2 income 228/min robots 0
+[Autoplay] base_2_s at 67.6s
+[Campaign] base_2_s at 1.1 min
+[Autoplay]    1.1 min  base {"level":2}
+[Autoplay] lift_1_s at 67.6s
+[Campaign] lift_1_s at 1.1 min
+[glim] repair bought at 1.1 min played
+[Autoplay]    1.1 min  build {"id":"glim"}
+[Autoplay] glim_repair_s at 67.6s
+[Campaign] glim_repair_s at 1.1 min
+[onboard] objective baler done at 1.1 min
+[card] 1.1 min  power  "Sell 3 bales"  cubes=573 earned=91  planet 0.0% hubs 1 hexes 0 plants 0 base 2 income 228/min robots 0
+[clarity]   1.1 min  beam: site 0 (4, 22)
+[Autoplay] first_cube_s at 67.7s
+[Campaign] first_cube_s at 1.1 min
+[clarity]   1.1 min  cut(story): Achievement: Bale Begins. Press your first bale.
+[clarity]   1.1 min  cut(story): Achievement: Just Right. Press a perfect bale.
+[glim] repaired at 1.1 min played
+[Autoplay] lift_2_s at 69.0s
+[Campaign] lift_2_s at 1.1 min
+[clarity]   1.2 min  WREN: I run the Cradle, our big ship. I never stopped listening for you.
+[Autoplay] first_cashin_s at 70.8s
+[Campaign] first_cashin_s at 1.2 min
+[clarity]   1.2 min  card: Sell 3 bales | Press [RMB] for a bale. Cubes for the signal tower. | > Carry your bale to the scale by the bin. | [1 / 3]
+[clarity]   1.2 min  toast(hint): Tap F: Glim scans your hex for junk you missed. Hold F for his upgrades.
+[clarity]   1.3 min  card: Sell 3 bales | Press [RMB] for a bale. Cubes for the signal tower. | [1 / 3]
+[clarity]   1.3 min  beam: none
+[clarity]   1.3 min  WREN: The Cradle can't land on a dead world. Let's make Verdance green again.
+[clarity]   1.3 min  card: Sell 3 bales | > Carry your bale to the scale by the bin. | [1 / 3]
+[clarity]   1.3 min  beam: bin
+[clarity]   1.3 min  prompt: E   set bale down
+[Autoplay]    1.4 min  glim_light {"tier":1}
+[clarity]   1.4 min  card: Sell 3 bales | [2 / 3]
+[clarity]   1.4 min  beam: none
+[clarity]   1.4 min  WREN: Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home.
+[clarity]   1.5 min  beam: site 0 (4, 22)
+[clarity]   1.5 min  prompt: E   pick up bale
+[clarity]   1.5 min  card: Sell 3 bales | > Carry your bale to the scale by the bin. | [2 / 3]
+[clarity]   1.5 min  beam: bin
+[clarity]   1.5 min  prompt: E   set bale down
+[onboard] objective power done at 1.6 min
+[Autoplay]    1.6 min  goal {"id":"bale_1","n":5}
+[Autoplay]    1.6 min  goal {"id":"cash_1","n":6}
+[Autoplay]    1.6 min  goal {"id":"lift_1","n":7}
+[card] 1.6 min  tower  "Build the signal tower"  cubes=118 earned=196  planet 0.0% hubs 1 hexes 0 plants 0 base 2 income 327/min robots 0
+[clarity]   1.6 min  WREN: Glim! He held on to your pod the whole way down, just to stay with you. Welcome back, little light.
+[onboard] objective tower done at 1.6 min
+[card] 1.6 min  glim  "Repair Glim"  cubes=118 earned=196  planet 0.0% hubs 1 hexes 0 plants 0 base 2 income 304/min robots 0
+[clarity]   1.6 min  beam: bench
+[onboard] objective glim done at 1.6 min
+[card] 1.6 min  hex  "Clean the glowing hex"  cubes=118 earned=196  planet 0.0% hubs 1 hexes 0 plants 0 base 2 income 292/min robots 0
+[clarity]   1.7 min  beam: site 0 (4, 22)
+[clarity]   1.7 min  prompt: E   set bale down
+[orbit-perf] process_ms avg=92.14 max=160.45 physics_ms avg=97.71 junk=8390 (near 1560 far 6874) junk_ms=0 mounds=0 landmarks=0 draw_calls=0 prims=0 streamer={"apply_us_max":16567,"apply_us_sum":37516,"build_us_max":321934,"build_us_sum":2226912,"built":22,"chunk_tris":79546,"collide":2,"horizon_m":442.148405360521,"jobs":0,"lod0":7,"lod1":12,"lod2":0,"near":68,"pending":1,"shell_ms":589,"shell_tris":61440,"view_alt":3.07146919449201}
+[clarity]   1.7 min  card: Clean the glowing hex | Plants only grow on clean ground. Clear the outline. | > Carry your bale to the scale by the bin. | [39%]
+[clarity]   1.8 min  WREN: First, one clean hex. Clear the outlined one. Green starts on clean ground.
+[clarity]   1.8 min  card: Clean the glowing hex | Plants only grow on clean ground. Clear the outline. | [43%]
+[clarity]   1.8 min  beam: none
+[clarity]   1.9 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [46%]
+[clarity]   1.9 min  prompt: E   set bale down
+[Autoplay]    1.9 min  glim_scan {"tier":1}
+[clarity]   2.0 min  card: Clean the glowing hex | [46%]
+[clarity]   2.0 min  prompt: E   Open the workbench
+[clarity]   2.0 min  beam: site 0 (4, 22)
+[Autoplay]   2.0 min cubes=58 rate=3.13/s partscur=44 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=2 task=deliver goals=7 research= pos=(1306.3, 281.2, -1263.9) esc=0
+[clarity]   2.1 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [49%]
+[clarity]   2.1 min  prompt: E   set bale down
+[clarity]   2.2 min  beam: none
+[clarity]   2.2 min  card: Clean the glowing hex | [53%]
+[clarity]   2.2 min  beam: site 0 (4, 22)
+[clarity]   2.3 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [54%]
+[clarity]   2.3 min  beam: none
+[clarity]   2.3 min  prompt: E   set bale down
+[clarity]   2.4 min  card: Clean the glowing hex | [54%]
+[orbit-perf] process_ms avg=75.68 max=132.25 physics_ms avg=82.07 junk=9081 (near 1321 far 7429) junk_ms=0 mounds=0 landmarks=0 draw_calls=0 prims=0 streamer={"apply_us_max":16567,"apply_us_sum":52496,"build_us_max":321934,"build_us_sum":2701569,"built":25,"chunk_tris":79546,"collide":2,"horizon_m":442.165631227472,"jobs":1,"lod0":7,"lod1":12,"lod2":0,"near":68,"pending":0,"shell_ms":589,"shell_tris":61440,"view_alt":3.073347242203}
+[clarity]   2.5 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [60%]
+[clarity]   2.5 min  prompt: E   set bale down
+[clarity]   2.6 min  card: Clean the glowing hex | [60%]
+[clarity]   2.7 min  card: Clean the glowing hex | > Your chest is full. Press [RMB] to make a bale. | [66%]
+[clarity]   2.7 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [66%]
+[clarity]   2.7 min  prompt: E   set bale down
+[clarity]   2.8 min  card: Clean the glowing hex | [66%]
+[clarity]   2.8 min  cut(reward): Salvaged: Rusty Sensor Module  +10 parts
+[clarity]   2.8 min  cut(reward): Salvaged: Restored Drive Wheel Assembly  +60 parts
+[clarity]   2.9 min  beam: site 0 (4, 22)
+[clarity]   2.9 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [73%]
+[clarity]   2.9 min  beam: none
+[clarity]   2.9 min  prompt: E   set bale down
+[Autoplay]   3.0 min cubes=130 rate=1.33/s partscur=124 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=7 research= pos=(1297.5, 293.6, -1269.9) esc=0
+[orbit-perf] process_ms avg=70.79 max=194.14 physics_ms avg=96.63 junk=8891 (near 1457 far 8382) junk_ms=0 mounds=0 landmarks=0 draw_calls=0 prims=0 streamer={"apply_us_max":16567,"apply_us_sum":68707,"build_us_max":323215,"build_us_sum":3362102,"built":28,"chunk_tris":79546,"collide":2,"horizon_m":442.272289117906,"jobs":1,"lod0":7,"lod1":12,"lod2":0,"near":73,"pending":1,"shell_ms":589,"shell_tris":61440,"view_alt":3.08497914461918}
+[clarity]   3.1 min  cut(reward): Salvaged: Rusty Special Module  +10 parts
+[lumi] level 3 at 3.1 min (+40 cubes)
+[clarity]   3.1 min  card: Clean the glowing hex | [76%]
+[clarity]   3.1 min  beam: site 0 (4, 22)
+[clarity]   3.1 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [76%]
+[clarity]   3.1 min  prompt: E   set bale down
+[clarity]   3.2 min  prompt: E   Open the workbench
+[clarity]   3.3 min  card: Clean the glowing hex | [79%]
+[clarity]   3.4 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [82%]
+[clarity]   3.4 min  prompt: E   set bale down
+[clarity]   3.5 min  card: Clean the glowing hex | [84%]
+[clarity]   3.6 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [88%]
+[clarity]   3.6 min  prompt: E   set bale down
+[clarity]   3.6 min  beam: none
+[clarity]   3.7 min  card: Clean the glowing hex | [88%]
+[orbit-perf] process_ms avg=50.12 max=77.19 physics_ms avg=48.74 junk=8472 (near 1265 far 7607) junk_ms=0 mounds=0 landmarks=0 draw_calls=0 prims=0 streamer={"apply_us_max":16567,"apply_us_sum":74484,"build_us_max":465761,"build_us_sum":3962531,"built":30,"chunk_tris":79546,"collide":2,"horizon_m":445.465686959845,"jobs":1,"lod0":7,"lod1":12,"lod2":0,"near":68,"pending":1,"shell_ms":589,"shell_tris":61440,"view_alt":3.4360685218594}
+[clarity]   3.8 min  beam: site 0 (4, 22)
+[clarity]   3.8 min  card: Clean the glowing hex | > Carry your bale to the scale by the bin. | [92%]
+[clarity]   3.8 min  prompt: E   set bale down
+[clarity]   3.9 min  beam: none
+[clarity]   4.0 min  card: Clean the glowing hex | [92%]
+[Autoplay]   4.0 min cubes=232 rate=1.76/s partscur=147 seeds=0 parts=0 hexes=0 lv=[0, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=7 research= pos=(1297.9, 289.6, -1270.5) esc=0
+[clarity]   4.1 min  beam: site 0 (4, 22)
+[clarity]   4.1 min  toast(story): Hex clean! Green can grow here now.
+[Autoplay] first_hex_s at 244.7s
+[Campaign] first_hex_s at 4.1 min
+[Autoplay]    4.1 min  hex_clean {"hex":99760,"n":1}
+[clarity]   4.1 min  cut(reward): Hex Lv 1  Clean.   +25 cubes
+[Autoplay] first_hexlv_1_s at 245.2s
+[Campaign] first_hexlv_1_s at 4.1 min
+[Autoplay]    4.1 min  hex_level {"hex":99760,"level":1}
+[clarity]   4.1 min  cut(story): Achievement: Clean Slate. Clean your first hex.
+[onboard] objective hex done at 4.1 min
+[Autoplay]    4.1 min  goal {"id":"hex_1","n":8}
+[Autoplay]    4.1 min  goal {"id":"upgrades_5","n":9}
+[Autoplay]    4.1 min  goal {"id":"cash_10","n":10}
+[card] 4.1 min  bench2  "Add a Bot Bay to the bench"  price { "cubes": 450.0, "parts": 20.0 }  cubes=660 earned=828  planet 0.0% hubs 1 hexes 1 plants 0 base 2 income 552/min robots 0
+[clarity]   4.1 min  WREN: Add a Bot Bay to the bench. You shouldn't do this alone.
+[clarity]   4.1 min  beam: bench
+[clarity]   4.2 min  prompt: E   set bale down
+[Autoplay] first_research_s at 251.9s
+[Campaign] first_research_s at 4.2 min
+[Autoplay]    4.2 min  research {"id":"salvage_logic"}
+[clarity]   4.2 min  toast(goal): Research complete: Salvage Logic.
+[clarity]   4.2 min  toast(goal): Workbench Mk II: Bot Bay installed. New workbench tab: Bots
+[Autoplay]    4.2 min  bench_tier {"tier":2}
+[clarity]   4.2 min  cut(story): Achievement: Curious. Finish your first research.
+[onboard] objective bench2 done at 4.2 min
+[card] 4.2 min  robot  "Build your first robot"  price { "cubes": 250.0, "parts": 40.0 }  cubes=210 earned=828  planet 0.0% hubs 1 hexes 1 plants 0 base 2 income 602/min robots 0
+[clarity]   4.2 min  WREN: The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench.
+[clarity]   4.3 min  card: Build your first robot | Workbench, Bots tab. Robots clean for you. | > cubes 223 / 250  parts 40 / 40 | [223 / 250]
+[orbit-perf] process_ms avg=47.89 max=65.96 physics_ms avg=81.98 junk=8674 (near 1357 far 8507) junk_ms=0 mounds=0 landmarks=0 draw_calls=0 prims=0 streamer={"apply_us_max":16567,"apply_us_sum":80483,"build_us_max":465761,"build_us_sum":4497646,"built":33,"chunk_tris":79546,"collide":2,"horizon_m":442.673308884432,"jobs":0,"lod0":7,"lod1":12,"lod2":0,"near":72,"pending":0,"shell_ms":589,"shell_tris":61440,"view_alt":3.12876813935827}
+[clarity]   4.5 min  card: Build your first robot | Workbench, Bots tab. Robots clean for you. | > Carry your bale to the scale by the bin.  cubes 223 / 250  parts 40 / 40 | [223 / 250]
+[clarity]   4.5 min  prompt: E   set bale down
+[clarity]   4.5 min  card: Build your first robot | > cubes 238 / 250  parts 40 / 40 | [238 / 250]
+[clarity]   4.7 min  cut(reward): Recovered: Rusty Chassis Frame  +10 parts
+[clarity]   4.7 min  cut(story): Achievement: Long Way Round. Roll 1 km.
+[clarity]   4.7 min  prompt: E   pick up bale
+[clarity]   4.8 min  card: Build your first robot | > Carry your bale to the scale by the bin.  cubes 238 / 250  parts 40 / 40 | [238 / 250]
+[clarity]   4.8 min  prompt: E   set bale down
+[clarity]   4.9 min  card: Build your first robot | > Carry your bale to the scale by the bin.
+[Autoplay] first_robot_s at 293.2s
+[Campaign] first_robot_s at 4.9 min
+[Autoplay] first_scoopie_s at 293.2s
+[Campaign] first_scoopie_s at 4.9 min
+[Autoplay]    4.9 min  robot {"fleet":1,"name":"Gizmo-75","type":"scoopie"}
+[clarity]   4.9 min  toast(story): Scoopie Gizmo-75 assembled. It looks around, then gets to work.
+[clarity]   4.9 min  WREN: ...another... voice? No. It doesn't talk. It just hums.
+[onboard] objective robot done at 4.9 min
+[clarity]   4.9 min  cut(story): Achievement: Not Alone. Build your first robot.
+[card] 4.9 min  hex2  "Clean 2 hexes"  cubes=2 earned=870  planet 0.0% hubs 1 hexes 1 plants 0 base 2 income 500/min robots 1
+[clarity]   5.0 min  beam: none
+[clarity]   5.0 min  WREN: One hex clean. Now one more, Lumi.
+[clarity]   5.0 min  card: Clean 2 hexes | Your robot cleans on its own. Clean one more hex. | [1 / 2]
+[clarity]   5.0 min  prompt: E   pick up bale
+[Autoplay]   5.0 min cubes=1 rate=8.06/s partscur=146 seeds=0 parts=0 hexes=1 lv=[1, 0, 0, 0, 0] robots={  } hub=2 task=deliver goals=10 research= pos=(1296.4, 281.7, -1273.9) esc=0
+[orbit-perf] process_ms avg=37.48 max=49.16 physics_ms avg=67.01 junk=9548 (near 1525 far 7753) junk_ms=0 mounds=0 landmarks=0 draw_calls=0 prims=0 streamer={"apply_us_max":16567,"apply_us_sum":81495,"build_us_max":465761,"build_us_sum":4751631,"built":35,"chunk_tris":79546,"collide":2,"horizon_m":442.653176681385,"jobs":0,"lod0":7,"lod1":12,"lod2":0,"near":66,"pending":0,"shell_ms":589,"shell_tris":61440,"view_alt":3.12656776661265}
+[clarity]   5.1 min  card: Clean 2 hexes | Your robot cleans on its own. Clean one more hex. | > Carry your bale to the scale by the bin. | [1 / 2]
+[clarity]   5.1 min  beam: site 0 (17, 31)
+[clarity]   5.1 min  prompt: E   set bale down
+[clarity]   5.2 min  card: Clean 2 hexes | > Carry your bale to the scale by the bin. | [1 / 2]
+[clarity]   5.2 min  card: Clean 2 hexes | [1 / 2]
+[clarity]   5.2 min  scoopie: Not enough cubes (bench tier 2)
+[clarity]   5.3 min  beam: none
+[clarity]   5.4 min  card: Clean 2 hexes | > Your chest is full. Press [RMB] to make a bale. | [1 / 2]
+[clarity]   5.4 min  prompt: E   set bale down
+[clarity]   5.4 min  card: Clean 2 hexes | > Carry your bale to the scale by the bin. | [1 / 2]
+[clarity]   5.4 min  beam: site 0 (17, 31)
+[clarity]   5.6 min  card: Clean 2 hexes | [1 / 2]
+[clarity]   5.7 min  beam: none
+[clarity]   5.7 min  cut(reward): Salvaged: Rusty Drive Wheel Assembly  +10 parts
+[orbit-perf] process_ms avg=74.43 max=122.59 physics_ms avg=63.10 junk=9768 (near 1647 far 7798) junk_ms=0 mounds=0 landmarks=0 draw_calls=0 prims=0 streamer={"apply_us_max":16567,"apply_us_sum":82408,"build_us_max":465761,"build_us_sum":4959436,"built":37,"chunk_tris":79546,"collide":2,"horizon_m":442.839361843634,"jobs":0,"lod0":7,"lod1":12,"lod2":0,"near":66,"pending":0,"shell_ms":589,"shell_tris":61440,"view_alt":3.14692537681481}
+[clarity]   5.8 min  card: Clean 2 hexes | > Carry your bale to the scale by the bin. | [1 / 2]
+[clarity]   5.8 min  prompt: E   set bale down
+[clarity]   5.9 min  beam: site 0 (17, 31)
+[clarity]   5.9 min  card: Clean 2 hexes | [1 / 2]
+[clarity]   5.9 min  beam: none
+[clarity]   5.9 min  prompt: E   pet the cat
+[Autoplay]   6.0 min cubes=66 rate=1.20/s partscur=165 seeds=0 parts=0 hexes=1 lv=[1, 0, 0, 0, 0] robots={  } hub=2 task=deliver goals=10 research= pos=(1289.5, 288.4, -1279.4) esc=0
+[clarity]   6.1 min  card: Clean 2 hexes | > Carry your bale to the scale by the bin. | [1 / 2]
+[clarity]   6.1 min  beam: site 0 (17, 31)
+[clarity]   6.1 min  prompt: E   set bale down
+[clarity]   6.3 min  card: Clean 2 hexes | [1 / 2]
+[clarity]   6.3 min  beam: none
+[clarity]   6.3 min  prompt: E   pet the cat
+[clarity]   6.4 min  beam: site 0 (17, 31)
+[orbit-perf] process_ms avg=71.55 max=93.26 physics_ms avg=60.84 junk=9545 (near 1484 far 9192) junk_ms=0 mounds=0 landmarks=0 draw_calls=0 prims=0 streamer={"apply_us_max":16567,"apply_us_sum":82408,"build_us_max":465761,"build_us_sum":4959436,"built":37,"chunk_tris":79546,"collide":2,"horizon_m":442.782984150656,"jobs":2,"lod0":7,"lod1":12,"lod2":0,"near":72,"pending":2,"shell_ms":589,"shell_tris":61440,"view_alt":3.14075904113838}
+[clarity]   6.4 min  card: Clean 2 hexes | > Carry your bale to the scale by the bin. | [1 / 2]
+[clarity]   6.4 min  prompt: E   set bale down
+[clarity]   6.6 min  prompt: E   set bale down
+[clarity]   6.6 min  card: Clean 2 hexes | [1 / 2]
+[clarity]   6.6 min  beam: none
+[clarity]   6.7 min  beam: site 0 (17, 31)
+[clarity]   6.8 min  card: Clean 2 hexes | > Carry your bale to the scale by the bin. | [1 / 2]
+[clarity]   6.8 min  beam: none
+[clarity]   6.8 min  prompt: E   set bale down
+[clarity]   6.9 min  beam: site 0 (17, 31)
+[clarity]   6.9 min  card: Clean 2 hexes | [1 / 2]
+[clarity]   6.9 min  beam: bench
+[clarity]   7.0 min  cut(story): Achievement: Glass Act. Clear 200 kg of glass.
+[Autoplay]   7.0 min cubes=136 rate=1.30/s partscur=171 seeds=0 parts=0 hexes=1 lv=[1, 0, 0, 0, 0] robots={  } hub=2 task=clean goals=10 research= pos=(1296.7, 271.1, -1276.1) esc=0
+[clarity]   7.1 min  cut(story): Achievement: Pocket Change. Earn 1,000 cubes in total.
+[clarity]   7.1 min  prompt: E   pick up bale
+[orbit-perf] process_ms avg=57.51 max=103.56 physics_ms avg=72.17 junk=9619 (near 1491 far 7204) junk_ms=0 mounds=0 landmarks=0 draw_calls=0 prims=0 streamer={"apply_us_max":16567,"apply_us_sum":84004,"build_us_max":465761,"build_us_sum":5569935,"built":40,"chunk_tris":79546,"collide":2,"horizon_m":442.926035849159,"jobs":0,"lod0":7,"lod1":12,"lod2":0,"near":61,"pending":0,"shell_ms":589,"shell_tris":61440,"view_alt":3.15640870774791}
+[clarity]   7.1 min  card: Clean 2 hexes | > Carry your bale to the scale by the bin. | [1 / 2]
+[clarity]   7.1 min  prompt: E   set bale down
+[clarity]   7.3 min  card: Clean 2 hexes | [1 / 2]
+[clarity]   7.3 min  prompt: E   pet the cat
+[clarity]   7.3 min  cut(reward): Salvaged: Rusty Manipulator Arm  +10 parts
+[clarity]   7.4 min  card: Clean 2 hexes | > Carry your bale to the scale by the bin. | [1 / 2]
+[clarity]   7.4 min  prompt: E   set bale down
+[Autoplay]    7.5 min  hex_clean {"hex":99759,"n":2}
+[clarity]   7.5 min  toast(info): Your robot cleaned a hex! It counts: 2 / 2
+[onboard] objective hex2 done at 7.5 min
+[clarity]   7.5 min  cut(reward): Hex Lv 1  Clean.   +25 cubes
+[Autoplay]    7.5 min  hex_level {"hex":99759,"level":1}
+[card] 7.5 min  hex3  "Clean 3 hexes"  cubes=402 earned=1270  planet 0.0% hubs 1 hexes 2 plants 0 base 2 income 325/min robots 1
+[clarity]   7.5 min  beam: site 0 (-9, 31)
+[clarity]   7.5 min  WREN: Your robot cleans on its own. One more hex, Lumi.
+[Autoplay]    7.5 min  glim_light {"tier":2}
+[clarity]   7.5 min  toast(story): Salvage Surge! A glowing hex west of you: 3x cubes.
+[events] started salvage_surge
+[clarity]   7.6 min  beam: site 0 (17, 31)
+[clarity]   7.6 min  card: Clean 3 hexes | Your robot helps now. Clean ground lets the garden spread. | > Carry your bale to the scale by the bin. | [2 / 3]
+[DevHooks] quitting after 90.0s
+[tunes] context none
+[Autoplay] report: {"baler_s":67.6,"base_2_s":67.6,"campaign_min":[["first_upgrade_s",0.7],["baler_s",1.1],["base_2_s",1.1],["lift_1_s",1.1],["glim_repair_s",1.1],["first_cube_s",1.1],["lift_2_s",1.1],["first_cashin_s",1.2],["first_hex_s",4.1],["first_hexlv_1_s",4.1],["first_research_s",4.2],["first_robot_s",4.9],["first_scoopie_s",4.9]],"cubes":159.612935392805,"cubes_fell":0,"cubes_made":25.0,"dead_gaps_min":[],"district":"Verdance","earned_total":1287.95043539281,"fell_through":0,"first_cashin_s":70.8,"first_cube_s":67.7,"first_hex_s":244.7,"first_hexlv_1_s":245.2,"first_research_s":251.9,"first_robot_s":293.2,"first_scoopie_s":293.2,"first_upgrade_s":67.6,"game_time_min":7.7,"game_time_s":461.2,"glim_repair_s":67.6,"goal_gaps_min":[[4.1,7.7,3.6]],"goals_done":10,"goals_total":122,"hexes_cleaned":2,"hub_level":2,"ignored_pieces":0,"junk_hexes":163455,"lift_1_s":67.6,"lift_2_s":69.0,"next_goals":["hex_3","earn_1k","scoopie_1"],"pace_affordable_at_2nd_bale":0,"pace_cubes_at_2nd_bale":103.863900339013,"pace_upgrades_at_2nd_bale":13,"parts_bought":0,"parts_found":4.0,"perfect_cubes":24.0,"remote_shops":0,"research_done":["salvage_logic"],"research_idle_max_s":398.0,"research_idle_s":398.0,"research_starved_s":398.0,"robots":{},"stuck_escapes":0,"stuck_robots":{},"upgrades":{"baler":1,"compartment_size":3,"lift_strength":2,"multi_lock":1,"scoop_speed":2,"scoop_width":2,"tread_speed":2}}
+[clarity]   7.7 min  summary: 53 card changes, 9 toasts (18 cut), 11 WREN lines, longest empty card 0 s
+WARNING: 22 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 5 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+ERROR: Pages in use exist at exit in PagedAllocator: N12VariantPools12BucketMediumE
+   at: ~PagedAllocator (./core/templates/paged_allocator.h:170)
+ERROR: 1 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
