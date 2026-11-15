@@ -2,7 +2,7 @@ class_name HubPanel
 extends HBoxContainer
 ## Workbench "Hub" tab. [ui2] Left: one big card for the next hub level (what it is, what it
 ## gives you, the cost in Parts and cubes, a big Upgrade button, the level spots). Right: the
-## smaller things built at the hub (Air Scrubbers, bale stations, the Telescope, the Jammer).
+## smaller things built at the hub (Air Scrubbers, bale stations, the Telescope).
 
 ## Height of the scrolling side column (fits the workbench at 1280x800 and 110% UI scale).
 const SIDE_H: float = 460.0
@@ -25,10 +25,7 @@ var _scrub_cost: BenchKit.CostRow
 var _scrub_btn: Button
 var _stations: StationsPanel  # [stations]
 var _scope: TelescopePanel  # [scope]
-var _jam_box: VBoxContainer
 var _yard: YardBuildsPanel  # [camp]
-var _jam: Label
-var _jam_btn: Button
 
 
 func _ready() -> void:
@@ -126,22 +123,6 @@ func _ready() -> void:
 	side.add_child(yc[0])
 	_yard = YardBuildsPanel.new()
 	(yc[1] as VBoxContainer).add_child(_yard)
-	# Signal Jammer (the Ledger arc, story/ledger.gd): shown once the dump drones start.
-	var jc: Array = BenchKit.card()
-	side.add_child(jc[0])
-	_jam_box = jc[1]
-	_jam = BenchKit.body("", UITheme.CREAM)
-	_jam_box.add_child(_jam)
-	_jam_btn = BenchKit.soft_button(tr("Build Signal Jammer"))
-	_jam_btn.pressed.connect(func() -> void:
-		var lg: Node = _ledger()
-		if lg and lg.build_jammer():
-			Audio.play("buy", 1.1, -2.0)
-		else:
-			Audio.play("buzz", 1.2, -8.0)
-			Refuse.say("")  # [v9d] say why
-		refresh())
-	_jam_box.add_child(_jam_btn)
 	refresh()
 
 
@@ -158,10 +139,6 @@ func _on_upgrade() -> void:
 		Audio.play("buzz", 1.2, -8.0)
 		Refuse.say("")  # [v9d] say why
 	refresh()
-
-
-func _ledger() -> Node:
-	return get_tree().get_first_node_in_group("ledger") if is_inside_tree() else null
 
 
 static func cost_text(cost: Dictionary, mult: float = 1.0) -> String:
@@ -264,12 +241,6 @@ func refresh() -> void:
 		(_scope.get_parent().get_parent() as Control).visible = false  # [camp2] built from the BUILD list
 	if _yard:  # [camp]
 		_yard.refresh()
-	var lg: Node = _ledger()
-	var jam_on: bool = lg != null and lg.jammer_visible()
-	(_jam_box.get_parent() as Control).visible = jam_on
-	if jam_on:
-		_jam.text = lg.jammer_text()
-		_jam_btn.disabled = not lg.can_build_jammer()
 
 
 func _set_gains(lines: Array[String]) -> void:

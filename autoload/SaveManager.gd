@@ -353,6 +353,9 @@ static func migrate(d: Dictionary) -> Dictionary:
 	if v < 4:
 		d = migrate_v4(d)  # [ui2]
 		v = 4
+	if v < 5:
+		d = drop_ledger(d)  # owner item 105: the Ledger is gone
+		v = 5
 	d["version"] = v
 	return d
 
@@ -386,6 +389,65 @@ static func migrate_v2(d: Dictionary) -> Dictionary:
 				slots[i] = {"state": "wait", "wait": 30.0}
 	flags["money_migrated"] = true
 	d["flags"] = flags
+	return d
+
+
+## v4 -> v5, owner item 105: the Ledger is gone from the game. An older save's Ledger state is
+## dropped here (it only removes or renames keys, so running it again changes nothing): its act
+## and coupons, drone counts, the audit event and its trinkets, the two Codex pages. The memo shard
+## and the system page keep their place under their new ids. Signal Jammers that were built are
+## paid back (900 cubes and 42 parts, x2.2 for each one after the first: what they cost).
+const LEDGER_FLAGS: Array[String] = ["ledger_act", "ledger_resolved", "ledger_relay_hub", "ledger_coupons"]
+const LEDGER_STATS: Array[String] = ["ledger_drops", "ledger_jammed", "ledger_seed_drops"]
+const LEDGER_ONCE: Array[String] = ["toast_ledger_note", "wren_ledger_drop", "toast_ledger_drone"]
+const LEDGER_RENAMED: Dictionary = {"shards:ledger_memo": "shards:pause_memo", "homeward:ledger_system": "homeward:buried_worlds"}
+
+
+static func drop_ledger(d: Dictionary) -> Dictionary:
+	var flags: Dictionary = d.get("flags", {}) if d.get("flags") is Dictionary else {}
+	for k: String in LEDGER_FLAGS:
+		flags.erase(k)
+	for k: Variant in flags.keys():  # Once / BeepGate marks ({key: ...} dictionaries in the flags)
+		if flags[k] is Dictionary:
+			for ok: String in LEDGER_ONCE:
+				(flags[k] as Dictionary).erase(ok)
+	if d.get("stats") is Dictionary:
+		for k: String in LEDGER_STATS:
+			(d["stats"] as Dictionary).erase(k)
+	if flags.get("codex") is Array:
+		var cx: Array = flags["codex"]
+		cx.erase("sightings:ledger_wreck")
+		for i: int in cx.size():
+			cx[i] = LEDGER_RENAMED.get(str(cx[i]), cx[i])
+	if flags.get("shards_found") is Array:
+		var sf: Array = flags["shards_found"]
+		for i: int in sf.size():
+			if str(sf[i]) == "ledger_memo":
+				sf[i] = "pause_memo"
+	if flags.get("trinkets") is Array:
+		(flags["trinkets"] as Array).erase("audit_stamp")
+		(flags["trinkets"] as Array).erase("drone_propeller")
+	if flags.get("events") is Dictionary:
+		var ev: Dictionary = flags["events"]
+		if ev.get("recent") is Array:
+			while (ev["recent"] as Array).has("ledger_audit"):
+				(ev["recent"] as Array).erase("ledger_audit")
+		if ev.get("done") is Dictionary:
+			(ev["done"] as Dictionary).erase("ledger_audit")
+	var mult: float = 0.0  # each district priced its own jammers: 1, 2.2, 4.84 times the cost
+	var worlds: Array = [d.get("world")]
+	if d.get("districts") is Dictionary:
+		worlds.append_array((d["districts"] as Dictionary).values())
+	for w: Variant in worlds:
+		if w is Dictionary and (w as Dictionary).has("ledger_jammers"):
+			for i: int in int((w as Dictionary)["ledger_jammers"]):
+				mult += pow(2.2, i)
+			(w as Dictionary).erase("ledger_jammers")
+	if mult > 0.0 and d.get("currencies") is Dictionary:
+		var cur: Dictionary = d["currencies"]
+		for pair: Array in [["cubes", 900.0], ["parts", 42.0]]:
+			var b: BigNum = BigNum.from_serialized(cur[pair[0]]) if cur.has(pair[0]) else BigNum.zero()
+			cur[pair[0]] = b.add(BigNum.from_float(float(pair[1]) * mult)).serialize()
 	return d
 
 

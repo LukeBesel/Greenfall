@@ -4,7 +4,7 @@ extends VBoxContainer
 ## separate tab"). The list is camp2's single source, HubBuilds.available(world, "one_time")
 ## (data/builds.json): only unlocked, not-yet-built things, in order; a building drops off once it
 ## stands and joins the small "Built" line. Building goes through HubBuilds.build (pay, place,
-## reveal; the first Signal Jammer is one of them). Also the controls of machines that already stand (bale stations' route / move, the telescope).
+## reveal). Also the controls of machines that already stand (bale stations' route / move, the telescope).
 
 var world: Node
 var _list: VBoxContainer
@@ -38,10 +38,6 @@ func _ready() -> void:
 	_scope = TelescopePanel.new()
 	_ops.add_child(_scope)
 	refresh()
-
-
-func _ledger() -> Node:
-	return get_tree().get_first_node_in_group("ledger") if is_inside_tree() else null
 
 
 func _world() -> Node:

@@ -73,9 +73,9 @@ func test_research_effect_lines() -> void:
 	assert_false(de[0].contains("speed"), "stat name translated: %s" % de[0])
 
 
-## The token icon renders: the UI and Ledger fonts reach ◆ (through the CJK fallbacks).
+## The token icon renders: the UI and mono fonts reach ◆ (through the CJK fallbacks).
 func test_token_glyph_in_fonts() -> void:
 	Settings.apply_language()
-	for f: Font in [UITheme.font(), LedgerUplink.mono_font()]:
+	for f: Font in [UITheme.font(), HoloFrame.mono()]:
 		assert_true(f.has_char("◆".unicode_at(0)), "%s has the token glyph" % f)
 	TranslationServer.set_locale("en")

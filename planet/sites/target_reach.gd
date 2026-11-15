@@ -2,7 +2,7 @@ class_name TargetReach
 extends RefCounted
 ## [v4world] Owner playtest 3 #55: "The objective led me under a building I can't get to. Every
 ## target must be reachable." One test for every collectible and objective target on the globe
-## (memory shards, outposts, eggs, CDs, the First Seed greenhouse, buried parts, the Ledger relay,
+## (memory shards, outposts, eggs, CDs, the First Seed greenhouse, buried parts,
 ## the purple beacon's point), and the nearest reachable open ground when a spot fails it.
 ##
 ## A ground point is FREE when it is:

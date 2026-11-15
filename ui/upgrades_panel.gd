@@ -4,7 +4,7 @@ extends VBoxContainer
 ##   Lumi      - Lumi's upgrade cards (upgrades.json, tab "patch").
 ##   Base      - the next hub level card and the next tier of each tiered build (camp2's
 ##               HubBuilds.available(world, "tiered"): trash bin, signal tower, air scrubbers,
-##               signal jammers, ...).
+##               ...).
 ##   Machines  - machine upgrades (tab "hub", e.g. Belt Drive) once their machine stands.
 ##   Glim      - [buddy] Glim's upgrade tracks (ui/glim_bench.gd), once he's found.
 ##   Rocket    - the rocket stages, once the pad is open.

@@ -122,7 +122,7 @@ hooks instead of played through.
   memo, half-way intercept (also the next planet's chart), restored note; a relic and an Heirloom pick.
 - Twists (data/homeward.json + world types): Ochre desert, Tailwinds + Rich Salvage (short); Tidewell
   ocean, Heavy Rain + Wild Bloom; Rime ice moon, Long Nights + Thin Soil; Anvil rust world, Heavy Junk +
-  Long Nights (the hardest, the Ledger's head office).
+  Long Nights (the hardest, the miners' head office).
 - **The ending**: all five at 100% -> fly back to Verdance, hop to Cradle Returns, build **Mk VII
   Homeward** there (8M cubes, 2,000 parts, all four relics): the launch complex goes up around the pad.
   E at the yellow-fenced bed beside it plants the last seed; E again (or the map's Launch home) launches.

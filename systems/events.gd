@@ -9,7 +9,6 @@ extends Node3D
 ##   robot_hiccup      a helper robot freezes; walk over and press E to fix it
 ##   wildlife_visit    a rare animal visits a Sustained/Thriving hex; press E for a photo
 ##   rare_part_signal  a violet beam marks a buried part; dig it up for a bonus rare part
-##   ledger_audit      (after the Ledger arc) a friendly drone races you to clear a ring of junk
 ## Nothing is ever lost: an event that times out just ends. Rewards scale with progress (see
 ## progress_cubes) so they stay a spike, never a flood. Also owns the cleaning streak (Streak)
 ## and the per-bale bonus (streak tier + surge share), applied by Patch when a bale is pressed.
@@ -89,7 +88,7 @@ static func pick_event(event_defs: Array, eligible: Dictionary, recent: Array, r
 
 
 ## Which events can run given a snapshot of the game: {junk_hexes, planted, robots,
-## max_hex_level, ledger_resolved, parts_left}.
+## max_hex_level, parts_left}.
 static func eligible_ids(ctx: Dictionary) -> Dictionary:
 	var out: Dictionary = {}
 	for e: Dictionary in defs():
@@ -102,11 +101,9 @@ static func eligible_ids(ctx: Dictionary) -> Dictionary:
 			ok = false
 		if int(req.get("hex_level", 0)) > int(ctx.get("max_hex_level", 0)):
 			ok = false
-		if bool(req.get("ledger_resolved", false)) and not bool(ctx.get("ledger_resolved", false)):
-			ok = false
 		if str(req.get("flag", "")) != "" and not bool((ctx.get("flags", GameState.flags) as Dictionary).get(str(req["flag"]), false)):
 			ok = false  # [pace] needs an unlock (has_baler, has_signal_finder, ...: Pace.sync_flags)
-		if id in ["supply_drop", "salvage_surge", "ledger_audit"] and int(ctx.get("junk_hexes", 0)) <= 0:
+		if id in ["supply_drop", "salvage_surge"] and int(ctx.get("junk_hexes", 0)) <= 0:
 			ok = false
 		if id == "rare_part_signal" and int(ctx.get("parts_left", 0)) <= 0:
 			ok = false
@@ -265,7 +262,7 @@ func context() -> Dictionary:
 	var parts_left: int = f.part_found.count(0)
 	var fleet: Fleet = world.get("fleet") as Fleet
 	return {"junk_hexes": junk, "planted": planted, "robots": fleet.robot_total() if fleet else 0, "max_hex_level": lvl,
-		"ledger_resolved": LedgerArc.resolved(), "parts_left": parts_left}
+		"parts_left": parts_left}
 
 
 func start_random() -> bool:
@@ -280,6 +277,26 @@ func start_random() -> bool:
 		if id != first and elig.get(id, false) and start(id):
 			return true
 	return false
+
+
+const COMPASS: Array[String] = ["north", "north-east", "east", "south-east", "south", "south-west", "west", "north-west"]
+
+
+## English compass name (stable for logic and tests); compass_label() is the display copy.
+static func compass(p: Vector3) -> String:
+	# +X east, -Z north (CityLayout: x east, z south).
+	var a: float = rad_to_deg(atan2(p.x, -p.z))
+	return COMPASS[int(round(fposmod(a, 360.0) / 45.0)) % 8]
+
+
+## [i18n] Translated compass direction for messages ("%s of you").
+static func compass_label(p: Vector3) -> String:
+	# TRANSLATORS: compass directions fill "%s of you" ("north of you").
+	var labels: Array[String] = [TranslationServer.translate("north"), TranslationServer.translate("north-east"),
+		TranslationServer.translate("east"), TranslationServer.translate("south-east"),
+		TranslationServer.translate("south"), TranslationServer.translate("south-west"),
+		TranslationServer.translate("west"), TranslationServer.translate("north-west")]
+	return labels[COMPASS.find(compass(p))]
 
 
 ## Starts an event now. force skips the requirements (dev hooks, tests).
@@ -301,13 +318,12 @@ func start(id: String, force: bool = false) -> bool:
 		"robot_hiccup": ok = _start_hiccup(d, force)
 		"wildlife_visit": ok = _start_wildlife(d, force)
 		"rare_part_signal": ok = _start_signal(d, force)
-		"ledger_audit": ok = _start_audit(d, force)
 	if not ok:
 		_clear_props()
 		active = {}
 		return false
 	if active.get("pos") is Vector3:
-		arg = LedgerArc.compass_label((active["pos"] as Vector3) - world.patch.global_position)
+		arg = compass_label((active["pos"] as Vector3) - world.patch.global_position)
 	if id == "robot_hiccup":
 		arg = str(active.get("robot_name", "A robot"))
 	var toast: String = Tutorial.glyphs(tr(str(d.get("toast", d.get("name", id)))))  # [v9d]
@@ -404,7 +420,6 @@ func _update_active(delta: float) -> void:
 		"robot_hiccup": _update_hiccup(delta)
 		"wildlife_visit": _update_wildlife(delta)
 		"rare_part_signal": _update_signal()
-		"ledger_audit": _update_audit(delta)
 
 
 # --- Patch hooks -------------------------------------------------------------------------------
@@ -424,9 +439,6 @@ func on_patch_take(pid: int, vol: float) -> void:
 				active["took"] = int(active.get("took", 0)) + 1
 				if int(active["took"]) % 6 == 1:
 					Vfx.float_text(world.field.piece_pos[pid] + OrbitUp.up(world.field.piece_pos[pid]) * 1.0, "x3", Color(1.0, 0.82, 0.3), 0.5, 0.9)
-		"ledger_audit":
-			if (active.get("zone_set", {}) as Dictionary).has(pid):
-				active["player"] = int(active.get("player", 0)) + 1
 
 
 ## Bale bonus: best streak tier while filling + the share of surge junk. Returns the new info.
@@ -1035,119 +1047,6 @@ func _update_signal() -> void:
 		_finish(true, tr("That was the signal: a stash with a rare part inside. %s") % got)
 	elif float(active["left"]) <= 0.0:
 		_finish(false, tr("The signal faded. The part is still down there; the detector will find it."))
-
-
-# --- Ledger audit ------------------------------------------------------------------------------
-
-func _start_audit(d: Dictionary, force: bool) -> bool:
-	var r: float = float(d.get("zone_radius", 5.0))
-	var spot: Dictionary = _junk_spot(r, 25, 8.0, 35.0, force)
-	if spot.is_empty():
-		return false
-	var pos: Vector3 = spot["pos"]
-	var zone: PackedInt32Array = spot["zone"]
-	var zs: Dictionary = {}
-	for pid: int in zone:
-		zs[pid] = true
-	active["pos"] = pos
-	active["zone"] = zone
-	active["zone_set"] = zs
-	active["player"] = 0
-	active["drone_n"] = 0
-	active["working"] = false
-	active["pace"] = clampf(1.0 / maxf(Economy.stat("scoop_rate") * float(d.get("drone_rate_frac", 0.25)), 0.01), 0.2, 1.2)
-	var col: Color = active["color"]
-	var root := Node3D.new()
-	root.name = "Audit"
-	add_child(root)
-	_keep(root)
-	root.global_position = pos
-	_upright(root)  # [orbB]
-	root.add_child(EventProps.zone_ring(r, col))
-	var board := Label3D.new()
-	board.name = "Score"
-	board.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	board.no_depth_test = true
-	board.font_size = 64
-	board.outline_size = 14
-	board.pixel_size = 0.012
-	board.modulate = col
-	board.position = Vector3(0, 4.2, 0)
-	root.add_child(board)
-	active["board"] = board
-	var drone := LedgerDrone.new()
-	drone.friendly = true
-	drone.ground_y = _ground
-	add_child(drone)
-	_keep(drone)
-	var dir := Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized()
-	if OrbitUp.on_globe():  # [orbB] a ground direction
-		dir = (dir - OrbitUp.up(pos) * dir.dot(OrbitUp.up(pos))).normalized()
-	drone.global_position = pos + dir * 50.0 + OrbitUp.up(pos) * 18.0
-	active["drone"] = drone
-	var tw := drone.create_tween()
-	tw.tween_property(drone, "global_position", pos + OrbitUp.up(pos) * 4.5, 5.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tw.tween_callback(func() -> void:
-		if active.get("id", "") == "ledger_audit":
-			active["working"] = true
-			drone.set_beam(2.0))
-	return true
-
-
-func _update_audit(_delta: float) -> void:
-	var drone: LedgerDrone = active.get("drone")
-	var zone: PackedInt32Array = active["zone"]
-	var alive: Array[int] = []
-	for pid: int in zone:
-		if world.field.piece_alive[pid] == 1:
-			alive.append(pid)
-	var board: Label3D = active.get("board")
-	if is_instance_valid(board):
-		board.text = tr("AUDIT   YOU %d  :  %d DRONE") % [int(active["player"]), int(active["drone_n"])]
-	active["progress"] = tr("You %d  :  %d Drone   ·   %d left") % [int(active["player"]), int(active["drone_n"]), alive.size()]
-	if bool(active["working"]) and is_instance_valid(drone) and _tick_t >= float(active["pace"]) and not alive.is_empty():
-		_tick_t = 0.0
-		var best: int = alive[0]
-		var bd: float = INF
-		for pid: int in alive:
-			var dd: float = Vector2(world.field.piece_pos[pid].x - drone.global_position.x, world.field.piece_pos[pid].z - drone.global_position.z).length_squared()
-			if dd < bd:
-				bd = dd
-				best = pid
-		var pp: Vector3 = world.field.piece_pos[best]
-		Vfx.burst("sparkle", pp + OrbitUp.up(pp) * 0.2, Color(0.4, 1.0, 0.6), 0.3)
-		world.collect_piece(best)
-		active["drone_n"] = int(active["drone_n"]) + 1
-		var old: Variant = active.get("dtw")
-		if old is Tween and (old as Tween).is_valid():
-			(old as Tween).kill()
-		var tw := drone.create_tween()
-		tw.tween_property(drone, "global_position", _gp(pp) + OrbitUp.up(pp) * 4.0, float(active["pace"]) * 0.9)
-		active["dtw"] = tw
-	if alive.size() <= 2 or float(active["left"]) <= 0.0:
-		var you: int = int(active["player"])
-		var dn: int = int(active["drone_n"])
-		var won: bool = you >= dn and you > 0
-		var old2: Variant = active.get("dtw")
-		if old2 is Tween and (old2 as Tween).is_valid():
-			(old2 as Tween).kill()
-		if is_instance_valid(drone):
-			_props.erase(drone)
-			drone.set_beam(0.0)
-			var dir := Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized()
-			if OrbitUp.on_globe():  # [orbB]
-				dir = (dir - OrbitUp.up(drone.global_position) * dir.dot(OrbitUp.up(drone.global_position))).normalized()
-			var tw := drone.create_tween()
-			tw.tween_property(drone, "global_position", drone.global_position + dir * 60.0 + OrbitUp.up(drone.global_position) * 22.0, 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-			tw.tween_callback(drone.queue_free)
-		if won:
-			var got: String = _pay(def("ledger_audit").get("reward", {}), active["pos"], "ledger_audit")
-			Audio.play("fanfare", 1.2, -6.0)
-			_finish(true, tr("Audit won, %d to %d! The Ledger stamps it APPROVED. %s") % [you, dn, got])
-		else:
-			var c: float = progress_cubes(20.0)
-			GameState.add_currency("cubes", BigNum.from_float(c))
-			_finish(false, tr("The drone won the audit, %d to %d. It left a tip anyway: +%s cubes.") % [dn, you, Settings.fmt(BigNum.from_float(c))])
 
 
 # --- Queries for the HUD and Command view --------------------------------------------------------

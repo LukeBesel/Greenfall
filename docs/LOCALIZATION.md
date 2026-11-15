@@ -31,8 +31,8 @@ and are exported by the `locale/*.po` include filter in `export_presets.cfg`.
   `tr()` where it is shown (`tr(str(def["name"]))`). Formatted data strings (`"Press %d metal bales"`,
   WREN lines with `{name}`) are translated *before* formatting: `tr(str(t["text"])) % n`,
   `tr(line).format({...})`.
-- **Sinks.** Toasts (`ui/notify_stack.gd`), subtitles (`ui/subtitles.gd`), Ledger lines
-  (`story/ledger_uplink.gd`) and cinematic captions (`story/cine.gd`) also pass their text through
+- **Sinks.** Toasts (`ui/notify_stack.gd`), subtitles (`ui/subtitles.gd`)
+  and cinematic captions (`story/cine.gd`) also pass their text through
   `tr()`, so raw data lines handed to them are translated even when the caller forgot. Translating
   an already-translated string is harmless (it is not a msgid, so it comes back unchanged).
 - **Const tables.** `const` arrays/dictionaries cannot call `tr()`. They are translated where they
@@ -58,7 +58,7 @@ It scans:
   lines and blocks. Scenes (`.tscn`): `text`, `tooltip_text`, `placeholder_text`, `title`.
 - JSON: the fields in `JSON_RULES` (`name`, `desc`, `hint`, `text`, `title`, `body`, `lore`,
   `toast`, `prompt`, `hud`, `tagline`, `unit`, `header`, ...), every line pool in
-  `wren_lines.json`, the Ledger's line pools in `ledger.json`, the `wren` pools in `events.json`,
+  `wren_lines.json`, the `wren` pools in `events.json`,
   and memory-shard `kind`s. Data-only files (`assets.json`, `steam.json`, tuning files) are skipped.
   When a new JSON file or field is player-facing, add it to `JSON_RULES`.
 
@@ -120,10 +120,9 @@ Rules for every translation:
 ## Reviewing a machine draft
 
 The six full translations were drafted by an AI translator in one pass, with this brief: cozy,
-warm, playful; Lumi is a small, brave seed-keeper robot; WREN is a dry, kind AI companion; the
-Ledger is a cold corporate antagonist in a formal, bureaucratic register. Lumi, LM-1, WREN, Cradle,
+warm, playful; Lumi is a small, brave seed-keeper robot; WREN is a dry, kind AI companion. Lumi, LM-1, WREN, Cradle,
 Verdance, Greenfall and the robot model names (Scoopie, Haul Bug, Seedling, Drip, Skimmer,
-Multibot) were kept in Latin script; the Ledger keeps its English name too.
+Multibot) were kept in Latin script.
 
 **Why the entries are not marked `#, fuzzy`.** Godot's PO loader skips fuzzy entries at runtime
 (checked on 4.7: a fuzzy entry comes back untranslated), and `tools/extract_strings.py` drops `#,`
@@ -135,8 +134,7 @@ Review workflow, per language:
 1. Load `locale/xx.po` in Poedit or a Weblate component (setup above). Weblate can mark every
    string "needs editing" on import, which gives reviewers a queue without breaking the game.
 2. Review in this order: the UI (`ui/`, `autoload/Settings.gd`, `.tscn` references), story and WREN
-   lines (`data/wren_lines.json`, `story/`), the Ledger (`data/ledger.json`, `story/ledger*.gd`;
-   keep the bureaucratic tone), then codex, goals and achievements (`data/*.json`).
+   lines (`data/wren_lines.json`, `story/`), then codex, goals and achievements (`data/*.json`).
 3. Play with `--locale=xx` and the pseudo checks below; in particular watch buttons and HUD
    labels for overflow (German and French run long) and check the tone of WREN against the brief.
 4. Keep placeholders, the `E   ` prompt prefix, `[k]`/`[p]`/bbcode tags and `\n` breaks (rules
@@ -206,12 +204,12 @@ Dev hook: `--locale=xx` forces any locale for one run (never saved). The setting
   `UITheme.font()` and the title font. Covers Latin-1, Latin Extended-A/B (DE, FR, ES, PT, PL, CS,
   TR ...), Greek and Cyrillic, checked in `tests/test_l10n.gd` and by hand. No CJK or Hangul of
   its own.
-- **Ledger terminal font**: `ui/fonts/AnonymousPro-*.ttf`. Covers Latin-1, Latin Extended-A, Greek
+- **Mono font** (`HoloFrame.mono()`): `ui/fonts/AnonymousPro-*.ttf`. Covers Latin-1, Latin Extended-A, Greek
   and Cyrillic; lacks `ẞ` and some Latin Extended-B / Additional letters; no CJK of its own.
 - **CJK fallback**: `ui/fonts/cjk/NotoSansSC-Subset.otf` (1.6 MB) and `NotoSansJP-Subset.otf`
   (1.7 MB), Noto Sans CJK Regular (OFL 1.1, `ui/fonts/cjk/OFL_NotoSansCJK.txt`). `ui/cjk_fallback.gd`
   (`CJKFallback.apply()`, called from `Settings.apply_language()`) adds both as `fallbacks` on the
-  UI font and the Ledger font; the one matching the locale goes first, so shared Han characters
+  UI font and the mono font; the one matching the locale goes first, so shared Han characters
   get Japanese or Simplified Chinese glyph shapes. Both are always attached, so the language
   picker shows 简体中文 and 日本語 in every locale.
 - **Rebuilding the subsets.** Each subset holds every character its `.po` uses plus a base set
@@ -227,7 +225,7 @@ Dev hook: `--locale=xx` forces any locale for one run (never saved). The setting
 ## What is not translated (yet)
 
 - World signage in 3D: shop signs and banners in `planet/street_dressing.gd`, robot body decals
-  (`HAUL`, `SKM-1`, stencils), the Ledger drone's hull text. They read as part of the art.
+  (`HAUL`, `SKM-1`, stencils). They read as part of the art.
 - Proper names: districts and the planet (`planet/planet_data.gd`), robot names (`robots/fleet.gd`).
 - Developer-only text: logs, `tools/` reports, the Steam status line, store-art renderers.
 - The credits list parsed from `docs/CREDITS.md` (asset names and authors).

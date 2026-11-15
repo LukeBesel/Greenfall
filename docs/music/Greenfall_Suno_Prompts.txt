@@ -8,17 +8,13 @@ Title theme for a game about a small robot bringing a dead, trash-buried world b
 A giant ark ship is torn apart by a meteor storm and one tiny escape pod falls toward a planet covered in trash. Big tense strings, pounding taiko and choir swells with alarm-like rhythms, then everything drops away to a quiet, lonely piano as the pod lands. Cinematic, instrumental.
   or (shorter): Dramatic space disaster score, urgent strings and big drums, falling and crashing, then silence and a single soft piano melody, emotional, instrumental
 
-3. The Ledger  (Story themes, Villain theme)
-Villain theme for the Ledger, a cold mining corporation that stripped a whole star system and left it buried in junk, still sending glitchy messages and drones. Dark corporate synthwave, ticking-clock percussion, detuned bass, stuttering arpeggios. Sinister and stylish rather than scary. Instrumental, 100 bpm.
-  or (shorter): Sinister corporate villain theme, cold synth bass, clock ticking, robotic arpeggios, dark and sleek, instrumental, 95 bpm
-
 4. Signal Found  (Story themes, Story: first message after the tower)
 A faint radio signal breaks through static after a long silence. Gentle synth arpeggio slowly joined by warm strings, hopeful and emotional, goosebumps moment. Instrumental, 76 bpm.
 
-5. What the Ledger Took  (Story themes, Story: memory shards)
+5. What Was Taken  (Story themes, Story: memory shards)
 Haunting music box over low drones and distant choir, uncovering what happened to an abandoned world. Sad, eerie and beautiful. Instrumental, 62 bpm.
 
-6. Drone Sweep  (Story themes, Story: Ledger drones nearby)
+6. Drone Sweep  (Story themes, Story: tense moments)
 Tense stealth music, ticking hi-hats, pulsing bass, cold synth stabs, something mechanical is watching. Suspenseful, not too loud. Instrumental, 96 bpm.
 
 7. Small Robot, Big Sky  (Story themes, Story: launching to a new planet)
@@ -263,7 +259,7 @@ Chill bossa lounge, warm keys, soft brushes, relaxing in a steaming hot spring a
 Gentle rising strings and harp, ice cracking open to reveal green below, warm emotional release. Instrumental, 84 bpm.
 
 76. Red Engine  (Anvil, Playlist, dark and driving)
-A red Mars-like foundry world of iron towers and lava rivers, home of the Ledger. Driving dark synthwave with distorted bass arpeggios and clanging metal percussion. Gritty and heavy but groovy enough to loop. Instrumental, 110 bpm.
+A red Mars-like foundry world of iron towers and lava rivers, Driving dark synthwave with distorted bass arpeggios and clanging metal percussion. Gritty and heavy but groovy enough to loop. Instrumental, 110 bpm.
   or (shorter): Dark synthwave, heavy distorted bass, metallic percussion, gritty red planet, instrumental, 110 bpm
 
 77. Slag Run  (Anvil, Playlist, dark and driving)
@@ -307,7 +303,7 @@ Retro lounge funk, warm Rhodes, wah guitar, lava-lamp glow, surprisingly chill o
 Slow dark ambient groove, glowing embers drifting upward, deep bass pulse, hypnotic and moody. Instrumental, 80 bpm.
 
 88. The Clerk's Regret  (Anvil, Playlist, emotional)
-Sad cello and slow piano, a Ledger clerk who wrote down every ton taken, regret and quiet hope. Instrumental, 64 bpm.
+Sad cello and slow piano, a mine clerk who wrote down every ton taken, regret and quiet hope. Instrumental, 64 bpm.
 
 89. Furnace Heartbeat  (Anvil, Playlist, tense)
 Ominous rising tension, heartbeat drum, grinding machinery, low brass, something waking in the foundry. Instrumental, 90 bpm.
