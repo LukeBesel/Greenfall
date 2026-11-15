@@ -77,7 +77,7 @@ static func build_summary(res: Dictionary, garden: Dictionary, robots: Array) ->
 	if int(garden.get("grew", 0)) > 0:
 		rows.append({"kind": "plants", "label": TranslationServer.translate("Plants grew"), "value": str(int(garden["grew"]))})
 	if int(garden.get("bloomed", 0)) > 0:
-		rows.append({"kind": "seeds", "label": TranslationServer.translate("Bloomed (seeds)"), "value": "%d  (+%s)" % [int(garden["bloomed"]), Settings.fmt(BigNum.from_float(float(garden.get("seeds", 0.0))))]})
+		rows.append({"kind": "seeds", "label": TranslationServer.translate("Bloomed (seeds)"), "value": "%d  (+%s)" % [int(garden["bloomed"]), Settings.fmt(BigNum.from_float(floorf(float(garden.get("seeds", 0.0)) + 1e-6)))]})  # [v10pace] whole seeds on screen
 	if float(res.get("air", 0.0)) > 0.0:
 		rows.append({"kind": "air", "label": TranslationServer.translate("Scrubbers cleaned the air"), "value": ""})
 	var raw: float = float(res.get("away_raw", res.get("seconds", 0.0)))

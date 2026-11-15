@@ -814,7 +814,7 @@ func _build_stats() -> Control:
 	_stat_card(grid, tr("Progress"), "", [
 		[UITheme.GOLD, tr("Upgrades bought"), _int(st.get("upgrades_bought", 0))],
 		[Color(0.45, 0.8, 1.0), tr("Field notes logged"), _int(st.get("data_earned", 0))],
-		[Color(0.45, 0.8, 1.0), tr("Research done"), "%d / %d" % [Research.done_list().size(), Research.ids().size()]],
+		[Color(0.45, 0.8, 1.0), tr("Research done"), "%d / %d" % [Research.finished_count(), Research.ids().size()]],
 		[UITheme.GOLD, tr("Achievements"), "%d / %d" % [Achievements.shown_unlocked_count(), Achievements.shown_defs().size()]],
 		[UITheme.CREAM, tr("Best hub level"), str(Achievements.best_hub_level())],
 	])

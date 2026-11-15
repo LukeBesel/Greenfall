@@ -507,14 +507,23 @@ static func sample_inventory() -> void:
 	GameState.add_currency("parts", BigNum.from_float(600))  # [money]
 
 
-## Haggle's welcome gift with the first robot: treads and a bobble plant.
+## [v10pace] The first robot used to come with treads and a bobble plant and a toast about the
+## Locker, long before there was a Locker (owner: "I got a cosmetic wayyy to fast"). They are the
+## Locker's first two robot looks now: put in it, without a word, once a Locker stands and a robot
+## exists (_starter_looks, from _process).
 func _on_robot_built(_n: String) -> void:
-	if st().get("starter", false):
+	_starter_looks()
+
+
+func _starter_looks() -> void:
+	if st().get("starter", false) or not LockerCabinet.owned():
+		return
+	var v: Variant = GameState.stats.get("robots_built", 0.0)
+	if not ((v is float or v is int) and float(v) >= 1.0):
 		return
 	st()["starter"] = true
 	add_part("treads")
 	add_part("bobble_plant")
-	EventBus.toast.emit(tr("Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d.") % LockerPanel.HUB_LEVEL, "story")  # [ui2]
 
 
 ## Dug-up parts sometimes come with a Settler Fragment (much likelier on Vintage/Legendary finds).
@@ -541,6 +550,7 @@ func _process(delta: float) -> void:
 		return
 	var dt: float = _tick
 	_tick = 0.0
+	_starter_looks()  # [v10pace]
 	var fl: Fleet = world.get("fleet")
 	if fl == null:
 		return
@@ -554,7 +564,7 @@ func _process(delta: float) -> void:
 
 func _salvage_find(r: Robot, sc: Dictionary) -> void:
 	GameState.inc_stat("builder_salvage_finds")
-	if rng.randi() % maxi(int(sc.get("clover_one_in", 40)), 1) == 0:
+	if LockerCabinet.owned() and rng.randi() % maxi(int(sc.get("clover_one_in", 40)), 1) == 0:  # [v10pace] a look only drops once it can be worn
 		add_part("lucky_clover")
 		EventBus.toast.emit(tr("%s spotted something green and lucky: a Lucky Clover!") % r.robot_name, "story")
 	elif rng.randi() % maxi(int(sc.get("fragment_one_in", 10)), 1) == 0:

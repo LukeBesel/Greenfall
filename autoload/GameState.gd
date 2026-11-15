@@ -107,6 +107,7 @@ func add_currency(id: String, amount: BigNum) -> void:
 	currencies[id] = get_currency(id).add(amount)
 	if currencies[id].mantissa < 0.0:  # [beat] currencies never go negative
 		currencies[id] = BigNum.zero()
+	_keep_whole(id)
 	if id == "cubes" and amount.mantissa > 0.0:
 		var total: BigNum = BigNum.from_serialized(stats.get("cubes_earned_total", [0.0, 0]))
 		stats["cubes_earned_total"] = total.add(amount).serialize()
@@ -128,8 +129,31 @@ func spend(id: String, amount: BigNum) -> bool:
 	currencies[id] = get_currency(id).sub(amount)
 	if currencies[id].mantissa < 0.0:  # [beat] near-equal amounts pass gte(): never leave a tiny negative
 		currencies[id] = BigNum.zero()
+	_keep_whole(id)
 	EventBus.currency_changed.emit(id, currencies[id])
 	return true
+
+
+## [v10pace] Owner: "How can i have a fraction of seeds." Seeds and Parts are whole things, but
+## their sources pay fractions (a bloom's seed_yield 0.5 x multipliers, 0.3 Parts per scooped metal
+## unit, the compost press, scaled prices). The balance is always a whole number; what is left over
+## is carried out of sight (flags.whole_carry) and joins the next gain, so nothing is lost.
+const WHOLE: Array[String] = ["parts", "seeds"]
+
+
+func _keep_whole(id: String) -> void:
+	if not (id in WHOLE):
+		return
+	var b: BigNum = currencies[id]
+	if b.exponent >= 12:  # past what a float holds exactly: nothing to show after the point
+		return
+	if not (flags.get("whole_carry") is Dictionary):
+		flags["whole_carry"] = {}
+	var carry: Dictionary = flags["whole_carry"]
+	var v: float = b.to_float() + float(carry.get(id, 0.0))
+	var whole: float = floorf(v + 1e-6)
+	carry[id] = clampf(v - whole, 0.0, 0.999999)
+	currencies[id] = BigNum.from_float(whole)
 
 
 ## [money] Cost dictionaries ({"cubes": 1500, "parts": 40}, legacy keys folded): affordable / pay.
@@ -262,6 +286,9 @@ func from_dict(d: Dictionary) -> void:
 	current_hub = int(d.get("current_hub", 0))
 	planet_state = (d.get("planet_state", {}) as Dictionary).duplicate(true)
 	orbit = (d.get("orbit", {}) as Dictionary).duplicate(true)  # [orbB]
+	for id: String in WHOLE:  # [v10pace] an older save's 2.5 seeds: 2 on screen, the half carried
+		if currencies.has(id):
+			_keep_whole(id)
 	flat_world = null
 	districts = {}
 	var ds: Dictionary = d.get("districts", {})

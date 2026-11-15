@@ -10,6 +10,10 @@ extends RefCounted
 ##   hex3    a robot's hex counts, and a line says so -> the seed step
 ##   garden  after the first seed: thirsty, the water key on the bed, an empty can and the refill,
 ##           out of seeds (each refusal says why)
+##   robot2  [v10pace] the second robot: the beam on the Bot Bay, E opens its own screen, the click
+##   map     [v10pace] "Look at the map": the map key completes it
+##   shuttle [v10pace] no rocket and no Shuttle build before the step; WREN says why; the marked spot;
+##           the price; the click; it goes up piece by piece; only then "Fly to the next station"
 ##   base2   short of Parts: the card and the bench say how many; then the price tag click builds it
 ##   haul    the plans wait: the card's hint and a bar; the Bots row is locked; they arrive; the click
 ##   tower2  the bench opens on the tower row; the click
@@ -60,7 +64,7 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		await tree.create_timer(0.25).timeout
 	await tree.create_timer(1.0).timeout
 	var only: String = DevHooks.get_s("walk-home-only", "")  # dev: --walk-home-only=hex2,base2 (iterating)
-	for part: String in ["hex2", "hex3", "garden", "hex10", "base2", "haul", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:
+	for part: String in ["hex2", "hex3", "garden", "robot2", "haul", "hex10", "map", "shuttle", "base2", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:  # [v10pace] the order of the card
 		if (only == "" and part != "probe") or part in only.split(","):
 			await Callable(WalkHome, "_part_" + part).call()
 	print("[walk-home] %d reloads" % _reloads)
@@ -851,7 +855,7 @@ static func _part_haul() -> void:
 	var fl: Fleet = w.get("fleet") as Fleet
 	GameState.flags.erase("haul_rig")
 	Research.done_list().erase("haul_rig")
-	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0)) - 300.0  # 5 min since the Scoopie
+	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0)) - 120.0  # 2 min since the Scoopie
 	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0.0)), 10.0)
 	if not await _goto("haul"):
 		return
@@ -862,18 +866,15 @@ static func _part_haul() -> void:
 	await _shot("haul_waiting")
 	await _reload("haul, plans on the way", func() -> Dictionary: return {"plans": GameState.flags.get("haul_rig", false), "t0_s": float(GameState.flags.get("first_robot_t", -1.0))})
 	fl = w.get("fleet") as Fleet
-	var ld: ListDetail = await _open_bench()
+	var ld: ListDetail = await _open_bay()  # [v10pace] robots are the Bot Bay's, not a workbench tab
 	if ld == null:
 		return
-	_check(_tab() == "patch" or _tab() == "bots", "haul: the bench opens (%s)" % _tab())
-	await _click(_tab_button("bots"))
-	ld = _list()
 	var row: Dictionary = _row(ld, "build_haulbug")
 	_check(str(row.get("state", "")) == "locked", "haul: the Haul Bug row is locked while the plans come (%s)" % str(row.get("state", "")))
-	await _close_bench()
-	# The plans come (20 min after the first robot).
+	await _close_bay()
+	# The plans come (7 min after the first robot).
 	_toasts.clear()
-	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0)) - 1201.0
+	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0)) - 421.0
 	for k: int in 12:
 		if GameState.flags.get("haul_rig", false):
 			break
@@ -881,18 +882,194 @@ static func _part_haul() -> void:
 	_check(GameState.flags.get("haul_rig", false), "haul: the plans arrive")
 	await tree.create_timer(0.5).timeout
 	c = _card()
-	_check(c[1].contains("Bots tab"), "haul: then the card says Bots tab (%s)" % str(c))
+	_check(c[1].contains("Bot Bay"), "haul: then the card says Bot Bay (%s)" % str(c))
+	_check(_beam_on_bay(), "haul: the beam stands on the Bot Bay (%s)" % str(ob.waypoint_target()))
 	_set_money(400.0, 40.0)
-	ld = await _open_bench()
+	ld = await _open_bay()
 	if ld == null:
 		return
-	_check(_tab() == "bots" and str(ld.get("_sel")) == "build_haulbug", "haul: the bench opens on the Haul Bug (%s / %s)" % [_tab(), str(ld.get("_sel"))])
-	await _shot("haul_bench")
+	_check(str(ld.get("_sel")) == "build_haulbug", "haul: the Bot Bay opens on the Haul Bug (%s)" % str(ld.get("_sel")))
+	await _shot("haul_bay")
 	await _click(_price_tag(ld, "build_haulbug"))
 	_check(fl.count("haulbug") >= 1, "haul: clicking its price tag builds a Haul Bug")
-	await _close_bench()
+	await _close_bay()
 	var moved: bool = await _wait_step_not("haul", 4.0)
 	_check(moved, "haul done: the card moves on (%s)" % _step_id())
+
+
+# --- [v10pace] robot2, map, shuttle: what comes before the first flight -----------------------------
+
+static func _bay() -> BotBay:
+	return BotBay.of(w)
+
+
+static func _beam_on_bay() -> bool:
+	var wp: Variant = ob.waypoint_target()
+	return wp is Vector3 and _bay() != null and (wp as Vector3).distance_to(_bay().stand_point()) < 3.0
+
+
+## Puts Lumi in front of the Bot Bay and presses the interact key: its own screen opens.
+static func _open_bay() -> ListDetail:
+	var bay: BotBay = _bay()
+	if bay == null or not bay.visible:
+		_check(false, "the Bot Bay stands in the yard")
+		return null
+	if bay.is_open():
+		await _close_bay()
+	var at: Vector3 = bay.stand_point()
+	_stand(so.globe.terrain.ground(at.normalized()), bay.global_position)
+	await _frames(4)
+	_check("Bot Bay" in str(w.call("interact_prompt", p)), "the prompt by the Bot Bay names it (%s)" % str(w.call("interact_prompt", p)))
+	await _tap("interact")
+	for k: int in 12:
+		if bay.is_open():
+			break
+		await tree.create_timer(0.1).timeout
+	_check(bay.is_open() and not _up().is_open, "the interact key at the Bot Bay opens its own screen, not the workbench")
+	await tree.create_timer(0.6).timeout
+	if not bay.is_open():
+		return null
+	_check(str(bay.screen.get("_tab")) == "bots" and not (bay.screen.get("_tab_buttons") as Array).any(func(b: Button) -> bool: return b.is_visible_in_tree()),
+		"the Bot Bay's screen is the robots list alone, with no tabs")
+	return bay.screen.get("_panel") as ListDetail
+
+
+static func _close_bay() -> void:
+	var bay: BotBay = _bay()
+	if bay and bay.is_open():
+		await _click(bay.screen.get("_close_btn") as Control)
+	_check(bay == null or not bay.is_open(), "the Close button closes the Bot Bay")
+	await tree.create_timer(0.5).timeout
+
+
+static func _part_robot2() -> void:
+	var fl: Fleet = w.get("fleet") as Fleet
+	if not await _goto("robot2"):
+		return
+	_set_money(100.0, 10.0)
+	await tree.create_timer(0.6).timeout
+	var c: Array[String] = _card()
+	_check(c[0] == "Build a second robot" and c[1].contains("Bot Bay"), "robot2: the card says Build a second robot, at the Bot Bay (%s)" % str(c))
+	var price: Dictionary = ob.step_price()
+	_check(float(price.get("cubes", 0.0)) > 0.0, "robot2: the card shows the robot's price (%s)" % str(price))
+	_check(not _up().is_open and not UpgradesScreen.tab_visible("bots", w), "robot2: the workbench has no Bots tab")
+	await _shot("robot2_start")
+	var ld: ListDetail = await _open_bay()
+	if ld == null:
+		return
+	var n0: int = fl.robot_total()
+	await _click(_price_tag(ld, "build_scoopie"))
+	_check(fl.robot_total() == n0, "robot2: a click while short builds nothing")
+	await _close_bay()
+	_set_money(float(price.get("cubes", 400.0)), float(price.get("parts", 60.0)))
+	await _reload("robot2, price in hand", func() -> Dictionary: return {"robots": (w.get("fleet") as Fleet).robot_total(), "bay": BotBay.built()})
+	fl = w.get("fleet") as Fleet
+	_check(_beam_on_bay(), "robot2: the beam stands on the Bot Bay (%s)" % str(ob.waypoint_target()))
+	ld = await _open_bay()
+	if ld == null:
+		return
+	await _shot("robot2_bay")
+	for k: int in 3:
+		await _click(_price_tag(ld, "build_scoopie"))
+		if fl.robot_total() > n0:
+			break
+		await tree.create_timer(0.5).timeout
+	_check(fl.robot_total() == n0 + 1, "robot2: clicking the Scoopie's price tag builds the second robot (%d)" % fl.robot_total())
+	await _close_bay()
+	var moved: bool = await _wait_step_not("robot2", 4.0)
+	_check(moved, "robot2 done: the card moves on (%s)" % _step_id())
+
+
+static func _part_map() -> void:
+	GameState.flags.erase("map_seen")
+	if not await _goto("map"):
+		return
+	await tree.create_timer(0.6).timeout
+	var c: Array[String] = _card()
+	_check(c[0] == "Look at the map" and c[1].contains(Settings.glyph("open_globe")), "map: the card says Look at the map with its key (%s)" % str(c))
+	await _reload("map, not looked yet", func() -> Dictionary: return {"seen": GameState.flags.get("map_seen", false)})
+	var sv: Variant = so.layers.survey if so.layers else null
+	await _tap("open_globe")
+	await tree.create_timer(0.8).timeout
+	_check(sv != null and bool((sv as Object).get("is_open")), "map: the map key opens the map")
+	_check(bool(GameState.flags.get("map_seen", false)), "map: opening it is remembered (flags.map_seen)")
+	await _shot("map_open")
+	await _tap("open_globe")
+	await tree.create_timer(0.8).timeout
+	if sv != null and bool((sv as Object).get("is_open")):
+		await _tap("pause")
+		await tree.create_timer(0.8).timeout
+	_check(sv == null or not bool((sv as Object).get("is_open")), "map: the same key closes it")
+	var moved: bool = await _wait_step_not("map", 4.0)
+	_check(moved, "map done: the card moves on (%s)" % _step_id())
+
+
+static func _part_shuttle() -> void:
+	var os_: OrbitSites = OrbitSites.of(w)
+	# The state before: no rocket was ever built or flown, WREN has not asked for one.
+	GameState.flags.erase("shuttle_plans")
+	_check(not Hub.rocket_built() and not os_.rocket_unlocked() and not os_.rocket_spot.visible, "shuttle: no rocket stands on the pad before it is built")
+	_check(not HubBuilds.listed(w, "shuttle"), "shuttle: the Build tab does not list it before WREN asks")
+	var spot: Node3D = w.get_node_or_null("BuildSpot_shuttle") as Node3D
+	_check(spot != null and not spot.visible, "shuttle: its spot is not marked yet")
+	_check(not ob.chain.slice(0, ob.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find("shuttle")).any(func(d: Dictionary) -> bool: return str(d.get("key", "")) in ["hubs_seen", "hubs_woken"]),
+		"shuttle: no 'Fly to' or 'Wake' step stands before 'Build the shuttle'")
+	var cost: Dictionary = YardBuilds.def("shuttle").get("cost", {})
+	_set_money(200.0, 10.0)
+	_toasts.clear()
+	if not await _goto("shuttle"):
+		return
+	await tree.create_timer(1.0).timeout
+	var c: Array[String] = _card()
+	_check(c[0] == "Build the shuttle" and c[1].contains("Garden Row"), "shuttle: the card says Build the shuttle and why (%s)" % str(c))
+	_check(bool(GameState.flags.get("shuttle_plans", false)) and HubBuilds.listed(w, "shuttle"), "shuttle: the step lists the Shuttle in the Build tab")
+	_check(spot != null and is_instance_valid(spot) and spot.visible and spot.global_position.distance_to(os_.sm.pad_xf(0).origin) < 1.0, "shuttle: its spot on the launch pad is marked")
+	_check(ob.step_price() == cost, "shuttle: the card shows its price (%s)" % str(ob.step_price()))
+	var pr: Array = ob.progress()
+	_check(str(pr[1]).begins_with("200"), "shuttle: the card counts the cubes saved toward it (%s)" % str(pr))
+	await _shot("shuttle_start")
+	await _reload("shuttle, saving up", func() -> Dictionary: return {"plans": GameState.flags.get("shuttle_plans", false), "built": Hub.rocket_built()})
+	os_ = OrbitSites.of(w)
+	var ld: ListDetail = await _open_bench()
+	if ld == null:
+		return
+	_check(_tab() == "build" and str(ld.get("_sel")) == "shuttle", "shuttle: the bench opens on the Shuttle in the Build tab (%s / %s)" % [_tab(), str(ld.get("_sel"))])
+	await _click(_price_tag(ld, "shuttle"))
+	_check(not Hub.rocket_built(), "shuttle: a click while short builds nothing")
+	_set_money(float(cost.get("cubes", 0.0)), float(cost.get("parts", 0.0)))
+	await tree.create_timer(0.4).timeout
+	await _shot("shuttle_bench")
+	for k: int in 3:
+		await _click(_price_tag(ld, "shuttle"))
+		if Hub.rocket_built():
+			break
+		await tree.create_timer(0.5).timeout
+	_check(Hub.rocket_built(), "shuttle: clicking its price tag builds it")
+	_check(GameState.get_currency("cubes").to_float() < 1.0, "shuttle: the price is paid (%.0f cubes left)" % GameState.get_currency("cubes").to_float())
+	await tree.create_timer(1.5).timeout
+	_check(not _up().is_open, "shuttle: the workbench closes by itself so the build is seen")
+	_check(ShuttleBuild.building, "shuttle: it is being put together on the pad")
+	var pad: Vector3 = os_.sm.pad_xf(0).origin
+	_stand(so.globe.terrain.ground((pad + _north(pad) * -5.0).normalized()), pad)
+	await _frames(4)
+	_check(not ("ocket" in str(w.call("interact_prompt", p))), "shuttle: no way to fly while it is still being built (%s)" % str(w.call("interact_prompt", p)))
+	await _shot("shuttle_building")
+	for k: int in 80:
+		if not ShuttleBuild.building:
+			break
+		await tree.create_timer(0.25).timeout
+	_check(not ShuttleBuild.building and os_.rocket_spot.visible and os_.hop.parked() != null and os_.hop.parked().visible, "shuttle: it stands finished on the pad")
+	_check(w.get_node_or_null("BuildSpot_shuttle") == null, "shuttle: the spot's marks are gone")
+	_check(_said("Shuttle"), "shuttle: a line says it is built (%s)" % str(_toasts))
+	await tree.create_timer(0.6).timeout
+	_check("ocket" in str(w.call("interact_prompt", p)), "shuttle: now E at the rocket answers (%s)" % str(w.call("interact_prompt", p)))
+	await _shot("shuttle_built")
+	var moved: bool = await _wait_step_not("shuttle", 4.0)
+	_check(moved and _step_id() == "hub_fly_2", "shuttle done: only now the card says to fly (%s)" % _step_id())
+	await _reload("shuttle just built", func() -> Dictionary: return {"built": Hub.rocket_built()})
+	os_ = OrbitSites.of(w)
+	await tree.create_timer(1.0).timeout
+	_check(os_.rocket_spot.visible, "shuttle: it still stands after a reload")
 
 
 # --- tower2 ----------------------------------------------------------------------------------------

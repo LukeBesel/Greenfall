@@ -35,7 +35,7 @@ static func part_clear(r: float) -> float:
 const PART_CLEAR_M: float = OTHER_REACH_M + DIG_RANGE_M + PART_MARGIN_M
 ## The yard anchors that carry an E prompt, or a job a player walks to (the scale).
 const E_ANCHORS: Array[String] = ["pod", "depot", "bin", "shack", "radio", "signal_tower", "telescope", "fabricator",
-	"generator", "composter", "locker", "nursery", "camera_bot"]
+	"generator", "composter", "locker", "nursery", "camera_bot", "bot_bay"]
 ## Cells whose centre is within this of the start get no big items (tyres, TVs, stoves), as the
 ## flat game's starting hexes: Lumi isn't strong enough for them yet.
 const SMALL_ONLY_M: float = 40.0

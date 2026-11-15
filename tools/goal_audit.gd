@@ -25,7 +25,7 @@ const SOURCES: Dictionary = {
 	"plants_planted": "core", "plants_bloomed": "core", "perfect_cubes": "core", "pure_cubes": "core",
 	"lumpy_cubes": "core", "parts_found": "core", "garden_stipend": "core", "hexes_restored": "core",
 	"time_played": "core", "distance_m": "core", "data_earned": "core", "drive_tier": "core",
-	"seeds_unlocked": "core", "glim_repaired": "core",
+	"seeds_unlocked": "core", "glim_repaired": "core", "map_seen": "core",
 	"shards_found": "shards", "eggs_found": "eggs",
 	"cats_petted": "fauna:cat", "fauna_cat_named": "fauna:cat", "album_shots": "node:PhotoAlbum", "seen_deer": "fauna:deer", "seen_fish": "fauna:fish",
 	"bales_recycled": "build:recycler", "air_filtered": "build:air_scrubber",

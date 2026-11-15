@@ -56,6 +56,7 @@ func _ready() -> void:
 			GameState.flags["objective_step"] = step
 		GameState.flags["objectives_v2"] = true
 	_drop_zone_step()  # [v8bot]
+	_late_rocket_steps()  # [v10pace]
 	_uncount_grant()  # [v9b]
 	if DevHooks.has("objective"):  # dev: jump to objective N (shots)
 		step = clampi(int(DevHooks.get_f("objective", 0.0)), 0, chain.size())
@@ -110,6 +111,46 @@ func _drop_zone_step() -> void:
 	if at >= 0 and step > at:
 		step -= 1
 		GameState.flags["objective_step"] = step
+
+
+## [v10pace] Owner (playtest 3): the rocket came "wayyy to early". The steps after the first seed
+## were reordered (a second robot, the Haul Bug and ten clean hexes come before the new "Build the
+## shuttle" step, and only then the first flight). A save from before keeps its place by step id:
+## it goes to the earliest step of the new order that it had not finished in the old order, so
+## nothing it still has to do is skipped (steps it has already met complete themselves as usual).
+## A rocket that stood but never flew is gone until the shuttle is built; one that flew is kept
+## (GameState.orbit.rocket_owned, YardBuilds.built("shuttle")).
+const ORDER_V3: Array[String] = ["dump3", "compartment", "scoop_size", "baler", "power", "tower", "glim", "hex", "bench2", "robot",
+	"hex2", "hex3", "seed", "hub_fly_2", "hub_wake_2", "hex10", "base2", "hub_fly_3", "hub_wake_3", "haul", "tower2", "research1",
+	"hex20", "rocket_tier_2", "base3", "hub_fly_4", "hub_wake_4"]
+
+
+func _late_rocket_steps() -> void:
+	if GameState.flags.has("objectives_v4"):
+		return
+	GameState.flags["objectives_v4"] = true
+	if not GameState.flags.has("objective_step"):
+		return
+	var ids: Array[String] = []
+	for d: Variant in chain:
+		ids.append(str((d as Dictionary).get("id", "")))
+	if not ids.has("shuttle"):
+		return  # another planet's own chain
+	step = remap_step(step, ORDER_V3, ids)
+	GameState.flags["objective_step"] = step
+
+
+## The step in `now` (ids, new order) for a save at `old_step` of `before` (ids, old order): the
+## earliest new position of any step the save had not finished; past the end when all were done.
+static func remap_step(old_step: int, before: Array[String], now: Array[String]) -> int:
+	if old_step >= before.size():
+		return now.size() + (old_step - before.size())
+	var out: int = now.size()
+	for i: int in range(maxi(old_step, 0), before.size()):
+		var at: int = now.find(before[i])
+		if at >= 0:
+			out = mini(out, at)
+	return out
 
 
 ## [v9b] The Bot Bay's Salvage Logic used to count as a finished research project, so "Finish a
@@ -300,6 +341,8 @@ func value_of(def: Dictionary) -> float:
 			return float(GameState.level_of(key))
 		"bench":  # [v1guide] the workbench's tier (ui/bench_tiers.gd)
 			return float(BenchTiers.tier())
+		"build":  # [v10pace] a build that stands (data/builds.json id): the shuttle
+			return 1.0 if HubBuilds.is_built(world, key) else 0.0
 	return 0.0
 
 
@@ -387,7 +430,7 @@ func progress() -> Array:
 			return [have / need, "%s / %s" % [Settings.fmt(BigNum.from_float(have)), Settings.fmt(BigNum.from_float(need))]]
 	var tgt: float = target_of(def)
 	var v: float = minf(value_of(def), tgt)
-	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower", "flag"]:
+	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower", "flag", "build"]:
 		# [v6pace] Saving up for the step's price: cubes toward it, a number that goes up (owner: a
 		# visible goal with a number at all times). Once it's covered, the step's own count again.
 		var pc: Dictionary = _step_price()
@@ -437,6 +480,9 @@ func _process(delta: float) -> void:
 		return
 	_t = REFRESH_S
 	var def: Dictionary = current()
+	var sf: String = str(def.get("sets_flag", ""))  # [v10pace] a step that opens something as it starts (the Shuttle build)
+	if sf != "" and _hold <= 0.0 and not GameState.flags.get(sf, false):
+		GameState.flags[sf] = true
 	situation = situation_hint(REFRESH_S)  # [v3clear]
 	waypoint.set_target(waypoint_target())
 	if def.is_empty() or _hold > 0.0:
@@ -707,10 +753,14 @@ func step_target(def: Dictionary) -> Dictionary:
 				out = {"to": "bench" if aff3 else ("depot" if p and not p.carried.is_empty() else "hex"), "row": ["build", "glim"]}
 			"hex", "hex2", "hex3", "hex10", "hex20":  # [v3clear] hex2, hex10, hex20 [v8bot] no "zone" step
 				out["to"] = "hex"
-			"bench2":
-				out = {"to": "bench" if BenchTiers.block_reason(world) == "" else "hex", "row": ["patch", "bench_tier"]}
-			"robot":
+			"bench2":  # [v10pace] the Bot Bay is a build of its own (Build tab)
+				out = {"to": "bench" if BenchTiers.block_reason(world) == "" and GameState.can_afford_all(BenchTiers.next_cost()) else "hex", "row": ["build", "bot_bay"]}
+			"robot", "robot2":
 				out = {"to": "bench", "row": ["bots", ""]}
+			"map":  # [v10pace] item 109: a key press, nothing to walk to
+				out["to"] = ""
+			"shuttle":  # [v10pace] to the bench once it can be paid; else earn
+				out = {"to": "bench" if GameState.can_afford_all(YardBuilds.def("shuttle").get("cost", {})) else "hex", "row": ["build", "shuttle"]}
 			"haul":  # [v4bots] waits for the Haul Bug plans (Research.check_story): clean meanwhile
 				out = {"to": "bench", "row": ["bots", "build_haulbug"]} if Research.robot_unlocked("haulbug") else {"to": "hex", "row": []}
 			"research1":  # [v3clear]
@@ -820,6 +870,13 @@ func _yard_point(anchor: String) -> Variant:
 
 
 func _resolve(t: Dictionary) -> Dictionary:
+	var row: Array = t.get("row", [])
+	if str(t.get("to", "")) == "bench" and not row.is_empty() and str(row[0]) in UpgradesScreen.SOLO_TABS:
+		var bay: Variant = bay_point()  # [v10pace] robots are built at the Bot Bay, not at the bench
+		if bay is Vector3:
+			t["to"] = "place"
+			t["pos"] = bay
+			return t
 	match str(t.get("to", "")):
 		"bench":
 			t["pos"] = _bench_pos()
@@ -837,6 +894,25 @@ func _resolve(t: Dictionary) -> Dictionary:
 			t["pos"] = null
 	return t
 
+
+
+## [v10pace] The Bot Bay nearest to Lumi that stands (its E spot), else null.
+func bay_point() -> Variant:
+	if world == null or not world.is_inside_tree():
+		return null
+	var p: Patch = world.get("patch") as Patch
+	var best: Variant = null
+	var bd: float = INF
+	for n: Node in world.get_tree().get_nodes_in_group("bot_bay"):
+		var b: BotBay = n as BotBay
+		if b == null or not b.visible:
+			continue
+		var at: Vector3 = b.stand_point()
+		var d: float = at.distance_to(p.global_position) if p else 0.0
+		if d < bd:
+			bd = d
+			best = at
+	return best
 
 
 ## The workbench row the current step asks for ([] when none).
@@ -932,8 +1008,10 @@ func _narrate() -> void:
 	var ls: Array = step_lines(def)
 	if not ls.is_empty():
 		# [v6story] dropped unsaid if the step is already done when her turn comes
-		w.speak(tr(str(ls[0])), w.stage(), false, func() -> bool:
-			return step < chain.size() and str(chain[step].get("id", "")) == id)
+		# [v10pace] a story beat (say_all: why Lumi flies on) speaks every line of the step
+		for li: int in (ls.size() if bool(def.get("say_all", false)) else 1):
+			w.speak(tr(str(ls[li])), w.stage(), false, func() -> bool:
+				return step < chain.size() and str(chain[step].get("id", "")) == id)
 
 
 # --- [v1guide] How to make a bale -----------------------------------------------------------------
@@ -1082,6 +1160,8 @@ func _step_price() -> Dictionary:
 		return BenchTiers.next_cost()
 	if typ == "tower" and SignalTower.tier() < int(def.get("target", 1)):
 		return SignalTower.next_cost()
+	if typ == "build" and value_of(def) < 1.0:  # [v10pace] the shuttle's price on the card
+		return (HubBuilds.entry(world, key).get("cost", {}) as Dictionary).duplicate()
 	# [v9a] "Repair Glim" (80 cubes, 10 Parts) is a flag step: it showed no price, no count and no
 	# "Need N more parts" while the player saved up, only "Build tab" and the hex outline.
 	if typ == "flag" and key == "glim_repaired" and not GameState.flags.get(key, false):

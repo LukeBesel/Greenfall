@@ -4,6 +4,7 @@
   "star_b": {"name": "Ember", "color": [1.0, 0.62, 0.38], "temperature_k": 3600, "size": 0.55, "energy": 0.25},
   "min_energy": 0.35,
   "max_energy": 1.6,
+  "globe_day": {"_doc": "[v10pace] The clock on a round planet (planet/sky_director.gd, SolarSystem.globe_day(id); a planet's own \"globe_day\" block overrides single keys). turn_min: minutes for one turn of the planet at speed 1. day_speed / night_speed: how fast the clock runs by day and by night (night = local time before 0.24 or after 0.76, about 48% of a turn), so a full cycle lasts turn_min x (0.52 / day_speed + 0.48 / night_speed) minutes: 36 x (0.743 + 0.253) = 35.8 min, of which 26.7 min day and 9.1 min night (was 24 min: 12.5 day, 11.5 night; owner: 'Sun went down too fast'). start_time: local time (0.5 = noon) when a new game lands. The first dusk comes (0.76 - start_time) x turn_min / day_speed = 21.6 min after landing (was 8.2). night_lift_found: how much the night is brightened once Glim is found (0..1; 1 = as bright as the first nights).", "turn_min": 36.0, "day_speed": 0.7, "night_speed": 1.9, "start_time": 0.34, "night_lift_found": 0.65},
   "planets": {
     "ochre":    {"orbit_au": 0.72, "tilt_deg": 8,  "sep_deg": 19, "sep_angle_deg": 20, "day_length_s": 1080, "moons": []},
     "verdance": {"orbit_au": 1.0,  "tilt_deg": 23, "sep_deg": 14, "sep_angle_deg": 30, "day_length_s": 1200, "moons": [{"name": "Pebble", "size": 0.6, "color": [0.8, 0.8, 0.78], "orbit": 1.0}]},

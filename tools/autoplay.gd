@@ -1425,6 +1425,15 @@ func _shop(want: Dictionary) -> void:
 			and HubBuilds.build(world, GlimDirector.BUILD_ID):
 		_event("build", {"id": "glim"})
 		_mark("glim_repair_s")
+	# 2b3) [v10pace] The shuttle (the Build tab) once WREN has asked for it and it is paid for; the
+	# card's "Look at the map" step (a key press for a person: tools/walk_home.gd plays it).
+	if HubBuilds.listed(world, "shuttle") and str(HubBuilds.entry(world, "shuttle")["reason"]) == "" and HubBuilds.build(world, "shuttle"):
+		_event("build", {"id": "shuttle"})
+		_mark("shuttle_s")
+		_progress()
+	var ob_m: Objectives = world.get("objectives") as Objectives
+	if ob_m and str(ob_m.current().get("key", "")) == "map_seen":
+		GameState.flags["map_seen"] = true
 	# 2c) [buddy] Glim's Lantern and Hex Scanner when affordable (1.5x margin: never starves the core loop).
 	for gid: String in ["light", "scan"]:
 		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and _card_spare(float(Glim.next_cost(gid).get("cubes", 0.0)), float(Glim.next_cost(gid).get("parts", 0.0))) and Glim.buy(gid):
@@ -1457,6 +1466,9 @@ func _shop(want: Dictionary) -> void:
 		ok = ok and robot != "" and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
 		if robot != "" and ok and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
+			var bay: BotBay = BotBay.of(world)  # [v10pace] robots roll out of the Bot Bay
+			if bay and bay.visible:
+				at = bay.build_point()
 			fleet.build(robot, at)
 	for t: String in (Economy.robot_order if fleet != null and BenchTiers.tab_open("bots") else []):  # [orbB] [v1guide]
 		var treq: Dictionary = fleet.tier_requirements(t)

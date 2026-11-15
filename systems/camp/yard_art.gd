@@ -1596,6 +1596,73 @@ static func fabricator_shell() -> Kit:
 	return k
 
 
+# --- Bot Bay (systems/camp/bot_bay.gd) ---------------------------------------------------------------
+
+## [v10pace] The yard's robot assembly bay: a small open booth (front +Z, about 3.2 x 2.6 m). A
+## hazard-edged plinth, cream side walls, a teal back wall with tool racks, a yellow gantry with a
+## hoist, a console with a lit screen, parts bins, and the robot picture sign on top.
+static func bot_bay() -> Kit:
+	var k := Kit.new()
+	k.box(Vector3(3.2, 0.18, 2.6), Vector3(0, 0.09, -0.1), Color.WHITE, Vector3.ZERO, 0.05, "concrete")
+	k.hazard(Vector3(3.22, 0.06, 2.62), Vector3(0, 0.16, -0.1))
+	k.box(Vector3(2.1, 0.04, 1.9), Vector3(0, 0.2, 0.0), GUNMETAL, Vector3.ZERO, 0.015)  # bay floor
+	k.decal("chevrons", Vector2(0.8, 0.26), Vector3(0, 0.225, 0.95), Vector3(-90, 0, 0))
+	for s: float in [-1.0, 1.0]:  # side walls
+		k.box(Vector3(0.3, 2.2, 1.9), Vector3(s * 1.3, 1.28, -0.2), CREAM, Vector3.ZERO, 0.06)
+		k.panel(1.4, 1.5, Vector3(s * 1.46, 1.25, -0.2), CREAM.darkened(0.05), Vector3(0, s * 90.0, 0), Color(-1, 0, 0), 0.04)
+		k.hazard(Vector3(0.32, 0.28, 0.06), Vector3(s * 1.3, 0.36, 0.77))
+		k.box(Vector3(0.36, 0.1, 2.0), Vector3(s * 1.3, 2.43, -0.2), TEAL, Vector3.ZERO, 0.03)
+		k.glow_box(Vector3(0.03, 1.5, 0.03), Vector3(s * 1.13, 1.3, 0.76), CYAN)
+	k.box(Vector3(2.9, 2.2, 0.2), Vector3(0, 1.28, -1.1), TEAL_D, Vector3.ZERO, 0.05)  # back wall
+	for x: float in [-0.7, 0.0, 0.7]:
+		k.box(Vector3(0.08, 2.0, 0.06), Vector3(x, 1.26, -0.98), TEAL, Vector3.ZERO, 0.02)
+	k.decal("logo", Vector2(0.5, 0.5), Vector3(-0.35, 1.75, -0.95))
+	k.vent(0.5, 0.34, Vector3(0.4, 0.8, -0.98), TEAL, Vector3.ZERO, 4)
+	# A spare arm and a wheel on the back wall's rack: this is where robots are put together.
+	k.box(Vector3(0.9, 0.05, 0.14), Vector3(0.38, 1.5, -0.93), GUNMETAL, Vector3.ZERO, 0.012)
+	k.box(Vector3(0.1, 0.5, 0.1), Vector3(0.1, 1.22, -0.92), ORANGE, Vector3(0, 0, 8), 0.03)
+	k.cyl(0.16, 0.09, Vector3(0.6, 1.24, -0.92), RUBBER, Vector3(90, 0, 0), 0.03, 14)
+	k.cyl(0.07, 0.1, Vector3(0.6, 1.24, -0.91), YELLOW, Vector3(90, 0, 0), 0.02, 10)
+	# Gantry: two rails, a trolley and a hoist over the pad.
+	for z: float in [-0.9, 0.5]:
+		k.box(Vector3(2.9, 0.16, 0.16), Vector3(0, 2.56, z), YELLOW, Vector3.ZERO, 0.03)
+	k.box(Vector3(0.44, 0.16, 1.5), Vector3(0, 2.56, -0.2), GUNMETAL, Vector3.ZERO, 0.03)
+	k.box(Vector3(0.28, 0.2, 0.28), Vector3(0, 2.4, 0.0), ORANGE, Vector3.ZERO, 0.04)
+	k.pipe(Vector3(0, 2.3, 0.0), Vector3(0, 1.75, 0.0), 0.015, STEEL, false)
+	k.box(Vector3(0.22, 0.06, 0.22), Vector3(0, 1.72, 0.0), GUNMETAL, Vector3.ZERO, 0.015)
+	# The picture sign (a robot's head) over the bay mouth: data/machine_art.json signs.bot_bay.
+	var sg: float = float(MachineArt.sign_def("bot_bay").get("size", 0.8))
+	for x: float in [-0.14, 0.14]:
+		k.box(Vector3(0.05, 0.2, 0.05), Vector3(x, 2.72, 0.5), GUNMETAL, Vector3.ZERO, 0.012)
+	MachineArt.put_sign(k, "bot_bay", Vector3(0, 2.76 + sg * 0.5, 0.5), Vector3.ZERO, true)
+	k.cyl(0.11, 0.1, Vector3(1.3, 2.53, 0.6), DARK, Vector3.ZERO, 0.02, 12)
+	k.glow_cyl(0.08, 0.12, Vector3(1.3, 2.63, 0.6), MINT, Vector3.ZERO, 12)
+	# Console by the right wall (the E spot), parts bins by the left.
+	k.box(Vector3(0.5, 0.9, 0.44), Vector3(1.28, 0.63, 1.0), CREAM, Vector3.ZERO, 0.04)
+	k.box(Vector3(0.52, 0.28, 0.46), Vector3(1.28, 1.16, 0.94), TEAL, Vector3(-25, 0, 0), 0.03)
+	k.glow_box(Vector3(0.38, 0.18, 0.02), Vector3(1.28, 1.19, 1.17), CYAN, Vector3(-25, 0, 0))
+	for i: int in 3:
+		k.glow_box(Vector3(0.04, 0.04, 0.02), Vector3(1.16 + i * 0.12, 0.85, 1.225), [MINT, AMBER, MINT][i])
+	for i: int in 2:
+		for j: int in 2:
+			k.box(Vector3(0.34, 0.22, 0.38), Vector3(-1.3, 0.3 + j * 0.24, 1.02 - i * 0.02 * j), [YELLOW, BLUE, RED][(i + j) % 3], Vector3.ZERO, 0.03)
+	k.pipe(Vector3(-1.15, 0.2, -1.25), Vector3(-1.15, 2.1, -1.25), 0.06, GUNMETAL, true)
+	k.cable([Vector3(1.28, 0.25, 0.8), Vector3(1.1, 0.22, 0.2), Vector3(0.8, 0.22, -0.4)], 0.025)
+	k.light(Vector3(0, 1.9, 0.9), CYAN, 0.3, 2.2)
+	return k
+
+
+## The Bot Bay's round pad and its ring of lights: lit only while a robot is being put together.
+static func bot_bay_pad() -> Kit:
+	var k := Kit.new()
+	k.cyl(0.62, 0.06, Vector3(0, 0.25, 0.0), GUNMETAL, Vector3.ZERO, 0.02, 24)
+	for i: int in 18:
+		var a: float = TAU * i / 18.0
+		k.glow_box(Vector3(0.11, 0.02, 0.035), Vector3(cos(a) * 0.54, 0.285, sin(a) * 0.54), CYAN, Vector3(0, -rad_to_deg(a) + 90.0, 0))
+	k.light(Vector3(0, 1.4, 0.1), CYAN, 0.9, 3.2)
+	return k
+
+
 ## The bay pad, its ring and light: lit only while a bot is being built.
 static func fabricator_bay() -> Kit:
 	var k := Kit.new()

@@ -32,20 +32,25 @@ func _goal_index(id: String) -> int:
 	return -1
 
 
-func test_rocket_comes_after_the_first_robot_and_seed() -> void:
+func test_rocket_is_built_by_the_player() -> void:
+	# [v10pace] Owner (playtest 3): "The rocket just popped out of nowhere right after planting the
+	# seed. Wayyy to early... I didnt even build this shuttle." No rocket before the Shuttle build.
 	assert_eq(Hub.rocket_level(), 1, "no base level stands before the first hop")
 	var ch: Array = Economy.read_json("res://data/objectives.json").get("objectives", [])
-	var zone: int = -1
-	for i: int in ch.size():
-		if str(ch[i]["id"]) == "seed":
-			zone = i
-	assert_gt(zone, 0, "the story still has its 'seed' step")
-	GameState.flags["objective_step"] = zone
-	assert_false(Hub.rocket_open(1), "not while 'Plant the first seed' is on the card (the seed scene comes before the hop to Garden Row)")
+	var was_flags: Dictionary = GameState.flags
+	var was_orbit: Dictionary = GameState.orbit
+	GameState.flags = {"objective_step": ch.size()}
+	GameState.orbit = {}
+	assert_false(Hub.rocket_open(1), "no story step puts a rocket on the pad")
 	assert_ne(Hub.rocket_lock_text(1), "")
-	GameState.flags["objective_step"] = zone + 1
-	assert_true(Hub.rocket_open(1))
+	YardBuilds.mark_built("shuttle")
+	assert_true(Hub.rocket_open(1), "the Shuttle build does")
 	assert_eq(Hub.rocket_lock_text(1), "")
+	GameState.flags = {}
+	GameState.orbit = {"rocket_owned": true}
+	assert_true(Hub.rocket_open(1), "a rocket that has flown (an older save, another planet) is built")
+	GameState.flags = was_flags
+	GameState.orbit = was_orbit
 
 
 func test_far_hub_prices_multiply() -> void:
@@ -114,7 +119,7 @@ func test_hub_steps_sit_between_the_base_steps() -> void:
 	var ids: Array = []
 	for o: Dictionary in Economy.read_json("res://data/objectives.json").get("objectives", []):
 		ids.append(str(o["id"]))
-	var order: Array = ["robot", "hex2", "seed", "hub_fly_2", "hub_wake_2", "base2", "hub_fly_3", "hub_wake_3", "rocket_tier_2", "base3", "hub_fly_4", "hub_wake_4"]
+	var order: Array = ["robot", "hex2", "seed", "robot2", "haul", "hex10", "map", "shuttle", "hub_fly_2", "hub_wake_2", "base2", "hub_fly_3", "hub_wake_3", "rocket_tier_2", "base3", "hub_fly_4", "hub_wake_4"]  # [v10pace] three robots, ten hexes and the shuttle before the first flight
 	for i: int in range(1, order.size()):
 		assert_gt(ids.find(order[i]), ids.find(order[i - 1]), "%s comes after %s" % [order[i], order[i - 1]])
 		assert_gt(ids.find(order[i - 1]), -1)

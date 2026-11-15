@@ -41,6 +41,24 @@ static func day_length(id: String, fallback: float = 1200.0) -> float:
 	return float(planet(id).get("day_length_s", fallback))
 
 
+## [v10pace] The clock on a round planet (data/solar_system.json "globe_day", a planet's own block
+## on top): {turn_min, day_speed, night_speed, start_time, night_lift_found}.
+static func globe_day(id: String) -> Dictionary:
+	var d: Dictionary = {"turn_min": 36.0, "day_speed": 0.7, "night_speed": 1.9, "start_time": 0.34, "night_lift_found": 0.65}
+	for src: Variant in [cfg().get("globe_day", {}), planet(id).get("globe_day", {})]:
+		if src is Dictionary:
+			for k: String in d:
+				if (src as Dictionary).has(k):
+					d[k] = float(src[k])
+	return d
+
+
+## How fast the globe's clock runs at this local time (0.5 = noon): slower by day, faster by night.
+static func globe_clock_speed(id: String, time_of_day: float) -> float:
+	var d: Dictionary = globe_day(id)
+	return float(d["night_speed"]) if (time_of_day < 0.24 or time_of_day > 0.76) else float(d["day_speed"])
+
+
 static func _col(a: Variant, fb: Color) -> Color:
 	if a is Array and (a as Array).size() >= 3:
 		return Color(float(a[0]), float(a[1]), float(a[2]))
