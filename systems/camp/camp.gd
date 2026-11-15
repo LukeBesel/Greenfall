@@ -20,6 +20,8 @@ extends Node
 
 const BIN_ANCHOR := Vector3(2.0, 0.0, -3.2)  # [camp2] front-right of the bin, off the plate, clear of the signal tower
 const BIN_REACH: float = 1.6
+## [v10pace] The marked spot on the launch pad where the shuttle is built (m).
+const SHUTTLE_SPOT := Vector2(5.0, 6.0)
 
 var world: Node
 var repairing: bool = false
@@ -151,6 +153,14 @@ func _setup() -> void:
 	world.add_child(locker)
 	locker.setup(world)
 	await _slice("camp:locker")
+	var bay := BotBay.new()  # [v10pace] the Bot Bay is its own machine: E opens its own screen
+	world.add_child(bay)
+	bay.setup(world)
+	BuildSpot.mark(world, "bot_bay", BotBay.SIZE, func() -> bool: return BotBay.built(),
+		func() -> bool: return bench_ok() and SignalTower.tier() >= 1, "bot_bay")
+	BuildSpot.mark(world, "shuttle", SHUTTLE_SPOT, func() -> bool: return Hub.rocket_built(),
+		func() -> bool: return bool(GameState.flags.get("shuttle_plans", false)), "shuttle")
+	await _slice("camp:bot bay")
 	if hub:
 		hub.level_changed.connect(func(_l: int) -> void: _apply_builds())  # after the slice's own ruin/level pass
 	YardBuilds.events.built.connect(_on_built)
@@ -333,6 +343,9 @@ func _was_shown(k: String) -> bool:
 
 
 func _on_built(id: String) -> void:
+	if id == "shuttle":  # [v10pace] its own build on the pad (ShuttleBuild), no machine reveal here
+		ShuttleBuild.start(world)
+		return
 	if id == "glim":  # [v4calm] Glim's own repair moment (systems/glim/glim_director.gd), no machine reveal
 		return
 	var ex: ExtrasDirector = ExtrasDirector.of(world)

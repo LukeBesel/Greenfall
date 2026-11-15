@@ -13,7 +13,7 @@ const BUILD_CATS: Array = [["story", "Story"], ["yard", "Yard"], ["machines", "M
 # l10n:end
 const BUILD_CAT_OF: Dictionary = {
 	"conveyor": "machines", "auto_baler": "machines", "recycler": "machines", "telescope": "machines", "air_scrubber": "machines",
-	"signal_tower": "story", "signal_jammer": "story", "museum": "story",
+	"signal_tower": "story", "signal_jammer": "story", "museum": "story", "bot_bay": "story", "shuttle": "story",  # [v10pace]
 	"bot_fabricator": "machines",  # [orbC]
 }
 
@@ -144,7 +144,7 @@ static func _base(world: Node) -> Array:
 ## [v1guide] The next workbench tier (ui/bench_tiers.gd): it opens the next tab(s).
 static func _bench_tier(world: Node) -> Dictionary:
 	var nd: Dictionary = BenchTiers.next_def()
-	if nd.is_empty():
+	if nd.is_empty() or str(nd.get("build", "")) != "":  # [v10pace] the Bot Bay is a build of its own (Build tab), not a bench upgrade
 		return {}
 	var cost: Dictionary = nd.get("cost", {})
 	var why: String = BenchTiers.block_reason(world)

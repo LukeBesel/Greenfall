@@ -29,7 +29,7 @@ const LANE_M: float = 1.2
 ## Footprint radius (m) of the model standing on each anchor (the start yard's machines).
 const FOOT: Dictionary = {"nursery": 3.0, "stations": 4.2, "shack": 2.2, "telescope": 2.0, "fabricator": 2.5,
 	"pod": 2.2, "depot": 2.2, "bench": 2.2, "signal_tower": 1.3, "composter": 1.3, "generator": 1.0, "radio": 0.9,
-	"locker": 0.8, "bin": 0.8, "camera_bot": 0.5, "door": 0.5}
+	"locker": 0.8, "bin": 0.8, "camera_bot": 0.5, "door": 0.5, "bot_bay": 1.9}
 
 
 ## With every machine standing as a disc of its footprint: does a walk from the landing spot over

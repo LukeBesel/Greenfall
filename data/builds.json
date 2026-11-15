@@ -23,6 +23,14 @@
       "kind": "one_time"
     },
     {
+      "id": "bot_bay",
+      "kind": "one_time"
+    },
+    {
+      "id": "shuttle",
+      "kind": "one_time"
+    },
+    {
       "id": "composter",
       "kind": "one_time"
     },

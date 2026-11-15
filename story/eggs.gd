@@ -95,7 +95,7 @@ func _setup_globe(data: Dictionary) -> void:
 	var avoid: Array[Vector3] = [Vector3.ZERO]
 	var so: Node = world.get("orbit")
 	if so:  # the yard's anchors (bench, bin, pod, tower, ...) stay clear
-		for nm: String in ["bench", "depot", "bin", "pod", "signal_tower", "telescope", "radio", "locker", "nursery", "rocket_pad", "stations"]:
+		for nm: String in ["bench", "depot", "bin", "pod", "signal_tower", "telescope", "radio", "locker", "nursery", "rocket_pad", "stations", "bot_bay"]:
 			avoid.append(to_local(so.call("yard_point", nm)))
 	for s: Dictionary in Outposts.plan_cells(self, f, frame_cells, {}, hub_index):  # keep off the outpost slabs
 		avoid.append(s["pos"] as Vector3)

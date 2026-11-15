@@ -48,7 +48,7 @@ func _build() -> void:
 	sky.fog_scale = 0.27 if so.view_mode == "command" else 1.0
 	w.add_child(sky)
 	var forced: bool = DevHooks.has("orbit-time") or not GameState.flags.has("orbit_spin")
-	sky.setup_sphere(day.env, day.sun, day.sky_mat, g.grid.radius_m, DevHooks.get_f("orbit-time", 0.42) if forced else -1.0)
+	sky.setup_sphere(day.env, day.sun, day.sky_mat, g.grid.radius_m, DevHooks.get_f("orbit-time", float(SolarSystem.globe_day(SkyDirector.current_planet_id())["start_time"])) if forced else -1.0)
 	if DevHooks.has("orbit-clouds"):
 		sky.clouds = DevHooks.get_f("orbit-clouds", 0.4)
 		sky.weather_frozen = true
@@ -155,6 +155,7 @@ func open_survey() -> void:
 	if so.sites and so.sites.picker and so.sites.picker.is_open:  # [v2map] the rocket's list is up
 		return
 	so.set_input(false)
+	GameState.flags["map_seen"] = true  # [v10pace] the card's "Look at the map" step (item 109; v10ui's map sets it too)
 	survey.open_view()
 
 

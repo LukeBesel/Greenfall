@@ -190,6 +190,14 @@ static func _icon(k: YardArt.Kit, icon: String, u: float, ink: Color, accent: Co
 			_bar(k, u, 0.13, 0.028, 0.0, -0.105, face, 0.0, 1)
 			_bar(k, u, 0.03, 0.09, 0.0, 0.125, ink)
 			_dot(k, u, 0.034, 0.0, 0.19, accent)
+		"rocket":  # [v10pace] the shuttle's build spot: a little rocket standing on its fins
+			_bar(k, u, 0.13, 0.26, 0.0, -0.01, ink)
+			_dot(k, u, 0.065, 0.0, 0.12, ink)
+			_bar(k, u, 0.09, 0.09, 0.0, 0.165, ink, 45.0)
+			_dot(k, u, 0.036, 0.0, 0.04, face, 1)
+			for s: float in [-1.0, 1.0]:
+				_bar(k, u, 0.06, 0.14, s * 0.085, -0.13, ink, s * 28.0)
+			_bar(k, u, 0.06, 0.09, 0.0, -0.2, accent)
 		"parts":  # the recycler: a cube goes in, a nut comes out
 			_bar(k, u, 0.15, 0.15, -0.18, 0.0, accent)
 			_bar(k, u, 0.11, 0.04, 0.0, 0.0, ink)

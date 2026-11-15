@@ -184,7 +184,7 @@ func _apply() -> void:
 static func night_lift() -> float:
 	if DevHooks.has("night-classic"):
 		return 0.0
-	return 1.0 if not Glim.is_found() else 0.65
+	return 1.0 if not Glim.is_found() else float(SolarSystem.globe_day(current_planet_id())["night_lift_found"])
 
 
 ## [biomes] Blend the frontier grade over the computed sky and fog; then the storm on top.
@@ -260,7 +260,7 @@ static func _col(a: Variant, fallback: Color) -> Color:
 ## Writing time_of_day (photo mode, --time) moves the planet so that the player's spot gets it.
 
 const SPHERE_DECL: float = 0.25   # the suns' declination (rad)
-const SPHERE_DAY_S: float = 1440.0  # one turn of the planet: 24 min (phase A)
+const SPHERE_DAY_S: float = 2160.0  # one turn of the planet at speed 1: 36 min (data/solar_system.json globe_day)
 
 var sphere: bool = false
 var sky_shader: ShaderMaterial
@@ -323,7 +323,7 @@ func setup_sphere(p_env: Environment, p_sun: DirectionalLight3D, p_sky: ShaderMa
 	sky_shader.set_shader_parameter("sun2_strength", clampf(0.4 + float(_suns["b"].get("energy", 0.25)), 0.4, 1.0))
 	var p: Vector3 = _player_pos()
 	if start_local_time >= 0.0 or not GameState.flags.has("orbit_spin"):
-		spin = spin_for_local_time(start_local_time if start_local_time >= 0.0 else 0.42, p)
+		spin = spin_for_local_time(start_local_time if start_local_time >= 0.0 else float(SolarSystem.globe_day(current_planet_id())["start_time"]), p)
 	else:
 		spin = float(GameState.flags["orbit_spin"])
 	clouds = float(GameState.flags.get("orbit_clouds", 0.35))
@@ -364,8 +364,10 @@ func _player_pos() -> Vector3:
 func _process_sphere(delta: float) -> void:
 	if _tod_out >= 0.0 and absf(time_of_day - _tod_out) > 0.0005:  # someone set the clock
 		spin = spin_for_local_time(time_of_day, _player_pos())
-	if not frozen:
-		spin = fposmod(spin + TAU * delta / day_period_s * CradleMode.day_speed(time_of_day) * Glim.clock_mult(time_of_day), TAU)
+	var film: Variant = world.get("intro") if world else null  # [v10pace] the day starts when Lumi wakes, not under the opening film
+	if not frozen and not (film is Intro and (film as Intro).running):
+		spin = fposmod(spin + TAU * delta / day_period_s * CradleMode.day_speed(time_of_day) * Glim.clock_mult(time_of_day)
+			* SolarSystem.globe_clock_speed(current_planet_id(), time_of_day), TAU)  # [v10pace] long days, short nights
 		GameState.flags["orbit_spin"] = spin
 	_clean_t -= delta  # clean_fn walks every cell (164k+): ask every few seconds, haze eases anyway
 	if _clean_t <= 0.0:

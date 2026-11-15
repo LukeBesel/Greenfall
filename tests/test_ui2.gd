@@ -200,11 +200,12 @@ func test_hub_gains_list_the_next_level() -> void:
 func test_tabs_appear_once_open_and_stay() -> void:
 	GameState.flags.erase("bench_tabs")
 	assert_true(UpgradesScreen.tab_visible("patch"))
-	GameState.flags["bench_tier"] = 1  # [v1guide] Bots opens with the workbench's Mk II (ui/bench_tiers.gd)
-	assert_false(UpgradesScreen.tab_visible("bots"), "hidden on a fresh game")
-	GameState.flags["bench_tier"] = 2
-	assert_true(UpgradesScreen.tab_visible("bots"))
-	assert_true("bots" in GameState.flags.get("bench_tabs", []), "an opened tab is remembered")
+	GameState.flags["bench_tier"] = 2  # [v1guide] Research opens with the workbench's Research Desk (ui/bench_tiers.gd)
+	assert_false(UpgradesScreen.tab_visible("research"), "hidden before the desk")
+	GameState.flags["bench_tier"] = 3
+	assert_true(UpgradesScreen.tab_visible("research"))
+	assert_true("research" in GameState.flags.get("bench_tabs", []), "an opened tab is remembered")
+	assert_false(UpgradesScreen.tab_visible("bots"), "[v10pace] the Bot Bay has its own screen: never a workbench tab")
 
 
 func test_pause_menu_has_no_save_button() -> void:
