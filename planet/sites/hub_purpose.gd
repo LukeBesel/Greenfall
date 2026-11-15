@@ -259,7 +259,9 @@ func can_wake(i: int) -> bool:
 func step_text(i: int, d: Dictionary) -> String:
 	match str(d.get("do", "")):
 		"clean":
-			return tr("Dig the landmark out. Clean hexes here: %d / %d") % [int(d["have"]), int(d["need"])]
+			# [v10base] It names the landmark and says what the cleaning is for ("Dig the landmark
+			# out" read as a buried thing to find: owner playtest 3 #101).
+			return tr("Clean hexes here to wake the %s: %d / %d") % [HubPlan.landmark_name(planet, i), int(d["have"]), int(d["need"])]
 		"outposts":
 			return tr("Repair an outpost here: %d / %d") % [int(d["have"]), int(d["need"])]
 		"wake":
@@ -501,6 +503,7 @@ func _refresh() -> void:
 	var ready_now: bool = far and not lm.is_empty() and can_wake(site)
 	_way.set_target(lm["pos"] if ready_now else null)
 	_show_beacon(far and not lm.is_empty() and HubPlan.woken(site), lm)
+	_show_mark(far and not lm.is_empty() and not HubPlan.woken(site), lm)
 	_show_bench(far and HubPlan.woken(site))
 	# The card.
 	var title: String = ""
@@ -567,6 +570,74 @@ func _show_beacon(on: bool, lm: Dictionary) -> void:
 		_lm_site = site
 		var up: Vector3 = lm["up"]
 		_beacon.global_transform = Transform3D(_up_basis(up), lm["top"])
+
+
+## [v10base] Owner playtest 3 #101 ("Dig landmark out but there is no landmark"): the landmark
+## stands 50 m off in the ruined town, broken and dark, and nothing marked it until the hexes were
+## done. While it sleeps a big teal pin bobs over its top on a tall thin light, so it can be seen
+## from the pad over the roofs from the moment Lumi lands. (The gold beacon is the woken one.)
+const MARK_H: float = 70.0
+var _mark: Node3D
+var _mark_site: int = -1
+
+
+func mark_node() -> Node3D:
+	return _mark if _mark and _mark.visible else null
+
+
+func _show_mark(on: bool, lm: Dictionary) -> void:
+	if not on:
+		if _mark:
+			_mark.visible = false
+		return
+	if _mark == null:
+		_mark = Node3D.new()
+		_mark.name = "LandmarkMark"
+		add_child(_mark)
+		var beam := MeshInstance3D.new()
+		var cm := CylinderMesh.new()
+		cm.top_radius = 0.35
+		cm.bottom_radius = 0.35
+		cm.height = MARK_H
+		cm.radial_segments = 8
+		cm.rings = 1
+		cm.cap_top = false
+		cm.cap_bottom = false
+		beam.mesh = cm
+		beam.position = Vector3(0, MARK_H * 0.5, 0)
+		var bm := StandardMaterial3D.new()
+		bm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		bm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		bm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		bm.cull_mode = BaseMaterial3D.CULL_DISABLED
+		bm.albedo_color = Color(TEAL, 0.3)
+		bm.disable_fog = true
+		beam.material_override = bm
+		beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_mark.add_child(beam)
+		var pin := MeshInstance3D.new()  # a fat arrow head pointing down at the landmark
+		pin.name = "Pin"
+		var pm := CylinderMesh.new()
+		pm.top_radius = 2.4
+		pm.bottom_radius = 0.0
+		pm.height = 4.4
+		pm.radial_segments = 6
+		pin.mesh = pm
+		var pmat := StandardMaterial3D.new()
+		pmat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		pmat.albedo_color = TEAL
+		pmat.disable_fog = true
+		pin.material_override = pmat
+		pin.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		pin.position = Vector3(0, 5.0, 0)
+		_mark.add_child(pin)
+		var tw := create_tween().set_loops()
+		tw.tween_property(pin, "position:y", 7.0, 0.9).set_trans(Tween.TRANS_SINE)
+		tw.tween_property(pin, "position:y", 5.0, 0.9).set_trans(Tween.TRANS_SINE)
+	_mark.visible = true
+	if _mark_site != site or _mark.global_position.distance_to(lm["top"]) > 0.5:
+		_mark_site = site
+		_mark.global_transform = Transform3D(_up_basis(lm["up"]), lm["top"])
 
 
 static func _up_basis(up: Vector3) -> Basis:

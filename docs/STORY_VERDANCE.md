@@ -140,7 +140,7 @@ What the game says at each station (v6hubs' steps, v6story's wording):
   fly. Signal Heights kept the star chart."
 - *On arrival*: the station's own line, e.g. "The fuel works. The tanks under the Tall Stack are
   still full."
-- *Clean first*: "Dig the landmark out. Clean hexes here: 3 / 8".
+- *Clean first*: "Clean hexes here to wake the Windpump: 3 / 4" (a teal pin marks the sleeping landmark).
 - *Wake it* (costs cubes): "Gantry Crane is awake. Gantry Works keeps cleaning when you fly on.", then
   "Rocket piece: Hull Plates" and "The recycling network grew: everything sells for x2.5 now."
 - *Too many stations for the rocket*: "The rocket can carry supplies to 2 bases. Upgrade it at the

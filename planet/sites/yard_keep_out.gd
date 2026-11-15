@@ -74,6 +74,13 @@ var e_points: Array[Vector3] = []  # site-local (x, z, E reach) of the yard's E 
 
 ## [v9a] Whether a buried part at this direction would lie within PART_CLEAR_M of a yard E spot.
 func near_e_point(dir: Vector3) -> bool:
+	# [v10base] A far pad: no buried part within FAR_PART_CLEAR_M of its edge (E there is the
+	# rocket's, the landing yard's build spots' and their machines'; E on a part digs first).
+	var dn: Vector3 = dir.normalized()
+	for hub: int in pads:
+		var lp: Vector3 = (pads[hub] as Transform3D) * (dn * radius)
+		if absf(lp.y) < 400.0 and maxf(absf(lp.x), absf(lp.z)) < PAD_HALF_M + FAR_PART_CLEAR_M:
+			return true
 	var q: Vector2 = local(dir)
 	if q.length() > PAD_HALF_M + part_clear(ROCKET_REACH_M) + 6.0:
 		return false
@@ -213,6 +220,23 @@ func add_world(key: Variant, items: Array, soft: bool = false) -> void:
 					(_world[k] as Array).append([inv, r, rad, soft])
 		_world_n += 1
 	version += 1  # [v4world]
+
+
+## [v10base] Owner playtest 3 #102 ("There is no even a garbage at this new base ... All bases
+## should have trash surrounding them right close by"): a far hub's landing pad, kept clear piece
+## by piece like the start pad (the same 21 m kit yard), so its junk starts at the pad's edge.
+## Before, every cell within 60 m of a far hub went clean (OrbitPlanet._clear_site).
+## Soft: Lumi walks there (it is no building).
+func add_pad(hub: int, site_xf: Transform3D) -> void:
+	var h: float = PAD_HALF_M + PAD_MARGIN_M - FOOT_GROW_M  # add_world grows it back
+	add_world("pad%d" % hub, [[site_xf, Rect2(-h, -h, h * 2.0, h * 2.0)]], true)
+	pads[hub] = site_xf.affine_inverse()
+
+
+var pads: Dictionary = {}  # far hub index -> world -> site-local
+## Buried parts keep this far off a far pad's edge: the rocket's E reach past the pad's north edge
+## (6.5 - 4 m) and the pad-edge machines' (3.4 m), plus the dig range and margin.
+const FAR_PART_CLEAR_M: float = 6.0
 
 
 func _wkey(d: Vector3, rad: float) -> Vector3i:
