@@ -772,7 +772,7 @@ static func need_text(price: Dictionary) -> String:
 		var need: float = float(Currencies.fold(price).get(cid, 0.0))
 		var have: float = GameState.get_currency(cid).to_float()
 		if need > have + 0.001:
-			return TranslationServer.translate("Need %s.") % (TranslationServer.translate("%s more %s") % [Settings.fmt(BigNum.from_float(ceilf(need - have))), Currencies.display_name(cid).to_lower()])
+			return TranslationServer.translate("Need %s.") % (TranslationServer.translate("%s more %s") % [Currencies.missing_text(cid, need), Currencies.display_name(cid).to_lower()])
 	return ""
 
 
@@ -784,7 +784,7 @@ static func short_text(price: Dictionary) -> String:
 		var need: float = float(Currencies.fold(price).get(cid, 0.0))
 		var have: float = GameState.get_currency(cid).to_float()
 		if need > have + 0.001:
-			miss.append(TranslationServer.translate("%s more %s") % [Settings.fmt(BigNum.from_float(ceilf(need - have))), Currencies.display_name(cid).to_lower()])
+			miss.append(TranslationServer.translate("%s more %s") % [Currencies.missing_text(cid, need), Currencies.display_name(cid).to_lower()])
 			if how == "":
 				how = TranslationServer.translate("Pick up trash to earn them.") if cid == "cubes" else TranslationServer.translate("Dig up parts and salvage junk to get them.")
 	if miss.is_empty():

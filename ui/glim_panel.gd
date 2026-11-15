@@ -126,7 +126,7 @@ func _rebuild() -> void:
 	_first = null
 	var bits: Array[String] = []
 	for cur: String in Currencies.IDS:
-		bits.append(Currencies.amount_text(cur, GameState.get_currency(cur).to_float()))
+		bits.append(Currencies.have_amount_text(cur))  # [v10ui] a balance rounds down (it rounded up here)
 	_money.text = "   ".join(bits)
 	_tracks.add_child(UITheme.label(tr("UPGRADES"), 15, UITheme.MUTED))
 	for t: Variant in Glim.tracks():

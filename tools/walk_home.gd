@@ -388,6 +388,65 @@ static func _part_hex2() -> void:
 	await tree.create_timer(2.5).timeout  # the card's DONE beat, then the next step slides in
 	c = _card()
 	_check(moved and _step_id() == "hex3" and c[0] == "Clean 3 hexes", "hex2 done: the card moves on to Clean 3 hexes (%s, %s)" % [_step_id(), str(c)])
+	# [v10ui] Owner #109: the map (M) is the planet's progress view, pointed at on the first clean hex.
+	_check(_said("how much of the planet is clean"), "map: the first clean hex points at the map key (%s)" % Settings.glyph("open_globe"))
+	var before: Dictionary = await _map_look("after a clean hex")
+	await _reload("hex2 done, the map looked at")
+	var after: Dictionary = await _map_look("after a reload")
+	_check(not before.is_empty() and int(before["ok"]) >= 2, "map: the hexes cleaned are counted (%s)" % str(before.get("sub", "")))
+	_check(not before.is_empty() and not after.is_empty() and int(after["ok"]) == int(before["ok"]) and str(after["rows"]) == str(before["rows"]),
+		"map: the same numbers after a reload (%s%% / %s%%)" % [str(before.get("pct", "?")), str(after.get("pct", "?"))])
+
+
+## [v10ui] Opens the map with its key, checks the progress card against the game's own numbers
+## (SiteManager's cells, the HUD's line), closes it with the key. Returns what the card showed.
+static func _map_look(tag: String) -> Dictionary:
+	var gv: GlobeView = so.layers.survey
+	var sm: SiteManager = so.globe.site_manager
+	await _tap("open_globe")
+	for k: int in 40:
+		if gv.is_open:
+			break
+		await tree.create_timer(0.1).timeout
+	_check(gv.is_open, "map %s: %s opens it" % [tag, Settings.glyph("open_globe")])
+	if not gv.is_open:
+		return {}
+	await tree.create_timer(0.8).timeout
+	var rd: Dictionary = gv.read_progress()
+	var ok: int = 0
+	var n: int = 0
+	var rows_ok: bool = true
+	var areas: Array = so.layers.map_areas()
+	for i: int in areas.size():
+		ok += int(areas[i]["ok"])
+		n += int(areas[i]["n"])
+		rows_ok = rows_ok and int(rd["rows"][i]["pct"]) == int(floor(100.0 * float(areas[i]["ok"]) / maxf(1.0, float(areas[i]["n"])) + 0.0001))
+	var want: int = int(floor(100.0 * float(ok) / maxf(1.0, float(n)) + 0.0001))
+	_check(int(rd["total"]) == HubPlan.main_total(sm.planet_id) and int(rd["shown_rows"]) == int(rd["total"]),
+		"map %s: one row per base area, the ones not visited too (%d of %d)" % [tag, int(rd["shown_rows"]), HubPlan.main_total(sm.planet_id)])
+	_check(int(rd["ok"]) == ok and int(rd["n"]) == n and str(rd["sub"]).contains(GlobeView._num(ok)), "map %s: the hex count under it is the game's (%s)" % [tag, str(rd["sub"])])
+	_check(int(rd["pct"]) == want and rows_ok and str(rd["big"]).contains(str(want)) and not str(rd["big"]).contains("."),
+		"map %s: the big number is the areas' ground, whole (%s, cells %d / %d)" % [tag, str(rd["big"]), ok, n])
+	var home: Dictionary = rd["rows"][0]
+	var hud_pct: int = int(floor(sm.region_clean(0) * 100.0))
+	_check(str(home["kind"]) == "home" and bool(home["here"]) and int(home["pct"]) == hud_pct,
+		"map %s: the home row is where Lumi is and shows the HUD's %d%% (%s)" % [tag, hud_pct, str(home)])
+	var locked: int = 0
+	for r: Dictionary in rd["rows"]:
+		if str(r["kind"]) == "locked":
+			locked += 1
+	_check(locked >= 1, "map %s: areas not visited yet show as locked rows (%d)" % [tag, locked])
+	_check(bool(GameState.flags.get("map_seen", false)), "map %s: opening it sets map_seen" % tag)
+	_check(not gv._resurvey.visible, "map %s: nothing to pay" % tag)
+	await _shot("map_" + tag.replace(" ", "_"))
+	await _tap("open_globe")
+	for k: int in 40:
+		if not gv.is_open:
+			break
+		await tree.create_timer(0.1).timeout
+	_check(not gv.is_open, "map %s: the same key closes it" % tag)
+	await tree.create_timer(0.3).timeout
+	return rd
 
 
 ## Scoops (the scoop key held at the nearest liftable piece of hex_fn's hex) until done_fn says so.

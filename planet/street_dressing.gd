@@ -969,21 +969,20 @@ func _build_billboard() -> void:
 	mi.visibility_range_end = 260.0
 	mi.visibility_range_end_margin = VIS_MARGIN  # [v8bld]
 	_cur.add_child(mi)
-	# Pasted-up slogan along the bottom, half peeled.
-	var l := Label3D.new()
-	l.text = "BRIGHTER DAYS AHEAD" if start_base else BILLBOARD_SLOGANS[(hub_index * 7 + _style.randi()) % BILLBOARD_SLOGANS.size()]
-	l.font_size = 160
-	l.pixel_size = 0.0075
-	l.outline_size = 24
-	l.outline_modulate = Color(0.06, 0.05, 0.07, 0.9)
-	l.modulate = Color(0.98, 0.95, 0.85, 0.95)
-	l.shaded = true
-	l.double_sided = false
-	l.alpha_cut = Label3D.ALPHA_CUT_OPAQUE_PREPASS
-	l.position = Vector3(x - w * 0.12, y0 + h * 0.86, z + 0.03)
+	# [v10ui] Owner, playtest 3: "brighter days ahead sign messed up". The slogan was a cream,
+	# dark-outlined Label3D laid over the top of the mural, wider than its place (it hung off the
+	# board's left edge) and, at the start base, the same words as the name board right under it:
+	# it read as a faint second print over the picture. Now the mural is the picture alone at the
+	# start base; elsewhere the slogan is on its own paper strip along the bottom, inside the board.
+	if start_base:
+		return
+	var slogan: String = BILLBOARD_SLOGANS[(hub_index * 7 + _style.randi()) % BILLBOARD_SLOGANS.size()]
+	var strip_w: float = w * 0.72
+	var strip_h: float = 1.05
+	var sc := Vector3(x, y0 + strip_h * 0.5 + 0.35, z + 0.03)
+	_deco.box(Transform3D(Basis(), sc), Vector3(strip_w, strip_h, 0.04), Color(0.9, 0.86, 0.74, PAINT))
+	var l: Label3D = _label(slogan, Transform3D(Basis(), sc + Vector3(0, 0, 0.03)), 96, minf(0.0085, (strip_w - 0.8) / (slogan.length() * 96 * 0.62)), Color(0.16, 0.13, 0.12, 0.95))
 	l.visibility_range_end = 260.0
-	l.visibility_range_end_margin = VIS_MARGIN  # [v8bld]
-	_cur.add_child(l)
 
 
 # --- Lines across streets: string lights, bunting, laundry ------------------------------
@@ -2471,7 +2470,11 @@ func _build_name_sign(broken: bool) -> void:
 	if broken:  # [world2] the board hangs down to the ground
 		_solid_box(Transform3D(board_xf.basis.orthonormalized(), board_xf.origin), Vector3(4.8, 1.3, 0.2))
 	var bg: Color = _sign_bg.lerp(Color(0.62, 0.6, 0.55), 0.45 if broken else 0.12)
-	bg.a = PAINT
+	# [v10ui] Owner, playtest 3: the board's face "looks blotchy". The painted-board class of the
+	# deco shader flakes down to the grime texture in hand-sized patches: on a dark 4.8 m face
+	# that read as camouflage behind the letters. The face is an enamel plate now (the plastic
+	# class: faded and scuffed, no patches), so the name is the one thing on it.
+	bg.a = PLAST
 	_deco.box(board_xf, Vector3(4.8, 1.3, 0.08), bg)
 	var trim: Color = post.lightened(0.1)
 	_deco.box(board_xf.translated_local(Vector3(0, 0.67, 0.02)), Vector3(4.9, 0.07, 0.1), trim)

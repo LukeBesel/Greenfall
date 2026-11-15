@@ -196,67 +196,67 @@ msgstr "Panel táctil"
 msgid "Paddle 1"
 msgstr "Paleta 1"
 
-#: autoload/Settings.gd:544
+#: autoload/Settings.gd:547
 msgid "LMB"
 msgstr "Clic izq."
 
-#: autoload/Settings.gd:545
+#: autoload/Settings.gd:548
 msgid "RMB"
 msgstr "Clic der."
 
-#: autoload/Settings.gd:546
+#: autoload/Settings.gd:549
 msgid "MMB"
 msgstr "Clic central"
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:550
 msgid "Wheel up"
 msgstr "Rueda arriba"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:551
 msgid "Wheel down"
 msgstr "Rueda abajo"
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:552
 msgid "Mouse %d"
 msgstr "Ratón %d"
 
-#: autoload/Settings.gd:551
+#: autoload/Settings.gd:554
 msgid "Button %d"
 msgstr "Botón %d"
 
-#: autoload/Settings.gd:556
+#: autoload/Settings.gd:559
 msgid "LS left"
 msgstr "JI izquierda"
 
-#: autoload/Settings.gd:556
+#: autoload/Settings.gd:559
 msgid "LS right"
 msgstr "JI derecha"
 
-#: autoload/Settings.gd:557
+#: autoload/Settings.gd:560
 msgid "LS up"
 msgstr "JI arriba"
 
-#: autoload/Settings.gd:557
+#: autoload/Settings.gd:560
 msgid "LS down"
 msgstr "JI abajo"
 
-#: autoload/Settings.gd:558
+#: autoload/Settings.gd:561
 msgid "RS left"
 msgstr "JD izquierda"
 
-#: autoload/Settings.gd:558
+#: autoload/Settings.gd:561
 msgid "RS right"
 msgstr "JD derecha"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:562
 msgid "RS up"
 msgstr "JD arriba"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:562
 msgid "RS down"
 msgstr "JD abajo"
 
-#: autoload/Settings.gd:570
+#: autoload/Settings.gd:573
 msgid "hold %s"
 msgstr "mantén %s"
 
@@ -475,7 +475,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   Telescopio: mirar el sistema"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:259
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:709 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d min"
 
@@ -655,6 +655,14 @@ msgstr "FLOREZCAMOS JUNTOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  AGUA  VIDA"
 
+#: planet/orbit_layers.gd:182 robots/sphere/command_overlay.gd:194
+msgid "Base %d"
+msgstr "Base %d"
+
+#: planet/orbit_layers.gd:191
+msgid "Press  {open_globe}  to see how much of the planet is clean"
+msgstr "Pulsa  {open_globe}  para ver cuánto del planeta está limpio"
+
 #: planet/orbit/orbit_crews.gd:223
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "¡Tu robot limpió un hexágono! Cuenta: %d / %d"
@@ -785,7 +793,7 @@ msgstr "Listo para despertar"
 msgid "Asleep: %d / %d"
 msgstr "Dormido: %d / %d"
 
-#: planet/sites/hub_purpose.gd:445
+#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:618
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% LIMPIO"
 
@@ -1131,7 +1139,7 @@ msgstr "No hay suficientes piezas"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
-#: ui/globe_view.gd:495
+#: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr "No hay cubos suficientes"
 
@@ -1406,10 +1414,6 @@ msgstr "Haz clic en - o + (o teclas - +): cuántos vienen"
 #: robots/sphere/command_overlay.gd:190
 msgid "OTHER BASES"
 msgstr "OTRAS BASES"
-
-#: robots/sphere/command_overlay.gd:194
-msgid "Base %d"
-msgstr "Base %d"
 
 #: robots/sphere/command_overlay.gd:206
 msgid "Good! Your robots will work here first."
@@ -2353,9 +2357,9 @@ msgstr "Recoge basura: mantén  {scoop}"
 msgid "Bring your chest to the trash bin"
 msgstr "Lleva tu pecho al cubo de basura"
 
-#: story/tutorial.gd:13
-msgid "Buy an upgrade: press  {interact}  at the bench"
-msgstr "Compra una mejora: pulsa  {interact}  en el banco"
+#: story/tutorial.gd:13 data/goals.json:goals[upgrade_1].text
+msgid "Buy an upgrade at the bench"
+msgstr "Compra una mejora en el banco"
 
 #: story/tutorial.gd:19
 msgid "Lumi is back on the job"
@@ -2991,20 +2995,20 @@ msgstr "Perfil %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d h"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Low"
 msgstr "Bajo"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 #: ui/settings_panel.gd:621
 msgid "Medium"
 msgstr "Medio"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "High"
 msgstr "Alto"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Ultra"
 msgstr "Ultra"
 
@@ -3675,7 +3679,7 @@ msgstr "SEMBRAR UN MUNDO NUEVO"
 msgid "The Cradle has to come home first."
 msgstr "Primero tiene que volver el Cradle."
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:393
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
 #: ui/rockets_panel.gd:88 ui/system_map.gd:745
 msgid "Launch"
 msgstr "Despegar"
@@ -3729,7 +3733,7 @@ msgstr "Flota"
 msgid "Fabricator"
 msgstr "Fabricador"
 
-#: ui/bench_kit.gd:164 ui/upgrade_card.gd:222
+#: ui/bench_kit.gd:163 ui/upgrade_card.gd:222
 msgid "need %s"
 msgstr "faltan %s"
 
@@ -3742,7 +3746,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "Máquinas"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:188 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:244 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "Cohete"
@@ -3843,7 +3847,7 @@ msgstr "Alcance de riego"
 msgid "Refill"
 msgstr "Recarga"
 
-#: ui/builder_panel.gd:21 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "Limpiar"
 
@@ -4192,7 +4196,7 @@ msgstr "Pacas grumosas"
 msgid "Bales cashed in"
 msgstr "Pacas cobradas"
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
@@ -4717,83 +4721,107 @@ msgstr "ASPECTO"
 msgid "???  %s"
 msgstr "???  %s"
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:176
 msgid "Survey"
 msgstr "Explorar"
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:176
 msgid "Verdance  ·  seed-keeper's survey"
 msgstr "Verdance  ·  mapa del guardián de semillas"
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:202
+msgid "Trash"
+msgstr "Basura"
+
+#: ui/globe_view.gd:202
+msgid "Green"
+msgstr "Verde"
+
+#: ui/globe_view.gd:211
 msgid "Not cleaned yet"
 msgstr "Aún sin limpiar"
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:211
 msgid "Cleaned"
 msgstr "Limpiado"
 
-#: ui/globe_view.gd:156 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "Plantado"
 
-#: ui/globe_view.gd:157 ui/system_map.gd:703 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:213 ui/system_map.gd:703 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "Restaurado"
 
-#: ui/globe_view.gd:157
+#: ui/globe_view.gd:213
 msgid "Cities"
 msgstr "Ciudades"
 
-#: ui/globe_view.gd:158
+#: ui/globe_view.gd:214
 msgid "Hubs"
 msgstr "Bases"
 
-#: ui/globe_view.gd:173 ui/late_menu.gd:21
+#: ui/globe_view.gd:229 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "Sistema solar"
 
-#: ui/globe_view.gd:188
+#: ui/globe_view.gd:244
 msgid "Travel between bases"
 msgstr "Viajar entre bases"
 
-#: ui/globe_view.gd:208
+#: ui/globe_view.gd:264
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]Arrastra para girar   ·   Rueda para zoom   ·   [/k][p]{@look}  girar     {zoom_out}{zoom_in}  zoom     {@dpad}  lista de vuelos     [/p]{open_globe}  cerrar"
 
-#: ui/globe_view.gd:335
+#: ui/globe_view.gd:393
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr "[k]Arrastra para girar   ·   Rueda para zoom   ·   [/k][p]{@look}  girar     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  cerrar"
 
-#: ui/globe_view.gd:390
+#: ui/globe_view.gd:448
 msgid "%d sectors away"
 msgstr "a %d sectores"
 
-#: ui/globe_view.gd:526
+#: ui/globe_view.gd:589
 msgid "%s HEXES CLEAN"
 msgstr "%s HEXÁGONOS LIMPIOS"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:591
 msgid "Surveyed %s ago%s"
 msgstr "Explorado hace %s%s"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:591
 msgid "   ·   OUTDATED"
 msgstr "   ·   DESACTUALIZADO"
 
-#: ui/globe_view.gd:529
+#: ui/globe_view.gd:592
 msgid "Re-survey      %s cubes"
 msgstr "Volver a explorar      %s cubos"
 
-#: ui/globe_view.gd:541
+#: ui/globe_view.gd:603
+msgid "%d%% clean"
+msgstr "%d%% limpio"
+
+#: ui/globe_view.gd:606
+msgid "%s of %s hexes around the bases"
+msgstr "%s de %s hexágonos alrededor de las bases"
+
+#: ui/globe_view.gd:609
+msgid "How much is clean"
+msgstr "Cuánto está limpio"
+
+#: ui/globe_view.gd:611
+msgid "%d of %d areas clean"
+msgstr "%d de %d zonas limpias"
+
+#: ui/globe_view.gd:691
 msgid "of the ground around your hubs is clean"
 msgstr "del suelo alrededor de tus bases está limpio"
 
-#: ui/globe_view.gd:543
+#: ui/globe_view.gd:693
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "del planeta recuperado  ·  %s de %s hexágonos de tierra"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:328
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:354
 msgid "DONE"
 msgstr "HECHO"
 
@@ -10917,10 +10945,6 @@ msgstr "Vacía tu compartimento en el cubo"
 #: data/goals.json:goals[dump_1].short
 msgid "Empty chest in bin"
 msgstr "Vacía el cofre en el cubo"
-
-#: data/goals.json:goals[upgrade_1].text
-msgid "Buy an upgrade at the bench"
-msgstr "Compra una mejora en el banco"
 
 #: data/goals.json:goals[upgrade_1].short
 msgid "Buy an upgrade"
@@ -17202,6 +17226,12 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "of the ground around the bases"
+#~ msgstr "del suelo alrededor de las bases"
+
+#~ msgid "Buy an upgrade: press  {interact}  at the bench"
+#~ msgstr "Compra una mejora: pulsa  {interact}  en el banco"
 
 #~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
 #~ msgstr "Banco de trabajo reparado. Pulsa {interact} en él para gastar cubos en mejoras."

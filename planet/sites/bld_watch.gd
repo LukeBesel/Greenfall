@@ -553,6 +553,14 @@ func _yard_views() -> void:
 		for k2: int in 45:
 			await tree.process_frame
 		get_viewport().get_texture().get_image().save_png(ProjectSettings.globalize_path("res://%s/view_%d.png" % [dir, vi]))
+	# [v10ui] view_4: the name sign close up, from the back of the yard (owner: "sign messed up").
+	var sign_at: Vector3 = hub_xf * Vector3(0.0, 0.0, -(CityLayout.YARD_HALF - 4.5))
+	var nf: Vector3 = (-hub_xf.basis.z - up * (-hub_xf.basis.z).dot(up)).normalized()
+	lumi.place_on_sphere(so.globe.terrain.ground(sign_at.normalized()), nf)
+	so.cam.reset_frame(nf)
+	for k3: int in 45:
+		await tree.process_frame
+	get_viewport().get_texture().get_image().save_png(ProjectSettings.globalize_path("res://%s/view_4.png" % dir))
 	print("[bldw] yard views saved to %s" % dir)
 	if DevHooks.has("bld-watch-quit"):
 		tree.quit(0)

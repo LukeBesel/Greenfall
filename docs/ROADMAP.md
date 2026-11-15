@@ -7,7 +7,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 The round world is the game, and the work is on its first planet, Verdance. The owner's bar: it must feel finished, with no glitches, easy progress, and simple enough for a young kid (docs/OWNER_FEEDBACK.md, items 1-56). This section is the one status summary; everything below it is the detail and the history.
 
 **Done**
-- **Start:** a clean loading screen, Medium quality by default, simple settings, robot beeps under the intro lines, and an opening film in three beats that ends on the game camera with no cut (shot table: `data/intro_shots.json`).
+- **Start:** a clean loading screen, High quality by default (owner item 96; Low on hardware that cannot run it), simple settings, robot beeps under the intro lines, and an opening film in three beats that ends on the game camera with no cut (shot table: `data/intro_shots.json`).
 - **World:** Verdance has flat-world trash density. Every hub is a town with its own character, with street furniture, outskirts and waterfronts, and the land between hubs has junk fields, suburbs and industrial edges. Lakes read as water, and the shorelines are clean.
 - **Start yard:** a flat, clean pad with trash right up to its edge, the bin bay next to the workbench, a fitted pod collider, and a tall smoke plume that marks home. No vehicle or buddy at the start.
 - **Guidance:** one goal timeline with one card. The beam and ring lead only to places. Hint lines cover a full chest, a piece too heavy, too few cubes, nothing nearby and the way home. WREN says why you are cleaning and narrates the goals once the tower is up. Messages and beeps are cut down, and one-time lines play once.
@@ -19,7 +19,7 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Growing and water:** plants are visible (sizes, soil, thirst). The first seed has a beacon. Hover Jets are needed to cross lakes.
 - **Glim:** a story build, the lantern bot who held on to the pod.
 - **Reach:** every collectible and objective target stands on reachable ground (`--target-reach`).
-- **Map:** our own survey style with sprout, Lumi and plume glyphs. Travel is at the rocket (press E), not in the map. Glyphs no longer cover each other on the start hub, the map shows the HUD's planet %, and the round game has one system map.
+- **Map:** our own survey style with sprout, Lumi and plume glyphs. Travel is at the rocket (press E), not in the map. Glyphs no longer cover each other on the start hub, the map is the planet progress view (item 109: whole-number % clean, a row per base area, always live and free), and the round game has one system map.
 - **Text:** all 3,992 strings are translated into German, French, Spanish, Brazilian Portuguese, Simplified Chinese and Japanese. A test fails when an early-game string has no translation.
 - **Screens (v6screens):** every 2D screen fits 1280x720, 1920x1080, 2560x1080 and 1280x800 at interface scale 0.8-1.5 in all six languages and pseudo, and works with a controller alone (focus always shown, B closes). The WREN line keeps off Lumi and the goal card. Seed of the Week is hidden (data/weekly.json `enabled`). Settings no longer offers Number format, Best-value tags or the Pseudo test language. Checked with `--ui-audit` (docs/QA_VERDANCE.md); not yet seen in a render.
 - **Checks:** the unit tests, the save round trip on the globe (with the shared-state checks of `tools/shared_roundtrip.gd`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.

@@ -10,7 +10,7 @@ const STEPS: Array[Dictionary] = [
 	{"id": "repair", "text": "Fix the Settlers' old bench: press  {interact}"},
 	{"id": "scoop", "text": "Pick up trash: hold  {scoop}", "goal": 8},
 	{"id": "dump", "text": "Bring your chest to the trash bin"},
-	{"id": "upgrade", "text": "Buy an upgrade: press  {interact}  at the bench"},
+	{"id": "upgrade", "text": "Buy an upgrade at the bench"},  # [v10ui] short: the bench's own prompt shows the key
 ]
 # [onboard2] QA P2: every early step uses what Lumi has at the start (the broken bench, his scoop,
 # the trash bin). Bales come later, with the Baler (story objectives, data/objectives.json).

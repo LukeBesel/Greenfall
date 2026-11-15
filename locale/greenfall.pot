@@ -195,67 +195,67 @@ msgstr ""
 msgid "Paddle 1"
 msgstr ""
 
-#: autoload/Settings.gd:544
+#: autoload/Settings.gd:547
 msgid "LMB"
 msgstr ""
 
-#: autoload/Settings.gd:545
+#: autoload/Settings.gd:548
 msgid "RMB"
 msgstr ""
 
-#: autoload/Settings.gd:546
+#: autoload/Settings.gd:549
 msgid "MMB"
 msgstr ""
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:550
 msgid "Wheel up"
 msgstr ""
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:551
 msgid "Wheel down"
 msgstr ""
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:552
 msgid "Mouse %d"
 msgstr ""
 
-#: autoload/Settings.gd:551
+#: autoload/Settings.gd:554
 msgid "Button %d"
 msgstr ""
 
-#: autoload/Settings.gd:556
+#: autoload/Settings.gd:559
 msgid "LS left"
 msgstr ""
 
-#: autoload/Settings.gd:556
+#: autoload/Settings.gd:559
 msgid "LS right"
 msgstr ""
 
-#: autoload/Settings.gd:557
+#: autoload/Settings.gd:560
 msgid "LS up"
 msgstr ""
 
-#: autoload/Settings.gd:557
+#: autoload/Settings.gd:560
 msgid "LS down"
 msgstr ""
 
-#: autoload/Settings.gd:558
+#: autoload/Settings.gd:561
 msgid "RS left"
 msgstr ""
 
-#: autoload/Settings.gd:558
+#: autoload/Settings.gd:561
 msgid "RS right"
 msgstr ""
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:562
 msgid "RS up"
 msgstr ""
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:562
 msgid "RS down"
 msgstr ""
 
-#: autoload/Settings.gd:570
+#: autoload/Settings.gd:573
 msgid "hold %s"
 msgstr ""
 
@@ -474,7 +474,7 @@ msgid "E   Telescope: look across the system"
 msgstr ""
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:259
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:709 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr ""
 
@@ -654,6 +654,14 @@ msgstr ""
 msgid "LIGHT  WATER  LIFE"
 msgstr ""
 
+#: planet/orbit_layers.gd:182 robots/sphere/command_overlay.gd:194
+msgid "Base %d"
+msgstr ""
+
+#: planet/orbit_layers.gd:191
+msgid "Press  {open_globe}  to see how much of the planet is clean"
+msgstr ""
+
 #: planet/orbit/orbit_crews.gd:223
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr ""
@@ -784,7 +792,7 @@ msgstr ""
 msgid "Asleep: %d / %d"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:445
+#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:618
 msgid "%s   %d%% CLEAN"
 msgstr ""
 
@@ -1126,7 +1134,7 @@ msgstr ""
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
-#: ui/globe_view.gd:495
+#: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr ""
 
@@ -1400,10 +1408,6 @@ msgstr ""
 
 #: robots/sphere/command_overlay.gd:190
 msgid "OTHER BASES"
-msgstr ""
-
-#: robots/sphere/command_overlay.gd:194
-msgid "Base %d"
 msgstr ""
 
 #: robots/sphere/command_overlay.gd:206
@@ -2327,8 +2331,8 @@ msgstr ""
 msgid "Bring your chest to the trash bin"
 msgstr ""
 
-#: story/tutorial.gd:13
-msgid "Buy an upgrade: press  {interact}  at the bench"
+#: story/tutorial.gd:13 data/goals.json:goals[upgrade_1].text
+msgid "Buy an upgrade at the bench"
 msgstr ""
 
 #: story/tutorial.gd:19
@@ -2965,20 +2969,20 @@ msgstr ""
 msgid "%d:%02d h"
 msgstr ""
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Low"
 msgstr ""
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 #: ui/settings_panel.gd:621
 msgid "Medium"
 msgstr ""
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "High"
 msgstr ""
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Ultra"
 msgstr ""
 
@@ -3649,7 +3653,7 @@ msgstr ""
 msgid "The Cradle has to come home first."
 msgstr ""
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:393
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
 #: ui/rockets_panel.gd:88 ui/system_map.gd:745
 msgid "Launch"
 msgstr ""
@@ -3703,7 +3707,7 @@ msgstr ""
 msgid "Fabricator"
 msgstr ""
 
-#: ui/bench_kit.gd:164 ui/upgrade_card.gd:222
+#: ui/bench_kit.gd:163 ui/upgrade_card.gd:222
 msgid "need %s"
 msgstr ""
 
@@ -3716,7 +3720,7 @@ msgstr ""
 msgid "Machines"
 msgstr ""
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:188 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:244 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr ""
@@ -3817,7 +3821,7 @@ msgstr ""
 msgid "Refill"
 msgstr ""
 
-#: ui/builder_panel.gd:21 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr ""
 
@@ -4161,7 +4165,7 @@ msgstr ""
 msgid "Bales cashed in"
 msgstr ""
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr ""
 
@@ -4686,83 +4690,107 @@ msgstr ""
 msgid "???  %s"
 msgstr ""
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:176
 msgid "Survey"
 msgstr ""
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:176
 msgid "Verdance  ·  seed-keeper's survey"
 msgstr ""
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:202
+msgid "Trash"
+msgstr ""
+
+#: ui/globe_view.gd:202
+msgid "Green"
+msgstr ""
+
+#: ui/globe_view.gd:211
 msgid "Not cleaned yet"
 msgstr ""
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:211
 msgid "Cleaned"
 msgstr ""
 
-#: ui/globe_view.gd:156 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr ""
 
-#: ui/globe_view.gd:157 ui/system_map.gd:703 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:213 ui/system_map.gd:703 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr ""
 
-#: ui/globe_view.gd:157
+#: ui/globe_view.gd:213
 msgid "Cities"
 msgstr ""
 
-#: ui/globe_view.gd:158
+#: ui/globe_view.gd:214
 msgid "Hubs"
 msgstr ""
 
-#: ui/globe_view.gd:173 ui/late_menu.gd:21
+#: ui/globe_view.gd:229 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr ""
 
-#: ui/globe_view.gd:188
+#: ui/globe_view.gd:244
 msgid "Travel between bases"
 msgstr ""
 
-#: ui/globe_view.gd:208
+#: ui/globe_view.gd:264
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr ""
 
-#: ui/globe_view.gd:335
+#: ui/globe_view.gd:393
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr ""
 
-#: ui/globe_view.gd:390
+#: ui/globe_view.gd:448
 msgid "%d sectors away"
 msgstr ""
 
-#: ui/globe_view.gd:526
+#: ui/globe_view.gd:589
 msgid "%s HEXES CLEAN"
 msgstr ""
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:591
 msgid "Surveyed %s ago%s"
 msgstr ""
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:591
 msgid "   ·   OUTDATED"
 msgstr ""
 
-#: ui/globe_view.gd:529
+#: ui/globe_view.gd:592
 msgid "Re-survey      %s cubes"
 msgstr ""
 
-#: ui/globe_view.gd:541
+#: ui/globe_view.gd:603
+msgid "%d%% clean"
+msgstr ""
+
+#: ui/globe_view.gd:606
+msgid "%s of %s hexes around the bases"
+msgstr ""
+
+#: ui/globe_view.gd:609
+msgid "How much is clean"
+msgstr ""
+
+#: ui/globe_view.gd:611
+msgid "%d of %d areas clean"
+msgstr ""
+
+#: ui/globe_view.gd:691
 msgid "of the ground around your hubs is clean"
 msgstr ""
 
-#: ui/globe_view.gd:543
+#: ui/globe_view.gd:693
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr ""
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:328
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:354
 msgid "DONE"
 msgstr ""
 
@@ -10796,10 +10824,6 @@ msgstr ""
 
 #: data/goals.json:goals[dump_1].short
 msgid "Empty chest in bin"
-msgstr ""
-
-#: data/goals.json:goals[upgrade_1].text
-msgid "Buy an upgrade at the bench"
 msgstr ""
 
 #: data/goals.json:goals[upgrade_1].short

@@ -85,6 +85,43 @@ var _rocket_card: Control
 var _hint: PromptLabel
 ## [v2map] How many bases the legend counts (the round globe has its hub sites, not planet.hubs).
 var hub_count: Callable = Callable()
+## [v10ui] Owner, playtest 3 #109: "see how many sections you have left on the planet and what %
+## you have done". With this set (the round game) the map is the planet's progress view: always
+## live and free, a whole-number "N% clean" over the base areas, "X of Y areas clean" and one row
+## per area (picture, name, bar, %, a tick when clean; an area not visited yet is a locked "?").
+## Returns [{name, ok, n, kind: home|awake|asleep|locked, here}], in the order of the base path.
+var areas_fn: Callable = Callable()
+## A row is ticked from this many whole percent.
+const AREA_DONE_PCT: int = 100
+var _areas_lbl: Label
+var _card_title: Label
+var _card_sub: Label
+var _area_rows: VBoxContainer
+var _area_sig: String = ""
+var _legend: HFlowContainer
+
+
+## [v10ui] Whole percent, rounded down (the HUD's "N% CLEAN" does the same).
+static func whole_pct(ok: int, n: int) -> int:
+	return int(floor(100.0 * float(ok) / maxf(1.0, float(n)) + 0.0001))
+
+
+## [v10ui] The card's numbers from the area rows: {pct, frac, done, total}. The headline is the
+## share of all the areas' ground together (what the rows add up to); done counts ticked rows.
+static func progress_of(areas: Array) -> Dictionary:
+	var ok: int = 0
+	var n: int = 0
+	var done: int = 0
+	for a: Dictionary in areas:
+		ok += int(a.get("ok", 0))
+		n += int(a.get("n", 0))
+		if whole_pct(int(a.get("ok", 0)), int(a.get("n", 0))) >= AREA_DONE_PCT:
+			done += 1
+	return {"pct": whole_pct(ok, n), "frac": float(ok) / maxf(1.0, float(n)), "done": done, "total": areas.size(), "ok": ok, "n": n}
+
+
+func progress_mode() -> bool:
+	return areas_fn.is_valid()
 
 
 func _ready() -> void:
@@ -139,6 +176,8 @@ func _ready() -> void:
 	var c1: Array = _holo_card(tr("Survey"), 300, tr("Verdance  ·  seed-keeper's survey"))
 	left.add_child(c1[0])
 	var b1: VBoxContainer = c1[1]
+	_card_title = b1.get_child(0).get_child(1).get_child(0) as Label
+	_card_sub = b1.get_child(0).get_child(1).get_child(1) as Label
 	_pct = UITheme.label("0.0 %", 40, CREAM)
 	b1.add_child(_pct)
 	_pct_sub = UITheme.label("", 13, UITheme.MUTED)
@@ -149,6 +188,23 @@ func _ready() -> void:
 	_bar.add_theme_stylebox_override("fill", UITheme.box(_legend_col(PlanetData.State.CLEAN), Color(0, 0, 0, 0), 0, 4, 0))
 	_bar.add_theme_stylebox_override("background", UITheme.box(Color(_legend_col(PlanetData.State.JUNK), 0.35), Color(0, 0, 0, 0), 0, 4, 0))
 	b1.add_child(_bar)
+	_areas_lbl = UITheme.label("", 15, CREAM)  # [v10ui] "2 of 6 areas clean"
+	_areas_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_areas_lbl.visible = false
+	b1.add_child(_areas_lbl)
+	_area_rows = VBoxContainer.new()
+	_area_rows.add_theme_constant_override("separation", 3)
+	_area_rows.visible = false
+	b1.add_child(_area_rows)
+	_legend = HFlowContainer.new()  # the globe's colours in three words
+	_legend.add_theme_constant_override("h_separation", 12)
+	_legend.visible = false
+	for lg: Array in [[_legend_col(PlanetData.State.JUNK), tr("Trash")], [_legend_col(PlanetData.State.CLEAN), tr("Clean")], [_legend_col(PlanetData.State.RESTORED), tr("Green")]]:
+		var lr: HBoxContainer = UITheme.stat_row(lg[0], lg[1])
+		(lr.get_child(1) as Label).size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		(lr.get_child(1) as Label).add_theme_font_size_override("font_size", 12)
+		_legend.add_child(lr)
+	b1.add_child(_legend)
 	_rows = VBoxContainer.new()
 	_rows.add_theme_constant_override("separation", 4)
 	b1.add_child(_rows)
@@ -193,7 +249,7 @@ func _ready() -> void:
 	# [v2map] Top centre: big readout and the controls on one soft plate (at the bottom the
 	# subtitles covered them, and bare text over the daylit world was hard to read).
 	var top := PanelContainer.new()
-	top.add_theme_stylebox_override("panel", UITheme.box(Color(0.04, 0.1, 0.09, 0.7), Color(HOLO, 0.25), 1, 12, 10))
+	top.add_theme_stylebox_override("panel", UITheme.box(Color(0.04, 0.1, 0.09, 0.92), Color(HOLO, 0.25), 1, 12, 10))  # [v10ui] solid enough that world text behind (a town sign) never reads through
 	top.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	top.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	top.offset_top = 18
@@ -314,8 +370,10 @@ func open_view() -> void:
 		_zoom = clampf(DevHooks.get_f("survey-zoom", 3.2), 1.4, 6.0)
 	if planet == null:
 		return
-	if _snapshot.is_empty():
+	if _snapshot.is_empty() or progress_mode():  # [v10ui] the progress view is always live and free
 		survey()
+	if progress_mode():
+		GameState.flags["map_seen"] = true  # the "Look at the map" step
 	is_open = true
 	_root.visible = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -470,7 +528,9 @@ func _set_handheld(on: bool) -> void:
 		if model:
 			model.holding = true
 			model.set_happy(0.7)
+		_show_carried(false)
 	else:
+		_show_carried(true)
 		if _anchor and _pivot.get_parent() == _anchor:
 			_pivot.reparent(_vp, false)
 			_pivot.position = Vector3.ZERO
@@ -500,6 +560,9 @@ func _on_resurvey() -> void:
 
 
 func _refresh_text() -> void:
+	if progress_mode():
+		_refresh_progress()
+		return
 	var counts: Dictionary = {}
 	var land: int = 0
 	# [v5text] Hub ground (the yards and the ground under town buildings) is nobody's work: the HUD's
@@ -531,6 +594,93 @@ func _refresh_text() -> void:
 		_system_btn.visible = open_system.is_valid() and Homeward.system_open()  # [pace2] partial progress opens the system
 	_ark.text = Bloom.globe_line()
 	_ark.visible = _ark.text != ""
+
+
+## [v10ui] The progress card (round game): whole-number %, areas done, one row per area.
+func _refresh_progress() -> void:
+	var areas: Array = areas_fn.call()
+	var pr: Dictionary = progress_of(areas)
+	_pct.text = tr("%d%% clean") % int(pr["pct"])
+	# The whole % stays at 0 for the first hour (six big areas), so the line under it counts hexes:
+	# a number that moves with every hex cleaned.
+	_pct_sub.text = tr("%s of %s hexes around the bases") % [_num(int(pr["ok"])), _num(int(pr["n"]))]
+	if _card_title:
+		_card_title.text = tr(str(Economy.planet.get("name", "Verdance")))
+		_card_sub.text = tr("How much is clean")
+	_bar.value = float(pr["frac"]) * 100.0
+	_areas_lbl.text = tr("%d of %d areas clean") % [int(pr["done"]), int(pr["total"])]
+	_areas_lbl.visible = true
+	_area_rows.visible = true
+	_legend.visible = true
+	_rows.visible = false
+	_age.visible = false
+	_resurvey.visible = false
+	_big.text = tr("%s   %d%% CLEAN") % [tr(str(Economy.planet.get("name", "Verdance"))).to_upper(), int(pr["pct"])]
+	if _system_btn:
+		_system_btn.visible = open_system.is_valid() and Homeward.system_open()
+	_ark.text = Bloom.globe_line()
+	_ark.visible = _ark.text != ""
+	var sig: String = TranslationServer.get_locale()
+	for a: Dictionary in areas:
+		sig += "|%s:%d:%s:%s" % [str(a.get("name", "")), whole_pct(int(a.get("ok", 0)), int(a.get("n", 0))), str(a.get("kind", "")), str(a.get("here", false))]
+	if sig == _area_sig:
+		return
+	_area_sig = sig
+	for c: Node in _area_rows.get_children():
+		_area_rows.remove_child(c)
+		c.queue_free()
+	for a: Dictionary in areas:
+		_area_rows.add_child(_area_row(a))
+
+
+## [v10ui] What the progress card shows, as text (walks and tests): {pct, done, total, big, rows:
+## [{name, pct, kind, done, here}]}.
+func read_progress() -> Dictionary:
+	var areas: Array = areas_fn.call() if progress_mode() else []
+	var pr: Dictionary = progress_of(areas)
+	var rows: Array = []
+	for a: Dictionary in areas:
+		var p: int = whole_pct(int(a.get("ok", 0)), int(a.get("n", 0)))
+		rows.append({"name": str(a.get("name", "")), "pct": p, "kind": str(a.get("kind", "")), "done": p >= AREA_DONE_PCT, "here": bool(a.get("here", false))})
+	return {"pct": int(pr["pct"]), "done": int(pr["done"]), "total": int(pr["total"]), "big": _pct.text, "sub": _pct_sub.text, "ok": int(pr["ok"]), "n": int(pr["n"]), "areas": _areas_lbl.text, "rows": rows, "shown_rows": _area_rows.get_child_count()}
+
+
+const AREA_PICS: Dictionary = {"home": "house", "awake": "flag", "asleep": "flag", "locked": "lock"}
+
+
+func _area_row(a: Dictionary) -> Control:
+	var kind: String = str(a.get("kind", "locked"))
+	var locked: bool = kind == "locked"
+	var p: int = whole_pct(int(a.get("ok", 0)), int(a.get("n", 0)))
+	var done: bool = p >= AREA_DONE_PCT and not locked
+	var col: Color = Color(CREAM, 0.6) if locked else (UITheme.GREEN if done else CREAM)
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 6)
+	var pic := StepIcons.Picture.new(str(AREA_PICS.get(kind, "flag")), 22.0, UITheme.GOLD if bool(a.get("here", false)) else col)
+	pic.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	hb.add_child(pic)
+	var nm := UITheme.label("?" if locked else str(a.get("name", "")), 14, col)
+	nm.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	nm.custom_minimum_size = Vector2(96, 0)
+	nm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(nm)
+	var bar := ProgressBar.new()
+	bar.show_percentage = false
+	bar.custom_minimum_size = Vector2(64, 8)
+	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	bar.value = 0.0 if locked else 100.0 * float(a.get("ok", 0)) / maxf(1.0, float(a.get("n", 0)))
+	bar.add_theme_stylebox_override("fill", UITheme.box(UITheme.GREEN if done else _legend_col(PlanetData.State.CLEAN), Color(0, 0, 0, 0), 0, 4, 0))
+	bar.add_theme_stylebox_override("background", UITheme.box(Color(_legend_col(PlanetData.State.JUNK), 0.18 if locked else 0.35), Color(0, 0, 0, 0), 0, 4, 0))
+	hb.add_child(bar)
+	var pl := UITheme.label("" if locked else "%d%%" % p, 14, col)
+	pl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	pl.custom_minimum_size = Vector2(40, 0)
+	hb.add_child(pl)
+	var tick := StepIcons.Picture.new("check", 18.0, UITheme.GREEN)
+	tick.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	tick.modulate.a = 1.0 if done else 0.0
+	hb.add_child(tick)
+	return hb
 
 
 ## [v5text] The card's big number: [text, what it means, fraction 0..1]. On the round game it is
@@ -684,6 +834,8 @@ func _process(delta: float) -> void:
 		if sphere_grid:  # [orbE] "you are here": a gold pin standing on Lumi's big hex
 			_here_pin(sphere_grid.centers[pc])
 	if Engine.get_process_frames() % 30 == 0:
+		if progress_mode() and cells and _snapshot != cells.state:  # [v10ui] live: the globe follows the cleaning
+			survey()
 		_refresh_text()
 
 
@@ -742,6 +894,15 @@ func _place_handheld(delta: float) -> void:
 	_world_cam.global_position = _world_cam.global_position.lerp(want, clampf(delta * 4.0, 0.0, 1.0))
 	# Aim a little left of the globe so it sits right of centre, clear of the survey card.
 	_world_cam.look_at(center - right * dist * 0.2, up)
+
+
+## [v10ui] Play-test: with a bale in hand the stack stood where the hologram floats and filled the
+## middle of the map. What Lumi carries (the stack and its tray) is put out of sight while the map
+## is up, so the map reads the same whatever he holds.
+func _show_carried(on: bool) -> void:
+	var stack: Node3D = holder.get_node_or_null("Stack") as Node3D if holder else null
+	if stack:
+		stack.visible = on
 
 
 var _pin: Sprite3D  # [v2map] the Lumi glyph

@@ -196,67 +196,67 @@ msgstr "触摸板"
 msgid "Paddle 1"
 msgstr "背键 1"
 
-#: autoload/Settings.gd:544
+#: autoload/Settings.gd:547
 msgid "LMB"
 msgstr "左键"
 
-#: autoload/Settings.gd:545
+#: autoload/Settings.gd:548
 msgid "RMB"
 msgstr "右键"
 
-#: autoload/Settings.gd:546
+#: autoload/Settings.gd:549
 msgid "MMB"
 msgstr "中键"
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:550
 msgid "Wheel up"
 msgstr "滚轮上"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:551
 msgid "Wheel down"
 msgstr "滚轮下"
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:552
 msgid "Mouse %d"
 msgstr "鼠标 %d"
 
-#: autoload/Settings.gd:551
+#: autoload/Settings.gd:554
 msgid "Button %d"
 msgstr "按键 %d"
 
-#: autoload/Settings.gd:556
+#: autoload/Settings.gd:559
 msgid "LS left"
 msgstr "左摇杆左"
 
-#: autoload/Settings.gd:556
+#: autoload/Settings.gd:559
 msgid "LS right"
 msgstr "左摇杆右"
 
-#: autoload/Settings.gd:557
+#: autoload/Settings.gd:560
 msgid "LS up"
 msgstr "左摇杆上"
 
-#: autoload/Settings.gd:557
+#: autoload/Settings.gd:560
 msgid "LS down"
 msgstr "左摇杆下"
 
-#: autoload/Settings.gd:558
+#: autoload/Settings.gd:561
 msgid "RS left"
 msgstr "右摇杆左"
 
-#: autoload/Settings.gd:558
+#: autoload/Settings.gd:561
 msgid "RS right"
 msgstr "右摇杆右"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:562
 msgid "RS up"
 msgstr "右摇杆上"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:562
 msgid "RS down"
 msgstr "右摇杆下"
 
-#: autoload/Settings.gd:570
+#: autoload/Settings.gd:573
 msgid "hold %s"
 msgstr "按住 %s"
 
@@ -475,7 +475,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:259
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:709 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d 分钟"
 
@@ -655,6 +655,14 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
+#: planet/orbit_layers.gd:182 robots/sphere/command_overlay.gd:194
+msgid "Base %d"
+msgstr "基地 %d"
+
+#: planet/orbit_layers.gd:191
+msgid "Press  {open_globe}  to see how much of the planet is clean"
+msgstr "按  {open_globe}  看看星球有多少已经干净"
+
 #: planet/orbit/orbit_crews.gd:223
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "你的机器人清理了一个六边形！也算数：%d / %d"
@@ -784,7 +792,7 @@ msgstr "可以唤醒"
 msgid "Asleep: %d / %d"
 msgstr "沉睡中：%d / %d"
 
-#: planet/sites/hub_purpose.gd:445
+#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:618
 msgid "%s   %d%% CLEAN"
 msgstr "%s   已清理 %d%%"
 
@@ -1130,7 +1138,7 @@ msgstr "零件不足"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
-#: ui/globe_view.gd:495
+#: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr "方块不足"
 
@@ -1403,10 +1411,6 @@ msgstr "点击 - 或 +（或按键 - +）：来几个"
 #: robots/sphere/command_overlay.gd:190
 msgid "OTHER BASES"
 msgstr "其他基地"
-
-#: robots/sphere/command_overlay.gd:194
-msgid "Base %d"
-msgstr "基地 %d"
 
 #: robots/sphere/command_overlay.gd:206
 msgid "Good! Your robots will work here first."
@@ -2347,9 +2351,9 @@ msgstr "捡垃圾：按住  {scoop}"
 msgid "Bring your chest to the trash bin"
 msgstr "把胸舱带到垃圾桶"
 
-#: story/tutorial.gd:13
-msgid "Buy an upgrade: press  {interact}  at the bench"
-msgstr "购买升级：在工作台按  {interact}"
+#: story/tutorial.gd:13 data/goals.json:goals[upgrade_1].text
+msgid "Buy an upgrade at the bench"
+msgstr "在工作台购买一项升级"
 
 #: story/tutorial.gd:19
 msgid "Lumi is back on the job"
@@ -2979,20 +2983,20 @@ msgstr "存档 %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d 小时"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 #: ui/settings_panel.gd:621
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Ultra"
 msgstr "超高"
 
@@ -3663,7 +3667,7 @@ msgstr "播种新世界"
 msgid "The Cradle has to come home first."
 msgstr "Cradle号得先回家。"
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:393
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
 #: ui/rockets_panel.gd:88 ui/system_map.gd:745
 msgid "Launch"
 msgstr "发射"
@@ -3717,7 +3721,7 @@ msgstr "车队"
 msgid "Fabricator"
 msgstr "制造机"
 
-#: ui/bench_kit.gd:164 ui/upgrade_card.gd:222
+#: ui/bench_kit.gd:163 ui/upgrade_card.gd:222
 msgid "need %s"
 msgstr "还差%s"
 
@@ -3730,7 +3734,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "机器"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:188 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:244 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "火箭"
@@ -3830,7 +3834,7 @@ msgstr "喷洒范围"
 msgid "Refill"
 msgstr "补水"
 
-#: ui/builder_panel.gd:21 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清理"
 
@@ -4178,7 +4182,7 @@ msgstr "不平整捆包"
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
@@ -4701,83 +4705,107 @@ msgstr "外观"
 msgid "???  %s"
 msgstr "???  %s"
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:176
 msgid "Survey"
 msgstr "勘测"
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:176
 msgid "Verdance  ·  seed-keeper's survey"
 msgstr "Verdance  ·  种子守护者的勘测"
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:202
+msgid "Trash"
+msgstr "垃圾"
+
+#: ui/globe_view.gd:202
+msgid "Green"
+msgstr "绿色"
+
+#: ui/globe_view.gd:211
 msgid "Not cleaned yet"
 msgstr "尚未清理"
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:211
 msgid "Cleaned"
 msgstr "已清理"
 
-#: ui/globe_view.gd:156 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "已种植"
 
-#: ui/globe_view.gd:157 ui/system_map.gd:703 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:213 ui/system_map.gd:703 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "已恢复"
 
-#: ui/globe_view.gd:157
+#: ui/globe_view.gd:213
 msgid "Cities"
 msgstr "城市"
 
-#: ui/globe_view.gd:158
+#: ui/globe_view.gd:214
 msgid "Hubs"
 msgstr "基地"
 
-#: ui/globe_view.gd:173 ui/late_menu.gd:21
+#: ui/globe_view.gd:229 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "太阳系"
 
-#: ui/globe_view.gd:188
+#: ui/globe_view.gd:244
 msgid "Travel between bases"
 msgstr "在基地间旅行"
 
-#: ui/globe_view.gd:208
+#: ui/globe_view.gd:264
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {zoom_out}{zoom_in}  缩放     {@dpad}  发射列表     [/p]{open_globe}  关闭"
 
-#: ui/globe_view.gd:335
+#: ui/globe_view.gd:393
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {zoom_out}{zoom_in}  缩放     [/p]{open_globe}  关闭"
 
-#: ui/globe_view.gd:390
+#: ui/globe_view.gd:448
 msgid "%d sectors away"
 msgstr "相隔 %d 个扇区"
 
-#: ui/globe_view.gd:526
+#: ui/globe_view.gd:589
 msgid "%s HEXES CLEAN"
 msgstr "%s 个六角格已清理"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:591
 msgid "Surveyed %s ago%s"
 msgstr "%s前勘测%s"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:591
 msgid "   ·   OUTDATED"
 msgstr "   ·   已过时"
 
-#: ui/globe_view.gd:529
+#: ui/globe_view.gd:592
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
-#: ui/globe_view.gd:541
+#: ui/globe_view.gd:603
+msgid "%d%% clean"
+msgstr "%d%% 干净"
+
+#: ui/globe_view.gd:606
+msgid "%s of %s hexes around the bases"
+msgstr "基地周围 %s / %s 个六角格"
+
+#: ui/globe_view.gd:609
+msgid "How much is clean"
+msgstr "已经干净了多少"
+
+#: ui/globe_view.gd:611
+msgid "%d of %d areas clean"
+msgstr "%d / %d 个区域已干净"
+
+#: ui/globe_view.gd:691
 msgid "of the ground around your hubs is clean"
 msgstr "基地周围的土地已清理干净"
 
-#: ui/globe_view.gd:543
+#: ui/globe_view.gd:693
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:328
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:354
 msgid "DONE"
 msgstr "完成"
 
@@ -10900,10 +10928,6 @@ msgstr "把胸舱里的垃圾倒进垃圾桶"
 #: data/goals.json:goals[dump_1].short
 msgid "Empty chest in bin"
 msgstr "把箱子倒进垃圾桶"
-
-#: data/goals.json:goals[upgrade_1].text
-msgid "Buy an upgrade at the bench"
-msgstr "在工作台购买一项升级"
 
 #: data/goals.json:goals[upgrade_1].short
 msgid "Buy an upgrade"
@@ -17185,6 +17209,12 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "of the ground around the bases"
+#~ msgstr "基地周围的地面"
+
+#~ msgid "Buy an upgrade: press  {interact}  at the bench"
+#~ msgstr "购买升级：在工作台按  {interact}"
 
 #~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
 #~ msgstr "工作台修好了。在它旁边按 {interact}，用方块购买升级。"

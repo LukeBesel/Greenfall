@@ -196,67 +196,67 @@ msgstr "タッチパッド"
 msgid "Paddle 1"
 msgstr "パドル 1"
 
-#: autoload/Settings.gd:544
+#: autoload/Settings.gd:547
 msgid "LMB"
 msgstr "左クリック"
 
-#: autoload/Settings.gd:545
+#: autoload/Settings.gd:548
 msgid "RMB"
 msgstr "右クリック"
 
-#: autoload/Settings.gd:546
+#: autoload/Settings.gd:549
 msgid "MMB"
 msgstr "中クリック"
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:550
 msgid "Wheel up"
 msgstr "ホイール上"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:551
 msgid "Wheel down"
 msgstr "ホイール下"
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:552
 msgid "Mouse %d"
 msgstr "マウス %d"
 
-#: autoload/Settings.gd:551
+#: autoload/Settings.gd:554
 msgid "Button %d"
 msgstr "ボタン %d"
 
-#: autoload/Settings.gd:556
+#: autoload/Settings.gd:559
 msgid "LS left"
 msgstr "Lスティック左"
 
-#: autoload/Settings.gd:556
+#: autoload/Settings.gd:559
 msgid "LS right"
 msgstr "Lスティック右"
 
-#: autoload/Settings.gd:557
+#: autoload/Settings.gd:560
 msgid "LS up"
 msgstr "Lスティック上"
 
-#: autoload/Settings.gd:557
+#: autoload/Settings.gd:560
 msgid "LS down"
 msgstr "Lスティック下"
 
-#: autoload/Settings.gd:558
+#: autoload/Settings.gd:561
 msgid "RS left"
 msgstr "Rスティック左"
 
-#: autoload/Settings.gd:558
+#: autoload/Settings.gd:561
 msgid "RS right"
 msgstr "Rスティック右"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:562
 msgid "RS up"
 msgstr "Rスティック上"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:562
 msgid "RS down"
 msgstr "Rスティック下"
 
-#: autoload/Settings.gd:570
+#: autoload/Settings.gd:573
 msgid "hold %s"
 msgstr "%s 長押し"
 
@@ -475,7 +475,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   望遠鏡：星系を見わたす"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:259
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:709 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d 分"
 
@@ -655,6 +655,14 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
+#: planet/orbit_layers.gd:182 robots/sphere/command_overlay.gd:194
+msgid "Base %d"
+msgstr "基地 %d"
+
+#: planet/orbit_layers.gd:191
+msgid "Press  {open_globe}  to see how much of the planet is clean"
+msgstr "{open_globe}  を押すと、星がどれだけきれいか見られるよ"
+
 #: planet/orbit/orbit_crews.gd:223
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "ロボットがヘックスを1つきれいにしたよ！これも数に入る：%d / %d"
@@ -784,7 +792,7 @@ msgstr "起こせる"
 msgid "Asleep: %d / %d"
 msgstr "眠っている：%d / %d"
 
-#: planet/sites/hub_purpose.gd:445
+#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:618
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% きれい"
 
@@ -1130,7 +1138,7 @@ msgstr "パーツが足りません"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
-#: ui/globe_view.gd:495
+#: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr "キューブが足りない"
 
@@ -1403,10 +1411,6 @@ msgstr "- か + をクリック（キー - +）：来る数"
 #: robots/sphere/command_overlay.gd:190
 msgid "OTHER BASES"
 msgstr "ほかの基地"
-
-#: robots/sphere/command_overlay.gd:194
-msgid "Base %d"
-msgstr "基地 %d"
 
 #: robots/sphere/command_overlay.gd:206
 msgid "Good! Your robots will work here first."
@@ -2347,9 +2351,9 @@ msgstr "ゴミを拾う：  {scoop}  を長押し"
 msgid "Bring your chest to the trash bin"
 msgstr "胸のゴミをゴミ箱へ運ぶ"
 
-#: story/tutorial.gd:13
-msgid "Buy an upgrade: press  {interact}  at the bench"
-msgstr "アップグレードを買う：作業台で  {interact}  を押す"
+#: story/tutorial.gd:13 data/goals.json:goals[upgrade_1].text
+msgid "Buy an upgrade at the bench"
+msgstr "作業台でアップグレードを買う"
 
 #: story/tutorial.gd:19
 msgid "Lumi is back on the job"
@@ -2979,20 +2983,20 @@ msgstr "プロフィール %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d 時間"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 #: ui/settings_panel.gd:621
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Ultra"
 msgstr "最高"
 
@@ -3663,7 +3667,7 @@ msgstr "新しい世界に種をまく"
 msgid "The Cradle has to come home first."
 msgstr "まずは Cradle号が帰ってこないと。"
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:393
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
 #: ui/rockets_panel.gd:88 ui/system_map.gd:745
 msgid "Launch"
 msgstr "発射"
@@ -3717,7 +3721,7 @@ msgstr "艦隊"
 msgid "Fabricator"
 msgstr "ファブリケーター"
 
-#: ui/bench_kit.gd:164 ui/upgrade_card.gd:222
+#: ui/bench_kit.gd:163 ui/upgrade_card.gd:222
 msgid "need %s"
 msgstr "あと%s"
 
@@ -3730,7 +3734,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "機械"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:188 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:244 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "ロケット"
@@ -3830,7 +3834,7 @@ msgstr "散水範囲"
 msgid "Refill"
 msgstr "補給"
 
-#: ui/builder_panel.gd:21 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清掃"
 
@@ -4178,7 +4182,7 @@ msgstr "でこぼこベール"
 msgid "Bales cashed in"
 msgstr "換金したベール"
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "栽培"
 
@@ -4701,83 +4705,107 @@ msgstr "見た目"
 msgid "???  %s"
 msgstr "???  %s"
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:176
 msgid "Survey"
 msgstr "調査"
 
-#: ui/globe_view.gd:139
+#: ui/globe_view.gd:176
 msgid "Verdance  ·  seed-keeper's survey"
 msgstr "Verdance  ·  種の守り手の調査"
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:202
+msgid "Trash"
+msgstr "ゴミ"
+
+#: ui/globe_view.gd:202
+msgid "Green"
+msgstr "みどり"
+
+#: ui/globe_view.gd:211
 msgid "Not cleaned yet"
 msgstr "未清掃"
 
-#: ui/globe_view.gd:155
+#: ui/globe_view.gd:211
 msgid "Cleaned"
 msgstr "清掃済み"
 
-#: ui/globe_view.gd:156 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "植え付け済み"
 
-#: ui/globe_view.gd:157 ui/system_map.gd:703 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:213 ui/system_map.gd:703 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "再生済み"
 
-#: ui/globe_view.gd:157
+#: ui/globe_view.gd:213
 msgid "Cities"
 msgstr "都市"
 
-#: ui/globe_view.gd:158
+#: ui/globe_view.gd:214
 msgid "Hubs"
 msgstr "基地"
 
-#: ui/globe_view.gd:173 ui/late_menu.gd:21
+#: ui/globe_view.gd:229 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "太陽系"
 
-#: ui/globe_view.gd:188
+#: ui/globe_view.gd:244
 msgid "Travel between bases"
 msgstr "基地間を移動"
 
-#: ui/globe_view.gd:208
+#: ui/globe_view.gd:264
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]ドラッグで回転   ·   ホイールでズーム   ·   [/k][p]{@look}  回転     {zoom_out}{zoom_in}  ズーム     {@dpad}  発射リスト     [/p]{open_globe}  閉じる"
 
-#: ui/globe_view.gd:335
+#: ui/globe_view.gd:393
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr "[k]ドラッグで回転   ·   ホイールでズーム   ·   [/k][p]{@look}  回転     {zoom_out}{zoom_in}  ズーム     [/p]{open_globe}  閉じる"
 
-#: ui/globe_view.gd:390
+#: ui/globe_view.gd:448
 msgid "%d sectors away"
 msgstr "%d セクター先"
 
-#: ui/globe_view.gd:526
+#: ui/globe_view.gd:589
 msgid "%s HEXES CLEAN"
 msgstr "きれいなヘックス %s"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:591
 msgid "Surveyed %s ago%s"
 msgstr "%s前に調査%s"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:591
 msgid "   ·   OUTDATED"
 msgstr "   ·   古い情報"
 
-#: ui/globe_view.gd:529
+#: ui/globe_view.gd:592
 msgid "Re-survey      %s cubes"
 msgstr "再調査      %s キューブ"
 
-#: ui/globe_view.gd:541
+#: ui/globe_view.gd:603
+msgid "%d%% clean"
+msgstr "%d%% きれい"
+
+#: ui/globe_view.gd:606
+msgid "%s of %s hexes around the bases"
+msgstr "基地のまわり %s / %s ヘックス"
+
+#: ui/globe_view.gd:609
+msgid "How much is clean"
+msgstr "どれだけきれいになった？"
+
+#: ui/globe_view.gd:611
+msgid "%d of %d areas clean"
+msgstr "%d / %d エリアがきれい"
+
+#: ui/globe_view.gd:691
 msgid "of the ground around your hubs is clean"
 msgstr "基地のまわりの地面がきれいになった"
 
-#: ui/globe_view.gd:543
+#: ui/globe_view.gd:693
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "の土地を取り戻した  ·  陸のヘックス %s / %s"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:328
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:354
 msgid "DONE"
 msgstr "完了"
 
@@ -10900,10 +10928,6 @@ msgstr "胸のゴミをゴミ箱に空ける"
 #: data/goals.json:goals[dump_1].short
 msgid "Empty chest in bin"
 msgstr "チェストをゴミ箱へ"
-
-#: data/goals.json:goals[upgrade_1].text
-msgid "Buy an upgrade at the bench"
-msgstr "作業台でアップグレードを買う"
 
 #: data/goals.json:goals[upgrade_1].short
 msgid "Buy an upgrade"
@@ -17185,6 +17209,12 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "of the ground around the bases"
+#~ msgstr "基地のまわりの地面"
+
+#~ msgid "Buy an upgrade: press  {interact}  at the bench"
+#~ msgstr "アップグレードを買う：作業台で  {interact}  を押す"
 
 #~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
 #~ msgstr "作業台を修理した。作業台で {interact} を押すとキューブでアップグレードできる。"

@@ -510,9 +510,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	if not is_open:
 		return
-	_currency.text = Settings.fmt(GameState.get_currency("cubes"))
-	_parts_lbl.text = Settings.fmt(GameState.get_currency("parts"))
-	_seeds_lbl.text = Settings.fmt(GameState.get_currency("seeds"))
+	_currency.text = Currencies.have("cubes")  # [v10ui] one text for a balance everywhere
+	_parts_lbl.text = Currencies.have("parts")
+	_seeds_lbl.text = Currencies.have("seeds")
 	_refresh_t -= delta
 	if _refresh_t <= 0.0:
 		_refresh_t = 0.25

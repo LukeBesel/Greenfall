@@ -382,8 +382,15 @@ func _exit_tree() -> void:
 
 ## Mean clean share of hub i's region (0..1).
 func region_clean(i: int) -> float:
+	var rc: Vector2i = region_counts(i)
+	return float(rc.x) / maxf(1.0, float(rc.y))
+
+
+## [v10ui] Hub i's region as (clean cells, cells that count): the one source for an area's % on the
+## HUD, the rocket list and the map's progress card.
+func region_counts(i: int) -> Vector2i:
 	if cells == null or i >= regions.size():
-		return 0.0
+		return Vector2i.ZERO
 	var reg: PackedInt32Array = regions[i]
 	var n: int = 0
 	var ok: int = 0
@@ -395,7 +402,7 @@ func region_clean(i: int) -> float:
 		n += 1
 		if not cells.is_dirty(c):
 			ok += 1
-	return float(ok) / maxf(1.0, float(n))
+	return Vector2i(ok, n)
 
 
 ## Restoration shown on hub i's prefab: its region's clean share.

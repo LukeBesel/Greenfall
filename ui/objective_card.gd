@@ -79,8 +79,7 @@ func _ready() -> void:
 	_title = UITheme.label("", 20, UITheme.CREAM)
 	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_title.custom_minimum_size = Vector2(tw, 0)
-	_title.max_lines_visible = 2
-	_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	# [v10ui] Never cut with "…" (owner: "press E at the what?"): the title wraps and the card grows.
 	vb.add_child(_title)
 	var prow := HBoxContainer.new()  # the one progress element and its number
 	prow.add_theme_constant_override("separation", 8)
@@ -110,8 +109,6 @@ func _ready() -> void:
 	_hint = UITheme.label("", 14, HINT)  # [v6story] the situation line
 	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_hint.custom_minimum_size = Vector2(tw, 0)
-	_hint.max_lines_visible = 2
-	_hint.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_hint.visible = false
 	_hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_hint.custom_minimum_size.x = tw - 24.0
@@ -182,6 +179,35 @@ static func title_of(def: Dictionary, full: bool = false) -> String:
 	return Objectives.glyphs(TranslationServer.translate(t))
 
 
+## [v10ui] The title in full, always: it wraps and the card grows. A long line (two key presses
+## in one instruction, a long language) drops to a smaller size so it still reads at a glance.
+const TITLE_PX: int = 20
+const TITLE_SMALL_PX: int = 16
+const TITLE_LINES: int = 3
+
+
+func set_title(t: String) -> void:
+	if t != _title.text:
+		_title.text = t
+		_fit_key = ""
+	_fit_title()
+
+
+var _fit_key: String = ""
+
+
+func _fit_title() -> void:
+	if _title.size.x < 1.0:
+		return  # not laid out yet: _process fits it
+	var key: String = "%s|%d" % [_title.text, int(_title.size.x)]
+	if key == _fit_key:
+		return
+	_fit_key = key
+	_title.add_theme_font_size_override("font_size", TITLE_PX)
+	if _title.get_line_count() > TITLE_LINES:
+		_title.add_theme_font_size_override("font_size", TITLE_SMALL_PX)
+
+
 func _set_texts(def: Dictionary) -> void:
 	var raw: String = objectives.situation if objectives else ""
 	_price = {}
@@ -190,7 +216,7 @@ func _set_texts(def: Dictionary) -> void:
 		# price line ("Need 292 more cubes") has nothing to do with it, so it stays off.
 		if raw != "" and objectives and (objectives.situation_price or raw == ListDetail.short_text(objectives.call("_step_price"))):
 			raw = ""
-		_title.text = substep
+		set_title(substep)
 		_why.text = raw
 		_why.add_theme_color_override("font_color", HINT)
 		_why.visible = raw != ""
@@ -201,7 +227,7 @@ func _set_texts(def: Dictionary) -> void:
 	_why.add_theme_color_override("font_color", WHY)
 	var t: Array[String] = Objectives.texts(def)
 	var big: bool = expanded()
-	_title.text = title_of(def, big)
+	set_title(title_of(def, big))
 	_pic.set_kind(picture_of(def))
 	_why.text = t[1]
 	_why.visible = _why.text != "" and (big or _step_t < WHY_S)
@@ -248,7 +274,7 @@ func read() -> Array[String]:
 	if _chips.visible:
 		var cs: PackedStringArray = []
 		for k: String in _price:
-			cs.append("%s %s / %s" % [k, Settings.fmt(BigNum.from_float(minf(GameState.get_currency(k).to_float(), float(_price[k])))), Settings.fmt(BigNum.from_float(float(_price[k])))])
+			cs.append("%s %s / %s" % [k, Currencies.have_text(minf(Currencies.shown(k), float(_price[k]))), Settings.fmt(BigNum.from_float(float(_price[k])))])
 		hint = (hint + "  " if hint != "" else "") + "  ".join(cs)
 	return [_title.text, _why.text, hint, _count.text if _count.text != "" else _plabel]
 
@@ -342,6 +368,8 @@ func _on_completed(_i: int) -> void:
 
 
 func _process(delta: float) -> void:
+	if visible:
+		_fit_title()
 	if not visible or _busy or objectives == null:
 		return
 	var def: Dictionary = objectives.current()
@@ -431,7 +459,7 @@ class CostChip extends HBoxContainer:
 		_line.custom_minimum_size = Vector2(0, 3)
 		_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_line.draw.connect(func() -> void:
-			var have: float = GameState.get_currency(currency).to_float()
+			var have: float = Currencies.shown(currency)
 			var f: float = clampf(have / maxf(need, 0.001), 0.0, 1.0)
 			_line.draw_rect(Rect2(0, 0, _line.size.x, 3), Color(1, 1, 1, 0.16))
 			_line.draw_rect(Rect2(0, 0, _line.size.x * f, 3), UITheme.GREEN if f >= 1.0 else HINT))
@@ -439,7 +467,7 @@ class CostChip extends HBoxContainer:
 
 	func set_need(n: float) -> void:
 		need = n
-		var have: float = GameState.get_currency(currency).to_float()
-		_l.text = "%s / %s" % [Settings.fmt(BigNum.from_float(minf(have, need))), Settings.fmt(BigNum.from_float(need))]
+		var have: float = Currencies.shown(currency)  # [v10ui] the HUD's number, floored the same way
+		_l.text = "%s / %s" % [Currencies.have_text(minf(have, need)), Settings.fmt(BigNum.from_float(need))]
 		_l.add_theme_color_override("font_color", UITheme.GREEN if have >= need else HINT)
 		_line.queue_redraw()
