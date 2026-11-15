@@ -61,6 +61,9 @@ run walk_opening -- --fresh --orbit --intro --walk-opening --save-dir=check_exit
 # [v9c] The travel steps (rocket, stations 2 and 6, the drive, the end card) played with real
 # input (tools/walk_travel.gd), and a save in the middle of station 2's chain loaded back.
 run walk_travel -- --fresh --orbit --no-intro --walk-travel --quit-after=4000 --save-dir=check_exit_travel_$$
+# [v10base] Owner playtest 3 #103/#100: fly to station 2 and back with a Continue at each end; the
+# workbench, bin and the rest of the yard still stand and answer E; the ship flies nose first.
+run walk_travel_back -- --fresh --orbit --no-intro --walk-travel --walk-travel-back --quit-after=1500 --save-dir=check_exit_travelb_$$
 run walk_travel_end -- --orbit --no-intro --walk-travel --walk-travel-end --quit-after=600 --save-dir=check_exit_travel_$$
 run walk_travel_save -- --fresh --orbit --no-intro --walk-travel --walk-travel-save --quit-after=2000 --save-dir=check_exit_travelr_$$
 run walk_travel_resume -- --orbit --no-intro --walk-travel --walk-travel-resume --quit-after=1500 --save-dir=check_exit_travelr_$$
