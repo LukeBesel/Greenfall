@@ -305,3 +305,4 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 106. "How can i have a fraction of seeds."
 107. "Sun went down too fast."
 108. "Also make sure the radio feature is added and the first song should play when you find a cd in the rubble close by at the start. It should play sun baked and tell you when you find cds you can play at will through glim. Random music playing is on but when I add more cds you will unlock more songs. Just allow all songs to play at random for now but first song is after CD and player can play sun baked whenever they want."
+109. "You should also unlock the hub or whatever way you see how many sections you have left on the planet and what % you have dond."
