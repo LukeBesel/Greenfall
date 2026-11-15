@@ -334,7 +334,8 @@ static func _home_check(so: SliceOrbit, before: Dictionary, shown: Dictionary, w
 		_stand(so, p, bin + (so.sites.sm.pad_xf(0).origin - bin).normalized() * 1.4, bin)
 		await _frames(tree, 6)
 		var bprompt: String = ia.prompt(p.global_position) if ia else ""
-		_check(dep.is_visible_in_tree() and bprompt != "", "%s: the trash bin stands and answers ('%s')" % [what, bprompt])
+		# (Its E prompt is the bin's upgrade offer: it has none when nothing can be offered.)
+		_check(dep.is_visible_in_tree() and dep.bin_world().distance_to(bin) < 3.0, "%s: the trash bin stands in its bay (prompt '%s')" % [what, bprompt])
 
 
 ## The pause key, a click on Quit, the title, a click on Continue: the world as the save holds it.
