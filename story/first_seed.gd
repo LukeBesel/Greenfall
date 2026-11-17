@@ -453,8 +453,10 @@ func give_signal(line: String = "") -> void:
 	if GameState.flags.get("seed_signal", false) or GameState.flags.get("seeds_unlocked", false):
 		return
 	GameState.flags["seed_signal"] = true
-	if world.get("wren") != null:
-		world.wren.line_started.emit(line if line != "" else tr("Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."), 1)
+	# [v10pace] The seed step's own WREN line is the signal line (data/objectives.json); it used to
+	# be said here as well, right after "Something green is waking out there" (critic 15).
+	if world.get("wren") != null and line != "":
+		world.wren.line_started.emit(line, 1)
 	Audio.play("detector", 0.7, -6.0)
 
 

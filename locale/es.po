@@ -1976,11 +1976,7 @@ msgstr "...Es verde. Lumi, es verde de verdad."
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Mantenla regada. Aquí fuera las semillas escasean, pero cada flor devuelve una, y un poco de luz verde para tu núcleo. Así es como empieza."
 
-#: story/first_seed.gd:457
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
-msgstr "Lumi. Capto una señal. Verde, débil, al este de la base. Un viejo invernadero. Ve a mirar."
-
-#: story/first_seed.gd:569
+#: story/first_seed.gd:571
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "Pulsa  {tool_plant}  para la semilla. Luego mantén  {scoop}  sobre un bancal del invernadero"
 
@@ -7441,8 +7437,8 @@ msgid "Bot Bay"
 msgstr "Bahía de robots"
 
 #: data/camp.json:builds.bot_bay.desc
-msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
-msgstr "Un taller de robots propio en el patio. Acércate y pulsa E para construir robots."
+msgid "A robot workshop of its own in the yard. Walk up to it to build robots."
+msgstr "Un taller de robots propio en el patio. Acércate para construir robots."
 
 #: data/camp.json:builds.shuttle.name
 msgid "Shuttle"
@@ -12098,6 +12094,10 @@ msgstr "Las plantas llenan tu Núcleo Floral."
 msgid "Keep cleaning. Seeds turn up in clean ground."
 msgstr "Sigue limpiando. Las semillas aparecen en suelo limpio."
 
+#: data/objectives.json:objectives[seed].lines
+msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+msgstr "Lumi. Capto una señal. Verde, débil, al este de la base. Un viejo invernadero. Ve a mirar."
+
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
 msgstr "Construye un segundo robot"
@@ -15222,8 +15222,8 @@ msgid "The repaired bench: upgrades for Lumi and things to build."
 msgstr "El banco reparado: mejoras para Lumi y cosas para construir."
 
 #: data/workbench.json:tiers[1].desc
-msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
-msgstr "Un taller de robots propio en el patio. Acércate y pulsa E para construir ayudantes que siguen limpiando mientras trabajas."
+msgid "A robot workshop of its own in the yard. Walk up to it to build helpers that keep cleaning while you work."
+msgstr "Un taller de robots propio en el patio. Acércate para construir ayudantes que siguen limpiando mientras trabajas."
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
@@ -16664,6 +16664,12 @@ msgstr "Ese pórtico desguazó la flota minera cuando se acabó el dinero. El ar
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
+#~ msgstr "Un taller de robots propio en el patio. Acércate y pulsa E para construir robots."
+
+#~ msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
+#~ msgstr "Un taller de robots propio en el patio. Acércate y pulsa E para construir ayudantes que siguen limpiando mientras trabajas."
 
 #~ msgid "Something green is waking out there. Plant the first seed."
 #~ msgstr "Algo verde está despertando ahí fuera. Planta la primera semilla."

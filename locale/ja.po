@@ -1970,11 +1970,7 @@ msgstr "……緑だ。Lumi、ほんとうに緑だよ。"
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "水を切らさないでね。ここでは種は貴重だけど、花が咲くたびにひとつ返ってくるし、きみのコアにも小さな緑の光が届く。こうやって始まるんだ。"
 
-#: story/first_seed.gd:457
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
-msgstr "Lumi。シグナルを受信。緑で、かすかで、基地の東。古い温室だ。見てきて。"
-
-#: story/first_seed.gd:569
+#: story/first_seed.gd:571
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "{tool_plant}  で種を持って、温室の苗床の上で  {scoop}  を長押し"
 
@@ -7424,8 +7420,8 @@ msgid "Bot Bay"
 msgstr "ボットベイ"
 
 #: data/camp.json:builds.bot_bay.desc
-msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
-msgstr "庭にある専用のロボット工房。近づいて E を押すとロボットを作れる。"
+msgid "A robot workshop of its own in the yard. Walk up to it to build robots."
+msgstr "庭にある専用のロボット工房。近づくとロボットを作れる。"
 
 #: data/camp.json:builds.shuttle.name
 msgid "Shuttle"
@@ -12081,6 +12077,10 @@ msgstr "植物が育つとブルームコアがたまる。"
 msgid "Keep cleaning. Seeds turn up in clean ground."
 msgstr "掃除を続けよう。きれいな地面から種が見つかる。"
 
+#: data/objectives.json:objectives[seed].lines
+msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+msgstr "Lumi。シグナルを受信。緑で、かすかで、基地の東。古い温室だ。見てきて。"
+
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
 msgstr "2体目のロボットを作る"
@@ -15205,8 +15205,8 @@ msgid "The repaired bench: upgrades for Lumi and things to build."
 msgstr "直した作業台：Lumi のアップグレードと、建てられるもの。"
 
 #: data/workbench.json:tiers[1].desc
-msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
-msgstr "庭にある専用のロボット工房。近づいて E を押すと、きみが働くあいだも片づけ続ける助っ人を作れる。"
+msgid "A robot workshop of its own in the yard. Walk up to it to build helpers that keep cleaning while you work."
+msgstr "庭にある専用のロボット工房。近づくと、きみが働くあいだも片づけ続ける助っ人を作れる。"
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
@@ -16647,6 +16647,12 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
+#~ msgstr "庭にある専用のロボット工房。近づいて E を押すとロボットを作れる。"
+
+#~ msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
+#~ msgstr "庭にある専用のロボット工房。近づいて E を押すと、きみが働くあいだも片づけ続ける助っ人を作れる。"
 
 #~ msgid "Something green is waking out there. Plant the first seed."
 #~ msgstr "外で緑の何かが目を覚ましかけてる。最初の種を植えて。"

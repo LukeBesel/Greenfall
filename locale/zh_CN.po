@@ -1970,11 +1970,7 @@ msgstr "……是绿色的。Lumi，真的是绿色的。"
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
-#: story/first_seed.gd:457
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
-msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
-
-#: story/first_seed.gd:569
+#: story/first_seed.gd:571
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "按  {tool_plant}  拿出种子。然后在温室苗床上按住  {scoop}"
 
@@ -7424,8 +7420,8 @@ msgid "Bot Bay"
 msgstr "机器人舱"
 
 #: data/camp.json:builds.bot_bay.desc
-msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
-msgstr "院子里一座独立的机器人工坊。走过去按 E 就能造机器人。"
+msgid "A robot workshop of its own in the yard. Walk up to it to build robots."
+msgstr "院子里一座独立的机器人工坊。走过去就能造机器人。"
 
 #: data/camp.json:builds.shuttle.name
 msgid "Shuttle"
@@ -12081,6 +12077,10 @@ msgstr "植物会充满你的绽放核心。"
 msgid "Keep cleaning. Seeds turn up in clean ground."
 msgstr "继续清理。干净的土地里会冒出种子。"
 
+#: data/objectives.json:objectives[seed].lines
+msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
+
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
 msgstr "建造第二个机器人"
@@ -15205,8 +15205,8 @@ msgid "The repaired bench: upgrades for Lumi and things to build."
 msgstr "修好的工作台：给 Lumi 的升级，还有可以建造的东西。"
 
 #: data/workbench.json:tiers[1].desc
-msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
-msgstr "院子里一座独立的机器人工坊。走过去按 E，造出在你干活时也不停清理的帮手。"
+msgid "A robot workshop of its own in the yard. Walk up to it to build helpers that keep cleaning while you work."
+msgstr "院子里一座独立的机器人工坊。走过去，造出在你干活时也不停清理的帮手。"
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
@@ -16647,6 +16647,12 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
+#~ msgstr "院子里一座独立的机器人工坊。走过去按 E 就能造机器人。"
+
+#~ msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
+#~ msgstr "院子里一座独立的机器人工坊。走过去按 E，造出在你干活时也不停清理的帮手。"
 
 #~ msgid "Something green is waking out there. Plant the first seed."
 #~ msgstr "外面有绿色的东西正在醒来。种下第一颗种子吧。"

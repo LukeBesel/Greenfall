@@ -152,7 +152,10 @@
       "wait_flag": "seed_signal",
       "type": "stat",
       "key": "plants_planted",
-      "target": 1
+      "target": 1,
+      "lines": [
+        "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+      ]
     },
     {
       "id": "robot2",

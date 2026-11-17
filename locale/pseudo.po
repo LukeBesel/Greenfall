@@ -1973,11 +1973,7 @@ msgstr "[...Îţ'š ĝŕééñ. Ļûmî, îţ'š àçţûàļļý ĝŕééñ. ~~
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "[Ķééþ îţ ŵàţéŕéð. Šééðš àŕé ŕàŕé ôûţ ĥéŕé, bûţ évéŕý bļôôm ĝîvéš ôñé bàçķ, àñð à ļîţţļé ĝŕééñ ļîĝĥţ ƒôŕ ýôûŕ çôŕé. Ţĥîš îš ĥôŵ îţ šţàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:457
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
-msgstr "[Ļûmî. Î'm ĝéţţîñĝ à šîĝñàļ. Ĝŕééñ, ƒàîñţ, éàšţ ôƒ ţĥé ĥûb. Àñ ôļð ĝŕééñĥôûšé. Ĝô ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: story/first_seed.gd:569
+#: story/first_seed.gd:571
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "[Þŕéšš  {tool_plant}  ƒôŕ ţĥé šééð. Ţĥéñ ĥôļð  {scoop}  ôñ à ĝŕééñĥôûšé béð ~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -7438,8 +7434,8 @@ msgid "Bot Bay"
 msgstr "[Bôţ Bàý ~]"
 
 #: data/camp.json:builds.bot_bay.desc
-msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
-msgstr "[À ŕôbôţ ŵôŕķšĥôþ ôƒ îţš ôŵñ îñ ţĥé ýàŕð. Ŵàļķ ûþ àñð þŕéšš É ţô bûîļð ŕôbôţš. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A robot workshop of its own in the yard. Walk up to it to build robots."
+msgstr "[À ŕôbôţ ŵôŕķšĥôþ ôƒ îţš ôŵñ îñ ţĥé ýàŕð. Ŵàļķ ûþ ţô îţ ţô bûîļð ŕôbôţš. ~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/camp.json:builds.shuttle.name
 msgid "Shuttle"
@@ -12095,6 +12091,10 @@ msgstr "[Þļàñţš ƒîļļ ýôûŕ Bļôôm Çôŕé. ~~~~~~~]"
 msgid "Keep cleaning. Seeds turn up in clean ground."
 msgstr "[Ķééþ çļéàñîñĝ. Šééðš ţûŕñ ûþ îñ çļéàñ ĝŕôûñð. ~~~~~~~~~~~~~]"
 
+#: data/objectives.json:objectives[seed].lines
+msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+msgstr "[Ļûmî. Î'm ĝéţţîñĝ à šîĝñàļ. Ĝŕééñ, ƒàîñţ, éàšţ ôƒ ţĥé ĥûb. Àñ ôļð ĝŕééñĥôûšé. Ĝô ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
 msgstr "[Bûîļð à šéçôñð ŕôbôţ ~~~~]"
@@ -15219,8 +15219,8 @@ msgid "The repaired bench: upgrades for Lumi and things to build."
 msgstr "[Ţĥé ŕéþàîŕéð béñçĥ: ûþĝŕàðéš ƒôŕ Ļûmî àñð ţĥîñĝš ţô bûîļð. ~~~~~~~~~~~~~~~~~]"
 
 #: data/workbench.json:tiers[1].desc
-msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
-msgstr "[À ŕôbôţ ŵôŕķšĥôþ ôƒ îţš ôŵñ îñ ţĥé ýàŕð. Ŵàļķ ûþ àñð þŕéšš É ţô bûîļð ĥéļþéŕš ţĥàţ ķééþ çļéàñîñĝ ŵĥîļé ýôû ŵôŕķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A robot workshop of its own in the yard. Walk up to it to build helpers that keep cleaning while you work."
+msgstr "[À ŕôbôţ ŵôŕķšĥôþ ôƒ îţš ôŵñ îñ ţĥé ýàŕð. Ŵàļķ ûþ ţô îţ ţô bûîļð ĥéļþéŕš ţĥàţ ķééþ çļéàñîñĝ ŵĥîļé ýôû ŵôŕķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
