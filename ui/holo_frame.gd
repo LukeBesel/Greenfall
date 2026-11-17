@@ -41,7 +41,18 @@ static func module(pad: int = 12, alpha: float = GLASS_A) -> PanelContainer:
 
 ## The mono "techy" font for labels and numbers (Anonymous Pro, with the CJK fallbacks).
 static func mono() -> Font:
-	return LedgerUplink.mono_font()
+	if _mono == null:
+		var f: Variant = load("res://ui/fonts/AnonymousPro-Bold.ttf") if ResourceLoader.exists("res://ui/fonts/AnonymousPro-Bold.ttf") else null
+		if f is Font:
+			_mono = f
+		else:
+			var sf := SystemFont.new()
+			sf.font_names = PackedStringArray(["Anonymous Pro", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Menlo", "monospace"])
+			_mono = sf
+	return _mono
+
+
+static var _mono: Font
 
 
 static func mono_label(text: String, px: int, col: Color) -> Label:

@@ -16,7 +16,7 @@ static var playing: bool = false
 # l10n:begin
 const SPACE_LINES: Array[Array] = [
 	["Clear of the air. Look back, {name}. Look at it.", 4.5],
-	["Five worlds, green. The Ledger left them as rubbish. You left them as gardens.", 5.5],
+	["Five worlds, green. They were left as rubbish. You left them as gardens.", 5.5],
 	["CRADLE:  SYSTEM SURVEY: FIVE WORLDS.  FIVE ALIVE.", 4.5],
 	["CRADLE:  CHARTER CONDITION MET.  WAKING SLEEPERS.  OPENING BAY ONE.", 5.0],
 	["It's opening the bay. It's actually opening the bay. Steady... steady...", 5.0],

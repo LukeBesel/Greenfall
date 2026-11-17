@@ -43,12 +43,10 @@ JSON_RULES: dict[str, dict] = {
     "*": {"keys": COMMON_KEYS},
     "wren_lines.json": {"all_top": True},
     "story_reasons.json": {"all_top": True},  # [v6story] goal reasons and the exit beat
-    # [v7arc] the story spine: shown fields only (from / answers / ledger / question are builder notes)
+    # [v7arc] the story spine: shown fields only (from / answers / question are builder notes)
     "story_arc.json": {"keys": {"reason", "arrive", "leave", "meter", "home_line", "next", "gives_text",
                                 "gave_text", "full", "why"}},
     "shards.json": {"keys": COMMON_KEYS | {"kind"}},
-    "ledger.json": {"keys": COMMON_KEYS, "pools": {"act1", "act2", "act3", "coupons", "drop_warn", "friendly",
-                                                   "jammed", "lonely", "cinematic"}},
     "events.json": {"keys": COMMON_KEYS, "pools": {"wren"}},
     "songs.json": {"keys": COMMON_KEYS | {"genre", "bio"}},  # [tunes] artists and songs
     "homeward.json": {"keys": COMMON_KEYS | {"map_line", "drive_lines", "line", "hint"}},  # [v7play] the release gate ("closed")
@@ -64,7 +62,7 @@ JSON_RULES: dict[str, dict] = {
 }
 # Strings that look like ids, colours, paths or speaker tags are never extracted from pools.
 ID_KEYS = {"id", "icon", "ears", "shape", "style", "pattern", "action", "mode", "kind", "type", "body", "anim", "set", "source", "stat", "look"}
-SPEAKERS = {"wren", "ledger", "lumi", "patch", "narrator", "sys"}
+SPEAKERS = {"wren", "lumi", "patch", "narrator", "sys"}
 
 # --- GDScript patterns ------------------------------------------------------------------------
 STR = r'"((?:[^"\\\n]|\\.)*)"'

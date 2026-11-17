@@ -13,7 +13,7 @@ const BUILD_CATS: Array = [["story", "Story"], ["yard", "Yard"], ["machines", "M
 # l10n:end
 const BUILD_CAT_OF: Dictionary = {
 	"conveyor": "machines", "auto_baler": "machines", "recycler": "machines", "telescope": "machines", "air_scrubber": "machines",
-	"signal_tower": "story", "signal_jammer": "story", "museum": "story",
+	"signal_tower": "story", "museum": "story",
 	"bot_fabricator": "machines",  # [orbC]
 }
 

@@ -239,7 +239,7 @@ static func storm_count(storm: Dictionary, cleaned: int, fences: bool) -> int:
 	return n
 
 
-## Dead pieces spread across a hex for a storm to blow back (more spread than a Ledger dump).
+## Dead pieces spread across a hex for a storm to blow back (spread, not one heap).
 static func storm_pieces(field: HexField, hid: int, r: RandomNumberGenerator, frac: float, min_n: int, max_n: int) -> PackedInt32Array:
 	var dead: Array[int] = []
 	for pid: int in field.hex_pieces[hid]:

@@ -76,6 +76,12 @@ run walk_goals -- --fresh --orbit --no-intro --walk-goals --save-dir=check_exit_
 # [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
 # with real keys and mouse clicks on the workbench (tools/walk_home.gd).
 run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$
+if tools/check_old_ledger_save.sh >screenshots/check_exit_old_ledger.log 2>&1; then  # owner item 105
+	echo "[check_exit] PASS old_ledger_save (a save from mid Ledger arc loads clean and plays on)"
+else
+	echo "[check_exit] FAIL old_ledger_save: see screenshots/check_exit_old_ledger.log"
+	fail=1
+fi
 # [v9s] Owner (Nov 13): "super annoying to hear the same bird chirp so many times over and over".
 # Two and a half minutes standing on green ground by the start (birds, frogs, the life bed), every
 # sound logged; tools/check_audio.py --repeat fails on a sound that repeats more than its category

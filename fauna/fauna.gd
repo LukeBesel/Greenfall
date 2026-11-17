@@ -1124,7 +1124,7 @@ func _update(a: Animal, dt: float) -> void:
 	if a.state == St.LEAVE:
 		_update_leave(a, dt)
 		return
-	# Never stand in junk: a Ledger drop or a stray piece moves the animal on.
+	# Never stand in junk: a stray piece moves the animal on.
 	a.check_t -= dt
 	if a.check_t <= 0.0:
 		a.check_t = 1.0 + _rng.randf()
@@ -2435,7 +2435,7 @@ func _hide_hud(n: Node = null) -> void:
 	for c: Node in (world if n == null else n).get_children():
 		if c is CanvasLayer:
 			var sc: Script = c.get_script()
-			if sc and sc.resource_path in ["res://ui/hud.gd", "res://ui/subtitles.gd", "res://ui/event_hud.gd", "res://story/ledger_uplink.gd"]:
+			if sc and sc.resource_path in ["res://ui/hud.gd", "res://ui/subtitles.gd", "res://ui/event_hud.gd"]:
 				(c as CanvasLayer).visible = false
 		elif c.get_child_count() > 0 and not (c is Control) and not (c is Fauna):
 			_hide_hud(c)

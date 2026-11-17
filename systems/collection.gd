@@ -82,7 +82,6 @@ static func source_name(source: String) -> String:
 		"wildlife_visit": return TranslationServer.translate("Wildlife Photos")
 		"animal_photos": return TranslationServer.translate("Animal Photos")  # [wild]
 		"rare_part_signal": return TranslationServer.translate("Rare Part Signals")
-		"ledger_audit": return TranslationServer.translate("Ledger Audits")
 		"streak": return TranslationServer.translate("Cleaning Streaks")
 		"lumi_level": return TranslationServer.translate("Lumi Levels")  # [hud]
 		"contracts": return TranslationServer.translate("Requests")

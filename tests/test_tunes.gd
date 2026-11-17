@@ -137,7 +137,7 @@ func test_shuffle_never_repeats_back_to_back() -> void:
 
 func test_shuffle_fits_the_planet_and_moment() -> void:
 	_all_files()
-	for id: String in ["verdance_night", "verdance_in_bloom", "fall_of_lm1", "the_ledger", "sunbaked"]:
+	for id: String in ["verdance_night", "verdance_in_bloom", "fall_of_lm1", "sunbaked"]:
 		Tunes.grant(id, true)
 	assert_false(Tunes.fits("verdance_night", "verdance", "explore", 0.0), "night songs only at night")
 	assert_true(Tunes.fits("verdance_night", "verdance", "night", 0.0))
@@ -145,7 +145,6 @@ func test_shuffle_fits_the_planet_and_moment() -> void:
 	assert_false(Tunes.fits("verdance_in_bloom", "verdance", "explore", 0.2), "restored songs wait for the green")
 	assert_true(Tunes.fits("verdance_in_bloom", "verdance", "explore", 0.8))
 	assert_false(Tunes.fits("fall_of_lm1", "verdance", "explore", 0.0), "the intro score is CD-player only")
-	assert_false(Tunes.fits("the_ledger", "anvil", "explore", 0.0))
 	assert_true(Tunes.fits("greenfall_main", "rime", "explore", 0.0), "the main theme fits anywhere")
 	var n: Dictionary = {}
 	for i: int in 2000:

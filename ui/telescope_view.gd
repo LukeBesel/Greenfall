@@ -6,7 +6,7 @@ extends CanvasLayer
 ##   stand on is marked. A ui/system_map.gd with a `planet_picked` signal is used instead if present.
 ##   Remote: the picked world's base district (ui/remote_district.gd) from its saved state, with
 ##   its crew at work, framed like an eyepiece (art/shaders/telescope_lens.gdshader), a reticle and
-##   readouts. Send a care package from here. Holding a Ledger wreck or a deer in the reticle
+##   readouts. Send a care package from here. Holding a deer in the reticle
 ##   unlocks a Codex entry.
 ## Pad: D-pad moves focus, A presses, right stick orbits / zooms, B (Esc) backs out.
 
@@ -745,7 +745,7 @@ func _check_spots(delta: float) -> void:
 	var ctr: Vector2 = vs * 0.5
 	for k: String in district.spot_nodes:
 		var n: Node3D = district.spot_nodes[k]
-		var key: String = "sightings:ledger_wreck" if k == "ledger_wreck" else "animals:deer"
+		var key: String = "animals:deer"
 		if Codex.is_unlocked(key):
 			continue
 		var p: Vector3 = n.global_position
@@ -754,7 +754,7 @@ func _check_spots(delta: float) -> void:
 		if float(_spot_t[k]) >= float(RemoteProgress.cfg().get("spot_s", 1.2)):
 			if Codex.unlock(key):
 				Audio.play("chime", 1.0, -6.0)
-				var nm: String = tr("Ledger wreck") if k == "ledger_wreck" else tr("Deer")
+				var nm: String = tr("Deer")
 				_hint.text = tr("Logged through the telescope: %s. New Codex entry.") % nm
 				EventBus.toast.emit(tr("Codex: %s") % nm, "info")
 				GameState.inc_stat("telescope_sightings")

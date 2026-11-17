@@ -125,7 +125,7 @@
       "snow": [0.93, 0.96, 1.0],
       "crevasse": [0.3, 0.7, 1.0],
       "rust": [0.42, 0.24, 0.16],
-      "ledger_paint": [0.86, 0.42, 0.12],
+      "rig_paint": [0.86, 0.42, 0.12],
       "moss": [0.3, 0.42, 0.17],
       "pool": [0.16, 0.62, 0.66],
       "lantern": [1.0, 0.78, 0.5],
@@ -143,7 +143,7 @@
       "_doc": "[p_seas] Placeable hub-site prefabs (planet/planets/rime/rime_site.gd): RimeHubSite.place(id, root, stage 0-2, restoration 0-1, {radius, seed}); a local ice patch about 80-90 m across (walkable trimesh, PROP colliders on every structure). Preview: res://planet/planets/rime/site_preview.tscn -- --site=<id>.",
       "script": "res://planet/planets/rime/rime_site.gd",
       "hub_camp": {"kind": "hub", "name": "Drill Camp", "size_m": 88, "desc": "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."},
-      "derrick": {"kind": "landmark", "name": "Frozen Derrick", "size_m": 84, "desc": "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."},
+      "derrick": {"kind": "landmark", "name": "Frozen Derrick", "size_m": 84, "desc": "An old core-drill derrick frozen into the ice; a geothermal tap when restored."},
       "borehole": {"kind": "landmark", "name": "The Borehole", "size_m": 92, "desc": "The shaft under its headframe and winder house; cold mist, then a warm glow."},
       "hot_springs": {"kind": "landmark", "name": "Hot Springs", "size_m": 80, "desc": "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."}
     }
@@ -197,14 +197,14 @@
       "salt": [0.8, 0.77, 0.7],
       "oasis": [0.1, 0.55, 0.54],
       "leaf": [0.36, 0.55, 0.22],
-      "ledger_yellow": [0.86, 0.62, 0.12],
+      "rig_yellow": [0.86, 0.62, 0.12],
       "line": [0.78, 0.94, 1.0]
     },
     "junk_tint": [0.82, 0.58, 0.36, 0.45],
     "ground_tint": [0.8, 0.55, 0.32, 0.62],
     "env": "res://planet/planets/ochre/env.gd",
     "biome": "ochre_pit",
-    "tagline": "The Ledger's first open-pit strip mine, closest to the twin suns.",
+    "tagline": "The miners' first open-pit strip mine, closest to the twin suns.",
     "no_lakes": true,
     "pieces_mult": 1.6,
     "exposure": 0.82,
@@ -213,7 +213,7 @@
       "api": "OchreSites.build(id, root, stage 1..5, restoration 0..1) -> Node3D, local +Y up, origin at the site centre",
       "list": {
         "hub_base": {
-          "name": "Ledger Haul Depot",
+          "name": "Old Haul Depot",
           "diameter_m": 92
         },
         "toppled_excavator": {
@@ -236,7 +236,7 @@
     "name": "Tidewell",
     "world_type": "ocean_world",
     "env": "res://planet/planets/tidewell/env.gd",
-    "tagline": "An ocean world. The Ledger's dredging rigs still stand in the shallows.",
+    "tagline": "An ocean world. Old dredging rigs still stand in the shallows.",
     "district": {
       "id": "tidewell",
       "name": "Tidewell",
@@ -408,7 +408,7 @@
         0.24,
         0.13
       ],
-      "ledger_paint": [
+      "rig_paint": [
         0.86,
         0.62,
         0.16
@@ -451,13 +451,13 @@
         "kind": "landmark",
         "name": "Ore Barge Wreck",
         "size_m": 100,
-        "desc": "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+        "desc": "A half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
       },
       "dredge_rig": {
         "kind": "landmark",
         "name": "Dredge Rig",
         "size_m": 88,
-        "desc": "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+        "desc": "An old jack-up dredging rig with bucket ladder, derrick and crane."
       },
       "reef_garden": {
         "kind": "landmark",
@@ -635,10 +635,10 @@
       {
         "id": "foundry_tower",
         "kind": "landmark",
-        "name": "Ledger Foundry Tower",
+        "name": "Foundry Tower",
         "script": "res://planet/planets/anvil/anvil_sites.gd",
         "size_m": 84,
-        "desc": "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+        "desc": "a colossal 130 m foundry stack on buttresses, pipes and slag tips"
       },
       {
         "id": "lava_forge",

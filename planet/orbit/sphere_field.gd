@@ -560,7 +560,7 @@ func relocate_blocked(cell: int, hidden: Callable = Callable()) -> Array:
 		piece_embed[pid] = 0.0  # off its heap: on the plain ground
 		_seat(pid, d)
 		moved.append(pid)
-	if not dropped.is_empty():  # out of the cell's list too (a Ledger drop revives dead pieces of a cell)
+	if not dropped.is_empty():  # out of the cell's list too
 		var keep := PackedInt32Array()
 		for pid: int in pieces_in(cell):
 			if not dropped.has(pid):
