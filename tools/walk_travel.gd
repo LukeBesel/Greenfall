@@ -241,6 +241,12 @@ static func _finish_station(so: SliceOrbit, site: int, redirty: bool) -> void:
 	var ia: Interactables = w.get("interactables") as Interactables
 	var seen: String = ia.prompt(p.global_position) if ia else ""
 	_check(seen.begins_with("E") and seen == hp.landmark_prompt(), "by the landmark the prompt says '%s'" % seen)
+	if not seen.begins_with("E") and ia:  # what holds E there
+		print("%s   Lumi %s, landmark %s (%.1f m), open spot %.1f m from it" % [TAG, str(p.global_position), str(lm["pos"]), p.global_position.distance_to(lm["pos"]), open_at.distance_to(lm["pos"])])
+		for e: Dictionary in ia._items:
+			var n: Node3D = e["node"] as Node3D
+			if is_instance_valid(n) and n.is_inside_tree() and n.global_position.distance_to(p.global_position) < 12.0:
+				print("%s     E entry %s at %.1f m (reach %.1f, shown %s, prompt '%s')" % [TAG, str(n.get_path()), n.global_position.distance_to(p.global_position), float(e["r"]), n.is_visible_in_tree(), str((e["prompt"] as Callable).call()) if e["prompt"] is Callable else str(e["prompt"])])
 	await _shot(tree, "landmark_%d" % site)
 	# Short of the price: E is refused with a line.
 	var cost: Dictionary = HubPlan.wake_cost(hp.planet)
@@ -284,12 +290,39 @@ static func _far_sell(so: SliceOrbit, site: int, must: bool) -> void:
 		_stand(so, p, dep.global_position + dep.global_basis.z * 4.0, dep.global_position)
 		await _shot(tree, "far_bin_%d" % site)
 		return
+	if must and p.carried.is_empty() and p.compartment.fill <= 0.0:  # the chest went into this bin while cleaning: scoop a little more
+		var jh: int = _junk_hex_near(so, site, p.global_position, dep.global_position)  # out of the bin's reach (it takes a chest)
+		_check(jh >= 0, "junk to scoop round this base, out of its bin's reach")
+		if jh >= 0:
+			await _scoop_real(so, p, jh)
+	var press: bool = Pace.baler_unlocked() and not Pace.dump_allowed()
+	if not press:  # no Baler yet: the chest itself is emptied into this base's bin
+		if p.compartment.fill <= 0.0 and not must:
+			print("%s   nothing in the chest here: the sale is played at station 2" % TAG)
+			return
+		var cc0: float = GameState.get_currency("cubes").to_float()
+		var f0: float = p.compartment.fill
+		_stand(so, p, dep.bin_world() + (dep.global_position - dep.bin_world()).normalized() * 1.4, dep.bin_world())
+		for k: int in 40:
+			await _wait(tree, 0.25)
+			if p.compartment.fill <= 0.0:
+				break
+		_check(f0 > 0.0 and p.compartment.fill <= 0.0 and GameState.get_currency("cubes").to_float() > cc0,
+			"at this base's bin the chest empties and pays: fill %.1f -> %.1f, cubes %.0f -> %.0f" % [f0, p.compartment.fill, cc0, GameState.get_currency("cubes").to_float()])
+		return
 	if p.carried.is_empty() and p.compartment.fill > 0.0:
+		for k: int in 20:  # what is still flying into the chest lands first (the press waits for it)
+			if p.compartment.pending <= 0.0:
+				break
+			await _wait(tree, 0.2)
 		await _tap(tree, "cube")
-		await _wait(tree, 0.8)
-	if p.carried.is_empty():  # a bale set down while cleaning: E by it picks it up
+		for k: int in 15:
+			await _wait(tree, 0.2)
+			if not p.carried.is_empty():
+				break
+	if p.carried.is_empty():  # a bale set down while cleaning here: E by it picks it up
 		var near: JunkCube = null
-		var bd: float = INF
+		var bd: float = 60.0  # this base's bales only
 		for n: Node in tree.get_nodes_in_group("junk_cube"):
 			var c: JunkCube = n as JunkCube
 			if c == null or c.carried or c.claimed:
@@ -320,6 +353,25 @@ static func _far_sell(so: SliceOrbit, site: int, must: bool) -> void:
 		"on this base's scale the bale sells: cubes %.0f -> %.0f (%d cashed here)" % [c0, GameState.get_currency("cubes").to_float(), dep.cashed - sold0])
 
 
+## The dirty land hex with junk nearest Lumi round base `site` (within 70 m of its middle), or -1.
+static func _junk_hex_near(so: SliceOrbit, site: int, at: Vector3, bin: Vector3) -> int:
+	var g: OrbitPlanet = so.globe
+	var f: SphereField = g.field
+	var c0: int = int(g.sites[site]["cell"])
+	var best: int = -1
+	var bd: float = INF
+	for c: int in g.grid.cells_within(g.grid.centers[c0], 70.0, c0):
+		if f.hex_hub[c] == 1 or f.hex_clean[c] == 1 or f.hex_water[c] == 1:
+			continue
+		if f.hex_center(c).distance_to(bin) < 22.0:
+			continue
+		var d: float = f.hex_center(c).distance_to(at)
+		if d < bd:
+			bd = d
+			best = c
+	return best
+
+
 ## The base's build step: the marked spot, its sign, the beam; E short of the price is refused with
 ## a line; E with the price builds the machine there; it then works (the bench opens by E).
 static func _build_spot(so: SliceOrbit, site: int, id: String) -> void:
@@ -335,6 +387,10 @@ static func _build_spot(so: SliceOrbit, site: int, id: String) -> void:
 		"the %s's build spot is marked on the pad, with its picture sign" % id)
 	if not (at is Vector3):
 		return
+	for k: int in 12:  # the station card refreshes on its own poll
+		if hp.card_text.contains("marked spot"):
+			break
+		await _wait(tree, 0.25)
 	_check(hp.card_text.contains("marked spot"), "the base's card: '%s'" % hp.card_text)
 	await _wait(tree, 1.6)
 	var wt: Variant = ob.waypoint_target()
@@ -354,12 +410,19 @@ static func _build_spot(so: SliceOrbit, site: int, id: String) -> void:
 	await _frames(tree, 4)
 	_check(not FarYard.is_built(site, id) and _said("needs"), "E without the price: not built, a line why (%s)" % _quote("needs"))
 	_set_money(maxf(float(keep[0]), float(cost.get("cubes", 0)) + 20.0), maxf(float(keep[1]), float(cost.get("parts", 0)) + 2.0))
-	var c0: float = GameState.get_currency("cubes").to_float()
+	var paid: Array = [0.0]  # the cubes taken in one go (the base's own income keeps coming in)
+	var last: Array = [GameState.get_currency("cubes").to_float()]
+	var watch := func(cur: String, amt: BigNum) -> void:
+		if cur == "cubes":
+			paid[0] = maxf(float(paid[0]), float(last[0]) - amt.to_float())
+			last[0] = amt.to_float()
+	EventBus.currency_changed.connect(watch)
 	_toasts.clear()
 	await _tap(tree, "interact")
 	await _wait(tree, 1.5)
-	_check(FarYard.is_built(site, id) and GameState.get_currency("cubes").to_float() <= c0 - float(cost.get("cubes", 0)) + 0.5 and _said("Built"),
-		"E with the price builds it there and takes the price (%s)" % _quote("Built"))
+	EventBus.currency_changed.disconnect(watch)
+	_check(FarYard.is_built(site, id) and absf(float(paid[0]) - float(cost.get("cubes", 0))) < 0.6 and _said("Built"),
+		"E with the price builds it there and takes the price (%.0f cubes; %s)" % [float(paid[0]), _quote("Built")])
 	_check(not is_instance_valid(mark) or not mark.is_inside_tree(), "the spot's marking is gone once it is built")
 	await _shot(tree, "built_%s_%d" % [id, site])
 	if id == "bench":
@@ -876,11 +939,11 @@ static func _stand_at_rocket(so: SliceOrbit) -> void:
 
 
 ## A few real scoops at the station: Lumi beside a piece of its junk, facing it, the button held.
-static func _scoop_real(so: SliceOrbit, p: Patch) -> void:
+static func _scoop_real(so: SliceOrbit, p: Patch, hex: int = -1) -> void:
 	var tree: SceneTree = so.w.get_tree()
 	var f: SphereField = so.globe.field
 	var ob: Objectives = so.w.get("objectives") as Objectives
-	var h: int = ob.target_hex
+	var h: int = hex if hex >= 0 else ob.target_hex
 	if h < 0:
 		_check(false, "no hex to scoop in")
 		return
@@ -1072,6 +1135,10 @@ static func _outpost_no_parts(so: SliceOrbit, site: int) -> void:
 	var st: Dictionary = hp.current_step(site)
 	if str(st.get("do", "")) == "clean":
 		_clean_cells(so.sites, site, int(st.get("need", 0)) - int(st.get("have", 0)))
+		await _wait(tree, 1.2)
+	if str(hp.current_step(site).get("do", "")) == "build":  # [v10base] the base's own workbench first
+		await _far_sell(so, site, true)
+		await _build_spot(so, site, str(hp.current_step(site).get("id", "bench")))
 		await _wait(tree, 1.2)
 	_check(str(hp.current_step(site).get("do", "")) == "outposts", "the chain reaches its outpost step")
 	await _wait(tree, 1.0)

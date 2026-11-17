@@ -198,7 +198,8 @@ func _clear_site(s: Dictionary, hub_cell: int, i: int) -> void:
 				cells.flags[c] |= SphereCells.F_HUB
 			continue
 		if far_ko and not DevHooks.has("pads-old"):  # [v10base] a far station: only the cells wholly on its pad go clean (--pads-old: the old 60 m clear, to compare)
-			if far_ko.cell_inside(grid, c):
+			# (and, as before, no lake within 60 m: the town and its landmark stand on that ground)
+			if far_ko.cell_inside(grid, c) or (planet.state[c] == WATER and grid.distance_m(c, hub_cell) < 60.0):
 				cells.state[c] = 1
 				cells.junk[c] = 0.0
 				cells.flags[c] |= SphereCells.F_HUB

@@ -214,6 +214,14 @@ func _make(i: int) -> void:
 			func() -> bool: return is_instance_valid(e) and e.is_inside_tree() and not sites.hop.flying and (id == "locker" or not FarYard.is_built(i, id)))
 		_stand(i, id, holder)
 	print("[faryard] base %d (%s): bin ready; built %s" % [i, HubPlan.hub_name(planet, i), str(ORDER.filter(func(id: String) -> bool: return FarYard.is_built(i, id)))])
+	if DevHooks.has("faryard-probe"):  # dev: where the landmark stands from the pad, and what TargetReach says there
+		var lm: Dictionary = sites.purpose.landmark(i)
+		if not lm.is_empty():
+			var tr_: TargetReach = TargetReach.for_world(so.w, true)
+			var lp: Vector3 = root.global_transform.affine_inverse() * (lm["pos"] as Vector3)
+			var d: Vector3 = (lm["pos"] as Vector3).normalized()
+			print("[faryard] base %d landmark at site-local (%.1f, %.1f, %.1f); why '%s', escapes %s, open spot %.1f m off" % [i, lp.x, lp.y, lp.z,
+				tr_.why(d) if tr_ else "?", str(tr_.escapes(d)) if tr_ else "?", tr_.open_spot(lm["pos"]).distance_to(lm["pos"]) if tr_ else -1.0])
 
 
 ## The machine on its spot (hidden until built; the Bot Bay shows itself).
