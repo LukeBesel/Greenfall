@@ -794,14 +794,27 @@ static func _part_heavy() -> void:
 	back = back - aim.normalized() * back.dot(aim.normalized())
 	var reach_m: float = 1.2 + (pow(maxf(f.piece_vol[left], 0.01), 1.0 / 3.0) * 0.5 if left >= 0 else 0.0)  # clear of its bulk
 	_stand(aim + (back.normalized() if back.length() > 0.3 else -_north(hc)) * reach_m, aim)
+	# [v9a] Pieces still flying into the chest from the last scoops land after an early take_all and
+	# fill it again ("Your chest is full" instead of the hex line): let them land, then empty it.
+	for k: int in 40:
+		if p.compartment.pending <= 0.0:
+			break
+		await tree.create_timer(0.1).timeout
 	await _frames(4)
 	p.compartment.take_all()
 	_toasts.clear()
 	await _hold("scoop", 1.2)
 	await tree.create_timer(0.4).timeout
-	var c2: Array[String] = _card()
 	var need_h: int = Pace.hex_need(f, stuck)
-	_check(Pace.heavy_hex and (c2[1] + c2[2]).contains("This hex needs Lift %d" % need_h), "heavy: the stuck hex says it needs Lift %d (%s; hex %d, Lumi on %d, the piece %d m from its centre)" % [need_h, str(c2), stuck, f.hex_at(p.global_position), int(sqrt(ld2)) if ld2 < INF else -1])
+	# [v9a] The card holds a hint at least ObjectiveCard.HINT_HOLD_S (3.5 s): the chest-full line
+	# from the last scoops can stand that long before the hex line takes its place (FAIL: "Your
+	# chest is full" read 1.6 s after the scoop). The heavy line itself lasts HEAVY_MS (6 s).
+	for k: int in int(ObjectiveCard.HINT_HOLD_S / 0.25) + 4:
+		if (_card()[1] + _card()[2]).contains("This hex needs Lift %d" % need_h):
+			break
+		await tree.create_timer(0.25).timeout
+	var c2: Array[String] = _card()
+	_check(Pace.heavy_hex and (c2[1] + c2[2]).contains("This hex needs Lift %d" % need_h), "heavy: the stuck hex says it needs Lift %d (%s; hex %d, Lumi on %d, the piece %d m from its centre, chest %.1f / %.1f)" % [need_h, str(c2), stuck, f.hex_at(p.global_position), int(sqrt(ld2)) if ld2 < INF else -1, p.compartment.fill, p.capacity()])
 	_check(Vfx.heavy_node != null and Vfx.heavy_node.visible, "heavy: the stuck hex's nearest piece is marked")
 	await _shot("heavy_hex")
 
