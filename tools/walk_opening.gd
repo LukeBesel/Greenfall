@@ -670,6 +670,9 @@ static func _reload(label: String) -> void:
 			continue
 		elif k == "chest":
 			same = absf(float(x) - float(y)) < 0.35
+		elif k == "clean" and int(a["robots"]) > 0:
+			# [v10pace] a robot out keeps cleaning between this look and the save at Quit: a little more is fine
+			same = float(y) >= float(x) - 0.001 and float(y) - float(x) <= 0.05
 		elif k == "beam":
 			# On a cleaning step the marker is the outlined hex ("hex", compared above); its beam to
 			# the nearest finishable hex comes and goes with where Lumi stands (main, v9d).

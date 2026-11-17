@@ -769,6 +769,11 @@ static func _part_heavy() -> void:
 	await tree.create_timer(0.4).timeout
 	var c2: Array[String] = _card()
 	var need_h: int = Pace.hex_need(f, stuck)
+	for k: int in 16:  # [v10pace] a "chest is full" hint from the scooping just before is held a few seconds
+		if (c2[1] + c2[2]).contains("This hex needs Lift"):
+			break
+		await tree.create_timer(0.25).timeout
+		c2 = _card()
 	_check(Pace.heavy_hex and (c2[1] + c2[2]).contains("This hex needs Lift %d" % need_h), "heavy: the stuck hex says it needs Lift %d (%s)" % [need_h, str(c2)])
 	_check(Vfx.heavy_node != null and Vfx.heavy_node.visible, "heavy: the stuck hex's nearest piece is marked")
 	await _shot("heavy_hex")
