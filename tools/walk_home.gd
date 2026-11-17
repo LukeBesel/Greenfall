@@ -393,7 +393,10 @@ static func _part_hex2() -> void:
 	var before: Dictionary = await _map_look("after a clean hex")
 	await _reload("hex2 done, the map looked at")
 	var after: Dictionary = await _map_look("after a reload")
-	_check(not before.is_empty() and int(before["ok"]) >= 2, "map: the hexes cleaned are counted (%s)" % str(before.get("sub", "")))
+	# The walk starts hex2 with the stat set to 1 (no hex played before it), so the map is held to
+	# the hexes really cleaned on the ground (each pays once: GameState.orbit hexes_paid).
+	var real: int = (GameState.orbit.get("hexes_paid", {}) as Dictionary).size()
+	_check(not before.is_empty() and real >= 1 and int(before["ok"]) >= real, "map: the hexes cleaned are counted (%s, %d cleaned on the ground)" % [str(before.get("sub", "")), real])
 	_check(not before.is_empty() and not after.is_empty() and int(after["ok"]) == int(before["ok"]) and str(after["rows"]) == str(before["rows"]),
 		"map: the same numbers after a reload (%s%% / %s%%)" % [str(before.get("pct", "?")), str(after.get("pct", "?"))])
 

@@ -1988,7 +1988,7 @@ msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back,
 msgstr "Mantenla regada. Aquí fuera las semillas escasean, pero cada flor devuelve una, y un poco de luz verde para tu núcleo. Así es como empieza."
 
 #: story/first_seed.gd:459
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
 msgstr "Lumi. Capto una señal. Verde, débil, al este de la base. Un viejo invernadero. Ve a mirar."
 
 #: story/first_seed.gd:571
@@ -16643,6 +16643,9 @@ msgstr "Ese pórtico desguazó la flota minera cuando se acabó el dinero. El ar
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+#~ msgstr "Lumi. Capto una señal. Verde, débil, al este de la base. Un viejo invernadero. Ve a mirar."
 
 #~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 #~ msgstr "PIEZA ENTERRADA: camina hacia ella hasta que la lectura llegue al máximo y desentiérrala."

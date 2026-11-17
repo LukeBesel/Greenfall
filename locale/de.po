@@ -1988,7 +1988,7 @@ msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back,
 msgstr "Halte ihn feucht. Samen sind hier draußen selten, aber jede Blüte gibt einen zurück, dazu ein bisschen grünes Licht für deinen Kern. So fängt es an."
 
 #: story/first_seed.gd:459
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
 msgstr "Lumi. Ich empfange ein Signal. Grün, schwach, östlich der Basis. Ein altes Gewächshaus. Sieh nach."
 
 #: story/first_seed.gd:571
@@ -16643,6 +16643,9 @@ msgstr "Dieser Portalkran verschrottete die Bergbauflotte, als das Geld ausging.
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
+
+#~ msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+#~ msgstr "Lumi. Ich empfange ein Signal. Grün, schwach, östlich der Basis. Ein altes Gewächshaus. Sieh nach."
 
 #~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 #~ msgstr "VERGRABENES TEIL: Geh darauf zu, bis der Wert am höchsten ist, dann grab es aus."

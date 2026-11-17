@@ -456,7 +456,7 @@ func give_signal(line: String = "") -> void:
 		return
 	GameState.flags["seed_signal"] = true
 	if world.get("wren") != null:
-		world.wren.line_started.emit(line if line != "" else tr("Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."), 1)
+		world.wren.line_started.emit(line if line != "" else tr("Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."), 1)
 	Audio.play("detector", 0.7, -6.0)
 
 

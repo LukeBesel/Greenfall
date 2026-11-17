@@ -1985,8 +1985,8 @@ msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back,
 msgstr "[Ķééþ îţ ŵàţéŕéð. Šééðš àŕé ŕàŕé ôûţ ĥéŕé, bûţ évéŕý bļôôm ĝîvéš ôñé bàçķ, àñð à ļîţţļé ĝŕééñ ļîĝĥţ ƒôŕ ýôûŕ çôŕé. Ţĥîš îš ĥôŵ îţ šţàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/first_seed.gd:459
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
-msgstr "[Ļûmî. Î'm ĝéţţîñĝ à šîĝñàļ. Ĝŕééñ, ƒàîñţ, éàšţ ôƒ ţĥé ĥûb. Àñ ôļð ĝŕééñĥôûšé. Ĝô ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
+msgstr "[Ļûmî. Î'm ĝéţţîñĝ à šîĝñàļ. Ĝŕééñ, ƒàîñţ, éàšţ ôƒ ţĥé bàšé. Àñ ôļð ĝŕééñĥôûšé. Ĝô ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/first_seed.gd:571
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"

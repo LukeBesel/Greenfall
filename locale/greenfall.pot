@@ -1974,7 +1974,7 @@ msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back,
 msgstr ""
 
 #: story/first_seed.gd:459
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
 msgstr ""
 
 #: story/first_seed.gd:571

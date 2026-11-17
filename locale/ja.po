@@ -1982,7 +1982,7 @@ msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back,
 msgstr "水を切らさないでね。ここでは種は貴重だけど、花が咲くたびにひとつ返ってくるし、きみのコアにも小さな緑の光が届く。こうやって始まるんだ。"
 
 #: story/first_seed.gd:459
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
 msgstr "Lumi。シグナルを受信。緑で、かすかで、基地の東。古い温室だ。見てきて。"
 
 #: story/first_seed.gd:571
@@ -16626,6 +16626,9 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+#~ msgstr "Lumi。シグナルを受信。緑で、かすかで、基地の東。古い温室だ。見てきて。"
 
 #~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 #~ msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"

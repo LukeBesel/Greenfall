@@ -1982,7 +1982,7 @@ msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back,
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
 #: story/first_seed.gd:459
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
 msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
 
 #: story/first_seed.gd:571
@@ -16626,6 +16626,9 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
+#~ msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
 
 #~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 #~ msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
