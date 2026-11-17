@@ -68,7 +68,7 @@ func test_pseudo_translates_code_and_data_strings() -> void:
 	var first: String = str((goals["goals"] as Array)[0]["text"])
 	assert_true(tr(first).begins_with("["), "goal text translated: %s" % tr(first))
 	# Formatted strings keep working.
-	assert_true((tr("Hub %d") % 3).contains("3"))
+	assert_true((tr("Base %d") % 3).contains("3"))
 	var many: String = tr_n("+%d part", "+%d parts", 5) % 5  # [money] tokens are gone
 	assert_true(many.begins_with("[") and many.contains("5"), many)
 	# A WREN line keeps its {name} placeholder.

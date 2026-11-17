@@ -95,7 +95,7 @@ func refresh() -> void:
 		var status: String = ""
 		if s.built(id):
 			status = tr("Built.")
-		elif reason.begins_with(tr("Requires research: %s.").get_slice("%", 0)) or reason.begins_with(tr("Requires hub level %d.").get_slice("%", 0)):  # [l10n]
+		elif reason.begins_with(tr("Requires research: %s.").get_slice("%", 0)) or reason.begins_with(tr("Requires base level %d.").get_slice("%", 0)):  # [l10n]
 			status = reason
 		else:
 			status = tr("Needs %s") % HubPanel.cost_text(d.get("cost", {}))

@@ -73,8 +73,8 @@ msgid "Scoop junk"
 msgstr "ガラクタをすくう"
 
 #: autoload/Settings.gd:17
-msgid "Press a cube"
-msgstr "キューブを圧縮"
+msgid "Make a bale"
+msgstr "ベールを作る"
 
 #: autoload/Settings.gd:17
 msgid "Interact"
@@ -273,7 +273,7 @@ msgid "The launch pad is still buried. Put your first robot to work to clear it.
 msgstr "発射台はまだゴミにうまっている。最初のロボットを働かせて片づけよう。"
 
 #: automation/hub.gd:173
-msgid "Hub upgraded: %s."
+msgid "Base upgraded: %s."
 msgstr "基地をアップグレード：%s。"
 
 #: automation/hub.gd:204
@@ -416,7 +416,7 @@ msgstr "研究が必要：%s。"
 
 #: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
 #: ui/stations_panel.gd:98
-msgid "Requires hub level %d."
+msgid "Requires base level %d."
 msgstr "基地レベル %d が必要。"
 
 #: automation/stations.gd:146
@@ -654,7 +654,7 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
-#: planet/orbit_layers.gd:182 robots/sphere/command_overlay.gd:194
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:241 robots/sphere/command_overlay.gd:194
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -839,10 +839,6 @@ msgstr "先にロケットを強化"
 msgid "%s site"
 msgstr "%sの地点"
 
-#: planet/sites/orbit_sites.gd:241
-msgid "Hub %d"
-msgstr "基地 %d"
-
 #: planet/sites/sphere_water.gd:263
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "水が……底が見える。Lumi、下で何かが動いてる。"
@@ -956,7 +952,7 @@ msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "まず植えよう：{tool_plant}  で種を持つ"
 
 #: player/patch.gd:412
-msgid "Watering can is empty. Refill at the hub."
+msgid "Watering can is empty. Refill at the base."
 msgstr "じょうろが空っぽ。基地で補給しよう。"
 
 #: player/patch.gd:431
@@ -1128,7 +1124,7 @@ msgid "Locked · research %s"
 msgstr "ロック中 · 研究 %s"
 
 #: robots/fleet.gd:149
-msgid "Crew full (%d/%d): upgrade the hub"
+msgid "Crew full (%d/%d): upgrade the base"
 msgstr "クルーが満員（%d/%d）：基地をアップグレードしよう"
 
 #: robots/fleet.gd:151 robots/fleet.gd:227
@@ -1154,11 +1150,11 @@ msgid "%s fleet upgraded to %s."
 msgstr "%s フリートを %s にアップグレード。"
 
 #: robots/robot.gd:247
-msgid "parked at hub"
+msgid "parked at base"
 msgstr "基地で待機"
 
 #: robots/robot.gd:247
-msgid "returning to hub"
+msgid "returning to base"
 msgstr "基地へ帰還中"
 
 #: robots/robot.gd:249
@@ -1576,7 +1572,7 @@ msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
 #: scenes/slice_orbit.gd:1026
-msgid "Upgrades need a workbench. Head back to the hub."
+msgid "Upgrades need a workbench. Head back to the base."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
 #: scenes/slice_orbit.gd:1126 systems/camp/camp.gd:242
@@ -2099,8 +2095,8 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
-msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
+msgstr "近くにパーツが埋まっている！ピッと鳴るまで近づいて、掘り出そう。"
 
 #: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
@@ -2135,8 +2131,8 @@ msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
 #: story/planet_steps.gd:57
-msgid "Wake station %d of %d"
-msgstr "ステーション%d/%dを目覚めさせよう"
+msgid "Wake base %d of %d"
+msgstr "基地%d/%dを目覚めさせよう"
 
 #: story/shards.gd:106
 msgid "Something surfaced in the cleared ground. A memory shard."
@@ -3621,6 +3617,10 @@ msgstr "庭"
 msgid "Base level %d"
 msgstr "基地レベル %d"
 
+#: ui/bench_lists.gd:131
+msgid "Build base level %d"
+msgstr "基地レベル%dを建設"
+
 #: ui/bench_tiers.gd:93
 msgid "Build the signal tower first."
 msgstr "まず信号塔を建てよう。"
@@ -3716,9 +3716,9 @@ msgstr "運搬"
 msgid "Plant"
 msgstr "植える"
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
-msgstr "水やり"
+msgstr "水"
 
 #: ui/builder_panel.gd:21
 msgid "Skim"
@@ -3826,16 +3826,16 @@ msgid "RESTART"
 msgstr "再起動"
 
 #: ui/checklist_card.gd:110
-msgid "RESTART CHECKLIST"
-msgstr "再起動チェックリスト"
+msgid "FIRST STEPS"
+msgstr "はじめの一歩"
 
 #: ui/checklist_card.gd:110
 msgid "NEXT STEP"
 msgstr "次のステップ"
 
 #: ui/checklist_card.gd:148
-msgid "RESTART CHECKLIST  ·  DONE"
-msgstr "再起動チェックリスト  ·  完了"
+msgid "FIRST STEPS  ·  DONE"
+msgstr "はじめの一歩  ·  完了"
 
 #: ui/codex_artists.gd:33
 msgid "ARTISTS"
@@ -4664,18 +4664,18 @@ msgid "How much is clean"
 msgstr "どれだけきれいになった？"
 
 #: ui/globe_view.gd:611
-msgid "%d of %d areas clean"
-msgstr "%d / %d エリアがきれい"
+msgid "%d of %d bases clean"
+msgstr "%d / %d 基地がきれい"
 
 #: ui/globe_view.gd:691
-msgid "of the ground around your hubs is clean"
+msgid "of the ground around your bases is clean"
 msgstr "基地のまわりの地面がきれいになった"
 
 #: ui/globe_view.gd:693
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "の土地を取り戻した  ·  陸のヘックス %s / %s"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:354
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:358
 msgid "DONE"
 msgstr "完了"
 
@@ -4744,20 +4744,20 @@ msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr "現在：レベル%d、%s。ベールの売値+%d%%。"
 
 #: ui/hub_panel.gd:194
-msgid "Hub level %d  ·  fully built"
-msgstr "ハブ レベル%d  ·  完成"
+msgid "Base level %d  ·  fully built"
+msgstr "基地レベル%d  ·  完成"
 
 #: ui/hub_panel.gd:197
-msgid "Every hub level is built."
-msgstr "ハブはすべて完成しました。"
+msgid "Every base level is built."
+msgstr "基地はすべて完成しました。"
 
 #: ui/hub_panel.gd:199
 msgid "Fully built"
 msgstr "完成"
 
 #: ui/hub_panel.gd:202
-msgid "Next: hub level %d"
-msgstr "次：ハブ レベル%d"
+msgid "Next: base level %d"
+msgstr "次：基地レベル%d"
 
 #: ui/hub_panel.gd:209
 msgid "Upgrade to level %d"
@@ -4772,8 +4772,8 @@ msgid "Continue in the full game"
 msgstr "続きは製品版で"
 
 #: ui/hub_panel.gd:224
-msgid "Opens at hub level %d."
-msgstr "ハブ レベル%dで解放。"
+msgid "Opens at base level %d."
+msgstr "基地レベル%dで解放。"
 
 #: ui/hub_panel.gd:226
 msgid "All built."
@@ -6217,15 +6217,15 @@ msgid "Ready to launch"
 msgstr "発射準備完了"
 
 #: ui/system_map.gd:726 ui/system_map.gd:741
-msgid "Choose a district"
-msgstr "地区を選ぶ"
+msgid "Choose a base"
+msgstr "基地を選ぶ"
 
 #: ui/system_map.gd:726
 msgid "Launch from the rocket pad"
 msgstr "ロケット発射台から出発"
 
 #: ui/system_map.gd:731
-msgid "Hubs on this planet"
+msgid "Bases on this planet"
 msgstr "この惑星の基地"
 
 #: ui/system_map.gd:760
@@ -7478,7 +7478,7 @@ msgstr "大きなレンズの顔をした、浮かぶ小さなカメラボット
 msgid "Junk"
 msgstr "ガラクタ"
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr "植物"
 
@@ -10872,12 +10872,12 @@ msgstr "基地をレベル4に"
 
 #: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
 #: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
-msgid "Fly to the next station"
-msgstr "次のステーションへ飛ぼう"
+msgid "Fly to the next base"
+msgstr "次の基地へ飛ぼう"
 
 #: data/goals.json:goals[hub_wake_5].text
-msgid "Wake station 5 of 6"
-msgstr "ステーション5/6を目覚めさせよう"
+msgid "Wake base 5 of 6"
+msgstr "基地5/6を目覚めさせよう"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
@@ -10904,8 +10904,8 @@ msgid "Base to level 5"
 msgstr "基地をレベル5に"
 
 #: data/goals.json:goals[hub_wake_6].text
-msgid "Wake station 6 of 6"
-msgstr "ステーション6/6を目覚めさせよう"
+msgid "Wake base 6 of 6"
+msgstr "基地6/6を目覚めさせよう"
 
 #: data/goals.json:goals[home_drive_5].text
 msgid "Build the Mk V Orbital drive"
@@ -11312,8 +11312,8 @@ msgid "Seed a new world"
 msgstr "新しい世界に種をまく"
 
 #: data/goals.json:goals[late_charm_20].text
-msgid "Reach 20 charm in one district"
-msgstr "1つの地区で魅力20に到達する"
+msgid "Reach 20 charm at one base"
+msgstr "1つの基地で魅力20に到達する"
 
 #: data/goals.json:goals[late_charm_20].short
 msgid "Reach 20 charm"
@@ -12109,8 +12109,8 @@ msgid "Something green is waking out there. Plant the first seed."
 msgstr "外で緑の何かが目を覚ましかけてる。最初の種を植えて。"
 
 #: data/objectives.json:objectives[hub_wake_2].text
-msgid "Wake station 2 of 6"
-msgstr "ステーション2/6を目覚めさせよう"
+msgid "Wake base 2 of 6"
+msgstr "基地2/6を目覚めさせよう"
 
 #: data/objectives.json:objectives[hex10].desc
 msgid "More clean ground, more room to plant. Robots help."
@@ -12133,8 +12133,8 @@ msgid "A bigger base makes more power, and power runs robots. Rebuild it at the 
 msgstr "基地が大きくなると電気が増えて、その電気でロボットが動くの。作業台で建て直そう。"
 
 #: data/objectives.json:objectives[hub_wake_3].text
-msgid "Wake station 3 of 6"
-msgstr "ステーション3/6を目覚めさせよう"
+msgid "Wake base 3 of 6"
+msgstr "基地3/6を目覚めさせよう"
 
 #: data/objectives.json:objectives[haul].desc
 msgid "Workbench, Bots tab. It carries bales to the scale for you."
@@ -12201,8 +12201,8 @@ msgid "One more base level, Lumi. Bigger machines need a stronger base."
 msgstr "基地をもう1レベル、Lumi。大きな機械には強い基地がいるんだ。"
 
 #: data/objectives.json:objectives[hub_wake_4].text
-msgid "Wake station 4 of 6"
-msgstr "ステーション4/6を目覚めさせよう"
+msgid "Wake base 4 of 6"
+msgstr "基地4/6を目覚めさせよう"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -12744,17 +12744,9 @@ msgstr "もう少し先：大地が緑になってきたら、WREN が Skimmer �
 msgid "Robotics"
 msgstr "ロボット工学"
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr "植物学"
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr "水文学"
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
-msgstr "物流"
+msgid "Hauling"
+msgstr "運搬"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
@@ -16634,6 +16626,99 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+#~ msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
+
+#~ msgid "Botany"
+#~ msgstr "植物学"
+
+#~ msgid "Hydrology"
+#~ msgstr "水文学"
+
+#~ msgid "Logistics"
+#~ msgstr "物流"
+
+#~ msgid "Press a cube"
+#~ msgstr "キューブを圧縮"
+
+#~ msgid "Reach 20 charm in one district"
+#~ msgstr "1つの地区で魅力20に到達する"
+
+#~ msgid "Hub upgraded: %s."
+#~ msgstr "基地をアップグレード：%s。"
+
+#~ msgid "Requires hub level %d."
+#~ msgstr "基地レベル %d が必要。"
+
+#~ msgid "Hub %d"
+#~ msgstr "基地 %d"
+
+#~ msgid "Watering can is empty. Refill at the hub."
+#~ msgstr "じょうろが空っぽ。基地で補給しよう。"
+
+#~ msgid "Crew full (%d/%d): upgrade the hub"
+#~ msgstr "クルーが満員（%d/%d）：基地をアップグレードしよう"
+
+#~ msgid "parked at hub"
+#~ msgstr "基地で待機"
+
+#~ msgid "returning to hub"
+#~ msgstr "基地へ帰還中"
+
+#~ msgid "Upgrades need a workbench. Head back to the hub."
+#~ msgstr "アップグレードには作業台が必要。基地に戻ろう。"
+
+#~ msgid "Wake station %d of %d"
+#~ msgstr "ステーション%d/%dを目覚めさせよう"
+
+#~ msgid "RESTART CHECKLIST"
+#~ msgstr "再起動チェックリスト"
+
+#~ msgid "RESTART CHECKLIST  ·  DONE"
+#~ msgstr "再起動チェックリスト  ·  完了"
+
+#~ msgid "%d of %d areas clean"
+#~ msgstr "%d / %d エリアがきれい"
+
+#~ msgid "of the ground around your hubs is clean"
+#~ msgstr "基地のまわりの地面がきれいになった"
+
+#~ msgid "Hub level %d  ·  fully built"
+#~ msgstr "ハブ レベル%d  ·  完成"
+
+#~ msgid "Every hub level is built."
+#~ msgstr "ハブはすべて完成しました。"
+
+#~ msgid "Next: hub level %d"
+#~ msgstr "次：ハブ レベル%d"
+
+#~ msgid "Opens at hub level %d."
+#~ msgstr "ハブ レベル%dで解放。"
+
+#~ msgid "Choose a district"
+#~ msgstr "地区を選ぶ"
+
+#~ msgid "Hubs on this planet"
+#~ msgstr "この惑星の基地"
+
+#~ msgid "Fly to the next station"
+#~ msgstr "次のステーションへ飛ぼう"
+
+#~ msgid "Wake station 5 of 6"
+#~ msgstr "ステーション5/6を目覚めさせよう"
+
+#~ msgid "Wake station 6 of 6"
+#~ msgstr "ステーション6/6を目覚めさせよう"
+
+#~ msgid "Wake station 2 of 6"
+#~ msgstr "ステーション2/6を目覚めさせよう"
+
+#~ msgid "Wake station 3 of 6"
+#~ msgstr "ステーション3/6を目覚めさせよう"
+
+#~ msgid "Wake station 4 of 6"
+#~ msgstr "ステーション4/6を目覚めさせよう"
 
 #~ msgid "Buy an upgrade: press  {interact}  at the bench"
 #~ msgstr "アップグレードを買う：作業台で  {interact}  を押す"

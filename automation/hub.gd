@@ -170,7 +170,7 @@ func upgrade() -> bool:
 	GameState.world["hub_level"] = level
 	_build_level(level, true)
 	level_changed.emit(level)
-	EventBus.toast.emit(tr("Hub upgraded: %s.") % tr(str(next["name"])), "story")
+	EventBus.toast.emit(tr("Base upgraded: %s.") % tr(str(next["name"])), "story")
 	leveled.emit(level)
 	return true
 

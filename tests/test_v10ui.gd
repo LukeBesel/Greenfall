@@ -326,3 +326,44 @@ func test_progress_card_fits_every_language_and_screen() -> void:
 				assert_eq(lb.get_visible_line_count(), lb.get_line_count(), "%s: '%s' shows in full" % [loc, lb.text])
 				assert_ne(lb.text_overrun_behavior, TextServer.OVERRUN_TRIM_ELLIPSIS, "%s: '%s' is never cut" % [loc, lb.text])
 		g._root.visible = false
+
+
+# --- Critic 14: the card's picture is the thing the step points at ------------------------------
+
+## The thing each checklist step's marker points at (story/tutorial.gd target()).
+const STEP_TARGETS: Dictionary = {"repair": "bench", "scoop": "piece", "dump": "pad", "upgrade": "bench"}
+
+
+func test_every_checklist_step_has_the_picture_of_its_target() -> void:
+	for s: Dictionary in Tutorial.STEPS:
+		var id: String = str(s["id"])
+		assert_true(STEP_TARGETS.has(id), "step %s: its target is known to this test" % id)
+		assert_eq(str(Tutorial.STEP_PICS.get(id, "")), str(Tutorial.TARGET_PICS.get(STEP_TARGETS.get(id, ""), "?")), "step %s: picture = its target's" % id)
+
+
+func test_card_shows_the_checklist_picture_not_the_goal_underneath() -> void:
+	var card := ObjectiveCard.new()
+	add_child_autofree(card)
+	var def: Dictionary = {"id": "dump3", "text": "Fill the bin 3 times"}
+	card.set_substep("Fix the Settlers' old bench: press E", [-1.0, ""], "gear")
+	card._set_texts(def)
+	assert_eq(card._pic.kind, "gear", "the bench step shows the bench's picture, not the bin")
+	card.set_substep("", [-1.0, ""], "gear")
+	card._set_texts(def)
+	assert_eq(card._pic.kind, ObjectiveCard.picture_of(def), "back on the goal: the goal's picture")
+	assert_eq(card.substep_pic, "", "no sub-step, no sub-step picture")
+
+
+func test_checklist_caption_has_no_jargon() -> void:
+	var src: String = FileAccess.get_file_as_string("res://ui/checklist_card.gd")
+	assert_false(src.contains("tr(\"RESTART CHECKLIST"), "no \"RESTART CHECKLIST\" caption")
+	assert_true(src.contains("tr(\"FIRST STEPS\")"), "the caption is \"FIRST STEPS\"")
+
+
+# --- Critic 7: one word for a base ------------------------------------------------------------
+
+func test_card_steps_say_base() -> void:
+	for d: Dictionary in _json("res://data/objectives.json")["objectives"] + _json("res://data/goals.json")["goals"]:
+		var t: String = str(d.get("text", "")).to_lower()
+		for w: String in ["station", "district", " hub"]:
+			assert_false(t.contains(w), "%s: \"%s\" says \"base\", not \"%s\"" % [d["id"], d.get("text", ""), w.strip_edges()])

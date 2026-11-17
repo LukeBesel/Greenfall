@@ -292,11 +292,11 @@ func _populate() -> void:
 			"patch":
 				ld.provider = func() -> Array: return BenchLists.upgrades(w)
 				ld.categories = BenchLists.UPGRADE_CATS
-				ld.counter = BenchLists.upgrades_counter
+				# [v10ui] Critic 18: "INSTALLED 6 / 135" and "BUILT 1" were numbers with no meaning
+				# for a child; each row shows its own level, so the corner stays empty here.
 			"build":
 				ld.provider = func() -> Array: return BenchLists.builds(w)
 				ld.categories = BenchLists.BUILD_CATS
-				ld.counter = func() -> String: return BenchLists.builds_counter(w)
 			"bots":  # [ui7] Build / Tiers / Fleet / Fabricator (ui/bench_bots.gd)
 				var fl: Fleet = fleet
 				var ba: Callable = build_at

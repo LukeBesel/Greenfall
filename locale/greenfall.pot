@@ -72,7 +72,7 @@ msgid "Scoop junk"
 msgstr ""
 
 #: autoload/Settings.gd:17
-msgid "Press a cube"
+msgid "Make a bale"
 msgstr ""
 
 #: autoload/Settings.gd:17
@@ -272,7 +272,7 @@ msgid "The launch pad is still buried. Put your first robot to work to clear it.
 msgstr ""
 
 #: automation/hub.gd:173
-msgid "Hub upgraded: %s."
+msgid "Base upgraded: %s."
 msgstr ""
 
 #: automation/hub.gd:204
@@ -415,7 +415,7 @@ msgstr ""
 
 #: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
 #: ui/stations_panel.gd:98
-msgid "Requires hub level %d."
+msgid "Requires base level %d."
 msgstr ""
 
 #: automation/stations.gd:146
@@ -653,7 +653,7 @@ msgstr ""
 msgid "LIGHT  WATER  LIFE"
 msgstr ""
 
-#: planet/orbit_layers.gd:182 robots/sphere/command_overlay.gd:194
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:241 robots/sphere/command_overlay.gd:194
 msgid "Base %d"
 msgstr ""
 
@@ -839,10 +839,6 @@ msgstr ""
 msgid "%s site"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:241
-msgid "Hub %d"
-msgstr ""
-
 #: planet/sites/sphere_water.gd:263
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr ""
@@ -952,7 +948,7 @@ msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr ""
 
 #: player/patch.gd:412
-msgid "Watering can is empty. Refill at the hub."
+msgid "Watering can is empty. Refill at the base."
 msgstr ""
 
 #: player/patch.gd:431
@@ -1124,7 +1120,7 @@ msgid "Locked · research %s"
 msgstr ""
 
 #: robots/fleet.gd:149
-msgid "Crew full (%d/%d): upgrade the hub"
+msgid "Crew full (%d/%d): upgrade the base"
 msgstr ""
 
 #: robots/fleet.gd:151 robots/fleet.gd:227
@@ -1150,11 +1146,11 @@ msgid "%s fleet upgraded to %s."
 msgstr ""
 
 #: robots/robot.gd:247
-msgid "parked at hub"
+msgid "parked at base"
 msgstr ""
 
 #: robots/robot.gd:247
-msgid "returning to hub"
+msgid "returning to base"
 msgstr ""
 
 #: robots/robot.gd:249
@@ -1577,7 +1573,7 @@ msgid "E   Open the workbench"
 msgstr ""
 
 #: scenes/slice_orbit.gd:1026
-msgid "Upgrades need a workbench. Head back to the hub."
+msgid "Upgrades need a workbench. Head back to the base."
 msgstr ""
 
 #: scenes/slice_orbit.gd:1126 systems/camp/camp.gd:242
@@ -2091,7 +2087,7 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr ""
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr ""
 
 #: story/objectives.gd:1188
@@ -2127,7 +2123,7 @@ msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
 #: story/planet_steps.gd:57
-msgid "Wake station %d of %d"
+msgid "Wake base %d of %d"
 msgstr ""
 
 #: story/shards.gd:106
@@ -3619,6 +3615,10 @@ msgstr ""
 msgid "Base level %d"
 msgstr ""
 
+#: ui/bench_lists.gd:131
+msgid "Build base level %d"
+msgstr ""
+
 #: ui/bench_tiers.gd:93
 msgid "Build the signal tower first."
 msgstr ""
@@ -3715,7 +3715,7 @@ msgstr ""
 msgid "Plant"
 msgstr ""
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
 msgstr ""
 
@@ -3824,7 +3824,7 @@ msgid "RESTART"
 msgstr ""
 
 #: ui/checklist_card.gd:110
-msgid "RESTART CHECKLIST"
+msgid "FIRST STEPS"
 msgstr ""
 
 #: ui/checklist_card.gd:110
@@ -3832,7 +3832,7 @@ msgid "NEXT STEP"
 msgstr ""
 
 #: ui/checklist_card.gd:148
-msgid "RESTART CHECKLIST  ·  DONE"
+msgid "FIRST STEPS  ·  DONE"
 msgstr ""
 
 #: ui/codex_artists.gd:33
@@ -4661,18 +4661,18 @@ msgid "How much is clean"
 msgstr ""
 
 #: ui/globe_view.gd:611
-msgid "%d of %d areas clean"
+msgid "%d of %d bases clean"
 msgstr ""
 
 #: ui/globe_view.gd:691
-msgid "of the ground around your hubs is clean"
+msgid "of the ground around your bases is clean"
 msgstr ""
 
 #: ui/globe_view.gd:693
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr ""
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:354
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:358
 msgid "DONE"
 msgstr ""
 
@@ -4741,11 +4741,11 @@ msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr ""
 
 #: ui/hub_panel.gd:194
-msgid "Hub level %d  ·  fully built"
+msgid "Base level %d  ·  fully built"
 msgstr ""
 
 #: ui/hub_panel.gd:197
-msgid "Every hub level is built."
+msgid "Every base level is built."
 msgstr ""
 
 #: ui/hub_panel.gd:199
@@ -4753,7 +4753,7 @@ msgid "Fully built"
 msgstr ""
 
 #: ui/hub_panel.gd:202
-msgid "Next: hub level %d"
+msgid "Next: base level %d"
 msgstr ""
 
 #: ui/hub_panel.gd:209
@@ -4769,7 +4769,7 @@ msgid "Continue in the full game"
 msgstr ""
 
 #: ui/hub_panel.gd:224
-msgid "Opens at hub level %d."
+msgid "Opens at base level %d."
 msgstr ""
 
 #: ui/hub_panel.gd:226
@@ -6207,7 +6207,7 @@ msgid "Ready to launch"
 msgstr ""
 
 #: ui/system_map.gd:726 ui/system_map.gd:741
-msgid "Choose a district"
+msgid "Choose a base"
 msgstr ""
 
 #: ui/system_map.gd:726
@@ -6215,7 +6215,7 @@ msgid "Launch from the rocket pad"
 msgstr ""
 
 #: ui/system_map.gd:731
-msgid "Hubs on this planet"
+msgid "Bases on this planet"
 msgstr ""
 
 #: ui/system_map.gd:760
@@ -7449,7 +7449,7 @@ msgstr ""
 msgid "Junk"
 msgstr ""
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr ""
 
@@ -10781,11 +10781,11 @@ msgstr ""
 
 #: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
 #: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
-msgid "Fly to the next station"
+msgid "Fly to the next base"
 msgstr ""
 
 #: data/goals.json:goals[hub_wake_5].text
-msgid "Wake station 5 of 6"
+msgid "Wake base 5 of 6"
 msgstr ""
 
 #: data/goals.json:goals[plant_25].text
@@ -10813,7 +10813,7 @@ msgid "Base to level 5"
 msgstr ""
 
 #: data/goals.json:goals[hub_wake_6].text
-msgid "Wake station 6 of 6"
+msgid "Wake base 6 of 6"
 msgstr ""
 
 #: data/goals.json:goals[home_drive_5].text
@@ -11221,7 +11221,7 @@ msgid "Seed a new world"
 msgstr ""
 
 #: data/goals.json:goals[late_charm_20].text
-msgid "Reach 20 charm in one district"
+msgid "Reach 20 charm at one base"
 msgstr ""
 
 #: data/goals.json:goals[late_charm_20].short
@@ -11946,7 +11946,7 @@ msgid "Something green is waking out there. Plant the first seed."
 msgstr ""
 
 #: data/objectives.json:objectives[hub_wake_2].text
-msgid "Wake station 2 of 6"
+msgid "Wake base 2 of 6"
 msgstr ""
 
 #: data/objectives.json:objectives[hex10].desc
@@ -11970,7 +11970,7 @@ msgid "A bigger base makes more power, and power runs robots. Rebuild it at the 
 msgstr ""
 
 #: data/objectives.json:objectives[hub_wake_3].text
-msgid "Wake station 3 of 6"
+msgid "Wake base 3 of 6"
 msgstr ""
 
 #: data/objectives.json:objectives[haul].desc
@@ -12038,7 +12038,7 @@ msgid "One more base level, Lumi. Bigger machines need a stronger base."
 msgstr ""
 
 #: data/objectives.json:objectives[hub_wake_4].text
-msgid "Wake station 4 of 6"
+msgid "Wake base 4 of 6"
 msgstr ""
 
 #: data/outposts.json:levels[0].name
@@ -12581,16 +12581,8 @@ msgstr ""
 msgid "Robotics"
 msgstr ""
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr ""
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr ""
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
+msgid "Hauling"
 msgstr ""
 
 #: data/research.json:nodes[scoop_beam].name

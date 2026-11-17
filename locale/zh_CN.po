@@ -73,8 +73,8 @@ msgid "Scoop junk"
 msgstr "铲废料"
 
 #: autoload/Settings.gd:17
-msgid "Press a cube"
-msgstr "压制方块"
+msgid "Make a bale"
+msgstr "制作捆包"
 
 #: autoload/Settings.gd:17
 msgid "Interact"
@@ -273,7 +273,7 @@ msgid "The launch pad is still buried. Put your first robot to work to clear it.
 msgstr "发射台还埋在垃圾里。先让你的第一个机器人开工，把它清出来。"
 
 #: automation/hub.gd:173
-msgid "Hub upgraded: %s."
+msgid "Base upgraded: %s."
 msgstr "基地已升级：%s。"
 
 #: automation/hub.gd:204
@@ -416,7 +416,7 @@ msgstr "需要研究：%s。"
 
 #: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
 #: ui/stations_panel.gd:98
-msgid "Requires hub level %d."
+msgid "Requires base level %d."
 msgstr "需要基地等级 %d。"
 
 #: automation/stations.gd:146
@@ -654,7 +654,7 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
-#: planet/orbit_layers.gd:182 robots/sphere/command_overlay.gd:194
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:241 robots/sphere/command_overlay.gd:194
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -839,10 +839,6 @@ msgstr "先升级火箭"
 msgid "%s site"
 msgstr "%s地点"
 
-#: planet/sites/orbit_sites.gd:241
-msgid "Hub %d"
-msgstr "基地 %d"
-
 #: planet/sites/sphere_water.gd:263
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "这水……我能看见底了。Lumi，下面有东西在动。"
@@ -956,7 +952,7 @@ msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "先种下：按  {tool_plant}  拿出种子"
 
 #: player/patch.gd:412
-msgid "Watering can is empty. Refill at the hub."
+msgid "Watering can is empty. Refill at the base."
 msgstr "水壶空了。回基地补水。"
 
 #: player/patch.gd:431
@@ -1128,7 +1124,7 @@ msgid "Locked · research %s"
 msgstr "未解锁 · 研究 %s"
 
 #: robots/fleet.gd:149
-msgid "Crew full (%d/%d): upgrade the hub"
+msgid "Crew full (%d/%d): upgrade the base"
 msgstr "队伍已满（%d/%d）：请升级基地"
 
 #: robots/fleet.gd:151 robots/fleet.gd:227
@@ -1154,11 +1150,11 @@ msgid "%s fleet upgraded to %s."
 msgstr "%s机队已升级为 %s。"
 
 #: robots/robot.gd:247
-msgid "parked at hub"
+msgid "parked at base"
 msgstr "停在基地"
 
 #: robots/robot.gd:247
-msgid "returning to hub"
+msgid "returning to base"
 msgstr "正在返回基地"
 
 #: robots/robot.gd:249
@@ -1576,7 +1572,7 @@ msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
 #: scenes/slice_orbit.gd:1026
-msgid "Upgrades need a workbench. Head back to the hub."
+msgid "Upgrades need a workbench. Head back to the base."
 msgstr "升级需要工作台。回基地去吧。"
 
 #: scenes/slice_orbit.gd:1126 systems/camp/camp.gd:242
@@ -2099,8 +2095,8 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
-msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
+msgstr "附近埋着一个零件！朝它走，听到哔哔声就把它挖出来。"
 
 #: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
@@ -2135,8 +2131,8 @@ msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
 #: story/planet_steps.gd:57
-msgid "Wake station %d of %d"
-msgstr "唤醒第 %d 座站点(共 %d 座)"
+msgid "Wake base %d of %d"
+msgstr "唤醒第 %d 座基地(共 %d 座)"
 
 #: story/shards.gd:106
 msgid "Something surfaced in the cleared ground. A memory shard."
@@ -3621,6 +3617,10 @@ msgstr "院子"
 msgid "Base level %d"
 msgstr "基地等级 %d"
 
+#: ui/bench_lists.gd:131
+msgid "Build base level %d"
+msgstr "建造基地%d级"
+
 #: ui/bench_tiers.gd:93
 msgid "Build the signal tower first."
 msgstr "先建造信号塔。"
@@ -3716,9 +3716,9 @@ msgstr "运输"
 msgid "Plant"
 msgstr "种植"
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
-msgstr "浇水"
+msgstr "水"
 
 #: ui/builder_panel.gd:21
 msgid "Skim"
@@ -3826,16 +3826,16 @@ msgid "RESTART"
 msgstr "重启"
 
 #: ui/checklist_card.gd:110
-msgid "RESTART CHECKLIST"
-msgstr "重启清单"
+msgid "FIRST STEPS"
+msgstr "第一步"
 
 #: ui/checklist_card.gd:110
 msgid "NEXT STEP"
 msgstr "下一步"
 
 #: ui/checklist_card.gd:148
-msgid "RESTART CHECKLIST  ·  DONE"
-msgstr "重启清单  ·  完成"
+msgid "FIRST STEPS  ·  DONE"
+msgstr "第一步  ·  完成"
 
 #: ui/codex_artists.gd:33
 msgid "ARTISTS"
@@ -4664,18 +4664,18 @@ msgid "How much is clean"
 msgstr "已经干净了多少"
 
 #: ui/globe_view.gd:611
-msgid "%d of %d areas clean"
-msgstr "%d / %d 个区域已干净"
+msgid "%d of %d bases clean"
+msgstr "%d / %d 座基地已干净"
 
 #: ui/globe_view.gd:691
-msgid "of the ground around your hubs is clean"
+msgid "of the ground around your bases is clean"
 msgstr "基地周围的土地已清理干净"
 
 #: ui/globe_view.gd:693
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:354
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:358
 msgid "DONE"
 msgstr "完成"
 
@@ -4744,11 +4744,11 @@ msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr "当前：%d级，%s。草捆售价+%d%%。"
 
 #: ui/hub_panel.gd:194
-msgid "Hub level %d  ·  fully built"
+msgid "Base level %d  ·  fully built"
 msgstr "基地%d级  ·  已建满"
 
 #: ui/hub_panel.gd:197
-msgid "Every hub level is built."
+msgid "Every base level is built."
 msgstr "基地所有等级均已建成。"
 
 #: ui/hub_panel.gd:199
@@ -4756,7 +4756,7 @@ msgid "Fully built"
 msgstr "已建满"
 
 #: ui/hub_panel.gd:202
-msgid "Next: hub level %d"
+msgid "Next: base level %d"
 msgstr "下一步：基地%d级"
 
 #: ui/hub_panel.gd:209
@@ -4772,7 +4772,7 @@ msgid "Continue in the full game"
 msgstr "在完整版中继续"
 
 #: ui/hub_panel.gd:224
-msgid "Opens at hub level %d."
+msgid "Opens at base level %d."
 msgstr "基地%d级时开放。"
 
 #: ui/hub_panel.gd:226
@@ -6217,15 +6217,15 @@ msgid "Ready to launch"
 msgstr "可以发射"
 
 #: ui/system_map.gd:726 ui/system_map.gd:741
-msgid "Choose a district"
-msgstr "选择一个区域"
+msgid "Choose a base"
+msgstr "选择一座基地"
 
 #: ui/system_map.gd:726
 msgid "Launch from the rocket pad"
 msgstr "从火箭发射台出发"
 
 #: ui/system_map.gd:731
-msgid "Hubs on this planet"
+msgid "Bases on this planet"
 msgstr "这颗星球上的基地"
 
 #: ui/system_map.gd:760
@@ -7478,7 +7478,7 @@ msgstr "一个漂浮的小相机机器人，脸是一枚大镜头。建造一次
 msgid "Junk"
 msgstr "废料"
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr "植物"
 
@@ -10872,12 +10872,12 @@ msgstr "基地升到 4 级"
 
 #: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
 #: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
-msgid "Fly to the next station"
-msgstr "飞往下一座站点"
+msgid "Fly to the next base"
+msgstr "飞往下一座基地"
 
 #: data/goals.json:goals[hub_wake_5].text
-msgid "Wake station 5 of 6"
-msgstr "唤醒第 5 座站点(共 6 座)"
+msgid "Wake base 5 of 6"
+msgstr "唤醒第 5 座基地(共 6 座)"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
@@ -10904,8 +10904,8 @@ msgid "Base to level 5"
 msgstr "基地升到 5 级"
 
 #: data/goals.json:goals[hub_wake_6].text
-msgid "Wake station 6 of 6"
-msgstr "唤醒第 6 座站点(共 6 座)"
+msgid "Wake base 6 of 6"
+msgstr "唤醒第 6 座基地(共 6 座)"
 
 #: data/goals.json:goals[home_drive_5].text
 msgid "Build the Mk V Orbital drive"
@@ -11312,8 +11312,8 @@ msgid "Seed a new world"
 msgstr "播种一个新世界"
 
 #: data/goals.json:goals[late_charm_20].text
-msgid "Reach 20 charm in one district"
-msgstr "在一个城区达到 20 点魅力"
+msgid "Reach 20 charm at one base"
+msgstr "在一座基地达到 20 点魅力"
 
 #: data/goals.json:goals[late_charm_20].short
 msgid "Reach 20 charm"
@@ -12109,8 +12109,8 @@ msgid "Something green is waking out there. Plant the first seed."
 msgstr "外面有绿色的东西正在醒来。种下第一颗种子吧。"
 
 #: data/objectives.json:objectives[hub_wake_2].text
-msgid "Wake station 2 of 6"
-msgstr "唤醒第 2 座站点(共 6 座)"
+msgid "Wake base 2 of 6"
+msgstr "唤醒第 2 座基地(共 6 座)"
 
 #: data/objectives.json:objectives[hex10].desc
 msgid "More clean ground, more room to plant. Robots help."
@@ -12133,8 +12133,8 @@ msgid "A bigger base makes more power, and power runs robots. Rebuild it at the 
 msgstr "基地越大，电就越多，机器人靠电干活。去工作台把它重建起来吧。"
 
 #: data/objectives.json:objectives[hub_wake_3].text
-msgid "Wake station 3 of 6"
-msgstr "唤醒第 3 座站点(共 6 座)"
+msgid "Wake base 3 of 6"
+msgstr "唤醒第 3 座基地(共 6 座)"
 
 #: data/objectives.json:objectives[haul].desc
 msgid "Workbench, Bots tab. It carries bales to the scale for you."
@@ -12201,8 +12201,8 @@ msgid "One more base level, Lumi. Bigger machines need a stronger base."
 msgstr "再升一级基地，Lumi。更大的机器需要更强的基地。"
 
 #: data/objectives.json:objectives[hub_wake_4].text
-msgid "Wake station 4 of 6"
-msgstr "唤醒第 4 座站点(共 6 座)"
+msgid "Wake base 4 of 6"
+msgstr "唤醒第 4 座基地(共 6 座)"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -12744,17 +12744,9 @@ msgstr "以后才有：等大地开始变绿，WREN 会发来 Skimmer 的图纸�
 msgid "Robotics"
 msgstr "机器人学"
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr "植物学"
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr "水文学"
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
-msgstr "物流"
+msgid "Hauling"
+msgstr "搬运"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
@@ -16634,6 +16626,99 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+#~ msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
+
+#~ msgid "Botany"
+#~ msgstr "植物学"
+
+#~ msgid "Hydrology"
+#~ msgstr "水文学"
+
+#~ msgid "Logistics"
+#~ msgstr "物流"
+
+#~ msgid "Press a cube"
+#~ msgstr "压制方块"
+
+#~ msgid "Reach 20 charm in one district"
+#~ msgstr "在一个城区达到 20 点魅力"
+
+#~ msgid "Hub upgraded: %s."
+#~ msgstr "基地已升级：%s。"
+
+#~ msgid "Requires hub level %d."
+#~ msgstr "需要基地等级 %d。"
+
+#~ msgid "Hub %d"
+#~ msgstr "基地 %d"
+
+#~ msgid "Watering can is empty. Refill at the hub."
+#~ msgstr "水壶空了。回基地补水。"
+
+#~ msgid "Crew full (%d/%d): upgrade the hub"
+#~ msgstr "队伍已满（%d/%d）：请升级基地"
+
+#~ msgid "parked at hub"
+#~ msgstr "停在基地"
+
+#~ msgid "returning to hub"
+#~ msgstr "正在返回基地"
+
+#~ msgid "Upgrades need a workbench. Head back to the hub."
+#~ msgstr "升级需要工作台。回基地去吧。"
+
+#~ msgid "Wake station %d of %d"
+#~ msgstr "唤醒第 %d 座站点(共 %d 座)"
+
+#~ msgid "RESTART CHECKLIST"
+#~ msgstr "重启清单"
+
+#~ msgid "RESTART CHECKLIST  ·  DONE"
+#~ msgstr "重启清单  ·  完成"
+
+#~ msgid "%d of %d areas clean"
+#~ msgstr "%d / %d 个区域已干净"
+
+#~ msgid "of the ground around your hubs is clean"
+#~ msgstr "基地周围的土地已清理干净"
+
+#~ msgid "Hub level %d  ·  fully built"
+#~ msgstr "基地%d级  ·  已建满"
+
+#~ msgid "Every hub level is built."
+#~ msgstr "基地所有等级均已建成。"
+
+#~ msgid "Next: hub level %d"
+#~ msgstr "下一步：基地%d级"
+
+#~ msgid "Opens at hub level %d."
+#~ msgstr "基地%d级时开放。"
+
+#~ msgid "Choose a district"
+#~ msgstr "选择一个区域"
+
+#~ msgid "Hubs on this planet"
+#~ msgstr "这颗星球上的基地"
+
+#~ msgid "Fly to the next station"
+#~ msgstr "飞往下一座站点"
+
+#~ msgid "Wake station 5 of 6"
+#~ msgstr "唤醒第 5 座站点(共 6 座)"
+
+#~ msgid "Wake station 6 of 6"
+#~ msgstr "唤醒第 6 座站点(共 6 座)"
+
+#~ msgid "Wake station 2 of 6"
+#~ msgstr "唤醒第 2 座站点(共 6 座)"
+
+#~ msgid "Wake station 3 of 6"
+#~ msgstr "唤醒第 3 座站点(共 6 座)"
+
+#~ msgid "Wake station 4 of 6"
+#~ msgstr "唤醒第 4 座站点(共 6 座)"
 
 #~ msgid "Buy an upgrade: press  {interact}  at the bench"
 #~ msgstr "购买升级：在工作台按  {interact}"

@@ -121,5 +121,5 @@ static func counter(fleet: Fleet) -> String:
 		var hub: int = cr.nearest_hub(cr.surface.up_at(cr.focus.global_position)) if cr.focus != null and is_instance_valid(cr.focus) else cr.hub_cell
 		var rate: float = float(cr.hub_summary(hub)["hexes_per_hour"])
 		if rate >= 1.0:
-			line += "   ·   " + (_tr("About %d hexes an hour") % roundi(rate)).to_upper()
+			line += "\n" + (_tr("About %d hexes an hour") % roundi(rate)).to_upper()  # [v10ui] critic 18: its own line, never broken mid-phrase
 	return line

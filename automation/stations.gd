@@ -126,7 +126,7 @@ func block_reason(id: String) -> String:
 		return tr("Requires research: %s.") % tr(str(Research.def(id).get("name", id)))
 	var d: Dictionary = def(id)
 	if hub_level() < int(d.get("requires_level", 1)):
-		return tr("Requires hub level %d.") % int(d.get("requires_level", 1))
+		return tr("Requires base level %d.") % int(d.get("requires_level", 1))
 	if not Hub.can_pay(d.get("cost", {})):
 		return tr("Not enough cubes or parts.")  # [money]
 	return ""

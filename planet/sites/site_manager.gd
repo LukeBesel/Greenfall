@@ -115,6 +115,11 @@ func build_hub(i: int, sync: bool = false) -> SitePrefab:
 	s["planet"] = planet_id
 	s["hub_index"] = i
 	s["seed"] = _seed
+	# [v10ui] Critic 17: every far town's name board said "OLD TOWN" (no name reached the
+	# dressing, which falls back to the start town's). Each base's sign shows its own name; the
+	# start yard keeps "Old Town" (owner item 94).
+	if i != 0 and str(s.get("name", "")) == "" and HubPlan.has_plan(planet_id):
+		s["name"] = str(HubPlan.entry(planet_id, i).get("name", ""))
 	s["water_fn"] = water_fn(i)  # [v3city] the town keeps its buildings, streets and props off the lake cells
 	s["globe_ctx"] = {"terrain": terrain, "grid": grid, "cells": cells, "xf": sites[i]["transform"], "clear": _clear_cell, "keep_out": _keep_out(0)}  # [v3city] the outskirts
 	var p: SitePrefab = PlanetEnvs.build_site(roots[i], s, levels[i], restoration_of(i))

@@ -723,12 +723,12 @@ func _info_panel() -> PanelContainer:
 	act.custom_minimum_size = Vector2(0, 38)
 	_button(act)
 	if not travel and not _locked:  # [v2map] a map, not a launcher: travel is at the rocket
-		act.text = tr("Choose a district") if here else tr("Launch from the rocket pad")
+		act.text = tr("Choose a base") if here else tr("Launch from the rocket pad")
 		act.disabled = not here or world == null or world.get("globe") == null
 		if here:
 			act.pressed.connect(_hand_to_globe)
 	elif here and travel and on_here.is_valid() and not HomewardDirector.home_ready(world):  # [v2map]
-		act.text = tr("Hubs on this planet")
+		act.text = tr("Bases on this planet")
 		act.pressed.connect(func() -> void:
 			close_map()
 			on_here.call())
@@ -738,7 +738,7 @@ func _info_panel() -> PanelContainer:
 			close_map()
 			HomewardDirector.launch_home(world))
 	elif here:
-		act.text = tr("Choose a district")
+		act.text = tr("Choose a base")
 		act.disabled = _locked or world == null or world.get("globe") == null
 		act.pressed.connect(_hand_to_globe)
 	else:
