@@ -512,6 +512,24 @@ static func _spot_test() -> void:
 	await _wait(func() -> bool: return _ob.revealed and _input_on(), 300.0)
 	_p.compartment.fill = _p.capacity()  # a full chest, as when he heads for the bin
 	var xf: Transform3D = _so.globe.sites[0]["transform"] as Transform3D
+	if DevHooks.has("walk-opening-yard-dump"):  # [v9a] dev: the yard's salvage colliders against the ways to the scale
+		var spots: Dictionary = {"start": _p.global_position, "bench": _w.call("bench_pos"), "bin": Objectives.bin_point(_w), "scale": (_w.get("depot") as Node3D).global_position}
+		for k: String in spots:
+			print("%s yard %s at %s" % [TAG, k, _yard(spots[k]).split(" =")[0]])
+		var inv: Transform3D = xf.affine_inverse()
+		for n: Node in _w.find_children("*", "CollisionShape3D", true, false):
+			if not str(n.get_path()).contains("Salvage"):
+				continue
+			var c: Vector3 = (n as Node3D).global_position
+			var l: Vector3 = inv * c
+			var line: Array[String] = []
+			for k: String in ["start", "bench", "bin"]:
+				var a: Vector3 = inv * (spots[k] as Vector3)
+				var b: Vector3 = inv * (spots["scale"] as Vector3)
+				var ab := Vector2(b.x - a.x, b.z - a.z)
+				var t: float = clampf(Vector2(l.x - a.x, l.z - a.z).dot(ab) / maxf(ab.length_squared(), 0.001), 0.0, 1.0)
+				line.append("%s-scale %.1f m" % [k, Vector2(l.x - a.x, l.z - a.z).distance_to(ab * t)])
+			print("%s yard salvage %s at (%.1f, %.1f) h %.1f: %s" % [TAG, str(n.get_path()).get_slice("Dressing/", 1), l.x, l.z, l.y, ", ".join(line)])
 	var spots: String = DevHooks.get_s("walk-opening-spot", "")
 	if not spots.contains(","):
 		spots = "-20.1,5.4;-21.3,5.6"  # the two CI wedges
