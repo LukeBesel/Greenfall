@@ -84,6 +84,12 @@ static func run_dev(so: SliceOrbit) -> void:
 			if cdf != null and cdf.has_method("first_spot") and (cdf.call("first_spot") as Vector3).is_finite():  # [v10snd]
 				var fsp: Vector3 = cdf.call("first_spot")
 				check.call("first_cd", fsp - fsp.normalized() * 0.55, null)
+			elif cdf != null and cdf.has_method("first_hex") and not Tunes.first_cd_found():  # not put out yet: where it will lie
+				var fh: int = cdf.call("first_hex")
+				if fh >= 0:
+					check.call("first_cd", cdf.call("spot", fh, false), null)
+				else:
+					fails.append("first_cd(no dirty hex by the bin to lie in)")
 			var sh: Variant = so.w.get("shards")
 			if sh is ShardSystem:
 				for hid: int in (sh as ShardSystem)._placed:
