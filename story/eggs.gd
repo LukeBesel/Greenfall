@@ -52,7 +52,6 @@ func setup() -> void:
 	var ids: Array[String] = district_eggs(order, defs, GameState.current_hub, world.field.seed_value, int(data.get("per_district", 9)),
 		wild, world.field.biome, int(data.get("wild_per_district", 4)))
 	var avoid: Array[Vector3] = [Vector3.ZERO, FirstSeed.GREENHOUSE_POS, Intro.POD_POS]
-	avoid.append((LedgerArc.relay_spot(world.field)["pos"] as Vector3))
 	for s: Dictionary in Outposts.plan(world.field):  # [outposts] keep eggs off the outpost slabs
 		avoid.append(s["pos"] as Vector3)
 	if DevHooks.has("museum-sample"):  # [eggs2] dev: a partly filled collection
@@ -100,8 +99,6 @@ func _setup_globe(data: Dictionary) -> void:
 	for s: Dictionary in Outposts.plan_cells(self, f, frame_cells, {}, hub_index):  # keep off the outpost slabs
 		avoid.append(s["pos"] as Vector3)
 	await BuildBudget.check("eggs:outposts")
-	avoid.append(LedgerArc.relay_spot_cells(self, f, frame_cells, hub_index)["pos"] as Vector3)  # and the Ledger's relay
-	await BuildBudget.check("eggs:relay")
 	var plan: Array[Dictionary] = plan_spots_cells(self, f, frame_cells, ids, defs, avoid, f.seed_value + 9091 + hub_index * 31)
 	for p: Dictionary in plan:
 		await BuildBudget.check("eggs:spawn")

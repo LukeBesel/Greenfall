@@ -98,21 +98,6 @@ func _ready() -> void:
 		_check("signal_paid", ev.active.is_empty() and parts1 >= parts0 + RobotParts.value(3), "parts %.0f -> %.0f" % [parts0, parts1])
 	else:
 		print("[events-check] SKIP signal (no buried parts left)")
-	# --- Ledger audit: the drone scoops, Patch beats it.
-	_check("audit_start", ev.start("ledger_audit", true))
-	ev.active["working"] = true
-	for i: int in 3:
-		ev._tick_t = 5.0
-		await _frames(1)
-	_check("audit_drone_scoops", int(ev.active.get("drone_n", 0)) >= 1, str(ev.active.get("drone_n", 0)))
-	var audit_p0: float = GameState.get_currency("parts").to_float()  # [qafix] the audit pays Parts now (tokens are gone)
-	for pid: int in ev.active["zone"]:
-		if s.field.piece_alive[pid] == 1:
-			ev.on_patch_take(pid, 1.0)
-			s.collect_piece(pid)
-	await _frames(2)
-	var audit_p1: float = GameState.get_currency("parts").to_float()
-	_check("audit_won", ev.active.is_empty() and audit_p1 >= audit_p0 + 40.0, "parts %.0f -> %.0f" % [audit_p0, audit_p1])  # [qafix] reward parts [40, 70]
 	# --- Scheduler: with the gate met, a random event starts by itself.
 	GameState.stats["hexes_cleaned"] = 10
 	for e: Dictionary in WorldEvents.defs():  # [qafix] [pace] events wait for unlocks (has_baler, ...): open them all

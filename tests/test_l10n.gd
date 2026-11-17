@@ -262,7 +262,7 @@ func test_early_game_strings_translated() -> void:
 	assert_true(tr("Your chest is full. Press [%s] to make a bale.").contains("[%s]"))
 
 
-## [i18n] With a CJK locale active, the UI and Ledger fonts render every character its .po uses.
+## [i18n] With a CJK locale active, the UI and mono fonts render every character its .po uses.
 func test_cjk_glyphs_render() -> void:
 	for l: String in CJK:
 		Settings.locale_override = l
@@ -276,7 +276,7 @@ func test_cjk_glyphs_render() -> void:
 					if c >= 0x2E80:  # CJK blocks; symbols like ◆ are shared with English
 						chars[c] = true
 		assert_gt(chars.size(), 1000, "%s uses CJK characters" % l)
-		for f: Font in [UITheme.font(), LedgerUplink.mono_font()]:
+		for f: Font in [UITheme.font(), HoloFrame.mono()]:
 			var missing: String = ""
 			for c: int in chars:
 				if not f.has_char(c):

@@ -247,7 +247,6 @@ static func plan(field: HexField, c: Dictionary = {}) -> Array[Dictionary]:
 	var foot: float = float(c.get("footprint", 3.6))
 	var outer: int = field.radius
 	var min_ring: int = maxi(1, outer - 1)
-	var relay: Vector3 = LedgerArc.relay_spot(field)["pos"]
 	# Best site in every frontier hex (seeded per hex, so it doesn't depend on the order).
 	var sites: Array[Dictionary] = []
 	for id: int in field.hex_count():
@@ -256,8 +255,6 @@ static func plan(field: HexField, c: Dictionary = {}) -> Array[Dictionary]:
 			continue
 		var site: Dictionary = _site_in(field, id, foot, field.seed_value + 4242 + id * 31)
 		if site.is_empty():
-			continue
-		if Vector2(site["pos"].x - relay.x, site["pos"].z - relay.z).length() < foot + 4.0:
 			continue
 		site["ring"] = ring
 		sites.append(site)
@@ -602,7 +599,7 @@ var _globe: bool = false
 ## The hub's outpost sites, frame-local: [{pos, yaw, hex, xf}]. Like plan(): 3-4 ruins spread
 ## round the hub, on open cells just outside the hub site (its frontier), standing on the ground's
 ## up. Deterministic per planet seed and hub; the eggs avoid them (story/eggs.gd).
-## [v6qa] plan_cells is the same for a hub every time (the eggs and the Ledger's relay ask again
+## [v6qa] plan_cells is the same for a hub every time (the eggs ask again
 ## to keep clear of the outposts): about 0.8 s for a hub region, three times per hub switch. The
 ## result is kept per field, hub and frame.
 static var _plan_cache: Dictionary = {}

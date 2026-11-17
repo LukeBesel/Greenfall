@@ -124,7 +124,7 @@ func test_migrate_is_idempotent_for_v2() -> void:
 func test_data_files_use_only_the_three() -> void:
 	var legacy: Dictionary = Currencies.cfg()["legacy"]
 	var bad: Array[String] = []
-	for f: String in ["hub", "stations", "outposts", "rockets", "ledger", "goals", "decor", "eggs", "bloom", "hex_levels", "events", "upgrades", "research", "designs", "lumi_level", "robot_parts", "parts"]:
+	for f: String in ["hub", "stations", "outposts", "rockets", "goals", "decor", "eggs", "bloom", "hex_levels", "events", "upgrades", "research", "designs", "lumi_level", "robot_parts", "parts"]:
 		var d: Dictionary = Economy.read_json("res://data/%s.json" % f)
 		_scan(d, f, legacy, bad)
 	assert_eq(bad, [] as Array[String], "legacy currency keys in data: %s" % ", ".join(bad))

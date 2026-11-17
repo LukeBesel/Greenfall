@@ -57,7 +57,7 @@ func test_reward_chatter_is_cut() -> void:
 	assert_true(Subtitles.cut("Achievement: First Scoop. Scoop your first piece of junk.", "story"), "achievements arrive as story")
 	assert_true(Subtitles.cut("Lumi reached level 3", "level"))
 	assert_false(Subtitles.cut("Build the signal tower", "goal"))
-	assert_false(Subtitles.cut("Ledger drone inbound, south!", "story"))
+	assert_false(Subtitles.cut("Rain! Your plants stay watered while it lasts.", "story"))
 	assert_false(Subtitles.cut("Chest full.", "info"), "warnings still show")
 
 

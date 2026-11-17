@@ -634,7 +634,7 @@ static func security_camera() -> Node3D:
 	led.name = "Led"
 	head.add_child(led)
 	n.add_child(mesh(ProcMesh.box(Vector3(1.0, 0.36, 0.03)), Mats.worn_paint(Color(0.85, 0.75, 0.2), 0.8, 0.5, 42.0, 0.6), Vector3(0, 1.7, 0.1)))
-	n.add_child(label(TranslationServer.translate("THE LEDGER IS WATCHING\n(FOR SAVINGS)"), 18, Color(0.12, 0.1, 0.08), Vector3(0, 1.7, 0.117)))
+	n.add_child(label(TranslationServer.translate("SMILE!\nYOU ARE ON CAMERA"), 18, Color(0.12, 0.1, 0.08), Vector3(0, 1.7, 0.117)))
 	collider(n, Vector3(0.18, 3.0, 0.18), Vector3(0, 1.5, 0))
 	return n
 

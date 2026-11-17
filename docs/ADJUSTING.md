@@ -282,7 +282,7 @@ once, when its way onward opens (`data/homeward.json` `planets[k].leave`, else r
 | The line after the last planet | `cradle.reason` |
 | What the final Homeward rocket needs | `data/homeward.json` `drive` tier 7: `requires_home: true` (the meters full). `requires_relics` / `requires_system` still work as gates if you want 100% back as a must |
 
-`from`, `answers` and `ledger` are notes for whoever builds the planet; they are not shown yet. A
+`from` and `answers` are notes for whoever builds the planet; they are not shown yet. A
 new planet needs only its block (keyed by its id in `data/homeward.json`). After changing text, run
 `python3 tools/extract_strings.py` and fill the six languages (docs/LOCALIZATION.md). Check with
 `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_story_arc.gd -gexit`.

@@ -1,6 +1,6 @@
 class_name Subtitles
 extends CanvasLayer
-## [intro2] The one subtitle line for the whole game: WREN, story narration, the Ledger's intercepts
+## [intro2] The one subtitle line for the whole game: WREN, story narration
 ## and cinematic captions all go through here.
 ## Rules (owner playtest #1: "way too fast", "multiple lines at once", "words glitching"):
 ##   - ONE line on screen at a time, bottom centre, on a soft dark pill with a shadow.
@@ -8,7 +8,6 @@ extends CanvasLayer
 ##     chromatic flicker and a 1-2 frame scramble that resolves within ~150 ms), then stays clean.
 ##   - Story-redacted text glitches HEAVILY, but only the marked spans: wrap them in
 ##     [glitch]...[/glitch] (or write [REDACTED] / ████), and the rest of the line stays clean.
-##     Ledger intercepts also get short jitter bursts of the whole pill (the words stay put).
 ##   - Each line stays fully visible for duration_for(text) = 55 ms per character + 1.2 s
 ##     (at least 2.5 s), then fades, then a short gap before the next one.
 ##   - Long lines are split at sentence (then clause) boundaries into chunks that fit one line;
@@ -28,7 +27,7 @@ const MAX_CHARS: int = 80
 const MAX_CHARS_CJK: int = 30
 const MAX_QUEUE: int = 8
 ## [onboard2] Owner: "I can't read two lines at once." This bar is THE message line: speech
-## (WREN, Ledger, intro) and every toast (rewards, sightings, goals, unlocks, hints, achievements,
+## (WREN, intro) and every toast (rewards, sightings, goals, unlocks, hints, achievements,
 ## "now playing") share it, one line at a time, each held its reading time. Priorities: speech 3,
 ## story 2, goal/level/hint/achievement 1, info 0, low (sightings, now playing) -1. Higher goes
 ## first (never cutting off the line on screen); a queued line with the same wording but other
@@ -51,8 +50,6 @@ const TOAST_KINDS: Dictionary = {
 const SPEAKERS: Dictionary = {
 	"": {"tag": "", "tag_col": Color(1, 1, 1), "col": Color(0.95, 0.94, 0.9)},
 	"wren": {"tag": "WREN", "tag_col": Color(0.5, 0.86, 1.0), "col": Color(0.93, 0.96, 1.0)},
-	"ledger": {"tag": "LEDGER", "tag_col": Color(1.0, 0.36, 0.26), "col": Color(1.0, 0.8, 0.55)},
-	"ledger_ok": {"tag": "LEDGER", "tag_col": Color(0.45, 0.95, 0.6), "col": Color(0.82, 1.0, 0.86)},
 }
 
 ## The live instance (the game world's). Story code without a reference uses Subtitles.say().
@@ -84,8 +81,6 @@ var _mask: Array = []
 var _heavy: bool = false
 var _app_t: float = 0.0
 var _noise_t: float = 0.0
-var _burst_t: float = 0.0
-var _burst_wait: float = 2.0
 var _col: Color = Color.WHITE
 var _dirty: bool = false
 var _clock: float = 0.0  # [onboard2] for stale toasts
@@ -295,7 +290,7 @@ static func _split_long(s: String, limit: int) -> PackedStringArray:
 
 # --- Static helpers for story code -------------------------------------------------------
 
-## Queue a line on the live subtitle bar (no-op if there is none). speaker: "", wren, ledger, ledger_ok.
+## Queue a line on the live subtitle bar (no-op if there is none). speaker: "", wren.
 static func say(text: String, speaker: String = "") -> void:
 	if current and is_instance_valid(current):
 		current.queue_line(text, speaker)
@@ -559,8 +554,6 @@ func _next() -> void:
 	_label.text = _chars
 	_app_t = 0.0
 	_noise_t = 0.0
-	_burst_t = 0.0
-	_burst_wait = randf_range(1.2, 2.6)
 	_hold = duration_for(_chars)
 	_phase = 1
 	_pt = 0.0
@@ -570,29 +563,17 @@ func _next() -> void:
 	_pill.modulate.a = 0.0
 	if not _speech_hidden and not spk.begins_with("toast:"):
 		Audio.duck(_hold + FADE_S * 2.0)  # [sound] music dips under the line
-		if str(_cur["speaker"]).begins_with("ledger") and Audio.has_sound("ledger_tick"):
-			Audio.play("ledger_tick", 1.0, -18.0, 0.05)
-		else:  # [v4calm] owner item 50: no beep-talk. One soft chirp at the start of a WREN line, none for narration
-			_beeps_left = beeps_for(str(_cur["speaker"]), bool(_cur.get("first", true)))
-			_beep_t = 0.0
-			_beep_pitch = 1.2
+		# [v4calm] owner item 50: no beep-talk. One soft chirp at the start of a WREN line, none for narration
+		_beeps_left = beeps_for(str(_cur["speaker"]), bool(_cur.get("first", true)))
+		_beep_t = 0.0
+		_beep_pitch = 1.2
 
 
 ## Purposeful glitches. Readable words: a light flicker and scramble on appearance only (~150 ms).
-## Marked spans ([glitch], [REDACTED], █): heavy, continuous scramble. Ledger intercepts: short
-## jitter bursts of the whole line; its words never change.
+## Marked spans ([glitch], [REDACTED], █): heavy, continuous scramble.
 func _glitch(delta: float) -> void:
 	_app_t += delta
 	var appear: float = 1.0 - clampf(_app_t / 0.15, 0.0, 1.0)
-	var ledger: bool = str(_cur.get("speaker", "")) == "ledger"
-	var burst: bool = false
-	if ledger:
-		_burst_wait -= delta
-		if _burst_wait <= 0.0:
-			_burst_t = randf_range(0.08, 0.16)
-			_burst_wait = randf_range(1.6, 3.2)
-		_burst_t = maxf(0.0, _burst_t - delta)
-		burst = _burst_t > 0.0
 	_noise_t -= delta
 	var tick: bool = _noise_t <= 0.0
 	if tick:
@@ -609,9 +590,9 @@ func _glitch(delta: float) -> void:
 				out[i] = NOISE[randi() % NOISE.length()]
 		_label.text = "".join(out)
 		_dirty = appear > 0.0
-	# Chromatic flicker: on appearance (and in Ledger bursts) the line shifts a pixel or two and
-	# its colour splits toward cyan / magenta for a frame at a time.
-	var amt: float = maxf(appear, 1.0 if burst else 0.0)
+	# Chromatic flicker: on appearance the line shifts a pixel or two and its colour splits
+	# toward cyan / magenta for a frame at a time.
+	var amt: float = appear
 	if amt > 0.0:
 		offset = Vector2(randf_range(-2.5, 2.5), randf_range(-1.0, 1.0)) * amt
 		var tint: Color = Color(0.55, 1.0, 1.0) if randf() < 0.5 else Color(1.0, 0.5, 0.85)

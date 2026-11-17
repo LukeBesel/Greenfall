@@ -47,7 +47,7 @@ static func accent(kind: String, text: String) -> Color:
 
 ## [v9d] A small picture for a toast (ui/step_icons.gd), from the line's English source when it
 ## has one, else from its kind.
-const ICON_WORDS: Array = [["drone", "junk"], ["Ledger", "junk"], ["cube", "cube"], ["Cube", "cube"], ["bale", "bale"],
+const ICON_WORDS: Array = [["cube", "cube"], ["Cube", "cube"], ["bale", "bale"],
 	["seed", "seed"], ["Seed", "seed"], ["Rain", "drop"], ["plant", "sprout"], ["Part", "part"], ["part", "part"],
 	["robot", "bot"], ["Robot", "bot"], ["hiccup", "bot"], ["Rocket", "rocket"], ["rocket", "rocket"], ["awake", "flag"],
 	["station", "flag"], ["Outpost", "house"], ["base", "house"], ["Hub", "house"], ["research", "flask"],

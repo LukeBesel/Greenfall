@@ -22,7 +22,6 @@ The planned songs below already have entries; drop the MP3 in under the file nam
 |---|---|---|---|---|
 | greenfall_main.mp3 | Greenfall (Main Theme) | The Cradle Farewell Orchestra (Verdance) | story (title) | start |
 | fall_of_lm1.mp3 | The Fall of LM-1 | The Cradle Farewell Orchestra (Verdance) | story (cinematic) | CD on Verdance |
-| the_ledger.mp3 | The Ledger | Ledger Brand Audio (Anvil) | story (villain) | CD on Anvil |
 | sprout_step.mp3 | Sprout Step | The Compactors (Verdance) | verdance (playlist) | CD on Verdance |
 | clean_sweep.mp3 | Clean Sweep | The Compactors (Verdance) | verdance (playlist) | start |
 | little_helpers.mp3 | Little Helpers | Lil' Rustbucket (Verdance) | verdance (playlist) | CD on Verdance |

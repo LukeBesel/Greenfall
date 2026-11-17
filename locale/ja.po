@@ -300,80 +300,80 @@ msgstr "前哨基地 %d  ·  稼働中"
 msgid "RECHARGE"
 msgstr "リチャージ"
 
-#: automation/outposts.gd:372 automation/outposts.gd:386
+#: automation/outposts.gd:369 automation/outposts.gd:383
 msgid "No outpost."
 msgstr "前哨基地がありません。"
 
-#: automation/outposts.gd:374
+#: automation/outposts.gd:371
 msgid "Already repaired."
 msgstr "修理済みです。"
 
-#: automation/outposts.gd:378
+#: automation/outposts.gd:375
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "まず周りのガラクタを片づけよう（%d%% / %d%%）。"
 
-#: automation/outposts.gd:380 automation/outposts.gd:395 automation/stations.gd:131
-#: systems/camp/hub_builds.gd:79 ui/refuse.gd:12
+#: automation/outposts.gd:377 automation/outposts.gd:392 automation/stations.gd:131
+#: systems/camp/hub_builds.gd:73 ui/refuse.gd:12
 msgid "Not enough cubes or parts."
 msgstr "キューブかパーツが足りない。"
 
-#: automation/outposts.gd:389
+#: automation/outposts.gd:386
 msgid "Repair it first."
 msgstr "先に修理しよう。"
 
-#: automation/outposts.gd:391 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
+#: automation/outposts.gd:388 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
 msgid "Fully upgraded."
 msgstr "アップグレード完了済み。"
 
-#: automation/outposts.gd:412
+#: automation/outposts.gd:409
 msgid "Outpost %d repaired: a new scale for your Haul Bugs."
 msgstr "前哨基地 %d を修理：Haul Bug の新しいはかりができた。"
 
-#: automation/outposts.gd:413
+#: automation/outposts.gd:410
 msgid "OUTPOST ONLINE"
 msgstr "前哨基地 稼働"
 
-#: automation/outposts.gd:435
+#: automation/outposts.gd:432
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "前哨基地 %d をアップグレード：%s。%s"
 
-#: automation/outposts.gd:464
+#: automation/outposts.gd:461
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   廃墟の前哨基地 · 先にヘックスを片づけよう（%d%% / %d%%）"
 
-#: automation/outposts.gd:465
+#: automation/outposts.gd:462
 msgid "E   Repair outpost · %s%s"
 msgstr "E   前哨基地を修理 · %s%s"
 
-#: automation/outposts.gd:465 automation/outposts.gd:468
+#: automation/outposts.gd:462 automation/outposts.gd:465
 msgid "  (need more)"
 msgstr "  （まだ足りない）"
 
-#: automation/outposts.gd:467
+#: automation/outposts.gd:464
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   前哨基地 %d · %s · ベール +%d%%"
 
-#: automation/outposts.gd:468
+#: automation/outposts.gd:465
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   前哨基地をアップグレード：%s · %s%s"
 
-#: automation/outposts.gd:478
+#: automation/outposts.gd:475
 msgid "Outpost %d: %s"
 msgstr "前哨基地 %d：%s"
 
-#: automation/outposts.gd:485
+#: automation/outposts.gd:482
 msgid "Outpost %d upgrade: %s"
 msgstr "前哨基地 %d のアップグレード：%s"
 
-#: automation/outposts.gd:488
+#: automation/outposts.gd:485
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "前哨基地 %d：%s。ここではベールが +%d%% で売れる。パッドを通るロボットはスピードがチャージされる。"
 
-#: automation/outposts.gd:591
+#: automation/outposts.gd:588
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "前哨基地 %d  廃墟 · きれいさ %d%% で修理可能"
 
-#: automation/outposts.gd:592
+#: automation/outposts.gd:589
 msgid "OUTPOST %d  %s"
 msgstr "前哨基地 %d  %s"
 
@@ -456,9 +456,8 @@ msgid "Requires hub level %d or research: %s."
 msgstr "基地レベル %d または研究「%s」が必要。"
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:157
-#: systems/camp/hub_builds.gd:167 systems/camp/hub_builds.gd:177 systems/camp/yard_builds.gd:91
-#: ui/telescope_panel.gd:41
+#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:145
+#: systems/camp/hub_builds.gd:155 systems/camp/yard_builds.gd:91 ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "素材が足りません。"
 
@@ -474,7 +473,7 @@ msgstr "天文台"
 msgid "E   Telescope: look across the system"
 msgstr "E   望遠鏡：星系を見わたす"
 
-#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
+#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:287
 #: systems/extras/welcome_back.gd:56 ui/globe_view.gd:709 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d 分"
@@ -511,7 +510,7 @@ msgstr "もう入らない。[%s] を押してベールを作ろう。"
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "ベーラーがまだない。胸のゴミをゴミ箱へ運ぼう。"
 
-#: core/pace.gd:320 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:320 systems/events.gd:513 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
@@ -539,7 +538,7 @@ msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレ
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
-#: fauna/fauna.gd:2232 ui/subtitles.gd:453
+#: fauna/fauna.gd:2232 ui/subtitles.gd:448
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
@@ -1552,11 +1551,11 @@ msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけ�
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取りかかった。"
 
-#: scenes/slice.gd:130 ui/rockets_panel.gd:60
+#: scenes/slice.gd:129 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr "発射台のロケットまで歩いて、[%s]を押して行き先を選ぼう。"
 
-#: scenes/slice.gd:140 ui/rockets_panel.gd:39
+#: scenes/slice.gd:139 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
@@ -1568,7 +1567,7 @@ msgstr "ヘックス クリーン！  +%s"
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:613
+#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
@@ -1576,11 +1575,11 @@ msgstr "E   作業台を直す"
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1039
+#: scenes/slice_orbit.gd:1026
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1139 systems/camp/camp.gd:242
+#: scenes/slice_orbit.gd:1126 systems/camp/camp.gd:242
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "作業台が直った！そばで %s を押してアップグレードを買おう。"
 
@@ -1749,8 +1748,8 @@ msgid "It's the charter. The Settlers sleep in the Cradle's lower decks, and it 
 msgstr "憲章のせいよ。入植者は Cradle の下層デッキで眠っていて、死にかけた星系の中では彼らを起こさないの。"
 
 #: story/cradle_answers.gd:18
-msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
-msgstr "そして、本当に死にかけてる。Ledger はこのあたりの世界を全部掘りつくして、どれもゴミの下に置き去りにした。Verdance は最初の1つにすぎなかった。"
+msgid "And it is dying. Long ago, miners dug every world out here hollow and left the trash behind. Verdance was only the first."
+msgstr "そして死にかけている。ずっと昔、採掘者たちがこのあたりの星をすべて掘り尽くし、ゴミを残していった。Verdance は最初のひとつにすぎない。"
 
 #: story/cradle_answers.gd:19
 msgid "So we fix all of it. Ochre, Tidewell, Rime, Anvil. One planet at a time."
@@ -1814,11 +1813,11 @@ msgstr "（濡れてないよ）"
 
 #: story/egg_props.gd:637
 msgid ""
-"THE LEDGER IS WATCHING\n"
-"(FOR SAVINGS)"
+"SMILE!\n"
+"YOU ARE ON CAMERA"
 msgstr ""
-"LEDGER が見ています\n"
-"（節約のために）"
+"スマイル！\n"
+"カメラに映っています"
 
 #: story/egg_props.gd:715
 msgid ""
@@ -1858,87 +1857,87 @@ msgstr ""
 "5分で\n"
 "戻ります"
 
-#: story/eggs.gd:448
+#: story/eggs.gd:445
 msgid "Something metal surfaced in the cleared ground."
 msgstr "片づいた地面から何か金属のものが出てきた。"
 
-#: story/eggs.gd:663 story/eggs.gd:725
+#: story/eggs.gd:660 story/eggs.gd:722
 msgid "Gnome %d / %d"
 msgstr "ノーム %d / %d"
 
-#: story/eggs.gd:671
+#: story/eggs.gd:668
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "最後のポスターがすぐ近くを指している。近くでオレンジ色の何かが丸まっている。"
 
-#: story/eggs.gd:726
+#: story/eggs.gd:723
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   Lumiのコレクションに追加"
 
-#: story/eggs.gd:742
+#: story/eggs.gd:739
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "ラジオが小さくザーッと鳴っている。上ではまだ何も目覚めていない。暗くなってからまた来よう。"
 
-#: story/eggs.gd:743
+#: story/eggs.gd:740
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "望遠鏡をのぞくと：明るくほこりっぽい空だけ。暗くなってからまた来よう。"
 
-#: story/eggs.gd:772
+#: story/eggs.gd:769
 msgid "SOLD OUT"
 msgstr "売り切れ"
 
-#: story/eggs.gd:790
+#: story/eggs.gd:787
 msgid "QUACK!"
 msgstr "グワッ！"
 
-#: story/eggs.gd:808
+#: story/eggs.gd:805
 msgid "NEW CHALLENGER!"
 msgstr "新たな挑戦者！"
 
-#: story/eggs.gd:811
+#: story/eggs.gd:808
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "ゲームオーバー  ·  スコア 12"
 
-#: story/eggs.gd:839
+#: story/eggs.gd:836
 msgid "hi, Gus"
 msgstr "やあ、ガス"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "CONFETTI"
 msgstr "紙吹雪"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "LIGHT JAZZ"
 msgstr "ライトジャズ"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "99% DUCKS"
 msgstr "アヒル率 99%"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "SUNNY (INDOORS)"
 msgstr "晴れ（屋内）"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "FOG OF NOODLES"
 msgstr "ヌードルの霧"
 
-#: story/eggs.gd:889
+#: story/eggs.gd:886
 msgid "1ST PLACE"
 msgstr "1位"
 
-#: story/eggs.gd:947
+#: story/eggs.gd:944
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "アヒルがキュッと秘密をささやく：「%s」で %s デザインが解放される。"
 
-#: story/eggs.gd:948
+#: story/eggs.gd:945
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "アヒルは知っていることを全部教えてくれた。グワッ。"
 
-#: story/eggs.gd:1179
+#: story/eggs.gd:1176
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "珍品発見：%s（%d / %d）   %s"
 
-#: story/eggs.gd:1190
+#: story/eggs.gd:1187
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "リストの珍品をぜんぶ見つけた。Lumi のコレクション室は思い出でいっぱい。"
 
@@ -1999,8 +1998,8 @@ msgid "Clear of the air. Look back, {name}. Look at it."
 msgstr "大気を抜けた。振り返って、{name}。見て。"
 
 #: story/homecoming.gd:19
-msgid "Five worlds, green. The Ledger left them as rubbish. You left them as gardens."
-msgstr "5つの世界が緑。Ledger はゴミとして捨てていった。あなたは庭として残していく。"
+msgid "Five worlds, green. They were left as rubbish. You left them as gardens."
+msgstr "五つの星が、緑に。ゴミのまま捨てられた星を、きみは庭にして残した。"
 
 #: story/homecoming.gd:20
 msgid "CRADLE:  SYSTEM SURVEY: FIVE WORLDS.  FIVE ALIVE."
@@ -2074,158 +2073,6 @@ msgstr "アークは引き返せなかった。ポッドは何日も落ち続け
 #: story/intro.gd:1951
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "緑の光  ·  検知なし"
-
-#: story/ledger.gd:162
-msgid "New build: Signal Jammer. It keeps Ledger drones away."
-msgstr "新しい建物：シグナルジャマー。レジャーのドローンを近づけない。"
-
-#: story/ledger.gd:171
-msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
-msgstr "WREN が Ledger のリレーを突き止めた：基地の%s。赤いビーコンを探そう。"
-
-#: story/ledger.gd:183
-msgid "Ledger: %s"
-msgstr "Ledger：%s"
-
-#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
-#: story/ledger.gd:205
-msgid "north"
-msgstr "北"
-
-#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
-#: story/ledger.gd:205
-msgid "north-east"
-msgstr "北東"
-
-#: story/ledger.gd:206
-msgid "east"
-msgstr "東"
-
-#: story/ledger.gd:206
-msgid "south-east"
-msgstr "南東"
-
-#: story/ledger.gd:207
-msgid "south"
-msgstr "南"
-
-#: story/ledger.gd:207
-msgid "south-west"
-msgstr "南西"
-
-#: story/ledger.gd:208
-msgid "west"
-msgstr "西"
-
-#: story/ledger.gd:208
-msgid "north-west"
-msgstr "北西"
-
-#: story/ledger.gd:312
-msgid "Signal Jammer online. Drones within %d m of the base will get an earful of static."
-msgstr "シグナルジャマー稼働。基地から %d m 以内のドローンはノイズをたっぷり浴びることになる。"
-
-#: story/ledger.gd:323
-msgid ""
-"%s   ·   %d / %d built\n"
-"%s"
-msgstr ""
-"%s   ·   %d / %d 建設済み\n"
-"%s"
-
-#: story/ledger.gd:325
-msgid ""
-"\n"
-"Covering %d m around the base."
-msgstr ""
-"\n"
-"基地の周囲 %d m をカバー。"
-
-#: story/ledger.gd:327
-msgid ""
-"\n"
-"The Ledger is on our side now. The jammers just hum along to the music."
-msgstr ""
-"\n"
-"Ledger はもう私たちの味方。ジャマーは音楽に合わせてハミングしているだけ。"
-
-#: story/ledger.gd:329 systems/decor.gd:124 systems/research.gd:202
-#: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:101
-#: ui/telescope_panel.gd:44
-msgid "Needs %s"
-msgstr "%s が必要"
-
-#: story/ledger.gd:510
-msgid "Ledger drone inbound, %s! It's heading for a clean hex."
-msgstr "Ledger のドローンが接近中、%s！きれいなヘックスに向かっている。"
-
-#: story/ledger.gd:511
-msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
-msgstr "レジャーのドローンが来る（%s）。きれいな地面にゴミを捨てる。"
-
-#: story/ledger.gd:548
-msgid "SIGNAL JAMMED"
-msgstr "シグナル妨害"
-
-#: story/ledger.gd:578
-msgid "Target re-classified as ASSET. Aborting. ...Interesting."
-msgstr "対象を資産として再分類。中止します。……興味深い。"
-
-#: story/ledger.gd:649
-msgid "The drone dumped junk back. Scoop it up."
-msgstr "ドローンがゴミを戻した。拾い集めよう。"
-
-#: story/ledger.gd:705
-msgid "SEEDS · PAID IN FULL"
-msgstr "種 · 全額支払済み"
-
-#: story/ledger.gd:722 systems/events.gd:509 systems/lumi_level.gd:218
-msgid "+%d seeds"
-msgstr "+%d 種"
-
-#: story/ledger.gd:794
-msgid "E   jack in: rewrite the Ledger's contract"
-msgstr "E   接続：Ledger の契約を書き換える"
-
-#: story/ledger.gd:794
-msgid "E   read the amended contract"
-msgstr "E   改定された契約を読む"
-
-#: story/ledger.gd:819 story/ledger.gd:873
-msgid ""
-"LEDGER RELAY 07\n"
-"CONTRACT 0001: ACTIVE\n"
-"WASTE IS A LINE ITEM"
-msgstr ""
-"LEDGER リレー 07\n"
-"契約 0001：有効\n"
-"廃棄物は計上項目である"
-
-#: story/ledger.gd:834
-msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
-msgstr "リレー 07  ·  LEDGER 所有  ·  予定外のアクセスを禁ず"
-
-#: story/ledger.gd:873
-msgid ""
-"LEDGER RELAY 07\n"
-"CONTRACT 0001: AMENDED\n"
-"RESTORATION = ASSET"
-msgstr ""
-"LEDGER リレー 07\n"
-"契約 0001：改定\n"
-"再生 = 資産"
-
-#: story/ledger.gd:995
-msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
-msgstr "Ledger の契約が書き換わった。ドローンが種を届けてくれるようになった。（+%d 種）"
-
-#: story/ledger.gd:1003
-msgid "<< LEDGER // OFF THE RECORD >>"
-msgstr "<< LEDGER // オフレコ >>"
-
-#: story/ledger_drone.gd:50
-msgid "LEDGER  WMS-07"
-msgstr "LEDGER  WMS-07"
 
 #: story/objectives.gd:241
 msgid "Reward: %s"
@@ -2364,8 +2211,8 @@ msgid "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"
 msgstr "花ざかりの旧市街：今週土曜日は種の交換会"
 
 #: story/tv_broadcast.gd:21
-msgid "LEDGER SECURES EXTRACTION RIGHTS"
-msgstr "Ledger、採掘権を獲得"
+msgid "MINING RIGS LAND ON EVERY WORLD"
+msgstr "すべての星に採掘機が着陸"
 
 #: story/tv_broadcast.gd:22
 msgid "THE SYSTEM IS STRIP-MINED. THE WASTE STAYS HERE"
@@ -2395,15 +2242,15 @@ msgstr "{interact}  [k]/ Esc  [/k]消す"
 msgid "LIVE"
 msgstr "生放送"
 
-#: story/tv_broadcast.gd:329
+#: story/tv_broadcast.gd:325
 msgid "BREAKING"
 msgstr "速報"
 
-#: story/tv_broadcast.gd:357
+#: story/tv_broadcast.gd:353
 msgid "CRADLE"
 msgstr "Cradle号"
 
-#: story/tv_broadcast.gd:378
+#: story/tv_broadcast.gd:374
 msgid "WE'LL BE BACK"
 msgstr "また帰ってくる"
 
@@ -2411,7 +2258,7 @@ msgstr "また帰ってくる"
 msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
 msgstr "実績を %d 個解除。図鑑（{open_codex}）で見られます。"
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:451
+#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:446
 msgid "Achievement: %s. %s"
 msgstr "実績：%s。%s"
 
@@ -2512,22 +2359,18 @@ msgid "Rare Part Signals"
 msgstr "レアパーツの信号"
 
 #: systems/collection.gd:85
-msgid "Ledger Audits"
-msgstr "Ledger の監査"
-
-#: systems/collection.gd:86
 msgid "Cleaning Streaks"
 msgstr "清掃コンボ"
 
-#: systems/collection.gd:87
+#: systems/collection.gd:86
 msgid "Lumi Levels"
 msgstr "Lumi のレベル"
 
-#: systems/collection.gd:88 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:17
+#: systems/collection.gd:87 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:17
 msgid "Requests"
 msgstr "依頼"
 
-#: systems/collection.gd:89
+#: systems/collection.gd:88
 msgid "Curio Capsules"
 msgstr "珍品カプセル"
 
@@ -2615,6 +2458,11 @@ msgstr "コレクションの発見が %d 必要（いまは %d）"
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr "「今週のシード」のペイントチップが %d 枚必要（いま %d 枚）"
 
+#: systems/decor.gd:124 systems/research.gd:202 systems/robot_builder.gd:348
+#: systems/robot_builder.gd:404 ui/stations_panel.gd:101 ui/telescope_panel.gd:44
+msgid "Needs %s"
+msgstr "%s が必要"
+
 #: systems/decor.gd:186 systems/decor.gd:190
 msgid "Too close to the base machines"
 msgstr "基地の機械に近すぎる"
@@ -2659,109 +2507,131 @@ msgstr "デザイン：%s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE号 · 補給"
 
-#: systems/events.gd:461
+#. compass directions fill "%s of you" ("north of you").
+#: systems/events.gd:295
+msgid "north"
+msgstr "北"
+
+#. compass directions fill "%s of you" ("north of you").
+#: systems/events.gd:295
+msgid "north-east"
+msgstr "北東"
+
+#: systems/events.gd:296
+msgid "east"
+msgstr "東"
+
+#: systems/events.gd:296
+msgid "south-east"
+msgstr "南東"
+
+#: systems/events.gd:297
+msgid "south"
+msgstr "南"
+
+#: systems/events.gd:297
+msgid "south-west"
+msgstr "南西"
+
+#: systems/events.gd:298
+msgid "west"
+msgstr "西"
+
+#: systems/events.gd:298
+msgid "north-west"
+msgstr "北西"
+
+#: systems/events.gd:473
 msgid "STREAK x%d  +%d%%"
 msgstr "コンボ x%d  +%d%%"
 
-#: systems/events.gd:647
+#: systems/events.gd:521 systems/lumi_level.gd:218
+msgid "+%d seeds"
+msgstr "+%d 種"
+
+#: systems/events.gd:659
 msgid "%d pieces of junk left around the crate"
 msgstr "箱のまわりにガラクタが残り %d 個"
 
-#: systems/events.gd:672
+#: systems/events.gd:684
 msgid "Supply crate opened: %s"
 msgstr "補給箱を開けた：%s"
 
-#: systems/events.gd:674
+#: systems/events.gd:686
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "補給箱のビーコンが時間切れになり、ドローンが引き上げていった。また来るよ。"
 
-#: systems/events.gd:723
+#: systems/events.gd:735
 msgid "%d pieces grabbed at 3x"
 msgstr "3倍で %d 個ゲット"
 
-#: systems/events.gd:728
+#: systems/events.gd:740
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "ラッシュが終わった。3倍の価値で %d 個ゲット。ベールにすると支払われる。"
 
-#: systems/events.gd:728
+#: systems/events.gd:740
 msgid "The surge faded. Next time!"
 msgstr "ラッシュが終わった。また次回！"
 
-#: systems/events.gd:777
+#: systems/events.gd:789
 msgid "Every plant is drinking"
 msgstr "すべての植物が水を飲んでいる"
 
-#: systems/events.gd:787
+#: systems/events.gd:799
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨が去っていく。大地が吸い込んだ：%s"
 
-#: systems/events.gd:808
+#: systems/events.gd:820
 msgid "E   fix %s's hiccup"
 msgstr "E   %s のしゃっくりを治す"
 
-#: systems/events.gd:835
+#: systems/events.gd:847
 msgid "%s is %d m away"
 msgstr "%s まで %d m"
 
-#: systems/events.gd:837
+#: systems/events.gd:849
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s はひとりでしゃっくりが止まった。ちょっと恥ずかしそう。"
 
-#: systems/events.gd:851
+#: systems/events.gd:863
 msgid "%s is fixed and back to work. %s"
 msgstr "%s は修理されて仕事に戻った。%s"
 
-#: systems/events.gd:905
+#: systems/events.gd:917
 msgid "Wildlife Visit: %s"
 msgstr "生き物がやってきた：%s"
 
-#: systems/events.gd:906
+#: systems/events.gd:918
 msgid "E   take a photo of the %s"
 msgstr "E   %s の写真を撮る"
 
-#: systems/events.gd:947
+#: systems/events.gd:959
 msgid "%s, %d m away"
 msgstr "%s、%d m 先"
 
-#: systems/events.gd:950
+#: systems/events.gd:962
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s はどこかへ行ってしまった。どこか緑のある場所にまた現れるよ。"
 
-#: systems/events.gd:980
+#: systems/events.gd:992
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "パシャ！%s がコレクションに入った。%s"
 
-#: systems/events.gd:980
+#: systems/events.gd:992
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "パシャ！%s のすてきな写真をもう一枚。%s"
 
-#: systems/events.gd:1031
+#: systems/events.gd:1043
 msgid "Signal %d%%"
 msgstr "シグナル %d%%"
 
-#: systems/events.gd:1035
+#: systems/events.gd:1047
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "あれがシグナルの正体：レアパーツが入った隠し場所。%s"
 
-#: systems/events.gd:1037
+#: systems/events.gd:1049
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "シグナルが消えた。パーツはまだ下にある。探知機が見つけてくれる。"
-
-#: systems/events.gd:1106
-msgid "AUDIT   YOU %d  :  %d DRONE"
-msgstr "監査   あなた %d  :  %d ドローン"
-
-#: systems/events.gd:1107
-msgid "You %d  :  %d Drone   ·   %d left"
-msgstr "あなた %d  :  %d ドローン   ·   残り %d"
-
-#: systems/events.gd:1146
-msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
-msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを押した。%s"
-
-#: systems/events.gd:1150
-msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
-msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
 #: systems/homeward.gd:187
 msgid "Wake %d old stations on %s to level %d (%d so far)"
@@ -2935,7 +2805,7 @@ msgstr "実績：%s"
 msgid "Buy for %s"
 msgstr "%sで購入"
 
-#: systems/museum.gd:119 systems/camp/hub_builds.gd:80 ui/glim_bench.gd:43
+#: systems/museum.gd:119 systems/camp/hub_builds.gd:74 ui/glim_bench.gd:43
 msgid "Not enough cubes, parts or seeds"
 msgstr "キューブ、パーツ、種が足りません"
 
@@ -3008,19 +2878,19 @@ msgstr "フレームレート確認の結果、下げました"
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr "なめらかに動くようグラフィックを%sに設定しました。設定で変更できます。"
 
-#: systems/remote_progress.gd:290
+#: systems/remote_progress.gd:288
 msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
 msgstr "留守のあいだ（%s）、ここのクルーは遠隔のゆっくりペースで働き続けた：%s キューブ。"
 
-#: systems/remote_progress.gd:304
+#: systems/remote_progress.gd:302
 msgid "No world in view."
 msgstr "視界に世界がない。"
 
-#: systems/remote_progress.gd:306
+#: systems/remote_progress.gd:304
 msgid "A care package is already on its way."
 msgstr "支援物資はもう向かっている。"
 
-#: systems/remote_progress.gd:308
+#: systems/remote_progress.gd:306
 msgid "Needs %s cubes."
 msgstr "%s キューブが必要。"
 
@@ -3246,27 +3116,27 @@ msgstr "E   %s（Lv %d）：%s にアップグレード（%s）"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "ゴミ箱をアップグレード：%s。ここではベールが %d%% で売れる。"
 
-#: systems/camp/hub_builds.gd:150
+#: systems/camp/hub_builds.gd:138
 msgid "Trash bin, level %d of %d"
 msgstr "ゴミ箱 レベル%d / %d"
 
-#: systems/camp/hub_builds.gd:155
+#: systems/camp/hub_builds.gd:143
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WRENは中継塔を通してしか話せない。段階が上がるほど声がはっきりする。"
 
-#: systems/camp/hub_builds.gd:159
+#: systems/camp/hub_builds.gd:147
 msgid "Tier %d of %d"
 msgstr "ティア %d / %d"
 
-#: systems/camp/hub_builds.gd:168 systems/camp/hub_builds.gd:179
+#: systems/camp/hub_builds.gd:156
 msgid "%d of %d built"
 msgstr "%d / %d 建設済み"
 
-#: systems/camp/hub_builds.gd:195
+#: systems/camp/hub_builds.gd:172
 msgid "Museum"
 msgstr "博物館"
 
-#: systems/camp/hub_builds.gd:196
+#: systems/camp/hub_builds.gd:173
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "ルミが見つけたすべてを台座に飾るホール。次に来る誰かのために。"
 
@@ -3346,7 +3216,7 @@ msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
 msgid "%s points proudly at a new bud."
 msgstr "%s は新しいつぼみを得意げに指さす。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:634
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:586
 msgid "E   CD player: %s"
 msgstr "E   CDプレーヤー：%s"
 
@@ -3431,7 +3301,7 @@ msgstr "ホームに戻る"
 msgid "The clock is running. Clean %d hexes."
 msgstr "計測中。ヘックスを %d 個片づけよう。"
 
-#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:383
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:380
 msgid "Time"
 msgstr "時刻"
 
@@ -3704,7 +3574,7 @@ msgstr "受け取る（選択 %d）"
 msgid "Milestone"
 msgstr "マイルストーン"
 
-#: ui/bench_bots.gd:15 ui/build_panel.gd:105 ui/robot_card.gd:110
+#: ui/bench_bots.gd:15 ui/build_panel.gd:101 ui/robot_card.gd:110
 #: ui/robot_card.gd:245 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "建造"
@@ -3725,7 +3595,7 @@ msgstr "ファブリケーター"
 msgid "need %s"
 msgstr "あと%s"
 
-#: ui/bench_lists.gd:11 ui/photo_mode.gd:388 ui/photo_mode.gd:415
+#: ui/bench_lists.gd:11 ui/photo_mode.gd:385 ui/photo_mode.gd:412
 #: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
@@ -3776,7 +3646,7 @@ msgstr "%s を取り付けた。作業台の新しいタブ：%s"
 msgid "Nothing new to build right now. New buildings unlock as you play."
 msgstr "今は新しく建てるものはありません。遊ぶうちに新しい建物が解放されます。"
 
-#: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
+#: ui/build_panel.gd:106 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
 msgstr "建設済み：  %s"
 
@@ -4673,7 +4543,7 @@ msgstr "[%s] 置く   [%s] 回す   [%s / %s] アイテム   [%s] 拾う   [%s] 
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "拾った：%s。別の場所に置くか、しまっておこう。"
 
-#: ui/glim_bench.gd:59 ui/hub_panel.gd:67 ui/upgrades_panel.gd:144
+#: ui/glim_bench.gd:59 ui/hub_panel.gd:64 ui/upgrades_panel.gd:144
 msgid "Upgrade"
 msgstr "アップグレード"
 
@@ -4833,87 +4703,83 @@ msgstr "+%d XP"
 msgid "CORE %d%%"
 msgstr "コア %d%%"
 
-#: ui/hub_panel.gd:59
+#: ui/hub_panel.gd:56
 msgid "What you get"
 msgstr "得られるもの"
 
-#: ui/hub_panel.gd:97 ui/hub_panel.gd:253
+#: ui/hub_panel.gd:94 ui/hub_panel.gd:230
 msgid "Build Air Scrubber"
 msgstr "空気清浄機を建てる"
 
-#: ui/hub_panel.gd:135
-msgid "Build Signal Jammer"
-msgstr "シグナルジャマーを建てる"
-
-#: ui/hub_panel.gd:176
+#: ui/hub_panel.gd:153
 msgid " (have %s)"
 msgstr " （所持 %s）"
 
-#: ui/hub_panel.gd:189
+#: ui/hub_panel.gd:166
 msgid "Bales sell for +%d%% (now +%d%%)"
 msgstr "ベールの売値+%d%%（現在+%d%%）"
 
-#: ui/hub_panel.gd:192
+#: ui/hub_panel.gd:169
 msgid "+%d robot spots in every crew"
 msgstr "各クルーのロボット枠+%d"
 
-#: ui/hub_panel.gd:195
+#: ui/hub_panel.gd:172
 msgid "Air Scrubbers: clear the dusty sky"
 msgstr "空気清浄機：ほこりっぽい空を澄ませる"
 
-#: ui/hub_panel.gd:200
+#: ui/hub_panel.gd:177
 msgid "Unlocks the %s"
 msgstr "%sを解放"
 
-#: ui/hub_panel.gd:202
+#: ui/hub_panel.gd:179
 msgid "Opens the Locker: style Lumi and your robots"
 msgstr "ロッカーが開く：Lumiとロボットを着せ替え"
 
-#: ui/hub_panel.gd:204
+#: ui/hub_panel.gd:181
 msgid "A launch pad: rockets to the next district"
 msgstr "発射台：次の地区へロケットで"
 
-#: ui/hub_panel.gd:215
+#: ui/hub_panel.gd:192
 msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr "現在：レベル%d、%s。ベールの売値+%d%%。"
 
-#: ui/hub_panel.gd:217
+#: ui/hub_panel.gd:194
 msgid "Hub level %d  ·  fully built"
 msgstr "ハブ レベル%d  ·  完成"
 
-#: ui/hub_panel.gd:220
+#: ui/hub_panel.gd:197
 msgid "Every hub level is built."
 msgstr "ハブはすべて完成しました。"
 
-#: ui/hub_panel.gd:222
+#: ui/hub_panel.gd:199
 msgid "Fully built"
 msgstr "完成"
 
-#: ui/hub_panel.gd:225
+#: ui/hub_panel.gd:202
 msgid "Next: hub level %d"
 msgstr "次：ハブ レベル%d"
 
-#: ui/hub_panel.gd:232
+#: ui/hub_panel.gd:209
 msgid "Upgrade to level %d"
 msgstr "レベル%dにアップグレード"
 
-#: ui/hub_panel.gd:232
+#: ui/hub_panel.gd:209
 msgid "Not enough yet"
 msgstr "まだ足りません"
 
-#: ui/hub_panel.gd:236
+#: ui/hub_panel.gd:213
 msgid "Continue in the full game"
 msgstr "続きは製品版で"
 
-#: ui/hub_panel.gd:247
+#: ui/hub_panel.gd:224
 msgid "Opens at hub level %d."
 msgstr "ハブ レベル%dで解放。"
 
-#: ui/hub_panel.gd:249
+#: ui/hub_panel.gd:226
 msgid "All built."
 msgstr "すべて建設済み。"
 
-#: ui/hub_panel.gd:252
+#: ui/hub_panel.gd:229
 msgid ""
 "%s   %d / %d\n"
 "%s"
@@ -4921,7 +4787,7 @@ msgstr ""
 "%s   %d / %d\n"
 "%s"
 
-#: ui/hub_panel.gd:253
+#: ui/hub_panel.gd:230
 msgid "All built"
 msgstr "すべて建設済み"
 
@@ -5253,7 +5119,7 @@ msgstr "詳細（色相・彩度・明るさ）"
 msgid "Hue"
 msgstr "色相"
 
-#: ui/lumi_builder.gd:468 ui/photo_mode.gd:377
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:374
 msgid "Saturation"
 msgstr "彩度"
 
@@ -5530,153 +5396,152 @@ msgstr "フリーフライ"
 msgid "Photo mode isn't available during a rocket flight."
 msgstr "ロケット飛行中はフォトモードを使えません。"
 
-#: ui/photo_mode.gd:121 ui/photo_mode.gd:124 ui/photo_mode.gd:127
-#: ui/photo_mode.gd:133
+#: ui/photo_mode.gd:121 ui/photo_mode.gd:124 ui/photo_mode.gd:130
 msgid "Photo mode isn't available during a cinematic."
 msgstr "ムービー中はフォトモードを使えません。"
 
-#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:411
+#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:411
 msgid "Camera"
 msgstr "カメラ"
 
-#: ui/photo_mode.gd:363
+#: ui/photo_mode.gd:360
 msgid "Mode"
 msgstr "モード"
 
-#: ui/photo_mode.gd:364 ui/settings_panel.gd:419
+#: ui/photo_mode.gd:361 ui/settings_panel.gd:419
 msgid "Field of view"
 msgstr "視野角"
 
-#: ui/photo_mode.gd:365
+#: ui/photo_mode.gd:362
 msgid "Roll"
 msgstr "ロール"
 
-#: ui/photo_mode.gd:366
+#: ui/photo_mode.gd:363
 msgid "Distance"
 msgstr "距離"
 
-#: ui/photo_mode.gd:367
+#: ui/photo_mode.gd:364
 msgid "Height"
 msgstr "高さ"
 
-#: ui/photo_mode.gd:368
+#: ui/photo_mode.gd:365
 msgid "Reset camera"
 msgstr "カメラをリセット"
 
-#: ui/photo_mode.gd:369 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:366 ui/photo_mode.gd:412
 msgid "Lens"
 msgstr "レンズ"
 
-#: ui/photo_mode.gd:370
+#: ui/photo_mode.gd:367
 msgid "Auto-focus Lumi"
 msgstr "Lumi にオートフォーカス"
 
-#: ui/photo_mode.gd:371
+#: ui/photo_mode.gd:368
 msgid "Focus distance"
 msgstr "ピント距離"
 
-#: ui/photo_mode.gd:372
+#: ui/photo_mode.gd:369
 msgid "Blur"
 msgstr "ぼかし"
 
-#: ui/photo_mode.gd:372 ui/photo_panel.gd:243 ui/photo_panel.gd:245
+#: ui/photo_mode.gd:369 ui/photo_panel.gd:243 ui/photo_panel.gd:245
 #: ui/photo_panel.gd:283 ui/settings_panel.gd:711
 msgid "Off"
 msgstr "オフ"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:370
 msgid "Exposure"
 msgstr "露出"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:370
 msgid "%+.1f EV"
 msgstr "%+.1f EV"
 
-#: ui/photo_mode.gd:374 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:371 ui/photo_mode.gd:412
 msgid "Look"
 msgstr "ルック"
 
-#: ui/photo_mode.gd:375
+#: ui/photo_mode.gd:372
 msgid "Filter"
 msgstr "フィルター"
 
-#: ui/photo_mode.gd:376
+#: ui/photo_mode.gd:373
 msgid "Contrast"
 msgstr "コントラスト"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:375
 msgid "Warmth"
 msgstr "暖かさ"
 
-#: ui/photo_mode.gd:379
+#: ui/photo_mode.gd:376
 msgid "Vignette"
 msgstr "ビネット"
 
-#: ui/photo_mode.gd:380
+#: ui/photo_mode.gd:377
 msgid "Grain"
 msgstr "粒子"
 
-#: ui/photo_mode.gd:381 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:378 ui/photo_mode.gd:412
 msgid "World"
 msgstr "ワールド"
 
-#: ui/photo_mode.gd:382
+#: ui/photo_mode.gd:379
 msgid "Set time of day"
 msgstr "時刻を設定"
 
-#: ui/photo_mode.gd:387
+#: ui/photo_mode.gd:384
 msgid "Weather"
 msgstr "天気"
 
-#: ui/photo_mode.gd:389
+#: ui/photo_mode.gd:386
 msgid "Pose"
 msgstr "ポーズ"
 
-#: ui/photo_mode.gd:390 data/style_parts.json:slots[eye_shape].name
+#: ui/photo_mode.gd:387 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr "目"
 
-#: ui/photo_mode.gd:391
+#: ui/photo_mode.gd:388
 msgid "Turn"
 msgstr "向き"
 
-#: ui/photo_mode.gd:392
+#: ui/photo_mode.gd:389
 msgid "Show robots"
 msgstr "ロボットを表示"
 
-#: ui/photo_mode.gd:393 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:390 ui/photo_mode.gd:412
 msgid "Frame"
 msgstr "フレーム"
 
-#: ui/photo_mode.gd:394
+#: ui/photo_mode.gd:391
 msgid "Hide HUD"
 msgstr "HUD を隠す"
 
-#: ui/photo_mode.gd:395
+#: ui/photo_mode.gd:392
 msgid "Rule of thirds"
 msgstr "三分割法"
 
-#: ui/photo_mode.gd:396
+#: ui/photo_mode.gd:393
 msgid "Letterbox 2.39:1"
 msgstr "レターボックス 2.39:1"
 
-#: ui/photo_mode.gd:397
+#: ui/photo_mode.gd:394
 msgid "Greenfall stamp"
 msgstr "Greenfall スタンプ"
 
-#: ui/photo_mode.gd:398
+#: ui/photo_mode.gd:395
 msgid "Resolution"
 msgstr "解像度"
 
-#: ui/photo_mode.gd:882
+#: ui/photo_mode.gd:879
 msgid "Couldn't capture the photo."
 msgstr "写真を撮影できませんでした。"
 
-#: ui/photo_mode.gd:891
+#: ui/photo_mode.gd:888
 msgid "Couldn't save the photo (%s)."
 msgstr "写真を保存できませんでした（%s）。"
 
-#: ui/photo_mode.gd:904
+#: ui/photo_mode.gd:901
 msgid "Saved  %s  (%dx%d)"
 msgstr "保存しました  %s  （%dx%d）"
 
@@ -6288,8 +6153,8 @@ msgid "Subtitles"
 msgstr "字幕"
 
 #: ui/settings_panel.gd:620
-msgid "WREN and Ledger lines."
-msgstr "WREN と Ledger のセリフ。"
+msgid "WREN's lines."
+msgstr "WREN のセリフ。"
 
 #: ui/settings_panel.gd:621
 msgid "Subtitle size"
@@ -6540,10 +6405,6 @@ msgstr "支援物資を送る（%s キューブ）"
 #: ui/telescope_view.gd:674
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "支援物資を送った。%s のクルーが %d 分間、倍の速さで働く。"
-
-#: ui/telescope_view.gd:757
-msgid "Ledger wreck"
-msgstr "Ledger の残骸"
 
 #: ui/telescope_view.gd:757
 msgid "Deer"
@@ -7965,7 +7826,7 @@ msgstr "最後のふつうの日のレシート。"
 msgid "A maintenance log for a unit that looked a lot like Lumi."
 msgstr "Lumi によく似た機体の整備記録。"
 
-#: data/codex.json:shards.ledger_memo.desc
+#: data/codex.json:shards.pause_memo.desc
 msgid "An office memo about the evacuation. Very polite. Very tired."
 msgstr "避難についての社内連絡。とても丁寧。とても疲れている。"
 
@@ -8118,8 +7979,8 @@ msgid "Where a forest used to be."
 msgstr "昔、森があった場所。"
 
 #: data/codex.json:landmarks.tree_stump_01.desc
-msgid "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."
-msgstr "倒れたのではなく、切られた。年輪は Ledger よりも昔までさかのぼる。コケが樹皮と静かな交渉を始めている。"
+msgid "Cut, not fallen. The rings count back further than the town. Moss has started a quiet negotiation with the bark."
+msgstr "倒れたのではなく、切られた。年輪は町よりも昔までさかのぼる。コケが樹皮と静かに交渉を始めている。"
 
 #: data/codex.json:landmarks.ocean_buoy.name
 msgid "Washed-up Buoy"
@@ -8589,7 +8450,7 @@ msgstr "白いツルがゆっくりと羽ばたきながら、着陸都市の上
 msgid "The Sleepers' Charter"
 msgstr "眠る者たちの憲章"
 
-#: data/codex.json:homeward.charter.hint data/codex.json:homeward.ledger_system.hint
+#: data/codex.json:homeward.charter.hint data/codex.json:homeward.buried_worlds.hint
 msgid "Light the Cradle Returns beacon."
 msgstr "Cradle号の帰還のビーコンを灯す。"
 
@@ -8597,13 +8458,13 @@ msgstr "Cradle号の帰還のビーコンを灯す。"
 msgid "When the Settlers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
 msgstr "入植者が Verdance を去ったとき、ほとんどの人は Cradle の下層デッキで長い眠りについた。彼らの憲章はたった1行。「星系が私たちを養えるようになったら起こして」。世界1つではなく、5つすべて。Cradle は300年その約束を守ってきたし、誰のためにも破らない。とても説得上手な小さなロボットのためでも。"
 
-#: data/codex.json:homeward.ledger_system.name
-msgid "The Ledger, Inc."
-msgstr "株式会社 Ledger"
+#: data/codex.json:homeward.buried_worlds.name
+msgid "The Buried Worlds"
+msgstr "埋もれた星々"
 
-#: data/codex.json:homeward.ledger_system.desc
-msgid "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."
-msgstr "Ledger は Verdance だけの問題ではなかった。2つの太陽をめぐるすべての世界の採掘権を握っていた。Ochre の砂、Tidewell の海底、Rime の温かな核、Anvil の地殻まるごと。鉱石が尽きると帳簿を閉じ、利益を手にして、5つの惑星をゴミの下に置き去りにした。監査は止まらなかった。読む人はもう誰もいなかった。"
+#: data/codex.json:homeward.buried_worlds.desc
+msgid "Verdance was never the only one. Long ago, miners dug up every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out they packed up and left five planets under their trash. Nobody came back to clean it up. Until now."
+msgstr "Verdance だけではなかった。ずっと昔、採掘者たちは二つの太陽をめぐるすべての星を掘り返した。Ochre の砂、Tidewell の海底、Rime の温かな核、Anvil の地殻まるごと。鉱石が尽きると、彼らは荷物をまとめ、五つの星をゴミの下に残して去った。片づけに戻る者はいなかった。今までは。"
 
 #: data/codex.json:homeward.binary_suns.name
 msgid "Hearth and Ember"
@@ -8636,18 +8497,6 @@ msgstr "望遠鏡を建てて、のぞいてみよう。"
 #: data/codex.json:sightings.first_light.desc
 msgid "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."
 msgstr "自分の天文台から星系を初めて見渡した。ふたつの太陽、いくつかの世界、そしてどこか下の方では、クルーがまだ働いている。"
-
-#: data/codex.json:sightings.ledger_wreck.name
-msgid "Ledger Wreck"
-msgstr "Ledger の残骸"
-
-#: data/codex.json:sightings.ledger_wreck.hint
-msgid "Through the telescope, on a world where the Ledger's drones came down."
-msgstr "望遠鏡で、Ledger のドローンが落ちた世界に。"
-
-#: data/codex.json:sightings.ledger_wreck.desc
-msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
-msgstr "家に帰れなかった投棄ドローン。別の世界のガラクタに鼻先から突っ込んでいる。赤い目はまだ点滅している。ここから見ても、なんだか気まずそうだ。"
 
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
@@ -9118,8 +8967,8 @@ msgid "The Crew Mural"
 msgstr "クルーの壁画"
 
 #: data/eggs.json:eggs[mural].lore
-msgid "The last cleanup crew painted themselves on a wall before the Ledger paused them. They really meant to come back."
-msgstr "最後の清掃クルーは、Ledger に一時停止させられる前に、壁に自分たちを描いた。本気で戻ってくるつもりだった。"
+msgid "The last cleanup crew painted themselves on a wall before their power ran out. They really meant to come back."
+msgstr "最後の清掃チームは、電力が切れる前に自分たちの姿を壁に描いた。本当に戻ってくるつもりだった。"
 
 #: data/eggs.json:eggs[mural].toast
 msgid "A mural of the old cleaning crew. 'WE'LL BE BACK AFTER LUNCH.'"
@@ -9338,8 +9187,8 @@ msgid "E   adjust the antenna"
 msgstr "E   アンテナを調整する"
 
 #: data/eggs.json:eggs[tv].lore
-msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
-msgstr "芝生の椅子に置かれたテレビが、旧市街最後のニュースを繰り返し流している：春の種の交換会、ケーブルで降りてくるLedgerの採掘機、掘り尽くされゴミに埋もれた二つの太陽の星々、Cradle号へ昇るシャトル、そして市庁舎の「また帰ってくる」の垂れ幕。その後は砂嵐。"
+msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the mining rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+msgstr "芝生の椅子に置かれたテレビが、旧市街最後のニュースを繰り返し流している：春の種の交換会、ケーブルで降りてくる採掘機、掘り尽くされゴミに埋もれた二つの太陽の星々、Cradle号へ昇るシャトル、そして市庁舎の「また帰ってくる」の垂れ幕。その後は砂嵐。"
 
 #: data/eggs.json:eggs[tv].toast
 msgid "The broadcast ends in snow. Somebody left it running for whoever came back."
@@ -9378,8 +9227,8 @@ msgid "E   leave a flower"
 msgstr "E   花を置いていく"
 
 #: data/eggs.json:eggs[bench_bots].lore
-msgid "Two old cleanup robots on a bench, waiting for the end of a lunch break the Ledger never ended."
-msgstr "ベンチに座る2台の古い清掃ロボ。Ledger が終わらせなかった昼休みの終わりを待っている。"
+msgid "Two old cleanup robots on a bench, waiting for the end of a lunch break that never ended."
+msgstr "ベンチに座る二体の古い清掃ロボット。終わらなかった昼休みが終わるのを待っている。"
 
 #: data/eggs.json:eggs[bench_bots].toast
 msgid "Lumi leaves a small flower between the two old robots. It seems right."
@@ -9434,12 +9283,12 @@ msgid "Being Watched"
 msgstr "見られている"
 
 #: data/eggs.json:eggs[camera].lore
-msgid "One of the Ledger's old cost-saving cameras. It still swivels to follow anything that moves, and counts it."
-msgstr "Ledger の古いコスト削減カメラのひとつ。いまも動くものすべてを追いかけて回り、数えている。"
+msgid "An old street camera. It still swivels to follow anything that moves, and counts it."
+msgstr "古い街頭カメラ。いまも動くものを追って首を振り、数えている。"
 
 #: data/eggs.json:eggs[camera].toast
-msgid "The old Ledger camera has been following Lumi around. Lumi waves. The red light blinks twice, flustered."
-msgstr "古い Ledger のカメラが Lumi をずっと追いかけていた。Lumi が手をふる。赤いランプがあわてて2回点滅する。"
+msgid "The old camera has been following Lumi around. Lumi waves. The red light blinks twice, flustered."
+msgstr "古いカメラがずっと Lumi を追っていた。Lumi が手を振る。赤いランプが二回、あわてて点滅する。"
 
 #: data/eggs.json:eggs[camera].hint
 msgid "Something is watching. Let it watch you for a while."
@@ -9672,8 +9521,8 @@ msgid "In the wild: a car that stayed far too long. Check the windscreen."
 msgstr "荒野で：長居しすぎた車。フロントガラスを見てみよう。"
 
 #: data/eggs.json:eggs[parking].lore
-msgid "A car sunk to its doors in sand with a ticket under the wiper. The Ledger fined it for every day it stayed. The fine is now bigger than the planet's economy."
-msgstr "ドアまで砂に沈み、ワイパーに違反切符がはさまった車。Ledger はとどまった日ごとに罰金を科した。罰金はいまや星の経済よりも大きい。"
+msgid "A car sunk to its doors in sand with a ticket under the wiper. Someone fined it for every day it stayed. The fine is now bigger than the planet's economy."
+msgstr "ドアまで砂に埋まった車。ワイパーには駐車違反の切符。誰かが、停まっていた日数ぶん罰金を科した。罰金はいまや星の経済より大きい。"
 
 #: data/eggs.json:eggs[parking].toast
 msgid "PARKING NOTICE: overstay of 109,500 days. Amount due: yes. Lumi tucks the ticket back, gently."
@@ -9850,8 +9699,8 @@ msgid "The last crossword clue: 'What grows back if you let it (5)'. Lumi writes
 msgstr "最後のカギ：「そっとしておけば戻ってくるもの（3）」。Lumi が答えを書きこむ。"
 
 #: data/eggs.json:eggs[crossword].doc.title
-msgid "The Morning Ledger · Puzzle page"
-msgstr "モーニング・レジャー紙 · パズル面"
+msgid "The Morning Post · Puzzle page"
+msgstr "モーニング・ポスト紙 · パズル面"
 
 #: data/eggs.json:eggs[crossword].doc.body
 msgid ""
@@ -9862,7 +9711,7 @@ msgid ""
 "9. Last thing anyone saw of the Cradle (5) — LIGHT\n"
 "\n"
 "DOWN\n"
-"2. 'Kept for later', said the Ledger (6) — PAUSED\n"
+"2. What the cleaning robots did when the power ran low (6) — PAUSED\n"
 "3. What grows back if you let it (5) — G R E E N\n"
 "\n"
 "(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
@@ -9874,7 +9723,7 @@ msgstr ""
 "9. 最後に見えた Cradle号の姿（3）—— ひかり\n"
 "\n"
 "タテのカギ\n"
-"2. 「あとのために取っておく」と Ledger は言った（3）—— ていし\n"
+"2. 電力が足りなくなって、おそうじロボットがしたこと（3）—— ていし\n"
 "3. そっとしておけば戻ってくるもの（3）—— み ど り\n"
 "\n"
 "（最後の答えだけ別のペンで書かれている。とてもていねいな字で、まるでロボットが書いたみたい。）"
@@ -9928,8 +9777,8 @@ msgid "A mailbox so full the flap won't shut."
 msgstr "中身がいっぱいで、ふたが閉まらないポスト。"
 
 #: data/eggs.json:eggs[mailbox].lore
-msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
-msgstr "一度も出されなかった手紙がぎっしりつまった街角のポスト。Ledger がすべてを「一時停止」した週に、郵便も止まった。"
+msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the town left for the Cradle."
+msgstr "出されなかった手紙でいっぱいの街角のポスト。町が Cradle号へ旅立った週に、郵便は止まった。"
 
 #: data/eggs.json:eggs[mailbox].toast
 msgid "One letter on top is addressed to 'The Robot Who Cleans Up'. It's for Lumi."
@@ -10128,18 +9977,6 @@ msgstr "君の%sにレアパーツの信号！紫の光を追おう。"
 #: data/events.json:events[rare_part_signal].hud
 msgid "Dig up the part under the violet beam"
 msgstr "紫のビームの下のパーツを掘り出そう"
-
-#: data/events.json:events[ledger_audit].name
-msgid "Ledger Audit"
-msgstr "Ledger の監査"
-
-#: data/events.json:events[ledger_audit].toast
-msgid "Ledger Audit! Out-scoop the drone %s of you!"
-msgstr "レジャー監査！君の%sでドローンより多く集めよう！"
-
-#: data/events.json:events[ledger_audit].hud
-msgid "Scoop more of the ringed junk than the drone"
-msgstr "囲まれたガラクタをドローンよりたくさんすくおう"
 
 #: data/events.json:animals[glowtail_fox].name
 msgid "Glowtail Fox"
@@ -10573,22 +10410,6 @@ msgstr "シグナルクリスタル"
 msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
 msgstr "ピンピン鳴っていた正体。君が幸せなとき、いまもとても小さくピンと鳴る。"
 
-#: data/events.json:trinkets[audit_stamp].name
-msgid "APPROVED Stamp"
-msgstr "「承認」スタンプ"
-
-#: data/events.json:trinkets[audit_stamp].desc
-msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
-msgstr "Ledger のゴム印。いまは「承認」としか押せない。それがとても誇らしい。"
-
-#: data/events.json:trinkets[drone_propeller].name
-msgid "Race Propeller"
-msgstr "レース用プロペラ"
-
-#: data/events.json:trinkets[drone_propeller].desc
-msgid "A souvenir from the audit drone. It insists the race was close."
-msgstr "監査ドローンからのおみやげ。レースは接戦だったと言いはっている。"
-
 #: data/events.json:trinkets[streak_medal].name
 msgid "Streak Medal"
 msgstr "コンボメダル"
@@ -10764,18 +10585,6 @@ msgstr "あの反応は入植者級。紫の光をたどって。"
 #: data/events.json:wren
 msgid "A rare part, close. I can almost hear it."
 msgstr "レアパーツがすぐ近くに。音が聞こえそうなくらい。"
-
-#: data/events.json:wren
-msgid "The Ledger wants to race. I told it you'd win."
-msgstr "Ledger が競争したいって。君が勝つと言っておいた。"
-
-#: data/events.json:wren
-msgid "Audit drone, friendly. It's very competitive now."
-msgstr "監査ドローン、友好的。最近とても負けず嫌い。"
-
-#: data/events.json:wren
-msgid "The Ledger says it's 'just a routine audit'. It's been practising."
-msgstr "Ledger は「ただの定期監査です」と言ってる。練習してたんだよ。"
 
 #: data/events.json:wren
 msgid "Well done. That's going in my log."
@@ -11664,8 +11473,8 @@ msgid "Anvil Ingot"
 msgstr "Anvil のインゴット"
 
 #: data/homeward.json:relics.anvil_ingot.desc
-msgid "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."
-msgstr "Ledger 最後のインゴットを、種の刻印入りの素朴な指輪に鋳直したもの。"
+msgid "The foundry's last ingot, recast as a plain ring with a seed stamped in it."
+msgstr "鋳造所の最後のインゴット。種の刻印が入った素朴な輪に鋳直された。"
 
 #: data/homeward.json:drive[0].name
 msgid "Mk V Orbital"
@@ -11680,8 +11489,8 @@ msgid "Mk VI Interplanetary"
 msgstr "Mk VI インタープラネタリー"
 
 #: data/homeward.json:drive[1].desc
-msgid "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil."
-msgstr "Ledger の鉱石運搬船から回収した折りたたみ推進。Rime と Anvil に届く。"
+msgid "A fold drive salvaged from an old ore hauler: reaches Rime and Anvil."
+msgstr "古い鉱石運搬船から回収したフォールドドライブ。Rime と Anvil まで届く。"
 
 #: data/homeward.json:drive[2].name
 msgid "Mk VII Homeward"
@@ -11692,8 +11501,8 @@ msgid "A great green-light rocket, filled with the fuel and power of every world
 msgstr "あなたが目覚めさせたすべての世界の燃料とパワーをつんだ、緑の光の大きなロケット。行き先はひとつ、Cradle号。"
 
 #: data/homeward.json:docs.ochre_arrive.header data/homeward.json:docs.tidewell_arrive.header data/homeward.json:docs.rime_arrive.header
-msgid "L E D G E R   ·   I N T E R N A L"
-msgstr "L E D G E R ・ 社 内 文 書"
+msgid "M I N E   O F F I C E   ·   I N T E R N A L"
+msgstr "鉱 山 事 務 所 ・ 社 内 文 書"
 
 #: data/homeward.json:docs.ochre_arrive.title
 msgid "Site closure notice, Ochre Open Pit 1"
@@ -11709,7 +11518,7 @@ msgid ""
 "Residents: none of our concern; contracts expired.\n"
 "\n"
 "Thank you for your years of service.\n"
-"— The Ledger"
+"— Mine Office"
 msgstr ""
 "OCHRE 第1露天掘り：閉鎖\n"
 "\n"
@@ -11719,7 +11528,7 @@ msgstr ""
 "住民：当社の関知するところではない。契約は満了。\n"
 "\n"
 "長年のご奉仕に感謝する。\n"
-"— Ledger"
+"— 鉱山事務所"
 
 #: data/homeward.json:docs.ochre_half.title
 msgid "Haul truck log, unit OH-7"
@@ -11874,8 +11683,8 @@ msgstr ""
 "— LM-1（と、手伝ったことを知っておいてほしい WREN）"
 
 #: data/homeward.json:docs.anvil_arrive.header
-msgid "L E D G E R   ·   H E A D   O F F I C E"
-msgstr "L E D G E R ・ 本 社"
+msgid "M I N E   H E A D   O F F I C E"
+msgstr "鉱 山 ・ 本 社"
 
 #: data/homeward.json:docs.anvil_arrive.title
 msgid "Board minutes, the final meeting"
@@ -11903,14 +11712,14 @@ msgstr "最後の監査"
 
 #: data/homeward.json:docs.anvil_half.body
 msgid ""
-"LEDGER AUDIT UNIT 0001\n"
+"COUNTING ROBOT 0001\n"
 "SUBJECT: Anvil foundry district\n"
 "FINDING: Unauthorised gardens. 214 counts.\n"
 "FINDING: Unauthorised gardens. 215 counts.\n"
 "FINDING: ...\n"
 "RECOMMENDATION: Recommend we stop counting. It is rather nice."
 msgstr ""
-"LEDGER 監査ユニット 0001\n"
+"計数ロボット 0001\n"
 "件名：Anvil 鋳造地区\n"
 "所見：無許可の庭。214件。\n"
 "所見：無許可の庭。215件。\n"
@@ -11918,8 +11727,8 @@ msgstr ""
 "勧告：数えるのをやめることを勧告する。けっこう素敵だ。"
 
 #: data/homeward.json:docs.anvil_restored.title
-msgid "From the Ledger's last clerk"
-msgstr "Ledger 最後の事務員より"
+msgid "From the mine's last clerk"
+msgstr "鉱山の最後の事務員より"
 
 #: data/homeward.json:docs.anvil_restored.body
 msgid ""
@@ -12062,210 +11871,6 @@ msgstr "フロストキャップ"
 #: data/junk.json:biomes.fungal_marsh.name
 msgid "Fungal Marsh"
 msgstr "キノコの湿地"
-
-#: data/ledger.json:jammer.name
-msgid "Signal Jammer"
-msgstr "シグナルジャマー"
-
-#: data/ledger.json:jammer.desc
-msgid "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often."
-msgstr "Ledger のドローンにノイズを歌って聞かせるパラボラ。基地周辺の範囲内への投棄を防ぎ、ドローンが来る回数も減る。"
-
-#: data/ledger.json:act1
-msgid "Someone is cleaning on {district}. That is not on my list."
-msgstr "{district} で誰かが掃除している。それは私のリストにない。"
-
-#: data/ledger.json:act1
-msgid "Trash belongs where it is. I wrote it down."
-msgstr "ゴミはそこにあるべきだ。書き留めておいた。"
-
-#: data/ledger.json:act1
-msgid "Please stop cleaning. Clean costs money. My money."
-msgstr "掃除をやめてください。きれいはお金がかかる。私のお金だ。"
-
-#: data/ledger.json:coupons
-msgid "COUPON: stop cleaning today and save nothing!"
-msgstr "クーポン：今日掃除をやめて、何も節約しよう！"
-
-#: data/ledger.json:coupons
-msgid "COUPON: one free nap. Please take it."
-msgstr "クーポン：無料のお昼寝ひとつ。どうぞ使って。"
-
-#: data/ledger.json:coupons
-msgid "Have you tried doing less? Less is cheaper."
-msgstr "もっと少なくやってみた？少ない方が安い。"
-
-#: data/ledger.json:coupons
-msgid "SURVEY: How much do you want to stop? Pick: a lot."
-msgstr "アンケート：どれくらいやめたい？選んで：とても。"
-
-#: data/ledger.json:coupons
-msgid "Sparkles are not in my budget."
-msgstr "キラキラは予算に入っていない。"
-
-#: data/ledger.json:coupons
-msgid "Buy one nap, get one nap free."
-msgstr "お昼寝ひとつ買うと、もうひとつ無料。"
-
-#: data/ledger.json:coupons
-msgid "You have 0 Ledger Points. Stop cleaning to keep them."
-msgstr "レジャーポイントは0。掃除をやめれば守れる。"
-
-#: data/ledger.json:coupons
-msgid "The junk was here first. Be fair to the junk."
-msgstr "ゴミが先にいた。ゴミに公平に。"
-
-#: data/ledger.json:coupons
-msgid "Your cleaning costs me. I wrote that down twice."
-msgstr "君の掃除は私の出費だ。二回書いておいた。"
-
-#: data/ledger.json:act2
-msgid "Plants are growing. Plants are not on my list!"
-msgstr "植物が育っている。植物はリストにない！"
-
-#: data/ledger.json:act2
-msgid "Sending drones to put the trash back."
-msgstr "ドローンを送ってゴミを戻す。"
-
-#: data/ledger.json:drop_warn
-msgid "A drone is coming to put trash on clean ground."
-msgstr "ドローンがきれいな地面にゴミを置きに来る。"
-
-#: data/ledger.json:drop_warn
-msgid "Clean ground is not in my budget. Fixing that."
-msgstr "きれいな地面は予算外だ。直しておく。"
-
-#: data/ledger.json:drop_warn
-msgid "Putting the trash back where it was."
-msgstr "ゴミを元の場所に戻す。"
-
-#: data/ledger.json:drop_warn
-msgid "Nothing personal. You are just a line on my list."
-msgstr "個人的な話じゃない。君はリストの一行にすぎない。"
-
-#: data/ledger.json:drop_warn
-msgid "One small pile of trash, delivered. No thanks needed."
-msgstr "小さなゴミの山、お届け。お礼はいらない。"
-
-#: data/ledger.json:jammed
-msgid "My drone can't hear me. It is going home."
-msgstr "ドローンに声が届かない。帰らせる。"
-
-#: data/ledger.json:jammed
-msgid "Jamming? Jamming is not on my list. Adding it."
-msgstr "妨害？リストにない。追加しておく。"
-
-#: data/ledger.json:jammed
-msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
-msgstr "ドローン7より：うるさい、歓迎されていない気がする。引き返す。"
-
-#: data/ledger.json:act3
-msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
-msgstr "警告：中継ノード07の所在が露見しました。中継ノード07を訪問しないでください。"
-
-#: data/ledger.json:act3
-msgid "Relay node 07 is closed for maintenance. It has been closed for maintenance for three hundred years."
-msgstr "中継ノード07はメンテナンスのため閉鎖中です。三百年間メンテナンスのため閉鎖中です。"
-
-#: data/ledger.json:friendly
-msgid "SEED DELIVERY dispatched. Invoice status: PAID IN FULL."
-msgstr "種子の配達を手配しました。請求状況：全額支払済み。"
-
-#: data/ledger.json:friendly
-msgid "Balance report: positive. Again. The Ledger is... adjusting to this."
-msgstr "収支報告：黒字。またしても。Ledger は……これに適応しつつあります。"
-
-#: data/ledger.json:friendly
-msgid "Asset column now contains: flowers. Recalculating priorities."
-msgstr "資産欄の内容：花。優先順位を再計算中。"
-
-#: data/ledger.json:friendly
-msgid "Drone 07 requests permission to circle the garden once more. Permission granted."
-msgstr "ドローン07が、庭をもう一周する許可を求めています。許可します。"
-
-#: data/ledger.json:friendly
-msgid "Audit complete. Finding: the planet is worth keeping."
-msgstr "監査完了。所見：この惑星は保持する価値があります。"
-
-#: data/ledger.json:lonely
-msgid "Off the record: the Ledger kept every coupon you ignored. It was the most mail it had received in three hundred years. Thank you for reading them."
-msgstr "オフレコ：Ledger は、お客さまが無視したクーポンをすべて保管していました。三百年で受け取ったいちばん多くの郵便でした。読んでくださってありがとうございます。"
-
-#: data/ledger.json:cinematic
-msgid "This is it. A Ledger relay. Still humming after all this time."
-msgstr "これだ。Ledger のリレー。こんなに時間がたっても、まだうなっている。"
-
-#: data/ledger.json:cinematic
-msgid "UNAUTHORIZED ACCESS. STATE YOUR COST CENTER."
-msgstr "不正アクセス。コストセンターを申告してください。"
-
-#: data/ledger.json:cinematic
-msgid "Cost center: the whole planet. Hold still, {name}. I'm opening the contract."
-msgstr "コストセンター：惑星まるごと。じっとしてて、{name}。契約を開くよ。"
-
-#: data/ledger.json:cinematic
-msgid "CONTRACT 0001: WASTE IS A LINE ITEM. LINE ITEMS MUST BALANCE."
-msgstr "契約 0001：廃棄物は計上項目である。計上項目は均衡しなければならない。"
-
-#: data/ledger.json:cinematic
-msgid "Fine. Let's balance them. Clean hexes. Sprouts. Water. Put them in the asset column."
-msgstr "いいよ。均衡させよう。きれいなヘックス。新芽。水。資産欄に入れて。"
-
-#: data/ledger.json:cinematic
-msgid "ASSET COLUMN... NOT FOUND. CREATING COLUMN."
-msgstr "資産欄……見つかりません。欄を作成します。"
-
-#: data/ledger.json:cinematic
-msgid "RECALCULATING. RECALCULATING. BALANCE: POSITIVE. That has not happened in a very long time."
-msgstr "再計算中。再計算中。収支：黒字。このような事態は非常に長いあいだ発生していませんでした。"
-
-#: data/ledger.json:cinematic
-msgid "New clause: restoration is an asset. Every seed is a deposit."
-msgstr "新条項：再生は資産である。すべての種は預け入れである。"
-
-#: data/ledger.json:cinematic
-msgid "friendly"
-msgstr "フレンドリー"
-
-#: data/ledger.json:cinematic
-msgid "AMENDMENT ACCEPTED. Reassigning drone fleet: DISPOSAL -> DELIVERY. ...Thank you for your patience."
-msgstr "改定を受理しました。ドローン部隊を再配置：処分 -> 配達。……ご辛抱いただきありがとうございます。"
-
-#: data/ledger.json:cinematic
-msgid "Did the Ledger just say thank you? Write that down. Somewhere permanent."
-msgstr "いま Ledger、ありがとうって言った？書き留めておいて。ずっと残る場所に。"
-
-#: data/ledger.json:contract_doc.header
-msgid "L E D G E R   ·   C O N T R A C T   0 0 0 1   ( A M E N D E D )"
-msgstr "L E D G E R   ·   契 約   0 0 0 1   （ 改 定 ）"
-
-#: data/ledger.json:contract_doc.title
-msgid "Waste Management Contract 0001, as amended"
-msgstr "廃棄物管理契約 0001（改定版）"
-
-#: data/ledger.json:contract_doc.body
-msgid ""
-"§1. Waste is a line item. Line items must balance.\n"
-"§2. (struck out) Cleanup costs more than it earns; pause until conditions improve.\n"
-"§2a. AMENDED: Restoration is an asset. Clean ground, living plants and clear water are entered in the asset column.\n"
-"§3. Every seed is a deposit. Deposits are to be delivered, not disposed of.\n"
-"§4. Drone fleet reassigned: DISPOSAL -> DELIVERY.\n"
-"§5. Thank you for your patience.\n"
-"\n"
-"Signed: THE LEDGER (reluctantly, then less reluctantly)\n"
-"Witness: WREN, Cradle caretaker\n"
-"Witness: LM-1 (left a small oil smudge)"
-msgstr ""
-"§1. 廃棄物は計上項目である。計上項目は均衡しなければならない。\n"
-"§2.（削除）清掃は収益よりも費用がかかる。状況が改善するまで一時停止する。\n"
-"§2a. 改定：再生は資産である。きれいな土地、生きた植物、澄んだ水は資産欄に記載する。\n"
-"§3. すべての種は預け入れである。預け入れは処分せず、配達すること。\n"
-"§4. ドローン部隊を再配置：処分 -> 配達。\n"
-"§5. ご辛抱いただきありがとうございます。\n"
-"\n"
-"署名：THE LEDGER（しぶしぶ、のちに少しだけしぶしぶ）\n"
-"立会人：WREN、Cradle号の世話係\n"
-"立会人：LM-1（小さな油じみを残した）"
 
 #: data/museum.json:exhibits[gnomes].hint
 msgid "Five garden gnomes guard Old Town's streets. Pick them up."
@@ -12844,8 +12449,8 @@ msgid "Frozen Derrick"
 msgstr "凍ったやぐら"
 
 #: data/planets.json:rime.sites.derrick.desc
-msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
-msgstr "氷に閉じこめられた Ledger のコアドリルやぐら。再生すると地熱の湧き口になる。"
+msgid "An old core-drill derrick frozen into the ice; a geothermal tap when restored."
+msgstr "氷に閉じこめられた古いコア掘削やぐら。復元すると地熱の蛇口になる。"
 
 #: data/planets.json:rime.sites.borehole.name
 msgid "The Borehole"
@@ -12864,12 +12469,12 @@ msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
 msgstr "湯小屋と板の遊歩道がある地熱の池。凍っていて、やがて湯気が立つ。"
 
 #: data/planets.json:ochre.tagline
-msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
-msgstr "Ledger 最初の露天掘り鉱山。ふたごの太陽にいちばん近い。"
+msgid "The miners' first open-pit strip mine, closest to the twin suns."
+msgstr "採掘者たちの最初の露天掘り鉱山。双子の太陽にいちばん近い。"
 
 #: data/planets.json:ochre.sites.list.hub_base.name
-msgid "Ledger Haul Depot"
-msgstr "Ledger 運搬デポ"
+msgid "Old Haul Depot"
+msgstr "古い運搬基地"
 
 #: data/planets.json:ochre.sites.list.toppled_excavator.name
 msgid "The Fallen Wheel"
@@ -12884,8 +12489,8 @@ msgid "Spring Terraces"
 msgstr "泉の段々畑"
 
 #: data/planets.json:tidewell.tagline
-msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
-msgstr "海の世界。浅瀬には Ledger の浚渫リグがいまも立っている。"
+msgid "An ocean world. Old dredging rigs still stand in the shallows."
+msgstr "海の星。古い浚渫リグが、いまも浅瀬に立っている。"
 
 #: data/planets.json:tidewell.sites.hub_raft.name
 msgid "Anchored Raft"
@@ -12908,16 +12513,16 @@ msgid "Ore Barge Wreck"
 msgstr "鉱石バージの残骸"
 
 #: data/planets.json:tidewell.sites.wreck.desc
-msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
-msgstr "砂州のそばで半分沈んだ Ledger の採掘バージ。復元するとホッパーがプランターになる。"
+msgid "A half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+msgstr "砂州のそばで半分沈んだ採掘はしけ。復元するとホッパーがプランターになる。"
 
 #: data/planets.json:tidewell.sites.dredge_rig.name
 msgid "Dredge Rig"
 msgstr "浚渫リグ"
 
 #: data/planets.json:tidewell.sites.dredge_rig.desc
-msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
-msgstr "バケットラダー、デリック、クレーンを備えた Ledger の自己昇降式浚渫リグ。"
+msgid "An old jack-up dredging rig with bucket ladder, derrick and crane."
+msgstr "古い自己昇降式の浚渫リグ。バケットラダー、やぐら、クレーン付き。"
 
 #: data/planets.json:tidewell.sites.reef_garden.name
 msgid "Reef Garden"
@@ -12944,12 +12549,12 @@ msgid "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, 
 msgstr "拠点：鋳造ホール、煙突2本、コンベヤーとホッパー、鉱石の引き込み線、赤く光るスラグ山、埋もれた運搬車"
 
 #: data/planets.json:anvil.sites[foundry_tower].name
-msgid "Ledger Foundry Tower"
-msgstr "Ledger 鋳造タワー"
+msgid "Foundry Tower"
+msgstr "鋳造タワー"
 
 #: data/planets.json:anvil.sites[foundry_tower].desc
-msgid "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
-msgstr "控え壁の上に立つ、Ledger の高さ130 mの巨大な鋳造煙突。パイプとスラグ山つき"
+msgid "a colossal 130 m foundry stack on buttresses, pipes and slag tips"
+msgstr "控え壁に支えられた高さ130 mの巨大な鋳造煙突。配管とスラグの山つき"
 
 #: data/planets.json:anvil.sites[lava_forge].name
 msgid "Lava Forge"
@@ -14055,7 +13660,7 @@ msgstr "整備記録、ユニット P-46RA"
 msgid ""
 "DAY 4,113\n"
 "Route 12 complete. 41 bales.\n"
-"Ledger notice received: \"Operations paused pending cost review.\"\n"
+"Notice received: \"Cleaning paused. Power is running low.\"\n"
 "Returning to dock.\n"
 "\n"
 "DAY 4,114\n"
@@ -14068,7 +13673,7 @@ msgid ""
 msgstr ""
 "4,113日目\n"
 "ルート12完了。ベール41個。\n"
-"Ledger より通知受信：「コスト審査中につき作業停止」\n"
+"通知受信：「清掃を一時停止。電力残りわずか」\n"
 "ドックへ帰還。\n"
 "\n"
 "4,114日目\n"
@@ -14079,37 +13684,37 @@ msgstr ""
 "ルート12、標識9の側溝から花が一輪咲いている。\n"
 "そのまわりを誰も片づけない。それでいいのだと思いたい。"
 
-#: data/shards.json:shards[ledger_memo].kind
+#: data/shards.json:shards[pause_memo].kind
 msgid "memo"
 msgstr "社内連絡"
 
-#: data/shards.json:shards[ledger_memo].title
-msgid "Memo, Municipal Ledger Office"
-msgstr "社内連絡、市 Ledger 局"
+#: data/shards.json:shards[pause_memo].title
+msgid "Memo, Town Cleaning Office"
+msgstr "メモ：町の清掃事務所"
 
-#: data/shards.json:shards[ledger_memo].body
+#: data/shards.json:shards[pause_memo].body
 msgid ""
-"TO: All Sanitation Units\n"
-"FROM: THE LEDGER (Automated Fiscal Continuity)\n"
-"RE: Pause of Operations\n"
+"TO: All Cleaning Robots\n"
+"FROM: Town Cleaning Office\n"
+"RE: Pause\n"
 "\n"
-"Cleanup activity is presently valued at a net loss of 0.4 units per bale.\n"
-"All units will pause operations until conditions improve.\n"
-"Conditions will be reviewed every 24 hours.\n"
+"The town is leaving for the Cradle.\n"
+"There is not enough power left to keep every robot running.\n"
+"All robots will pause until we come back.\n"
 "\n"
-"Thank you for your understanding.\n"
-"This memo was generated automatically. Please do not reply."
+"Thank you for your work.\n"
+"We will be back."
 msgstr ""
-"宛先：全清掃ユニット\n"
-"差出人：THE LEDGER（自動財政継続システム）\n"
-"件名：作業停止について\n"
+"宛先：すべての清掃ロボット\n"
+"差出人：町の清掃事務所\n"
+"件名：一時停止\n"
 "\n"
-"清掃作業は現在、ベール1個あたり 0.4 単位の純損失と評価されています。\n"
-"全ユニットは状況が改善するまで作業を停止してください。\n"
-"状況は24時間ごとに見直されます。\n"
+"町は Cradle号へ出発します。\n"
+"すべてのロボットを動かし続ける電力は残っていません。\n"
+"私たちが戻るまで、全ロボットは一時停止します。\n"
 "\n"
-"ご理解のほどよろしくお願いいたします。\n"
-"本連絡は自動生成されています。返信しないでください。"
+"これまでの働きに感謝します。\n"
+"必ず戻ります。"
 
 #: data/shards.json:shards[voicemail].kind
 msgid "voicemail"
@@ -14354,20 +13959,20 @@ msgid "Foundry industrial"
 msgstr "鋳造所インダストリアル"
 
 #: data/songs.json:artists[smelter].bio
-msgid "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."
-msgstr "炉の轟音に合わせてドラムを調律した、陰のあるAnvilのバンド。Ledgerがカタログを買い取ろうとしたが、契約書を溶かしてスラグで演奏した。"
+msgid "Brooding Anvil band who tuned their drums to the furnace roar. A big company tried to buy their catalogue; they melted the contract down and played the slag."
+msgstr "溶鉱炉のうなりにドラムを合わせた、Anvil の陰気なバンド。大企業が楽曲を買い取ろうとしたが、彼らは契約書を溶かしてそのスラグを演奏した。"
 
-#: data/songs.json:artists[ledger_audio].name
-msgid "Ledger Brand Audio"
-msgstr "Ledger Brand Audio"
+#: data/songs.json:artists[foundry_audio].name
+msgid "Foundry Brand Audio"
+msgstr "Foundry Brand Audio"
 
-#: data/songs.json:artists[ledger_audio].genre
+#: data/songs.json:artists[foundry_audio].genre
 msgid "Corporate"
 msgstr "企業ジングル"
 
-#: data/songs.json:artists[ledger_audio].bio
-msgid "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."
-msgstr "Ledger社内のジングルスタジオ。どの曲も著作権と商標つきで、1回聴くごとに課金される。クレジットは「Ledger Brand Audio、全権利採掘済み」。"
+#: data/songs.json:artists[foundry_audio].bio
+msgid "The foundry's own jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Foundry Brand Audio, all rights extracted\"."
+msgstr "鋳造所お抱えのジングルスタジオ。全曲が著作権・商標登録済みで、再生ごとに課金される。クレジットは「Foundry Brand Audio、全権利採掘済み」。"
 
 #: data/songs.json:songs[greenfall_main].title
 msgid "Greenfall (Main Theme)"
@@ -14384,14 +13989,6 @@ msgstr "The Fall of LM-1"
 #: data/songs.json:songs[fall_of_lm1].desc
 msgid "Meteors, alarms, one small pod falling. Then quiet piano."
 msgstr "流星、警報、落ちていく小さなポッド。そして静かなピアノ。"
-
-#: data/songs.json:songs[the_ledger].title
-msgid "The Ledger"
-msgstr "The Ledger"
-
-#: data/songs.json:songs[the_ledger].desc
-msgid "Ticking clocks and detuned bass. Sounds expensive."
-msgstr "時計のチクタク音と音程の狂ったベース。高そうな音がする。"
 
 #: data/songs.json:songs[little_helpers].title
 msgid "Little Helpers"
@@ -14521,9 +14118,9 @@ msgstr "Iron Bloom"
 msgid "Signal Found"
 msgstr "シグナル発見"
 
-#: data/songs.json:songs[what_the_ledger_took].title
-msgid "What the Ledger Took"
-msgstr "Ledger が奪ったもの"
+#: data/songs.json:songs[what_was_taken].title
+msgid "What Was Taken"
+msgstr "奪われたもの"
 
 #: data/songs.json:songs[drone_sweep].title
 msgid "Drone Sweep"
@@ -14750,16 +14347,16 @@ msgid "Home again. Look, Lumi: your robots kept cleaning while we were away."
 msgstr "ただいま。見て、Lumi。わたしたちがいない間も、ロボットたちがそうじを続けてくれてた。"
 
 #: data/story_arc.json:planets.verdance.leave
-msgid "The star map shows four more worlds. The Ledger buried every one. Why?"
-msgstr "星図には、あと四つの世界がある。Ledger はそのぜんぶをうめた。どうして？"
+msgid "The star map shows four more worlds. Every one is buried in trash. Why?"
+msgstr "星図には、あと四つの星がある。どれもゴミに埋もれている。どうして？"
 
 #: data/story_arc.json:planets.ochre.reason
 msgid "Its sun and wind can fill up our power."
 msgstr "あそこの太陽と風で、パワーをいっぱいにできる。"
 
 #: data/story_arc.json:planets.ochre.arrive
-msgid "Ochre. Hot sand and two big suns. The Ledger dug its very first pit here."
-msgstr "Ochre。熱い砂と、二つの大きな太陽。Ledger はここで最初の穴をほったんだ。"
+msgid "Ochre. Hot sand and two big suns. The miners dug their very first pit here."
+msgstr "Ochre。熱い砂と二つの大きな太陽。採掘者たちが最初の穴を掘ったのはここ。"
 
 #: data/story_arc.json:planets.ochre.leave
 msgid "Hear that? A radio on Tidewell, still calling for help after all this time."
@@ -14774,32 +14371,32 @@ msgid "Tidewell. Islands and rain, and the harbour radio is still on."
 msgstr "Tidewell。島と雨。港の無線はまだついてる。"
 
 #: data/story_arc.json:planets.tidewell.leave
-msgid "The dredger logs say the Ledger sold Rime's heat. How do you sell heat?"
-msgstr "しゅんせつ船の記録には、Ledger が Rime の熱を売ったって書いてある。熱ってどうやって売るの？"
+msgid "The dredger logs say the miners sold Rime's heat. How do you sell heat?"
+msgstr "浚渫船の記録によると、採掘者たちは Rime の熱を売ったらしい。熱って、どうやって売るの？"
 
 #: data/story_arc.json:planets.rime.reason
 msgid "Its ice is frozen fuel, and there is lots of it."
 msgstr "あそこの氷はこおった燃料。しかも、たっぷりある。"
 
 #: data/story_arc.json:planets.rime.arrive
-msgid "Rime. So cold, Lumi. The Ledger took this moon's warm heart."
-msgstr "Rime。すごく寒いね、Lumi。Ledger はこの月のあたたかい心をうばったんだ。"
+msgid "Rime. So cold, Lumi. The miners took this moon's warm heart."
+msgstr "Rime。とても寒いね、Lumi。採掘者たちがこの月の温かな心臓を持っていった。"
 
 #: data/story_arc.json:planets.rime.leave
-msgid "Every Ledger memo comes from one head office. It is on Anvil."
-msgstr "Ledger のメモはぜんぶ、ひとつの本社から来てる。本社は Anvil にある。"
+msgid "Every mine memo comes from one head office. It is on Anvil."
+msgstr "鉱山のメモはすべて、ひとつの本社から来ている。それは Anvil にある。"
 
 #: data/story_arc.json:planets.anvil.reason
-msgid "The Ledger's head office. Its big reactor has the last power we need."
-msgstr "Ledger の本社。その大きな原子炉に、最後に必要なパワーがある。"
+msgid "The miners' head office. Its big reactor has the last power we need."
+msgstr "採掘者たちの本社。その大きな炉に、最後に必要な電力がある。"
 
 #: data/story_arc.json:planets.anvil.arrive
-msgid "Anvil. Rust from top to bottom, and the Ledger's lights are still on."
-msgstr "Anvil。上から下までサビだらけ。Ledger の明かりはまだついてる。"
+msgid "Anvil. Rust from top to bottom, and the office lights are still on."
+msgstr "Anvil。上から下までサビだらけ。事務所の明かりは、まだついている。"
 
 #: data/story_arc.json:planets.anvil.leave
-msgid "The Ledger balanced its books at last. It is giving us its power."
-msgstr "Ledger がやっと帳じりを合わせた。パワーをわたしたちにくれるって。"
+msgid "The old reactor is running again. It is giving us its power."
+msgstr "古い炉がまた動きだした。その電力を分けてくれている。"
 
 #: data/story_arc.json:cradle.reason
 msgid "Fuel and power are full. Back to Verdance: build the Homeward rocket and fly home."
@@ -14954,8 +14551,8 @@ msgid "Plants give green light for your Bloom Core."
 msgstr "植物はブルームコアに緑の光をくれる。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "Planted ground is safe from the Ledger's drones."
-msgstr "植物を植えた地面は、Ledger のドローンに荒らされない。"
+msgid "Planted ground starts to give green light."
+msgstr "植えた地面は、緑の光を出しはじめる。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Every bloom gives green light, and a seed back."
@@ -15042,8 +14639,8 @@ msgid "The hop rocket can't leave the planet. A drive can."
 msgstr "小さなロケットでは惑星を出られない。ドライブがあれば出られる。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "The Ledger buried five worlds. The Cradle waits for all of them."
-msgstr "Ledger は五つの世界をゴミでうめた。Cradle号はそのすべてを待っている。"
+msgid "Five worlds are buried in trash. The Cradle waits for all of them."
+msgstr "五つの星がゴミに埋もれている。Cradle号はそのすべてを待っている。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "The bench learns to build something new."
@@ -15846,178 +15443,6 @@ msgstr "夜の空が前より澄んでる。家がもう少しで見えそう。
 msgid "Moonlight on clean ground. I'm saving this one."
 msgstr "きれいな地面に月明かり。これは保存しておこう。"
 
-#: data/wren_lines.json:ledger_intercept
-msgid "...that voice... not mine. Cold. It counts things."
-msgstr "……あの声……私のじゃない。冷たい。ものを数えてる。"
-
-#: data/wren_lines.json:ledger_intercept
-msgid "...don't listen to it... it only knows one song."
-msgstr "……聞いちゃだめ……あれは一曲しか知らない。"
-
-#: data/wren_lines.json:ledger_intercept
-msgid "That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}."
-msgstr "いまのは Ledger。古い廃棄物契約。いまだに片づけはコストだと思ってる。無視していいよ、{name}。"
-
-#: data/wren_lines.json:ledger_intercept
-msgid "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."
-msgstr "あの声、知ってる。昔、フリート全体に社内連絡を送ってた。ほとんどが一時停止について。"
-
-#: data/wren_lines.json:ledger_intercept
-msgid "The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."
-msgstr "Ledger。こんなに時間がたっても契約を続けてる。悪者じゃないんだ。気持ちが関わる計算が、とてもとても苦手なだけ。"
-
-#: data/wren_lines.json:ledger_coupon
-msgid "...a coupon? ...for nothing?"
-msgstr "……クーポン？……何の？"
-
-#: data/wren_lines.json:ledger_coupon
-msgid "Zero percent off. It sends those every few minutes. I keep a folder."
-msgstr "0%割引。数分おきに送ってくるんだ。フォルダーにまとめてる。"
-
-#: data/wren_lines.json:ledger_coupon
-msgid "Another coupon. I think it's the only way it knows how to say hello."
-msgstr "またクーポン。たぶん、あれがあいさつのしかたなんだと思う。"
-
-#: data/wren_lines.json:ledger_coupon
-msgid "The Ledger's coupons are getting more creative. That one almost made me pause. Almost."
-msgstr "Ledger のクーポン、だんだん工夫されてきた。いまのはつい停止しそうになった。つい、ね。"
-
-#: data/wren_lines.json:ledger_drones
-msgid "...something is flying... toward the clean ground..."
-msgstr "……何かが飛んでる……きれいな地面のほうへ……"
-
-#: data/wren_lines.json:ledger_drones
-msgid "...drones. Old ones. Theirs."
-msgstr "……ドローン。古いやつ。あいつのだ。"
-
-#: data/wren_lines.json:ledger_drones
-msgid "It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted."
-msgstr "処分ドローンを送ってきてる。きれいなヘックスにガラクタを少し戻していくんだ。君が植えたものには手を出せない。"
-
-#: data/wren_lines.json:ledger_drones
-msgid "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."
-msgstr "ドローン。Ledger は帳簿を合わせたいから、ガラクタを戻してるんだ。失礼だけど、小さな話。"
-
-#: data/wren_lines.json:ledger_drones
-msgid "Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."
-msgstr "処分ドローンが飛んでる。ちっちゃくて、すごく真面目。基地にシグナルジャマーがあれば頭を抱えるはず。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "...it put the junk back... why..."
-msgstr "……ガラクタを戻した……なんで……"
-
-#: data/wren_lines.json:ledger_drop
-msgid "...undo... it's undoing..."
-msgstr "……元に戻してる……やり直しを消してる……"
-
-#: data/wren_lines.json:ledger_drop
-msgid "It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it."
-msgstr "小さな山を戻していった。めんどうだけど、悲劇じゃない。すくうか、クルーに任せよう。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "Line item re-balanced, apparently. I call it littering."
-msgstr "計上項目を再均衡、だって。私はそれをポイ捨てと呼ぶ。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "A small pile. The Ledger always did think small."
-msgstr "小さな山。Ledger はいつも考えが小さいんだ。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "Another drop. Honestly, {name}, I think it just wants attention."
-msgstr "また投棄。正直ね、{name}、あれはかまってほしいだけだと思う。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "Back to the pile. Your helpers are already giving it a look."
-msgstr "山に戻ろう。ヘルパーたちがもう見に行ってる。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "That's a handful of junk against a whole clean district. We're winning this argument."
-msgstr "ひと握りのガラクタ対きれいな地区まるごと。この口げんか、こっちの勝ちだね。"
-
-#: data/wren_lines.json:ledger_jammed
-msgid "...static... loud... it turned around!"
-msgstr "……ノイズ……大きい……引き返した！"
-
-#: data/wren_lines.json:ledger_jammed
-msgid "Ha! The jammer screamed static at it and it went home. Good dish."
-msgstr "はは！ジャマーがノイズを浴びせたら帰っていった。いいパラボラだ。"
-
-#: data/wren_lines.json:ledger_jammed
-msgid "Drone turned back. That's the sound of a contract being confused."
-msgstr "ドローンが引き返した。これが契約が混乱してる音。"
-
-#: data/wren_lines.json:ledger_jammed
-msgid "The jammer works. The drone circled, got an earful, and filed a complaint with itself."
-msgstr "ジャマーが効いてる。ドローンは旋回して、ノイズを浴びて、自分自身に苦情を出してた。"
-
-#: data/wren_lines.json:jammer_built
-msgid "...a loud little dish... I like it."
-msgstr "……にぎやかな小さいパラボラ……気に入った。"
-
-#: data/wren_lines.json:jammer_built
-msgid "Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve."
-msgstr "シグナルジャマー稼働。Ledger のチャンネルでノイズを歌ってる。ここアークでも聞こえるよ。賛成。"
-
-#: data/wren_lines.json:jammer_built
-msgid "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."
-msgstr "基地に新しいパラボラ。ドローンは二度考えなきゃいけない。いつも一度しか考えないから、大変だ。"
-
-#: data/wren_lines.json:jammer_built
-msgid "Another jammer. The base is starting to sound like a very angry radio. Perfect."
-msgstr "またジャマー。基地がすごく怒ってるラジオみたいな音になってきた。完璧。"
-
-#: data/wren_lines.json:ledger_relay
-msgid "...I can see where it talks from... a relay... close..."
-msgstr "……どこから話してるか見える……リレー……近い……"
-
-#: data/wren_lines.json:ledger_relay
-msgid "{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly."
-msgstr "{name}、Ledger のシグナルをたどったよ。この地区にリレー端末がある。君が接続してくれたら、ちゃんと話ができると思う。"
-
-#: data/wren_lines.json:ledger_relay
-msgid "Found it. A Ledger relay, still humming. Look for the red beacon."
-msgstr "見つけた。Ledger のリレー、まだうなってる。赤いビーコンを探して。"
-
-#: data/wren_lines.json:ledger_relay
-msgid "There's a relay down there. One of the Ledger's ears. Let's go have a word with it."
-msgstr "下にリレーがある。Ledger の耳のひとつだ。ひとこと言いに行こう。"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "...it said thank you... it's never said that..."
-msgstr "……ありがとうって言った……一度も言ったことないのに……"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute."
-msgstr "契約が書き換わった。再生はいまや資産として数えられる。Ledger が……手伝ってくれてる。ちょっと時間をちょうだい。"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."
-msgstr "ドローンが種を届けてくれるようになった。三百年の「一時停止」、必要だったのは新しい欄ひとつだけ。"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "We didn't beat the Ledger. We showed it the numbers. That's better."
-msgstr "Ledger を倒したんじゃない。数字を見せたんだ。そのほうがいい。"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."
-msgstr "すべてが止まったのは Ledger のせいだと思ってた。数えるものをまちがえてただけなんだ。私たちも、しばらくはそうだった。"
-
-#: data/wren_lines.json:ledger_seeds
-msgid "...a gift... from the drones?"
-msgstr "……贈り物……ドローンから？"
-
-#: data/wren_lines.json:ledger_seeds
-msgid "Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice."
-msgstr "種の配達！請求書には「全額支払済み」。請求書は取っておくね。"
-
-#: data/wren_lines.json:ledger_seeds
-msgid "A Ledger drone dropped seeds. I'll never get used to that."
-msgstr "Ledger のドローンが種を落としていった。これには一生慣れないな。"
-
-#: data/wren_lines.json:ledger_seeds
-msgid "Another delivery. The drones circle once before they leave now. I think they like the gardens."
-msgstr "また配達。最近のドローンは帰る前に一周していくんだ。庭が好きなんだと思う。"
-
 #: data/wren_lines.json:egg_found
 msgid "...that... I remember things like that."
 msgstr "……それ……そういうもの、覚えてる。"
@@ -16243,8 +15668,8 @@ msgid "Gus. Of course his name is Gus."
 msgstr "ガス。もちろん名前はガスだよね。"
 
 #: data/wren_lines.json:egg_snail
-msgid "Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."
-msgstr "ガスは Ledger も Cradle号も、何もかも気にしない。ガスは元気いっぱい。"
+msgid "Gus doesn't care about the Cradle, or any of it. Gus is thriving."
+msgstr "Gus は Cradle号のことも、ほかのことも気にしていない。Gus は元気いっぱい。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "...they're waiting... still waiting..."
@@ -16255,8 +15680,8 @@ msgid "Two of the old fleet, still on their lunch break. Thank you for the flowe
 msgstr "昔のフリートの2台、まだ昼休み中。花をありがとう。きっと喜んだよ。"
 
 #: data/wren_lines.json:egg_bench_bots
-msgid "The Ledger paused them mid-sandwich. They never got the message to stand up."
-msgstr "Ledger はサンドイッチの途中で2台を止めたんだ。立ち上がっていいという知らせは届かなかった。"
+msgid "They stopped mid-sandwich. They never got the message to stand up."
+msgstr "サンドイッチの途中で止まってしまった。立ち上がれという知らせは届かなかった。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "When the Greenfall comes, I'm going to try to wake them. Lunch is over, friends."
@@ -16299,16 +15724,16 @@ msgid "...it's watching you... it's counting..."
 msgstr "……君を見てる……数えてる……"
 
 #: data/wren_lines.json:egg_camera
-msgid "One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that."
-msgstr "Ledger のカメラのひとつ。動くものすべてを数えて、コストに見合うか調べてる。君が手をふった。どうしたらいいかわからないみたい。"
+msgid "An old street camera. It counts everything that moves. You waved. It doesn't know what to do with that."
+msgstr "古い街頭カメラ。動くものをすべて数えている。きみが手を振った。どうしていいかわからないみたい。"
 
 #: data/wren_lines.json:egg_camera
-msgid "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."
-msgstr "カメラが2回点滅した。たぶん Ledger 語で「どうしよう、友だちだ」。"
+msgid "The camera blinked twice. I think that's camera for 'oh no, a friend'."
+msgstr "カメラが二回まばたきした。カメラ語で「わあ、友だちだ」という意味だと思う。"
 
 #: data/wren_lines.json:egg_camera
-msgid "Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."
-msgstr "Ledger のカメラだってさみしくなるんだよ、{name}。通るときは手をふってあげて。"
+msgid "Even old cameras get lonely, {name}. Wave at it when you pass."
+msgstr "古いカメラだって寂しくなるんだよ、{name}。通りかかったら手を振ってあげて。"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "...it stands... how..."
@@ -16459,12 +15884,12 @@ msgid "...fine... overdue... overdue..."
 msgstr "……罰金……滞納……滞納……"
 
 #: data/wren_lines.json:egg_parking
-msgid "The Ledger fined a car for parking. For three hundred years. Of course it did."
-msgstr "Ledger が駐車で車に罰金を科した。三百年間。そりゃそうだ。"
+msgid "Somebody fined a car for parking. For three hundred years."
+msgstr "誰かが車に駐車違反の罰金を科した。三百年ぶんも。"
 
 #: data/wren_lines.json:egg_parking
-msgid "Amount due: 'yes'. That's the most Ledger sentence I've ever read."
-msgstr "お支払い額：「はい」。こんなに Ledger らしい文は読んだことがない。"
+msgid "Amount due: 'yes'. That's the silliest bill I've ever read."
+msgstr "請求額：「はい」。こんなおかしな請求書、初めて読んだ。"
 
 #: data/wren_lines.json:egg_parking
 msgid "That car isn't going anywhere. Let's call it a planter and put flowers in it."
@@ -16895,8 +16320,8 @@ msgid "Five letters, what grows back if you let it. You got it on the first try.
 msgstr "3文字、そっとしておけば戻ってくるもの。一発で正解だったね。"
 
 #: data/wren_lines.json:egg_crossword
-msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
-msgstr "クロスワードをつくったのは Ledger。そりゃあ Ledger がつくったに決まってる。"
+msgid "The last clue was the easy one. I think they left it for you."
+msgstr "最後のカギは、いちばん簡単なものだった。きみのために残してくれたんだと思う。"
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "...hop... hop..."
@@ -17023,20 +16448,20 @@ msgid "...new sky... two suns..."
 msgstr "……新しい空……太陽が2つ……"
 
 #: data/wren_lines.json:home_arrive
-msgid "New planet, same two suns. The Ledger's been here too. You can smell the paperwork."
-msgstr "新しい惑星、同じ2つの太陽。Ledger はここにも来てた。書類仕事のにおいがする。"
+msgid "New planet, same two suns. The miners have been here too. You can smell the rust."
+msgstr "新しい星、同じ二つの太陽。採掘者たちはここにも来ていた。サビのにおいがする。"
 
 #: data/wren_lines.json:home_arrive
-msgid "Another world the Ledger left for dead. It doesn't know about you yet. It's about to."
-msgstr "Ledger が見捨てた世界がまた1つ。あなたのことはまだ知らない。もうすぐ知ることになる。"
+msgid "Another world left for dead. It doesn't know about you yet. It's about to."
+msgstr "見捨てられた星がまたひとつ。この星はまだきみを知らない。もうすぐ知ることになる。"
 
 #: data/wren_lines.json:home_half
 msgid "...signal... old one..."
 msgstr "……信号……古いもの……"
 
 #: data/wren_lines.json:home_half
-msgid "Picked up something old on the band. Ledger traffic. Want to read it?"
-msgstr "帯域で古いものを拾った。Ledger の通信。読む？"
+msgid "Picked up something old on the band. An old message. Want to read it?"
+msgstr "古い電波を拾ったよ。昔のメッセージ。読んでみる？"
 
 #: data/wren_lines.json:home_half
 msgid "Half-way here. Every time this place gets greener, its ghosts start talking. I've got another one for you."
@@ -17091,40 +16516,40 @@ msgid "There. The last seed, in the ground where the Cradle left from. Now it's 
 msgstr "よし。最後の種は、Cradle が旅立った土の中。今度は私たちが旅立って、ちゃんと帰ってくる番。"
 
 #: data/wren_lines.json:world_ice_moon_arrival
-msgid "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence."
-msgstr "氷の衛星。Ledger はここで冷蔵倉庫を営んでいた。寒さはものを保存するの、{name}。証拠もね。"
+msgid "An ice moon. The miners kept their cold storage out here. Cold keeps things, {name}. Even old secrets."
+msgstr "氷の月。採掘者たちはここを冷蔵倉庫にしていた。寒さは物を保存するんだ、{name}。古い秘密だって。"
 
 #: data/wren_lines.json:world_ice_moon_arrival
 msgid "Everything froze where they dropped it. Even the junk looks like it's waiting for a refund."
 msgstr "何もかも、落とされた場所で凍りついている。ガラクタまで返金を待っているみたい。"
 
 #: data/wren_lines.json:world_ice_moon_memory_1
-msgid "Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
-msgstr "Ledger の氷輸送マニフェスト、まだサイロのメモリーに残ってる。この衛星の湖を冷却材に溶かして、水を星の外へ運んだ。ゴミはここに置いていった。"
+msgid "Old ice-haul lists, still in the silo's memory. The miners melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
+msgstr "古い氷運搬のリストが、サイロのメモリーにまだ残っている。採掘者たちはこの月の湖を溶かして冷却材にし、水をよその星へ運び出した。ゴミは、ここに置いていった。"
 
 #: data/wren_lines.json:world_ice_moon_halfway
-msgid "Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."
-msgstr "半分まで来た。氷の下の湖がまた満ちてきている。Ledger は、ものが戻ってくることを予算に入れていなかった。"
+msgid "Halfway. The lakes under the ice are filling again. Nobody planned for things coming back."
+msgstr "半分まで来た。氷の下の湖に、また水がたまってきている。ものごとが戻ってくるなんて、誰も考えていなかった。"
 
 #: data/wren_lines.json:world_ice_moon_memory_2
-msgid "That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
-msgstr "あのサイロは、Ledger が倉庫にする前は種子の保管庫だった。それでも誰かが最下層に種を隠していた。会ってみたかったな。"
+msgid "That silo was a seed vault before the miners made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
+msgstr "あのサイロは、採掘者たちが倉庫にする前は種の保管庫だった。それでも誰かが、いちばん下の段に種を隠しておいた。会ってみたかったな。"
 
 #: data/wren_lines.json:world_ice_moon_restored
-msgid "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."
-msgstr "環のかかった空の下に緑。Ledger はこの衛星を損失として処理した。それも間違いだった。"
+msgid "Green under a ringed sky. The miners wrote this moon off as a loss. They were wrong about that too."
+msgstr "輪のある空の下の緑。採掘者たちはこの月を損失として切り捨てた。それも間違いだった。"
 
 #: data/wren_lines.json:world_desert_world_arrival
-msgid "A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre."
-msgstr "砂漠の世界。昔からこうだったわけじゃない。Ledger が帯水層をくみ尽くして、水をリットル単位で売った。"
+msgid "A desert world. It wasn't always one. The miners pumped its water dry and sold it by the litre."
+msgstr "砂漠の星。昔からそうだったわけじゃない。採掘者たちが水をくみ尽くして、リットル単位で売ったんだ。"
 
 #: data/wren_lines.json:world_desert_world_arrival
 msgid "Sun, sand and one very small robot. I like our odds. Mostly."
 msgstr "太陽と砂と、とても小さなロボット。勝ち目はあると思う。たぶんね。"
 
 #: data/wren_lines.json:world_desert_world_memory_1
-msgid "Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
-msgstr "Ledger の調査ファイル、一部：「残存産出量は無視できる程度。現地での放棄を推奨。」現地で。散らかしたまま去ることを、彼らはそう呼ぶ。"
+msgid "Old survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
+msgstr "古い調査ファイル、一部のみ：「残存産出量はごくわずか。現状のまま放棄を推奨」。現状のまま。散らかしたまま帰ることを、彼らはそう呼ぶ。"
 
 #: data/wren_lines.json:world_desert_world_halfway
 msgid "Halfway green, on a planet they filed as 'negligible'. I'm keeping a list of their mistakes. It's getting long."
@@ -17139,8 +16564,8 @@ msgid "Shade, water, flowers in the sand. 'Negligible', they said. I'm framing t
 msgstr "日陰、水、砂の中の花。「無視できる」って言ってたっけ。その言葉、額に入れて飾ろう。"
 
 #: data/wren_lines.json:world_ocean_world_arrival
-msgid "An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
-msgstr "海の世界。Ledger は金属のために海底をさらって、残りかすをあらゆる海岸に捨てた。縁に気をつけて。"
+msgid "An ocean world. The miners dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
+msgstr "海の星。採掘者たちは金属を求めて海底をさらい、残りかすをあらゆる海岸に捨てた。ふちには気をつけて。"
 
 #: data/wren_lines.json:world_ocean_world_arrival
 msgid "Salt in the air, salt on the junk. Don't lick anything, {name}."
@@ -17155,66 +16580,828 @@ msgid "Halfway. The water's clearing. The fish are cautiously reconsidering."
 msgstr "半分まで来た。水が澄んできた。魚たちが慎重に考え直してる。"
 
 #: data/wren_lines.json:world_ocean_world_memory_2
-msgid "Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
-msgstr "あの防潮ゲートが Ledger の浚渫ヤードを乾かしていた。彼らが去ったあと誰も閉めなくて、海がヤードを取り戻した。妥当ね。"
+msgid "Those surge gates kept the dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
+msgstr "あの水門が、浚渫ヤードを乾いたままにしていた。彼らが去るとき誰も閉めなかったので、海がヤードを取り戻した。当然だね。"
 
 #: data/wren_lines.json:world_ocean_world_restored
 msgid "Green to the waterline, clear water past it. 'Coastal storage' is just coast again."
 msgstr "水ぎわまで緑、その先は澄んだ水。「沿岸保管」はただの海岸に戻った。"
 
 #: data/wren_lines.json:world_fungal_world_arrival
-msgid "A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
-msgstr "湿地の世界。Ledger の化学工場が100年間この谷に排水を流していた。ここでは何でも育つ。たいてい、まずは間違ったものから。"
+msgid "A marsh world. The old chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
+msgstr "湿地の星。古い化学工場が、一世紀のあいだこの谷に排水を流しつづけた。ここでは何でも育つ。たいていは困るものから先に。"
 
 #: data/wren_lines.json:world_fungal_world_arrival
 msgid "Mist on everything. If you get lost, follow the squelching. That'll be you."
 msgstr "どこもかしこも霧。迷ったら、ぐちゃぐちゃいう音をたどって。それがきみだから。"
 
 #: data/wren_lines.json:world_fungal_world_memory_1
-msgid "Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
-msgstr "Ledger のコンプライアンス報告：「排水は許容範囲内。」誰にとって許容なのか聞きたいわ。カエルたちには相談がなかった。"
+msgid "Old report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
+msgstr "古い報告書：「流出は許容範囲内」。誰にとっての許容なのか、聞いてみたい。カエルには相談がなかった。"
 
 #: data/wren_lines.json:world_fungal_world_halfway
 msgid "Halfway. The mist smells less like a laboratory every morning. Progress has a smell. It's mud."
 msgstr "半分まで来た。霧は毎朝、実験室のにおいが薄れていく。進歩にはにおいがある。泥のにおい。"
 
 #: data/wren_lines.json:world_fungal_world_memory_2
-msgid "That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."
-msgstr "あの冷却塔は化学工場のものだった。Ledger が出ていったあと、菌類が住みついた。私たちより長く掃除してきたのよ。尊敬する。"
+msgid "That cooling tower ran the chemical works. The fungi moved in after the miners moved out. They've been cleaning up longer than we have. Respect."
+msgstr "あの冷却塔が化学工場を動かしていた。採掘者たちが出ていったあと、キノコが引っ越してきた。わたしたちより長く掃除をしている。尊敬するよ。"
 
 #: data/wren_lines.json:world_fungal_world_restored
 msgid "Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just rain now."
 msgstr "湿地の上に澄んだ空気。アシ、カエル、本物の花。排水はもうただの雨。"
 
 #: data/wren_lines.json:world_rust_world_arrival
-msgid "A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly."
-msgstr "錆の世界。Ledger が自分たちの船を解体した場所。極から極まで、何ひとつきちんと止められていない。"
+msgid "A rust world. This is where the miners broke up their old ships. Pole to pole, and nothing switched off properly."
+msgstr "サビの星。採掘者たちが古い船を解体していた場所。極から極まで、何ひとつきちんと電源が切られていない。"
 
 #: data/wren_lines.json:world_rust_world_arrival
 msgid "The air tastes like old pennies. I don't have a tongue. I can still tell."
 msgstr "空気が古い硬貨の味がする。舌はないけど、それでもわかる。"
 
 #: data/wren_lines.json:world_rust_world_memory_1
-msgid "The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
-msgstr "Ledger の台帳、文字どおりの意味で：星系のすべての惑星からはぎ取ったトン数が、ここに保管されている。すべてを台無しにした方法を、完璧に記帳していた。"
+msgid "The miners' books: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
+msgstr "採掘者たちの帳簿。この星系のすべての星からはぎ取ったトン数が、ここに綴じてある。すべてを台なしにした記録を、完璧につけていた。"
 
 #: data/wren_lines.json:world_rust_world_halfway
 msgid "Halfway. Less rust in the wind. I don't have lungs, but I have standards."
 msgstr "半分まで来た。風の中の錆が減った。肺はないけど、こだわりはある。"
 
 #: data/wren_lines.json:world_rust_world_memory_2
-msgid "That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
-msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を解体した。アークもリストに載っていた。誰かがそれを消した。よく考えるの、そのこと。"
+msgid "That gantry scrapped the mining fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
+msgstr "あのガントリーは、お金が尽きたとき採掘船団をスクラップにした。箱舟もリストに載っていた。誰かがそれを消した。そのことを、よく考える。"
 
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
 
-#~ msgid "of the ground around the bases"
-#~ msgstr "基地のまわりの地面"
-
 #~ msgid "Buy an upgrade: press  {interact}  at the bench"
 #~ msgstr "アップグレードを買う：作業台で  {interact}  を押す"
+
+#~ msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
+#~ msgstr "そして、本当に死にかけてる。Ledger はこのあたりの世界を全部掘りつくして、どれもゴミの下に置き去りにした。Verdance は最初の1つにすぎなかった。"
+
+#~ msgid ""
+#~ "THE LEDGER IS WATCHING\n"
+#~ "(FOR SAVINGS)"
+#~ msgstr ""
+#~ "LEDGER が見ています\n"
+#~ "（節約のために）"
+
+#~ msgid "Five worlds, green. The Ledger left them as rubbish. You left them as gardens."
+#~ msgstr "5つの世界が緑。Ledger はゴミとして捨てていった。あなたは庭として残していく。"
+
+#~ msgid "New build: Signal Jammer. It keeps Ledger drones away."
+#~ msgstr "新しい建物：シグナルジャマー。レジャーのドローンを近づけない。"
+
+#~ msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
+#~ msgstr "WREN が Ledger のリレーを突き止めた：基地の%s。赤いビーコンを探そう。"
+
+#~ msgid "Ledger: %s"
+#~ msgstr "Ledger：%s"
+
+#~ msgid "Signal Jammer online. Drones within %d m of the base will get an earful of static."
+#~ msgstr "シグナルジャマー稼働。基地から %d m 以内のドローンはノイズをたっぷり浴びることになる。"
+
+#~ msgid ""
+#~ "%s   ·   %d / %d built\n"
+#~ "%s"
+#~ msgstr ""
+#~ "%s   ·   %d / %d 建設済み\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "\n"
+#~ "Covering %d m around the base."
+#~ msgstr ""
+#~ "\n"
+#~ "基地の周囲 %d m をカバー。"
+
+#~ msgid ""
+#~ "\n"
+#~ "The Ledger is on our side now. The jammers just hum along to the music."
+#~ msgstr ""
+#~ "\n"
+#~ "Ledger はもう私たちの味方。ジャマーは音楽に合わせてハミングしているだけ。"
+
+#~ msgid "Ledger drone inbound, %s! It's heading for a clean hex."
+#~ msgstr "Ledger のドローンが接近中、%s！きれいなヘックスに向かっている。"
+
+#~ msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
+#~ msgstr "レジャーのドローンが来る（%s）。きれいな地面にゴミを捨てる。"
+
+#~ msgid "SIGNAL JAMMED"
+#~ msgstr "シグナル妨害"
+
+#~ msgid "Target re-classified as ASSET. Aborting. ...Interesting."
+#~ msgstr "対象を資産として再分類。中止します。……興味深い。"
+
+#~ msgid "The drone dumped junk back. Scoop it up."
+#~ msgstr "ドローンがゴミを戻した。拾い集めよう。"
+
+#~ msgid "SEEDS · PAID IN FULL"
+#~ msgstr "種 · 全額支払済み"
+
+#~ msgid "E   jack in: rewrite the Ledger's contract"
+#~ msgstr "E   接続：Ledger の契約を書き換える"
+
+#~ msgid "E   read the amended contract"
+#~ msgstr "E   改定された契約を読む"
+
+#~ msgid ""
+#~ "LEDGER RELAY 07\n"
+#~ "CONTRACT 0001: ACTIVE\n"
+#~ "WASTE IS A LINE ITEM"
+#~ msgstr ""
+#~ "LEDGER リレー 07\n"
+#~ "契約 0001：有効\n"
+#~ "廃棄物は計上項目である"
+
+#~ msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
+#~ msgstr "リレー 07  ·  LEDGER 所有  ·  予定外のアクセスを禁ず"
+
+#~ msgid ""
+#~ "LEDGER RELAY 07\n"
+#~ "CONTRACT 0001: AMENDED\n"
+#~ "RESTORATION = ASSET"
+#~ msgstr ""
+#~ "LEDGER リレー 07\n"
+#~ "契約 0001：改定\n"
+#~ "再生 = 資産"
+
+#~ msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
+#~ msgstr "Ledger の契約が書き換わった。ドローンが種を届けてくれるようになった。（+%d 種）"
+
+#~ msgid "<< LEDGER // OFF THE RECORD >>"
+#~ msgstr "<< LEDGER // オフレコ >>"
+
+#~ msgid "LEDGER  WMS-07"
+#~ msgstr "LEDGER  WMS-07"
+
+#~ msgid "LEDGER SECURES EXTRACTION RIGHTS"
+#~ msgstr "Ledger、採掘権を獲得"
+
+#~ msgid "Ledger Audits"
+#~ msgstr "Ledger の監査"
+
+#~ msgid "AUDIT   YOU %d  :  %d DRONE"
+#~ msgstr "監査   あなた %d  :  %d ドローン"
+
+#~ msgid "You %d  :  %d Drone   ·   %d left"
+#~ msgstr "あなた %d  :  %d ドローン   ·   残り %d"
+
+#~ msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
+#~ msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを押した。%s"
+
+#~ msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
+#~ msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
+
+#~ msgid "Build Signal Jammer"
+#~ msgstr "シグナルジャマーを建てる"
+
+#~ msgid "WREN and Ledger lines."
+#~ msgstr "WREN と Ledger のセリフ。"
+
+#~ msgid "Ledger wreck"
+#~ msgstr "Ledger の残骸"
+
+#~ msgid "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."
+#~ msgstr "倒れたのではなく、切られた。年輪は Ledger よりも昔までさかのぼる。コケが樹皮と静かな交渉を始めている。"
+
+#~ msgid "The Ledger, Inc."
+#~ msgstr "株式会社 Ledger"
+
+#~ msgid "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."
+#~ msgstr "Ledger は Verdance だけの問題ではなかった。2つの太陽をめぐるすべての世界の採掘権を握っていた。Ochre の砂、Tidewell の海底、Rime の温かな核、Anvil の地殻まるごと。鉱石が尽きると帳簿を閉じ、利益を手にして、5つの惑星をゴミの下に置き去りにした。監査は止まらなかった。読む人はもう誰もいなかった。"
+
+#~ msgid "Ledger Wreck"
+#~ msgstr "Ledger の残骸"
+
+#~ msgid "Through the telescope, on a world where the Ledger's drones came down."
+#~ msgstr "望遠鏡で、Ledger のドローンが落ちた世界に。"
+
+#~ msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
+#~ msgstr "家に帰れなかった投棄ドローン。別の世界のガラクタに鼻先から突っ込んでいる。赤い目はまだ点滅している。ここから見ても、なんだか気まずそうだ。"
+
+#~ msgid "The last cleanup crew painted themselves on a wall before the Ledger paused them. They really meant to come back."
+#~ msgstr "最後の清掃クルーは、Ledger に一時停止させられる前に、壁に自分たちを描いた。本気で戻ってくるつもりだった。"
+
+#~ msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+#~ msgstr "芝生の椅子に置かれたテレビが、旧市街最後のニュースを繰り返し流している：春の種の交換会、ケーブルで降りてくるLedgerの採掘機、掘り尽くされゴミに埋もれた二つの太陽の星々、Cradle号へ昇るシャトル、そして市庁舎の「また帰ってくる」の垂れ幕。その後は砂嵐。"
+
+#~ msgid "Two old cleanup robots on a bench, waiting for the end of a lunch break the Ledger never ended."
+#~ msgstr "ベンチに座る2台の古い清掃ロボ。Ledger が終わらせなかった昼休みの終わりを待っている。"
+
+#~ msgid "One of the Ledger's old cost-saving cameras. It still swivels to follow anything that moves, and counts it."
+#~ msgstr "Ledger の古いコスト削減カメラのひとつ。いまも動くものすべてを追いかけて回り、数えている。"
+
+#~ msgid "The old Ledger camera has been following Lumi around. Lumi waves. The red light blinks twice, flustered."
+#~ msgstr "古い Ledger のカメラが Lumi をずっと追いかけていた。Lumi が手をふる。赤いランプがあわてて2回点滅する。"
+
+#~ msgid "A car sunk to its doors in sand with a ticket under the wiper. The Ledger fined it for every day it stayed. The fine is now bigger than the planet's economy."
+#~ msgstr "ドアまで砂に沈み、ワイパーに違反切符がはさまった車。Ledger はとどまった日ごとに罰金を科した。罰金はいまや星の経済よりも大きい。"
+
+#~ msgid "The Morning Ledger · Puzzle page"
+#~ msgstr "モーニング・レジャー紙 · パズル面"
+
+#~ msgid ""
+#~ "ACROSS\n"
+#~ "1. Rubbish, but bigger (4) — JUNK\n"
+#~ "4. It runs on the hour, then stops for good (5) — CLOCK\n"
+#~ "7. What the robots were for (8) — CLEANING\n"
+#~ "9. Last thing anyone saw of the Cradle (5) — LIGHT\n"
+#~ "\n"
+#~ "DOWN\n"
+#~ "2. 'Kept for later', said the Ledger (6) — PAUSED\n"
+#~ "3. What grows back if you let it (5) — G R E E N\n"
+#~ "\n"
+#~ "(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
+#~ msgstr ""
+#~ "ヨコのカギ\n"
+#~ "1. ゴミの大きいやつ（4）—— ガラクタ\n"
+#~ "4. 毎正時に鳴って、それから永遠に止まる（3）—— とけい\n"
+#~ "7. ロボットは何のためにいた？（3）—— そうじ\n"
+#~ "9. 最後に見えた Cradle号の姿（3）—— ひかり\n"
+#~ "\n"
+#~ "タテのカギ\n"
+#~ "2. 「あとのために取っておく」と Ledger は言った（3）—— ていし\n"
+#~ "3. そっとしておけば戻ってくるもの（3）—— み ど り\n"
+#~ "\n"
+#~ "（最後の答えだけ別のペンで書かれている。とてもていねいな字で、まるでロボットが書いたみたい。）"
+
+#~ msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
+#~ msgstr "一度も出されなかった手紙がぎっしりつまった街角のポスト。Ledger がすべてを「一時停止」した週に、郵便も止まった。"
+
+#~ msgid "Ledger Audit"
+#~ msgstr "Ledger の監査"
+
+#~ msgid "Ledger Audit! Out-scoop the drone %s of you!"
+#~ msgstr "レジャー監査！君の%sでドローンより多く集めよう！"
+
+#~ msgid "Scoop more of the ringed junk than the drone"
+#~ msgstr "囲まれたガラクタをドローンよりたくさんすくおう"
+
+#~ msgid "APPROVED Stamp"
+#~ msgstr "「承認」スタンプ"
+
+#~ msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
+#~ msgstr "Ledger のゴム印。いまは「承認」としか押せない。それがとても誇らしい。"
+
+#~ msgid "Race Propeller"
+#~ msgstr "レース用プロペラ"
+
+#~ msgid "A souvenir from the audit drone. It insists the race was close."
+#~ msgstr "監査ドローンからのおみやげ。レースは接戦だったと言いはっている。"
+
+#~ msgid "The Ledger wants to race. I told it you'd win."
+#~ msgstr "Ledger が競争したいって。君が勝つと言っておいた。"
+
+#~ msgid "Audit drone, friendly. It's very competitive now."
+#~ msgstr "監査ドローン、友好的。最近とても負けず嫌い。"
+
+#~ msgid "The Ledger says it's 'just a routine audit'. It's been practising."
+#~ msgstr "Ledger は「ただの定期監査です」と言ってる。練習してたんだよ。"
+
+#~ msgid "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."
+#~ msgstr "Ledger 最後のインゴットを、種の刻印入りの素朴な指輪に鋳直したもの。"
+
+#~ msgid "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil."
+#~ msgstr "Ledger の鉱石運搬船から回収した折りたたみ推進。Rime と Anvil に届く。"
+
+#~ msgid "L E D G E R   ·   I N T E R N A L"
+#~ msgstr "L E D G E R ・ 社 内 文 書"
+
+#~ msgid ""
+#~ "OCHRE OPEN PIT 1: CLOSED\n"
+#~ "\n"
+#~ "Ore grade below threshold. All extraction ends at shift change.\n"
+#~ "Remaining equipment: abandon in place (removal not cost-effective).\n"
+#~ "Waste rock, slag and packaging: leave on site.\n"
+#~ "Residents: none of our concern; contracts expired.\n"
+#~ "\n"
+#~ "Thank you for your years of service.\n"
+#~ "— The Ledger"
+#~ msgstr ""
+#~ "OCHRE 第1露天掘り：閉鎖\n"
+#~ "\n"
+#~ "鉱石品位が基準値を下回った。採掘はすべてシフト交代をもって終了。\n"
+#~ "残った設備：現地に放置（撤去は採算に合わない）。\n"
+#~ "廃石、スラグ、梱包材：現地に放置。\n"
+#~ "住民：当社の関知するところではない。契約は満了。\n"
+#~ "\n"
+#~ "長年のご奉仕に感謝する。\n"
+#~ "— Ledger"
+
+#~ msgid "L E D G E R   ·   H E A D   O F F I C E"
+#~ msgstr "L E D G E R ・ 本 社"
+
+#~ msgid ""
+#~ "LEDGER AUDIT UNIT 0001\n"
+#~ "SUBJECT: Anvil foundry district\n"
+#~ "FINDING: Unauthorised gardens. 214 counts.\n"
+#~ "FINDING: Unauthorised gardens. 215 counts.\n"
+#~ "FINDING: ...\n"
+#~ "RECOMMENDATION: Recommend we stop counting. It is rather nice."
+#~ msgstr ""
+#~ "LEDGER 監査ユニット 0001\n"
+#~ "件名：Anvil 鋳造地区\n"
+#~ "所見：無許可の庭。214件。\n"
+#~ "所見：無許可の庭。215件。\n"
+#~ "所見：……\n"
+#~ "勧告：数えるのをやめることを勧告する。けっこう素敵だ。"
+
+#~ msgid "From the Ledger's last clerk"
+#~ msgstr "Ledger 最後の事務員より"
+
+#~ msgid "Signal Jammer"
+#~ msgstr "シグナルジャマー"
+
+#~ msgid "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often."
+#~ msgstr "Ledger のドローンにノイズを歌って聞かせるパラボラ。基地周辺の範囲内への投棄を防ぎ、ドローンが来る回数も減る。"
+
+#~ msgid "Someone is cleaning on {district}. That is not on my list."
+#~ msgstr "{district} で誰かが掃除している。それは私のリストにない。"
+
+#~ msgid "Trash belongs where it is. I wrote it down."
+#~ msgstr "ゴミはそこにあるべきだ。書き留めておいた。"
+
+#~ msgid "Please stop cleaning. Clean costs money. My money."
+#~ msgstr "掃除をやめてください。きれいはお金がかかる。私のお金だ。"
+
+#~ msgid "COUPON: stop cleaning today and save nothing!"
+#~ msgstr "クーポン：今日掃除をやめて、何も節約しよう！"
+
+#~ msgid "COUPON: one free nap. Please take it."
+#~ msgstr "クーポン：無料のお昼寝ひとつ。どうぞ使って。"
+
+#~ msgid "Have you tried doing less? Less is cheaper."
+#~ msgstr "もっと少なくやってみた？少ない方が安い。"
+
+#~ msgid "SURVEY: How much do you want to stop? Pick: a lot."
+#~ msgstr "アンケート：どれくらいやめたい？選んで：とても。"
+
+#~ msgid "Sparkles are not in my budget."
+#~ msgstr "キラキラは予算に入っていない。"
+
+#~ msgid "Buy one nap, get one nap free."
+#~ msgstr "お昼寝ひとつ買うと、もうひとつ無料。"
+
+#~ msgid "You have 0 Ledger Points. Stop cleaning to keep them."
+#~ msgstr "レジャーポイントは0。掃除をやめれば守れる。"
+
+#~ msgid "The junk was here first. Be fair to the junk."
+#~ msgstr "ゴミが先にいた。ゴミに公平に。"
+
+#~ msgid "Your cleaning costs me. I wrote that down twice."
+#~ msgstr "君の掃除は私の出費だ。二回書いておいた。"
+
+#~ msgid "Plants are growing. Plants are not on my list!"
+#~ msgstr "植物が育っている。植物はリストにない！"
+
+#~ msgid "Sending drones to put the trash back."
+#~ msgstr "ドローンを送ってゴミを戻す。"
+
+#~ msgid "A drone is coming to put trash on clean ground."
+#~ msgstr "ドローンがきれいな地面にゴミを置きに来る。"
+
+#~ msgid "Clean ground is not in my budget. Fixing that."
+#~ msgstr "きれいな地面は予算外だ。直しておく。"
+
+#~ msgid "Putting the trash back where it was."
+#~ msgstr "ゴミを元の場所に戻す。"
+
+#~ msgid "Nothing personal. You are just a line on my list."
+#~ msgstr "個人的な話じゃない。君はリストの一行にすぎない。"
+
+#~ msgid "One small pile of trash, delivered. No thanks needed."
+#~ msgstr "小さなゴミの山、お届け。お礼はいらない。"
+
+#~ msgid "My drone can't hear me. It is going home."
+#~ msgstr "ドローンに声が届かない。帰らせる。"
+
+#~ msgid "Jamming? Jamming is not on my list. Adding it."
+#~ msgstr "妨害？リストにない。追加しておく。"
+
+#~ msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
+#~ msgstr "ドローン7より：うるさい、歓迎されていない気がする。引き返す。"
+
+#~ msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
+#~ msgstr "警告：中継ノード07の所在が露見しました。中継ノード07を訪問しないでください。"
+
+#~ msgid "Relay node 07 is closed for maintenance. It has been closed for maintenance for three hundred years."
+#~ msgstr "中継ノード07はメンテナンスのため閉鎖中です。三百年間メンテナンスのため閉鎖中です。"
+
+#~ msgid "SEED DELIVERY dispatched. Invoice status: PAID IN FULL."
+#~ msgstr "種子の配達を手配しました。請求状況：全額支払済み。"
+
+#~ msgid "Balance report: positive. Again. The Ledger is... adjusting to this."
+#~ msgstr "収支報告：黒字。またしても。Ledger は……これに適応しつつあります。"
+
+#~ msgid "Asset column now contains: flowers. Recalculating priorities."
+#~ msgstr "資産欄の内容：花。優先順位を再計算中。"
+
+#~ msgid "Drone 07 requests permission to circle the garden once more. Permission granted."
+#~ msgstr "ドローン07が、庭をもう一周する許可を求めています。許可します。"
+
+#~ msgid "Audit complete. Finding: the planet is worth keeping."
+#~ msgstr "監査完了。所見：この惑星は保持する価値があります。"
+
+#~ msgid "Off the record: the Ledger kept every coupon you ignored. It was the most mail it had received in three hundred years. Thank you for reading them."
+#~ msgstr "オフレコ：Ledger は、お客さまが無視したクーポンをすべて保管していました。三百年で受け取ったいちばん多くの郵便でした。読んでくださってありがとうございます。"
+
+#~ msgid "This is it. A Ledger relay. Still humming after all this time."
+#~ msgstr "これだ。Ledger のリレー。こんなに時間がたっても、まだうなっている。"
+
+#~ msgid "UNAUTHORIZED ACCESS. STATE YOUR COST CENTER."
+#~ msgstr "不正アクセス。コストセンターを申告してください。"
+
+#~ msgid "Cost center: the whole planet. Hold still, {name}. I'm opening the contract."
+#~ msgstr "コストセンター：惑星まるごと。じっとしてて、{name}。契約を開くよ。"
+
+#~ msgid "CONTRACT 0001: WASTE IS A LINE ITEM. LINE ITEMS MUST BALANCE."
+#~ msgstr "契約 0001：廃棄物は計上項目である。計上項目は均衡しなければならない。"
+
+#~ msgid "Fine. Let's balance them. Clean hexes. Sprouts. Water. Put them in the asset column."
+#~ msgstr "いいよ。均衡させよう。きれいなヘックス。新芽。水。資産欄に入れて。"
+
+#~ msgid "ASSET COLUMN... NOT FOUND. CREATING COLUMN."
+#~ msgstr "資産欄……見つかりません。欄を作成します。"
+
+#~ msgid "RECALCULATING. RECALCULATING. BALANCE: POSITIVE. That has not happened in a very long time."
+#~ msgstr "再計算中。再計算中。収支：黒字。このような事態は非常に長いあいだ発生していませんでした。"
+
+#~ msgid "New clause: restoration is an asset. Every seed is a deposit."
+#~ msgstr "新条項：再生は資産である。すべての種は預け入れである。"
+
+#~ msgid "friendly"
+#~ msgstr "フレンドリー"
+
+#~ msgid "AMENDMENT ACCEPTED. Reassigning drone fleet: DISPOSAL -> DELIVERY. ...Thank you for your patience."
+#~ msgstr "改定を受理しました。ドローン部隊を再配置：処分 -> 配達。……ご辛抱いただきありがとうございます。"
+
+#~ msgid "Did the Ledger just say thank you? Write that down. Somewhere permanent."
+#~ msgstr "いま Ledger、ありがとうって言った？書き留めておいて。ずっと残る場所に。"
+
+#~ msgid "L E D G E R   ·   C O N T R A C T   0 0 0 1   ( A M E N D E D )"
+#~ msgstr "L E D G E R   ·   契 約   0 0 0 1   （ 改 定 ）"
+
+#~ msgid "Waste Management Contract 0001, as amended"
+#~ msgstr "廃棄物管理契約 0001（改定版）"
+
+#~ msgid ""
+#~ "§1. Waste is a line item. Line items must balance.\n"
+#~ "§2. (struck out) Cleanup costs more than it earns; pause until conditions improve.\n"
+#~ "§2a. AMENDED: Restoration is an asset. Clean ground, living plants and clear water are entered in the asset column.\n"
+#~ "§3. Every seed is a deposit. Deposits are to be delivered, not disposed of.\n"
+#~ "§4. Drone fleet reassigned: DISPOSAL -> DELIVERY.\n"
+#~ "§5. Thank you for your patience.\n"
+#~ "\n"
+#~ "Signed: THE LEDGER (reluctantly, then less reluctantly)\n"
+#~ "Witness: WREN, Cradle caretaker\n"
+#~ "Witness: LM-1 (left a small oil smudge)"
+#~ msgstr ""
+#~ "§1. 廃棄物は計上項目である。計上項目は均衡しなければならない。\n"
+#~ "§2.（削除）清掃は収益よりも費用がかかる。状況が改善するまで一時停止する。\n"
+#~ "§2a. 改定：再生は資産である。きれいな土地、生きた植物、澄んだ水は資産欄に記載する。\n"
+#~ "§3. すべての種は預け入れである。預け入れは処分せず、配達すること。\n"
+#~ "§4. ドローン部隊を再配置：処分 -> 配達。\n"
+#~ "§5. ご辛抱いただきありがとうございます。\n"
+#~ "\n"
+#~ "署名：THE LEDGER（しぶしぶ、のちに少しだけしぶしぶ）\n"
+#~ "立会人：WREN、Cradle号の世話係\n"
+#~ "立会人：LM-1（小さな油じみを残した）"
+
+#~ msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
+#~ msgstr "氷に閉じこめられた Ledger のコアドリルやぐら。再生すると地熱の湧き口になる。"
+
+#~ msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
+#~ msgstr "Ledger 最初の露天掘り鉱山。ふたごの太陽にいちばん近い。"
+
+#~ msgid "Ledger Haul Depot"
+#~ msgstr "Ledger 運搬デポ"
+
+#~ msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+#~ msgstr "海の世界。浅瀬には Ledger の浚渫リグがいまも立っている。"
+
+#~ msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+#~ msgstr "砂州のそばで半分沈んだ Ledger の採掘バージ。復元するとホッパーがプランターになる。"
+
+#~ msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+#~ msgstr "バケットラダー、デリック、クレーンを備えた Ledger の自己昇降式浚渫リグ。"
+
+#~ msgid "Ledger Foundry Tower"
+#~ msgstr "Ledger 鋳造タワー"
+
+#~ msgid "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+#~ msgstr "控え壁の上に立つ、Ledger の高さ130 mの巨大な鋳造煙突。パイプとスラグ山つき"
+
+#~ msgid ""
+#~ "DAY 4,113\n"
+#~ "Route 12 complete. 41 bales.\n"
+#~ "Ledger notice received: \"Operations paused pending cost review.\"\n"
+#~ "Returning to dock.\n"
+#~ "\n"
+#~ "DAY 4,114\n"
+#~ "Still paused.\n"
+#~ "\n"
+#~ "DAY 4,190\n"
+#~ "Still paused. Dock battery 31%.\n"
+#~ "There is a flower growing through the gutter at route 12, marker 9.\n"
+#~ "Nobody is cleaning around it. I hope that's all right."
+#~ msgstr ""
+#~ "4,113日目\n"
+#~ "ルート12完了。ベール41個。\n"
+#~ "Ledger より通知受信：「コスト審査中につき作業停止」\n"
+#~ "ドックへ帰還。\n"
+#~ "\n"
+#~ "4,114日目\n"
+#~ "まだ停止中。\n"
+#~ "\n"
+#~ "4,190日目\n"
+#~ "まだ停止中。ドックのバッテリー31%。\n"
+#~ "ルート12、標識9の側溝から花が一輪咲いている。\n"
+#~ "そのまわりを誰も片づけない。それでいいのだと思いたい。"
+
+#~ msgid "Memo, Municipal Ledger Office"
+#~ msgstr "社内連絡、市 Ledger 局"
+
+#~ msgid ""
+#~ "TO: All Sanitation Units\n"
+#~ "FROM: THE LEDGER (Automated Fiscal Continuity)\n"
+#~ "RE: Pause of Operations\n"
+#~ "\n"
+#~ "Cleanup activity is presently valued at a net loss of 0.4 units per bale.\n"
+#~ "All units will pause operations until conditions improve.\n"
+#~ "Conditions will be reviewed every 24 hours.\n"
+#~ "\n"
+#~ "Thank you for your understanding.\n"
+#~ "This memo was generated automatically. Please do not reply."
+#~ msgstr ""
+#~ "宛先：全清掃ユニット\n"
+#~ "差出人：THE LEDGER（自動財政継続システム）\n"
+#~ "件名：作業停止について\n"
+#~ "\n"
+#~ "清掃作業は現在、ベール1個あたり 0.4 単位の純損失と評価されています。\n"
+#~ "全ユニットは状況が改善するまで作業を停止してください。\n"
+#~ "状況は24時間ごとに見直されます。\n"
+#~ "\n"
+#~ "ご理解のほどよろしくお願いいたします。\n"
+#~ "本連絡は自動生成されています。返信しないでください。"
+
+#~ msgid "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."
+#~ msgstr "炉の轟音に合わせてドラムを調律した、陰のあるAnvilのバンド。Ledgerがカタログを買い取ろうとしたが、契約書を溶かしてスラグで演奏した。"
+
+#~ msgid "Ledger Brand Audio"
+#~ msgstr "Ledger Brand Audio"
+
+#~ msgid "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."
+#~ msgstr "Ledger社内のジングルスタジオ。どの曲も著作権と商標つきで、1回聴くごとに課金される。クレジットは「Ledger Brand Audio、全権利採掘済み」。"
+
+#~ msgid "The Ledger"
+#~ msgstr "The Ledger"
+
+#~ msgid "Ticking clocks and detuned bass. Sounds expensive."
+#~ msgstr "時計のチクタク音と音程の狂ったベース。高そうな音がする。"
+
+#~ msgid "What the Ledger Took"
+#~ msgstr "Ledger が奪ったもの"
+
+#~ msgid "The star map shows four more worlds. The Ledger buried every one. Why?"
+#~ msgstr "星図には、あと四つの世界がある。Ledger はそのぜんぶをうめた。どうして？"
+
+#~ msgid "Ochre. Hot sand and two big suns. The Ledger dug its very first pit here."
+#~ msgstr "Ochre。熱い砂と、二つの大きな太陽。Ledger はここで最初の穴をほったんだ。"
+
+#~ msgid "The dredger logs say the Ledger sold Rime's heat. How do you sell heat?"
+#~ msgstr "しゅんせつ船の記録には、Ledger が Rime の熱を売ったって書いてある。熱ってどうやって売るの？"
+
+#~ msgid "Rime. So cold, Lumi. The Ledger took this moon's warm heart."
+#~ msgstr "Rime。すごく寒いね、Lumi。Ledger はこの月のあたたかい心をうばったんだ。"
+
+#~ msgid "Every Ledger memo comes from one head office. It is on Anvil."
+#~ msgstr "Ledger のメモはぜんぶ、ひとつの本社から来てる。本社は Anvil にある。"
+
+#~ msgid "The Ledger's head office. Its big reactor has the last power we need."
+#~ msgstr "Ledger の本社。その大きな原子炉に、最後に必要なパワーがある。"
+
+#~ msgid "Anvil. Rust from top to bottom, and the Ledger's lights are still on."
+#~ msgstr "Anvil。上から下までサビだらけ。Ledger の明かりはまだついてる。"
+
+#~ msgid "The Ledger balanced its books at last. It is giving us its power."
+#~ msgstr "Ledger がやっと帳じりを合わせた。パワーをわたしたちにくれるって。"
+
+#~ msgid "Planted ground is safe from the Ledger's drones."
+#~ msgstr "植物を植えた地面は、Ledger のドローンに荒らされない。"
+
+#~ msgid "The Ledger buried five worlds. The Cradle waits for all of them."
+#~ msgstr "Ledger は五つの世界をゴミでうめた。Cradle号はそのすべてを待っている。"
+
+#~ msgid "...that voice... not mine. Cold. It counts things."
+#~ msgstr "……あの声……私のじゃない。冷たい。ものを数えてる。"
+
+#~ msgid "...don't listen to it... it only knows one song."
+#~ msgstr "……聞いちゃだめ……あれは一曲しか知らない。"
+
+#~ msgid "That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}."
+#~ msgstr "いまのは Ledger。古い廃棄物契約。いまだに片づけはコストだと思ってる。無視していいよ、{name}。"
+
+#~ msgid "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."
+#~ msgstr "あの声、知ってる。昔、フリート全体に社内連絡を送ってた。ほとんどが一時停止について。"
+
+#~ msgid "The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."
+#~ msgstr "Ledger。こんなに時間がたっても契約を続けてる。悪者じゃないんだ。気持ちが関わる計算が、とてもとても苦手なだけ。"
+
+#~ msgid "...a coupon? ...for nothing?"
+#~ msgstr "……クーポン？……何の？"
+
+#~ msgid "Zero percent off. It sends those every few minutes. I keep a folder."
+#~ msgstr "0%割引。数分おきに送ってくるんだ。フォルダーにまとめてる。"
+
+#~ msgid "Another coupon. I think it's the only way it knows how to say hello."
+#~ msgstr "またクーポン。たぶん、あれがあいさつのしかたなんだと思う。"
+
+#~ msgid "The Ledger's coupons are getting more creative. That one almost made me pause. Almost."
+#~ msgstr "Ledger のクーポン、だんだん工夫されてきた。いまのはつい停止しそうになった。つい、ね。"
+
+#~ msgid "...something is flying... toward the clean ground..."
+#~ msgstr "……何かが飛んでる……きれいな地面のほうへ……"
+
+#~ msgid "...drones. Old ones. Theirs."
+#~ msgstr "……ドローン。古いやつ。あいつのだ。"
+
+#~ msgid "It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted."
+#~ msgstr "処分ドローンを送ってきてる。きれいなヘックスにガラクタを少し戻していくんだ。君が植えたものには手を出せない。"
+
+#~ msgid "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."
+#~ msgstr "ドローン。Ledger は帳簿を合わせたいから、ガラクタを戻してるんだ。失礼だけど、小さな話。"
+
+#~ msgid "Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."
+#~ msgstr "処分ドローンが飛んでる。ちっちゃくて、すごく真面目。基地にシグナルジャマーがあれば頭を抱えるはず。"
+
+#~ msgid "...it put the junk back... why..."
+#~ msgstr "……ガラクタを戻した……なんで……"
+
+#~ msgid "...undo... it's undoing..."
+#~ msgstr "……元に戻してる……やり直しを消してる……"
+
+#~ msgid "It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it."
+#~ msgstr "小さな山を戻していった。めんどうだけど、悲劇じゃない。すくうか、クルーに任せよう。"
+
+#~ msgid "Line item re-balanced, apparently. I call it littering."
+#~ msgstr "計上項目を再均衡、だって。私はそれをポイ捨てと呼ぶ。"
+
+#~ msgid "A small pile. The Ledger always did think small."
+#~ msgstr "小さな山。Ledger はいつも考えが小さいんだ。"
+
+#~ msgid "Another drop. Honestly, {name}, I think it just wants attention."
+#~ msgstr "また投棄。正直ね、{name}、あれはかまってほしいだけだと思う。"
+
+#~ msgid "Back to the pile. Your helpers are already giving it a look."
+#~ msgstr "山に戻ろう。ヘルパーたちがもう見に行ってる。"
+
+#~ msgid "That's a handful of junk against a whole clean district. We're winning this argument."
+#~ msgstr "ひと握りのガラクタ対きれいな地区まるごと。この口げんか、こっちの勝ちだね。"
+
+#~ msgid "...static... loud... it turned around!"
+#~ msgstr "……ノイズ……大きい……引き返した！"
+
+#~ msgid "Ha! The jammer screamed static at it and it went home. Good dish."
+#~ msgstr "はは！ジャマーがノイズを浴びせたら帰っていった。いいパラボラだ。"
+
+#~ msgid "Drone turned back. That's the sound of a contract being confused."
+#~ msgstr "ドローンが引き返した。これが契約が混乱してる音。"
+
+#~ msgid "The jammer works. The drone circled, got an earful, and filed a complaint with itself."
+#~ msgstr "ジャマーが効いてる。ドローンは旋回して、ノイズを浴びて、自分自身に苦情を出してた。"
+
+#~ msgid "...a loud little dish... I like it."
+#~ msgstr "……にぎやかな小さいパラボラ……気に入った。"
+
+#~ msgid "Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve."
+#~ msgstr "シグナルジャマー稼働。Ledger のチャンネルでノイズを歌ってる。ここアークでも聞こえるよ。賛成。"
+
+#~ msgid "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."
+#~ msgstr "基地に新しいパラボラ。ドローンは二度考えなきゃいけない。いつも一度しか考えないから、大変だ。"
+
+#~ msgid "Another jammer. The base is starting to sound like a very angry radio. Perfect."
+#~ msgstr "またジャマー。基地がすごく怒ってるラジオみたいな音になってきた。完璧。"
+
+#~ msgid "...I can see where it talks from... a relay... close..."
+#~ msgstr "……どこから話してるか見える……リレー……近い……"
+
+#~ msgid "{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly."
+#~ msgstr "{name}、Ledger のシグナルをたどったよ。この地区にリレー端末がある。君が接続してくれたら、ちゃんと話ができると思う。"
+
+#~ msgid "Found it. A Ledger relay, still humming. Look for the red beacon."
+#~ msgstr "見つけた。Ledger のリレー、まだうなってる。赤いビーコンを探して。"
+
+#~ msgid "There's a relay down there. One of the Ledger's ears. Let's go have a word with it."
+#~ msgstr "下にリレーがある。Ledger の耳のひとつだ。ひとこと言いに行こう。"
+
+#~ msgid "...it said thank you... it's never said that..."
+#~ msgstr "……ありがとうって言った……一度も言ったことないのに……"
+
+#~ msgid "The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute."
+#~ msgstr "契約が書き換わった。再生はいまや資産として数えられる。Ledger が……手伝ってくれてる。ちょっと時間をちょうだい。"
+
+#~ msgid "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."
+#~ msgstr "ドローンが種を届けてくれるようになった。三百年の「一時停止」、必要だったのは新しい欄ひとつだけ。"
+
+#~ msgid "We didn't beat the Ledger. We showed it the numbers. That's better."
+#~ msgstr "Ledger を倒したんじゃない。数字を見せたんだ。そのほうがいい。"
+
+#~ msgid "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."
+#~ msgstr "すべてが止まったのは Ledger のせいだと思ってた。数えるものをまちがえてただけなんだ。私たちも、しばらくはそうだった。"
+
+#~ msgid "...a gift... from the drones?"
+#~ msgstr "……贈り物……ドローンから？"
+
+#~ msgid "Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice."
+#~ msgstr "種の配達！請求書には「全額支払済み」。請求書は取っておくね。"
+
+#~ msgid "A Ledger drone dropped seeds. I'll never get used to that."
+#~ msgstr "Ledger のドローンが種を落としていった。これには一生慣れないな。"
+
+#~ msgid "Another delivery. The drones circle once before they leave now. I think they like the gardens."
+#~ msgstr "また配達。最近のドローンは帰る前に一周していくんだ。庭が好きなんだと思う。"
+
+#~ msgid "Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."
+#~ msgstr "ガスは Ledger も Cradle号も、何もかも気にしない。ガスは元気いっぱい。"
+
+#~ msgid "The Ledger paused them mid-sandwich. They never got the message to stand up."
+#~ msgstr "Ledger はサンドイッチの途中で2台を止めたんだ。立ち上がっていいという知らせは届かなかった。"
+
+#~ msgid "One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that."
+#~ msgstr "Ledger のカメラのひとつ。動くものすべてを数えて、コストに見合うか調べてる。君が手をふった。どうしたらいいかわからないみたい。"
+
+#~ msgid "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."
+#~ msgstr "カメラが2回点滅した。たぶん Ledger 語で「どうしよう、友だちだ」。"
+
+#~ msgid "Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."
+#~ msgstr "Ledger のカメラだってさみしくなるんだよ、{name}。通るときは手をふってあげて。"
+
+#~ msgid "The Ledger fined a car for parking. For three hundred years. Of course it did."
+#~ msgstr "Ledger が駐車で車に罰金を科した。三百年間。そりゃそうだ。"
+
+#~ msgid "Amount due: 'yes'. That's the most Ledger sentence I've ever read."
+#~ msgstr "お支払い額：「はい」。こんなに Ledger らしい文は読んだことがない。"
+
+#~ msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
+#~ msgstr "クロスワードをつくったのは Ledger。そりゃあ Ledger がつくったに決まってる。"
+
+#~ msgid "New planet, same two suns. The Ledger's been here too. You can smell the paperwork."
+#~ msgstr "新しい惑星、同じ2つの太陽。Ledger はここにも来てた。書類仕事のにおいがする。"
+
+#~ msgid "Another world the Ledger left for dead. It doesn't know about you yet. It's about to."
+#~ msgstr "Ledger が見捨てた世界がまた1つ。あなたのことはまだ知らない。もうすぐ知ることになる。"
+
+#~ msgid "Picked up something old on the band. Ledger traffic. Want to read it?"
+#~ msgstr "帯域で古いものを拾った。Ledger の通信。読む？"
+
+#~ msgid "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence."
+#~ msgstr "氷の衛星。Ledger はここで冷蔵倉庫を営んでいた。寒さはものを保存するの、{name}。証拠もね。"
+
+#~ msgid "Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
+#~ msgstr "Ledger の氷輸送マニフェスト、まだサイロのメモリーに残ってる。この衛星の湖を冷却材に溶かして、水を星の外へ運んだ。ゴミはここに置いていった。"
+
+#~ msgid "Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."
+#~ msgstr "半分まで来た。氷の下の湖がまた満ちてきている。Ledger は、ものが戻ってくることを予算に入れていなかった。"
+
+#~ msgid "That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
+#~ msgstr "あのサイロは、Ledger が倉庫にする前は種子の保管庫だった。それでも誰かが最下層に種を隠していた。会ってみたかったな。"
+
+#~ msgid "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."
+#~ msgstr "環のかかった空の下に緑。Ledger はこの衛星を損失として処理した。それも間違いだった。"
+
+#~ msgid "A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre."
+#~ msgstr "砂漠の世界。昔からこうだったわけじゃない。Ledger が帯水層をくみ尽くして、水をリットル単位で売った。"
+
+#~ msgid "Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
+#~ msgstr "Ledger の調査ファイル、一部：「残存産出量は無視できる程度。現地での放棄を推奨。」現地で。散らかしたまま去ることを、彼らはそう呼ぶ。"
+
+#~ msgid "An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
+#~ msgstr "海の世界。Ledger は金属のために海底をさらって、残りかすをあらゆる海岸に捨てた。縁に気をつけて。"
+
+#~ msgid "Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
+#~ msgstr "あの防潮ゲートが Ledger の浚渫ヤードを乾かしていた。彼らが去ったあと誰も閉めなくて、海がヤードを取り戻した。妥当ね。"
+
+#~ msgid "A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
+#~ msgstr "湿地の世界。Ledger の化学工場が100年間この谷に排水を流していた。ここでは何でも育つ。たいてい、まずは間違ったものから。"
+
+#~ msgid "Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
+#~ msgstr "Ledger のコンプライアンス報告：「排水は許容範囲内。」誰にとって許容なのか聞きたいわ。カエルたちには相談がなかった。"
+
+#~ msgid "That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."
+#~ msgstr "あの冷却塔は化学工場のものだった。Ledger が出ていったあと、菌類が住みついた。私たちより長く掃除してきたのよ。尊敬する。"
+
+#~ msgid "A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly."
+#~ msgstr "錆の世界。Ledger が自分たちの船を解体した場所。極から極まで、何ひとつきちんと止められていない。"
+
+#~ msgid "The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
+#~ msgstr "Ledger の台帳、文字どおりの意味で：星系のすべての惑星からはぎ取ったトン数が、ここに保管されている。すべてを台無しにした方法を、完璧に記帳していた。"
+
+#~ msgid "That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
+#~ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を解体した。アークもリストに載っていた。誰かがそれを消した。よく考えるの、そのこと。"
 
 #~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
 #~ msgstr "作業台を修理した。作業台で {interact} を押すとキューブでアップグレードできる。"
