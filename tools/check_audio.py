@@ -12,8 +12,9 @@ laptop speakers rattle or crackle.
 
 Per sound: peak (dBFS), samples at full scale, DC offset, share of energy below 80 Hz and
 80-200 Hz, clicks per second (single-sample steps far above the local signal), loop seam step
-(for loops: the jump from the last sample back to the first), and the depth of a steady 15-80 Hz
-tremolo (a purr or buzz there reads as a helicopter / rattle on laptop speakers). Exit 1 if any limit is broken.
+(for loops: the jump from the last sample back to the first), the depth of a steady 15-80 Hz
+tremolo on a bass-heavy sound (a rattle on laptop speakers), and a steady 15-45 Hz beat of the
+loudness on any animal, bed or recorded mix (a rotor: the cat's purr). Exit 1 if any limit is broken.
 Needs numpy (scipy optional, used for nicer spectra when present).
 """
 import argparse
@@ -73,12 +74,17 @@ except ImportError:  # the CI runner has no numpy: --repeat (in tools/check_exit
 # Limits. "bed": loops that play for minutes (ambience beds, beam hum); "note": score instruments
 # (short, transposed); "shot": one-shot SFX.
 LIMITS = {
-    "bed": {"peak": 0.99, "dc": 0.01, "sub80": 0.25, "clicks_s": 2.0, "seam": 0.05, "flutter": 0.3},
+    "bed": {"peak": 0.99, "dc": 0.01, "sub80": 0.25, "clicks_s": 2.0, "seam": 0.05, "flutter": 0.3, "rotor": 0.12},
     "note": {"peak": 0.99, "dc": 0.02, "sub80": 0.6, "clicks_s": 4.0, "seam": 0.08, "flutter": 1.5},
     "shot": {"peak": 0.99, "dc": 0.03, "sub80": 0.7, "clicks_s": 40.0, "seam": 1.0, "flutter": 1.0},
-    "animal": {"peak": 0.99, "dc": 0.02, "sub80": 0.15, "clicks_s": 10.0, "seam": 1.0, "flutter": 0.45, "b80_200": 0.45},
-    "mix": {"peak": 0.995, "dc": 0.01, "sub80": 0.30, "clicks_s": 2.0, "seam": 1.0, "flutter": 0.5},
+    "animal": {"peak": 0.99, "dc": 0.02, "sub80": 0.15, "clicks_s": 10.0, "seam": 1.0, "flutter": 0.45, "b80_200": 0.45, "rotor": 0.12},
+    "mix": {"peak": 0.995, "dc": 0.01, "sub80": 0.30, "clicks_s": 2.0, "seam": 1.0, "flutter": 0.5, "rotor": 0.12},
 }
+# Sounds allowed a steady 15-45 Hz beat (name without the take number; mix_music: a recording
+# with music in it, see check_mix). A frog's croak is a short
+# voiced pulse train by nature (23-38 pulses a second); only the double croak is long enough to be
+# measured, a second in all, 3-4 croaks a minute by a pond.
+ROTOR_OK = {"fauna_frog", "mix_music"}
 # Instruments that are meant to be deep (a kick, a sub bass): only clipping / DC / clicks apply.
 # The Master bus high-pass (data/sound.json master_highpass_hz) trims what is under it.
 DEEP = {"music_kick", "music_sub", "music_bass", "music_bass_short", "music_conga_lo",
@@ -156,6 +162,57 @@ def flutter(x, rate):
     return float(peak)
 
 
+# [v10snd] A rotor. Owner, third report: "cats still sound like helicopter". The purr passed this
+# script twice because flutter() above only fails a chop on a BASS-HEAVY sound (and only looks at
+# 15-80 Hz); the purr was 180 Hz - 1.1 kHz noise pulsed 25 times a second, and any sound pulsed
+# steadily 15-45 times a second for more than a moment reads as a rotor, whatever its pitch. So:
+# the depth of the strongest steady 15-45 Hz beat of the loudness, in every 2 s stretch of the sound
+# (a short purr inside a long recording is not averaged away), counted when it stands 12x clear of
+# the envelope's random wobble and lasts over ROTOR_MIN_S. Checked on animals, beds and recorded
+# mixes (--wav), whatever their spectrum. Under 15 Hz is left alone: that is the note rate of a bird's
+# song, a coo's wobble and a flock's wingbeats (7-13 Hz), which nobody hears as a motor.
+ROTOR_BAND = (15.0, 45.0)
+ROTOR_MIN_S = 0.7
+ROTOR_WIN_S = 2.0
+
+
+def rotor(x, rate):
+    """(depth, Hz) of the strongest steady 15-45 Hz amplitude beat in any 2 s stretch; (0, 0) if none."""
+    best = (0.0, 0.0)
+    n = int(ROTOR_WIN_S * rate)
+    if len(x) < int(ROTOR_MIN_S * rate):
+        return best
+    hop = max(rate // 400, 1)
+    for s in range(0, max(len(x) - n // 2, 1), n // 2):
+        c = x[s: s + n]
+        if len(c) < int(ROTOR_MIN_S * rate):
+            break
+        m = len(c) // hop
+        env = np.sqrt((c[: m * hop].reshape(m, hop) ** 2).mean(axis=1))
+        mean = env.mean()
+        if mean < 1e-3:  # under -60 dBFS nobody hears a beat
+            continue
+        e = (env - mean) / mean
+        X = np.abs(np.fft.rfft(e * np.hanning(len(e)))) * 2.0 / (0.5 * len(e))
+        f = np.fft.rfftfreq(len(e), hop / rate)
+        band = (f >= ROTOR_BAND[0]) & (f < ROTOR_BAND[1])
+        if not band.any():
+            continue
+        k = int(np.argmax(X[band]))
+        peak = X[band][k]
+        fk = f[band][k]
+        # The beat's own rate, not an overtone of a slower rhythm: a bird's song of 9 short notes a
+        # second also shows up at 18 Hz, and its real rate (under 15 Hz) is not a rotor's.
+        over = False
+        for div in (2.0, 3.0):
+            sub = (f >= fk / div * 0.9) & (f <= fk / div * 1.1) & (f < ROTOR_BAND[0])
+            if sub.any() and X[sub].max() > peak:
+                over = True
+        if not over and peak * peak >= 12.0 * np.median(X[band] ** 2) and peak > best[0]:
+            best = (float(peak), float(fk))
+    return best
+
+
 def seam_step(x, loop_begin, loop_end):
     if loop_end <= loop_begin + 2 or loop_end > len(x):
         return 0.0
@@ -179,6 +236,7 @@ def measure(x, rate, loop=False, lb=0, le=0):
         "clicks_s": clicks_per_s(x, rate),
         "seam": seam_step(x, lb, le if le > 0 else len(x)) if loop else 0.0,
         "flutter": flutter(x, rate),
+        "rotor": rotor(x, rate),
     }
 
 
@@ -197,6 +255,8 @@ def judge(name, kind, m):
         # a steady 15-80 Hz chop matters when the sound is bass-heavy (a helicopter / rattle)
         if m["flutter"] > lim["flutter"] and m["sub80"] + m["b80_200"] > 0.35:
             bad.append("15-80 Hz tremolo depth %.2f" % m["flutter"])
+    if "rotor" in lim and m["rotor"][0] > lim["rotor"] and re.sub(r"_\d+$", "", name) not in ROTOR_OK:
+        bad.append("steady %.0f Hz beat, depth %.2f (a rotor)" % (m["rotor"][1], m["rotor"][0]))
     if "b80_200" in lim and m["b80_200"] > lim["b80_200"]:
         bad.append("80-200 Hz %.0f%%" % (m["b80_200"] * 100))
     if m["seam"] > lim["seam"]:
@@ -205,9 +265,9 @@ def judge(name, kind, m):
 
 
 def row(name, kind, m, bad):
-    return "%-26s %-4s pk %6.1f rms %6.1f fs %4d dc %+.4f <80 %3.0f%% 80-200 %3.0f%% clk %5.1f/s seam %.3f trem %4.2f  %s" % (
+    return "%-26s %-4s pk %6.1f rms %6.1f fs %4d dc %+.4f <80 %3.0f%% 80-200 %3.0f%% clk %5.1f/s seam %.3f trem %4.2f beat %4.2f@%2.0f  %s" % (
         name, kind, m["peak_db"], m["rms_db"], m["fs"], m["dc"], m["sub80"] * 100, m["b80_200"] * 100,
-        m["clicks_s"], m["seam"], m["flutter"], ("FAIL " + ", ".join(bad)) if bad else "ok")
+        m["clicks_s"], m["seam"], m["flutter"], m["rotor"][0], m["rotor"][1], ("FAIL " + ", ".join(bad)) if bad else "ok")
 
 
 def check_dump(d):
@@ -229,6 +289,10 @@ def check_dump(d):
 def check_mix(path, seg):
     rate, x = read_wav(path)
     print("== %s: %.1f s" % (path, len(x) / rate))
+    # The steady-beat (rotor) rule is for the buses without music: two low notes of a chord beat
+    # against each other by nature (E2 and G2 are 16 Hz apart), so music.wav, songs.wav and
+    # master.wav (which holds them) are not judged on it. Check ambience.wav and sfx.wav for beats.
+    beats = os.path.basename(path).split(".")[0] not in ("master", "music", "songs")
     fails = 0
     n = int(seg * rate)
     for s in range(0, len(x), n):
@@ -239,11 +303,11 @@ def check_mix(path, seg):
             print("%5.0fs  quiet" % (s / rate))
             continue
         m = measure(c, rate)
-        bad = judge("mix", "mix", m)
+        bad = judge("mix" if beats else "mix_music", "mix", m)
         fails += bool(bad)
         print(row("%5.0fs" % (s / rate), "mix", m, bad))
     m = measure(x, rate)
-    print(row("whole", "mix", m, judge("mix", "mix", m)))
+    print(row("whole", "mix", m, judge("mix" if beats else "mix_music", "mix", m)))
     return fails
 
 
@@ -277,7 +341,7 @@ def check_log(path):
 # Category of a sound (first regex that matches its name; tags like "scoop:clink" included).
 CATS = [
     ("bird", r"^(song|chirp|coo|gull|quack|bird|heron)$"),
-    ("animal", r"^(frog|meow|seal|purr|flutter|ice_creak)$"),
+    ("animal", r"^(frog|meow|mew|seal|flutter|ice_creak)$"),
     ("ambience", r"^(amb_|life_|LifeAmbience)"),
     ("robot", r"^(robot:|bot:)"),
 ]
@@ -285,9 +349,10 @@ CATS = [
 # sounds with more than one take; min gap regularity (coefficient of variation of the gaps under
 # 60 s; a metronome is 0) once a sound has 8 such gaps, or None to skip; category total a minute.
 REPEAT_RULES = {
-    "bird":     {"per_min": 3.0, "streak": 1, "cv": 0.25, "total": 4.0},
-    "animal":   {"per_min": 4.0, "streak": 1, "cv": 0.25, "total": 8.0},
-    "ambience": {"per_min": 2.0, "streak": 2, "cv": 0.2, "total": 4.0},
+    # [v10snd] owner: "too much ambient noise like wind and birds": was bird 3 / 4, animal 4 / 8, ambience 2 / 4
+    "bird":     {"per_min": 2.0, "streak": 1, "cv": 0.25, "total": 3.0},
+    "animal":   {"per_min": 3.0, "streak": 1, "cv": 0.25, "total": 5.0},
+    "ambience": {"per_min": 1.0, "streak": 2, "cv": 0.2, "total": 2.0},
     "robot":    {"per_min": 30.0, "streak": 3, "cv": 0.15, "total": 60.0},
     "ui":       {"per_min": 90.0, "streak": None, "cv": None, "total": None},
     "action":   {"per_min": 90.0, "streak": None, "cv": None, "total": None},

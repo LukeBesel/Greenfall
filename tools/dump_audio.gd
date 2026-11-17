@@ -63,7 +63,7 @@ func _process(_dt: float) -> void:
 	for id: String in ["wind", "insects", "lapping"]:  # fauna/fauna_ambience.gd's frontier beds
 		_wav("fauna_" + id, FaunaSounds.loop_stream(id), "bed")
 	_wav("fauna_crickets", FaunaSounds.crickets_loop(), "bed")
-	var animals: Dictionary = {}  # the wildlife's calls (purr, meow, birds, ...), fauna/fauna_sounds.gd
+	var animals: Dictionary = {}  # the wildlife's calls (mew, meow, birds, ...), fauna/fauna_sounds.gd
 	FaunaSounds._synth_all(animals)
 	for n: String in animals:
 		var list: Array = animals[n]
@@ -72,7 +72,7 @@ func _process(_dt: float) -> void:
 	StorySfx.ensure()  # the eggs' sounds (story/story_sfx.gd)
 	var story: Dictionary = StorySfx._streams
 	for n: String in story:
-		_wav("story_" + n, story[n], "animal" if n == "purr" or n == "quack" else "shot")
+		_wav("story_" + n, story[n], "animal" if n == "mew" or n == "quack" else "shot")
 	var f := FileAccess.open(_out.path_join("manifest.json"), FileAccess.WRITE)
 	f.store_string(JSON.stringify(_items, " "))
 	f.close()

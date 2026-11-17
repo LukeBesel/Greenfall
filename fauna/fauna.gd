@@ -12,7 +12,7 @@ extends Node3D
 ## an animal stands is checked against junk (FaunaRules.spot_ok).
 ##
 ## Cats: sit, groom, wander, curl up asleep on warm spots by the base, follow Lumi a little when
-## he stops nearby, and can be petted (E): a purr and a heart. Pet the same cat three times and
+## he stops nearby, and can be petted (E): a soft mew and a heart. Pet the same cat three times and
 ## it adopts you: it gets a name, lives at that base and follows you there (GameState.flags.fauna_cat).
 ## Sightings (in view and near Lumi) unlock Codex "Animals" entries (flags.fauna_seen); photos
 ## in photo mode go into the Collection (flags.fauna_photos, trinkets pic_<species>).
@@ -1020,6 +1020,8 @@ func _process(delta: float) -> void:
 	_ambience(delta)
 	if not _look_done and DevHooks.has("fauna-look"):
 		_dev_look()
+	if DevHooks.has("cat-probe"):
+		_dev_cat_probe(delta)
 	if DevHooks.has("fauna-callcount"):  # [fauna2] dev: bird calls per real minute
 		var now_s: float = Time.get_ticks_msec() * 0.001
 		if not has_meta("cc_t0"):
@@ -1631,8 +1633,8 @@ func _update_cat(a: Animal, dt: float) -> void:
 		a.state = St.FOLLOW
 		a.follow_t = 0.0
 		if a.sound_t <= 0.0:
-			a.sound_t = _rng.randf_range(15.0, 35.0)  # [v9s] was a fixed 12 s
-			_sound_at("meow", a.pos, -8.0)
+			a.sound_t = _rng.randf_range(45.0, 110.0)  # [v10snd] a rare soft meow (was every 15-35 s)
+			_sound_at("meow", a.pos, -12.0)
 	match a.state:
 		St.FOLLOW:
 			a.follow_t += dt
@@ -1751,14 +1753,14 @@ func _pet_enabled(a: Animal) -> bool:
 	return true
 
 
-## E on a cat: it sits up, leans in and purrs; a heart rises. Third time: it adopts you.
+## E on a cat: it sits up, leans in and gives a soft mew; a heart rises. Third time: it adopts you.
 func pet(a: Animal) -> void:
 	a.state = St.PET
 	a.t = 2.6
 	a.pets += 1
 	var to: Vector3 = _lumi_pos - a.pos
 	_face(a, to, 1.0, 1.0)
-	Audio.play("purr", 1.0, -12.0, 0.05)  # [v8snd] was -3 dB: louder than every other animal
+	Audio.play("mew", 1.0, -8.0, 0.05)  # [v10snd] a soft mew; the purr read as a helicopter (fauna_sounds.gd)
 	_heart(a.pos + Vector3(0, 0.55, 0))
 	var pm: Node = world.patch.get("model") if world.get("patch") else null
 	if pm:
@@ -2422,7 +2424,7 @@ func _ambience(delta: float) -> void:
 	if _cricket_vol > 0.01:
 		if not _crickets.playing and not Audio.holds(_crickets):  # [v8pause]
 			_crickets.play()
-		AudioVol.set_db(_crickets, linear_to_db(_cricket_vol) - 8.0)  # [qafix] crash fix
+		AudioVol.set_db(_crickets, linear_to_db(_cricket_vol) - 14.0)  # [qafix] crash fix; [v10snd] was -8
 	elif _crickets.playing:
 		_crickets.stop()
 	if ambience:
@@ -2488,6 +2490,34 @@ func _view_clear(focus: Vector3, eye: Vector3) -> float:
 			var dd: float = (eye - from).length()
 			frac = minf(frac, (0.4 + res[0] * dd) / maxf(0.4 + dd, 0.01))
 	return frac
+
+
+## [v10snd] --cat-probe[=S]: the nearest cat is petted every S seconds (default 9) once one is within
+## 12 m, and every state it goes through is logged (`[catprobe]`), so an --audio-capture run
+## records the real mix of a cat being followed, petted and left alone (owner: "cats still sound
+## like helicopter", the third report; nobody can listen here).
+var _cat_probe_t: float = 6.0
+var _cat_probe_state: int = -1
+func _dev_cat_probe(delta: float) -> void:
+	var best: Animal = null
+	for a: Animal in animals:
+		if a.kind == "cat" and a.state != St.LEAVE and (best == null or a.pos.distance_to(_lumi_pos) < best.pos.distance_to(_lumi_pos)):
+			best = a
+	if best == null:
+		return
+	if int(best.state) != _cat_probe_state:
+		_cat_probe_state = int(best.state)
+		print("[catprobe] t=%.1f cat %.1f m away, state %s" % [age, best.pos.distance_to(_lumi_pos), St.keys()[best.state]])
+	_cat_probe_t -= delta
+	if _cat_probe_t <= 0.0 and best.pos.distance_to(_lumi_pos) >= 12.0:
+		_cat_probe_t = 3.0
+		print("[catprobe] t=%.1f nearest cat %.1f m away (%s): brought to Lumi" % [age, best.pos.distance_to(_lumi_pos), St.keys()[best.state]])
+		best.pos = _lumi_pos + Vector3(2.5, 0.0, 1.0)
+		best.pos.y = _ground_y(best.pos)
+	if _cat_probe_t <= 0.0 and best.pos.distance_to(_lumi_pos) < 12.0:
+		_cat_probe_t = DevHooks.get_f("cat-probe", 9.0)
+		print("[catprobe] t=%.1f pet" % age)
+		pet(best)
 
 
 ## --fauna-look=SPECIES[,dist,pitch,yaw]: put Lumi beside the nearest one and frame both.

@@ -71,7 +71,8 @@ What a file with no entry gets is `"defaults"` in the same file.
 |---|---|
 | Quiet between songs (seconds, shortest and longest) | `gap_s` |
 | Quiet after loading a save | `first_gap_s` |
-| Quiet minutes after the pod lands | `landing_gap_s` |
+| The first song: the CD in the junk by the start pad (no song before it; found = that song plays and the radio, N, opens) | `first_cd.song`, `first_cd.planet` |
+| After the first CD every song may come up at random (true), or only the found ones (false) | `shuffle_all` |
 | How often the main theme is picked (0 to 1). It still never plays twice in a row | `main_share` |
 | Which song is the main theme (first on the title screen) | `main_theme` |
 | Level of all songs against the rest of the game | `song_db` |
@@ -88,9 +89,10 @@ A new planet: add a block with its id there (and a folder if you like).
 
 | To change | Edit |
 |---|---|
-| Where the five sliders in Settings start for a new player (Master, Music, Ambience, Sound effects, Interface) | `volumes` (0 to 1) |
-| A fixed trim under a slider (Music, Songs, Ambience, SFX, UI) | `bus_trim_db` |
-| Which slider a sound follows (menu clicks: Interface; animal calls: Ambience; the rest: Sound effects) | `bus_of` |
+| Where the six sliders in Settings start for a new player (Master, Music, Sound effects, Reward sounds, Wind and animals, Interface) | `volumes` (0 to 1): `master`, `music`, `sfx`, `jingles`, `ambience`, `ui` |
+| A fixed trim under a slider (Music, Songs, Ambience, SFX, UI, Jingles) | `bus_trim_db` |
+| Which slider a sound follows (menu clicks: Interface; animal calls and wind: Wind and animals; fanfare, chime, ding, coin, sparkle, buy: Reward sounds; the rest: Sound effects) | `bus_of` |
+| How loud the score's stingers are (upgrade, level up, robot built, hex clean; they follow Reward sounds) | `sting_db` |
 | One sound louder or quieter everywhere | `sound_db`: `"chime": -3` |
 | A sound that repeats too fast: the shortest time between two plays, in seconds | `min_gap_s`: `"clink": 0.2` |
 | The same, only where one thing plays it: `tag:sound`. Tags: `scoop` (pieces flying into Lumi), `lumi` (start/stop squeak), `sweep` (litter), `lights` (street lights coming on), `robot` (robots at work) | `min_gap_s`: `"robot:servo": 2.0`, `sound_db`: `"scoop:pop": -3` |
@@ -132,6 +134,12 @@ street lights (`lights:`) got gaps too; they only show up later in a run.
 | Frogs (one shared clock, a little more at night) | `wildlife.gap_s.frog`, `wildlife.frog_night_mult` |
 
 Every sound with more than one take never plays the same take twice running (`Audio.pick_take`). World events that also happen far away (a hex coming clean, a hex levelling up) use `Audio.play_at`: full level within 16 m of the camera, 6 dB softer per doubling past it.
+
+**The 2026-11-15 pass (v10snd)** (owner: "way too much wind or waves", "too much ambient noise like wind and birds", "cats still sound like helicopter", "the sounds when i get an upgrade are just so loud ... add setting", "could use a bit more music"). Nobody heard any of it; all by measurement.
+- The cat. `--cat-probe[=S]` on an orbit run brings the nearest cat to Lumi and pets it every S seconds, logging its states (`[catprobe]`); with `--audio-capture` that records a cat's real mix. Found: every purr put a steady 25-27 Hz beat (depth 0.2-0.36) on the Ambience bus at -36 dB, 9 dB over the wind bed. A purr is breath noise pulsed about 25 times a second, which is what a rotor is. `check_audio.py` had passed it twice because its chop rule only fired on bass-heavy sounds. The purr is gone: a petted cat gives one soft mew (`FaunaSounds.mew`), and the follow-meow comes every 45-110 s (was 15-35). The check now has a rotor rule: a steady 15-45 Hz beat of the loudness (its own rate, not the overtone of a slower rhythm), depth over 0.12 in any 2 s stretch of an animal, a bed, or a recorded bus without music (`--wav .../ambience.wav`, `sfx.wav`). Frogs are exempt by name (a croak is a pulse train), music is exempt (low chord notes beat). The new rule also caught the wing flutter (squared 7-12 Hz wingbeats: an 14-23 Hz overtone; now round beats) and the unused hover spray bed (a 23 Hz beat; now a slow swell).
+- Ambience. Measured on the Ambience bus, standing (`--life-sound --audio-capture`, after the first 20 s): start yard -45.1 dBFS, lake shore south of the yard -45.2, town street -45.6, all of it the dust wind bed, on 100% of the time and louder than anything else while Lumi stands. Now `wind_dust` -34 (was -25), `leaves` -32 (was -23), the bus trimmed 3 dB, the slider starts at 0.5 (was 0.8): see the table in docs/OWNER_FEEDBACK.md item 90 for the after numbers. Birds: one call per 50-120 s (was 22-50), at most 2 a minute, one species at most every 100-130 s; frogs 35-100 s; flutters 14-35 s; creaks and the life bed's birdsong at most once in 2.5 minutes. `--repeat` caps tightened to match (bird 2 a minute, all birds 3; animals 3 / 5; ambience 1 / 2).
+- Reward sounds. In-game loudness of every one-shot = its loudest 400 ms + the dB it is played at (from a `--sound-log` autoplay run): the scoop's clink sat at -34 dB, buy at -18..-22, fanfare -23, chime -25, coin -27, ding -29, and the score's stingers peaked at -11 dBFS. They now have their own bus and slider (Jingles, "Reward sounds") and land near -30, a little over the scoop. The baler and bin thumps (crunch, pop, hydraulic, clunk, groan at -22..-24) come down 3-4 dB.
+- Music. `gap_s` 3-7.5 min (was 6-15). No song before the first CD (see "The rules" above).
 
 **The 2026-11-13 pass** (owner: "rattling noise constantly, like my speakers blew out"; "cat sounds like a helicopter"). Measured in the start yard (`--life-sound --audio-capture`, standing still), before -> after: the dust wind bed 42.7 -> 0.1 raw spikes a second, 57% -> 3% of the bed under 80 Hz. The purr: peak -0.4 -> -9 dBFS and played 9 dB softer, under 200 Hz 62% -> 4%, 24 Hz chop depth 1.3-1.5 -> about 0.4, at most once per 6 s. Every wind bed and the leaves 31-57% -> 1-4% under 80 Hz; the score's bass moved up an octave (E2-D#3) and its air bed was high-passed.
 

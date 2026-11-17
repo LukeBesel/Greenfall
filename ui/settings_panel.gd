@@ -257,6 +257,7 @@ func _build_basics(p: VBoxContainer) -> void:
 	_slider(p, "Music", Settings.music_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
 		Settings.music_volume = v
 		Audio.apply_volumes())
+	_mix_sliders(p, false)  # [v10snd] owner: reward sounds too loud, too much wind and birds: "add setting"
 	_cycler(p, tr("Quality preset"), [tr("Low"), tr("Medium"), tr("High"), tr("Ultra")], Settings.quality, _queue_quality)
 	_toggle(p, tr("Fullscreen"), Settings.fullscreen, func(v: bool) -> void:
 		Settings.fullscreen = v
@@ -319,6 +320,25 @@ func _link_focus() -> void:
 
 # --- Pages ----------------------------------------------------------------------------
 
+## [v10snd] The sliders a player reaches for when something is too loud, each with a sound to hear
+## the new level by: Sound effects (scooping, machines), Reward sounds (the Jingles bus: fanfares,
+## chimes, upgrade and level-up tunes) and Wind and animals (the Ambience bus: wind, water, birds,
+## animals). On Basics (title and pause) and on the Sound page; saved with the settings.
+func _mix_sliders(p: VBoxContainer, with_sfx: bool) -> void:
+	if with_sfx:
+		_slider(p, tr("Sound effects"), Settings.sfx_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
+			Settings.sfx_volume = v
+			Audio.apply_volumes()
+			Audio.play("pop", 1.0, -6.0))
+	_slider(p, tr("Reward sounds"), Settings.jingle_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
+		Settings.jingle_volume = v
+		Audio.apply_volumes()
+		Audio.play("chime", 1.0, -6.0))
+	_slider(p, tr("Wind and animals"), Settings.ambience_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
+		Settings.ambience_volume = v
+		Audio.apply_volumes()
+		Audio.play("bird", 1.0, -8.0))
+
 func _build_audio(p: VBoxContainer) -> void:
 	_section(p, tr("Volume"))
 	_slider(p, "Master", Settings.master_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
@@ -327,13 +347,7 @@ func _build_audio(p: VBoxContainer) -> void:
 	_slider(p, "Music", Settings.music_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
 		Settings.music_volume = v
 		Audio.apply_volumes())
-	_slider(p, tr("Ambience"), Settings.ambience_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:  # [v6sound]
-		Settings.ambience_volume = v
-		Audio.apply_volumes())
-	_slider(p, tr("Sound effects"), Settings.sfx_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
-		Settings.sfx_volume = v
-		Audio.apply_volumes()
-		Audio.play("pop", 1.0, -6.0))
+	_mix_sliders(p, true)
 	_slider(p, tr("Interface"), Settings.ui_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:  # [v6sound]
 		Settings.ui_volume = v
 		Audio.apply_volumes()

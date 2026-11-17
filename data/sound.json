@@ -1,25 +1,33 @@
 {
- "_doc": "[v6sound] The mix and the ambience, per planet (autoload/Audio.gd, audio/ambience.gd). See docs/ADJUSTING.md, \"Music and sound\". volumes: where the five sliders in Settings start (0..1) for a new player. bus_trim_db: fixed trim of each bus under its slider. bus_of: sounds that do not play on the SFX bus: UI sounds follow the Interface slider, animal calls and wind follow the Ambience slider. sound_db: trim of one sound everywhere it is played; \"tag:sound\" (e.g. \"scoop:blip\") trims it only where the code plays it with that tag (scoop: the pieces flying into Lumi, lumi: start/stop squeak, sweep: litter sweep, lights: street lights coming on, robot: robots at work); -80 or lower mutes it. min_gap_s: the shortest time (game seconds) between two plays of the same sound; a play that comes sooner is dropped, so nothing can machine-gun or stack. duck: how far music and ambience dip while WREN speaks.",
+ "_doc": "[v6sound] The mix and the ambience, per planet (autoload/Audio.gd, audio/ambience.gd). See docs/ADJUSTING.md, \"Music and sound\". volumes: where the six sliders in Settings start (0..1) for a new player. bus_trim_db: fixed trim of each bus under its slider. bus_of: sounds that do not play on the SFX bus: UI sounds follow the Interface slider, animal calls and wind follow the Ambience slider. sound_db: trim of one sound everywhere it is played; \"tag:sound\" (e.g. \"scoop:blip\") trims it only where the code plays it with that tag (scoop: the pieces flying into Lumi, lumi: start/stop squeak, sweep: litter sweep, lights: street lights coming on, robot: robots at work); -80 or lower mutes it. min_gap_s: the shortest time (game seconds) between two plays of the same sound; a play that comes sooner is dropped, so nothing can machine-gun or stack. duck: how far music and ambience dip while WREN speaks.",
  "volumes": {
   "master": 0.9,
   "music": 0.55,
-  "ambience": 0.8,
+  "ambience": 0.5,
   "sfx": 0.9,
-  "ui": 0.8
+  "ui": 0.8,
+  "jingles": 0.8
  },
+ "_doc_v10snd": "[v10snd] Owner, 2026-11-15: 'way too much wind or waves sound', 'too much ambient noise like wind and birds and stuff', 'the sounds like when i get an upgrade and stuff are just so loud. quiet them down and also add setting to adjust that'. Ambience: the slider starts at 0.5 (was 0.8; a saved 0.8 follows once, Settings.MIX_VERSION), the bus is trimmed 3 dB, the life beds are 9 dB lower and every animal and creak about half as frequent (wildlife, life.events). Jingles: a bus and slider of its own ('Reward sounds') for the fanfare, chime, ding, sparkle, coin, buy, upgrade and confirm sounds and the score's stingers (upgrade, level up, robot built, hex clean); bus_of sends them there, sound_db brings each down to sit a little over the scoop.",
  "_doc_master_highpass": "[v8snd] master_highpass_hz: a high-pass on the Master bus, under the whole mix (Hz, 0 = off). Laptop and phone speakers can't play sub-bass and rattle on it; 60 keeps the kick and bass notes, takes out the rumble.",
  "master_highpass_hz": 60.0,
  "bus_trim_db": {
   "Music": 0.0,
   "Songs": 0.0,
-  "Ambience": 0.0,
+  "Ambience": -3.0,
   "SFX": 0.0,
-  "UI": 0.0
+  "UI": 0.0,
+  "Jingles": 0.0
  },
  "bus_of": {
   "click": "UI",
   "tick": "UI",
-  "buy": "UI",
+  "buy": "Jingles",
+  "fanfare": "Jingles",
+  "chime": "Jingles",
+  "ding": "Jingles",
+  "coin": "Jingles",
+  "sparkle": "Jingles",
   "confirm": "UI",
   "buzz": "UI",
   "error": "UI",
@@ -32,11 +40,26 @@
   "quack": "Ambience",
   "meow": "Ambience",
   "seal": "Ambience",
-  "purr": "Ambience",
+  "mew": "Ambience",
   "bird": "Ambience"
  },
+ "_doc_sound_db_v10": "[v10snd] Measured in play (autoplay, --sound-log, loudest 400 ms of each sound + the dB it is played at): the scoop's clink sits at -34 dB; before this pass buy was at -18..-22, fanfare -23, chime -25 (up to -20), coin -27, ding -29, the score's stingers peaked at -11 dBFS, and the baler's crunch, pop, hydraulic, clunk and groan sat at -22..-24. Now the reward sounds land at about -30 (-32 with the Reward sounds slider at its start level), a little over the scoop; the machine sounds come 3-4 dB down. sting_db: the score's stingers (upgrade, level up, robot built, hex clean).",
+ "sting_db": -6.0,
  "sound_db": {
-  "scoop:blip": -80.0
+  "scoop:blip": -80.0,
+  "scoop:pop": 0.0,
+  "buy": -11.0,
+  "fanfare": -7.0,
+  "chime": -5.0,
+  "coin": -3.0,
+  "ding": -1.0,
+  "crunch": -4.0,
+  "pop": -4.0,
+  "hydraulic": -4.0,
+  "clunk": -3.0,
+  "groan": -3.0,
+  "dig": -3.0,
+  "thunk": -2.0
  },
  "min_gap_s": {
   "_default": 0.04,
@@ -45,7 +68,7 @@
   "scoop:sparkle": 0.7,
   "scoop:whoosh": 0.7,
   "scoop:pop": 0.35,
-  "purr": 6.0,
+  "mew": 6.0,
   "lumi:squeak": 2.5,
   "sweep:whoosh": 1.5,
   "lights:clunk": 1.2,
@@ -76,14 +99,14 @@
  },
  "_doc_wildlife": "[v9s] The wildlife's calls (fauna/fauna.gd), every planet. gap_s: [shortest, longest] seconds between two calls of a category: call (every bird call in the game shares one clock, also the life bed's birds; twice as long at night), flutter (a flock's wings), frog (all frogs share one clock, mostly near the short end with now and then a long hush; frog_night_mult at night). species_gap_s: one kind of call never twice within about this many seconds. calls_per_min: at most this many bird calls in any minute. While Lumi stands still the bird gap grows from 1x at still_after_s to still_mult at still_full_s. phrase: sound -> [chance, shortest s, longest s]: after a call the same bird calls once more that much later (another take), then silence.",
  "wildlife": {
-  "gap_s": {"call": [22.0, 50.0], "flutter": [5.0, 14.0], "frog": [14.0, 50.0]},
+  "gap_s": {"call": [50.0, 120.0], "flutter": [14.0, 35.0], "frog": [35.0, 100.0]},
   "frog_night_mult": 0.85,
-  "species_gap_s": {"song": 50.0, "chirp": 45.0, "coo": 60.0, "gull": 60.0, "quack": 45.0, "heron": 60.0},
-  "calls_per_min": 3,
+  "species_gap_s": {"song": 110.0, "chirp": 100.0, "coo": 130.0, "gull": 130.0, "quack": 100.0, "heron": 130.0},
+  "calls_per_min": 2,
   "still_after_s": 45.0,
   "still_full_s": 240.0,
   "still_mult": 2.5,
-  "phrase": {"chirp": [0.45, 0.6, 1.8], "coo": [0.25, 1.2, 2.5], "song": [0.2, 1.8, 3.5]}
+  "phrase": {"chirp": [0.25, 0.6, 1.8], "coo": [0.12, 1.2, 2.5], "song": [0.1, 1.8, 3.5]}
  },
  "duck": {
   "music_db": -7.0,
@@ -104,19 +127,19 @@
     "events": [],
     "life": {
      "_doc": "[v6life] The bed that follows the ground round Lumi (audio/life_ambience.gd), not the planet's restoration. Any planet can have one. rings: rings of cells round Lumi it listens to (3 is about 30 m). fade_s: crossfade seconds. loops: id -> [dB at full weight, on]; on is dirty (mostly junk round Lumi), green (grass round Lumi) or always; an id is a built-in loop (wind_dust, wind_warm, wind_sea, wind_eerie, heat_buzz, waves, water, cicadas, leaves) or a res:// sound file. events: [sound, shortest wait s, longest wait s, dB, pitch low, pitch high, when, at least s between two]; when is dirty, green, green_day or always; sound is amb_creak, a game sound (song, chirp, coo, gull, frog, ...) or a res:// file. Bird calls also wait for the wildlife's shared bird clock.",
-     "_doc_mix": "mix: when the beds come in: dirty_from / dirty_full are the share of junk round Lumi where the dirty bed starts / is full; green_from / green_full the same for the mean green (0..1); dirty_hushes_green: how much junk quiets the green bed (0..1). when: the thresholds of the events' conditions (dirty: junk share, green: mean green, night: darkness 0..1 above which green_day is off). min_gap_floor_s: no one-shot plays twice within this many seconds, whatever its own numbers say (the owner wants birds and creaks rare: about once a minute at most). Loops are beds and do not count.",
+     "_doc_mix": "mix: when the beds come in: dirty_from / dirty_full are the share of junk round Lumi where the dirty bed starts / is full; green_from / green_full the same for the mean green (0..1); dirty_hushes_green: how much junk quiets the green bed (0..1). when: the thresholds of the events' conditions (dirty: junk share, green: mean green, night: darkness 0..1 above which green_day is off). min_gap_floor_s: no one-shot plays twice within this many seconds, whatever its own numbers say (the owner wants birds and creaks rare: [v10snd] once in two minutes at most). Loops are beds and do not count.",
      "rings": 3,
      "fade_s": 6.0,
      "mix": {"dirty_from": 0.25, "dirty_full": 0.85, "green_from": 0.12, "green_full": 0.6, "dirty_hushes_green": 0.6},
      "when": {"dirty": 0.6, "green": 0.3, "night": 0.3},
-     "min_gap_floor_s": 60.0,
+     "min_gap_floor_s": 120.0,
      "loops": {
-      "wind_dust": [-25.0, "dirty"],
-      "leaves": [-23.0, "green"]
+      "wind_dust": [-34.0, "dirty"],
+      "leaves": [-32.0, "green"]
      },
      "events": [
-      ["amb_creak", 60.0, 120.0, -27.0, 0.75, 1.05, "dirty", 60.0],
-      ["song", 70.0, 150.0, -25.0, 0.95, 1.1, "green_day", 70.0]
+      ["amb_creak", 150.0, 320.0, -31.0, 0.75, 1.05, "dirty", 150.0],
+      ["song", 160.0, 340.0, -28.0, 0.95, 1.1, "green_day", 160.0]
      ]
     }
    }

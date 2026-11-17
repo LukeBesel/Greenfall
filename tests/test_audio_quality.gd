@@ -1,5 +1,5 @@
 extends GutTest
-## [v8snd] The sounds that play for minutes at a time, and the cat's purr, must not make laptop
+## [v8snd] The sounds that play for minutes at a time, and the cat's sounds, must not make laptop
 ## speakers rattle: no clipping, no DC, little energy under 80 Hz, no raw single-sample spikes
 ## (crackle), and the purr no full-depth low chop (it read as a helicopter). The owner heard "a
 ## rattling noise constantly, like my speakers blew out": the start yard's dust wind (raw spikes,
@@ -104,7 +104,7 @@ func test_score_air_bed_is_not_rumble() -> void:
 	assert_lt(_sub80(air["pcm"]), 0.3, "the score's air bed is not mostly sub-bass")
 
 
-## The envelope's strongest 15-40 Hz component, relative to its mean (a steady chop's depth).
+## The envelope's strongest 15-45 Hz component, relative to its mean (a steady chop's depth).
 static func _chop_depth(b: PackedFloat32Array) -> float:
 	var hop: int = int(RATE / 400.0)
 	var env := PackedFloat32Array()
@@ -118,7 +118,7 @@ static func _chop_depth(b: PackedFloat32Array) -> float:
 		mean += e
 	mean /= maxf(1.0, env.size())
 	var best: float = 0.0
-	for f: int in range(15, 41):
+	for f: int in range(15, 46):
 		var re: float = 0.0
 		var im: float = 0.0
 		for i: int in env.size():
@@ -129,17 +129,40 @@ static func _chop_depth(b: PackedFloat32Array) -> float:
 	return best
 
 
-func test_purr_is_a_soft_purr_not_a_helicopter() -> void:
+## [v10snd] Owner, third report: "cats still sound like helicopter". The purr (noise pulsed 25
+## times a second) is gone; a petted cat gives a soft mew. No cat sound may beat steadily at
+## 15-45 Hz (what a rotor is, whatever its pitch), and none is loud.
+func test_cat_sounds_are_not_a_helicopter() -> void:
+	var sounds: Dictionary = {}
+	FaunaSounds._synth_all(sounds)
+	assert_false(sounds.has("purr"), "the purr is gone")
+	assert_true(sounds.has("mew") and sounds.has("meow"))
+	for nm: String in ["mew", "meow"]:
+		for st: AudioStreamWAV in sounds[nm]:
+			var b: PackedFloat32Array = _pcm_of(st)
+			assert_lt(_peak_dc(b).x, 0.2, "%s is soft" % nm)
+			assert_lt(_sub80(b), 0.05, "%s has no sub-bass" % nm)
+			assert_lt(_chop_depth(b), 0.15, "%s has no steady 15-45 Hz beat" % nm)
+	# The check itself: the old purr's recipe (band noise, 25 Hz pulse at +-30%) must fail it.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 9091
-	for v: float in [0.0, 0.15, -0.1]:
-		var b: PackedFloat32Array = FaunaSounds.purr(rng, v)
-		var pd: Vector2 = _peak_dc(b)
-		assert_lt(pd.x, 0.5, "purr %.2f is soft (peak %.2f)" % [v, pd.x])
-		assert_lt(_sub80(b), 0.05, "purr %.2f has no sub-bass" % v)
-		assert_lt(_chop_depth(b), 0.8, "purr %.2f pulses gently, not a full on/off chop" % v)
-	assert_lt(SoundCfg.min_gap("purr"), 999.0)
-	assert_gte(SoundCfg.min_gap("purr"), 4.0, "mashing E can't keep a cat purring non-stop")
+	var old := PackedFloat32Array()
+	old.resize(int(1.2 * RATE))
+	var lp: float = 0.0
+	for i: int in old.size():
+		lp += (rng.randf_range(-1.0, 1.0) - lp) * 0.27
+		old[i] = lp * (0.7 + 0.3 * sin(TAU * 25.0 * i / RATE))
+	assert_gt(_chop_depth(old), 0.2, "the check catches a 25 Hz pulsed noise (the old purr)")
+	assert_gte(SoundCfg.min_gap("mew"), 4.0, "mashing E can't make a cat mew non-stop")
+	assert_eq(SoundCfg.bus_of("mew"), "Ambience")
+
+
+static func _pcm_of(st: AudioStreamWAV) -> PackedFloat32Array:
+	var out := PackedFloat32Array()
+	out.resize(st.data.size() / 2)
+	for i: int in out.size():
+		out[i] = st.data.decode_s16(i * 2) / 32768.0
+	return out
 
 
 func test_master_has_a_small_speaker_high_pass() -> void:

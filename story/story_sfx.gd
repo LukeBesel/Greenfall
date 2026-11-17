@@ -24,7 +24,9 @@ static func ensure() -> void:
 	rng.seed = 4711
 	_reg("quack", [_quack(1.0), _quack(1.12), _quack(0.92)])
 	_reg("glitch", [_glitch(rng, 0.35), _glitch(rng, 0.5), _glitch(rng, 0.25)])
-	_reg("purr", [_purr(rng)])
+	for i: int in int(2.4 * FaunaSounds.RATE):  # [v10snd] the old purr's draws, so the takes after it stay as checked
+		rng.randf()
+	_reg("mew", [FaunaSounds.mew(0.0), FaunaSounds.mew(0.1), FaunaSounds.mew(-0.07)])
 	_reg("phone_ring", [_ring()])
 	_reg("arcade", [_arcade(0), _arcade(1)])
 	_reg("tv_static", [_static(rng)])
@@ -132,12 +134,6 @@ static func _glitch(rng: RandomNumberGenerator, seconds: float) -> PackedFloat32
 		var gate: float = 1.0 if fmod(t * 23.0, 1.0) < 0.7 else 0.2
 		b[i] = (hold * 0.5 + sq * 0.18) * gate * exp(-t * 3.0) * 0.32
 	return b
-
-
-## [v8snd] The same soft purr as the wildlife's cats (fauna/fauna_sounds.gd); this one was a
-## 24 Hz chop of sub-200 Hz noise plus a 48 Hz tone (a helicopter on laptop speakers).
-static func _purr(rng: RandomNumberGenerator) -> PackedFloat32Array:
-	return FaunaSounds.purr(rng, 0.0)
 
 
 static func _ring() -> PackedFloat32Array:

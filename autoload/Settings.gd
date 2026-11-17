@@ -70,6 +70,10 @@ var music_volume: float = 0.55
 ## [v6sound] Wind, wildlife and planet beds; and menu clicks. Defaults: data/sound.json "volumes".
 var ambience_volume: float = 0.8
 var ui_volume: float = 0.8
+## [v10snd] Reward sounds: fanfares, chimes, upgrade and level-up stingers (the Jingles bus).
+var jingle_volume: float = 0.8
+## Raise when a default volume in data/sound.json "volumes" is lowered and saved settings should follow once.
+const MIX_VERSION: int = 2
 var mouse_sensitivity: float = 0.0035
 var invert_y: bool = false
 var best_value_tags: bool = true
@@ -126,6 +130,7 @@ func _ready() -> void:
 	ambience_volume = SoundCfg.volume_default("ambience", ambience_volume)
 	sfx_volume = SoundCfg.volume_default("sfx", sfx_volume)
 	ui_volume = SoundCfg.volume_default("ui", ui_volume)
+	jingle_volume = SoundCfg.volume_default("jingles", jingle_volume)
 	load_settings()
 	PadHold.install(get_tree())  # [orbD] hold the pad's map button (View) for the goal tracker
 	for a: String in OS.get_cmdline_user_args():  # [l10n] dev hook: --locale=pseudo|de|es|en
@@ -216,6 +221,7 @@ func _register_default_actions() -> void:
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
 		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_TOUCHPAD), _joy(JOY_BUTTON_PADDLE1)],  # [hud] expand the goal tracker; [orbD] pad: hold View (ui/pad_hold.gd), or touchpad / paddle 1
 		"photo_mode": [_key(KEY_P)],  # [photo] pad: via the pause menu
+		"open_radio": [_key(KEY_N)],  # [v10snd] the radio, from the first CD on (ui/tunes_picker.gd); pad: via the pause menu
 		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
 		"glim_scan": [_key(KEY_F), _axis(JOY_AXIS_TRIGGER_LEFT, 1.0)],  # [buddy] tap: hex scan, hold: Glim panel
 		"boost": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],  # [orbD] hover-boost on the globe (x4), also the sled's boost
@@ -274,6 +280,8 @@ func save_settings() -> void:
 	cfg.set_value("audio", "music", music_volume)
 	cfg.set_value("audio", "ambience", ambience_volume)
 	cfg.set_value("audio", "ui", ui_volume)
+	cfg.set_value("audio", "jingles", jingle_volume)
+	cfg.set_value("audio", "mix", MIX_VERSION)
 	cfg.set_value("ui", "best_value_tags", best_value_tags)
 	cfg.set_value("ui", "hud_mode", hud_mode)  # [hud]
 	cfg.set_value("display", "quality", quality)
@@ -326,6 +334,11 @@ func load_settings() -> void:
 	music_volume = float(cfg.get_value("audio", "music", music_volume))
 	ambience_volume = float(cfg.get_value("audio", "ambience", ambience_volume))
 	ui_volume = float(cfg.get_value("audio", "ui", ui_volume))
+	jingle_volume = float(cfg.get_value("audio", "jingles", jingle_volume))
+	# [v10snd] Owner: "too much ambient noise like wind and birds". The lower Ambience start level
+	# also reaches a player whose settings were saved with the old one (once; the slider is theirs after).
+	if int(cfg.get_value("audio", "mix", 1)) < MIX_VERSION:
+		ambience_volume = minf(ambience_volume, SoundCfg.volume_default("ambience", ambience_volume))
 	best_value_tags = bool(cfg.get_value("ui", "best_value_tags", best_value_tags))
 	hud_mode = clampi(int(cfg.get_value("ui", "hud_mode", hud_mode)), 0, 2)  # [hud]
 	quality = int(cfg.get_value("display", "quality", quality))
