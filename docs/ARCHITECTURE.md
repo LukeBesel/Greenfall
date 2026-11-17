@@ -23,7 +23,7 @@ Written in the `[health]` pass, Nov 2026, against Godot 4.7.2. Line counts are a
 | `robots/` | 6 / 3.7k | `Fleet` (spawn, orders, zones), `Robot` (role AI in `_physics_process`), `RobotVisual`/`RobotKit`/`RobotPersona` (looks and animation), `WaterNet` |
 | `automation/` | 15 / 5.6k | `Hub` (base levels), `Depot`/scale, `Stations` (conveyor, auto-baler, recycler), `Rocket`/`LaunchPad`/`RocketTiers`, `Outposts`, `CargoPods`, `JunkCube` |
 | `plants/` | 4 / 1k | `Garden` (slots, growth, watering), `HexLevels`, `Composter`, `Wildlife` |
-| `story/` | 18 / 6.6k | `Wren` (companion lines), `Intro`, `FirstSeed`, `ShardSystem`, `EasterEggs`/`EggProps`, `LedgerArc`, `CoreCharge`, `BloomFinale`, `Goals`, `Interactables`, `StorySfx` |
+| `story/` | 18 / 6.6k | `Wren` (companion lines), `Intro`, `FirstSeed`, `ShardSystem`, `EasterEggs`/`EggProps`, `CoreCharge`, `BloomFinale`, `Goals`, `Interactables`, `StorySfx` |
 | `systems/` | 14 / 4.5k | `Research`, `Achievements`, `Codex`, `WorldEvents`, `Contracts`, `Bloom`, `LumiLevel`, `RobotBuilder`, `Collection`, `QualityProbe` (mostly static data and logic plus one node each) |
 | `ui/` | 44 / 12k | `HUD`, hotbar, goals panel, upgrades/research/codex/command/globe screens, pause menu, settings panel, photo mode, `UITheme` |
 | `water/`, `audio/`, `art/`, `steam/` | | lake view; music director and synth; `ProcMesh`/`Mats`/`AssetLib`/`Vfx`; the Steam wrapper and demo gating |
@@ -55,7 +55,7 @@ Written in the `[health]` pass, Nov 2026, against Godot 4.7.2. Line counts are a
 5. **Restore**: `_restore_world()` (cubes, Patch, offline catch-up), `cam.snap()`, spawn dev flags.
 6. **Dev setup**: camera presets, `--give`, `--unlock-seeds`, `--upgrade-levels`, `--give-parts`, `--clean-hexes`, `--robots`, `--order`, `--open=...`.
 7. **Global hooks**: `EventBus.hitstop_requested` and the cosmetics unlock checks. It prints `[slice] built in N ms`, then handles `--auto-launch` and the rocket arrival.
-8. **Story and systems** (the order matters: later nodes read earlier ones in `setup()`): `Wren` + `Subtitles`, `Garden`, `HexLevels`, `FutureLayer` (plus `--future` preview), `Goals`, `Wildlife`, `FirstSeed`, `ShardSystem`, `DocumentView`, `Tutorial`, research/codex/achievements (`_setup_research_codex`), `CargoPods`, `Composter`, `Interactables`, `Outposts`, `EasterEggs`, `LedgerArc`, `WorldEvents`, `Contracts`, `Bloom`, frontier setup, `CoreCharge`, `Intro` (plays, or places the pod and wakes WREN).
+8. **Story and systems** (the order matters: later nodes read earlier ones in `setup()`): `Wren` + `Subtitles`, `Garden`, `HexLevels`, `FutureLayer` (plus `--future` preview), `Goals`, `Wildlife`, `FirstSeed`, `ShardSystem`, `DocumentView`, `Tutorial`, research/codex/achievements (`_setup_research_codex`), `CargoPods`, `Composter`, `Interactables`, `Outposts`, `EasterEggs`, `WorldEvents`, `Contracts`, `Bloom`, frontier setup, `CoreCharge`, `Intro` (plays, or places the pod and wakes WREN).
 
 The rest of the file:
 - sim hooks: `collect_piece`, `_on_hex_clean` with its milestones, `salvage_materials`, `add_cube`, `_hitstop`, `planet_cell_at`

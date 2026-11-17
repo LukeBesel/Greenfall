@@ -2,7 +2,7 @@ class_name TvBroadcast
 extends Node
 ## [eggs2] "Still Broadcasting" (egg "tv"): adjusting the antenna tunes in the last news broadcast
 ## from Old Town, a loop of simple stylised frames drawn here (no image files) with one caption
-## each: the green city before, the Ledger's rigs arriving, the system strip-mined and buried in
+## each: the green city before, the mining rigs arriving, the system strip-mined and buried in
 ## trash, the evacuation to the Cradle, the empty city ("WE'LL BE BACK"), then static. The picture
 ## renders into a SubViewport that is shown both on the TV's screen and in a close-up overlay with
 ## a readable caption. E / Esc closes it; it can be watched again any time.
@@ -18,7 +18,7 @@ const STATIC_S: float = 0.35
 # l10n:begin
 const FRAMES: Array[Dictionary] = [
 	{"kind": "green", "caption": "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"},
-	{"kind": "rigs", "caption": "LEDGER SECURES EXTRACTION RIGHTS"},
+	{"kind": "rigs", "caption": "MINING RIGS LAND ON EVERY WORLD"},
 	{"kind": "trash", "caption": "THE SYSTEM IS STRIP-MINED. THE WASTE STAYS HERE"},
 	{"kind": "evac", "caption": "EVACUATION: ALL RESIDENTS TO THE CRADLE"},
 	{"kind": "empty", "caption": "OLD TOWN, TONIGHT. A SIGN ON THE TOWN HALL"},
@@ -311,7 +311,7 @@ class _Picture extends Control:
 		_suns(Vector2(250, 40), Vector2(276, 58), Color(1.0, 0.85, 0.55), Color(1.0, 0.55, 0.3))
 		_skyline(170, Color(0.66, 0.6, 0.55), 11, Color(0.5, 0.55, 0.6))
 		_ground(170, Color(0.42, 0.5, 0.3))
-		# Ledger mining rigs lowering in on cables: dark hulls with red eyes and drill legs.
+		# Mining rigs lowering in on cables: dark hulls with red eyes and drill legs.
 		for k: int in 3:
 			var cx: float = 60.0 + k * 100.0
 			var y: float = minf(40.0 + k * 10.0 + t * 6.0, 92.0 + k * 6.0)
@@ -322,10 +322,6 @@ class _Picture extends Control:
 			draw_colored_polygon(PackedVector2Array([Vector2(cx - 6, y + 26), Vector2(cx + 6, y + 26), Vector2(cx, y + 62)]), Color(0.35, 0.33, 0.3))
 			draw_circle(Vector2(cx, y + 12), 3.0, Color(1.0, 0.2, 0.15) if fmod(t + k * 0.3, 1.0) < 0.6 else Color(0.5, 0.1, 0.08))
 			draw_line(Vector2(cx, 0), Vector2(cx, y - 10), Color(0.15, 0.15, 0.17), 1.0)
-		# The Ledger's mark: a ruled square.
-		draw_rect(Rect2(14, 14, 26, 26), Color(0.9, 0.9, 0.88), false, 2.0)
-		for k: int in 3:
-			draw_line(Vector2(18, 21 + k * 6), Vector2(36, 21 + k * 6), Color(0.9, 0.9, 0.88), 1.5)
 		_text(tr("BREAKING"), Vector2(160, 186), 12, Color(1.0, 0.85, 0.3))
 
 	func _trash(t: float) -> void:

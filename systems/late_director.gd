@@ -158,15 +158,11 @@ func dev_post_finale() -> void:
 	GameState.flags["credits_seen"] = true
 	GameState.flags["intro_done"] = true
 	GameState.flags["seeds_unlocked"] = true
-	GameState.flags["tutorial_step"] = 999  # the opening chores, the Ledger and WREN's memory: long done
-	GameState.flags["ledger_act"] = 4
-	GameState.flags["ledger_resolved"] = true
+	GameState.flags["tutorial_step"] = 999  # the opening chores and WREN's memory: long done
 	GameState.flags["wren_awake"] = true
 	GameState.flags["first_sprout"] = true
 	if world.get("tutorial") != null:
 		world.tutorial.set("step", 999)
-	if world.get("ledger") != null:
-		world.ledger.set("act", 4)
 	if world.get("planet") != null:
 		var pl: PlanetData = world.planet
 		for c: int in pl.cells_within(pl.hubs[0], 4):

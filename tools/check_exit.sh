@@ -73,6 +73,12 @@ run walk_goals -- --fresh --orbit --no-intro --walk-goals --save-dir=check_exit_
 # [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
 # with real keys and mouse clicks on the workbench (tools/walk_home.gd).
 run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$
+if tools/check_old_ledger_save.sh >screenshots/check_exit_old_ledger.log 2>&1; then  # owner item 105
+	echo "[check_exit] PASS old_ledger_save (a save from mid Ledger arc loads clean and plays on)"
+else
+	echo "[check_exit] FAIL old_ledger_save: see screenshots/check_exit_old_ledger.log"
+	fail=1
+fi
 # [v10snd] Owner (Nov 15): the first song plays when the CD by the start pad is found, and the radio
 # (N) plays a found song at will: a new game with real keys and clicks, two reloads (tools/walk_radio.gd).
 run walk_radio -- --fresh --orbit --no-intro --walk-radio --save-dir=check_exit_radio_$$

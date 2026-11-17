@@ -54,7 +54,7 @@
     "gardener_list": {"desc": "Someone's to-do list for a garden. Half the items are ticked."},
     "receipt": {"desc": "A till receipt from the last ordinary day."},
     "maint_log": {"desc": "A maintenance log for a unit that looked a lot like Lumi."},
-    "ledger_memo": {"desc": "An office memo about the evacuation. Very polite. Very tired."},
+    "pause_memo": {"desc": "An office memo about the evacuation. Very polite. Very tired."},
     "voicemail": {"desc": "A voicemail transcript. Someone was calling to say they were safe."},
     "poster": {"desc": "A faded safety poster. The smiling robot on it is waving."}
   },
@@ -70,7 +70,7 @@
     "dead_tree_trunk": {"name": "Old Tree Trunk", "hint": "It used to be tall.", "desc": "A tree that did not make it. But there are tiny green shoots at its base, and beetles inside, and it is not as dead as it looks."},
     "old_drill_press": {"name": "Drill Press", "hint": "Out in the rust plains.", "desc": "A workshop drill press standing alone in a field. The workshop around it is long gone; the press stayed exactly where it was told."},
     "old_military_compressor": {"name": "Field Compressor", "hint": "Out where the wild bases are.", "desc": "A wheeled air compressor, its gauges frozen at 'enough'. It pumped up the tyres of a whole fleet of cleanup carts once."},
-    "tree_stump_01": {"name": "Tree Stump", "hint": "Where a forest used to be.", "desc": "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."},
+    "tree_stump_01": {"name": "Tree Stump", "hint": "Where a forest used to be.", "desc": "Cut, not fallen. The rings count back further than the town. Moss has started a quiet negotiation with the bark."},
     "ocean_buoy": {"name": "Washed-up Buoy", "hint": "On a far coast.", "desc": "A channel buoy that drifted inland on a storm tide and never found its way back. Its lamp still blinks, once an hour, out of habit."},
     "wooden_crate_02": {"name": "Cargo Crate", "hint": "Near the shore, or the dunes.", "desc": "A slatted crate stencilled CRADLE SUPPLY: FRAGILE. Packed for the ark's launch three hundred years ago, and left behind in the rush. Empty. Whatever was inside was planted somewhere, a long time ago."},
     "barrel_03": {"name": "Sand-Blasted Drum", "hint": "Where the wind carries sand.", "desc": "Centuries of wind have polished this drum down to bare, shining metal. In the dunes even the junk gets buffed."},
@@ -117,13 +117,12 @@
   },
   "homeward": {
     "charter": {"name": "The Sleepers' Charter", "hint": "Light the Cradle Returns beacon.", "desc": "When the Settlers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."},
-    "ledger_system": {"name": "The Ledger, Inc.", "hint": "Light the Cradle Returns beacon.", "desc": "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."},
+    "buried_worlds": {"name": "The Buried Worlds", "hint": "Light the Cradle Returns beacon.", "desc": "Verdance was never the only one. Long ago, miners dug up every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out they packed up and left five planets under their trash. Nobody came back to clean it up. Until now."},
     "binary_suns": {"name": "Hearth and Ember", "hint": "Open the solar-system map.", "desc": "The Verdance system has two suns: Hearth, warm and white, and Ember, its small orange companion. Every world sees both. On Ochre they are huge and hot; from Rime they are two bright points, and the stars stay out all day."},
     "homecoming": {"name": "Homecoming", "hint": "Restore every world and launch home.", "desc": "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Settlers woke up to a green sky."}
   },
   "_sightings_doc": "[scope] Seen through the Telescope (ui/telescope_view.gd).",
   "sightings": {
-    "first_light": {"name": "First Light", "hint": "Build a Telescope and look through it.", "desc": "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."},
-    "ledger_wreck": {"name": "Ledger Wreck", "hint": "Through the telescope, on a world where the Ledger's drones came down.", "desc": "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."}
+    "first_light": {"name": "First Light", "hint": "Build a Telescope and look through it.", "desc": "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."}
   }
 }

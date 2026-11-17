@@ -356,3 +356,11 @@ Supersedes "Planet travel: districts per base on a 40k-hex planet" above.
 - **Locked cosmetics are never shown** (owner playtest #2): locked designs are a dark silhouette (`LumiStyle.silhouette`, `DesignPreview.show_design(id, hidden)`) named "???" with only the unlock hint; locked presets, parts, swatches and bonuses in the builder are "???" cards / grey "?" swatches with the hint.
 - **Other dressable bots plug in through `CosmeticTargets`** (`systems/cosmetic_targets.gd`): `register(id, {name, order, editor: Callable(world) -> Control, unlocked: Callable -> bool, hint})`, `all()`, `make_editor(id, world)`, `display_name(id)` ("???" while locked). Lumi is built in (`LumiBuilder`). Part unlock rules can reuse `LumiStyle.unlock_met / unlock_progress / unlock_text / buy` with their own data.
 - **LumiBuilder is a hostable Control**: `var b := LumiBuilder.new(); b.world = world; parent.add_child(b)` (embedded: no backdrop, the host owns Esc and LB/RB, footer button "Wear look", signals `worn` / `closed`), or `LumiBuilder.open(world, parent)` for a full-screen overlay (CanvasLayer 100).
+
+## The Ledger is removed (2026-11-15, owner item 105)
+
+- The owner: "remove this whole ledger thing it makes no sense." Everything above that describes the Ledger (the antagonist, its coupons, drones, jammers, relay, audit) is history; none of it is in the game.
+- **No villain.** The worlds were mined out long ago by "the miners" and left under their trash; the old memos are signed "Mine Office". The arc is the count: fuel and power across the planets to get the ark home (docs/STORY_ARC.md).
+- **Removed, not switched off**: scripts, data, strings, the build, the event, the Codex pages. Shared helpers moved to their users: `Decor.YARD_ANCHORS`, `WorldEvents.compass_label`, `HoloFrame.mono()`.
+- **Saves**: version 5 (`SaveManager.drop_ledger`) drops the Ledger keys, renames `shards:ledger_memo` to `shards:pause_memo` and `homeward:ledger_system` to `homeward:buried_worlds` (so found pages stay found and the shard count stays 8), drops the audit trinkets and pays built Signal Jammers back in cubes and parts.
+- **Not renamed**: the material key `ledger` (a yellow paint) in the planet art scripts under `planet/planets/`. It is never shown.

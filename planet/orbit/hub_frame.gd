@@ -1,6 +1,6 @@
 class_name HubFrame
 extends Node3D
-## [orbB] Per-hub frame for flat-yard systems on the globe (fauna, eggs, outposts, the Ledger,
+## [orbB] Per-hub frame for flat-yard systems on the globe (fauna, eggs, outposts,
 ## Garden Mode's decor). This node stands on the hub site Lumi is nearest (the site transform:
 ## site-local metres, +Y up, y = 0 on the pad), so a system parented here keeps its flat-game
 ## coordinates and maths; it converts only at its edges (to_local / to_global, the globe ground).

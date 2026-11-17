@@ -53,20 +53,14 @@ static func kind_now(id: String) -> String:
 	return str(d.get("kind", "one_time"))
 
 
-## How many of a counted/tiered thing stand here (tower tier, jammers, scrubbers).
+## How many of a counted/tiered thing stand here (tower tier, scrubbers).
 static func _count(id: String) -> int:
 	match id:
 		"signal_tower":
 			return SignalTower.tier()
-		"signal_jammer":
-			return LedgerArc.jammer_count()
 		"air_scrubber":
 			return int(GameState.world.get("hub_scrubbers", 0))
 	return 0
-
-
-static func _ledger(world: Node) -> Node:
-	return world.get_tree().get_first_node_in_group("ledger") if world and world.is_inside_tree() else null
 
 
 static func _hub_level(world: Node) -> int:
@@ -90,9 +84,6 @@ static func is_built(world: Node, id: String) -> bool:
 		"air_scrubber":
 			var hub: Hub = world.get("hub") as Hub if world else null
 			return hub != null and hub.scrubbers >= int(hub.scrubber_def().get("max", 6))
-		"signal_jammer":
-			var lg: Node = _ledger(world)
-			return lg != null and (LedgerArc.jammer_count() >= int(lg.call("jammer_def").get("max", 3)) or bool(lg.call("resolved")))
 		"conveyor", "auto_baler", "recycler":
 			return Stations.built_in_state(id)
 		"telescope":
@@ -119,9 +110,6 @@ static func listed(world: Node, id: String) -> bool:
 		"air_scrubber":
 			var hub: Hub = world.get("hub") as Hub if world else null
 			return hub != null and hub.level >= int(hub.scrubber_def().get("requires_level", 2))
-		"signal_jammer":
-			var lg: Node = _ledger(world)
-			return lg != null and bool(lg.call("jammer_visible"))
 		"conveyor", "auto_baler", "recycler":
 			return Stations.of(world) != null and Research.exists(id) and Research.has(id) if world else false
 		"telescope":
@@ -166,17 +154,6 @@ static func entry(world: Node, id: String) -> Dictionary:
 				e["cost"] = _scaled(sd.get("cost", {}), hub.scrubber_cost_mult())
 				e["reason"] = "" if Hub.can_pay(sd.get("cost", {}), hub.scrubber_cost_mult()) else TranslationServer.translate("Not enough materials.")
 				e["tier"] = TranslationServer.translate("%d of %d built") % [hub.scrubbers, int(sd.get("max", 6))]
-		"signal_jammer":
-			var lg: Node = _ledger(world)
-			if lg:
-				var jd: Dictionary = lg.call("jammer_def")
-				var mult: float = float(lg.call("jammer_cost_mult"))
-				e["name"] = str(jd.get("name", "Signal Jammer"))
-				e["desc"] = str(jd.get("desc", ""))
-				e["cost"] = _scaled(jd.get("cost", {}), mult)
-				e["reason"] = "" if bool(lg.call("can_build_jammer")) else TranslationServer.translate("Not enough materials.")
-				if LedgerArc.jammer_count() > 0:
-					e["tier"] = TranslationServer.translate("%d of %d built") % [LedgerArc.jammer_count(), int(jd.get("max", 3))]
 		"conveyor", "auto_baler", "recycler":
 			var st: Stations = Stations.of(world) if world else null
 			if st:
@@ -265,12 +242,6 @@ static func build(world: Node, id: String) -> bool:
 			if hub == null or not hub.build_scrubber():
 				return false
 			MachineReveal.reveal(world, nm, _newest_child(hub, hub.global_position), false)
-		"signal_jammer":
-			var lg: Node = _ledger(world)
-			if lg == null or not bool(lg.call("build_jammer")):
-				return false
-			var js: Array = lg.get("_jammers")
-			MachineReveal.reveal(world, nm, (js.back() as Node3D).global_position if not js.is_empty() and js.back() is Node3D else (world.call("bench_pos") as Vector3), false)
 		"conveyor", "auto_baler", "recycler":
 			var st: Stations = Stations.of(world)
 			if st == null or not st.build(id):

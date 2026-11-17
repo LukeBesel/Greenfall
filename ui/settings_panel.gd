@@ -631,7 +631,7 @@ func _build_access(p: VBoxContainer) -> void:
 		tr("Okabe-Ito colours for hex progress, the hopper meter and part rarity."))
 	_section(p, tr("Subtitles"))
 	_toggle(p, tr("Subtitles"), Settings.subtitles_enabled, func(v: bool) -> void: Settings.subtitles_enabled = v,
-		tr("WREN and Ledger lines."))
+		tr("WREN's lines."))
 	_cycler(p, tr("Subtitle size"), [tr("Small"), tr("Medium"), tr("Large")], Settings.subtitle_size, func(i: int) -> void:
 		Settings.subtitle_size = i)
 	_toggle(p, tr("Subtitle background"), Settings.subtitle_background, func(v: bool) -> void: Settings.subtitle_background = v,

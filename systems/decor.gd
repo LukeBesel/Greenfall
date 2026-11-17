@@ -310,11 +310,14 @@ func up_basis(p: Vector3) -> Basis:
 	return Basis(Quaternion(Vector3.UP, up))
 
 
+const YARD_ANCHORS: Array[String] = ["bench", "depot", "bin", "pod", "signal_tower", "telescope", "radio", "locker", "nursery", "rocket_pad", "stations"]
+
+
 func _near_anchor(p: Vector3) -> bool:
 	var so: Node = world.get("orbit")
 	if so == null or hub_index != 0:
 		return false
-	for nm: String in LedgerArc.YARD_ANCHORS:
+	for nm: String in YARD_ANCHORS:
 		var a: Vector3 = to_local(so.call("yard_point", nm))
 		if Vector2(a.x - p.x, a.z - p.z).length() < 2.2:
 			return true

@@ -159,14 +159,14 @@
    "home": "anvil",
    "name": "Smelter Skelter",
    "genre": "Foundry industrial",
-   "bio": "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."
+   "bio": "Brooding Anvil band who tuned their drums to the furnace roar. A big company tried to buy their catalogue; they melted the contract down and played the slag."
   },
   {
-   "id": "ledger_audio",
+   "id": "foundry_audio",
    "home": "anvil",
-   "name": "Ledger Brand Audio",
+   "name": "Foundry Brand Audio",
    "genre": "Corporate",
-   "bio": "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."
+   "bio": "The foundry's own jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Foundry Brand Audio, all rights extracted\"."
   }
  ],
  "songs": [
@@ -195,18 +195,6 @@
     "title",
     "intro"
    ]
-  },
-  {
-   "id": "the_ledger",
-   "title": "The Ledger",
-   "artist": "ledger_audio",
-   "group": "story",
-   "kind": "villain",
-   "shuffle": false,
-   "bpm": 100,
-   "unlock": "cd",
-   "found_on": "anvil",
-   "desc": "Ticking clocks and detuned bass. Sounds expensive."
   },
   {
    "id": "sprout_step",
@@ -639,8 +627,8 @@
    "found_on": "verdance"
   },
   {
-   "id": "what_the_ledger_took",
-   "title": "What the Ledger Took",
+   "id": "what_was_taken",
+   "title": "What Was Taken",
    "artist": "recycle_bin",
    "group": "story",
    "kind": "cinematic",
@@ -1021,7 +1009,7 @@
   {
    "id": "forge_stomp",
    "title": "Forge Stomp",
-   "artist": "ledger_audio",
+   "artist": "foundry_audio",
    "group": "anvil",
    "kind": "playlist",
    "bpm": 120,
@@ -1041,7 +1029,7 @@
   {
    "id": "ember_drift",
    "title": "Ember Drift",
-   "artist": "ledger_audio",
+   "artist": "foundry_audio",
    "group": "anvil",
    "kind": "playlist",
    "bpm": 80,
@@ -1061,7 +1049,7 @@
   {
    "id": "furnace_heartbeat",
    "title": "Furnace Heartbeat",
-   "artist": "ledger_audio",
+   "artist": "foundry_audio",
    "group": "anvil",
    "kind": "playlist",
    "bpm": 90,
@@ -1081,7 +1069,7 @@
   {
    "id": "cool_stone",
    "title": "Cool Stone",
-   "artist": "ledger_audio",
+   "artist": "foundry_audio",
    "group": "anvil",
    "kind": "restored",
    "bpm": 78,

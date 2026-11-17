@@ -175,7 +175,7 @@ campaign planet the save is on (Verdance's on a fresh start).
 "Story arc"): `gives` {fuel, power} toward home (the sum over all campaign planets must stay equal
 to `home.fuel` / `home.power`, so move points from another planet or raise the totals), `reason`,
 `question`, `arrive` and `leave` (WREN, 1–2 short lines each), plus the builder notes `from`,
-`answers` and `ledger`. The game reads it with no code: the exit beat, the meters and the map.
+`answers`. The game reads it with no code: the exit beat, the meters and the map.
 Per-hub lines stay where they are (`data/story_reasons.json` `goal_reasons.by_id.hub_fly_<order>`
 or each hub's `reason`), and the leave toast is `data/homeward.json` `planets[k].leave.toast`.
 Dev planets need no story block. `PlanetCfg.problems(id)` reports a campaign planet without one.
@@ -191,7 +191,7 @@ A campaign planet's story is a block in `data/story_arc.json` `planets.<id>`, re
 | `reason` | the one-line reason to go there (the system map, WREN) |
 | `arrive`, `leave` | WREN's lines on the first landing and at the exit beat |
 | `question`, `answers` | the question this planet leaves open, and its answer to the previous planet's |
-| `from`, `ledger` | notes for the planet's builder (where the fuel and power come from; what the Ledger did here), not shown yet |
+| `from` | a note for the planet's builder (where the fuel and power come from), not shown yet |
 
 Adding a planet changes the sums: the five planets give exactly 10 and 10 (`home` in the same
 file). Agree the new totals with the story owner, and see docs/STORY_ARC.md "The five planets".

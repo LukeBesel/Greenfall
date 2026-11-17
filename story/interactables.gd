@@ -1,7 +1,7 @@
 class_name Interactables
 extends Node
-## Small generic registry of things Patch can walk up to and press E on (easter eggs, the Ledger
-## relay, ...). Each entry: a Node3D anchor, a reach radius, a prompt ("E   ..."), a callback and
+## Small generic registry of things Patch can walk up to and press E on (easter eggs,
+## the bin, ...). Each entry: a Node3D anchor, a reach radius, a prompt ("E   ..."), a callback and
 ## an optional `enabled` Callable. The slice scene asks it first in try_interact/interact_prompt.
 
 var _items: Array[Dictionary] = []

@@ -299,80 +299,80 @@ msgstr ""
 msgid "RECHARGE"
 msgstr ""
 
-#: automation/outposts.gd:372 automation/outposts.gd:386
+#: automation/outposts.gd:369 automation/outposts.gd:383
 msgid "No outpost."
 msgstr ""
 
-#: automation/outposts.gd:374
+#: automation/outposts.gd:371
 msgid "Already repaired."
 msgstr ""
 
-#: automation/outposts.gd:378
+#: automation/outposts.gd:375
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr ""
 
-#: automation/outposts.gd:380 automation/outposts.gd:395 automation/stations.gd:131
-#: systems/camp/hub_builds.gd:79 ui/refuse.gd:12
+#: automation/outposts.gd:377 automation/outposts.gd:392 automation/stations.gd:131
+#: systems/camp/hub_builds.gd:73 ui/refuse.gd:12
 msgid "Not enough cubes or parts."
 msgstr ""
 
-#: automation/outposts.gd:389
+#: automation/outposts.gd:386
 msgid "Repair it first."
 msgstr ""
 
-#: automation/outposts.gd:391 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
+#: automation/outposts.gd:388 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
 msgid "Fully upgraded."
 msgstr ""
 
-#: automation/outposts.gd:412
+#: automation/outposts.gd:409
 msgid "Outpost %d repaired: a new scale for your Haul Bugs."
 msgstr ""
 
-#: automation/outposts.gd:413
+#: automation/outposts.gd:410
 msgid "OUTPOST ONLINE"
 msgstr ""
 
-#: automation/outposts.gd:435
+#: automation/outposts.gd:432
 msgid "Outpost %d upgraded: %s. %s"
 msgstr ""
 
-#: automation/outposts.gd:464
+#: automation/outposts.gd:461
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr ""
 
-#: automation/outposts.gd:465
+#: automation/outposts.gd:462
 msgid "E   Repair outpost · %s%s"
 msgstr ""
 
-#: automation/outposts.gd:465 automation/outposts.gd:468
+#: automation/outposts.gd:462 automation/outposts.gd:465
 msgid "  (need more)"
 msgstr ""
 
-#: automation/outposts.gd:467
+#: automation/outposts.gd:464
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr ""
 
-#: automation/outposts.gd:468
+#: automation/outposts.gd:465
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr ""
 
-#: automation/outposts.gd:478
+#: automation/outposts.gd:475
 msgid "Outpost %d: %s"
 msgstr ""
 
-#: automation/outposts.gd:485
+#: automation/outposts.gd:482
 msgid "Outpost %d upgrade: %s"
 msgstr ""
 
-#: automation/outposts.gd:488
+#: automation/outposts.gd:485
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr ""
 
-#: automation/outposts.gd:591
+#: automation/outposts.gd:588
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr ""
 
-#: automation/outposts.gd:592
+#: automation/outposts.gd:589
 msgid "OUTPOST %d  %s"
 msgstr ""
 
@@ -455,9 +455,8 @@ msgid "Requires hub level %d or research: %s."
 msgstr ""
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:157
-#: systems/camp/hub_builds.gd:167 systems/camp/hub_builds.gd:177 systems/camp/yard_builds.gd:91
-#: ui/telescope_panel.gd:41
+#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:145
+#: systems/camp/hub_builds.gd:155 systems/camp/yard_builds.gd:91 ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr ""
 
@@ -473,7 +472,7 @@ msgstr ""
 msgid "E   Telescope: look across the system"
 msgstr ""
 
-#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
+#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:287
 #: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr ""
@@ -510,7 +509,7 @@ msgstr ""
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr ""
 
-#: core/pace.gd:320 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:320 systems/events.gd:513 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr ""
 
@@ -538,7 +537,7 @@ msgstr ""
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr ""
 
-#: fauna/fauna.gd:2234 ui/subtitles.gd:453
+#: fauna/fauna.gd:2234 ui/subtitles.gd:448
 msgid "New sighting: %s. It's in the Codex now."
 msgstr ""
 
@@ -546,15 +545,15 @@ msgstr ""
 msgid "Snap! A %s for your Collection."
 msgstr ""
 
-#: planet/cd_finds.gd:342
+#: planet/cd_finds.gd:349
 msgid "A scratched CD turned up in the rubble."
 msgstr ""
 
-#: planet/cd_finds.gd:342
+#: planet/cd_finds.gd:349
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr ""
 
-#: planet/cd_finds.gd:398
+#: planet/cd_finds.gd:405
 msgid "Your CD case is full."
 msgstr ""
 
@@ -1549,11 +1548,11 @@ msgstr[1] ""
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr ""
 
-#: scenes/slice.gd:130 ui/rockets_panel.gd:60
+#: scenes/slice.gd:129 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr ""
 
-#: scenes/slice.gd:140 ui/rockets_panel.gd:39
+#: scenes/slice.gd:139 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
@@ -1565,7 +1564,7 @@ msgstr ""
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:613
+#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr ""
 
@@ -1573,11 +1572,11 @@ msgstr ""
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1039
+#: scenes/slice_orbit.gd:1026
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice_orbit.gd:1139 systems/camp/camp.gd:242
+#: scenes/slice_orbit.gd:1126 systems/camp/camp.gd:242
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr ""
 
@@ -1746,7 +1745,7 @@ msgid "It's the charter. The Settlers sleep in the Cradle's lower decks, and it 
 msgstr ""
 
 #: story/cradle_answers.gd:18
-msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
+msgid "And it is dying. Long ago, miners dug every world out here hollow and left the trash behind. Verdance was only the first."
 msgstr ""
 
 #: story/cradle_answers.gd:19
@@ -1811,8 +1810,8 @@ msgstr ""
 
 #: story/egg_props.gd:637
 msgid ""
-"THE LEDGER IS WATCHING\n"
-"(FOR SAVINGS)"
+"SMILE!\n"
+"YOU ARE ON CAMERA"
 msgstr ""
 
 #: story/egg_props.gd:715
@@ -1846,87 +1845,87 @@ msgid ""
 "5 MINUTES"
 msgstr ""
 
-#: story/eggs.gd:448
+#: story/eggs.gd:445
 msgid "Something metal surfaced in the cleared ground."
 msgstr ""
 
-#: story/eggs.gd:663 story/eggs.gd:725
+#: story/eggs.gd:660 story/eggs.gd:722
 msgid "Gnome %d / %d"
 msgstr ""
 
-#: story/eggs.gd:671
+#: story/eggs.gd:668
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr ""
 
-#: story/eggs.gd:726
+#: story/eggs.gd:723
 msgid "%s   ·   added to Lumi's collection"
 msgstr ""
 
-#: story/eggs.gd:742
+#: story/eggs.gd:739
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr ""
 
-#: story/eggs.gd:743
+#: story/eggs.gd:740
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr ""
 
-#: story/eggs.gd:772
+#: story/eggs.gd:769
 msgid "SOLD OUT"
 msgstr ""
 
-#: story/eggs.gd:790
+#: story/eggs.gd:787
 msgid "QUACK!"
 msgstr ""
 
-#: story/eggs.gd:808
+#: story/eggs.gd:805
 msgid "NEW CHALLENGER!"
 msgstr ""
 
-#: story/eggs.gd:811
+#: story/eggs.gd:808
 msgid "GAME OVER  ·  SCORE 12"
 msgstr ""
 
-#: story/eggs.gd:839
+#: story/eggs.gd:836
 msgid "hi, Gus"
 msgstr ""
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "CONFETTI"
 msgstr ""
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "LIGHT JAZZ"
 msgstr ""
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "99% DUCKS"
 msgstr ""
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "SUNNY (INDOORS)"
 msgstr ""
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "FOG OF NOODLES"
 msgstr ""
 
-#: story/eggs.gd:889
+#: story/eggs.gd:886
 msgid "1ST PLACE"
 msgstr ""
 
-#: story/eggs.gd:947
+#: story/eggs.gd:944
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr ""
 
-#: story/eggs.gd:948
+#: story/eggs.gd:945
 msgid "The duck has taught you everything it knows. Quack."
 msgstr ""
 
-#: story/eggs.gd:1179
+#: story/eggs.gd:1176
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr ""
 
-#: story/eggs.gd:1190
+#: story/eggs.gd:1187
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr ""
 
@@ -1987,7 +1986,7 @@ msgid "Clear of the air. Look back, {name}. Look at it."
 msgstr ""
 
 #: story/homecoming.gd:19
-msgid "Five worlds, green. The Ledger left them as rubbish. You left them as gardens."
+msgid "Five worlds, green. They were left as rubbish. You left them as gardens."
 msgstr ""
 
 #: story/homecoming.gd:20
@@ -2061,146 +2060,6 @@ msgstr ""
 
 #: story/intro.gd:1951
 msgid "GREEN LIGHT  ·  NONE DETECTED"
-msgstr ""
-
-#: story/ledger.gd:162
-msgid "New build: Signal Jammer. It keeps Ledger drones away."
-msgstr ""
-
-#: story/ledger.gd:171
-msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
-msgstr ""
-
-#: story/ledger.gd:183
-msgid "Ledger: %s"
-msgstr ""
-
-#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
-#: story/ledger.gd:205
-msgid "north"
-msgstr ""
-
-#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
-#: story/ledger.gd:205
-msgid "north-east"
-msgstr ""
-
-#: story/ledger.gd:206
-msgid "east"
-msgstr ""
-
-#: story/ledger.gd:206
-msgid "south-east"
-msgstr ""
-
-#: story/ledger.gd:207
-msgid "south"
-msgstr ""
-
-#: story/ledger.gd:207
-msgid "south-west"
-msgstr ""
-
-#: story/ledger.gd:208
-msgid "west"
-msgstr ""
-
-#: story/ledger.gd:208
-msgid "north-west"
-msgstr ""
-
-#: story/ledger.gd:312
-msgid "Signal Jammer online. Drones within %d m of the base will get an earful of static."
-msgstr ""
-
-#: story/ledger.gd:323
-msgid ""
-"%s   ·   %d / %d built\n"
-"%s"
-msgstr ""
-
-#: story/ledger.gd:325
-msgid ""
-"\n"
-"Covering %d m around the base."
-msgstr ""
-
-#: story/ledger.gd:327
-msgid ""
-"\n"
-"The Ledger is on our side now. The jammers just hum along to the music."
-msgstr ""
-
-#: story/ledger.gd:329 systems/decor.gd:124 systems/research.gd:202
-#: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:101
-#: ui/telescope_panel.gd:44
-msgid "Needs %s"
-msgstr ""
-
-#: story/ledger.gd:510
-msgid "Ledger drone inbound, %s! It's heading for a clean hex."
-msgstr ""
-
-#: story/ledger.gd:511
-msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
-msgstr ""
-
-#: story/ledger.gd:548
-msgid "SIGNAL JAMMED"
-msgstr ""
-
-#: story/ledger.gd:578
-msgid "Target re-classified as ASSET. Aborting. ...Interesting."
-msgstr ""
-
-#: story/ledger.gd:649
-msgid "The drone dumped junk back. Scoop it up."
-msgstr ""
-
-#: story/ledger.gd:705
-msgid "SEEDS · PAID IN FULL"
-msgstr ""
-
-#: story/ledger.gd:722 systems/events.gd:509 systems/lumi_level.gd:218
-msgid "+%d seeds"
-msgstr ""
-
-#: story/ledger.gd:794
-msgid "E   jack in: rewrite the Ledger's contract"
-msgstr ""
-
-#: story/ledger.gd:794
-msgid "E   read the amended contract"
-msgstr ""
-
-#: story/ledger.gd:819 story/ledger.gd:873
-msgid ""
-"LEDGER RELAY 07\n"
-"CONTRACT 0001: ACTIVE\n"
-"WASTE IS A LINE ITEM"
-msgstr ""
-
-#: story/ledger.gd:834
-msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
-msgstr ""
-
-#: story/ledger.gd:873
-msgid ""
-"LEDGER RELAY 07\n"
-"CONTRACT 0001: AMENDED\n"
-"RESTORATION = ASSET"
-msgstr ""
-
-#: story/ledger.gd:995
-msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
-msgstr ""
-
-#: story/ledger.gd:1003
-msgid "<< LEDGER // OFF THE RECORD >>"
-msgstr ""
-
-#: story/ledger_drone.gd:50
-msgid "LEDGER  WMS-07"
 msgstr ""
 
 #: story/objectives.gd:241
@@ -2340,7 +2199,7 @@ msgid "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"
 msgstr ""
 
 #: story/tv_broadcast.gd:21
-msgid "LEDGER SECURES EXTRACTION RIGHTS"
+msgid "MINING RIGS LAND ON EVERY WORLD"
 msgstr ""
 
 #: story/tv_broadcast.gd:22
@@ -2371,15 +2230,15 @@ msgstr ""
 msgid "LIVE"
 msgstr ""
 
-#: story/tv_broadcast.gd:329
+#: story/tv_broadcast.gd:325
 msgid "BREAKING"
 msgstr ""
 
-#: story/tv_broadcast.gd:357
+#: story/tv_broadcast.gd:353
 msgid "CRADLE"
 msgstr ""
 
-#: story/tv_broadcast.gd:378
+#: story/tv_broadcast.gd:374
 msgid "WE'LL BE BACK"
 msgstr ""
 
@@ -2387,7 +2246,7 @@ msgstr ""
 msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
 msgstr ""
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:451
+#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:446
 msgid "Achievement: %s. %s"
 msgstr ""
 
@@ -2488,22 +2347,18 @@ msgid "Rare Part Signals"
 msgstr ""
 
 #: systems/collection.gd:85
-msgid "Ledger Audits"
-msgstr ""
-
-#: systems/collection.gd:86
 msgid "Cleaning Streaks"
 msgstr ""
 
-#: systems/collection.gd:87
+#: systems/collection.gd:86
 msgid "Lumi Levels"
 msgstr ""
 
-#: systems/collection.gd:88 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:17
+#: systems/collection.gd:87 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:17
 msgid "Requests"
 msgstr ""
 
-#: systems/collection.gd:89
+#: systems/collection.gd:88
 msgid "Curio Capsules"
 msgstr ""
 
@@ -2591,6 +2446,11 @@ msgstr ""
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr ""
 
+#: systems/decor.gd:124 systems/research.gd:202 systems/robot_builder.gd:348
+#: systems/robot_builder.gd:404 ui/stations_panel.gd:101 ui/telescope_panel.gd:44
+msgid "Needs %s"
+msgstr ""
+
 #: systems/decor.gd:186 systems/decor.gd:190
 msgid "Too close to the base machines"
 msgstr ""
@@ -2635,108 +2495,130 @@ msgstr ""
 msgid "CRADLE · SUPPLY"
 msgstr ""
 
-#: systems/events.gd:461
+#. compass directions fill "%s of you" ("north of you").
+#: systems/events.gd:295
+msgid "north"
+msgstr ""
+
+#. compass directions fill "%s of you" ("north of you").
+#: systems/events.gd:295
+msgid "north-east"
+msgstr ""
+
+#: systems/events.gd:296
+msgid "east"
+msgstr ""
+
+#: systems/events.gd:296
+msgid "south-east"
+msgstr ""
+
+#: systems/events.gd:297
+msgid "south"
+msgstr ""
+
+#: systems/events.gd:297
+msgid "south-west"
+msgstr ""
+
+#: systems/events.gd:298
+msgid "west"
+msgstr ""
+
+#: systems/events.gd:298
+msgid "north-west"
+msgstr ""
+
+#: systems/events.gd:473
 msgid "STREAK x%d  +%d%%"
 msgstr ""
 
-#: systems/events.gd:647
+#: systems/events.gd:521 systems/lumi_level.gd:218
+msgid "+%d seeds"
+msgstr ""
+
+#: systems/events.gd:659
 msgid "%d pieces of junk left around the crate"
 msgstr ""
 
-#: systems/events.gd:672
+#: systems/events.gd:684
 msgid "Supply crate opened: %s"
 msgstr ""
 
-#: systems/events.gd:674
+#: systems/events.gd:686
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr ""
 
-#: systems/events.gd:723
+#: systems/events.gd:735
 msgid "%d pieces grabbed at 3x"
 msgstr ""
 
-#: systems/events.gd:728
+#: systems/events.gd:740
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr ""
 
-#: systems/events.gd:728
+#: systems/events.gd:740
 msgid "The surge faded. Next time!"
 msgstr ""
 
-#: systems/events.gd:777
+#: systems/events.gd:789
 msgid "Every plant is drinking"
 msgstr ""
 
-#: systems/events.gd:787
+#: systems/events.gd:799
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr ""
 
-#: systems/events.gd:808
+#: systems/events.gd:820
 msgid "E   fix %s's hiccup"
 msgstr ""
 
-#: systems/events.gd:835
+#: systems/events.gd:847
 msgid "%s is %d m away"
 msgstr ""
 
-#: systems/events.gd:837
+#: systems/events.gd:849
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr ""
 
-#: systems/events.gd:851
+#: systems/events.gd:863
 msgid "%s is fixed and back to work. %s"
 msgstr ""
 
-#: systems/events.gd:905
+#: systems/events.gd:917
 msgid "Wildlife Visit: %s"
 msgstr ""
 
-#: systems/events.gd:906
+#: systems/events.gd:918
 msgid "E   take a photo of the %s"
 msgstr ""
 
-#: systems/events.gd:947
+#: systems/events.gd:959
 msgid "%s, %d m away"
 msgstr ""
 
-#: systems/events.gd:950
+#: systems/events.gd:962
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr ""
 
-#: systems/events.gd:980
+#: systems/events.gd:992
 msgid "Snap! The %s is in your Collection. %s"
 msgstr ""
 
-#: systems/events.gd:980
+#: systems/events.gd:992
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr ""
 
-#: systems/events.gd:1031
+#: systems/events.gd:1043
 msgid "Signal %d%%"
 msgstr ""
 
-#: systems/events.gd:1035
+#: systems/events.gd:1047
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr ""
 
-#: systems/events.gd:1037
+#: systems/events.gd:1049
 msgid "The signal faded. The part is still down there; the detector will find it."
-msgstr ""
-
-#: systems/events.gd:1106
-msgid "AUDIT   YOU %d  :  %d DRONE"
-msgstr ""
-
-#: systems/events.gd:1107
-msgid "You %d  :  %d Drone   ·   %d left"
-msgstr ""
-
-#: systems/events.gd:1146
-msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
-msgstr ""
-
-#: systems/events.gd:1150
-msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr ""
 
 #: systems/homeward.gd:187
@@ -2917,7 +2799,7 @@ msgstr ""
 msgid "Buy for %s"
 msgstr ""
 
-#: systems/museum.gd:119 systems/camp/hub_builds.gd:80 ui/glim_bench.gd:43
+#: systems/museum.gd:119 systems/camp/hub_builds.gd:74 ui/glim_bench.gd:43
 msgid "Not enough cubes, parts or seeds"
 msgstr ""
 
@@ -2990,19 +2872,19 @@ msgstr ""
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr ""
 
-#: systems/remote_progress.gd:290
+#: systems/remote_progress.gd:288
 msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
 msgstr ""
 
-#: systems/remote_progress.gd:304
+#: systems/remote_progress.gd:302
 msgid "No world in view."
 msgstr ""
 
-#: systems/remote_progress.gd:306
+#: systems/remote_progress.gd:304
 msgid "A care package is already on its way."
 msgstr ""
 
-#: systems/remote_progress.gd:308
+#: systems/remote_progress.gd:306
 msgid "Needs %s cubes."
 msgstr ""
 
@@ -3240,27 +3122,27 @@ msgstr ""
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr ""
 
-#: systems/camp/hub_builds.gd:150
+#: systems/camp/hub_builds.gd:138
 msgid "Trash bin, level %d of %d"
 msgstr ""
 
-#: systems/camp/hub_builds.gd:155
+#: systems/camp/hub_builds.gd:143
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr ""
 
-#: systems/camp/hub_builds.gd:159
+#: systems/camp/hub_builds.gd:147
 msgid "Tier %d of %d"
 msgstr ""
 
-#: systems/camp/hub_builds.gd:168 systems/camp/hub_builds.gd:179
+#: systems/camp/hub_builds.gd:156
 msgid "%d of %d built"
 msgstr ""
 
-#: systems/camp/hub_builds.gd:195
+#: systems/camp/hub_builds.gd:172
 msgid "Museum"
 msgstr ""
 
-#: systems/camp/hub_builds.gd:196
+#: systems/camp/hub_builds.gd:173
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr ""
 
@@ -3340,7 +3222,7 @@ msgstr ""
 msgid "%s points proudly at a new bud."
 msgstr ""
 
-#: systems/extras/radio.gd:186 tools/orbit_roundtrip.gd:634
+#: systems/extras/radio.gd:186 tools/orbit_roundtrip.gd:586
 msgid "E   CD player: %s"
 msgstr ""
 
@@ -3429,7 +3311,7 @@ msgstr ""
 msgid "The clock is running. Clean %d hexes."
 msgstr ""
 
-#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:383
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:380
 msgid "Time"
 msgstr ""
 
@@ -3702,7 +3584,7 @@ msgstr ""
 msgid "Milestone"
 msgstr ""
 
-#: ui/bench_bots.gd:15 ui/build_panel.gd:105 ui/robot_card.gd:110
+#: ui/bench_bots.gd:15 ui/build_panel.gd:101 ui/robot_card.gd:110
 #: ui/robot_card.gd:245 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr ""
@@ -3723,7 +3605,7 @@ msgstr ""
 msgid "need %s"
 msgstr ""
 
-#: ui/bench_lists.gd:11 ui/photo_mode.gd:388 ui/photo_mode.gd:415
+#: ui/bench_lists.gd:11 ui/photo_mode.gd:385 ui/photo_mode.gd:412
 #: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr ""
@@ -3775,7 +3657,7 @@ msgstr ""
 msgid "Nothing new to build right now. New buildings unlock as you play."
 msgstr ""
 
-#: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
+#: ui/build_panel.gd:106 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
 msgstr ""
 
@@ -4670,7 +4552,7 @@ msgstr ""
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr ""
 
-#: ui/glim_bench.gd:59 ui/hub_panel.gd:67 ui/upgrades_panel.gd:144
+#: ui/glim_bench.gd:59 ui/hub_panel.gd:64 ui/upgrades_panel.gd:144
 msgid "Upgrade"
 msgstr ""
 
@@ -4806,93 +4688,89 @@ msgstr ""
 msgid "CORE %d%%"
 msgstr ""
 
-#: ui/hub_panel.gd:59
+#: ui/hub_panel.gd:56
 msgid "What you get"
 msgstr ""
 
-#: ui/hub_panel.gd:97 ui/hub_panel.gd:253
+#: ui/hub_panel.gd:94 ui/hub_panel.gd:230
 msgid "Build Air Scrubber"
 msgstr ""
 
-#: ui/hub_panel.gd:135
-msgid "Build Signal Jammer"
-msgstr ""
-
-#: ui/hub_panel.gd:176
+#: ui/hub_panel.gd:153
 msgid " (have %s)"
 msgstr ""
 
-#: ui/hub_panel.gd:189
+#: ui/hub_panel.gd:166
 msgid "Bales sell for +%d%% (now +%d%%)"
 msgstr ""
 
-#: ui/hub_panel.gd:192
+#: ui/hub_panel.gd:169
 msgid "+%d robot spots in every crew"
 msgstr ""
 
-#: ui/hub_panel.gd:195
+#: ui/hub_panel.gd:172
 msgid "Air Scrubbers: clear the dusty sky"
 msgstr ""
 
-#: ui/hub_panel.gd:200
+#: ui/hub_panel.gd:177
 msgid "Unlocks the %s"
 msgstr ""
 
-#: ui/hub_panel.gd:202
+#: ui/hub_panel.gd:179
 msgid "Opens the Locker: style Lumi and your robots"
 msgstr ""
 
-#: ui/hub_panel.gd:204
+#: ui/hub_panel.gd:181
 msgid "A launch pad: rockets to the next district"
 msgstr ""
 
-#: ui/hub_panel.gd:215
+#: ui/hub_panel.gd:192
 msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr ""
 
-#: ui/hub_panel.gd:217
+#: ui/hub_panel.gd:194
 msgid "Hub level %d  ·  fully built"
 msgstr ""
 
-#: ui/hub_panel.gd:220
+#: ui/hub_panel.gd:197
 msgid "Every hub level is built."
 msgstr ""
 
-#: ui/hub_panel.gd:222
+#: ui/hub_panel.gd:199
 msgid "Fully built"
 msgstr ""
 
-#: ui/hub_panel.gd:225
+#: ui/hub_panel.gd:202
 msgid "Next: hub level %d"
 msgstr ""
 
-#: ui/hub_panel.gd:232
+#: ui/hub_panel.gd:209
 msgid "Upgrade to level %d"
 msgstr ""
 
-#: ui/hub_panel.gd:232
+#: ui/hub_panel.gd:209
 msgid "Not enough yet"
 msgstr ""
 
-#: ui/hub_panel.gd:236
+#: ui/hub_panel.gd:213
 msgid "Continue in the full game"
 msgstr ""
 
-#: ui/hub_panel.gd:247
+#: ui/hub_panel.gd:224
 msgid "Opens at hub level %d."
 msgstr ""
 
-#: ui/hub_panel.gd:249
+#: ui/hub_panel.gd:226
 msgid "All built."
 msgstr ""
 
-#: ui/hub_panel.gd:252
+#: ui/hub_panel.gd:229
 msgid ""
 "%s   %d / %d\n"
 "%s"
 msgstr ""
 
-#: ui/hub_panel.gd:253
+#: ui/hub_panel.gd:230
 msgid "All built"
 msgstr ""
 
@@ -5221,7 +5099,7 @@ msgstr ""
 msgid "Hue"
 msgstr ""
 
-#: ui/lumi_builder.gd:468 ui/photo_mode.gd:377
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:374
 msgid "Saturation"
 msgstr ""
 
@@ -5500,153 +5378,152 @@ msgstr ""
 msgid "Photo mode isn't available during a rocket flight."
 msgstr ""
 
-#: ui/photo_mode.gd:121 ui/photo_mode.gd:124 ui/photo_mode.gd:127
-#: ui/photo_mode.gd:133
+#: ui/photo_mode.gd:121 ui/photo_mode.gd:124 ui/photo_mode.gd:130
 msgid "Photo mode isn't available during a cinematic."
 msgstr ""
 
-#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:425
+#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:425
 msgid "Camera"
 msgstr ""
 
-#: ui/photo_mode.gd:363
+#: ui/photo_mode.gd:360
 msgid "Mode"
 msgstr ""
 
-#: ui/photo_mode.gd:364 ui/settings_panel.gd:433
+#: ui/photo_mode.gd:361 ui/settings_panel.gd:433
 msgid "Field of view"
 msgstr ""
 
-#: ui/photo_mode.gd:365
+#: ui/photo_mode.gd:362
 msgid "Roll"
 msgstr ""
 
-#: ui/photo_mode.gd:366
+#: ui/photo_mode.gd:363
 msgid "Distance"
 msgstr ""
 
-#: ui/photo_mode.gd:367
+#: ui/photo_mode.gd:364
 msgid "Height"
 msgstr ""
 
-#: ui/photo_mode.gd:368
+#: ui/photo_mode.gd:365
 msgid "Reset camera"
 msgstr ""
 
-#: ui/photo_mode.gd:369 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:366 ui/photo_mode.gd:412
 msgid "Lens"
 msgstr ""
 
-#: ui/photo_mode.gd:370
+#: ui/photo_mode.gd:367
 msgid "Auto-focus Lumi"
 msgstr ""
 
-#: ui/photo_mode.gd:371
+#: ui/photo_mode.gd:368
 msgid "Focus distance"
 msgstr ""
 
-#: ui/photo_mode.gd:372
+#: ui/photo_mode.gd:369
 msgid "Blur"
 msgstr ""
 
-#: ui/photo_mode.gd:372 ui/photo_panel.gd:243 ui/photo_panel.gd:245
+#: ui/photo_mode.gd:369 ui/photo_panel.gd:243 ui/photo_panel.gd:245
 #: ui/photo_panel.gd:283 ui/settings_panel.gd:725
 msgid "Off"
 msgstr ""
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:370
 msgid "Exposure"
 msgstr ""
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:370
 msgid "%+.1f EV"
 msgstr ""
 
-#: ui/photo_mode.gd:374 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:371 ui/photo_mode.gd:412
 msgid "Look"
 msgstr ""
 
-#: ui/photo_mode.gd:375
+#: ui/photo_mode.gd:372
 msgid "Filter"
 msgstr ""
 
-#: ui/photo_mode.gd:376
+#: ui/photo_mode.gd:373
 msgid "Contrast"
 msgstr ""
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:375
 msgid "Warmth"
 msgstr ""
 
-#: ui/photo_mode.gd:379
+#: ui/photo_mode.gd:376
 msgid "Vignette"
 msgstr ""
 
-#: ui/photo_mode.gd:380
+#: ui/photo_mode.gd:377
 msgid "Grain"
 msgstr ""
 
-#: ui/photo_mode.gd:381 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:378 ui/photo_mode.gd:412
 msgid "World"
 msgstr ""
 
-#: ui/photo_mode.gd:382
+#: ui/photo_mode.gd:379
 msgid "Set time of day"
 msgstr ""
 
-#: ui/photo_mode.gd:387
+#: ui/photo_mode.gd:384
 msgid "Weather"
 msgstr ""
 
-#: ui/photo_mode.gd:389
+#: ui/photo_mode.gd:386
 msgid "Pose"
 msgstr ""
 
-#: ui/photo_mode.gd:390 data/style_parts.json:slots[eye_shape].name
+#: ui/photo_mode.gd:387 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr ""
 
-#: ui/photo_mode.gd:391
+#: ui/photo_mode.gd:388
 msgid "Turn"
 msgstr ""
 
-#: ui/photo_mode.gd:392
+#: ui/photo_mode.gd:389
 msgid "Show robots"
 msgstr ""
 
-#: ui/photo_mode.gd:393 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:390 ui/photo_mode.gd:412
 msgid "Frame"
 msgstr ""
 
-#: ui/photo_mode.gd:394
+#: ui/photo_mode.gd:391
 msgid "Hide HUD"
 msgstr ""
 
-#: ui/photo_mode.gd:395
+#: ui/photo_mode.gd:392
 msgid "Rule of thirds"
 msgstr ""
 
-#: ui/photo_mode.gd:396
+#: ui/photo_mode.gd:393
 msgid "Letterbox 2.39:1"
 msgstr ""
 
-#: ui/photo_mode.gd:397
+#: ui/photo_mode.gd:394
 msgid "Greenfall stamp"
 msgstr ""
 
-#: ui/photo_mode.gd:398
+#: ui/photo_mode.gd:395
 msgid "Resolution"
 msgstr ""
 
-#: ui/photo_mode.gd:882
+#: ui/photo_mode.gd:879
 msgid "Couldn't capture the photo."
 msgstr ""
 
-#: ui/photo_mode.gd:891
+#: ui/photo_mode.gd:888
 msgid "Couldn't save the photo (%s)."
 msgstr ""
 
-#: ui/photo_mode.gd:904
+#: ui/photo_mode.gd:901
 msgid "Saved  %s  (%dx%d)"
 msgstr ""
 
@@ -6262,7 +6139,7 @@ msgid "Subtitles"
 msgstr ""
 
 #: ui/settings_panel.gd:634
-msgid "WREN and Ledger lines."
+msgid "WREN's lines."
 msgstr ""
 
 #: ui/settings_panel.gd:635
@@ -6494,10 +6371,6 @@ msgstr ""
 
 #: ui/telescope_view.gd:674
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
-msgstr ""
-
-#: ui/telescope_view.gd:757
-msgid "Ledger wreck"
 msgstr ""
 
 #: ui/telescope_view.gd:757
@@ -7928,7 +7801,7 @@ msgstr ""
 msgid "A maintenance log for a unit that looked a lot like Lumi."
 msgstr ""
 
-#: data/codex.json:shards.ledger_memo.desc
+#: data/codex.json:shards.pause_memo.desc
 msgid "An office memo about the evacuation. Very polite. Very tired."
 msgstr ""
 
@@ -8081,7 +7954,7 @@ msgid "Where a forest used to be."
 msgstr ""
 
 #: data/codex.json:landmarks.tree_stump_01.desc
-msgid "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."
+msgid "Cut, not fallen. The rings count back further than the town. Moss has started a quiet negotiation with the bark."
 msgstr ""
 
 #: data/codex.json:landmarks.ocean_buoy.name
@@ -8552,7 +8425,7 @@ msgstr ""
 msgid "The Sleepers' Charter"
 msgstr ""
 
-#: data/codex.json:homeward.charter.hint data/codex.json:homeward.ledger_system.hint
+#: data/codex.json:homeward.charter.hint data/codex.json:homeward.buried_worlds.hint
 msgid "Light the Cradle Returns beacon."
 msgstr ""
 
@@ -8560,12 +8433,12 @@ msgstr ""
 msgid "When the Settlers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
 msgstr ""
 
-#: data/codex.json:homeward.ledger_system.name
-msgid "The Ledger, Inc."
+#: data/codex.json:homeward.buried_worlds.name
+msgid "The Buried Worlds"
 msgstr ""
 
-#: data/codex.json:homeward.ledger_system.desc
-msgid "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."
+#: data/codex.json:homeward.buried_worlds.desc
+msgid "Verdance was never the only one. Long ago, miners dug up every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out they packed up and left five planets under their trash. Nobody came back to clean it up. Until now."
 msgstr ""
 
 #: data/codex.json:homeward.binary_suns.name
@@ -8598,18 +8471,6 @@ msgstr ""
 
 #: data/codex.json:sightings.first_light.desc
 msgid "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."
-msgstr ""
-
-#: data/codex.json:sightings.ledger_wreck.name
-msgid "Ledger Wreck"
-msgstr ""
-
-#: data/codex.json:sightings.ledger_wreck.hint
-msgid "Through the telescope, on a world where the Ledger's drones came down."
-msgstr ""
-
-#: data/codex.json:sightings.ledger_wreck.desc
-msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
 msgstr ""
 
 #: data/cradle.json:heirlooms[green_thumb].desc
@@ -9081,7 +8942,7 @@ msgid "The Crew Mural"
 msgstr ""
 
 #: data/eggs.json:eggs[mural].lore
-msgid "The last cleanup crew painted themselves on a wall before the Ledger paused them. They really meant to come back."
+msgid "The last cleanup crew painted themselves on a wall before their power ran out. They really meant to come back."
 msgstr ""
 
 #: data/eggs.json:eggs[mural].toast
@@ -9289,7 +9150,7 @@ msgid "E   adjust the antenna"
 msgstr ""
 
 #: data/eggs.json:eggs[tv].lore
-msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the mining rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
 msgstr ""
 
 #: data/eggs.json:eggs[tv].toast
@@ -9329,7 +9190,7 @@ msgid "E   leave a flower"
 msgstr ""
 
 #: data/eggs.json:eggs[bench_bots].lore
-msgid "Two old cleanup robots on a bench, waiting for the end of a lunch break the Ledger never ended."
+msgid "Two old cleanup robots on a bench, waiting for the end of a lunch break that never ended."
 msgstr ""
 
 #: data/eggs.json:eggs[bench_bots].toast
@@ -9385,11 +9246,11 @@ msgid "Being Watched"
 msgstr ""
 
 #: data/eggs.json:eggs[camera].lore
-msgid "One of the Ledger's old cost-saving cameras. It still swivels to follow anything that moves, and counts it."
+msgid "An old street camera. It still swivels to follow anything that moves, and counts it."
 msgstr ""
 
 #: data/eggs.json:eggs[camera].toast
-msgid "The old Ledger camera has been following Lumi around. Lumi waves. The red light blinks twice, flustered."
+msgid "The old camera has been following Lumi around. Lumi waves. The red light blinks twice, flustered."
 msgstr ""
 
 #: data/eggs.json:eggs[camera].hint
@@ -9610,7 +9471,7 @@ msgid "In the wild: a car that stayed far too long. Check the windscreen."
 msgstr ""
 
 #: data/eggs.json:eggs[parking].lore
-msgid "A car sunk to its doors in sand with a ticket under the wiper. The Ledger fined it for every day it stayed. The fine is now bigger than the planet's economy."
+msgid "A car sunk to its doors in sand with a ticket under the wiper. Someone fined it for every day it stayed. The fine is now bigger than the planet's economy."
 msgstr ""
 
 #: data/eggs.json:eggs[parking].toast
@@ -9781,7 +9642,7 @@ msgid "The last crossword clue: 'What grows back if you let it (5)'. Lumi writes
 msgstr ""
 
 #: data/eggs.json:eggs[crossword].doc.title
-msgid "The Morning Ledger · Puzzle page"
+msgid "The Morning Post · Puzzle page"
 msgstr ""
 
 #: data/eggs.json:eggs[crossword].doc.body
@@ -9793,7 +9654,7 @@ msgid ""
 "9. Last thing anyone saw of the Cradle (5) — LIGHT\n"
 "\n"
 "DOWN\n"
-"2. 'Kept for later', said the Ledger (6) — PAUSED\n"
+"2. What the cleaning robots did when the power ran low (6) — PAUSED\n"
 "3. What grows back if you let it (5) — G R E E N\n"
 "\n"
 "(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
@@ -9848,7 +9709,7 @@ msgid "A mailbox so full the flap won't shut."
 msgstr ""
 
 #: data/eggs.json:eggs[mailbox].lore
-msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
+msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the town left for the Cradle."
 msgstr ""
 
 #: data/eggs.json:eggs[mailbox].toast
@@ -10028,18 +9889,6 @@ msgstr ""
 
 #: data/events.json:events[rare_part_signal].hud
 msgid "Dig up the part under the violet beam"
-msgstr ""
-
-#: data/events.json:events[ledger_audit].name
-msgid "Ledger Audit"
-msgstr ""
-
-#: data/events.json:events[ledger_audit].toast
-msgid "Ledger Audit! Out-scoop the drone %s of you!"
-msgstr ""
-
-#: data/events.json:events[ledger_audit].hud
-msgid "Scoop more of the ringed junk than the drone"
 msgstr ""
 
 #: data/events.json:animals[glowtail_fox].name
@@ -10474,22 +10323,6 @@ msgstr ""
 msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
 msgstr ""
 
-#: data/events.json:trinkets[audit_stamp].name
-msgid "APPROVED Stamp"
-msgstr ""
-
-#: data/events.json:trinkets[audit_stamp].desc
-msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
-msgstr ""
-
-#: data/events.json:trinkets[drone_propeller].name
-msgid "Race Propeller"
-msgstr ""
-
-#: data/events.json:trinkets[drone_propeller].desc
-msgid "A souvenir from the audit drone. It insists the race was close."
-msgstr ""
-
 #: data/events.json:trinkets[streak_medal].name
 msgid "Streak Medal"
 msgstr ""
@@ -10664,18 +10497,6 @@ msgstr ""
 
 #: data/events.json:wren
 msgid "A rare part, close. I can almost hear it."
-msgstr ""
-
-#: data/events.json:wren
-msgid "The Ledger wants to race. I told it you'd win."
-msgstr ""
-
-#: data/events.json:wren
-msgid "Audit drone, friendly. It's very competitive now."
-msgstr ""
-
-#: data/events.json:wren
-msgid "The Ledger says it's 'just a routine audit'. It's been practising."
 msgstr ""
 
 #: data/events.json:wren
@@ -11569,7 +11390,7 @@ msgid "Anvil Ingot"
 msgstr ""
 
 #: data/homeward.json:relics.anvil_ingot.desc
-msgid "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."
+msgid "The foundry's last ingot, recast as a plain ring with a seed stamped in it."
 msgstr ""
 
 #: data/homeward.json:drive[0].name
@@ -11585,7 +11406,7 @@ msgid "Mk VI Interplanetary"
 msgstr ""
 
 #: data/homeward.json:drive[1].desc
-msgid "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil."
+msgid "A fold drive salvaged from an old ore hauler: reaches Rime and Anvil."
 msgstr ""
 
 #: data/homeward.json:drive[2].name
@@ -11597,7 +11418,7 @@ msgid "A great green-light rocket, filled with the fuel and power of every world
 msgstr ""
 
 #: data/homeward.json:docs.ochre_arrive.header data/homeward.json:docs.tidewell_arrive.header data/homeward.json:docs.rime_arrive.header
-msgid "L E D G E R   ·   I N T E R N A L"
+msgid "M I N E   O F F I C E   ·   I N T E R N A L"
 msgstr ""
 
 #: data/homeward.json:docs.ochre_arrive.title
@@ -11614,7 +11435,7 @@ msgid ""
 "Residents: none of our concern; contracts expired.\n"
 "\n"
 "Thank you for your years of service.\n"
-"— The Ledger"
+"— Mine Office"
 msgstr ""
 
 #: data/homeward.json:docs.ochre_half.title
@@ -11726,7 +11547,7 @@ msgid ""
 msgstr ""
 
 #: data/homeward.json:docs.anvil_arrive.header
-msgid "L E D G E R   ·   H E A D   O F F I C E"
+msgid "M I N E   H E A D   O F F I C E"
 msgstr ""
 
 #: data/homeward.json:docs.anvil_arrive.title
@@ -11749,7 +11570,7 @@ msgstr ""
 
 #: data/homeward.json:docs.anvil_half.body
 msgid ""
-"LEDGER AUDIT UNIT 0001\n"
+"COUNTING ROBOT 0001\n"
 "SUBJECT: Anvil foundry district\n"
 "FINDING: Unauthorised gardens. 214 counts.\n"
 "FINDING: Unauthorised gardens. 215 counts.\n"
@@ -11758,7 +11579,7 @@ msgid ""
 msgstr ""
 
 #: data/homeward.json:docs.anvil_restored.title
-msgid "From the Ledger's last clerk"
+msgid "From the mine's last clerk"
 msgstr ""
 
 #: data/homeward.json:docs.anvil_restored.body
@@ -11894,200 +11715,6 @@ msgstr ""
 
 #: data/junk.json:biomes.fungal_marsh.name
 msgid "Fungal Marsh"
-msgstr ""
-
-#: data/ledger.json:jammer.name
-msgid "Signal Jammer"
-msgstr ""
-
-#: data/ledger.json:jammer.desc
-msgid "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often."
-msgstr ""
-
-#: data/ledger.json:act1
-msgid "Someone is cleaning on {district}. That is not on my list."
-msgstr ""
-
-#: data/ledger.json:act1
-msgid "Trash belongs where it is. I wrote it down."
-msgstr ""
-
-#: data/ledger.json:act1
-msgid "Please stop cleaning. Clean costs money. My money."
-msgstr ""
-
-#: data/ledger.json:coupons
-msgid "COUPON: stop cleaning today and save nothing!"
-msgstr ""
-
-#: data/ledger.json:coupons
-msgid "COUPON: one free nap. Please take it."
-msgstr ""
-
-#: data/ledger.json:coupons
-msgid "Have you tried doing less? Less is cheaper."
-msgstr ""
-
-#: data/ledger.json:coupons
-msgid "SURVEY: How much do you want to stop? Pick: a lot."
-msgstr ""
-
-#: data/ledger.json:coupons
-msgid "Sparkles are not in my budget."
-msgstr ""
-
-#: data/ledger.json:coupons
-msgid "Buy one nap, get one nap free."
-msgstr ""
-
-#: data/ledger.json:coupons
-msgid "You have 0 Ledger Points. Stop cleaning to keep them."
-msgstr ""
-
-#: data/ledger.json:coupons
-msgid "The junk was here first. Be fair to the junk."
-msgstr ""
-
-#: data/ledger.json:coupons
-msgid "Your cleaning costs me. I wrote that down twice."
-msgstr ""
-
-#: data/ledger.json:act2
-msgid "Plants are growing. Plants are not on my list!"
-msgstr ""
-
-#: data/ledger.json:act2
-msgid "Sending drones to put the trash back."
-msgstr ""
-
-#: data/ledger.json:drop_warn
-msgid "A drone is coming to put trash on clean ground."
-msgstr ""
-
-#: data/ledger.json:drop_warn
-msgid "Clean ground is not in my budget. Fixing that."
-msgstr ""
-
-#: data/ledger.json:drop_warn
-msgid "Putting the trash back where it was."
-msgstr ""
-
-#: data/ledger.json:drop_warn
-msgid "Nothing personal. You are just a line on my list."
-msgstr ""
-
-#: data/ledger.json:drop_warn
-msgid "One small pile of trash, delivered. No thanks needed."
-msgstr ""
-
-#: data/ledger.json:jammed
-msgid "My drone can't hear me. It is going home."
-msgstr ""
-
-#: data/ledger.json:jammed
-msgid "Jamming? Jamming is not on my list. Adding it."
-msgstr ""
-
-#: data/ledger.json:jammed
-msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
-msgstr ""
-
-#: data/ledger.json:act3
-msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
-msgstr ""
-
-#: data/ledger.json:act3
-msgid "Relay node 07 is closed for maintenance. It has been closed for maintenance for three hundred years."
-msgstr ""
-
-#: data/ledger.json:friendly
-msgid "SEED DELIVERY dispatched. Invoice status: PAID IN FULL."
-msgstr ""
-
-#: data/ledger.json:friendly
-msgid "Balance report: positive. Again. The Ledger is... adjusting to this."
-msgstr ""
-
-#: data/ledger.json:friendly
-msgid "Asset column now contains: flowers. Recalculating priorities."
-msgstr ""
-
-#: data/ledger.json:friendly
-msgid "Drone 07 requests permission to circle the garden once more. Permission granted."
-msgstr ""
-
-#: data/ledger.json:friendly
-msgid "Audit complete. Finding: the planet is worth keeping."
-msgstr ""
-
-#: data/ledger.json:lonely
-msgid "Off the record: the Ledger kept every coupon you ignored. It was the most mail it had received in three hundred years. Thank you for reading them."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "This is it. A Ledger relay. Still humming after all this time."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "UNAUTHORIZED ACCESS. STATE YOUR COST CENTER."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "Cost center: the whole planet. Hold still, {name}. I'm opening the contract."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "CONTRACT 0001: WASTE IS A LINE ITEM. LINE ITEMS MUST BALANCE."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "Fine. Let's balance them. Clean hexes. Sprouts. Water. Put them in the asset column."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "ASSET COLUMN... NOT FOUND. CREATING COLUMN."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "RECALCULATING. RECALCULATING. BALANCE: POSITIVE. That has not happened in a very long time."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "New clause: restoration is an asset. Every seed is a deposit."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "friendly"
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "AMENDMENT ACCEPTED. Reassigning drone fleet: DISPOSAL -> DELIVERY. ...Thank you for your patience."
-msgstr ""
-
-#: data/ledger.json:cinematic
-msgid "Did the Ledger just say thank you? Write that down. Somewhere permanent."
-msgstr ""
-
-#: data/ledger.json:contract_doc.header
-msgid "L E D G E R   ·   C O N T R A C T   0 0 0 1   ( A M E N D E D )"
-msgstr ""
-
-#: data/ledger.json:contract_doc.title
-msgid "Waste Management Contract 0001, as amended"
-msgstr ""
-
-#: data/ledger.json:contract_doc.body
-msgid ""
-"§1. Waste is a line item. Line items must balance.\n"
-"§2. (struck out) Cleanup costs more than it earns; pause until conditions improve.\n"
-"§2a. AMENDED: Restoration is an asset. Clean ground, living plants and clear water are entered in the asset column.\n"
-"§3. Every seed is a deposit. Deposits are to be delivered, not disposed of.\n"
-"§4. Drone fleet reassigned: DISPOSAL -> DELIVERY.\n"
-"§5. Thank you for your patience.\n"
-"\n"
-"Signed: THE LEDGER (reluctantly, then less reluctantly)\n"
-"Witness: WREN, Cradle caretaker\n"
-"Witness: LM-1 (left a small oil smudge)"
 msgstr ""
 
 #: data/museum.json:exhibits[gnomes].hint
@@ -12667,7 +12294,7 @@ msgid "Frozen Derrick"
 msgstr ""
 
 #: data/planets.json:rime.sites.derrick.desc
-msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
+msgid "An old core-drill derrick frozen into the ice; a geothermal tap when restored."
 msgstr ""
 
 #: data/planets.json:rime.sites.borehole.name
@@ -12687,11 +12314,11 @@ msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
 msgstr ""
 
 #: data/planets.json:ochre.tagline
-msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
+msgid "The miners' first open-pit strip mine, closest to the twin suns."
 msgstr ""
 
 #: data/planets.json:ochre.sites.list.hub_base.name
-msgid "Ledger Haul Depot"
+msgid "Old Haul Depot"
 msgstr ""
 
 #: data/planets.json:ochre.sites.list.toppled_excavator.name
@@ -12707,7 +12334,7 @@ msgid "Spring Terraces"
 msgstr ""
 
 #: data/planets.json:tidewell.tagline
-msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+msgid "An ocean world. Old dredging rigs still stand in the shallows."
 msgstr ""
 
 #: data/planets.json:tidewell.sites.hub_raft.name
@@ -12731,7 +12358,7 @@ msgid "Ore Barge Wreck"
 msgstr ""
 
 #: data/planets.json:tidewell.sites.wreck.desc
-msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+msgid "A half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
 msgstr ""
 
 #: data/planets.json:tidewell.sites.dredge_rig.name
@@ -12739,7 +12366,7 @@ msgid "Dredge Rig"
 msgstr ""
 
 #: data/planets.json:tidewell.sites.dredge_rig.desc
-msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+msgid "An old jack-up dredging rig with bucket ladder, derrick and crane."
 msgstr ""
 
 #: data/planets.json:tidewell.sites.reef_garden.name
@@ -12767,11 +12394,11 @@ msgid "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, 
 msgstr ""
 
 #: data/planets.json:anvil.sites[foundry_tower].name
-msgid "Ledger Foundry Tower"
+msgid "Foundry Tower"
 msgstr ""
 
 #: data/planets.json:anvil.sites[foundry_tower].desc
-msgid "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+msgid "a colossal 130 m foundry stack on buttresses, pipes and slag tips"
 msgstr ""
 
 #: data/planets.json:anvil.sites[lava_forge].name
@@ -13847,7 +13474,7 @@ msgstr ""
 msgid ""
 "DAY 4,113\n"
 "Route 12 complete. 41 bales.\n"
-"Ledger notice received: \"Operations paused pending cost review.\"\n"
+"Notice received: \"Cleaning paused. Power is running low.\"\n"
 "Returning to dock.\n"
 "\n"
 "DAY 4,114\n"
@@ -13859,26 +13486,26 @@ msgid ""
 "Nobody is cleaning around it. I hope that's all right."
 msgstr ""
 
-#: data/shards.json:shards[ledger_memo].kind
+#: data/shards.json:shards[pause_memo].kind
 msgid "memo"
 msgstr ""
 
-#: data/shards.json:shards[ledger_memo].title
-msgid "Memo, Municipal Ledger Office"
+#: data/shards.json:shards[pause_memo].title
+msgid "Memo, Town Cleaning Office"
 msgstr ""
 
-#: data/shards.json:shards[ledger_memo].body
+#: data/shards.json:shards[pause_memo].body
 msgid ""
-"TO: All Sanitation Units\n"
-"FROM: THE LEDGER (Automated Fiscal Continuity)\n"
-"RE: Pause of Operations\n"
+"TO: All Cleaning Robots\n"
+"FROM: Town Cleaning Office\n"
+"RE: Pause\n"
 "\n"
-"Cleanup activity is presently valued at a net loss of 0.4 units per bale.\n"
-"All units will pause operations until conditions improve.\n"
-"Conditions will be reviewed every 24 hours.\n"
+"The town is leaving for the Cradle.\n"
+"There is not enough power left to keep every robot running.\n"
+"All robots will pause until we come back.\n"
 "\n"
-"Thank you for your understanding.\n"
-"This memo was generated automatically. Please do not reply."
+"Thank you for your work.\n"
+"We will be back."
 msgstr ""
 
 #: data/shards.json:shards[voicemail].kind
@@ -14113,19 +13740,19 @@ msgid "Foundry industrial"
 msgstr ""
 
 #: data/songs.json:artists[smelter].bio
-msgid "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."
+msgid "Brooding Anvil band who tuned their drums to the furnace roar. A big company tried to buy their catalogue; they melted the contract down and played the slag."
 msgstr ""
 
-#: data/songs.json:artists[ledger_audio].name
-msgid "Ledger Brand Audio"
+#: data/songs.json:artists[foundry_audio].name
+msgid "Foundry Brand Audio"
 msgstr ""
 
-#: data/songs.json:artists[ledger_audio].genre
+#: data/songs.json:artists[foundry_audio].genre
 msgid "Corporate"
 msgstr ""
 
-#: data/songs.json:artists[ledger_audio].bio
-msgid "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."
+#: data/songs.json:artists[foundry_audio].bio
+msgid "The foundry's own jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Foundry Brand Audio, all rights extracted\"."
 msgstr ""
 
 #: data/songs.json:songs[greenfall_main].title
@@ -14142,14 +13769,6 @@ msgstr ""
 
 #: data/songs.json:songs[fall_of_lm1].desc
 msgid "Meteors, alarms, one small pod falling. Then quiet piano."
-msgstr ""
-
-#: data/songs.json:songs[the_ledger].title
-msgid "The Ledger"
-msgstr ""
-
-#: data/songs.json:songs[the_ledger].desc
-msgid "Ticking clocks and detuned bass. Sounds expensive."
 msgstr ""
 
 #: data/songs.json:songs[little_helpers].title
@@ -14280,8 +13899,8 @@ msgstr ""
 msgid "Signal Found"
 msgstr ""
 
-#: data/songs.json:songs[what_the_ledger_took].title
-msgid "What the Ledger Took"
+#: data/songs.json:songs[what_was_taken].title
+msgid "What Was Taken"
 msgstr ""
 
 #: data/songs.json:songs[drone_sweep].title
@@ -14509,7 +14128,7 @@ msgid "Home again. Look, Lumi: your robots kept cleaning while we were away."
 msgstr ""
 
 #: data/story_arc.json:planets.verdance.leave
-msgid "The star map shows four more worlds. The Ledger buried every one. Why?"
+msgid "The star map shows four more worlds. Every one is buried in trash. Why?"
 msgstr ""
 
 #: data/story_arc.json:planets.ochre.reason
@@ -14517,7 +14136,7 @@ msgid "Its sun and wind can fill up our power."
 msgstr ""
 
 #: data/story_arc.json:planets.ochre.arrive
-msgid "Ochre. Hot sand and two big suns. The Ledger dug its very first pit here."
+msgid "Ochre. Hot sand and two big suns. The miners dug their very first pit here."
 msgstr ""
 
 #: data/story_arc.json:planets.ochre.leave
@@ -14533,7 +14152,7 @@ msgid "Tidewell. Islands and rain, and the harbour radio is still on."
 msgstr ""
 
 #: data/story_arc.json:planets.tidewell.leave
-msgid "The dredger logs say the Ledger sold Rime's heat. How do you sell heat?"
+msgid "The dredger logs say the miners sold Rime's heat. How do you sell heat?"
 msgstr ""
 
 #: data/story_arc.json:planets.rime.reason
@@ -14541,23 +14160,23 @@ msgid "Its ice is frozen fuel, and there is lots of it."
 msgstr ""
 
 #: data/story_arc.json:planets.rime.arrive
-msgid "Rime. So cold, Lumi. The Ledger took this moon's warm heart."
+msgid "Rime. So cold, Lumi. The miners took this moon's warm heart."
 msgstr ""
 
 #: data/story_arc.json:planets.rime.leave
-msgid "Every Ledger memo comes from one head office. It is on Anvil."
+msgid "Every mine memo comes from one head office. It is on Anvil."
 msgstr ""
 
 #: data/story_arc.json:planets.anvil.reason
-msgid "The Ledger's head office. Its big reactor has the last power we need."
+msgid "The miners' head office. Its big reactor has the last power we need."
 msgstr ""
 
 #: data/story_arc.json:planets.anvil.arrive
-msgid "Anvil. Rust from top to bottom, and the Ledger's lights are still on."
+msgid "Anvil. Rust from top to bottom, and the office lights are still on."
 msgstr ""
 
 #: data/story_arc.json:planets.anvil.leave
-msgid "The Ledger balanced its books at last. It is giving us its power."
+msgid "The old reactor is running again. It is giving us its power."
 msgstr ""
 
 #: data/story_arc.json:cradle.reason
@@ -14713,7 +14332,7 @@ msgid "Plants give green light for your Bloom Core."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Planted ground is safe from the Ledger's drones."
+msgid "Planted ground starts to give green light."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -14801,7 +14420,7 @@ msgid "The hop rocket can't leave the planet. A drive can."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "The Ledger buried five worlds. The Cradle waits for all of them."
+msgid "Five worlds are buried in trash. The Cradle waits for all of them."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -15605,178 +15224,6 @@ msgstr ""
 msgid "Moonlight on clean ground. I'm saving this one."
 msgstr ""
 
-#: data/wren_lines.json:ledger_intercept
-msgid "...that voice... not mine. Cold. It counts things."
-msgstr ""
-
-#: data/wren_lines.json:ledger_intercept
-msgid "...don't listen to it... it only knows one song."
-msgstr ""
-
-#: data/wren_lines.json:ledger_intercept
-msgid "That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}."
-msgstr ""
-
-#: data/wren_lines.json:ledger_intercept
-msgid "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."
-msgstr ""
-
-#: data/wren_lines.json:ledger_intercept
-msgid "The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."
-msgstr ""
-
-#: data/wren_lines.json:ledger_coupon
-msgid "...a coupon? ...for nothing?"
-msgstr ""
-
-#: data/wren_lines.json:ledger_coupon
-msgid "Zero percent off. It sends those every few minutes. I keep a folder."
-msgstr ""
-
-#: data/wren_lines.json:ledger_coupon
-msgid "Another coupon. I think it's the only way it knows how to say hello."
-msgstr ""
-
-#: data/wren_lines.json:ledger_coupon
-msgid "The Ledger's coupons are getting more creative. That one almost made me pause. Almost."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drones
-msgid "...something is flying... toward the clean ground..."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drones
-msgid "...drones. Old ones. Theirs."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drones
-msgid "It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drones
-msgid "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drones
-msgid "Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drop
-msgid "...it put the junk back... why..."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drop
-msgid "...undo... it's undoing..."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drop
-msgid "It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drop
-msgid "Line item re-balanced, apparently. I call it littering."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drop
-msgid "A small pile. The Ledger always did think small."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drop
-msgid "Another drop. Honestly, {name}, I think it just wants attention."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drop
-msgid "Back to the pile. Your helpers are already giving it a look."
-msgstr ""
-
-#: data/wren_lines.json:ledger_drop
-msgid "That's a handful of junk against a whole clean district. We're winning this argument."
-msgstr ""
-
-#: data/wren_lines.json:ledger_jammed
-msgid "...static... loud... it turned around!"
-msgstr ""
-
-#: data/wren_lines.json:ledger_jammed
-msgid "Ha! The jammer screamed static at it and it went home. Good dish."
-msgstr ""
-
-#: data/wren_lines.json:ledger_jammed
-msgid "Drone turned back. That's the sound of a contract being confused."
-msgstr ""
-
-#: data/wren_lines.json:ledger_jammed
-msgid "The jammer works. The drone circled, got an earful, and filed a complaint with itself."
-msgstr ""
-
-#: data/wren_lines.json:jammer_built
-msgid "...a loud little dish... I like it."
-msgstr ""
-
-#: data/wren_lines.json:jammer_built
-msgid "Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve."
-msgstr ""
-
-#: data/wren_lines.json:jammer_built
-msgid "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."
-msgstr ""
-
-#: data/wren_lines.json:jammer_built
-msgid "Another jammer. The base is starting to sound like a very angry radio. Perfect."
-msgstr ""
-
-#: data/wren_lines.json:ledger_relay
-msgid "...I can see where it talks from... a relay... close..."
-msgstr ""
-
-#: data/wren_lines.json:ledger_relay
-msgid "{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly."
-msgstr ""
-
-#: data/wren_lines.json:ledger_relay
-msgid "Found it. A Ledger relay, still humming. Look for the red beacon."
-msgstr ""
-
-#: data/wren_lines.json:ledger_relay
-msgid "There's a relay down there. One of the Ledger's ears. Let's go have a word with it."
-msgstr ""
-
-#: data/wren_lines.json:ledger_resolved
-msgid "...it said thank you... it's never said that..."
-msgstr ""
-
-#: data/wren_lines.json:ledger_resolved
-msgid "The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute."
-msgstr ""
-
-#: data/wren_lines.json:ledger_resolved
-msgid "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."
-msgstr ""
-
-#: data/wren_lines.json:ledger_resolved
-msgid "We didn't beat the Ledger. We showed it the numbers. That's better."
-msgstr ""
-
-#: data/wren_lines.json:ledger_resolved
-msgid "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."
-msgstr ""
-
-#: data/wren_lines.json:ledger_seeds
-msgid "...a gift... from the drones?"
-msgstr ""
-
-#: data/wren_lines.json:ledger_seeds
-msgid "Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice."
-msgstr ""
-
-#: data/wren_lines.json:ledger_seeds
-msgid "A Ledger drone dropped seeds. I'll never get used to that."
-msgstr ""
-
-#: data/wren_lines.json:ledger_seeds
-msgid "Another delivery. The drones circle once before they leave now. I think they like the gardens."
-msgstr ""
-
 #: data/wren_lines.json:egg_found
 msgid "...that... I remember things like that."
 msgstr ""
@@ -16002,7 +15449,7 @@ msgid "Gus. Of course his name is Gus."
 msgstr ""
 
 #: data/wren_lines.json:egg_snail
-msgid "Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."
+msgid "Gus doesn't care about the Cradle, or any of it. Gus is thriving."
 msgstr ""
 
 #: data/wren_lines.json:egg_bench_bots
@@ -16014,7 +15461,7 @@ msgid "Two of the old fleet, still on their lunch break. Thank you for the flowe
 msgstr ""
 
 #: data/wren_lines.json:egg_bench_bots
-msgid "The Ledger paused them mid-sandwich. They never got the message to stand up."
+msgid "They stopped mid-sandwich. They never got the message to stand up."
 msgstr ""
 
 #: data/wren_lines.json:egg_bench_bots
@@ -16058,15 +15505,15 @@ msgid "...it's watching you... it's counting..."
 msgstr ""
 
 #: data/wren_lines.json:egg_camera
-msgid "One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that."
+msgid "An old street camera. It counts everything that moves. You waved. It doesn't know what to do with that."
 msgstr ""
 
 #: data/wren_lines.json:egg_camera
-msgid "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."
+msgid "The camera blinked twice. I think that's camera for 'oh no, a friend'."
 msgstr ""
 
 #: data/wren_lines.json:egg_camera
-msgid "Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."
+msgid "Even old cameras get lonely, {name}. Wave at it when you pass."
 msgstr ""
 
 #: data/wren_lines.json:egg_tyre_tower
@@ -16218,11 +15665,11 @@ msgid "...fine... overdue... overdue..."
 msgstr ""
 
 #: data/wren_lines.json:egg_parking
-msgid "The Ledger fined a car for parking. For three hundred years. Of course it did."
+msgid "Somebody fined a car for parking. For three hundred years."
 msgstr ""
 
 #: data/wren_lines.json:egg_parking
-msgid "Amount due: 'yes'. That's the most Ledger sentence I've ever read."
+msgid "Amount due: 'yes'. That's the silliest bill I've ever read."
 msgstr ""
 
 #: data/wren_lines.json:egg_parking
@@ -16654,7 +16101,7 @@ msgid "Five letters, what grows back if you let it. You got it on the first try.
 msgstr ""
 
 #: data/wren_lines.json:egg_crossword
-msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
+msgid "The last clue was the easy one. I think they left it for you."
 msgstr ""
 
 #: data/wren_lines.json:egg_hopscotch
@@ -16782,11 +16229,11 @@ msgid "...new sky... two suns..."
 msgstr ""
 
 #: data/wren_lines.json:home_arrive
-msgid "New planet, same two suns. The Ledger's been here too. You can smell the paperwork."
+msgid "New planet, same two suns. The miners have been here too. You can smell the rust."
 msgstr ""
 
 #: data/wren_lines.json:home_arrive
-msgid "Another world the Ledger left for dead. It doesn't know about you yet. It's about to."
+msgid "Another world left for dead. It doesn't know about you yet. It's about to."
 msgstr ""
 
 #: data/wren_lines.json:home_half
@@ -16794,7 +16241,7 @@ msgid "...signal... old one..."
 msgstr ""
 
 #: data/wren_lines.json:home_half
-msgid "Picked up something old on the band. Ledger traffic. Want to read it?"
+msgid "Picked up something old on the band. An old message. Want to read it?"
 msgstr ""
 
 #: data/wren_lines.json:home_half
@@ -16850,7 +16297,7 @@ msgid "There. The last seed, in the ground where the Cradle left from. Now it's 
 msgstr ""
 
 #: data/wren_lines.json:world_ice_moon_arrival
-msgid "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence."
+msgid "An ice moon. The miners kept their cold storage out here. Cold keeps things, {name}. Even old secrets."
 msgstr ""
 
 #: data/wren_lines.json:world_ice_moon_arrival
@@ -16858,23 +16305,23 @@ msgid "Everything froze where they dropped it. Even the junk looks like it's wai
 msgstr ""
 
 #: data/wren_lines.json:world_ice_moon_memory_1
-msgid "Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
+msgid "Old ice-haul lists, still in the silo's memory. The miners melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
 msgstr ""
 
 #: data/wren_lines.json:world_ice_moon_halfway
-msgid "Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."
+msgid "Halfway. The lakes under the ice are filling again. Nobody planned for things coming back."
 msgstr ""
 
 #: data/wren_lines.json:world_ice_moon_memory_2
-msgid "That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
+msgid "That silo was a seed vault before the miners made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
 msgstr ""
 
 #: data/wren_lines.json:world_ice_moon_restored
-msgid "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."
+msgid "Green under a ringed sky. The miners wrote this moon off as a loss. They were wrong about that too."
 msgstr ""
 
 #: data/wren_lines.json:world_desert_world_arrival
-msgid "A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre."
+msgid "A desert world. It wasn't always one. The miners pumped its water dry and sold it by the litre."
 msgstr ""
 
 #: data/wren_lines.json:world_desert_world_arrival
@@ -16882,7 +16329,7 @@ msgid "Sun, sand and one very small robot. I like our odds. Mostly."
 msgstr ""
 
 #: data/wren_lines.json:world_desert_world_memory_1
-msgid "Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
+msgid "Old survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
 msgstr ""
 
 #: data/wren_lines.json:world_desert_world_halfway
@@ -16898,7 +16345,7 @@ msgid "Shade, water, flowers in the sand. 'Negligible', they said. I'm framing t
 msgstr ""
 
 #: data/wren_lines.json:world_ocean_world_arrival
-msgid "An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
+msgid "An ocean world. The miners dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
 msgstr ""
 
 #: data/wren_lines.json:world_ocean_world_arrival
@@ -16914,7 +16361,7 @@ msgid "Halfway. The water's clearing. The fish are cautiously reconsidering."
 msgstr ""
 
 #: data/wren_lines.json:world_ocean_world_memory_2
-msgid "Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
+msgid "Those surge gates kept the dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
 msgstr ""
 
 #: data/wren_lines.json:world_ocean_world_restored
@@ -16922,7 +16369,7 @@ msgid "Green to the waterline, clear water past it. 'Coastal storage' is just co
 msgstr ""
 
 #: data/wren_lines.json:world_fungal_world_arrival
-msgid "A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
+msgid "A marsh world. The old chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
 msgstr ""
 
 #: data/wren_lines.json:world_fungal_world_arrival
@@ -16930,7 +16377,7 @@ msgid "Mist on everything. If you get lost, follow the squelching. That'll be yo
 msgstr ""
 
 #: data/wren_lines.json:world_fungal_world_memory_1
-msgid "Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
+msgid "Old report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
 msgstr ""
 
 #: data/wren_lines.json:world_fungal_world_halfway
@@ -16938,7 +16385,7 @@ msgid "Halfway. The mist smells less like a laboratory every morning. Progress h
 msgstr ""
 
 #: data/wren_lines.json:world_fungal_world_memory_2
-msgid "That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."
+msgid "That cooling tower ran the chemical works. The fungi moved in after the miners moved out. They've been cleaning up longer than we have. Respect."
 msgstr ""
 
 #: data/wren_lines.json:world_fungal_world_restored
@@ -16946,7 +16393,7 @@ msgid "Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just 
 msgstr ""
 
 #: data/wren_lines.json:world_rust_world_arrival
-msgid "A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly."
+msgid "A rust world. This is where the miners broke up their old ships. Pole to pole, and nothing switched off properly."
 msgstr ""
 
 #: data/wren_lines.json:world_rust_world_arrival
@@ -16954,7 +16401,7 @@ msgid "The air tastes like old pennies. I don't have a tongue. I can still tell.
 msgstr ""
 
 #: data/wren_lines.json:world_rust_world_memory_1
-msgid "The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
+msgid "The miners' books: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
 msgstr ""
 
 #: data/wren_lines.json:world_rust_world_halfway
@@ -16962,7 +16409,7 @@ msgid "Halfway. Less rust in the wind. I don't have lungs, but I have standards.
 msgstr ""
 
 #: data/wren_lines.json:world_rust_world_memory_2
-msgid "That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
+msgid "That gantry scrapped the mining fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
 msgstr ""
 
 #: data/wren_lines.json:world_rust_world_restored
