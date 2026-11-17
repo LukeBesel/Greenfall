@@ -14,12 +14,13 @@ const COLOR := Color(0.74, 0.48, 1.0)
 const TRAIL_N: int = 7
 const TRAIL_STEP_M: float = 2.2  # [v10guide] critic 13: fewer, bigger, evenly spaced arrows (was 9 x 1.7 m)
 const TRAIL_START_M: float = 2.0
-## [v10guide] Critic 13: no trail when the target is this close and on screen (the beam says it).
-const TRAIL_HIDE_NEAR_M: float = 12.0
+## [v10guide] Critic 13: no trail when the target is this close and on screen (the beam and ring say it).
+const TRAIL_HIDE_NEAR_M: float = 6.0
 ## [v10guide] An arrow stands on whatever is under it up to this high (the pad, a kerb): the
 ## arrows drawn on the terrain under the start pad were cut by its top into a "zigzag" and a "flat
 ## triangle" (critic 13, owner's shots 22 and 25).
 const TRAIL_CLIMB_M: float = 1.6
+const TRAIL_PITCH_DEG: float = 35.0
 const NEAR_M: float = 3.0
 ## [v1guide] The sky beam: tall enough to read from across the yard and over junk heaps.
 const BEAM_H: float = 70.0
@@ -266,14 +267,18 @@ func _update_trail(lumi: Patch, to: Vector3) -> void:
 			var n: Vector3 = pt.normalized()
 			var g: Vector3 = sf.terrain.ground(n) + n * (0.08 + sf.ground_height(sf.hex_at(pt), pt))
 			if space != null and a > 0.0:  # [v10guide] on top of the pad / kerb, not cut by it
-				var q := PhysicsRayQueryParameters3D.create(g + n * TRAIL_CLIMB_M, g - n * 0.05)
+				# from above Lumi's own feet too: the yard pad can stand higher over the terrain than CLIMB_M
+				var top: float = maxf(g.length() + TRAIL_CLIMB_M, from.length() + 1.0)
+				var q := PhysicsRayQueryParameters3D.create(n * top, g - n * 0.05)
 				q.exclude = [lumi.get_rid()]
 				q.collide_with_areas = false
 				var hit: Dictionary = space.intersect_ray(q)
-				if not hit.is_empty() and hit["collider"] is StaticBody3D:
+				if not hit.is_empty() and not (hit["collider"] is RigidBody3D or hit["collider"] is CharacterBody3D):
 					g = (hit["position"] as Vector3) + n * 0.06
 			var fw: Vector3 = (dir - n * dir.dot(n)).normalized()
-			xf = Transform3D(Basis.looking_at(fw, n), g)
+			# [v10guide] critic 13: pitched up toward the camera behind Lumi, so the arrow reads from the
+			# play camera's low angle instead of lying flat as a thin sliver
+			xf = Transform3D(Basis.looking_at(fw, n) * Basis(Vector3.RIGHT, deg_to_rad(TRAIL_PITCH_DEG)), g + n * 0.12)
 		else:
 			var y: float = 0.06
 			if f:
@@ -285,17 +290,17 @@ func _update_trail(lumi: Patch, to: Vector3) -> void:
 		mm.set_instance_color(i, Color(1, 1, 1, a * 0.95 * _trail_alpha))
 
 
-## A flat solid chevron pointing along -Z (Basis.looking_at's forward), 0.8 m wide.
+## A flat solid chevron pointing along -Z (Basis.looking_at's forward), 1.1 m wide.
 ## [v10guide] Critic 13: the thin two-stroke V (two overlapping quads, 0.5 m) read as a zigzag from
 ## the play camera's low angle; one solid arrowhead (an outer tip and a notch, no overlaps) reads
 ## as an arrow from 10-15 m.
 static func _chevron() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var tip := Vector3(0, 0, -0.32)
-	var notch := Vector3(0, 0, -0.02)  # the concave back: an arrowhead, not a triangle
-	var left := Vector3(-0.4, 0, 0.2)
-	var right := Vector3(0.4, 0, 0.2)
+	var tip := Vector3(0, 0, -0.42)
+	var notch := Vector3(0, 0, -0.04)  # the concave back: an arrowhead, not a triangle
+	var left := Vector3(-0.55, 0, 0.26)
+	var right := Vector3(0.55, 0, 0.26)
 	var tris: Array[Vector3] = [tip, left, notch, tip, notch, right]
 	for v: Vector3 in tris:
 		st.set_color(Color.WHITE)

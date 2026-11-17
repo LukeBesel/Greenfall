@@ -686,7 +686,7 @@ func _pose(delta: float) -> void:
 
 ## [v10guide] Critic 23: on the planet the film's sky is the dead world's dusty one (the shot's
 ## "dust", default FILM_DUST); it clears over the hand-off into the game's own sky.
-const FILM_DUST: float = 0.6
+const FILM_DUST: float = 1.0
 
 
 func _film_dust(s: Dictionary, u: float) -> void:
