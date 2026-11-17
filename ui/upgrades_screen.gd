@@ -21,6 +21,11 @@ const TABS: Array[Dictionary] = [
 const TAB_ALIASES: Dictionary = {"upgrades": "patch", "cosmetics": "patch", "builder": "patch", "locker": "patch", "trade": "bots", "hub": "patch", "rockets": "patch"}  # [ui3] Hub and Rockets folded into Upgrades  # [qafix] "upgrades" is the Upgrades tab (id patch)
 const TAB_FONT: int = 19
 
+## [v10pace] Owner: "Make the bot bay another thing like the tool bench. seperate from other stuff."
+## Tabs that are not on the workbench: each is a machine's own screen (the Bot Bay: systems/camp/
+## bot_bay.gd), this same class with `solo` set to the tab: its title, no tab row, one list.
+const SOLO_TABS: Dictionary = {"bots": "BOT BAY"}  # l10n
+
 ## [ui2] id -> Callable() -> bool. A tab whose gate returns false is locked (see set_tab_gate).
 static var _gates: Dictionary = {}
 static var _gate_hints: Dictionary = {}
@@ -84,6 +89,8 @@ static func cond_ok(c: Array, w: Node) -> bool:
 
 ## [ui2] Whether a tab is shown at all: a code gate (set_tab_gate) if one is set, else the data.
 static func tab_visible(id: String, w: Node = null) -> bool:
+	if id in SOLO_TABS:  # [v10pace] never a workbench tab: it is a machine's own screen
+		return false
 	if DevHooks.has("bench-all"):
 		return true
 	if _gates.has(id):
@@ -125,6 +132,8 @@ var _hub_panel: HubPanel
 var hub: Hub
 var _alloc: AllocationBoard
 var build_at: Callable = func() -> Vector3: return Vector3.ZERO
+## [v10pace] "" = the workbench; a SOLO_TABS id = that machine's own screen (set before _ready).
+var solo: String = ""
 
 
 func _ready() -> void:
@@ -133,6 +142,10 @@ func _ready() -> void:
 	if DevHooks.has("tab"):
 		_tab = DevHooks.get_s("tab", "patch")
 	_tab = str(TAB_ALIASES.get(_tab, _tab))
+	if solo != "":
+		_tab = solo
+	elif _tab in SOLO_TABS:
+		_tab = "patch"
 	_root = Control.new()
 	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.theme = UITheme.get_theme()
@@ -151,7 +164,7 @@ func _ready() -> void:
 	var header := HBoxContainer.new()
 	hm.add_child(header)
 	header.add_theme_constant_override("separation", 8)
-	header.add_child(HoloFrame.header_title(tr("WORKBENCH")))
+	header.add_child(HoloFrame.header_title(tr(str(SOLO_TABS[solo])) if solo != "" else tr("WORKBENCH")))
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(sp)
@@ -177,6 +190,7 @@ func _ready() -> void:
 	header.add_child(close)
 	var tm: PanelContainer = HoloFrame.module(6)
 	vb.add_child(tm)
+	tm.visible = solo == ""  # [v10pace] a machine's own screen has one list and no tabs
 	var tabs := HBoxContainer.new()
 	tabs.add_theme_constant_override("separation", 8)
 	tm.add_child(tabs)
@@ -222,12 +236,12 @@ func _ready() -> void:
 	_root.resized.connect(_relayout)
 	_relayout()
 	_root.visible = false
-	if DevHooks.has("open-bench"):  # [v7look] dev: opens the workbench S wall seconds in (shots; --tab, --bench-all)
+	if DevHooks.has("open-bench") and solo == "":  # [v7look] dev: opens the workbench S wall seconds in (shots; --tab, --bench-all)
 		(func() -> void:
 			await DevHooks.wait_wall(DevHooks.get_f("open-bench", 100.0))
 			if is_inside_tree() and not is_open:
 				open_screen()).call_deferred()
-	if DevHooks.has("bench-report"):  # [v1guide] dev: print the tabs and rows every N game seconds
+	if DevHooks.has("bench-report") and solo == "":  # [v1guide] dev: print the tabs and rows every N game seconds
 		var t := Timer.new()
 		t.wait_time = maxf(1.0, DevHooks.get_f("bench-report", 20.0))
 		t.autostart = true
@@ -330,7 +344,7 @@ func _populate() -> void:
 
 func _set_tab(id: String) -> void:
 	id = str(TAB_ALIASES.get(id, id))
-	if id == _tab:
+	if id == _tab or solo != "" or id in SOLO_TABS:  # [v10pace]
 		return
 	_tab = id
 	_close_btn.focus_neighbor_bottom = NodePath()  # [ui2] the old tab's buttons are going away
@@ -349,7 +363,7 @@ func _style_tabs() -> void:
 		var on: bool = TABS[i]["id"] == _tab
 		var b: Button = _tab_buttons[i]
 		var tid: String = str(TABS[i]["id"])
-		b.visible = on or tab_visible(tid, fleet.world if fleet else null)  # [ui2] tabs appear once they are open
+		b.visible = (on or tab_visible(tid, fleet.world if fleet else null)) and not (tid in SOLO_TABS)  # [ui2] tabs appear once they are open
 		b.tooltip_text = tr(str(TABS[i]["name"]))
 		# [ui2] Holo tabs: the active one is a lit glass pill, the rest are quiet text.
 		b.add_theme_stylebox_override("normal", BenchKit.holo(Color(BenchKit.HOLO, 0.8), Color(0.1, 0.25, 0.32, 0.55), 1.0, 8, 8) if on else BenchKit.holo(Color(BenchKit.HOLO, 0.12), Color(0, 0, 0, 0.2), 0.0, 8, 8))
@@ -438,7 +452,11 @@ func objective_row() -> Array:
 	if obj == null:
 		return []
 	var r: Array = obj.bench_row()
-	if r.size() < 2 or not tab_visible(str(r[0]), w):
+	if r.size() < 2:
+		return []
+	if solo != "":  # [v10pace] a machine's own screen: only its own rows
+		return r if str(r[0]) == solo else []
+	if not tab_visible(str(r[0]), w):
 		return []
 	return r
 
@@ -476,7 +494,7 @@ func _input(event: InputEvent) -> void:
 		close_screen()
 		get_viewport().set_input_as_handled()
 		return
-	if event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
+	if solo == "" and (event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev")):
 		var order: Array[String] = []
 		for t: Dictionary in TABS:
 			if str(t["id"]) == _tab or tab_visible(str(t["id"]), fleet.world if fleet else null):  # [ui2] skip hidden tabs

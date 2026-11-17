@@ -519,6 +519,9 @@ func any_modal_open() -> bool:
 		var m: Node = w.get(k)
 		if m != null and bool(m.get("is_open")):
 			return true
+	for b: Node in w.get_tree().get_nodes_in_group("bot_bay"):  # [v10pace] a Bot Bay's own screen
+		if b is BotBay and (b as BotBay).is_open():
+			return true
 	return false
 
 
@@ -899,8 +902,25 @@ func _attach_camp() -> void:
 		var home: Vector3 = yard_point("camera_bot")
 		camp.camera_bot.set("_home", home)
 		camp.camera_bot.global_position = home + home.normalized() * 1.5
+	_seat_builds()  # [v10pace] the Bot Bay and the marked build spots
 	if sp0:  # [orbD] anchors that settle later (moved out of another planet's geometry) carry their interactables
 		sp0.anchors_moved.connect(func(_names: PackedStringArray) -> void: reseat_yard())
+
+
+## [v10pace] The Bot Bay (systems/camp/bot_bay.gd) and the marked spots of things not built yet
+## (systems/camp/build_spot.gd: the Bot Bay's, the shuttle's on the launch pad) on their anchors.
+func _seat_builds() -> void:
+	var bay: BotBay = BotBay.of(w)
+	var bs: Array = yard_slot("bot_bay", BotBay.POS)
+	var bxf: Transform3D = (bs[0] as Node3D).global_transform * (bs[1] as Transform3D)
+	if bay:
+		bay.place(bxf)
+	var spot: Node3D = w.get_node_or_null("BuildSpot_bot_bay") as Node3D
+	if spot:
+		spot.global_transform = bxf
+	var pad: Node3D = w.get_node_or_null("BuildSpot_shuttle") as Node3D
+	if pad and globe.site_manager:
+		pad.global_transform = globe.site_manager.pad_xf(0)
 
 
 ## [orbD] Re-reads the start site's anchors for everything attached to them at setup: the signal
@@ -918,6 +938,7 @@ func reseat_yard() -> void:
 		var reach: Node3D = locker.get("_anchor") as Node3D
 		if reach:
 			reach.global_position = locker.global_position + locker.global_basis.z * 0.9
+	_seat_builds()  # [v10pace]
 	var camp: Camp = w.get("camp")
 	if camp and camp.camera_bot:
 		var home: Vector3 = yard_point("camera_bot")

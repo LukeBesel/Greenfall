@@ -18,6 +18,18 @@ static func is_built() -> bool:
 	return YardBuilds.built("locker")
 
 
+## [v10pace] Whether Lumi has a Locker at any base (flags.locker_owned, set the first time one is
+## seen standing). Owner: "I got a cosmetic wayyy to fast... I dont even have locker yet": no look
+## is handed out, dropped or unlocked before this is true (Designs.check_unlocks, RobotBuilder).
+static func owned() -> bool:
+	if bool(GameState.flags.get("locker_owned", false)):
+		return true
+	if is_built() or DevHooks.has("locker") or DevHooks.has("open-locker"):
+		GameState.flags["locker_owned"] = true
+		return true
+	return false
+
+
 func setup(p_world: Node) -> void:
 	world = p_world
 	name = "LockerCabinet"

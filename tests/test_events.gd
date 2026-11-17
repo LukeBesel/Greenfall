@@ -299,7 +299,7 @@ func test_reward_track_unlocks_liveries_and_builder_parts() -> void:
 	assert_eq(RobotBuilder.count("propeller_cap"), 1, "each step is granted once")
 	var before: float = GameState.get_currency("parts").to_float()
 	c.count_done(17 + 5)  # past the last step (20): one repeat Vintage part per repeat_every
-	assert_true(GameState.get_currency("parts").to_float() >= before + 450.0 * 2.0 + 150.0 * 2.0 - 0.01, "[ui2] the track's rare robot parts pay Parts")
+	assert_true(GameState.get_currency("parts").to_float() >= before + RobotParts.value(4) * 2.0 + RobotParts.value(3) * 2.0 - 0.01, "[ui2] the track's rare robot parts pay Parts")
 	assert_eq(GameState.parts.size(), 0, "no robot part items")
 	c.free()
 

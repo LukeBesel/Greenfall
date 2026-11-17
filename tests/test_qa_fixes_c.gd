@@ -72,13 +72,13 @@ func test_upgrades_screen_tab_closes_and_focus_follows_tabs() -> void:
 	# Active tab lit ([ui2] holo), the others quiet.
 	assert_eq(scr._tab_buttons[3].get_theme_color("font_color"), BenchKit.HOLO.lightened(0.5))
 	assert_eq(scr._tab_buttons[0].get_theme_color("font_color"), UITheme.MUTED)
-	# RB from Bots goes to the next tab on screen (Research), per TABS order.
-	scr._tab = "bots"
+	# RB from Build goes to the next tab on screen (Research), per TABS order ([v10pace] Bots is the Bot Bay's own screen).
+	scr._tab = "build"
 	var ev := InputEventAction.new()
 	ev.action = "ui_tab_next"
 	ev.pressed = true
 	scr._input(ev)
-	assert_eq(scr._tab, "research")  # [ui6] Bots is third, Research fourth
+	assert_eq(scr._tab, "research")  # [ui6] Research follows Build
 	scr._set_tab("contracts")
 	await wait_physics_frames(2)
 	var close := InputEventAction.new()

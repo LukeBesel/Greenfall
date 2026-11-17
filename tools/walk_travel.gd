@@ -97,7 +97,12 @@ static func _station_two(so: SliceOrbit) -> void:
 	var os_: OrbitSites = so.sites
 	var hp: HubPurpose = os_.purpose
 	var p: Patch = w.get("patch") as Patch
-	# The state the card reaches hub_fly_2 in: the seed planted (the rocket comes with that step).
+	# The state the card reaches hub_fly_2 in: the seed planted, three robots, ten hexes, and the
+	# shuttle built by the player ([v10pace]: no rocket stands before; tools/walk_home.gd plays the build).
+	_check(not os_.rocket_unlocked() and not os_.rocket_spot.visible, "no rocket stands on the pad before the shuttle is built")
+	YardBuilds.mark_built("shuttle")
+	GameState.flags["shuttle_plans"] = true
+	GameState.flags["map_seen"] = true
 	_set_story(ob, "hub_fly_2")
 	GameState.stats["plants_planted"] = maxf(float(GameState.stats.get("plants_planted", 0)), 1.0)
 	GameState.flags["seeds_unlocked"] = true
@@ -110,7 +115,7 @@ static func _station_two(so: SliceOrbit) -> void:
 	# 1. Short of the station's price: no beam on the rocket yet, the card says what is missing.
 	_set_money(float(cost.get("cubes", 0)) * 0.5, 0.0)
 	await _wait(tree, 1.6)
-	_check(os_.rocket_spot.visible, "the rocket stands on the pad once the seed is planted")
+	_check(os_.rocket_spot.visible, "the rocket stands on the pad once the shuttle is built")
 	var tgt: Dictionary = ob.step_target(ob.current())
 	_check(str(ob.current().get("id", "")) == "hub_fly_2" and tgt.get("pos", null) == null and ob.situation != "",
 		"short of the price: no beam on the rocket, the card says what is missing ('%s')" % ob.situation)

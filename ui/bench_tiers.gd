@@ -116,6 +116,9 @@ static func buy(w: Node = null) -> bool:
 	if gr is Dictionary:
 		for cid: Variant in gr:
 			GameState.add_currency(str(cid), BigNum.from_float(float(gr[cid])))
+	if str(def(t).get("build", "")) != "":  # [v10pace] a machine of its own (the Bot Bay): it shows up in the yard
+		YardBuilds.events.built.emit(str(def(t)["build"]))
+		return true
 	var names: Array[String] = []
 	for tab: Variant in def(t).get("tabs", []):
 		for td: Dictionary in UpgradesScreen.TABS:

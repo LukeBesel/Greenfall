@@ -44,14 +44,15 @@ func test_default_is_aurora_and_unlocked() -> void:
 
 
 func test_unlock_by_any_condition() -> void:
-	GameState.stats["robots_built"] = 4
+	GameState.flags["locker_owned"] = true  # [v10pace] no look unlocks before a Locker stands (tests/test_v10pace.gd)
+	GameState.stats["robots_built"] = 12
 	assert_almost_eq(Designs.progress("bolt"), 0.8, 0.001)
 	assert_eq(Designs.check_unlocks(true), [] as Array[String])
-	GameState.stats["robots_built"] = 5
+	GameState.stats["robots_built"] = 15
 	assert_eq(Designs.check_unlocks(true), ["bolt"] as Array[String])
 	assert_true(Designs.is_unlocked("bolt"))
 	assert_eq(Designs.check_unlocks(true), [] as Array[String], "unlocks once")
-	GameState.stats["trinkets_found"] = 5
+	GameState.stats["trinkets_found"] = 12
 	assert_eq(Designs.check_unlocks(true), ["pixel"] as Array[String])
 	assert_true(Designs.select("pixel"))
 	assert_eq(Designs.current(), "pixel")
@@ -59,7 +60,7 @@ func test_unlock_by_any_condition() -> void:
 
 func test_progress_text_and_unlock_text() -> void:
 	GameState.stats["cubes_made"] = 12
-	assert_eq(Designs.progress_text("bolt"), "12 / 50 bales")
+	assert_eq(Designs.progress_text("bolt"), "12 / 600 bales")
 	assert_ne(Designs.unlock_text("sprout"), "")
 	assert_eq(Designs.progress_text("aurora"), "")
 
