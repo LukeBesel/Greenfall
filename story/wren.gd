@@ -16,9 +16,9 @@ const CHATTER_GAP_S: float = 150.0
 const BACKLOG_MAX: int = 6
 ## [v4calm] Owner item 49 ("far too many messages"): reward chatter and stat remarks are cut. These
 ## triggers never speak; story beats, goals and warnings still do.
-const MUTED: Array[String] = ["hex_clean", "perfect", "upgrade", "idle", "part_rare", "milestone", "streak_max", "ledger_coupon", "egg_found", "bloom_milestone", "event_won"]
+const MUTED: Array[String] = ["hex_clean", "perfect", "upgrade", "idle", "part_rare", "milestone", "streak_max", "egg_found", "bloom_milestone", "event_won"]
 ## [v4calm] Owner item 47: these speak once per save (Once flags), never again.
-const ONCE: Array[String] = ["robot_built", "first_robot_hint", "globe", "jammer_built", "greenhouse_built", "outpost_repaired", "outpost_upgraded"]
+const ONCE: Array[String] = ["robot_built", "first_robot_hint", "globe", "greenhouse_built", "outpost_repaired", "outpost_upgraded"]
 
 var lines: Dictionary = {}
 var _queue: Array[Dictionary] = []

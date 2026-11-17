@@ -70,7 +70,7 @@ func test_one_line_at_a_time() -> void:
 	s.queue_line("Second line.", "")
 	assert_eq(Subtitles.plain(s.current_text()), "First line.")
 	assert_true(s.is_busy("wren"))
-	s.show_now("Now.", "ledger")
+	s.show_now("Now.", "")
 	assert_eq(s.current_text(), "Now.")
 	assert_false(s.is_busy("wren"))
 	s.clear()

@@ -30,7 +30,6 @@ var interactables: Interactables
 var scope_from_memory: bool = false  # [scope]
 var camp: Camp  # [camp] the landing yard: broken bench, trash bin, yard builds (systems/camp/camp.gd)
 var eggs: EasterEggs
-var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
 var events: WorldEvents  # [events] world events, cleaning streak (systems/events.gd)
 var lumi_level: LumiLevel  # [hud] Lumi Level / XP (systems/lumi_level.gd), drawn by the hotbar

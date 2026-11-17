@@ -1,6 +1,6 @@
 class_name CJKFallback
 extends RefCounted
-## [i18n] CJK glyphs for the UI. The built-in UI font (Open Sans) and the Ledger's Anonymous Pro have
+## [i18n] CJK glyphs for the UI. The built-in UI font (Open Sans) and the mono Anonymous Pro have
 ## no Chinese or Japanese characters, so both get the subset Noto Sans CJK fonts in ui/fonts/cjk/ as
 ## fallbacks. The font matching the active locale goes first, so shared Han characters take the
 ## Japanese or Simplified Chinese glyph shape as appropriate. Both stay attached in every locale:
@@ -35,7 +35,7 @@ static func fonts_for(locale: String) -> Array[Font]:
 ## Puts the CJK fallbacks (ordered for `locale`) after any other fallbacks of the UI fonts.
 static func apply(locale: String) -> void:
 	var ours: Array[Font] = fonts_for(locale)
-	for base: Font in [ThemeDB.fallback_font, LedgerUplink.mono_font()]:
+	for base: Font in [ThemeDB.fallback_font, HoloFrame.mono()]:
 		if base == null:
 			continue
 		var kept: Array[Font] = []

@@ -72,10 +72,10 @@ func test_clarity_follows_the_tower() -> void:  # [onboard]
 
 func test_no_repeats_until_pool_exhausted() -> void:
 	GameState.flags["signal_tower"] = 1
-	var pool: Array = wren.lines["ledger_drop"][0]  # [v4calm] hex_clean is muted now
+	var pool: Array = wren.lines["world_ice_moon_arrival"][0]  # [v4calm] hex_clean is muted now
 	var seen: Dictionary = {}
 	for i: int in pool.size():
-		wren.say("ledger_drop", 1.0, true)
+		wren.say("world_ice_moon_arrival", 1.0, true)
 	for q: Dictionary in wren._queue:
 		seen[q["text"]] = true
 	assert_eq(seen.size(), pool.size())

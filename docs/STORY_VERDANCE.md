@@ -12,8 +12,8 @@ Status key in the tables: **ok** (the game says it), **fixed** (v6story changed 
 
 ## The story in one page
 
-**Verdance** was the Settlers' home: towns, gardens, a blue sky. A machine company called **the
-Ledger** dug up every world around the two suns and left its trash behind. When the air went bad,
+**Verdance** was the Settlers' home: towns, gardens, a blue sky. Long ago, **miners** dug up every
+world around the two suns and left their trash behind. When the air went bad,
 the Settlers packed the last seeds into a big ship, the ark **Cradle**, and went to sleep on board.
 They left their cleanup robots running, in little **cleanup stations** in every town: a workbench,
 a trash bin with a recycler, a scale and a landing pad. The plan was to come back and plant when the
@@ -23,8 +23,7 @@ Name: the ark's people are **the Settlers** (one Settler; "Settler tech"). The o
 Makers" and "the Gardeners" (2026-11-11). Ids, flags and save keys still say `maker` (`maker_shell`,
 `builder_maker`, `maker_fragments`, `maker_badge`) so old saves load; only the shown text changed.
 
-It never came. The Ledger did its sums, decided that cleaning "costs more than it earns", and paused
-every robot. Three hundred years went by. The stations fell silent and the trash stayed.
+It never came. One by one the cleanup robots ran out of power and paused. Three hundred years went by. The stations fell silent and the trash stayed.
 
 **Lumi** (LM-1) is the Cradle's small seed-keeper robot. He sings to the seedlings. **WREN** is the
 Cradle's mind: she flies the ship and has looked after Lumi all that time. One night a meteor storm
@@ -55,7 +54,7 @@ So the plan, in the order the game teaches it:
    Works**. At each station Lumi cleans a little, wakes the landmark, takes its piece for the rocket,
    and leaves a crew of robots there to carry on.
 6. **Why fly on with Verdance only one fifth clean.** The star chart at Signal Heights shows the
-   truth: the Ledger buried **five** worlds, not one. The Cradle's rule (the Settlers' charter) is
+   truth: **five** worlds are buried in trash, not one. The Cradle's rule (the Settlers' charter) is
    "wake us when the worlds can feed us", and one green town is not enough. Two more things make
    leaving the right call. First, some of Verdance can't be cleaned with what is here: the tools for
    its buried, flooded and frozen parts were left on the other worlds (the Deep Drill is on Ochre).
@@ -63,10 +62,9 @@ So the plan, in the order the game teaches it:
    planting while Lumi is away. Lumi goes on to wake the next world and comes back with better
    tools. When every world is green, the Cradle comes home.
 
-**The Ledger** is not a villain to fight. It is a lonely adding machine that still sends coupons
-asking Lumi to stop, and drones that put a little trash back on clean ground (never on planted
-ground). Later Lumi and WREN find its relay and show it the sums: clean ground and living plants go
-in the "asset" column. It changes sides and its drones deliver seeds.
+**There is no villain** (owner item 105: the Ledger, its coupons, drones, jammers and relay were
+removed). The worlds were mined out and left; nobody is against Lumi. The story is the count: gather
+fuel and power across the planets to get the ark home.
 
 **Memory shards** are things the Settlers left behind (a shop sign, a child's drawing, a voicemail).
 They are how the player learns what happened: found when the hex that holds them is cleaned.
@@ -99,7 +97,7 @@ They are how the player learns what happened: found when the hex that holds them
 | 11 | Adds a Bot Bay to the bench | A planet is too big for one small robot | card `bench2` + WREN | **fixed** (card gave only where to click) |
 | 12 | Builds the first robot; it starts cleaning by itself | Robots clean on their own and keep going when Lumi is busy. Nothing asks the player to paint a zone (owner item 79: the old "show your robot where to clean first" step is gone) | cards `robot`, `hex2` ("Your robot cleans on its own."), WREN at `hex3` | **fixed**: WREN said "the base has power!" with no cause; the step read as if the robot did nothing until told |
 | 13 | Finds the Settler seed tin, plants and waters the first seed | Nothing grows by itself any more; every bloom gives green light and a seed back | story/first_seed.gd (WREN's long scene), card `seed` | ok. The best-told beat in the game |
-| 14 | Meets the Ledger's drones | The Ledger thinks cleaning costs too much; drones can't touch planted ground, so planting protects clean ground | story/ledger.gd toasts | ok |
+| 14 | (removed, owner item 105: the Ledger and its drones are gone) | | | |
 | 15 | Cleans 10 hexes with the robots | More clean ground, more room to plant | card `hex10` | **fixed** (card gave only the key to press) |
 | 16 | Rebuilds the base to level 2 | A bigger station makes more power: more robots can run | card `base2` | **fixed** ("the base can grow now" said nothing about why) |
 | 17 | Builds a Haul Bug | Robot bales pile up in the streets; a Haul Bug carries them to the scale | research.json `haul_rig` + card `haul` | ok |
@@ -152,7 +150,7 @@ What the game says at each station (v6hubs' steps, v6story's wording):
 | # | What the player does | In-world reason | Where the game says it | Status |
 |---|---|---|---|---|
 | E0 | Has six stations restored to level 2 | Six crews are enough to keep Verdance going without Lumi; the launch kit is complete | WREN, first line of the exit beat: "Six stations awake, Lumi. Their robots can look after Verdance now." (homeward.json `leave.toast`); before that the map says "Wake 6 old stations on Verdance to level 2 (N so far)" | in game (v6pace gate, v6story text) |
-| E1 | Sees the solar map open | The star chart shows five worlds the Ledger buried; the Cradle waits for all of them | WREN, same beat, spoken once: data/story_arc.json `planets.verdance` (home line, leave line, Ochre's reason; docs/STORY_ARC.md) | **fixed** (there was no line at all: the map button just appeared) |
+| E1 | Sees the solar map open | The star chart shows five worlds buried in trash; the Cradle waits for all of them | WREN, same beat, spoken once: data/story_arc.json `planets.verdance` (home line, leave line, Ochre's reason; docs/STORY_ARC.md) | **fixed** (there was no line at all: the map button just appeared) |
 | E2 | Builds the Mk V Orbital drive (500K cubes, the biggest price on Verdance) | It is the hop rocket rebuilt for space out of a mountain of cubes | homeward.json drive desc; goal reason "The hop rocket can't leave the planet. A drive can." | **fixed** (the desc was a spec sheet) |
 | E3 | Launches to Ochre | Verdance isn't finished and that is all right; some of its trash needs tools left on other worlds; Lumi will be back | WREN `exit.drive_built` (two lines, once) + the Verdance line on the map ("Your robots keep cleaning it while you are away") | **fixed** |
 
@@ -177,7 +175,7 @@ happened here").
 | Why "base levels" | Each rebuild gives the station more power: more robots, a better scale, the rocket pad |
 | Why cleaning matters to getting home | Briefing: clean ground → plants → green light → Lumi's core, and the sign the Cradle looks for |
 | Why robots | Bot Bay card and WREN: a planet is too big for one robot; crews carry on when Lumi leaves |
-| Why plant, if we leave | Green light for the core; planted ground is safe from the Ledger's drones; the Cradle counts green |
+| Why plant, if we leave | Green light for the core; the Cradle counts green |
 | Why leave a dirty planet | The exit beat (E0–E3) |
 | WREN's step line could come a step late | A step line is dropped unsaid if its step is already done when her turn comes |
 | Steps with only a "where to click" line | Each has a reason now; where to click moved behind the reason |
@@ -187,7 +185,8 @@ happened here").
 
 ## Not changed (and why)
 
-- The first-seed scene, the Ledger arc, the shards and the eggs: already coherent and well liked.
+- The first-seed scene, the shards and the eggs: already coherent and well liked. (The Ledger arc
+  was removed on the owner's word, item 105: "it makes no sense".)
 - "Sell" stays as the everyday word for putting a bale on the scale (dozens of strings); the story
   says what really happens there (it is recycled into cubes).
 - The Cradle Returns frontier and the late-game goals: off Verdance's first visit. They keep the

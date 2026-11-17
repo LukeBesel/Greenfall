@@ -46,7 +46,7 @@
       "stat:robots_built": "More robots, more clean ground. They carry on when you fly on.",
       "flag:seeds_unlocked": "Nothing grows by itself here any more. You need seeds.",
       "stat:plants_planted": "Plants give green light for your Bloom Core.",
-      "hex_level:2": "Planted ground is safe from the Ledger's drones.",
+      "hex_level:2": "Planted ground starts to give green light.",
       "stat:plants_bloomed": "Every bloom gives green light, and a seed back.",
       "stat:bales_recycled": "The Recycler turns bales into parts for robots.",
       "hex_level:3": "Watered plants grow, and growing plants give more green light.",
@@ -69,8 +69,8 @@
       "stat:hexes_restored": "Fully restored ground stays green without you.",
       "bases_l5:": "Every strong base keeps its part of Verdance clean.",
       "stat:drive_tier": "The hop rocket can't leave the planet. A drive can.",
-      "stat:planets_landed": "The Ledger buried five worlds. The Cradle waits for all of them.",
-      "stat:planets_restored": "The Ledger buried five worlds. The Cradle waits for all of them."
+      "stat:planets_landed": "Five worlds are buried in trash. The Cradle waits for all of them.",
+      "stat:planets_restored": "Five worlds are buried in trash. The Cradle waits for all of them."
     },
     "by_type": {
       "research": "The bench learns to build something new.",
