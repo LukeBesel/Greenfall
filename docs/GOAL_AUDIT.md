@@ -229,7 +229,7 @@ home = hex2..base3, travel = stations / rocket, me = shared UI, goals, events).
 | story card titles and why lines | all 12 words or fewer | - | all | OK | data/objectives.json checked |
 | objective card (every step) | words and a count only: no picture on the card | VISUAL | me (card widget) | FIXED | ui/objective_card.gd `icon_of`: a glyph per kind of work (scoop, cube, part, data, seed, plant, star) left of OBJECTIVE; tests/test_goal_audit.gd checks every step and goal gets one and the story uses several |
 | objective card + base banner, 960x540, first frame | the base banner ("LANDING YARD 0% CLEAN / BASES 1/6") showed through the card's bottom edge as the card first appeared | overlap (transient) | me (HUD column) | OPEN | not seen in later frames nor at 1500x1000; `--ui-audit` at 1500x1000 and 960x540 (en, de): 0 issues |
-| world signs (shop names, OLD TOWN, slogans), WREN / LEDGER name tags, robot tags | not translated (`--locale=pseudo --l10n-audit`: 24 texts) | text skipped tr() | world art | OPEN | names and tags are fine as they are; the shop and slogan signs go against "picture signs with no words" (ART_KIT) or need tr() |
+| world signs (shop names, OLD TOWN, slogans), WREN name tag, robot tags | not translated (`--locale=pseudo --l10n-audit`: 24 texts) | text skipped tr() | world art | OPEN | names and tags are fine as they are; the shop and slogan signs go against "picture signs with no words" (ART_KIT) or need tr() |
 
 
 Renders (opengl3, Low, one at a time): `tools/shot.sh v9/steps_last --orbit --no-intro

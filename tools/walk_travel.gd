@@ -6,7 +6,7 @@ extends RefCounted
 ##   station 2 (hub_fly_2, hub_wake_2): the rocket marked; E at the rocket opens its list; a click on
 ##     Fly by NEXT STOP flies (E skips); control comes back on landing, the title says why we came,
 ##     the card turns to "Wake station 2", the hex to clean is outlined; real scooping there counts;
-##     a Ledger dump on a cleaned hex keeps the count; E at the landmark without the price is refused
+##     junk back on a cleaned hex keeps the count; E at the landmark without the price is refused
 ##     with a line, with it wakes the station (reward, next step, nothing left on the landmark);
 ##     with no cubes at all the rocket still flies home.
 ##   station 6 (rocket_tier_3, hub_fly_6, hub_wake_6, home_drive_5): the far station is locked in
@@ -156,7 +156,7 @@ static func _station_two(so: SliceOrbit) -> void:
 
 
 ## The rest of a station's chain from wherever it stands, then the wake by E.
-static func _finish_station(so: SliceOrbit, site: int, ledger: bool) -> void:
+static func _finish_station(so: SliceOrbit, site: int, redirty: bool) -> void:
 	var w: Node = so.w
 	var tree: SceneTree = w.get_tree()
 	var ob: Objectives = w.get("objectives") as Objectives
@@ -197,12 +197,12 @@ static func _finish_station(so: SliceOrbit, site: int, ledger: bool) -> void:
 		await _wait(tree, 1.2)
 		st = hp.current_step(site)
 	_check(str(st.get("do", "")) == "wake", "the chain is done: the card asks to wake the landmark ('%s')" % hp.card_text)
-	if ledger:  # a Ledger dump on a cleaned hex here: the count stays done
+	if redirty:  # junk back on a cleaned hex here: the count stays done
 		var c: int = _a_clean_cell(os_, site)
 		if c >= 0:
 			os_.sm.cells.set_junk(c, 1.0)
 			await _wait(tree, 1.2)
-			_check(hp.can_wake(site), "a Ledger dump on a cleaned hex keeps the station ready (step '%s')" % str(hp.current_step(site).get("do", "")))
+			_check(hp.can_wake(site), "junk back on a cleaned hex keeps the station ready (step '%s')" % str(hp.current_step(site).get("do", "")))
 			os_.sm.cells.set_junk(c, 0.0)
 	var lm: Dictionary = hp.landmark(site)
 	_check(not lm.is_empty(), "the landmark stands")

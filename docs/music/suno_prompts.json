@@ -17,24 +17,18 @@
      "Dramatic space disaster score, urgent strings and big drums, falling and crashing, then silence and a single soft piano melody, emotional, instrumental"
     ],
     [
-     "The Ledger",
-     "Villain theme",
-     "Villain theme for the Ledger, a cold mining corporation that stripped a whole star system and left it buried in junk, still sending glitchy messages and drones. Dark corporate synthwave, ticking-clock percussion, detuned bass, stuttering arpeggios. Sinister and stylish rather than scary. Instrumental, 100 bpm.",
-     "Sinister corporate villain theme, cold synth bass, clock ticking, robotic arpeggios, dark and sleek, instrumental, 95 bpm"
-    ],
-    [
      "Signal Found",
      "Story: first message after the tower",
      "A faint radio signal breaks through static after a long silence. Gentle synth arpeggio slowly joined by warm strings, hopeful and emotional, goosebumps moment. Instrumental, 76 bpm."
     ],
     [
-     "What the Ledger Took",
+     "What Was Taken",
      "Story: memory shards",
      "Haunting music box over low drones and distant choir, uncovering what happened to an abandoned world. Sad, eerie and beautiful. Instrumental, 62 bpm."
     ],
     [
      "Drone Sweep",
-     "Story: Ledger drones nearby",
+     "Story: tense moments",
      "Tense stealth music, ticking hi-hats, pulsing bass, cold synth stabs, something mechanical is watching. Suspenseful, not too loud. Instrumental, 96 bpm."
     ],
     [
@@ -439,12 +433,12 @@
    ]
   },
   {
-   "name": "Anvil (red Mars-like foundry world, the Ledger's home, the hardest planet)",
+   "name": "Anvil (red Mars-like foundry world, the old foundries, the hardest planet)",
    "tracks": [
     [
      "Red Engine",
      "Playlist, dark and driving",
-     "A red Mars-like foundry world of iron towers and lava rivers, home of the Ledger. Driving dark synthwave with distorted bass arpeggios and clanging metal percussion. Gritty and heavy but groovy enough to loop. Instrumental, 110 bpm.",
+     "A red Mars-like foundry world of iron towers and lava rivers. Driving dark synthwave with distorted bass arpeggios and clanging metal percussion. Gritty and heavy but groovy enough to loop. Instrumental, 110 bpm.",
      "Dark synthwave, heavy distorted bass, metallic percussion, gritty red planet, instrumental, 110 bpm"
     ],
     [
@@ -512,7 +506,7 @@
     [
      "The Clerk's Regret",
      "Playlist, emotional",
-     "Sad cello and slow piano, a Ledger clerk who wrote down every ton taken, regret and quiet hope. Instrumental, 64 bpm."
+     "Sad cello and slow piano, a mine clerk who wrote down every ton taken, regret and quiet hope. Instrumental, 64 bpm."
     ],
     [
      "Furnace Heartbeat",

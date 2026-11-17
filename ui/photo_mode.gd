@@ -8,7 +8,7 @@ extends CanvasLayer
 ## just render that viewport at twice the window size for a few frames.
 ## Closing restores everything it touched: pause state, mouse, HUD and other UI layers, robots,
 ## time of day / haze / environment, Lumi's joints, transform, face and process mode.
-## Can't open during cinematics (intro, story beats that own the camera or hide the HUD, Ledger
+## Can't open during cinematics (intro, story beats that own the camera or hide the HUD,
 ## resolution) or rocket flights.
 ##
 ## Dev flags (screenshots): --photo[=S] opens after S wall-clock seconds; --photo-seq="k=v|k=v;..."
@@ -118,9 +118,6 @@ func block_reason(from_menu: bool = false) -> String:
 		return tr("Photo mode isn't available during a rocket flight.")
 	var intro: Variant = world.get("intro")
 	if intro is Node and (intro as Node).has_method("busy") and bool((intro as Node).call("busy")):
-		return tr("Photo mode isn't available during a cinematic.")
-	var ledger: Variant = world.get("ledger")
-	if ledger is Object and bool((ledger as Object).get("busy")):
 		return tr("Photo mode isn't available during a cinematic.")
 	var hud: Variant = world.get("hud")
 	if hud is CanvasLayer and not (hud as CanvasLayer).visible:

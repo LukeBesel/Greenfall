@@ -225,7 +225,7 @@ func test_tv_broadcast_tells_the_story() -> void:
 	var caps: Array[String] = []
 	for i: int in TvBroadcast.FRAMES.size():
 		caps.append(TvBroadcast.caption(i))
-	assert_has(caps, "LEDGER SECURES EXTRACTION RIGHTS")
+	assert_has(caps, "MINING RIGS LAND ON EVERY WORLD")
 	assert_has(caps, "EVACUATION: ALL RESIDENTS TO THE CRADLE")
 	assert_eq(str(TvBroadcast.FRAMES[-1]["kind"]), "static", "ends in static")
 

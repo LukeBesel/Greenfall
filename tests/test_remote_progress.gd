@@ -113,7 +113,7 @@ func test_snapshot_from_save_is_read_only_and_complete() -> void:
 	assert_eq(int(s["hub_level"]), 4)
 	assert_eq(int(s["junk_hexes"]), n - 2)
 	assert_eq((s["robots"] as Array).size(), 1)
-	assert_eq(int(s["ledger_act"]), 3)
+	assert_false(s.has("ledger_act"), "an old save's Ledger flag is ignored")
 	assert_eq(str(s["name"]), "Rime")
 	assert_almost_eq(RemoteProgress.junk_left(s), (n - 2) * RemoteProgress.AVG_HEX_UNITS - 12.0, 0.01)
 

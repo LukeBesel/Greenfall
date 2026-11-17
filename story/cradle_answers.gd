@@ -3,7 +3,7 @@ extends Node
 ## [home] "The Cradle Answers": the Cradle Returns beat before the true ending (docs/DECISIONS.md,
 ## Homeward). The pad is green and the beacon is lit, so the ark comes, but it will not land: its
 ## Settlers sleep aboard and the charter forbids waking them into a dying system. The whole Verdance
-## system was strip-mined by the Ledger. So: restore every planet, then build the Homeward rocket.
+## system was strip-mined long ago. So: restore every planet, then build the Homeward rocket.
 ## Plays once per profile (Homeward.answered); a quit midway replays it on the next load.
 ## Off-world shots use the SpaceStage; always hands the screen back (Cine).
 
@@ -15,7 +15,7 @@ const LINES: Array[Array] = [
 	["CRADLE:  BEACON RECEIVED.  GREEN DETECTED ON VERDANCE.  SEED-KEEPER LM-1 LOCATED.", 5.5],
 	["CRADLE:  LANDING DENIED.  SYSTEM SURVEY: FIVE WORLDS.  ONE ALIVE.  SLEEPERS REMAIN UNDER.", 6.0],
 	["It's the charter. The Settlers sleep in the Cradle's lower decks, and it won't wake them into a dying system.", 6.0],
-	["And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first.", 6.5],
+	["And it is dying. Long ago, miners dug every world out here hollow and left the trash behind. Verdance was only the first.", 6.5],
 	["So we fix all of it. Ochre, Tidewell, Rime, Anvil. One planet at a time.", 5.0],
 	["Then we build a rocket big enough to reach the Cradle, and we carry the last seed up ourselves.", 5.5],
 	["CRADLE:  ACKNOWLEDGED.  HOLDING ORBIT.  WE WILL WAIT FOR YOU, SMALL ROBOT.", 5.0],
@@ -80,5 +80,5 @@ func play() -> void:
 	playing = false
 	EventBus.toast.emit(tr("The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram ({open_globe}). Build the Mk V Orbital drive to reach Ochre and Tidewell."), "story")
 	Codex.unlock("homeward:charter")
-	Codex.unlock("homeward:ledger_system")
+	Codex.unlock("homeward:buried_worlds")
 	queue_free()

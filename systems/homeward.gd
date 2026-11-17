@@ -1,7 +1,7 @@
 class_name Homeward
 extends RefCounted
 ## [home] Homeward: the campaign across the Verdance system (data/homeward.json, docs/DECISIONS.md).
-## Five fixed planets in a set order: Verdance (world 0) and four the Ledger strip-mined and left
+## Five fixed planets in a set order: Verdance (world 0) and four that were strip-mined and left
 ## under its trash. Each is a world in the Cradle Mode profile (its own save slot) that restores
 ## like Verdance. The rocket's interplanetary drive (Mk V Orbital, Mk VI Interplanetary) opens them;
 ## once every planet is restored, the Mk VII Homeward rocket is built at Verdance's Cradle Returns,

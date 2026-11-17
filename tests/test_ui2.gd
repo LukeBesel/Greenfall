@@ -81,7 +81,7 @@ func test_save_v4_turns_robot_part_items_into_parts() -> void:
 	var m2: Dictionary = SaveManager.migrate(old)
 	assert_eq(int(m2["version"]), GameState.SAVE_VERSION)
 	assert_almost_eq(BigNum.from_serialized(m2["currencies"]["parts"]).to_float(), 2.0 * 5.0 + 25.0, 0.001)
-	assert_eq(GameState.SAVE_VERSION, 4)
+	assert_gte(GameState.SAVE_VERSION, 4)
 
 
 func test_robot_build_costs_parts_and_cubes() -> void:

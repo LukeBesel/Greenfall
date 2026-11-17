@@ -182,14 +182,12 @@ static func snapshot_from_save(d: Dictionary, w: Dictionary = {}) -> Dictionary:
 	for i: int in n:
 		if clean[i] == 0:
 			junk += 1
-	var flags: Dictionary = d.get("flags", {})
 	return {
 		"name": str(w.get("name", "Verdance")), "type": str(w.get("type", "")), "index": int(w.get("index", 0)),
 		"planet_id": str(w.get("planet_id", w.get("planet", ""))),
 		"saved_unix": float(d.get("saved_unix", 0.0)), "hub": hub, "hub_level": int(dist.get("hub_level", 1)),
 		"radius": radius, "clean": clean, "levels": levels, "robots": robots, "junk_hexes": junk,
 		"offline_units": float(dist.get("offline_units", 0.0)), "share": district_share(clean, levels),
-		"ledger_act": int(flags.get("ledger_act", 0)), "ledger_resolved": bool(flags.get("ledger_resolved", false)),
 	}
 
 
@@ -217,7 +215,7 @@ static func make_sample() -> void:
 	var w: Dictionary = {"index": 90, "name": "Tidewell", "type": "ocean_world", "slot": -1, "planet_id": "tidewell"}
 	var snap: Dictionary = snapshot_from_save({"saved_unix": Time.get_unix_time_from_system() - 0.4 * 3600.0, "current_hub": 0,
 		"world": {"hub_level": 4, "robots": robots, "field": {"radius": radius, "clean": Marshalls.raw_to_base64(clean)},
-		"hex_levels": {"levels": Marshalls.raw_to_base64(levels)}}, "flags": {"ledger_act": 2}}, w)
+		"hex_levels": {"levels": Marshalls.raw_to_base64(levels)}}}, w)
 	sample = {"world": w, "snap": snap}
 
 
