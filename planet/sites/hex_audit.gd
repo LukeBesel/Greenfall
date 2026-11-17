@@ -80,9 +80,11 @@ func pads() -> int:
 		var only: float = DevHooks.get_f("hex-audit-pad", -1.0)  # dev: one hub
 		if only >= 0.0 and int(only) != hi:
 			continue
-		var p: SitePrefab = sm.build_hub(hi)
-		if not p.is_built:
-			await p.rebuilt
+		var p: SitePrefab = sm.build_hub(hi, true)  # in one go: a play-budget build waits on frames a headless audit may not give it
+		for k: int in 600:
+			if p.is_built:
+				break
+			await get_tree().process_frame
 		for k: int in 3:
 			await get_tree().physics_frame
 		var m: Dictionary = HexAudit.pad_junk(g, hi)
