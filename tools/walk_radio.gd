@@ -95,7 +95,7 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		await WalkHome._frames(6)
 		if k == 0:
 			_check(not Tunes.first_cd_found(), "standing 5 m away does not pick it up")
-			await _shot("cd_lies")
+			await _shot("cd_lies", 3.0)  # the camera swings round behind him first
 		var d0: float = WalkHome.p.global_position.distance_to(spot2)
 		await _drive_to(spot2, 25.0)  # scooping what is in the way; the CD flies to him (0.8 s)
 		if Tunes.first_cd_found():
@@ -242,11 +242,11 @@ static func _radio_pick(id: String) -> void:
 
 ## --walk-radio-shots=/abs/dir (rendered runs): a frame of what the player sees now.
 static var _shot_n: int = 0
-static func _shot(name: String) -> void:
+static func _shot(name: String, wait_s: float = 0.6) -> void:
 	var dir: String = DevHooks.get_s("walk-radio-shots", "")
 	if dir == "" or DisplayServer.get_name() == "headless":
 		return
-	await WalkHome.tree.create_timer(0.6, true).timeout
+	await WalkHome.tree.create_timer(wait_s, true).timeout
 	await RenderingServer.frame_post_draw
 	DirAccess.make_dir_recursive_absolute(dir)
 	var path: String = "%s/%02d_%s.png" % [dir, _shot_n, name]

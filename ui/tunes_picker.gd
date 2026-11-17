@@ -102,7 +102,7 @@ func _fill() -> void:
 	_add(tr("Stop the music"), mode == Tunes.OFF, Tunes.OFF)
 	var focus: Button = first
 	for id: String in Tunes.found():
-		var b: Button = _add("%s  ·  %s" % [tr(Tunes.title(id)), tr(Tunes.artist_name(id))], mode == id, id)
+		var b: Button = _add(tr(Tunes.title(id)), mode == id, id)  # [v10snd] the title alone: "title · artist" was cut off
 		if mode == id:
 			focus = b
 	for id: String in Tunes.held():
