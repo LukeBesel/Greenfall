@@ -325,55 +325,59 @@ msgstr "请先修复。"
 msgid "Fully upgraded."
 msgstr "已满级。"
 
-#: automation/outposts.gd:409
+#: automation/outposts.gd:411
 msgid "Outpost %d repaired: a new scale for your Haul Bugs."
 msgstr "前哨站 %d 已修复：Haul Bug 有了新秤。"
 
-#: automation/outposts.gd:410
+#: automation/outposts.gd:413
+msgid "Outpost %d repaired: a new scale for your bales."
+msgstr "前哨站 %d 修好了：一台给捆包用的新秤。"
+
+#: automation/outposts.gd:414
 msgid "OUTPOST ONLINE"
 msgstr "前哨站上线"
 
-#: automation/outposts.gd:432
+#: automation/outposts.gd:436
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "前哨站 %d 已升级：%s。%s"
 
-#: automation/outposts.gd:461
+#: automation/outposts.gd:465
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   前哨废墟 · 先清理它所在的六角格（%d%% / %d%%）"
 
-#: automation/outposts.gd:462
+#: automation/outposts.gd:466
 msgid "E   Repair outpost · %s%s"
 msgstr "E   修复前哨站 · %s%s"
 
-#: automation/outposts.gd:462 automation/outposts.gd:465
+#: automation/outposts.gd:466 automation/outposts.gd:469
 msgid "  (need more)"
 msgstr "  （还不够）"
 
-#: automation/outposts.gd:464
+#: automation/outposts.gd:468
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   前哨站 %d · %s · 捆包 +%d%%"
 
-#: automation/outposts.gd:465
+#: automation/outposts.gd:469
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   升级前哨站：%s · %s%s"
 
-#: automation/outposts.gd:475
+#: automation/outposts.gd:479
 msgid "Outpost %d: %s"
 msgstr "前哨站 %d：%s"
 
-#: automation/outposts.gd:482
+#: automation/outposts.gd:486
 msgid "Outpost %d upgrade: %s"
 msgstr "前哨站 %d 升级：%s"
 
-#: automation/outposts.gd:485
+#: automation/outposts.gd:489
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "前哨站 %d：%s。在这里捆包售价 +%d%%；经过平台的机器人会获得加速。"
 
-#: automation/outposts.gd:588
+#: automation/outposts.gd:592
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "前哨 %d  废墟 · 清洁度 %d%% 时可修复"
 
-#: automation/outposts.gd:589
+#: automation/outposts.gd:593
 msgid "OUTPOST %d  %s"
 msgstr "前哨 %d  %s"
 
@@ -473,26 +477,9 @@ msgstr "天文台"
 msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
-#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:287
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:259
-msgid "%d min"
-msgstr "%d 分钟"
-
-#: core/offline.gd:142
-msgid "While you were away (%s):"
-msgstr "你离开期间（%s）："
-
-#: core/offline.gd:144
-msgid "The fleet baled and delivered %s cubes."
-msgstr "机队打包并交付了 %s 个方块。"
-
 #: core/offline.gd:146
-msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
-msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现了。有台 Haul Bug 就能让它们动起来。"
-
-#: core/offline.gd:148
-msgid "The scrubbers filtered the air the whole time. It's a little clearer."
-msgstr "净化器一直在过滤空气。现在清新了一点。"
+msgid "While you were away, your robots earned %s cubes."
+msgstr "你不在的时候，机器人赚了 %s 个方块。"
 
 #: core/pace.gd:206
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
@@ -514,7 +501,7 @@ msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: core/pace.gd:338 tools/walk_opening.gd:323
+#: core/pace.gd:338 tools/walk_opening.gd:324
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "现在不收散装垃圾了。按 [%s] 压一个垃圾块，再把它放到秤上。"
 
@@ -654,7 +641,7 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
-#: planet/orbit/orbit_crews.gd:223
+#: planet/orbit/orbit_crews.gd:226
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "你的机器人清理了一个六边形！也算数：%d / %d"
 
@@ -1350,80 +1337,80 @@ msgstr "机器人指挥"
 msgid "No robots here yet."
 msgstr "这里还没有机器人。"
 
-#: robots/sphere/command_overlay.gd:121 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+#: robots/sphere/command_overlay.gd:122 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
 msgid "Build one at the workbench."
 msgstr "在工作台造一台。"
 
-#: robots/sphere/command_overlay.gd:124 robots/sphere/command_overlay.gd:196
+#: robots/sphere/command_overlay.gd:125 robots/sphere/command_overlay.gd:197
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "%d 台机器人"
 
-#: robots/sphere/command_overlay.gd:126
+#: robots/sphere/command_overlay.gd:127
 msgid "About %d hexes an hour"
 msgstr "每小时约 %d 个六角格"
 
-#: robots/sphere/command_overlay.gd:139 robots/sphere/command_overlay.gd:197
+#: robots/sphere/command_overlay.gd:140 robots/sphere/command_overlay.gd:198
 msgid "%d working"
 msgstr "%d 台在工作"
 
-#: robots/sphere/command_overlay.gd:141
+#: robots/sphere/command_overlay.gd:142
 msgid "%d working, %d waiting"
 msgstr "%d 台在工作，%d 台在等待"
 
-#: robots/sphere/command_overlay.gd:143
+#: robots/sphere/command_overlay.gd:144
 msgid "%d waiting"
 msgstr "%d 台在等待"
 
-#: robots/sphere/command_overlay.gd:148 robots/sphere/crew_talk.gd:81 robots/sphere/crew_talk.gd:85
+#: robots/sphere/command_overlay.gd:149 robots/sphere/crew_talk.gd:58
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "捆包越堆越多。建造一台 Haul Bug 吧。"
 
-#: robots/sphere/command_overlay.gd:161
+#: robots/sphere/command_overlay.gd:162
 msgid "Robots here: all %d"
 msgstr "这里的机器人：全部 %d"
 
-#: robots/sphere/command_overlay.gd:162
+#: robots/sphere/command_overlay.gd:163
 msgid "Robots here: %d of %d"
 msgstr "这里的机器人：%d / %d"
 
-#: robots/sphere/command_overlay.gd:165
+#: robots/sphere/command_overlay.gd:166
 msgid "%d on the way, %d working here"
 msgstr "%d 正在路上，%d 在这里工作"
 
-#: robots/sphere/command_overlay.gd:168
+#: robots/sphere/command_overlay.gd:169
 msgid "D-pad left / right: how many come"
 msgstr "十字键左 / 右：来几个"
 
-#: robots/sphere/command_overlay.gd:169
+#: robots/sphere/command_overlay.gd:170
 msgid "Click - or + (or keys - +): how many come"
 msgstr "点击 - 或 +（或按键 - +）：来几个"
 
-#: robots/sphere/command_overlay.gd:190
+#: robots/sphere/command_overlay.gd:191
 msgid "OTHER BASES"
 msgstr "其他基地"
 
-#: robots/sphere/command_overlay.gd:194
+#: robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
-#: robots/sphere/command_overlay.gd:206
+#: robots/sphere/command_overlay.gd:207
 msgid "Good! Your robots will work here first."
 msgstr "很好！你的机器人会先在这里干活。"
 
-#: robots/sphere/command_overlay.gd:207
+#: robots/sphere/command_overlay.gd:208
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "按住 A：涂   按住 X：擦除   %s：返回"
 
-#: robots/sphere/command_overlay.gd:208
+#: robots/sphere/command_overlay.gd:209
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "鼠标左键：涂   鼠标右键：擦除   %s：返回"
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Y: next job"
 msgstr "Y：下一种工作"
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Tab: next job"
 msgstr "Tab：下一种工作"
 
@@ -1479,66 +1466,70 @@ msgstr "这里的湖面上没有垃圾。"
 msgid "I can't find a way there. Trying another spot."
 msgstr "我找不到过去的路。换个地方试试。"
 
-#: robots/sphere/crew_talk.gd:78
+#: robots/sphere/crew_talk.gd:57
+msgid "Bales are piling up. One more Haul Bug would help."
+msgstr "捆包越堆越多。再来一台 Haul Bug 会有帮助。"
+
+#: robots/sphere/crew_talk.gd:87
 msgid "Hello! Looking around."
 msgstr "你好！我先四处看看。"
 
-#: robots/sphere/crew_talk.gd:82
+#: robots/sphere/crew_talk.gd:91
 msgid "On my way to work."
 msgstr "正在去干活的路上。"
 
-#: robots/sphere/crew_talk.gd:88
+#: robots/sphere/crew_talk.gd:97
 msgid "Fetching a bale."
 msgstr "正在去取捆包。"
 
-#: robots/sphere/crew_talk.gd:90
+#: robots/sphere/crew_talk.gd:99
 msgid "Carrying bales home."
 msgstr "正在把捆包运回去。"
 
-#: robots/sphere/crew_talk.gd:92
+#: robots/sphere/crew_talk.gd:101
 msgid "Tipping junk into the baler."
 msgstr "正在把垃圾倒进打包机。"
 
-#: robots/sphere/crew_talk.gd:94
+#: robots/sphere/crew_talk.gd:103
 msgid "Filling my water tank."
 msgstr "正在加满水箱。"
 
-#: robots/sphere/crew_talk.gd:98
+#: robots/sphere/crew_talk.gd:107
 msgid "Looking for work."
 msgstr "正在找活干。"
 
 #. a robot kind and its Mk tier, e.g. "Scoopie (Mk II)".
-#: robots/sphere/crew_talk.gd:106
+#: robots/sphere/crew_talk.gd:115
 msgid "%s (%s)"
 msgstr "%s（%s）"
 
-#: robots/sphere/crew_talk.gd:107
+#: robots/sphere/crew_talk.gd:116
 msgid "%s the %s: %s"
 msgstr "%s（%s）：%s"
 
-#: robots/sphere/crew_talk.gd:132
+#: robots/sphere/crew_talk.gd:141
 msgid "No robots here yet"
 msgstr "这里还没有机器人"
 
-#: robots/sphere/crew_talk.gd:134
+#: robots/sphere/crew_talk.gd:143
 msgid "%d robot working here"
 msgid_plural "%d robots working here"
 msgstr[0] "%d 台机器人在这里工作"
 
-#: robots/sphere/crew_talk.gd:136
+#: robots/sphere/crew_talk.gd:145
 msgid "%s, about %d hexes an hour"
 msgstr "%s，每小时约 %d 个六角格"
 
-#: robots/sphere/crew_talk.gd:147
+#: robots/sphere/crew_talk.gd:156
 msgid "While you were away, your robots here cleaned %d hex."
 msgid_plural "While you were away, your robots here cleaned %d hexes."
 msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格。"
 
-#: robots/sphere/crew_talk.gd:149
+#: robots/sphere/crew_talk.gd:158
 msgid "While you were away, your robots here earned %s cubes."
 msgstr "你不在的时候，这里的机器人赚了 %s 个方块。"
 
-#: robots/sphere/crew_talk.gd:150
+#: robots/sphere/crew_talk.gd:159
 msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
 msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
 msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格，赚了 %s 个方块。"
@@ -1638,6 +1629,11 @@ msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 #: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
+
+#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
+#: ui/globe_view.gd:559 ui/upgrade_card.gd:259
+msgid "%d min"
+msgstr "%d 分钟"
 
 #: story/bloom_finale.gd:15
 msgid "Lumi. Stop for a second. Look up."
@@ -1966,8 +1962,8 @@ msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
 msgstr "那个人就是你。小小的。倔强的。只剩百分之四的电。完美。"
 
 #: story/first_seed.gd:22
-msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
-msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
+msgid "Take it to the greenhouse beds. Dig. Drop it in. Pat it down. And then — this part matters — water it."
+msgstr "把它带到温室的苗床。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
 
 #: story/first_seed.gd:167
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
@@ -1978,8 +1974,8 @@ msgid "...It's green. Lumi, it's actually green."
 msgstr "……是绿色的。Lumi，真的是绿色的。"
 
 #: story/first_seed.gd:308
-msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
-msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
+msgid "Keep it watered. Every bloom gives seeds back, and a little green light for your core. This is how it starts."
+msgstr "记得浇水。每次开花都会还你种子，还会给你的核心一点绿光。一切就是这样开始的。"
 
 #: story/first_seed.gd:459
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
@@ -2082,51 +2078,51 @@ msgstr "目标完成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:943
+#: story/objectives.gd:962
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "打包机装好了！装满箱子，然后按 [%s] 打包。"
 
-#: story/objectives.gd:965 story/objectives.gd:1187
+#: story/objectives.gd:984 story/objectives.gd:1211 tools/walk_opening.gd:752
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:981
+#: story/objectives.gd:1000
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:983
+#: story/objectives.gd:1002
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:1188
+#: story/objectives.gd:1212
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:1204 story/objectives.gd:1217
+#: story/objectives.gd:1229 story/objectives.gd:1245
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
-#: story/objectives.gd:1209
+#: story/objectives.gd:1235
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1239
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1239
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:1226
+#: story/objectives.gd:1255
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
-#: story/objectives.gd:1227
+#: story/objectives.gd:1256
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:1238
+#: story/objectives.gd:1267
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -3429,7 +3425,7 @@ msgstr "Glim 还在扫描。稍后再试。"
 msgid "Close"
 msgstr "关闭"
 
-#: tools/walk_opening.gd:573 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:574 ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "退出"
 
@@ -16610,6 +16606,24 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
+#~ msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
+
+#~ msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
+#~ msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
+
+#~ msgid "While you were away (%s):"
+#~ msgstr "你离开期间（%s）："
+
+#~ msgid "The fleet baled and delivered %s cubes."
+#~ msgstr "机队打包并交付了 %s 个方块。"
+
+#~ msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
+#~ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现了。有台 Haul Bug 就能让它们动起来。"
+
+#~ msgid "The scrubbers filtered the air the whole time. It's a little clearer."
+#~ msgstr "净化器一直在过滤空气。现在清新了一点。"
 
 #~ msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
 #~ msgstr "而它确实在死去。Ledger 把这附近每个世界都挖空了，把每一个都丢在自己的垃圾底下。Verdance 只是第一个。"

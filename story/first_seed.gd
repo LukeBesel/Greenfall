@@ -19,7 +19,7 @@ const LINES: Array[Array] = [
 	["Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky.", 5.5],
 	["Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground.", 6.0],
 	["That somebody is you. Small. Stubborn. Running on four percent. Perfect.", 4.5],
-	["Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it.", 6.0],
+	["Take it to the greenhouse beds. Dig. Drop it in. Pat it down. And then — this part matters — water it.", 6.0],
 ]
 # l10n:end
 
@@ -305,7 +305,7 @@ func _sprout_moment(pos: Vector3) -> void:
 	Audio.play("fanfare", 0.8, -6.0)
 	world.wren.line_started.emit(tr("...It's green. Lumi, it's actually green."), 1)
 	await get_tree().create_timer(4.5).timeout
-	world.wren.line_started.emit(tr("Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."), 1)
+	world.wren.line_started.emit(tr("Keep it watered. Every bloom gives seeds back, and a little green light for your core. This is how it starts."), 1)
 	_card = ""  # [v7play]
 	EventBus.tutorial_changed.emit("")
 	GameState.flags["first_sprout"] = true

@@ -325,55 +325,59 @@ msgstr "先に修理しよう。"
 msgid "Fully upgraded."
 msgstr "アップグレード完了済み。"
 
-#: automation/outposts.gd:409
+#: automation/outposts.gd:411
 msgid "Outpost %d repaired: a new scale for your Haul Bugs."
 msgstr "前哨基地 %d を修理：Haul Bug の新しいはかりができた。"
 
-#: automation/outposts.gd:410
+#: automation/outposts.gd:413
+msgid "Outpost %d repaired: a new scale for your bales."
+msgstr "前哨基地%dを修理した：ベール用の新しいはかりだ。"
+
+#: automation/outposts.gd:414
 msgid "OUTPOST ONLINE"
 msgstr "前哨基地 稼働"
 
-#: automation/outposts.gd:432
+#: automation/outposts.gd:436
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "前哨基地 %d をアップグレード：%s。%s"
 
-#: automation/outposts.gd:461
+#: automation/outposts.gd:465
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   廃墟の前哨基地 · 先にヘックスを片づけよう（%d%% / %d%%）"
 
-#: automation/outposts.gd:462
+#: automation/outposts.gd:466
 msgid "E   Repair outpost · %s%s"
 msgstr "E   前哨基地を修理 · %s%s"
 
-#: automation/outposts.gd:462 automation/outposts.gd:465
+#: automation/outposts.gd:466 automation/outposts.gd:469
 msgid "  (need more)"
 msgstr "  （まだ足りない）"
 
-#: automation/outposts.gd:464
+#: automation/outposts.gd:468
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   前哨基地 %d · %s · ベール +%d%%"
 
-#: automation/outposts.gd:465
+#: automation/outposts.gd:469
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   前哨基地をアップグレード：%s · %s%s"
 
-#: automation/outposts.gd:475
+#: automation/outposts.gd:479
 msgid "Outpost %d: %s"
 msgstr "前哨基地 %d：%s"
 
-#: automation/outposts.gd:482
+#: automation/outposts.gd:486
 msgid "Outpost %d upgrade: %s"
 msgstr "前哨基地 %d のアップグレード：%s"
 
-#: automation/outposts.gd:485
+#: automation/outposts.gd:489
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "前哨基地 %d：%s。ここではベールが +%d%% で売れる。パッドを通るロボットはスピードがチャージされる。"
 
-#: automation/outposts.gd:588
+#: automation/outposts.gd:592
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "前哨基地 %d  廃墟 · きれいさ %d%% で修理可能"
 
-#: automation/outposts.gd:589
+#: automation/outposts.gd:593
 msgid "OUTPOST %d  %s"
 msgstr "前哨基地 %d  %s"
 
@@ -473,26 +477,9 @@ msgstr "天文台"
 msgid "E   Telescope: look across the system"
 msgstr "E   望遠鏡：星系を見わたす"
 
-#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:287
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:259
-msgid "%d min"
-msgstr "%d 分"
-
-#: core/offline.gd:142
-msgid "While you were away (%s):"
-msgstr "留守のあいだに（%s）："
-
-#: core/offline.gd:144
-msgid "The fleet baled and delivered %s cubes."
-msgstr "フリートが %s キューブ分をベールにして納品した。"
-
 #: core/offline.gd:146
-msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
-msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた。Lumi が換金した。Haul Bug がいればどんどん運んでくれる。"
-
-#: core/offline.gd:148
-msgid "The scrubbers filtered the air the whole time. It's a little clearer."
-msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
+msgid "While you were away, your robots earned %s cubes."
+msgstr "るすの間に、ロボットがキューブを%s個かせいだ。"
 
 #: core/pace.gd:206
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
@@ -514,7 +501,7 @@ msgstr "ベーラーがまだない。胸のゴミをゴミ箱へ運ぼう。"
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
-#: core/pace.gd:338 tools/walk_opening.gd:323
+#: core/pace.gd:338 tools/walk_opening.gd:324
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "もうバラのゴミは入れられないよ。[%s] でベールを作って、はかりにのせよう。"
 
@@ -654,7 +641,7 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
-#: planet/orbit/orbit_crews.gd:223
+#: planet/orbit/orbit_crews.gd:226
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "ロボットがヘックスを1つきれいにしたよ！これも数に入る：%d / %d"
 
@@ -1350,80 +1337,80 @@ msgstr "ロボット司令"
 msgid "No robots here yet."
 msgstr "ここにはまだロボットがいない。"
 
-#: robots/sphere/command_overlay.gd:121 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+#: robots/sphere/command_overlay.gd:122 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
 msgid "Build one at the workbench."
 msgstr "作業台で作ろう。"
 
-#: robots/sphere/command_overlay.gd:124 robots/sphere/command_overlay.gd:196
+#: robots/sphere/command_overlay.gd:125 robots/sphere/command_overlay.gd:197
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "ロボット%d台"
 
-#: robots/sphere/command_overlay.gd:126
+#: robots/sphere/command_overlay.gd:127
 msgid "About %d hexes an hour"
 msgstr "1時間に約%dヘックス"
 
-#: robots/sphere/command_overlay.gd:139 robots/sphere/command_overlay.gd:197
+#: robots/sphere/command_overlay.gd:140 robots/sphere/command_overlay.gd:198
 msgid "%d working"
 msgstr "%d台が作業中"
 
-#: robots/sphere/command_overlay.gd:141
+#: robots/sphere/command_overlay.gd:142
 msgid "%d working, %d waiting"
 msgstr "%d台が作業中、%d台が待機中"
 
-#: robots/sphere/command_overlay.gd:143
+#: robots/sphere/command_overlay.gd:144
 msgid "%d waiting"
 msgstr "%d台が待機中"
 
-#: robots/sphere/command_overlay.gd:148 robots/sphere/crew_talk.gd:81 robots/sphere/crew_talk.gd:85
+#: robots/sphere/command_overlay.gd:149 robots/sphere/crew_talk.gd:58
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "ベールがたまっている。Haul Bug を作ろう。"
 
-#: robots/sphere/command_overlay.gd:161
+#: robots/sphere/command_overlay.gd:162
 msgid "Robots here: all %d"
 msgstr "ここのロボット：ぜんぶ（%d）"
 
-#: robots/sphere/command_overlay.gd:162
+#: robots/sphere/command_overlay.gd:163
 msgid "Robots here: %d of %d"
 msgstr "ここのロボット：%d / %d"
 
-#: robots/sphere/command_overlay.gd:165
+#: robots/sphere/command_overlay.gd:166
 msgid "%d on the way, %d working here"
 msgstr "%d 向かっている、%d ここで作業中"
 
-#: robots/sphere/command_overlay.gd:168
+#: robots/sphere/command_overlay.gd:169
 msgid "D-pad left / right: how many come"
 msgstr "十字キー左右：来る数"
 
-#: robots/sphere/command_overlay.gd:169
+#: robots/sphere/command_overlay.gd:170
 msgid "Click - or + (or keys - +): how many come"
 msgstr "- か + をクリック（キー - +）：来る数"
 
-#: robots/sphere/command_overlay.gd:190
+#: robots/sphere/command_overlay.gd:191
 msgid "OTHER BASES"
 msgstr "ほかの基地"
 
-#: robots/sphere/command_overlay.gd:194
+#: robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
-#: robots/sphere/command_overlay.gd:206
+#: robots/sphere/command_overlay.gd:207
 msgid "Good! Your robots will work here first."
 msgstr "いいね！ロボットはまずここで働くよ。"
 
-#: robots/sphere/command_overlay.gd:207
+#: robots/sphere/command_overlay.gd:208
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "A長押し：ぬる   X長押し：消す   %s：もどる"
 
-#: robots/sphere/command_overlay.gd:208
+#: robots/sphere/command_overlay.gd:209
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "左クリック：ぬる   右クリック：消す   %s：もどる"
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Y: next job"
 msgstr "Y：次の仕事"
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Tab: next job"
 msgstr "Tab：次の仕事"
 
@@ -1479,66 +1466,70 @@ msgstr "このあたりの湖にゴミはない。"
 msgid "I can't find a way there. Trying another spot."
 msgstr "そこへ行く道がない。別の場所をためすよ。"
 
-#: robots/sphere/crew_talk.gd:78
+#: robots/sphere/crew_talk.gd:57
+msgid "Bales are piling up. One more Haul Bug would help."
+msgstr "ベールがたまっている。Haul Bug がもう1台いると助かる。"
+
+#: robots/sphere/crew_talk.gd:87
 msgid "Hello! Looking around."
 msgstr "こんにちは！まわりを見ているよ。"
 
-#: robots/sphere/crew_talk.gd:82
+#: robots/sphere/crew_talk.gd:91
 msgid "On my way to work."
 msgstr "仕事に向かっている。"
 
-#: robots/sphere/crew_talk.gd:88
+#: robots/sphere/crew_talk.gd:97
 msgid "Fetching a bale."
 msgstr "ベールを取りに行く。"
 
-#: robots/sphere/crew_talk.gd:90
+#: robots/sphere/crew_talk.gd:99
 msgid "Carrying bales home."
 msgstr "ベールを持ち帰っている。"
 
-#: robots/sphere/crew_talk.gd:92
+#: robots/sphere/crew_talk.gd:101
 msgid "Tipping junk into the baler."
 msgstr "ゴミをベーラーに入れている。"
 
-#: robots/sphere/crew_talk.gd:94
+#: robots/sphere/crew_talk.gd:103
 msgid "Filling my water tank."
 msgstr "水タンクを満たしている。"
 
-#: robots/sphere/crew_talk.gd:98
+#: robots/sphere/crew_talk.gd:107
 msgid "Looking for work."
 msgstr "仕事を探している。"
 
 #. a robot kind and its Mk tier, e.g. "Scoopie (Mk II)".
-#: robots/sphere/crew_talk.gd:106
+#: robots/sphere/crew_talk.gd:115
 msgid "%s (%s)"
 msgstr "%s（%s）"
 
-#: robots/sphere/crew_talk.gd:107
+#: robots/sphere/crew_talk.gd:116
 msgid "%s the %s: %s"
 msgstr "%s（%s）：%s"
 
-#: robots/sphere/crew_talk.gd:132
+#: robots/sphere/crew_talk.gd:141
 msgid "No robots here yet"
 msgstr "ここにはまだロボットがいない"
 
-#: robots/sphere/crew_talk.gd:134
+#: robots/sphere/crew_talk.gd:143
 msgid "%d robot working here"
 msgid_plural "%d robots working here"
 msgstr[0] "ロボット%d台がここで作業中"
 
-#: robots/sphere/crew_talk.gd:136
+#: robots/sphere/crew_talk.gd:145
 msgid "%s, about %d hexes an hour"
 msgstr "%s、1時間に約%dヘックス"
 
-#: robots/sphere/crew_talk.gd:147
+#: robots/sphere/crew_talk.gd:156
 msgid "While you were away, your robots here cleaned %d hex."
 msgid_plural "While you were away, your robots here cleaned %d hexes."
 msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけた。"
 
-#: robots/sphere/crew_talk.gd:149
+#: robots/sphere/crew_talk.gd:158
 msgid "While you were away, your robots here earned %s cubes."
 msgstr "るすの間に、ここのロボットがキューブを%s個かせいだ。"
 
-#: robots/sphere/crew_talk.gd:150
+#: robots/sphere/crew_talk.gd:159
 msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
 msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
 msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけ、キューブを%s個かせいだ。"
@@ -1638,6 +1629,11 @@ msgstr "プレイを続ける：最初の地区は基地レベル %d のまま�
 #: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
 msgid "%dh %02dm"
 msgstr "%d時間%02d分"
+
+#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
+#: ui/globe_view.gd:559 ui/upgrade_card.gd:259
+msgid "%d min"
+msgstr "%d 分"
 
 #: story/bloom_finale.gd:15
 msgid "Lumi. Stop for a second. Look up."
@@ -1966,8 +1962,8 @@ msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
 msgstr "その誰かが君。小さくて。がんこで。残り4パーセントで動いてる。完璧だ。"
 
 #: story/first_seed.gd:22
-msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
-msgstr "きれいな地面を探して。掘って。入れて。土をぽんぽん。それから——ここが大事——水をあげて。"
+msgid "Take it to the greenhouse beds. Dig. Drop it in. Pat it down. And then — this part matters — water it."
+msgstr "温室の花だんに持っていって。掘って。入れて。土をぽんぽん。それから——ここが大事——水をあげて。"
 
 #: story/first_seed.gd:167
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
@@ -1978,8 +1974,8 @@ msgid "...It's green. Lumi, it's actually green."
 msgstr "……緑だ。Lumi、ほんとうに緑だよ。"
 
 #: story/first_seed.gd:308
-msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
-msgstr "水を切らさないでね。ここでは種は貴重だけど、花が咲くたびにひとつ返ってくるし、きみのコアにも小さな緑の光が届く。こうやって始まるんだ。"
+msgid "Keep it watered. Every bloom gives seeds back, and a little green light for your core. This is how it starts."
+msgstr "水を切らさないでね。花が咲くたびに種が返ってくるし、きみのコアにも小さな緑の光が届く。こうやって始まるんだ。"
 
 #: story/first_seed.gd:459
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
@@ -2082,51 +2078,51 @@ msgstr "目標達成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:943
+#: story/objectives.gd:962
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "ベーラー設置！チェストを満たして [%s] でベールを作ろう。"
 
-#: story/objectives.gd:965 story/objectives.gd:1187
+#: story/objectives.gd:984 story/objectives.gd:1211 tools/walk_opening.gd:752
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:981
+#: story/objectives.gd:1000
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:983
+#: story/objectives.gd:1002
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:1188
+#: story/objectives.gd:1212
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:1204 story/objectives.gd:1217
+#: story/objectives.gd:1229 story/objectives.gd:1245
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
-#: story/objectives.gd:1209
+#: story/objectives.gd:1235
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1239
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1239
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:1226
+#: story/objectives.gd:1255
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
-#: story/objectives.gd:1227
+#: story/objectives.gd:1256
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:1238
+#: story/objectives.gd:1267
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -3429,7 +3425,7 @@ msgstr "Glim はまだスキャン中。少し待ってからもう一度。"
 msgid "Close"
 msgstr "閉じる"
 
-#: tools/walk_opening.gd:573 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:574 ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "終了"
 
@@ -16610,6 +16606,24 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
+#~ msgstr "きれいな地面を探して。掘って。入れて。土をぽんぽん。それから——ここが大事——水をあげて。"
+
+#~ msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
+#~ msgstr "水を切らさないでね。ここでは種は貴重だけど、花が咲くたびにひとつ返ってくるし、きみのコアにも小さな緑の光が届く。こうやって始まるんだ。"
+
+#~ msgid "While you were away (%s):"
+#~ msgstr "留守のあいだに（%s）："
+
+#~ msgid "The fleet baled and delivered %s cubes."
+#~ msgstr "フリートが %s キューブ分をベールにして納品した。"
+
+#~ msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
+#~ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた。Lumi が換金した。Haul Bug がいればどんどん運んでくれる。"
+
+#~ msgid "The scrubbers filtered the air the whole time. It's a little clearer."
+#~ msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
 #~ msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
 #~ msgstr "そして、本当に死にかけてる。Ledger はこのあたりの世界を全部掘りつくして、どれもゴミの下に置き去りにした。Verdance は最初の1つにすぎなかった。"

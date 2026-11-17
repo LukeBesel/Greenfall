@@ -406,7 +406,11 @@ func repair(i: int, animate: bool = true, free: bool = false) -> bool:
 	if i < items.size():
 		Audio.play("buy", 1.0, -2.0)
 		items[i].set_level(1, animate, func() -> void:
-			EventBus.toast.emit(tr("Outpost %d repaired: a new scale for your Haul Bugs.") % (i + 1), "story")
+			# [v10guide] critic 20: the Haul Bugs are named only once the player can have them
+			if Research.robot_unlocked("haulbug"):
+				EventBus.toast.emit(tr("Outpost %d repaired: a new scale for your Haul Bugs.") % (i + 1), "story")
+			else:
+				EventBus.toast.emit(tr("Outpost %d repaired: a new scale for your bales.") % (i + 1), "story")
 			Vfx.float_text(items[i].pad_world() + Vector3(0, 2.4, 0), tr("OUTPOST ONLINE"), Color(0.6, 1.0, 0.65), 1.6, 2.0)
 			if world.get("wren") != null:
 				world.wren.say("outpost_repaired", 1.0, true))

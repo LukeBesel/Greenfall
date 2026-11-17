@@ -92,6 +92,7 @@ static func run_dev(so: SliceOrbit) -> void:
 	await _bench2()
 	await _robot()
 	_release_all()
+	_check(_guide_checks >= 8, "the beam and trail were checked against the card %d times" % _guide_checks)  # [v10guide]
 	if _full:
 		print("%s game minutes per step: %s" % [TAG, ", ".join(_times)])
 	print("%s %s" % [TAG, "PASS" if _fails.is_empty() else "FAIL: " + "; ".join(_fails)])
@@ -663,6 +664,7 @@ static func _reload(label: String) -> void:
 	_check(diff.is_empty() and _input_on(), "reload at %s: card '%s' %s, beam on %s, chest %.1f, carrying %d: the same after Continue%s (Lumi %.1f m from where he was)" % [
 		label, str(b["card"] if b["card"] != "" else b["checklist"]), str(b["count"]), str(b["to"]), float(b["chest"]), int(b["carried"]),
 		"" if diff.is_empty() else "; CHANGED: " + ", ".join(diff), moved])
+	_guide_check("reload at %s" % label)
 
 
 static func _short(v: Variant) -> String:
@@ -706,6 +708,7 @@ static func _on_step(id: String) -> bool:
 	var tgt: Dictionary = _ob.step_target(_ob.current())
 	var marked: bool = _ob.waypoint_target() is Vector3 or _ob.target_hex >= 0
 	_check(_card() != "" and marked, "%s: card '%s' / '%s', marker %s" % [id, _card(), _card(true), str(tgt.get("to", ""))])
+	_guide_check(id)
 	return true
 
 
@@ -731,6 +734,52 @@ static func _beam() -> Variant:
 	var wp: Waypoint = _ob.waypoint
 	var r: Variant = wp.get("_raw")
 	return r if r is Vector3 else wp.get("_target")
+
+
+## [v10guide] Critic 5: where the card's current line sends Lumi, worked out from what the card
+## says (its situation line and picture, else the step's own target), not from the beam. "skip" =
+## a cleaning step (the hex outline is the marker;
+## its beam to the nearest finishable hex comes and goes with where Lumi stands).
+static func _card_place() -> Variant:
+	var tut: Tutorial = _w.get("tutorial") as Tutorial
+	if tut and not tut.done():
+		return "skip"
+	var line: String = _ob.situation
+	var rocket: Variant = _ob.away_rocket()
+	if line != "" and not _ob.situation_price:
+		if _ob.situation_kind == "bale":  # "Carry your bale to the scale" (home: under the tall smoke)
+			return rocket if rocket is Vector3 else (_w.get("depot") as Node3D).global_position
+		var press: String = TranslationServer.translate("Your chest is full. Press [%s] to make a bale.") % Settings.glyph("cube")
+		if _ob.situation_kind == "chest" and line != press:  # "Bring it to the bin" (pressing a bale: no place, the step's target holds)
+			return rocket if rocket is Vector3 else Objectives.bin_point(_w)
+		if _ob.situation_kind == "lock":  # "Upgrade Lift at the bench"
+			return _ob._resolve({"to": "bench", "row": []}).get("pos", null)
+		if _ob.situation_kind == "house":  # "Head home: follow the beam" / "The rocket waits on the pad"
+			return rocket if rocket is Vector3 else _ob.home_pos()
+	var stt: Dictionary = _ob.step_target(_ob.current())
+	if str(stt.get("to", "")) in ["hex", ""] and stt.get("pos", null) == null:
+		return "skip"
+	return stt.get("pos", null)
+
+
+## [v10guide] Critic 5: the beam stands on the card's place and the trail runs toward it from Lumi.
+static func _guide_check(label: String) -> void:
+	var want: Variant = _card_place()
+	if want is String:
+		return
+	var b: Variant = _beam()
+	var ok: bool = (want == null and b == null) or (want is Vector3 and b is Vector3 and (want as Vector3).distance_to(b) < 2.5)
+	var wp: Waypoint = _ob.waypoint
+	var goal: Variant = wp.get("_target")
+	var trail_ok: bool = true
+	if ok and want is Vector3 and goal is Vector3:  # the trail ends on the beam's open-ground spot by the place
+		trail_ok = (goal as Vector3).distance_to(want) < 8.0
+	_check(ok and trail_ok, "%s: the beam and trail go where the card says (card '%s' / '%s': %s; beam on %s)" % [
+		label, _card(), _ob.situation, _short(want) if want is Vector3 else "no place", _short(b) if b is Vector3 else "nothing"])
+	_guide_checks += 1
+
+
+static var _guide_checks: int = 0
 
 
 static func _beam_at(at: Variant, m: float = 2.5) -> bool:
@@ -858,6 +907,8 @@ static func _make_and_sell_bale(reload_label: String = "") -> void:
 			var c: JunkCube = _p.nearest_loose_cube()
 			if c:
 				await _tap("interact")
+	await _secs(0.6)  # the card's next refresh
+	_guide_check("carrying a bale on %s" % str(_ob.current().get("id", "")))
 	if str(_ob.current().get("id", "")) == "power":
 		_check(str(_ob.step_target(_ob.current()).get("to", "")) == "depot" and _ob.waypoint_target() is Vector3, "bale: carrying it, the beam goes to the scale (%s)" % str(_ob.step_target(_ob.current()).get("to", "")))
 	var dp: Node3D = _w.get("depot") as Node3D
