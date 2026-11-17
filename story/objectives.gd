@@ -980,7 +980,7 @@ func _explain_signal() -> void:
 	if w and w.awake():  # [qafix] WREN only gets through once a tower is up; otherwise the toast says it
 		w.speak(tr("Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."), 1)  # [v4calm] the lamp is quiet now
 	else:  # [qafix] QA P1 #2: one line, not WREN and a toast saying the same thing
-		EventBus.toast.emit(tr("BURIED PART: walk toward it until the reading peaks, then dig it up."), "hint")
+		EventBus.toast.emit(tr("A part is buried nearby! Walk toward it until it beeps, then dig it up."), "hint")
 
 
 # --- Dev ---------------------------------------------------------------------------------------

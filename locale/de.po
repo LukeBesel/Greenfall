@@ -2101,8 +2101,8 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr "Dein Detektor hat in der Nähe ein vergrabenes Roboterteil gefunden. Folge der Anzeige VERGRABENES TEIL; er piept, wenn du genau darüber stehst."
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
-msgstr "VERGRABENES TEIL: Geh darauf zu, bis der Wert am höchsten ist, dann grab es aus."
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
+msgstr "Hier ist ein Teil vergraben! Geh darauf zu, bis es piept, dann grab es aus."
 
 #: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
@@ -3729,9 +3729,9 @@ msgstr "Fahren"
 msgid "Plant"
 msgstr "Pflanzen"
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
-msgstr "Gießen"
+msgstr "Wasser"
 
 #: ui/builder_panel.gd:21
 msgid "Skim"
@@ -7495,7 +7495,7 @@ msgstr "Ein kleiner schwebender Kamerabot mit einem großen Objektiv als Gesicht
 msgid "Junk"
 msgstr "Schrott"
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr "Pflanzen"
 
@@ -12761,17 +12761,9 @@ msgstr "Kommt später: WREN schickt Skimmer-Pläne, sobald das Land grün wird."
 msgid "Robotics"
 msgstr "Robotik"
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr "Botanik"
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr "Hydrologie"
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
-msgstr "Logistik"
+msgid "Hauling"
+msgstr "Transport"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
@@ -16651,6 +16643,18 @@ msgstr "Dieser Portalkran verschrottete die Bergbauflotte, als das Geld ausging.
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
+
+#~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+#~ msgstr "VERGRABENES TEIL: Geh darauf zu, bis der Wert am höchsten ist, dann grab es aus."
+
+#~ msgid "Botany"
+#~ msgstr "Botanik"
+
+#~ msgid "Hydrology"
+#~ msgstr "Hydrologie"
+
+#~ msgid "Logistics"
+#~ msgstr "Logistik"
 
 #~ msgid "Press a cube"
 #~ msgstr "Würfel pressen"

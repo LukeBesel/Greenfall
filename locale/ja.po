@@ -2095,8 +2095,8 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
-msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
+msgstr "近くにパーツが埋まっている！ピッと鳴るまで近づいて、掘り出そう。"
 
 #: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
@@ -3716,9 +3716,9 @@ msgstr "運搬"
 msgid "Plant"
 msgstr "植える"
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
-msgstr "水やり"
+msgstr "水"
 
 #: ui/builder_panel.gd:21
 msgid "Skim"
@@ -7478,7 +7478,7 @@ msgstr "大きなレンズの顔をした、浮かぶ小さなカメラボット
 msgid "Junk"
 msgstr "ガラクタ"
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr "植物"
 
@@ -12744,17 +12744,9 @@ msgstr "もう少し先：大地が緑になってきたら、WREN が Skimmer �
 msgid "Robotics"
 msgstr "ロボット工学"
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr "植物学"
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr "水文学"
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
-msgstr "物流"
+msgid "Hauling"
+msgstr "運搬"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
@@ -16634,6 +16626,18 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+#~ msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
+
+#~ msgid "Botany"
+#~ msgstr "植物学"
+
+#~ msgid "Hydrology"
+#~ msgstr "水文学"
+
+#~ msgid "Logistics"
+#~ msgstr "物流"
 
 #~ msgid "Press a cube"
 #~ msgstr "キューブを圧縮"

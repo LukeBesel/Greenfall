@@ -2087,7 +2087,7 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr ""
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr ""
 
 #: story/objectives.gd:1188
@@ -3715,7 +3715,7 @@ msgstr ""
 msgid "Plant"
 msgstr ""
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
 msgstr ""
 
@@ -7449,7 +7449,7 @@ msgstr ""
 msgid "Junk"
 msgstr ""
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr ""
 
@@ -12581,16 +12581,8 @@ msgstr ""
 msgid "Robotics"
 msgstr ""
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr ""
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr ""
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
+msgid "Hauling"
 msgstr ""
 
 #: data/research.json:nodes[scoop_beam].name

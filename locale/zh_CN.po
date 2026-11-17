@@ -2095,8 +2095,8 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
-msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
+msgstr "附近埋着一个零件！朝它走，听到哔哔声就把它挖出来。"
 
 #: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
@@ -3716,9 +3716,9 @@ msgstr "运输"
 msgid "Plant"
 msgstr "种植"
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
-msgstr "浇水"
+msgstr "水"
 
 #: ui/builder_panel.gd:21
 msgid "Skim"
@@ -7478,7 +7478,7 @@ msgstr "一个漂浮的小相机机器人，脸是一枚大镜头。建造一次
 msgid "Junk"
 msgstr "废料"
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr "植物"
 
@@ -12744,17 +12744,9 @@ msgstr "以后才有：等大地开始变绿，WREN 会发来 Skimmer 的图纸�
 msgid "Robotics"
 msgstr "机器人学"
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr "植物学"
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr "水文学"
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
-msgstr "物流"
+msgid "Hauling"
+msgstr "搬运"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
@@ -16634,6 +16626,18 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+#~ msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
+
+#~ msgid "Botany"
+#~ msgstr "植物学"
+
+#~ msgid "Hydrology"
+#~ msgstr "水文学"
+
+#~ msgid "Logistics"
+#~ msgstr "物流"
 
 #~ msgid "Press a cube"
 #~ msgstr "压制方块"

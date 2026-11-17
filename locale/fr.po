@@ -2101,8 +2101,8 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr "Ton détecteur a trouvé une pièce de robot enterrée tout près. Suis l'indication PIÈCE ENTERRÉE ; il bipe quand tu es juste au-dessus."
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
-msgstr "PIÈCE ENTERRÉE : avance vers elle jusqu'au signal maximal, puis déterre-la."
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
+msgstr "Une pièce est enterrée près d'ici ! Avance vers elle jusqu'au bip, puis déterre-la."
 
 #: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
@@ -3729,9 +3729,9 @@ msgstr "Transporter"
 msgid "Plant"
 msgstr "Planter"
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
-msgstr "Arroser"
+msgstr "Eau"
 
 #: ui/builder_panel.gd:21
 msgid "Skim"
@@ -7495,7 +7495,7 @@ msgstr "Un petit robot caméra flottant avec un gros objectif en guise de visage
 msgid "Junk"
 msgstr "Ferraille"
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr "Plantes"
 
@@ -12761,17 +12761,9 @@ msgstr "Plus tard : WREN enverra les plans du Skimmer quand la terre reverdira."
 msgid "Robotics"
 msgstr "Robotique"
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr "Botanique"
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr "Hydrologie"
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
-msgstr "Logistique"
+msgid "Hauling"
+msgstr "Transport"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
@@ -16651,6 +16643,18 @@ msgstr "Ce portique a mis à la casse la flotte minière quand l'argent a manqu�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pieds. Les comptes sont clos, {name}. Nous les avons équilibrés."
+
+#~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+#~ msgstr "PIÈCE ENTERRÉE : avance vers elle jusqu'au signal maximal, puis déterre-la."
+
+#~ msgid "Botany"
+#~ msgstr "Botanique"
+
+#~ msgid "Hydrology"
+#~ msgstr "Hydrologie"
+
+#~ msgid "Logistics"
+#~ msgstr "Logistique"
 
 #~ msgid "Press a cube"
 #~ msgstr "Presser un cube"

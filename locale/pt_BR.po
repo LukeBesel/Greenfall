@@ -2101,8 +2101,8 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr "Seu detector achou uma peça de robô enterrada aqui perto. Siga a leitura PEÇA ENTERRADA; ele apita quando você está bem em cima."
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
-msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
+msgstr "Tem uma peça enterrada aqui perto! Ande até ela até apitar e desenterre."
 
 #: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
@@ -3729,9 +3729,9 @@ msgstr "Transportar"
 msgid "Plant"
 msgstr "Plantar"
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
-msgstr "Regar"
+msgstr "Água"
 
 #: ui/builder_panel.gd:21
 msgid "Skim"
@@ -7495,7 +7495,7 @@ msgstr "Um robozinho câmera flutuante com uma lente grande no lugar do rosto. C
 msgid "Junk"
 msgstr "Sucata"
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr "Plantas"
 
@@ -12761,17 +12761,9 @@ msgstr "Vem depois: a WREN vai mandar os planos do Skimmer quando a terra estive
 msgid "Robotics"
 msgstr "Robótica"
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr "Botânica"
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr "Hidrologia"
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
-msgstr "Logística"
+msgid "Hauling"
+msgstr "Transporte"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
@@ -16651,6 +16643,18 @@ msgstr "Aquele pórtico sucateou a frota de mineração quando o dinheiro acabou
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+#~ msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
+
+#~ msgid "Botany"
+#~ msgstr "Botânica"
+
+#~ msgid "Hydrology"
+#~ msgstr "Hidrologia"
+
+#~ msgid "Logistics"
+#~ msgstr "Logística"
 
 #~ msgid "Press a cube"
 #~ msgstr "Prensar um cubo"

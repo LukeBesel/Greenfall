@@ -2098,8 +2098,8 @@ msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART 
 msgstr "[Ýôûŕ ðéţéçţôŕ'š ƒôûñð à ŕôbôţ þàŕţ bûŕîéð ñéàŕbý. Fôļļôŵ ţĥé BÛŔÎÉÐ ÞÀŔŢ ŕéàðîñĝ; îţ bééþš ôñçé ýôû'ŕé ŕîĝĥţ ôñ ţôþ ôƒ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/objectives.gd:983
-msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
-msgstr "[BÛŔÎÉÐ ÞÀŔŢ: ŵàļķ ţôŵàŕð îţ ûñţîļ ţĥé ŕéàðîñĝ þéàķš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
+msgstr "[À þàŕţ îš bûŕîéð ñéàŕbý! Ŵàļķ ţôŵàŕð îţ ûñţîļ îţ bééþš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/objectives.gd:1188
 msgid "Your chest is full. Bring it to the bin."
@@ -3726,7 +3726,7 @@ msgstr "[Ĥàûļ ~]"
 msgid "Plant"
 msgstr "[Þļàñţ ~]"
 
-#: ui/builder_panel.gd:21
+#: ui/builder_panel.gd:21 data/research.json:branches[hydrology].name
 msgid "Water"
 msgstr "[Ŵàţéŕ ~]"
 
@@ -7492,7 +7492,7 @@ msgstr "[À ļîţţļé ƒļôàţîñĝ çàméŕà bôţ ŵîţĥ à bîĝ ļ
 msgid "Junk"
 msgstr "[Ĵûñķ ~]"
 
-#: data/codex.json:categories[plants].name
+#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
 msgid "Plants"
 msgstr "[Þļàñţš ~]"
 
@@ -12758,17 +12758,9 @@ msgstr "[Çôméš ļàţéŕ: ŴŔÉÑ ŵîļļ šéñð Šķîmméŕ þļàñ�
 msgid "Robotics"
 msgstr "[Ŕôbôţîçš ~]"
 
-#: data/research.json:branches[botany].name
-msgid "Botany"
-msgstr "[Bôţàñý ~]"
-
-#: data/research.json:branches[hydrology].name
-msgid "Hydrology"
-msgstr "[Ĥýðŕôļôĝý ~]"
-
 #: data/research.json:branches[logistics].name
-msgid "Logistics"
-msgstr "[Ļôĝîšţîçš ~]"
+msgid "Hauling"
+msgstr "[Ĥàûļîñĝ ~]"
 
 #: data/research.json:nodes[scoop_beam].name
 msgid "Scoop Beam"
