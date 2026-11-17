@@ -258,7 +258,7 @@ func test_wren_speaks_world_lines_clearly() -> void:
 	w._process(0.1)
 	assert_eq(got.size(), 1)
 	assert_eq(int(got[0][1]), 2, "the ark relay is clear")
-	assert_string_contains(str(got[0][0]), "Ledger")
+	assert_string_contains(str(got[0][0]), "miners")
 
 
 # --- World picker ----------------------------------------------------------------------------

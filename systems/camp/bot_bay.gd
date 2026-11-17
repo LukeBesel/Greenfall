@@ -34,6 +34,7 @@ var _anchor: Node3D
 var _shell: MeshInstance3D
 var _pad: MeshInstance3D
 var _busy_t: float = 0.0
+var _check_t: float = 0.0
 
 
 class BayEvents:
@@ -196,6 +197,11 @@ func flash_build() -> void:
 
 
 func _process(delta: float) -> void:
+	_check_t += delta
+	if _check_t >= 0.5:  # the state is the truth (a load, a dev jump): stand when built
+		_check_t = 0.0
+		if visible != built(key):
+			_show(built(key))
 	if _busy_t > 0.0:
 		_busy_t -= delta
 		if _busy_t <= 0.0:

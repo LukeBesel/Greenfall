@@ -40,7 +40,7 @@ static func state() -> Dictionary:
 
 static func built(id: String) -> bool:
 	if id == "bot_bay":  # [v10pace] the start yard's Bot Bay is the old workbench tier 2 (systems/camp/bot_bay.gd)
-		return BotBay.built()
+		return BenchTiers.tier() >= 2
 	if id == "shuttle" and bool(GameState.orbit.get("rocket_owned", false)):  # [v10pace] a rocket that has flown is built
 		return true
 	if bool(def(id).get("global", false)):  # [camp3] one build for the whole game (the camera bot)
@@ -50,7 +50,7 @@ static func built(id: String) -> bool:
 
 static func mark_built(id: String) -> void:
 	if id == "bot_bay":  # [v10pace]
-		BotBay.mark_built(BotBay.HOME)
+		GameState.flags["bench_tier"] = maxi(BenchTiers.tier(), 2)
 		return
 	if bool(def(id).get("global", false)):  # [camp3]
 		_global()[id] = true

@@ -24,8 +24,7 @@ const TAB_FONT: int = 19
 ## [v10pace] Owner: "Make the bot bay another thing like the tool bench. seperate from other stuff."
 ## Tabs that are not on the workbench: each is a machine's own screen (the Bot Bay: systems/camp/
 ## bot_bay.gd), this same class with `solo` set to the tab: its title, no tab row, one list.
-const SOLO_TABS: Dictionary = {"bots": "BOT BAY"}
-# l10n: tr("BOT BAY")
+const SOLO_TABS: Dictionary = {"bots": "BOT BAY"}  # l10n
 
 ## [ui2] id -> Callable() -> bool. A tab whose gate returns false is locked (see set_tab_gate).
 static var _gates: Dictionary = {}

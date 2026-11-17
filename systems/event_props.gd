@@ -105,7 +105,7 @@ static func hex_glow(size: float, col: Color, curtain: float = 1.6) -> Node3D:
 	return n
 
 
-## Flat glowing ring on the ground (zones: supply crate, audit, part signal).
+## Flat glowing ring on the ground (zones: supply crate, part signal).
 static func zone_ring(radius: float, col: Color) -> MeshInstance3D:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)

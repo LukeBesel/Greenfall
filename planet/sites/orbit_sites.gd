@@ -54,6 +54,8 @@ func _setup() -> void:
 	_build_water()
 	if DevHooks.has("soak"):  # dev QA soak (planet/sites/soak_watch.gd)
 		SoakWatch.attach(so)
+	if DevHooks.has("soak") or DevHooks.has("bale-watch"):  # [v10pace] bales heaped on the pad (tools/bale_watch.gd)
+		BaleWatch.attach(so)
 	if DevHooks.has("site-reach"):
 		_reach_audit.call_deferred()
 	if DevHooks.has("city-walk"):  # [v3city] dev: walk check of the start town (planet/sites/city_walk.gd)

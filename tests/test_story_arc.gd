@@ -37,7 +37,7 @@ func test_every_planet_has_a_complete_story_block() -> void:
 		assert_false(b.is_empty(), "%s has a story block" % id)
 		var g: Vector2i = StoryArc.gives(k)
 		assert_true(g.x > 0 or g.y > 0, "%s gives fuel or power" % id)
-		for key: String in ["reason", "question", "from", "answers", "ledger"]:
+		for key: String in ["reason", "question", "from", "answers"]:
 			assert_gt(str(b.get(key, "")).length(), 12, "%s has its %s" % [id, key])
 		assert_true(str(b.get("reason", "")).length() <= 80, "%s: the reason is one short line" % id)
 		assert_true(str(b.get("question", "")).ends_with("?"), "%s: the question is a question" % id)

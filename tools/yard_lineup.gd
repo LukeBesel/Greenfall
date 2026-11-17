@@ -253,7 +253,7 @@ func _build_stations() -> void:
 	sc.free()
 
 
-## Signal tower tiers 1-4, an air scrubber, a signal jammer.
+## Signal tower tiers 1-4, an air scrubber.
 func _build_towers() -> void:
 	for t: int in range(1, 5):
 		var d: Dictionary = YardArt.signal_tower(t)
@@ -270,12 +270,6 @@ func _build_towers() -> void:
 	add_child(fab)
 	fab.set_building(true)
 	fab.call("_pose", 1.3)
-	var jb: MeshInstance3D = YardArt.jammer_base().mi(0.15)
-	jb.position = Vector3(98.0, 0, 0.5)
-	add_child(jb)
-	var jd: MeshInstance3D = YardArt.jammer_dish().mi(0.15)
-	jd.position = Vector3(98.0, 3.0, 0.5)
-	add_child(jd)
 
 
 func _build_bins() -> void:

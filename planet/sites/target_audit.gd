@@ -2,10 +2,10 @@ class_name TargetAudit
 extends RefCounted
 ## [v4world] Dev: --target-reach. Owner playtest 3 #55: every collectible and objective target on
 ## the globe must be reachable. Builds each hub site in turn (as --site-reach does), stands the hub
-## frame there so its outposts, eggs and Ledger relay are placed as in play, lets the hub's cells
+## frame there so its outposts and eggs are placed as in play, lets the hub's cells
 ## materialize round its pad (parts, wrecks), then tests every target with TargetReach (with the
 ## colliders loaded): memory shards (where each surfaces), CDs (where each would turn up, every
-## 3rd hex), outposts, eggs and gnomes, the Ledger relay, the First Seed greenhouse, buried parts,
+## 3rd hex), outposts, eggs and gnomes, the First Seed greenhouse, buried parts,
 ## the hub's build anchors (SiteReach.audit), no shut-in pocket round each outpost (TargetReach.pockets), and the purple beacon's point for raw hex centres
 ## (TargetReach.beacon_point, every 3rd hex). Prints a [targets] line per hub and kind, the
 ## failures, and "[targets] N unreachable" with PASS/FAIL; exits 1 on any failure.
@@ -62,10 +62,6 @@ static func run_dev(so: SliceOrbit) -> void:
 			for e: Dictionary in (eggs as EasterEggs).placed:
 				var en: Node3D = e["node"]
 				check.call("gnome" if str(e.get("kind", "")).contains("gnome") else "egg", en.global_position, en)
-		var lg: Node = hf.node("Ledger")
-		if lg is LedgerArc:
-			var rs: Dictionary = LedgerArc.relay_spot_cells(hf, so.globe.field, hf.region(), i)
-			check.call("relay", hf.to_global(rs["pos"]), (lg as LedgerArc).relay)
 		var cells: PackedInt32Array = hf.region()
 		var cdf: Node = so.w.get_node_or_null("CdFinds")
 		if cdf == null:

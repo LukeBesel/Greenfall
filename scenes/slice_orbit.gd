@@ -17,7 +17,7 @@ extends Node
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
 ## Not here: CityLayout/CityView/StreetDressing/litter/far junk/water (orbD sites), Fleet/robot
 ## builder/Command view (orbC), SkyDirector/GlobeView/FutureLayer, the intro cinematic and photo
-## mode (orbE); frontier districts (retired on the globe). Fauna, eggs, outposts, the Ledger arc
+## mode (orbE); frontier districts (retired on the globe). Fauna, eggs, outposts
 ## and Garden Mode's decor run per hub (HubFrame).
 ##
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
@@ -703,7 +703,7 @@ func _attach_first_seed() -> void:
 ## The seed economy at the base: the compost press on the start yard's "composter" anchor (its own
 ## model and label; YardSite's stand-in steps aside), and the early seed finds in scooped junk.
 ## Memory shards in the start hub's region (they surface as their cells are cleaned) and the
-## paper view that reads them (also the Ledger's contract and the eggs' notes).
+## paper view that reads them (also the eggs' notes).
 func _attach_shards() -> void:
 	var dv := DocumentView.new()
 	dv.name = "DocumentView"
@@ -748,9 +748,7 @@ func _build_hub_frame() -> void:
 		var eg: Node = hub_frame.node("EasterEggs")
 		w.set("eggs", eg as EasterEggs if eg else null)
 		var op: Node = hub_frame.node("Outposts")
-		w.set("outposts", op as Outposts if op else null)
-		var lg: Node = hub_frame.node("Ledger")
-		w.set("ledger", lg as LedgerArc if lg else null))
+		w.set("outposts", op as Outposts if op else null))
 	hub_frame.host("Fauna", func(f: HubFrame, _hub: int) -> Node:  # ambient animals return as hexes are restored
 		var fa := Fauna.new()
 		f.add_child(fa)
@@ -783,16 +781,6 @@ func _build_hub_frame() -> void:
 		await BuildBudget.pause("hub frame:outposts")
 	await BuildBudget.check("hub frame:eggs")  # [v5load]
 	w.set("fauna", hub_frame.node("Fauna") as Fauna)
-	hub_frame.host("Ledger", func(f: HubFrame, hub: int) -> Node:  # the Ledger arc: drones, jammers and the relay at this hub
-		var lg := LedgerArc.new()
-		lg.name = "Ledger"
-		lg.world = w
-		lg.hub_index = hub
-		lg.frame_cells = f.region()
-		f.add_child(lg)
-		lg.setup()
-		return lg)
-	await BuildBudget.check("hub frame:ledger")  # [v5load]
 	hub_frame.host("Decor", func(f: HubFrame, hub: int) -> Node:  # Garden Mode's decorations at this hub
 		var dc := Decor.new()
 		dc.hub_index = hub
@@ -801,7 +789,6 @@ func _build_hub_frame() -> void:
 		return dc)
 	w.set("eggs", hub_frame.node("EasterEggs") as EasterEggs)
 	w.set("outposts", hub_frame.node("Outposts") as Outposts)
-	w.set("ledger", hub_frame.node("Ledger") as LedgerArc)
 
 
 ## [orbE] A new game plays the intro cinematic (story/intro.gd) in the pod anchor's frame; its

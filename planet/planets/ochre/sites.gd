@@ -86,9 +86,9 @@ static func mat(key: String) -> Material:
 	var m: Material
 	match key:
 		"paint_ruin":
-			m = Mats.worn_paint(_pal("ledger_yellow", Color(0.86, 0.62, 0.12)), 0.42, 0.9, 3.0, 0.8)
+			m = Mats.worn_paint(_pal("rig_yellow", Color(0.86, 0.62, 0.12)), 0.42, 0.9, 3.0, 0.8)
 		"paint_mid":
-			m = Mats.worn_paint(_pal("ledger_yellow", Color(0.86, 0.62, 0.12)).lerp(Color(0.92, 0.7, 0.3), 0.3), 0.93, 0.18, 3.0, 0.35)
+			m = Mats.worn_paint(_pal("rig_yellow", Color(0.86, 0.62, 0.12)).lerp(Color(0.92, 0.7, 0.3), 0.3), 0.93, 0.18, 3.0, 0.35)
 		"paint_future":
 			var w := StandardMaterial3D.new()
 			w.albedo_color = Color(0.9, 0.87, 0.8)

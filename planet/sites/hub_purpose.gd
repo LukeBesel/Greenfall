@@ -223,8 +223,8 @@ func steps(i: int) -> Array:
 		match str(s["do"]):
 			"clean":
 				d["need"] = int(s.get("hexes", 8))
-				# [v9c] Kept at its best: a Ledger drone's dump on a cleaned hex here (story/ledger.gd
-				# drops on the region Lumi is in) took the count back down, even after the wake was ready.
+				# [v9c] Kept at its best: junk coming back onto a cleaned hex here must not take the
+				# count back down, even after the wake was ready.
 				var best: int = int(HubPlan.peek(i).get("clean_best", 0))
 				var now_c: int = mini(cleaned_here(i), int(d["need"]))
 				if now_c > best and HubPlan.seen(i):

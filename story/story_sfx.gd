@@ -28,8 +28,6 @@ static func ensure() -> void:
 	_reg("phone_ring", [_ring()])
 	_reg("arcade", [_arcade(0), _arcade(1)])
 	_reg("tv_static", [_static(rng)])
-	_reg("ledger_tick", [_tick(1400.0), _tick(1250.0), _tick(1550.0)])
-	_streams["drone_hum"] = _hum(rng)
 
 
 static var _box: AudioStreamWAV
@@ -169,34 +167,6 @@ static func _static(rng: RandomNumberGenerator) -> PackedFloat32Array:
 		var t: float = float(i) / RATE
 		b[i] = rng.randf_range(-1.0, 1.0) * (0.6 + 0.4 * sin(TAU * 60.0 * t)) * sin(PI * t / 0.8) * 0.12
 	return b
-
-
-static func _tick(f: float) -> PackedFloat32Array:
-	var b := _buf(0.04)
-	for i: int in b.size():
-		var t: float = float(i) / RATE
-		b[i] = (1.0 if fmod(t * f, 1.0) < 0.5 else -1.0) * exp(-t * 120.0) * 0.12
-	return b
-
-
-## Looping rotor hum for the Ledger drones (two detuned rotor tones + filtered air noise).
-static func _hum(rng: RandomNumberGenerator) -> AudioStreamWAV:
-	var seconds: float = 1.0
-	var b := _buf(seconds)
-	var lp: float = 0.0
-	for i: int in b.size():
-		var t: float = float(i) / RATE
-		lp += (rng.randf_range(-1.0, 1.0) - lp) * 0.12
-		var r1: float = sin(TAU * 110.0 * t) * (0.6 + 0.4 * sin(TAU * 22.0 * t))
-		var r2: float = sin(TAU * 165.0 * t) * 0.4 + sin(TAU * 220.0 * t) * 0.2
-		b[i] = (r1 * 0.25 + r2 * 0.18 + lp * 0.5) * 0.4
-	# Crossfade the tail into the head so the loop is seamless.
-	var xf: int = int(0.05 * RATE)
-	for i: int in xf:
-		var g: float = float(i) / xf
-		b[i] = b[i] * g + b[b.size() - xf + i] * (1.0 - g)
-	b.resize(b.size() - xf)
-	return wav(b, true)
 
 
 ## Music box: plucked tines (fundamental + inharmonic partials), long decay, gentle tempo.

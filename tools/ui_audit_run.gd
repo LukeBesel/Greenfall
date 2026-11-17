@@ -445,11 +445,11 @@ func _extra_screens() -> Array[Dictionary]:
 	var dv: Node = w.get("doc_view") as Node
 	if dv:
 		var doc: Dictionary = {}
-		var f := FileAccess.open("res://data/ledger.json", FileAccess.READ)
+		var f := FileAccess.open("res://data/shards.json", FileAccess.READ)
 		if f:
 			var d: Variant = JSON.parse_string(f.get_as_text())
-			if d is Dictionary:
-				doc = (d as Dictionary).get("contract_doc", {})
+			if d is Dictionary and not ((d as Dictionary).get("shards", []) as Array).is_empty():
+				doc = (d as Dictionary)["shards"][0]
 		if not doc.is_empty():
 			out.append({"name": "document", "root": func() -> Node: return dv,
 				"open": func() -> void: dv.call("show_doc", doc), "close": func() -> void: dv.call("close_doc"),

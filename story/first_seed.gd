@@ -341,7 +341,7 @@ static func find_spot(so: SliceOrbit, site: Transform3D) -> Transform3D:
 	var f: SphereField = so.globe.field
 	var space: PhysicsDirectSpaceState3D = so.w.get_world_3d().direct_space_state
 	var anchors: Array[Vector3] = []
-	for nm: String in LedgerArc.YARD_ANCHORS + ["shack", "generator", "composter", "fabricator", "camera_bot"]:
+	for nm: String in Decor.YARD_ANCHORS + ["shack", "generator", "composter", "fabricator", "camera_bot"]:
 		anchors.append(site.affine_inverse() * so.yard_point(nm))
 	var box := BoxShape3D.new()
 	box.size = Vector3(6.6, 2.2, 9.6)

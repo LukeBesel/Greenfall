@@ -25,7 +25,7 @@ var bales: Array[Dictionary] = []
 var sprouts: int = 0
 var boost: float = 1.0
 var palette: Dictionary = {}
-var spot_nodes: Dictionary = {}  # kind -> Node3D (Ledger wreck, deer)
+var spot_nodes: Dictionary = {}  # kind -> Node3D (deer)
 var _ground_mat: StandardMaterial3D
 var _junk_mm: MultiMesh
 var _sprout_mm: MultiMesh
@@ -423,17 +423,9 @@ func _build_bots() -> void:
 		bots.append(b)
 
 
-## Things to spot through the reticle: a Ledger dump-drone wreck (Ledger act 2+) and deer on
-## Growing ground (level 3+). Each unlocks a Codex entry the first time it is held in view.
+## Things to spot through the reticle: deer on Growing ground (level 3+). Unlocks a Codex entry
+## the first time it is held in view.
 func _build_spots() -> void:
-	var junk: Array[int] = _junk_order()
-	if int(snap.get("ledger_act", 0)) >= 2 and not junk.is_empty():
-		var h: int = junk[mini(junk.size() - 1, 2)]
-		var wreck := _ledger_wreck()
-		wreck.position = center_of(h) + Vector3(2.5, 0, -1.5)
-		wreck.rotation = Vector3(0.25, 0.8, -0.35)
-		add_child(wreck)
-		spot_nodes["ledger_wreck"] = wreck
 	var levels: PackedByteArray = snap.get("levels", PackedByteArray())
 	for i: int in state.size():
 		if state[i] == 2 and i < levels.size() and levels[i] >= 3:
@@ -450,32 +442,6 @@ func _build_spots() -> void:
 			spot_nodes["deer"] = deer
 			break
 
-
-func _ledger_wreck() -> Node3D:
-	var n := Node3D.new()
-	var shell := Telescope._mat(Color(0.18, 0.16, 0.16), 0.5, 0.5)
-	var red := Telescope._glow_mat(Color(1.0, 0.22, 0.16), 1.6)
-	var body := MeshInstance3D.new()
-	body.mesh = ProcMesh.box(Vector3(1.6, 0.6, 1.1))
-	body.material_override = shell
-	body.position.y = 0.3
-	n.add_child(body)
-	for k: int in 3:
-		var arm := MeshInstance3D.new()
-		arm.mesh = ProcMesh.box(Vector3(1.4 - k * 0.3, 0.06, 0.12))
-		arm.material_override = shell
-		arm.position = Vector3(0.4 - k * 0.5, 0.62, 0.3 * k - 0.3)
-		arm.rotation = Vector3(0, k * 1.1, 0.3 * (k - 1))
-		n.add_child(arm)
-	var eye := MeshInstance3D.new()
-	eye.mesh = ProcMesh.sphere(0.09, 8, 4)
-	eye.material_override = red
-	eye.position = Vector3(0.82, 0.38, 0)
-	n.add_child(eye)
-	return n
-
-
-# --- Simulation ------------------------------------------------------------------------------
 
 func _random_in(i: int, r: float = 0.7) -> Vector3:
 	var a: float = _rng.randf() * TAU

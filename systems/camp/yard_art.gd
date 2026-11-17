@@ -1435,40 +1435,6 @@ static func scrubber() -> Kit:
 	return k
 
 
-# --- Signal jammer (story/ledger.gd) ------------------------------------------------------------------
-
-static func jammer_base() -> Kit:
-	var k := Kit.new()
-	k.box(Vector3(1.0, 0.1, 1.0), Vector3(0, 0.05, 0), DARK)
-	k.box(Vector3(0.9, 0.55, 0.9), Vector3(0, 0.37, 0), CREAM, Vector3.ZERO, 0.05)
-	k.box(Vector3(0.96, 0.06, 0.96), Vector3(0, 0.66, 0), RED, Vector3.ZERO, 0.02)
-	k.hazard(Vector3(0.92, 0.08, 0.92), Vector3(0, 0.16, 0))
-	k.box(Vector3(0.56, 0.16, 0.04), Vector3(0, 0.42, 0.46), DARK, Vector3.ZERO, 0.01)
-	k.decal("warn", Vector2(0.18, 0.18), Vector3(0.3, 0.42, -0.455), Vector3(0, 180, 0))
-	k.vent(0.4, 0.24, Vector3(0.455, 0.38, 0), CREAM.darkened(0.15), Vector3(0, 90, 0), 3)
-	k.cyl(0.12, 0.3, Vector3(0, 0.82, 0), GUNMETAL, Vector3.ZERO, 0.03, 12)
-	k.pipe(Vector3(0, 0.9, 0), Vector3(0, 3.0, 0), 0.06, GUNMETAL, false)
-	for y: float in [1.4, 2.2]:
-		k.cyl(0.09, 0.06, Vector3(0, y, 0), RED, Vector3.ZERO, 0.015, 12)
-	for a: int in 3:  # guy struts
-		var d := Vector3(cos(a * TAU / 3.0), 0, sin(a * TAU / 3.0))
-		k.pipe(d * 0.42 + Vector3(0, 0.66, 0), Vector3(0, 1.9, 0) + d * 0.05, 0.015, STEEL, false)
-	return k
-
-
-## The jammer's dish (in the Dish node: it turns): bowl, rim, feed arm (the Tip lamp sits at its end).
-static func jammer_dish() -> Kit:
-	var k := Kit.new()
-	k.push(Transform3D(Basis(Vector3.RIGHT, deg_to_rad(-70.0)), Vector3(0, 0, 0.1)))
-	k.cyl(0.2, 0.18, Vector3(0, -0.06, 0), CREAM, Vector3.ZERO, 0.02, 18, "paint", 0.55)
-	k.cyl(0.52, 0.03, Vector3(0, 0.05, 0), Color(0.96, 0.95, 0.9), Vector3.ZERO, 0.01, 20)
-	k.cyl(0.56, 0.045, Vector3(0, 0.05, 0), RED, Vector3.ZERO, 0.012, 22, "paint", 0.56)
-	k.pop()
-	k.pipe(Vector3(0, 0.05, 0.12), Vector3(0, 0.2, 0.56), 0.015, STEEL, false)
-	k.box(Vector3(0.12, 0.12, 0.2), Vector3(0, 0, -0.05), GUNMETAL, Vector3.ZERO, 0.02)
-	return k
-
-
 # --- Observatory annex (automation/telescope.gd; the dome itself is kitified) -------------------------
 
 ## Kit dressing round the observatory (model-local: door at +Z): entrance steps with a hazard nose,

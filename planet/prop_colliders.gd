@@ -266,7 +266,7 @@ static func push_out_pieces(root: Node, field: HexField, view: Node = null) -> i
 		var c := Vector3(f.x, 0.0, f.y)
 		var pids := PackedInt32Array()
 		for hid: int in field.hexes_near(c, 1 + int(r / field.hex_size)):
-			pids.append_array(field.hex_pieces[hid])  # dead ones too: the Ledger can revive them
+			pids.append_array(field.hex_pieces[hid])  # dead ones too
 		for pid: int in pids:
 			if field.is_water(field.piece_hex[pid]):
 				continue

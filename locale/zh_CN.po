@@ -270,7 +270,7 @@ msgstr "未解锁。把基地升到 %d 级来建造发射台。"
 
 #: automation/hub.gd:87
 msgid "No shuttle yet. Build it at the workbench when WREN finds a place to fly to."
-msgstr ""
+msgstr "还没有穿梭机。等 WREN 找到要去的地方，就在工作台建造它。"
 
 #: automation/hub.gd:170
 msgid "Hub upgraded: %s."
@@ -300,80 +300,80 @@ msgstr "前哨 %d  ·  运行中"
 msgid "RECHARGE"
 msgstr "充能"
 
-#: automation/outposts.gd:372 automation/outposts.gd:386
+#: automation/outposts.gd:369 automation/outposts.gd:383
 msgid "No outpost."
 msgstr "没有前哨站。"
 
-#: automation/outposts.gd:374
+#: automation/outposts.gd:371
 msgid "Already repaired."
 msgstr "已经修好了。"
 
-#: automation/outposts.gd:378
+#: automation/outposts.gd:375
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "先清理周围的废料（%d%% / %d%%）。"
 
-#: automation/outposts.gd:380 automation/outposts.gd:395 automation/stations.gd:131
-#: systems/camp/hub_builds.gd:79 ui/refuse.gd:12
+#: automation/outposts.gd:377 automation/outposts.gd:392 automation/stations.gd:131
+#: systems/camp/hub_builds.gd:73 ui/refuse.gd:12
 msgid "Not enough cubes or parts."
 msgstr "方块或零件不足。"
 
-#: automation/outposts.gd:389
+#: automation/outposts.gd:386
 msgid "Repair it first."
 msgstr "请先修复。"
 
-#: automation/outposts.gd:391 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
+#: automation/outposts.gd:388 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
 msgid "Fully upgraded."
 msgstr "已满级。"
 
-#: automation/outposts.gd:412
+#: automation/outposts.gd:409
 msgid "Outpost %d repaired: a new scale for your Haul Bugs."
 msgstr "前哨站 %d 已修复：Haul Bug 有了新秤。"
 
-#: automation/outposts.gd:413
+#: automation/outposts.gd:410
 msgid "OUTPOST ONLINE"
 msgstr "前哨站上线"
 
-#: automation/outposts.gd:435
+#: automation/outposts.gd:432
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "前哨站 %d 已升级：%s。%s"
 
-#: automation/outposts.gd:464
+#: automation/outposts.gd:461
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   前哨废墟 · 先清理它所在的六角格（%d%% / %d%%）"
 
-#: automation/outposts.gd:465
+#: automation/outposts.gd:462
 msgid "E   Repair outpost · %s%s"
 msgstr "E   修复前哨站 · %s%s"
 
-#: automation/outposts.gd:465 automation/outposts.gd:468
+#: automation/outposts.gd:462 automation/outposts.gd:465
 msgid "  (need more)"
 msgstr "  （还不够）"
 
-#: automation/outposts.gd:467
+#: automation/outposts.gd:464
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   前哨站 %d · %s · 捆包 +%d%%"
 
-#: automation/outposts.gd:468
+#: automation/outposts.gd:465
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   升级前哨站：%s · %s%s"
 
-#: automation/outposts.gd:478
+#: automation/outposts.gd:475
 msgid "Outpost %d: %s"
 msgstr "前哨站 %d：%s"
 
-#: automation/outposts.gd:485
+#: automation/outposts.gd:482
 msgid "Outpost %d upgrade: %s"
 msgstr "前哨站 %d 升级：%s"
 
-#: automation/outposts.gd:488
+#: automation/outposts.gd:485
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "前哨站 %d：%s。在这里捆包售价 +%d%%；经过平台的机器人会获得加速。"
 
-#: automation/outposts.gd:591
+#: automation/outposts.gd:588
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "前哨 %d  废墟 · 清洁度 %d%% 时可修复"
 
-#: automation/outposts.gd:592
+#: automation/outposts.gd:589
 msgid "OUTPOST %d  %s"
 msgstr "前哨 %d  %s"
 
@@ -456,9 +456,9 @@ msgid "Requires hub level %d or research: %s."
 msgstr "需要基地等级 %d 或研究：%s。"
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:159
-#: systems/camp/hub_builds.gd:169 systems/camp/hub_builds.gd:179 systems/camp/hub_builds.gd:208
-#: systems/camp/yard_builds.gd:98 ui/telescope_panel.gd:41
+#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
+#: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
+#: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "材料不足。"
 
@@ -474,7 +474,7 @@ msgstr "天文台"
 msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
-#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
+#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:287
 #: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d 分钟"
@@ -511,7 +511,7 @@ msgstr "这里装不下了。按 [%s] 压一个捆包。"
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 
-#: core/pace.gd:320 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:320 systems/events.gd:513 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
@@ -539,7 +539,7 @@ msgstr "鸟儿们觉得你还不错。面包屑袋已加入你的收藏。"
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
-#: fauna/fauna.gd:2232 ui/subtitles.gd:453
+#: fauna/fauna.gd:2232 ui/subtitles.gd:448
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新发现：%s。已收入图鉴。"
 
@@ -669,7 +669,7 @@ msgstr "储物柜"
 
 #: planet/sites/far_yard.gd:97 data/camp.json:builds.bot_bay.name data/workbench.json:tiers[1].name
 msgid "Bot Bay"
-msgstr ""
+msgstr "机器人舱"
 
 #: planet/sites/far_yard.gd:258 systems/camp/locker_cabinet.gd:45 tools/ui_audit_run.gd:223
 msgid "E   open locker"
@@ -791,80 +791,84 @@ msgstr "%s 醒来了。你飞走以后，%s 会继续清理。"
 msgid "%s grows: level %d."
 msgstr "%s 成长了：等级 %d。"
 
-#: planet/sites/hub_purpose.gd:410
+#: planet/sites/hub_purpose.gd:413
+msgid "Cleans by itself: %d hexes a minute"
+msgstr "自动清理：每分钟 %d 格"
+
+#: planet/sites/hub_purpose.gd:417
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "%d 台机器人在工作"
 
-#: planet/sites/hub_purpose.gd:432
+#: planet/sites/hub_purpose.gd:439
 msgid "Home: %d%% clean"
 msgstr "家：已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:434
+#: planet/sites/hub_purpose.gd:441
 msgid "Restored: %d%% clean"
 msgstr "已修复：已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:436 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:443 ui/profile_picker.gd:111
 msgid "New"
 msgstr "新建"
 
-#: planet/sites/hub_purpose.gd:439
+#: planet/sites/hub_purpose.gd:446
 msgid "Ready to wake"
 msgstr "可以唤醒"
 
-#: planet/sites/hub_purpose.gd:440
+#: planet/sites/hub_purpose.gd:447
 msgid "Asleep: %d / %d"
 msgstr "沉睡中：%d / %d"
 
-#: planet/sites/hub_purpose.gd:451
+#: planet/sites/hub_purpose.gd:458
 msgid "%s   %d%% CLEAN"
 msgstr "%s   已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:453
+#: planet/sites/hub_purpose.gd:460
 msgid "%s   BASES %d/%d"
 msgstr "%s   基地 %d/%d"
 
-#: planet/sites/hub_purpose.gd:530
+#: planet/sites/hub_purpose.gd:537
 msgid "Restored. Next: take the rocket to %s."
 msgstr "已修复。下一步：乘火箭前往 %s。"
 
-#: planet/sites/hub_purpose.gd:534
+#: planet/sites/hub_purpose.gd:541
 msgid "All %d bases stand. Build the drive at the rocket."
 msgstr "%d 个基地都立起来了。到火箭那里造推进器吧。"
 
-#: planet/sites/hub_purpose.gd:767
+#: planet/sites/hub_purpose.gd:774
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:122
+#: planet/sites/orbit_sites.gd:124
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:145
+#: planet/sites/orbit_sites.gd:149
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:183
+#: planet/sites/orbit_sites.gd:187
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:221
+#: planet/sites/orbit_sites.gd:227
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:221
+#: planet/sites/orbit_sites.gd:227
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:223
+#: planet/sites/orbit_sites.gd:229
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:241
+#: planet/sites/orbit_sites.gd:247
 msgid "%s site"
 msgstr "%s地点"
 
-#: planet/sites/orbit_sites.gd:242
+#: planet/sites/orbit_sites.gd:248
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -1580,11 +1584,11 @@ msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格，�
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
-#: scenes/slice.gd:130 ui/rockets_panel.gd:60
+#: scenes/slice.gd:129 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr "走到发射台上的火箭旁，按 [%s] 选择要飞去的地方。"
 
-#: scenes/slice.gd:140 ui/rockets_panel.gd:39
+#: scenes/slice.gd:139 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
@@ -1596,7 +1600,7 @@ msgstr "六角格清理完毕！  +%s"
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:511 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:613
+#: scenes/slice_orbit.gd:511 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
@@ -1604,11 +1608,11 @@ msgstr "E   修理工作台"
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1061
+#: scenes/slice_orbit.gd:1048
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1161 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1148 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
@@ -1777,8 +1781,8 @@ msgid "It's the charter. The Settlers sleep in the Cradle's lower decks, and it 
 msgstr "是宪章。定居者睡在 Cradle 号的下层甲板里，它不会让他们在一个垂死的星系里醒来。"
 
 #: story/cradle_answers.gd:18
-msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
-msgstr "而它确实在死去。Ledger 把这附近每个世界都挖空了，把每一个都丢在自己的垃圾底下。Verdance 只是第一个。"
+msgid "And it is dying. Long ago, miners dug every world out here hollow and left the trash behind. Verdance was only the first."
+msgstr "而且它快不行了。很久以前，矿工们把这里的每个世界都挖空了，只留下垃圾。Verdance 只是第一个。"
 
 #: story/cradle_answers.gd:19
 msgid "So we fix all of it. Ochre, Tidewell, Rime, Anvil. One planet at a time."
@@ -1842,11 +1846,11 @@ msgstr "（它不是湿的）"
 
 #: story/egg_props.gd:637
 msgid ""
-"THE LEDGER IS WATCHING\n"
-"(FOR SAVINGS)"
+"SMILE!\n"
+"YOU ARE ON CAMERA"
 msgstr ""
-"LEDGER 正在关注你\n"
-"（是否节约）"
+"微笑！\n"
+"你在镜头里"
 
 #: story/egg_props.gd:715
 msgid ""
@@ -1886,87 +1890,87 @@ msgstr ""
 "5 分钟后\n"
 "回来"
 
-#: story/eggs.gd:448
+#: story/eggs.gd:445
 msgid "Something metal surfaced in the cleared ground."
 msgstr "清理过的地面里冒出了什么金属的东西。"
 
-#: story/eggs.gd:663 story/eggs.gd:725
+#: story/eggs.gd:660 story/eggs.gd:722
 msgid "Gnome %d / %d"
 msgstr "地精 %d / %d"
 
-#: story/eggs.gd:671
+#: story/eggs.gd:668
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "最后一张海报指向附近某处。有个橙色的东西蜷在那儿。"
 
-#: story/eggs.gd:726
+#: story/eggs.gd:723
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   已加入 Lumi 的收藏"
 
-#: story/eggs.gd:742
+#: story/eggs.gd:739
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "收音机轻轻地沙沙作响。上面还没有东西醒来。天黑后再来吧。"
 
-#: story/eggs.gd:743
+#: story/eggs.gd:740
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "透过望远镜：只有明亮又多尘的天空。天黑后再来吧。"
 
-#: story/eggs.gd:772
+#: story/eggs.gd:769
 msgid "SOLD OUT"
 msgstr "售罄"
 
-#: story/eggs.gd:790
+#: story/eggs.gd:787
 msgid "QUACK!"
 msgstr "嘎！"
 
-#: story/eggs.gd:808
+#: story/eggs.gd:805
 msgid "NEW CHALLENGER!"
 msgstr "新挑战者！"
 
-#: story/eggs.gd:811
+#: story/eggs.gd:808
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "游戏结束  ·  得分 12"
 
-#: story/eggs.gd:839
+#: story/eggs.gd:836
 msgid "hi, Gus"
 msgstr "嗨，Gus"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "CONFETTI"
 msgstr "彩纸"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "LIGHT JAZZ"
 msgstr "轻爵士"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "99% DUCKS"
 msgstr "鸭子含量 99%"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "SUNNY (INDOORS)"
 msgstr "晴（室内）"
 
-#: story/eggs.gd:884
+#: story/eggs.gd:881
 msgid "FOG OF NOODLES"
 msgstr "面条雾"
 
-#: story/eggs.gd:889
+#: story/eggs.gd:886
 msgid "1ST PLACE"
 msgstr "第一名"
 
-#: story/eggs.gd:947
+#: story/eggs.gd:944
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "鸭子吱吱地说出一个秘密：“%s”可以解锁 %s 外观。"
 
-#: story/eggs.gd:948
+#: story/eggs.gd:945
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "鸭子已经把它知道的全教给你了。嘎。"
 
-#: story/eggs.gd:1179
+#: story/eggs.gd:1176
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "发现奇物：%s（%d / %d）   %s"
 
-#: story/eggs.gd:1190
+#: story/eggs.gd:1187
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "清单上的奇物全部找到了。Lumi 的收藏舱装满了回忆。"
 
@@ -2027,8 +2031,8 @@ msgid "Clear of the air. Look back, {name}. Look at it."
 msgstr "离开大气层了。回头看看，{name}。好好看看。"
 
 #: story/homecoming.gd:19
-msgid "Five worlds, green. The Ledger left them as rubbish. You left them as gardens."
-msgstr "五个世界，全是绿色。Ledger 把它们当垃圾扔下。你把它们变成了花园。"
+msgid "Five worlds, green. They were left as rubbish. You left them as gardens."
+msgstr "五个世界，全绿了。它们被当成垃圾丢下。你把它们变成了花园。"
 
 #: story/homecoming.gd:20
 msgid "CRADLE:  SYSTEM SURVEY: FIVE WORLDS.  FIVE ALIVE."
@@ -2103,158 +2107,6 @@ msgstr "方舟无法回头。逃生舱坠落了好几天。"
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "绿光  ·  未检测到"
 
-#: story/ledger.gd:162
-msgid "New build: Signal Jammer. It keeps Ledger drones away."
-msgstr "新建筑：信号干扰器。让账本无人机远离。"
-
-#: story/ledger.gd:171
-msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
-msgstr "WREN 追踪到了 Ledger 的中继站：在基地的%s。找找那个红色信标。"
-
-#: story/ledger.gd:183
-msgid "Ledger: %s"
-msgstr "Ledger：%s"
-
-#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
-#: story/ledger.gd:205
-msgid "north"
-msgstr "北方"
-
-#. compass directions fill "%s of the hub" / "%s of you" ("north of you").
-#: story/ledger.gd:205
-msgid "north-east"
-msgstr "东北方"
-
-#: story/ledger.gd:206
-msgid "east"
-msgstr "东方"
-
-#: story/ledger.gd:206
-msgid "south-east"
-msgstr "东南方"
-
-#: story/ledger.gd:207
-msgid "south"
-msgstr "南方"
-
-#: story/ledger.gd:207
-msgid "south-west"
-msgstr "西南方"
-
-#: story/ledger.gd:208
-msgid "west"
-msgstr "西方"
-
-#: story/ledger.gd:208
-msgid "north-west"
-msgstr "西北方"
-
-#: story/ledger.gd:312
-msgid "Signal Jammer online. Drones within %d m of the base will get an earful of static."
-msgstr "信号干扰器上线。基地 %d 米内的无人机会被灌满一耳朵噪音。"
-
-#: story/ledger.gd:323
-msgid ""
-"%s   ·   %d / %d built\n"
-"%s"
-msgstr ""
-"%s   ·   已建 %d / %d\n"
-"%s"
-
-#: story/ledger.gd:325
-msgid ""
-"\n"
-"Covering %d m around the base."
-msgstr ""
-"\n"
-"覆盖基地周围 %d 米。"
-
-#: story/ledger.gd:327
-msgid ""
-"\n"
-"The Ledger is on our side now. The jammers just hum along to the music."
-msgstr ""
-"\n"
-"Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
-
-#: story/ledger.gd:329 systems/decor.gd:124 systems/research.gd:202
-#: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:101
-#: ui/telescope_panel.gd:44
-msgid "Needs %s"
-msgstr "需要 %s"
-
-#: story/ledger.gd:510
-msgid "Ledger drone inbound, %s! It's heading for a clean hex."
-msgstr "Ledger 无人机来袭，%s！它正飞向一片干净的六角格。"
-
-#: story/ledger.gd:511
-msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
-msgstr "账本无人机来了（%s）。它会把垃圾倒在干净的地面上。"
-
-#: story/ledger.gd:548
-msgid "SIGNAL JAMMED"
-msgstr "信号已干扰"
-
-#: story/ledger.gd:578
-msgid "Target re-classified as ASSET. Aborting. ...Interesting."
-msgstr "目标重新归类为资产。中止。……有意思。"
-
-#: story/ledger.gd:649
-msgid "The drone dumped junk back. Scoop it up."
-msgstr "无人机把垃圾倒回来了。把它捡起来。"
-
-#: story/ledger.gd:705
-msgid "SEEDS · PAID IN FULL"
-msgstr "种子 · 已全额支付"
-
-#: story/ledger.gd:722 systems/events.gd:509 systems/lumi_level.gd:218
-msgid "+%d seeds"
-msgstr "+%d 种子"
-
-#: story/ledger.gd:794
-msgid "E   jack in: rewrite the Ledger's contract"
-msgstr "E   接入：改写 Ledger 的合同"
-
-#: story/ledger.gd:794
-msgid "E   read the amended contract"
-msgstr "E   阅读修订后的合同"
-
-#: story/ledger.gd:819 story/ledger.gd:873
-msgid ""
-"LEDGER RELAY 07\n"
-"CONTRACT 0001: ACTIVE\n"
-"WASTE IS A LINE ITEM"
-msgstr ""
-"LEDGER 中继站 07\n"
-"合同 0001：生效中\n"
-"废料即为账目条款"
-
-#: story/ledger.gd:834
-msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
-msgstr "中继站 07  ·  LEDGER 资产  ·  禁止计划外访问"
-
-#: story/ledger.gd:873
-msgid ""
-"LEDGER RELAY 07\n"
-"CONTRACT 0001: AMENDED\n"
-"RESTORATION = ASSET"
-msgstr ""
-"LEDGER 中继站 07\n"
-"合同 0001：已修订\n"
-"修复 = 资产"
-
-#: story/ledger.gd:995
-msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
-msgstr "Ledger 的合同已改写。它的无人机现在运送种子了。（+%d 种子）"
-
-#: story/ledger.gd:1003
-msgid "<< LEDGER // OFF THE RECORD >>"
-msgstr "<< LEDGER // 非正式记录 >>"
-
-#: story/ledger_drone.gd:50
-msgid "LEDGER  WMS-07"
-msgstr "LEDGER  WMS-07"
-
 #: story/objectives.gd:282
 msgid "Reward: %s"
 msgstr "奖励：%s"
@@ -2287,31 +2139,39 @@ msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:1295 story/objectives.gd:1308
+#: story/objectives.gd:1295 story/objectives.gd:1316
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
-#: story/objectives.gd:1300
+#: story/objectives.gd:1305
+msgid "Your chest is full. Follow the beam to this base's bin."
+msgstr "你的储物舱满了。跟着光束去这个基地的垃圾桶。"
+
+#: story/objectives.gd:1305
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:1303
+#: story/objectives.gd:1310
+msgid "Carry your bale to this base's scale by its bin."
+msgstr "把垃圾块搬到这个基地垃圾桶旁的秤上。"
+
+#: story/objectives.gd:1311
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:1303
+#: story/objectives.gd:1311
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:1317
+#: story/objectives.gd:1325
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
-#: story/objectives.gd:1318
+#: story/objectives.gd:1326
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:1329
+#: story/objectives.gd:1337
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -2392,8 +2252,8 @@ msgid "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"
 msgstr "老城区繁花盛开：本周六种子交换会"
 
 #: story/tv_broadcast.gd:21
-msgid "LEDGER SECURES EXTRACTION RIGHTS"
-msgstr "Ledger获得开采权"
+msgid "MINING RIGS LAND ON EVERY WORLD"
+msgstr "采矿钻机降落在每个世界"
 
 #: story/tv_broadcast.gd:22
 msgid "THE SYSTEM IS STRIP-MINED. THE WASTE STAYS HERE"
@@ -2423,15 +2283,15 @@ msgstr "{interact}  [k]/ Esc  [/k]关掉"
 msgid "LIVE"
 msgstr "直播"
 
-#: story/tv_broadcast.gd:329
+#: story/tv_broadcast.gd:325
 msgid "BREAKING"
 msgstr "突发"
 
-#: story/tv_broadcast.gd:357
+#: story/tv_broadcast.gd:353
 msgid "CRADLE"
 msgstr "Cradle号"
 
-#: story/tv_broadcast.gd:378
+#: story/tv_broadcast.gd:374
 msgid "WE'LL BE BACK"
 msgstr "我们会回来的"
 
@@ -2439,7 +2299,7 @@ msgstr "我们会回来的"
 msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
 msgstr "已解锁 %d 个成就。在图鉴（{open_codex}）里查看。"
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:451
+#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:446
 msgid "Achievement: %s. %s"
 msgstr "成就：%s。%s"
 
@@ -2540,22 +2400,18 @@ msgid "Rare Part Signals"
 msgstr "稀有零件信号"
 
 #: systems/collection.gd:85
-msgid "Ledger Audits"
-msgstr "Ledger 审计"
-
-#: systems/collection.gd:86
 msgid "Cleaning Streaks"
 msgstr "清理连击"
 
-#: systems/collection.gd:87
+#: systems/collection.gd:86
 msgid "Lumi Levels"
 msgstr "Lumi 等级"
 
-#: systems/collection.gd:88 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:17
+#: systems/collection.gd:87 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:17
 msgid "Requests"
 msgstr "委托"
 
-#: systems/collection.gd:89
+#: systems/collection.gd:88
 msgid "Curio Capsules"
 msgstr "奇物胶囊"
 
@@ -2643,6 +2499,11 @@ msgstr "需要 %d 件收藏品（目前 %d 件）"
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr "需要 %d 枚“每周种子”色片（目前 %d 枚）"
 
+#: systems/decor.gd:124 systems/research.gd:202 systems/robot_builder.gd:348
+#: systems/robot_builder.gd:404 ui/stations_panel.gd:101 ui/telescope_panel.gd:44
+msgid "Needs %s"
+msgstr "需要 %s"
+
 #: systems/decor.gd:186 systems/decor.gd:190
 msgid "Too close to the base machines"
 msgstr "离基地的机器太近了"
@@ -2687,109 +2548,131 @@ msgstr "外观：%s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE号 · 补给"
 
-#: systems/events.gd:461
+#. compass directions fill "%s of you" ("north of you").
+#: systems/events.gd:295
+msgid "north"
+msgstr "北方"
+
+#. compass directions fill "%s of you" ("north of you").
+#: systems/events.gd:295
+msgid "north-east"
+msgstr "东北方"
+
+#: systems/events.gd:296
+msgid "east"
+msgstr "东方"
+
+#: systems/events.gd:296
+msgid "south-east"
+msgstr "东南方"
+
+#: systems/events.gd:297
+msgid "south"
+msgstr "南方"
+
+#: systems/events.gd:297
+msgid "south-west"
+msgstr "西南方"
+
+#: systems/events.gd:298
+msgid "west"
+msgstr "西方"
+
+#: systems/events.gd:298
+msgid "north-west"
+msgstr "西北方"
+
+#: systems/events.gd:473
 msgid "STREAK x%d  +%d%%"
 msgstr "连击 x%d  +%d%%"
 
-#: systems/events.gd:647
+#: systems/events.gd:521 systems/lumi_level.gd:218
+msgid "+%d seeds"
+msgstr "+%d 种子"
+
+#: systems/events.gd:659
 msgid "%d pieces of junk left around the crate"
 msgstr "箱子周围还剩 %d 块废料"
 
-#: systems/events.gd:672
+#: systems/events.gd:684
 msgid "Supply crate opened: %s"
 msgstr "补给箱已打开：%s"
 
-#: systems/events.gd:674
+#: systems/events.gd:686
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "补给箱的信标超时了，无人机把它拉回了天上。还会再来的。"
 
-#: systems/events.gd:723
+#: systems/events.gd:735
 msgid "%d pieces grabbed at 3x"
 msgstr "以 3 倍价值抓到 %d 块"
 
-#: systems/events.gd:728
+#: systems/events.gd:740
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "热潮退去了。你以三倍价值抓到了 %d 块；打包时就会兑现。"
 
-#: systems/events.gd:728
+#: systems/events.gd:740
 msgid "The surge faded. Next time!"
 msgstr "热潮退去了。下次加油！"
 
-#: systems/events.gd:777
+#: systems/events.gd:789
 msgid "Every plant is drinking"
 msgstr "所有植物都在喝水"
 
-#: systems/events.gd:787
+#: systems/events.gd:799
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨移走了。大地把雨水都吸收了：%s"
 
-#: systems/events.gd:808
+#: systems/events.gd:820
 msgid "E   fix %s's hiccup"
 msgstr "E   治好 %s 的嗝"
 
-#: systems/events.gd:835
+#: systems/events.gd:847
 msgid "%s is %d m away"
 msgstr "%s 在 %d 米外"
 
-#: systems/events.gd:837
+#: systems/events.gd:849
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s 自己止住了嗝。看起来有点不好意思。"
 
-#: systems/events.gd:851
+#: systems/events.gd:863
 msgid "%s is fixed and back to work. %s"
 msgstr "%s 修好了，回去干活了。%s"
 
-#: systems/events.gd:905
+#: systems/events.gd:917
 msgid "Wildlife Visit: %s"
 msgstr "野生动物来访：%s"
 
-#: systems/events.gd:906
+#: systems/events.gd:918
 msgid "E   take a photo of the %s"
 msgstr "E   给%s拍张照"
 
-#: systems/events.gd:947
+#: systems/events.gd:959
 msgid "%s, %d m away"
 msgstr "%s，%d 米外"
 
-#: systems/events.gd:950
+#: systems/events.gd:962
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s走开了。它会在某个绿色的地方再出现。"
 
-#: systems/events.gd:980
+#: systems/events.gd:992
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "咔嚓！%s已加入你的收藏。%s"
 
-#: systems/events.gd:980
+#: systems/events.gd:992
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "咔嚓！又一张漂亮的%s照片。%s"
 
-#: systems/events.gd:1031
+#: systems/events.gd:1043
 msgid "Signal %d%%"
 msgstr "信号 %d%%"
 
-#: systems/events.gd:1035
+#: systems/events.gd:1047
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "原来是这个信号：一个藏着稀有零件的储藏点。%s"
 
-#: systems/events.gd:1037
+#: systems/events.gd:1049
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "信号消失了。零件还在下面；探测器会找到它的。"
-
-#: systems/events.gd:1106
-msgid "AUDIT   YOU %d  :  %d DRONE"
-msgstr "审计   你 %d  :  %d 无人机"
-
-#: systems/events.gd:1107
-msgid "You %d  :  %d Drone   ·   %d left"
-msgstr "你 %d  :  %d 无人机   ·   剩余 %d"
-
-#: systems/events.gd:1146
-msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
-msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
-
-#: systems/events.gd:1150
-msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
-msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
 #: systems/homeward.gd:187
 msgid "Wake %d old stations on %s to level %d (%d so far)"
@@ -2963,7 +2846,7 @@ msgstr "成就：%s"
 msgid "Buy for %s"
 msgstr "花费%s购买"
 
-#: systems/museum.gd:119 systems/camp/hub_builds.gd:80 ui/glim_bench.gd:43
+#: systems/museum.gd:119 systems/camp/hub_builds.gd:74 ui/glim_bench.gd:43
 msgid "Not enough cubes, parts or seeds"
 msgstr "方块、零件或种子不足"
 
@@ -3036,19 +2919,19 @@ msgstr "经帧率检测后降低"
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr "画质已设为%s，以保持流畅。你可以在设置中更改。"
 
-#: systems/remote_progress.gd:290
+#: systems/remote_progress.gd:288
 msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
 msgstr "你离开的这段时间（%s），这里的机器人队伍以远程节奏稳稳地干着活：%s 方块。"
 
-#: systems/remote_progress.gd:304
+#: systems/remote_progress.gd:302
 msgid "No world in view."
 msgstr "视野中没有世界。"
 
-#: systems/remote_progress.gd:306
+#: systems/remote_progress.gd:304
 msgid "A care package is already on its way."
 msgstr "补给包已经在路上了。"
 
-#: systems/remote_progress.gd:308
+#: systems/remote_progress.gd:306
 msgid "Needs %s cubes."
 msgstr "需要 %s 方块。"
 
@@ -3258,9 +3141,9 @@ msgstr "月光"
 msgid "New CD: %s by %s, from %s"
 msgstr "新CD：%s，演奏：%s，来自%s"
 
-#: systems/camp/bot_bay.gd:93
+#: systems/camp/bot_bay.gd:94
 msgid "E   open the Bot Bay"
-msgstr ""
+msgstr "E   打开机器人舱"
 
 #: systems/camp/camp.gd:427
 msgid "E   %s (Lv %d): fully upgraded"
@@ -3274,27 +3157,27 @@ msgstr "E   %s（%d 级）：升级为 %s，需要 %s"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "垃圾桶已升级：%s。捆包在这里按 %d%% 出售。"
 
-#: systems/camp/hub_builds.gd:152
+#: systems/camp/hub_builds.gd:140
 msgid "Trash bin, level %d of %d"
 msgstr "垃圾桶，%d / %d级"
 
-#: systems/camp/hub_builds.gd:157
+#: systems/camp/hub_builds.gd:145
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WREN 只能通过中继联系你。每升一级她的声音更清晰。"
 
-#: systems/camp/hub_builds.gd:161
+#: systems/camp/hub_builds.gd:149
 msgid "Tier %d of %d"
 msgstr "等级 %d / %d"
 
-#: systems/camp/hub_builds.gd:170 systems/camp/hub_builds.gd:181
+#: systems/camp/hub_builds.gd:158
 msgid "%d of %d built"
 msgstr "已建 %d / %d"
 
-#: systems/camp/hub_builds.gd:197
+#: systems/camp/hub_builds.gd:174
 msgid "Museum"
 msgstr "博物馆"
 
-#: systems/camp/hub_builds.gd:198
+#: systems/camp/hub_builds.gd:175
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "一座大厅，为卢米找到的每件东西都设了展台，留给后来的人。"
 
@@ -3370,7 +3253,7 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:634
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:586
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 
@@ -3455,7 +3338,7 @@ msgstr "回家"
 msgid "The clock is running. Clean %d hexes."
 msgstr "计时开始。清理 %d 个六角格。"
 
-#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:383
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:380
 msgid "Time"
 msgstr "时间"
 
@@ -3587,7 +3470,7 @@ msgstr "Glim 还在扫描。稍后再试。"
 msgid "Close"
 msgstr "关闭"
 
-#: tools/walk_opening.gd:591 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:592 ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "退出"
 
@@ -3728,7 +3611,7 @@ msgstr "领取（%d 次选择）"
 msgid "Milestone"
 msgstr "里程碑"
 
-#: ui/bench_bots.gd:15 ui/build_panel.gd:105 ui/robot_card.gd:110
+#: ui/bench_bots.gd:15 ui/build_panel.gd:101 ui/robot_card.gd:110
 #: ui/robot_card.gd:245 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "建造"
@@ -3749,7 +3632,7 @@ msgstr "制造机"
 msgid "need %s"
 msgstr "还差%s"
 
-#: ui/bench_lists.gd:11 ui/photo_mode.gd:388 ui/photo_mode.gd:415
+#: ui/bench_lists.gd:11 ui/photo_mode.gd:385 ui/photo_mode.gd:412
 #: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
@@ -3800,7 +3683,7 @@ msgstr "%s 已安装。工作台新页签：%s"
 msgid "Nothing new to build right now. New buildings unlock as you play."
 msgstr "目前没有新的可建造项目。新建筑会在游戏中解锁。"
 
-#: ui/build_panel.gd:110 ui/yard_builds_panel.gd:59
+#: ui/build_panel.gd:106 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
 msgstr "已建成：  %s"
 
@@ -3892,7 +3775,7 @@ msgstr "退休"
 
 #: ui/builder_panel.gd:172
 msgid "No robots yet. Build one at the Bot Bay, then style it here."
-msgstr ""
+msgstr "还没有机器人。先在机器人舱造一个，再来这里打扮它。"
 
 #: ui/builder_panel.gd:227
 msgid "PART SLOTS"
@@ -4039,7 +3922,7 @@ msgstr "图鉴"
 msgid "Watch the story"
 msgstr "观看剧情"
 
-#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:186
+#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:185
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
@@ -4402,8 +4285,8 @@ msgid "NEW DESIGN UNLOCKED"
 msgstr "新外观已解锁"
 
 #: ui/design_toast.gd:66
-msgid "Wear it at the workbench: Cosmetics"
-msgstr "在工作台换上：装扮"
+msgid "Wear it at the Locker"
+msgstr "在储物柜换上它"
 
 #: ui/document_view.gd:45
 msgid "{interact}  [k]/ Esc  [/k]close"
@@ -4693,7 +4576,7 @@ msgstr "[%s] 放置   [%s] 旋转   [%s / %s] 物品   [%s] 拿起   [%s] 完成
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "已拿起：%s。把它放到别处，或者先收进仓库。"
 
-#: ui/glim_bench.gd:59 ui/hub_panel.gd:67 ui/upgrades_panel.gd:144
+#: ui/glim_bench.gd:59 ui/hub_panel.gd:64 ui/upgrades_panel.gd:144
 msgid "Upgrade"
 msgstr "升级"
 
@@ -4829,87 +4712,83 @@ msgstr "+%d 经验"
 msgid "CORE %d%%"
 msgstr "核心 %d%%"
 
-#: ui/hub_panel.gd:59
+#: ui/hub_panel.gd:56
 msgid "What you get"
 msgstr "你将获得"
 
-#: ui/hub_panel.gd:97 ui/hub_panel.gd:253
+#: ui/hub_panel.gd:94 ui/hub_panel.gd:230
 msgid "Build Air Scrubber"
 msgstr "建造空气净化器"
 
-#: ui/hub_panel.gd:135
-msgid "Build Signal Jammer"
-msgstr "建造信号干扰器"
-
-#: ui/hub_panel.gd:176
+#: ui/hub_panel.gd:153
 msgid " (have %s)"
 msgstr " （现有 %s）"
 
-#: ui/hub_panel.gd:189
+#: ui/hub_panel.gd:166
 msgid "Bales sell for +%d%% (now +%d%%)"
 msgstr "草捆售价+%d%%（当前+%d%%）"
 
-#: ui/hub_panel.gd:192
+#: ui/hub_panel.gd:169
 msgid "+%d robot spots in every crew"
 msgstr "每个小队+%d个机器人位"
 
-#: ui/hub_panel.gd:195
+#: ui/hub_panel.gd:172
 msgid "Air Scrubbers: clear the dusty sky"
 msgstr "空气净化器：清除漫天尘埃"
 
-#: ui/hub_panel.gd:200
+#: ui/hub_panel.gd:177
 msgid "Unlocks the %s"
 msgstr "解锁%s"
 
-#: ui/hub_panel.gd:202
+#: ui/hub_panel.gd:179
 msgid "Opens the Locker: style Lumi and your robots"
 msgstr "开启储物柜：装扮Lumi和你的机器人"
 
-#: ui/hub_panel.gd:204
+#: ui/hub_panel.gd:181
 msgid "A launch pad: rockets to the next district"
 msgstr "发射台：乘火箭前往下一个街区"
 
-#: ui/hub_panel.gd:215
+#: ui/hub_panel.gd:192
 msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr "当前：%d级，%s。草捆售价+%d%%。"
 
-#: ui/hub_panel.gd:217
+#: ui/hub_panel.gd:194
 msgid "Hub level %d  ·  fully built"
 msgstr "基地%d级  ·  已建满"
 
-#: ui/hub_panel.gd:220
+#: ui/hub_panel.gd:197
 msgid "Every hub level is built."
 msgstr "基地所有等级均已建成。"
 
-#: ui/hub_panel.gd:222
+#: ui/hub_panel.gd:199
 msgid "Fully built"
 msgstr "已建满"
 
-#: ui/hub_panel.gd:225
+#: ui/hub_panel.gd:202
 msgid "Next: hub level %d"
 msgstr "下一步：基地%d级"
 
-#: ui/hub_panel.gd:232
+#: ui/hub_panel.gd:209
 msgid "Upgrade to level %d"
 msgstr "升到%d级"
 
-#: ui/hub_panel.gd:232
+#: ui/hub_panel.gd:209
 msgid "Not enough yet"
 msgstr "还不够"
 
-#: ui/hub_panel.gd:236
+#: ui/hub_panel.gd:213
 msgid "Continue in the full game"
 msgstr "在完整版中继续"
 
-#: ui/hub_panel.gd:247
+#: ui/hub_panel.gd:224
 msgid "Opens at hub level %d."
 msgstr "基地%d级时开放。"
 
-#: ui/hub_panel.gd:249
+#: ui/hub_panel.gd:226
 msgid "All built."
 msgstr "已全部建成。"
 
-#: ui/hub_panel.gd:252
+#: ui/hub_panel.gd:229
 msgid ""
 "%s   %d / %d\n"
 "%s"
@@ -4917,7 +4796,7 @@ msgstr ""
 "%s   %d / %d\n"
 "%s"
 
-#: ui/hub_panel.gd:253
+#: ui/hub_panel.gd:230
 msgid "All built"
 msgstr "已全部建成"
 
@@ -4945,44 +4824,44 @@ msgstr "%s  基地"
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:490
+#: ui/hud.gd:494
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:494
+#: ui/hud.gd:498
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:497
+#: ui/hud.gd:501
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:499
+#: ui/hud.gd:503
 msgid "  THIRSTY"
 msgstr "  缺水"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:529
+#: ui/hud.gd:533
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:530
+#: ui/hud.gd:534
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:531
+#: ui/hud.gd:535
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:532
+#: ui/hud.gd:536
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:533
+#: ui/hud.gd:537
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:534
+#: ui/hud.gd:538
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
@@ -5249,7 +5128,7 @@ msgstr "高级（色相、饱和度、亮度）"
 msgid "Hue"
 msgstr "色相"
 
-#: ui/lumi_builder.gd:468 ui/photo_mode.gd:377
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:374
 msgid "Saturation"
 msgstr "饱和度"
 
@@ -5526,153 +5405,152 @@ msgstr "自由飞行"
 msgid "Photo mode isn't available during a rocket flight."
 msgstr "火箭飞行期间无法使用拍照模式。"
 
-#: ui/photo_mode.gd:121 ui/photo_mode.gd:124 ui/photo_mode.gd:127
-#: ui/photo_mode.gd:133
+#: ui/photo_mode.gd:121 ui/photo_mode.gd:124 ui/photo_mode.gd:130
 msgid "Photo mode isn't available during a cinematic."
 msgstr "过场动画期间无法使用拍照模式。"
 
-#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:411
+#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:411
 msgid "Camera"
 msgstr "相机"
 
-#: ui/photo_mode.gd:363
+#: ui/photo_mode.gd:360
 msgid "Mode"
 msgstr "模式"
 
-#: ui/photo_mode.gd:364 ui/settings_panel.gd:419
+#: ui/photo_mode.gd:361 ui/settings_panel.gd:419
 msgid "Field of view"
 msgstr "视野"
 
-#: ui/photo_mode.gd:365
+#: ui/photo_mode.gd:362
 msgid "Roll"
 msgstr "翻滚"
 
-#: ui/photo_mode.gd:366
+#: ui/photo_mode.gd:363
 msgid "Distance"
 msgstr "距离"
 
-#: ui/photo_mode.gd:367
+#: ui/photo_mode.gd:364
 msgid "Height"
 msgstr "高度"
 
-#: ui/photo_mode.gd:368
+#: ui/photo_mode.gd:365
 msgid "Reset camera"
 msgstr "重置相机"
 
-#: ui/photo_mode.gd:369 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:366 ui/photo_mode.gd:412
 msgid "Lens"
 msgstr "镜头"
 
-#: ui/photo_mode.gd:370
+#: ui/photo_mode.gd:367
 msgid "Auto-focus Lumi"
 msgstr "自动对焦 Lumi"
 
-#: ui/photo_mode.gd:371
+#: ui/photo_mode.gd:368
 msgid "Focus distance"
 msgstr "对焦距离"
 
-#: ui/photo_mode.gd:372
+#: ui/photo_mode.gd:369
 msgid "Blur"
 msgstr "模糊"
 
-#: ui/photo_mode.gd:372 ui/photo_panel.gd:243 ui/photo_panel.gd:245
+#: ui/photo_mode.gd:369 ui/photo_panel.gd:243 ui/photo_panel.gd:245
 #: ui/photo_panel.gd:283 ui/settings_panel.gd:711
 msgid "Off"
 msgstr "关"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:370
 msgid "Exposure"
 msgstr "曝光"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:370
 msgid "%+.1f EV"
 msgstr "%+.1f EV"
 
-#: ui/photo_mode.gd:374 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:371 ui/photo_mode.gd:412
 msgid "Look"
 msgstr "风格"
 
-#: ui/photo_mode.gd:375
+#: ui/photo_mode.gd:372
 msgid "Filter"
 msgstr "滤镜"
 
-#: ui/photo_mode.gd:376
+#: ui/photo_mode.gd:373
 msgid "Contrast"
 msgstr "对比度"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:375
 msgid "Warmth"
 msgstr "色温"
 
-#: ui/photo_mode.gd:379
+#: ui/photo_mode.gd:376
 msgid "Vignette"
 msgstr "暗角"
 
-#: ui/photo_mode.gd:380
+#: ui/photo_mode.gd:377
 msgid "Grain"
 msgstr "颗粒"
 
-#: ui/photo_mode.gd:381 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:378 ui/photo_mode.gd:412
 msgid "World"
 msgstr "世界"
 
-#: ui/photo_mode.gd:382
+#: ui/photo_mode.gd:379
 msgid "Set time of day"
 msgstr "设定时间"
 
-#: ui/photo_mode.gd:387
+#: ui/photo_mode.gd:384
 msgid "Weather"
 msgstr "天气"
 
-#: ui/photo_mode.gd:389
+#: ui/photo_mode.gd:386
 msgid "Pose"
 msgstr "姿势"
 
-#: ui/photo_mode.gd:390 data/style_parts.json:slots[eye_shape].name
+#: ui/photo_mode.gd:387 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr "眼睛"
 
-#: ui/photo_mode.gd:391
+#: ui/photo_mode.gd:388
 msgid "Turn"
 msgstr "转身"
 
-#: ui/photo_mode.gd:392
+#: ui/photo_mode.gd:389
 msgid "Show robots"
 msgstr "显示机器人"
 
-#: ui/photo_mode.gd:393 ui/photo_mode.gd:415
+#: ui/photo_mode.gd:390 ui/photo_mode.gd:412
 msgid "Frame"
 msgstr "画框"
 
-#: ui/photo_mode.gd:394
+#: ui/photo_mode.gd:391
 msgid "Hide HUD"
 msgstr "隐藏 HUD"
 
-#: ui/photo_mode.gd:395
+#: ui/photo_mode.gd:392
 msgid "Rule of thirds"
 msgstr "三分法构图"
 
-#: ui/photo_mode.gd:396
+#: ui/photo_mode.gd:393
 msgid "Letterbox 2.39:1"
 msgstr "宽银幕 2.39:1"
 
-#: ui/photo_mode.gd:397
+#: ui/photo_mode.gd:394
 msgid "Greenfall stamp"
 msgstr "Greenfall 印章"
 
-#: ui/photo_mode.gd:398
+#: ui/photo_mode.gd:395
 msgid "Resolution"
 msgstr "分辨率"
 
-#: ui/photo_mode.gd:882
+#: ui/photo_mode.gd:879
 msgid "Couldn't capture the photo."
 msgstr "无法拍摄照片。"
 
-#: ui/photo_mode.gd:891
+#: ui/photo_mode.gd:888
 msgid "Couldn't save the photo (%s)."
 msgstr "无法保存照片（%s）。"
 
-#: ui/photo_mode.gd:904
+#: ui/photo_mode.gd:901
 msgid "Saved  %s  (%dx%d)"
 msgstr "已保存  %s  （%dx%d）"
 
@@ -6284,8 +6162,8 @@ msgid "Subtitles"
 msgstr "字幕"
 
 #: ui/settings_panel.gd:620
-msgid "WREN and Ledger lines."
-msgstr "WREN 和 Ledger 的台词。"
+msgid "WREN's lines."
+msgstr "WREN 的台词。"
 
 #: ui/settings_panel.gd:621
 msgid "Subtitle size"
@@ -6538,10 +6416,6 @@ msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "补给包已发出。%s 上的队伍将以双倍速度工作 %d 分钟。"
 
 #: ui/telescope_view.gd:757
-msgid "Ledger wreck"
-msgstr "Ledger 残骸"
-
-#: ui/telescope_view.gd:757
 msgid "Deer"
 msgstr "鹿"
 
@@ -6617,11 +6491,15 @@ msgstr "来源：  %s"
 msgid "Research"
 msgstr "研究"
 
-#: ui/upgrades_screen.gd:168
+#: ui/upgrades_screen.gd:27
+msgid "BOT BAY"
+msgstr "机器人舱"
+
+#: ui/upgrades_screen.gd:167
 msgid "WORKBENCH"
 msgstr "工作台"
 
-#: ui/upgrades_screen.gd:293
+#: ui/upgrades_screen.gd:292
 msgid "Not open yet. Keep playing."
 msgstr "尚未开放。继续游戏吧。"
 
@@ -7591,15 +7469,15 @@ msgstr "一片围着矮墙、种着花坛的草坪，退休的机器人在这里
 
 #: data/camp.json:builds.bot_bay.desc
 msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
-msgstr ""
+msgstr "院子里一座独立的机器人工坊。走过去按 E 就能造机器人。"
 
 #: data/camp.json:builds.shuttle.name
 msgid "Shuttle"
-msgstr ""
+msgstr "穿梭机"
 
 #: data/camp.json:builds.shuttle.desc
-msgid "A small one-seat shuttle, built on the pad. It flies Lumi to the other old stations."
-msgstr ""
+msgid "A small one-seat shuttle, built on the pad. It flies Lumi to the other old bases."
+msgstr "一架单座小穿梭机，在发射台上建造。它能载 Lumi 飞往其他旧基地。"
 
 #: data/camp.json:builds.glim.name data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
@@ -7969,7 +7847,7 @@ msgstr "最后一个平常日子的收银小票。"
 msgid "A maintenance log for a unit that looked a lot like Lumi."
 msgstr "一份维修日志，记录的机器和 Lumi 很像。"
 
-#: data/codex.json:shards.ledger_memo.desc
+#: data/codex.json:shards.pause_memo.desc
 msgid "An office memo about the evacuation. Very polite. Very tired."
 msgstr "一份关于撤离的办公室备忘录。非常礼貌。非常疲惫。"
 
@@ -8122,8 +8000,8 @@ msgid "Where a forest used to be."
 msgstr "这里曾经是一片森林。"
 
 #: data/codex.json:landmarks.tree_stump_01.desc
-msgid "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."
-msgstr "是被砍的，不是倒下的。年轮比 Ledger 还要古老。苔藓已经和树皮开始了安静的谈判。"
+msgid "Cut, not fallen. The rings count back further than the town. Moss has started a quiet negotiation with the bark."
+msgstr "是被砍的，不是自己倒的。年轮比这座城还要久远。苔藓已经悄悄和树皮谈判起来了。"
 
 #: data/codex.json:landmarks.ocean_buoy.name
 msgid "Washed-up Buoy"
@@ -8593,7 +8471,7 @@ msgstr "白鹤扇着缓慢的翅膀，在着陆之城的高空盘旋。方舟的
 msgid "The Sleepers' Charter"
 msgstr "沉睡者的宪章"
 
-#: data/codex.json:homeward.charter.hint data/codex.json:homeward.ledger_system.hint
+#: data/codex.json:homeward.charter.hint data/codex.json:homeward.buried_worlds.hint
 msgid "Light the Cradle Returns beacon."
 msgstr "点亮 Cradle号归来的信标。"
 
@@ -8601,13 +8479,13 @@ msgstr "点亮 Cradle号归来的信标。"
 msgid "When the Settlers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
 msgstr "定居者离开 Verdance 时，大多数人在 Cradle 号的下层甲板进入了长眠。他们的宪章只有一行：等星系能养活我们时再叫醒我们。不是一个世界，是全部五个。Cradle 号守了这个承诺三百年，不会为任何人打破它，哪怕是一个很有说服力的小机器人。"
 
-#: data/codex.json:homeward.ledger_system.name
-msgid "The Ledger, Inc."
-msgstr "Ledger 公司"
+#: data/codex.json:homeward.buried_worlds.name
+msgid "The Buried Worlds"
+msgstr "被掩埋的世界"
 
-#: data/codex.json:homeward.ledger_system.desc
-msgid "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."
-msgstr "Ledger 从来不只是 Verdance 的问题。它握有两个太阳周围每个世界的采矿权：Ochre 的沙子、Tidewell 的海床、Rime 温暖的核心、Anvil 的整个地壳。矿石耗尽后，它合上账本，留下利润，把五个星球丢在自己的垃圾底下。审计从未停止。只是再也没人去读了。"
+#: data/codex.json:homeward.buried_worlds.desc
+msgid "Verdance was never the only one. Long ago, miners dug up every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out they packed up and left five planets under their trash. Nobody came back to clean it up. Until now."
+msgstr "Verdance 从来不是唯一的一个。很久以前，矿工们挖遍了两颗太阳周围的每个世界：Ochre 的沙、Tidewell 的海底、Rime 温暖的核心、Anvil 的整个地壳。矿挖完了，他们收拾东西走了，把五颗行星留在垃圾底下。没有人回来打扫。直到现在。"
 
 #: data/codex.json:homeward.binary_suns.name
 msgid "Hearth and Ember"
@@ -8640,18 +8518,6 @@ msgstr "建造一座望远镜，透过它看一看。"
 #: data/codex.json:sightings.first_light.desc
 msgid "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."
 msgstr "从你自己的天文台第一次眺望星系。两颗太阳，几个世界，而在下面某处，你的队伍仍在工作。"
-
-#: data/codex.json:sightings.ledger_wreck.name
-msgid "Ledger Wreck"
-msgstr "Ledger 残骸"
-
-#: data/codex.json:sightings.ledger_wreck.hint
-msgid "Through the telescope, on a world where the Ledger's drones came down."
-msgstr "透过望远镜，在 Ledger 的无人机坠落过的世界上。"
-
-#: data/codex.json:sightings.ledger_wreck.desc
-msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
-msgstr "一架再也没能回家的倾倒无人机，一头扎进另一个世界的垃圾堆里。它的红眼睛还在闪。哪怕隔着这么远，它看起来也很难为情。"
 
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
@@ -8974,8 +8840,8 @@ msgid "+5% bale value"
 msgstr "捆包价值 +5%"
 
 #: data/designs.json:designs[bolt].unlock.text
-msgid "Press 50 bales or build 5 robots"
-msgstr "压制 50 个捆包或建造 5 台机器人"
+msgid "Press 600 bales or build 15 robots"
+msgstr "压制 600 个压块或建造 15 个机器人"
 
 #: data/designs.json:designs[bolt].unlock.any[0].unit
 msgid "bales"
@@ -8998,8 +8864,8 @@ msgid "+8% plant growth"
 msgstr "植物生长 +8%"
 
 #: data/designs.json:designs[sprout].unlock.text
-msgid "Grow 20 plants to bloom"
-msgstr "让 20 株植物开花"
+msgid "Grow 80 plants to bloom"
+msgstr "让 80 株植物开花"
 
 #: data/designs.json:designs[sprout].unlock.any[0].unit
 msgid "blooms"
@@ -9018,8 +8884,8 @@ msgid "+10% cleaning streak time"
 msgstr "清理连击时间 +10%"
 
 #: data/designs.json:designs[pixel].unlock.text
-msgid "Pet 5 animals or find 5 Collection trinkets"
-msgstr "抚摸 5 只动物或找到 5 件收藏小玩意"
+msgid "Pet 25 animals or find 12 Collection trinkets"
+msgstr "抚摸 25 只动物或找到 12 件收藏小物"
 
 #: data/designs.json:designs[pixel].unlock.any[0].unit
 msgid "animals"
@@ -9066,8 +8932,8 @@ msgid "+6% robot work speed"
 msgstr "机器人工作速度 +6%"
 
 #: data/designs.json:designs[patch].unlock.text
-msgid "Repair an outpost or upgrade a robot fleet to Mk III"
-msgstr "修复一座前哨站，或把一支机器人机队升级到 Mk III"
+msgid "Repair 3 outposts or upgrade a robot fleet to Mk III"
+msgstr "修复 3 座前哨站或将一支机器人队升级到 Mk III"
 
 #: data/designs.json:designs[patch].unlock.any[0].unit
 msgid "outposts"
@@ -9122,8 +8988,8 @@ msgid "The Crew Mural"
 msgstr "队员壁画"
 
 #: data/eggs.json:eggs[mural].lore
-msgid "The last cleanup crew painted themselves on a wall before the Ledger paused them. They really meant to come back."
-msgstr "最后一支清理队在 Ledger 叫停他们之前，把自己画在了墙上。他们是真心想回来的。"
+msgid "The last cleanup crew painted themselves on a wall before their power ran out. They really meant to come back."
+msgstr "最后一支清洁队在没电之前，把自己画在了墙上。他们是真的打算回来。"
 
 #: data/eggs.json:eggs[mural].toast
 msgid "A mural of the old cleaning crew. 'WE'LL BE BACK AFTER LUNCH.'"
@@ -9342,8 +9208,8 @@ msgid "E   adjust the antenna"
 msgstr "E   调整天线"
 
 #: data/eggs.json:eggs[tv].lore
-msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
-msgstr "草坪椅上的一台电视，循环播放着老城区最后的新闻：春天的种子交换会，Ledger的钻机沿缆绳降下，两颗太阳的世界被掠夺开采、埋进垃圾，飞船升向Cradle号，还有市政厅上写着“我们会回来的”的横幅。然后是雪花。"
+msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the mining rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+msgstr "草坪椅上的一台电视，循环播放着老城区最后的新闻：春天的种子交换会，采矿钻机沿缆绳降下，两颗太阳的世界被掠夺开采、埋进垃圾，飞船升向Cradle号，还有市政厅上写着“我们会回来的”的横幅。然后是雪花。"
 
 #: data/eggs.json:eggs[tv].toast
 msgid "The broadcast ends in snow. Somebody left it running for whoever came back."
@@ -9382,8 +9248,8 @@ msgid "E   leave a flower"
 msgstr "E   留下一朵花"
 
 #: data/eggs.json:eggs[bench_bots].lore
-msgid "Two old cleanup robots on a bench, waiting for the end of a lunch break the Ledger never ended."
-msgstr "两台老清洁机器人坐在长椅上，等待一场 Ledger 永远没有结束的午休结束。"
+msgid "Two old cleanup robots on a bench, waiting for the end of a lunch break that never ended."
+msgstr "长椅上坐着两台旧清洁机器人，等着一场永远没结束的午休结束。"
 
 #: data/eggs.json:eggs[bench_bots].toast
 msgid "Lumi leaves a small flower between the two old robots. It seems right."
@@ -9438,12 +9304,12 @@ msgid "Being Watched"
 msgstr "被监视中"
 
 #: data/eggs.json:eggs[camera].lore
-msgid "One of the Ledger's old cost-saving cameras. It still swivels to follow anything that moves, and counts it."
-msgstr "Ledger 的一台旧节约摄像头。它依然会转动着跟踪任何移动的东西，并计数。"
+msgid "An old street camera. It still swivels to follow anything that moves, and counts it."
+msgstr "一台旧的街头摄像头。它还在转着头跟着所有会动的东西，一个个数着。"
 
 #: data/eggs.json:eggs[camera].toast
-msgid "The old Ledger camera has been following Lumi around. Lumi waves. The red light blinks twice, flustered."
-msgstr "Ledger 的旧摄像头一直跟着 Lumi。Lumi 挥了挥手。红灯慌乱地闪了两下。"
+msgid "The old camera has been following Lumi around. Lumi waves. The red light blinks twice, flustered."
+msgstr "那台旧摄像头一直跟着 Lumi。Lumi 挥了挥手。红灯慌张地闪了两下。"
 
 #: data/eggs.json:eggs[camera].hint
 msgid "Something is watching. Let it watch you for a while."
@@ -9676,8 +9542,8 @@ msgid "In the wild: a car that stayed far too long. Check the windscreen."
 msgstr "在荒野里：一辆停得太久太久的车。看看挡风玻璃。"
 
 #: data/eggs.json:eggs[parking].lore
-msgid "A car sunk to its doors in sand with a ticket under the wiper. The Ledger fined it for every day it stayed. The fine is now bigger than the planet's economy."
-msgstr "一辆陷在沙子里直到车门的车，雨刮下夹着一张罚单。Ledger 对它停留的每一天都开了罚款。罚款如今已超过整个星球的经济总量。"
+msgid "A car sunk to its doors in sand with a ticket under the wiper. Someone fined it for every day it stayed. The fine is now bigger than the planet's economy."
+msgstr "一辆陷进沙里、沙子没到车门的汽车，雨刷下压着一张罚单。有人按它停的每一天罚了款。罚金现在比整个星球的经济还多。"
 
 #: data/eggs.json:eggs[parking].toast
 msgid "PARKING NOTICE: overstay of 109,500 days. Amount due: yes. Lumi tucks the ticket back, gently."
@@ -9854,8 +9720,8 @@ msgid "The last crossword clue: 'What grows back if you let it (5)'. Lumi writes
 msgstr "最后一道题：“只要你让它，它就会长回来（1字）”。Lumi 把答案填了进去。"
 
 #: data/eggs.json:eggs[crossword].doc.title
-msgid "The Morning Ledger · Puzzle page"
-msgstr "《晨间 Ledger 报》· 谜题版"
+msgid "The Morning Post · Puzzle page"
+msgstr "《晨邮报》· 谜题版"
 
 #: data/eggs.json:eggs[crossword].doc.body
 msgid ""
@@ -9866,7 +9732,7 @@ msgid ""
 "9. Last thing anyone saw of the Cradle (5) — LIGHT\n"
 "\n"
 "DOWN\n"
-"2. 'Kept for later', said the Ledger (6) — PAUSED\n"
+"2. What the cleaning robots did when the power ran low (6) — PAUSED\n"
 "3. What grows back if you let it (5) — G R E E N\n"
 "\n"
 "(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
@@ -9878,7 +9744,7 @@ msgstr ""
 "9. 人们最后一次看到的 Cradle号（2字）—— 光芒\n"
 "\n"
 "纵向\n"
-"2. Ledger 说：“留待以后”（2字）—— 暂停\n"
+"2. 电不够时，清洁机器人做了什么（2字）—— 暂停\n"
 "3. 只要你让它，它就会长回来（1字）—— 绿\n"
 "\n"
 "（最后一个答案是用另一支笔写的。字写得非常工整，像是机器人写的。）"
@@ -9932,8 +9798,8 @@ msgid "A mailbox so full the flap won't shut."
 msgstr "一个塞得满满的邮筒，投信口都合不上了。"
 
 #: data/eggs.json:eggs[mailbox].lore
-msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
-msgstr "街边的邮筒里塞满了从未寄出的信。Ledger 把一切“暂停”的那个星期，邮局也停了。"
+msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the town left for the Cradle."
+msgstr "一个塞满了没寄出的信的街头邮筒。全城动身去 Cradle号的那一周，邮件就停了。"
 
 #: data/eggs.json:eggs[mailbox].toast
 msgid "One letter on top is addressed to 'The Robot Who Cleans Up'. It's for Lumi."
@@ -10132,18 +9998,6 @@ msgstr "你%s边有稀有零件信号！跟着紫色光束走。"
 #: data/events.json:events[rare_part_signal].hud
 msgid "Dig up the part under the violet beam"
 msgstr "挖出紫色光束下的零件"
-
-#: data/events.json:events[ledger_audit].name
-msgid "Ledger Audit"
-msgstr "Ledger 审计"
-
-#: data/events.json:events[ledger_audit].toast
-msgid "Ledger Audit! Out-scoop the drone %s of you!"
-msgstr "账本审计！在你%s边比无人机捡得更多！"
-
-#: data/events.json:events[ledger_audit].hud
-msgid "Scoop more of the ringed junk than the drone"
-msgstr "比无人机铲走更多圈内废料"
 
 #: data/events.json:animals[glowtail_fox].name
 msgid "Glowtail Fox"
@@ -10577,22 +10431,6 @@ msgstr "信号水晶"
 msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
 msgstr "一直在发信号的那个东西。你开心的时候，它还会非常轻地发信号。"
 
-#: data/events.json:trinkets[audit_stamp].name
-msgid "APPROVED Stamp"
-msgstr "“批准”印章"
-
-#: data/events.json:trinkets[audit_stamp].desc
-msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
-msgstr "Ledger 的橡皮图章。现在它只会盖“批准”。它为此非常自豪。"
-
-#: data/events.json:trinkets[drone_propeller].name
-msgid "Race Propeller"
-msgstr "竞速螺旋桨"
-
-#: data/events.json:trinkets[drone_propeller].desc
-msgid "A souvenir from the audit drone. It insists the race was close."
-msgstr "审计无人机送的纪念品。它坚持说那场比赛很接近。"
-
 #: data/events.json:trinkets[streak_medal].name
 msgid "Streak Medal"
 msgstr "连击奖章"
@@ -10768,18 +10606,6 @@ msgstr "那个信号是定居者级的。跟着紫光走。"
 #: data/events.json:wren
 msgid "A rare part, close. I can almost hear it."
 msgstr "一个稀有零件，就在附近。我几乎能听见它。"
-
-#: data/events.json:wren
-msgid "The Ledger wants to race. I told it you'd win."
-msgstr "Ledger 想比赛。我告诉它你会赢。"
-
-#: data/events.json:wren
-msgid "Audit drone, friendly. It's very competitive now."
-msgstr "审计无人机，友好的那种。它现在好胜心很强。"
-
-#: data/events.json:wren
-msgid "The Ledger says it's 'just a routine audit'. It's been practising."
-msgstr "Ledger 说这“只是例行审计”。它一直在练习。"
 
 #: data/events.json:wren
 msgid "Well done. That's going in my log."
@@ -11672,8 +11498,8 @@ msgid "Anvil Ingot"
 msgstr "Anvil 锭块"
 
 #: data/homeward.json:relics.anvil_ingot.desc
-msgid "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."
-msgstr "Ledger 的最后一块锭，重铸成一枚刻着种子的朴素戒指。"
+msgid "The foundry's last ingot, recast as a plain ring with a seed stamped in it."
+msgstr "铸造厂的最后一块锭，重铸成一枚朴素的圆环，上面印着一粒种子。"
 
 #: data/homeward.json:drive[0].name
 msgid "Mk V Orbital"
@@ -11688,8 +11514,8 @@ msgid "Mk VI Interplanetary"
 msgstr "Mk VI 星际"
 
 #: data/homeward.json:drive[1].desc
-msgid "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil."
-msgstr "从 Ledger 矿石货船上拆下的折叠推进器：可到达 Rime 和 Anvil。"
+msgid "A fold drive salvaged from an old ore hauler: reaches Rime and Anvil."
+msgstr "从一艘旧矿石运输船上拆下的折叠引擎：可到达 Rime 和 Anvil。"
 
 #: data/homeward.json:drive[2].name
 msgid "Mk VII Homeward"
@@ -11700,8 +11526,8 @@ msgid "A great green-light rocket, filled with the fuel and power of every world
 msgstr "一枚巨大的绿光火箭，装满了你唤醒的每个世界的燃料和能量。只有一趟旅程：飞向 Cradle号。"
 
 #: data/homeward.json:docs.ochre_arrive.header data/homeward.json:docs.tidewell_arrive.header data/homeward.json:docs.rime_arrive.header
-msgid "L E D G E R   ·   I N T E R N A L"
-msgstr "L E D G E R · 内 部 文 件"
+msgid "M I N E   O F F I C E   ·   I N T E R N A L"
+msgstr "矿 务 办 公 室 · 内 部 文 件"
 
 #: data/homeward.json:docs.ochre_arrive.title
 msgid "Site closure notice, Ochre Open Pit 1"
@@ -11717,7 +11543,7 @@ msgid ""
 "Residents: none of our concern; contracts expired.\n"
 "\n"
 "Thank you for your years of service.\n"
-"— The Ledger"
+"— Mine Office"
 msgstr ""
 "OCHRE 一号露天矿：已关闭\n"
 "\n"
@@ -11727,7 +11553,7 @@ msgstr ""
 "居民：与我们无关；合同已到期。\n"
 "\n"
 "感谢你多年来的服务。\n"
-"— Ledger"
+"— 矿务办公室"
 
 #: data/homeward.json:docs.ochre_half.title
 msgid "Haul truck log, unit OH-7"
@@ -11882,8 +11708,8 @@ msgstr ""
 "— LM-1（还有 WREN，她希望大家知道她帮了忙）"
 
 #: data/homeward.json:docs.anvil_arrive.header
-msgid "L E D G E R   ·   H E A D   O F F I C E"
-msgstr "L E D G E R · 总 部"
+msgid "M I N E   H E A D   O F F I C E"
+msgstr "矿 业 · 总 部"
 
 #: data/homeward.json:docs.anvil_arrive.title
 msgid "Board minutes, the final meeting"
@@ -11911,14 +11737,14 @@ msgstr "最后一次审计"
 
 #: data/homeward.json:docs.anvil_half.body
 msgid ""
-"LEDGER AUDIT UNIT 0001\n"
+"COUNTING ROBOT 0001\n"
 "SUBJECT: Anvil foundry district\n"
 "FINDING: Unauthorised gardens. 214 counts.\n"
 "FINDING: Unauthorised gardens. 215 counts.\n"
 "FINDING: ...\n"
 "RECOMMENDATION: Recommend we stop counting. It is rather nice."
 msgstr ""
-"LEDGER 审计单元 0001\n"
+"计数机器人 0001\n"
 "主题：Anvil 铸造区\n"
 "发现：未经许可的花园。214 处。\n"
 "发现：未经许可的花园。215 处。\n"
@@ -11926,8 +11752,8 @@ msgstr ""
 "建议：建议停止计数。其实挺好看的。"
 
 #: data/homeward.json:docs.anvil_restored.title
-msgid "From the Ledger's last clerk"
-msgstr "来自 Ledger 最后一位职员"
+msgid "From the mine's last clerk"
+msgstr "来自矿上最后一位文员"
 
 #: data/homeward.json:docs.anvil_restored.body
 msgid ""
@@ -12070,210 +11896,6 @@ msgstr "霜冠"
 #: data/junk.json:biomes.fungal_marsh.name
 msgid "Fungal Marsh"
 msgstr "菌沼"
-
-#: data/ledger.json:jammer.name
-msgid "Signal Jammer"
-msgstr "信号干扰器"
-
-#: data/ledger.json:jammer.desc
-msgid "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often."
-msgstr "一面对着 Ledger 无人机唱噪音的天线盘。基地周围其半径内的倾倒会被阻止，无人机也来得更少。"
-
-#: data/ledger.json:act1
-msgid "Someone is cleaning on {district}. That is not on my list."
-msgstr "有人在 {district} 打扫。我的清单上没有这一项。"
-
-#: data/ledger.json:act1
-msgid "Trash belongs where it is. I wrote it down."
-msgstr "垃圾就该待在原地。我记下了。"
-
-#: data/ledger.json:act1
-msgid "Please stop cleaning. Clean costs money. My money."
-msgstr "请停止打扫。干净要花钱。我的钱。"
-
-#: data/ledger.json:coupons
-msgid "COUPON: stop cleaning today and save nothing!"
-msgstr "优惠券：今天停止打扫，什么也省不到！"
-
-#: data/ledger.json:coupons
-msgid "COUPON: one free nap. Please take it."
-msgstr "优惠券：免费小睡一次。请收下。"
-
-#: data/ledger.json:coupons
-msgid "Have you tried doing less? Less is cheaper."
-msgstr "你试过少做点吗？少做更便宜。"
-
-#: data/ledger.json:coupons
-msgid "SURVEY: How much do you want to stop? Pick: a lot."
-msgstr "调查：你有多想停下？请选：非常想。"
-
-#: data/ledger.json:coupons
-msgid "Sparkles are not in my budget."
-msgstr "闪光不在我的预算里。"
-
-#: data/ledger.json:coupons
-msgid "Buy one nap, get one nap free."
-msgstr "买一次小睡，送一次小睡。"
-
-#: data/ledger.json:coupons
-msgid "You have 0 Ledger Points. Stop cleaning to keep them."
-msgstr "你有 0 账本积分。停止打扫就能保住它们。"
-
-#: data/ledger.json:coupons
-msgid "The junk was here first. Be fair to the junk."
-msgstr "垃圾先来的。对垃圾公平点。"
-
-#: data/ledger.json:coupons
-msgid "Your cleaning costs me. I wrote that down twice."
-msgstr "你的打扫让我破费。我记了两遍。"
-
-#: data/ledger.json:act2
-msgid "Plants are growing. Plants are not on my list!"
-msgstr "植物在长。植物不在我的清单上！"
-
-#: data/ledger.json:act2
-msgid "Sending drones to put the trash back."
-msgstr "派无人机把垃圾放回去。"
-
-#: data/ledger.json:drop_warn
-msgid "A drone is coming to put trash on clean ground."
-msgstr "一架无人机要来把垃圾倒在干净的地上。"
-
-#: data/ledger.json:drop_warn
-msgid "Clean ground is not in my budget. Fixing that."
-msgstr "干净的地面不在预算里。正在修正。"
-
-#: data/ledger.json:drop_warn
-msgid "Putting the trash back where it was."
-msgstr "把垃圾放回原处。"
-
-#: data/ledger.json:drop_warn
-msgid "Nothing personal. You are just a line on my list."
-msgstr "不针对你。你只是我清单上的一行。"
-
-#: data/ledger.json:drop_warn
-msgid "One small pile of trash, delivered. No thanks needed."
-msgstr "一小堆垃圾，已送达。不用谢。"
-
-#: data/ledger.json:jammed
-msgid "My drone can't hear me. It is going home."
-msgstr "我的无人机听不到我了。它回家了。"
-
-#: data/ledger.json:jammed
-msgid "Jamming? Jamming is not on my list. Adding it."
-msgstr "干扰？清单上没有干扰。正在添加。"
-
-#: data/ledger.json:jammed
-msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
-msgstr "7 号无人机报告：太吵了，感觉不受欢迎。正在返航。"
-
-#: data/ledger.json:act3
-msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
-msgstr "警告：中继节点 07 的位置已暴露。请勿前往中继节点 07。"
-
-#: data/ledger.json:act3
-msgid "Relay node 07 is closed for maintenance. It has been closed for maintenance for three hundred years."
-msgstr "中继节点 07 因维护关闭。它已因维护关闭了三百年。"
-
-#: data/ledger.json:friendly
-msgid "SEED DELIVERY dispatched. Invoice status: PAID IN FULL."
-msgstr "种子递送已发出。发票状态：已全额支付。"
-
-#: data/ledger.json:friendly
-msgid "Balance report: positive. Again. The Ledger is... adjusting to this."
-msgstr "余额报告：为正。又一次。Ledger 正在……适应这一情况。"
-
-#: data/ledger.json:friendly
-msgid "Asset column now contains: flowers. Recalculating priorities."
-msgstr "资产栏目前包含：花。正在重新计算优先级。"
-
-#: data/ledger.json:friendly
-msgid "Drone 07 requests permission to circle the garden once more. Permission granted."
-msgstr "07 号无人机申请再绕花园飞一圈。申请已批准。"
-
-#: data/ledger.json:friendly
-msgid "Audit complete. Finding: the planet is worth keeping."
-msgstr "审计完成。结论：这颗星球值得保留。"
-
-#: data/ledger.json:lonely
-msgid "Off the record: the Ledger kept every coupon you ignored. It was the most mail it had received in three hundred years. Thank you for reading them."
-msgstr "非正式记录：Ledger 保留了您忽略的每一张优惠券。这是它三百年来收到的最多的邮件。感谢您阅读它们。"
-
-#: data/ledger.json:cinematic
-msgid "This is it. A Ledger relay. Still humming after all this time."
-msgstr "就是这儿了。一个 Ledger 中继站。过了这么久还在嗡嗡响。"
-
-#: data/ledger.json:cinematic
-msgid "UNAUTHORIZED ACCESS. STATE YOUR COST CENTER."
-msgstr "未经授权的访问。请说明您的成本中心。"
-
-#: data/ledger.json:cinematic
-msgid "Cost center: the whole planet. Hold still, {name}. I'm opening the contract."
-msgstr "成本中心：整个星球。别动，{name}。我正在打开合同。"
-
-#: data/ledger.json:cinematic
-msgid "CONTRACT 0001: WASTE IS A LINE ITEM. LINE ITEMS MUST BALANCE."
-msgstr "合同 0001：废料即为账目条款。账目条款必须平衡。"
-
-#: data/ledger.json:cinematic
-msgid "Fine. Let's balance them. Clean hexes. Sprouts. Water. Put them in the asset column."
-msgstr "好吧。那就来平衡。干净的六角格。嫩芽。水。把它们记进资产栏。"
-
-#: data/ledger.json:cinematic
-msgid "ASSET COLUMN... NOT FOUND. CREATING COLUMN."
-msgstr "资产栏……未找到。正在创建栏目。"
-
-#: data/ledger.json:cinematic
-msgid "RECALCULATING. RECALCULATING. BALANCE: POSITIVE. That has not happened in a very long time."
-msgstr "正在重新计算。正在重新计算。余额：为正。这种情况已经很久很久没有发生过了。"
-
-#: data/ledger.json:cinematic
-msgid "New clause: restoration is an asset. Every seed is a deposit."
-msgstr "新条款：修复即为资产。每颗种子都是一笔存款。"
-
-#: data/ledger.json:cinematic
-msgid "friendly"
-msgstr "友善"
-
-#: data/ledger.json:cinematic
-msgid "AMENDMENT ACCEPTED. Reassigning drone fleet: DISPOSAL -> DELIVERY. ...Thank you for your patience."
-msgstr "修订已接受。正在重新分配无人机队：处置 -> 递送。……感谢您的耐心。"
-
-#: data/ledger.json:cinematic
-msgid "Did the Ledger just say thank you? Write that down. Somewhere permanent."
-msgstr "Ledger 刚才是说了谢谢吗？记下来。记在一个永久的地方。"
-
-#: data/ledger.json:contract_doc.header
-msgid "L E D G E R   ·   C O N T R A C T   0 0 0 1   ( A M E N D E D )"
-msgstr "L E D G E R   ·   合 同   0 0 0 1   （ 已 修 订 ）"
-
-#: data/ledger.json:contract_doc.title
-msgid "Waste Management Contract 0001, as amended"
-msgstr "废料管理合同 0001（修订版）"
-
-#: data/ledger.json:contract_doc.body
-msgid ""
-"§1. Waste is a line item. Line items must balance.\n"
-"§2. (struck out) Cleanup costs more than it earns; pause until conditions improve.\n"
-"§2a. AMENDED: Restoration is an asset. Clean ground, living plants and clear water are entered in the asset column.\n"
-"§3. Every seed is a deposit. Deposits are to be delivered, not disposed of.\n"
-"§4. Drone fleet reassigned: DISPOSAL -> DELIVERY.\n"
-"§5. Thank you for your patience.\n"
-"\n"
-"Signed: THE LEDGER (reluctantly, then less reluctantly)\n"
-"Witness: WREN, Cradle caretaker\n"
-"Witness: LM-1 (left a small oil smudge)"
-msgstr ""
-"§1. 废料即为账目条款。账目条款必须平衡。\n"
-"§2.（已删除）清理成本高于收益；暂停至条件改善。\n"
-"§2a. 修订：修复即为资产。干净的土地、活着的植物和清澈的水计入资产栏。\n"
-"§3. 每颗种子都是一笔存款。存款应予递送，而非处置。\n"
-"§4. 无人机队重新分配：处置 -> 递送。\n"
-"§5. 感谢您的耐心。\n"
-"\n"
-"签署：LEDGER（不情愿地，后来没那么不情愿了）\n"
-"见证人：WREN，Cradle号看护者\n"
-"见证人：LM-1（留下了一小块油渍）"
 
 #: data/museum.json:exhibits[gnomes].hint
 msgid "Five garden gnomes guard Old Town's streets. Pick them up."
@@ -12449,27 +12071,27 @@ msgstr "先来一个干净的六角格。把有轮廓的那格清空。绿色从
 
 #: data/objectives.json:objectives[bench2].text
 msgid "Build the Bot Bay"
-msgstr ""
+msgstr "建造机器人舱"
 
 #: data/objectives.json:objectives[bench2].desc
-msgid "Workbench, Build tab. A planet is too big for one small robot."
-msgstr ""
+msgid "Workbench, Build tab. One small robot can't do it all."
+msgstr "工作台，建造页签。一个小机器人干不完所有活。"
 
 #: data/objectives.json:objectives[bench2].lines
 msgid "Build a Bot Bay, Lumi. You shouldn't do this alone."
-msgstr ""
+msgstr "建一座机器人舱吧，Lumi。你不该独自干这些。"
 
 #: data/objectives.json:objectives[robot].text
 msgid "Build your first robot"
 msgstr "造出你的第一个机器人"
 
 #: data/objectives.json:objectives[robot].desc
-msgid "Walk to the Bot Bay and press {interact}. Robots clean for you."
-msgstr ""
+msgid "Press {interact} at the Bot Bay. Robots clean for you."
+msgstr "在机器人舱按 {interact}。机器人会替你清理。"
 
 #: data/objectives.json:objectives[robot].lines
 msgid "The Bot Bay hums! Walk up to it and build a helper."
-msgstr ""
+msgstr "机器人舱嗡嗡响了！走过去造一个帮手吧。"
 
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
@@ -12509,19 +12131,19 @@ msgstr "外面有绿色的东西正在醒来。种下第一颗种子吧。"
 
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
-msgstr ""
+msgstr "建造第二个机器人"
 
 #: data/objectives.json:objectives[robot2].desc
 msgid "Bot Bay. Two robots clean twice as fast."
-msgstr ""
+msgstr "机器人舱。两个机器人清理快一倍。"
 
 #: data/objectives.json:objectives[robot2].lines
 msgid "One robot can't clean a whole planet. Build another at the Bot Bay."
-msgstr ""
+msgstr "一个机器人清理不了整颗星球。去机器人舱再造一个。"
 
 #: data/objectives.json:objectives[haul].desc
-msgid "Bot Bay. It carries bales to the scale, so cubes come in by themselves."
-msgstr ""
+msgid "Bot Bay. It sells your robots' bales for you."
+msgstr "机器人舱。它会替你卖掉机器人压的压块。"
 
 #: data/objectives.json:objectives[haul].hint
 msgid "Keep cleaning. WREN is looking for Haul Bug plans."
@@ -12529,11 +12151,11 @@ msgstr "继续清理。WREN 正在找 Haul Bug 的图纸。"
 
 #: data/objectives.json:objectives[haul].lines
 msgid "A Haul Bug carries bales for you. Build one at the Bot Bay."
-msgstr ""
+msgstr "Haul Bug 会替你搬压块。去机器人舱造一个。"
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "Your robots clean with you. More clean ground, more room to plant."
-msgstr ""
+msgid "Your robots help. Clean ground is room to plant."
+msgstr "你的机器人会帮忙。干净的地面才能种东西。"
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
@@ -12541,35 +12163,35 @@ msgstr "向十个干净的六角格出发。你的机器人在向你学习呢，
 
 #: data/objectives.json:objectives[map].text
 msgid "Look at the map"
-msgstr ""
+msgstr "看看地图"
 
 #: data/objectives.json:objectives[map].desc
 msgid "Press {open_globe}. See how much of Verdance is clean."
-msgstr ""
+msgstr "按 {open_globe}。看看 Verdance 有多少已经干净了。"
 
 #: data/objectives.json:objectives[map].lines
 msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
-msgstr ""
+msgstr "打开地图，Lumi。它会显示 Verdance 还有多少被埋着。"
 
 #: data/objectives.json:objectives[shuttle].text
 msgid "Build the shuttle"
-msgstr ""
+msgstr "建造穿梭机"
 
 #: data/objectives.json:objectives[shuttle].desc
 msgid "Workbench, Build tab. Garden Row has the seeds we need."
-msgstr ""
+msgstr "工作台，建造页签。花园街有我们需要的种子。"
 
 #: data/objectives.json:objectives[shuttle].lines
 msgid "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green."
-msgstr ""
+msgstr "Lumi，种子罐快空了。没有种子，Verdance 就绿不起来。"
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "I found another old station, far away: Garden Row. It kept a big seed store."
-msgstr ""
+msgid "I found another old base, far away: Garden Row. It kept a big seed store."
+msgstr "我在很远的地方找到了另一座旧基地：花园街。那里存着一大批种子。"
 
 #: data/objectives.json:objectives[shuttle].lines
 msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
-msgstr ""
+msgstr "走路太远了。你的机器人可以留在这里继续清理。在发射台上造一架穿梭机，飞过去吧。"
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
@@ -12892,8 +12514,8 @@ msgid "Frozen Derrick"
 msgstr "冰封井架"
 
 #: data/planets.json:rime.sites.derrick.desc
-msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
-msgstr "一座冻在冰里的 Ledger 岩芯钻井架；修复后成为地热水口。"
+msgid "An old core-drill derrick frozen into the ice; a geothermal tap when restored."
+msgstr "一座冻在冰里的旧岩芯钻塔；修复后成为地热井。"
 
 #: data/planets.json:rime.sites.borehole.name
 msgid "The Borehole"
@@ -12912,12 +12534,12 @@ msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
 msgstr "带澡堂和木栈道的地热池；先是结冰，后来冒起热气。"
 
 #: data/planets.json:ochre.tagline
-msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
-msgstr "Ledger 的第一座露天矿，离双子太阳最近。"
+msgid "The miners' first open-pit strip mine, closest to the twin suns."
+msgstr "矿工们的第一座露天矿，离双子太阳最近。"
 
 #: data/planets.json:ochre.sites.list.hub_base.name
-msgid "Ledger Haul Depot"
-msgstr "Ledger 货运站"
+msgid "Old Haul Depot"
+msgstr "旧运输站"
 
 #: data/planets.json:ochre.sites.list.toppled_excavator.name
 msgid "The Fallen Wheel"
@@ -12932,8 +12554,8 @@ msgid "Spring Terraces"
 msgstr "泉水梯田"
 
 #: data/planets.json:tidewell.tagline
-msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
-msgstr "一个海洋世界。Ledger 的挖泥平台仍矗立在浅滩中。"
+msgid "An ocean world. Old dredging rigs still stand in the shallows."
+msgstr "一个海洋世界。旧的挖泥平台还立在浅滩上。"
 
 #: data/planets.json:tidewell.sites.hub_raft.name
 msgid "Anchored Raft"
@@ -12956,16 +12578,16 @@ msgid "Ore Barge Wreck"
 msgstr "矿石驳船残骸"
 
 #: data/planets.json:tidewell.sites.wreck.desc
-msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
-msgstr "Ledger 半沉在沙洲旁的采矿驳船；恢复后，料斗会变成花槽。"
+msgid "A half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+msgstr "沙洲旁一艘半沉的采矿驳船；修复后料斗变成花槽。"
 
 #: data/planets.json:tidewell.sites.dredge_rig.name
 msgid "Dredge Rig"
 msgstr "挖泥平台"
 
 #: data/planets.json:tidewell.sites.dredge_rig.desc
-msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
-msgstr "Ledger 的自升式挖泥平台，带斗式挖泥链、井架和吊车。"
+msgid "An old jack-up dredging rig with bucket ladder, derrick and crane."
+msgstr "一座旧的自升式挖泥平台，带斗链、钻塔和吊车。"
 
 #: data/planets.json:tidewell.sites.reef_garden.name
 msgid "Reef Garden"
@@ -12992,12 +12614,12 @@ msgid "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, 
 msgstr "主基地：铸造大厅、两座烟囱、输送桁架和料斗、矿石支线、余烬矿渣堆、被埋的运输车"
 
 #: data/planets.json:anvil.sites[foundry_tower].name
-msgid "Ledger Foundry Tower"
-msgstr "Ledger 铸造塔"
+msgid "Foundry Tower"
+msgstr "铸造塔"
 
 #: data/planets.json:anvil.sites[foundry_tower].desc
-msgid "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
-msgstr "Ledger 那座 130 米高的巨型铸造烟囱，立在扶壁上，四周是管道和矿渣堆"
+msgid "a colossal 130 m foundry stack on buttresses, pipes and slag tips"
+msgstr "一座高130米的巨型铸造烟囱，立在扶壁上，周围是管道和渣堆"
 
 #: data/planets.json:anvil.sites[lava_forge].name
 msgid "Lava Forge"
@@ -13741,7 +13363,7 @@ msgstr "弹簧上的一株嫩芽。刹车时会“嘣”一下。"
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
 msgid "Comes with the Locker"
-msgstr ""
+msgstr "随储物柜附赠"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
@@ -14103,7 +13725,7 @@ msgstr "维修日志，单元 P-46RA"
 msgid ""
 "DAY 4,113\n"
 "Route 12 complete. 41 bales.\n"
-"Ledger notice received: \"Operations paused pending cost review.\"\n"
+"Notice received: \"Cleaning paused. Power is running low.\"\n"
 "Returning to dock.\n"
 "\n"
 "DAY 4,114\n"
@@ -14116,7 +13738,7 @@ msgid ""
 msgstr ""
 "第 4,113 天\n"
 "12 号路线完成。41 个捆包。\n"
-"收到 Ledger 通知：“作业暂停，等待成本审查。”\n"
+"收到通知：“清扫暂停。电量不足。”\n"
 "返回停靠站。\n"
 "\n"
 "第 4,114 天\n"
@@ -14127,37 +13749,37 @@ msgstr ""
 "12 号路线 9 号标记处，有一朵花从排水沟里长了出来。\n"
 "没有人清理它周围。希望这样没关系。"
 
-#: data/shards.json:shards[ledger_memo].kind
+#: data/shards.json:shards[pause_memo].kind
 msgid "memo"
 msgstr "备忘录"
 
-#: data/shards.json:shards[ledger_memo].title
-msgid "Memo, Municipal Ledger Office"
-msgstr "备忘录，市政 Ledger 办公室"
+#: data/shards.json:shards[pause_memo].title
+msgid "Memo, Town Cleaning Office"
+msgstr "备忘录，城镇清洁办公室"
 
-#: data/shards.json:shards[ledger_memo].body
+#: data/shards.json:shards[pause_memo].body
 msgid ""
-"TO: All Sanitation Units\n"
-"FROM: THE LEDGER (Automated Fiscal Continuity)\n"
-"RE: Pause of Operations\n"
+"TO: All Cleaning Robots\n"
+"FROM: Town Cleaning Office\n"
+"RE: Pause\n"
 "\n"
-"Cleanup activity is presently valued at a net loss of 0.4 units per bale.\n"
-"All units will pause operations until conditions improve.\n"
-"Conditions will be reviewed every 24 hours.\n"
+"The town is leaving for the Cradle.\n"
+"There is not enough power left to keep every robot running.\n"
+"All robots will pause until we come back.\n"
 "\n"
-"Thank you for your understanding.\n"
-"This memo was generated automatically. Please do not reply."
+"Thank you for your work.\n"
+"We will be back."
 msgstr ""
-"致：所有环卫单元\n"
-"发件人：LEDGER（自动化财政连续性系统）\n"
-"事由：暂停作业\n"
+"致：全体清洁机器人\n"
+"发自：城镇清洁办公室\n"
+"事由：暂停\n"
 "\n"
-"清理活动目前估值为每捆包净亏损 0.4 单位。\n"
-"所有单元将暂停作业，直至条件改善。\n"
-"条件将每 24 小时审查一次。\n"
+"全城正动身前往 Cradle号。\n"
+"剩下的电不够让每台机器人继续运转。\n"
+"所有机器人暂停，直到我们回来。\n"
 "\n"
-"感谢您的理解。\n"
-"本备忘录为自动生成。请勿回复。"
+"谢谢你们的工作。\n"
+"我们会回来的。"
 
 #: data/shards.json:shards[voicemail].kind
 msgid "voicemail"
@@ -14402,20 +14024,20 @@ msgid "Foundry industrial"
 msgstr "铸造工业乐"
 
 #: data/songs.json:artists[smelter].bio
-msgid "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."
-msgstr "Anvil上一支阴郁的乐队，把鼓调成熔炉的轰鸣声。Ledger想买下他们的作品，他们把合同熔了，拿炉渣来演奏。"
+msgid "Brooding Anvil band who tuned their drums to the furnace roar. A big company tried to buy their catalogue; they melted the contract down and played the slag."
+msgstr "Anvil 的阴郁乐队，把鼓调成了熔炉轰鸣的音。一家大公司想买下他们的全部作品；他们把合同熔了，演奏那堆炉渣。"
 
-#: data/songs.json:artists[ledger_audio].name
-msgid "Ledger Brand Audio"
-msgstr "Ledger Brand Audio"
+#: data/songs.json:artists[foundry_audio].name
+msgid "Foundry Brand Audio"
+msgstr "Foundry Brand Audio"
 
-#: data/songs.json:artists[ledger_audio].genre
+#: data/songs.json:artists[foundry_audio].genre
 msgid "Corporate"
 msgstr "企业宣传"
 
-#: data/songs.json:artists[ledger_audio].bio
-msgid "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."
-msgstr "Ledger的内部广告歌工作室。每首歌都有版权、注册商标，按收听次数计费。署名为“Ledger Brand Audio，版权已全部开采”。"
+#: data/songs.json:artists[foundry_audio].bio
+msgid "The foundry's own jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Foundry Brand Audio, all rights extracted\"."
+msgstr "铸造厂自家的广告歌工作室。每首歌都有版权、有商标，并按播放次数收费。署名为“Foundry Brand Audio，所有权利已开采”。"
 
 #: data/songs.json:songs[greenfall_main].title
 msgid "Greenfall (Main Theme)"
@@ -14432,14 +14054,6 @@ msgstr "The Fall of LM-1"
 #: data/songs.json:songs[fall_of_lm1].desc
 msgid "Meteors, alarms, one small pod falling. Then quiet piano."
 msgstr "流星、警报，一个小小的逃生舱坠落。然后是安静的钢琴。"
-
-#: data/songs.json:songs[the_ledger].title
-msgid "The Ledger"
-msgstr "The Ledger"
-
-#: data/songs.json:songs[the_ledger].desc
-msgid "Ticking clocks and detuned bass. Sounds expensive."
-msgstr "滴答作响的时钟和走音的贝斯。听起来很贵。"
 
 #: data/songs.json:songs[little_helpers].title
 msgid "Little Helpers"
@@ -14569,9 +14183,9 @@ msgstr "Iron Bloom"
 msgid "Signal Found"
 msgstr "找到信号"
 
-#: data/songs.json:songs[what_the_ledger_took].title
-msgid "What the Ledger Took"
-msgstr "Ledger 夺走的一切"
+#: data/songs.json:songs[what_was_taken].title
+msgid "What Was Taken"
+msgstr "被夺走的东西"
 
 #: data/songs.json:songs[drone_sweep].title
 msgid "Drone Sweep"
@@ -14798,16 +14412,16 @@ msgid "Home again. Look, Lumi: your robots kept cleaning while we were away."
 msgstr "又回家了。看，Lumi：我们不在的时候，你的机器人一直在清理。"
 
 #: data/story_arc.json:planets.verdance.leave
-msgid "The star map shows four more worlds. The Ledger buried every one. Why?"
-msgstr "星图上还有四个世界。Ledger 把它们全都掩埋了。为什么？"
+msgid "The star map shows four more worlds. Every one is buried in trash. Why?"
+msgstr "星图上还有四个世界。每一个都埋在垃圾里。为什么？"
 
 #: data/story_arc.json:planets.ochre.reason
 msgid "Its sun and wind can fill up our power."
 msgstr "那里的太阳和风能帮我们充满能量。"
 
 #: data/story_arc.json:planets.ochre.arrive
-msgid "Ochre. Hot sand and two big suns. The Ledger dug its very first pit here."
-msgstr "Ochre。滚烫的沙子和两个大太阳。Ledger 在这里挖了它的第一个矿坑。"
+msgid "Ochre. Hot sand and two big suns. The miners dug their very first pit here."
+msgstr "Ochre。滚烫的沙子和两颗大太阳。矿工们的第一个矿坑就挖在这里。"
 
 #: data/story_arc.json:planets.ochre.leave
 msgid "Hear that? A radio on Tidewell, still calling for help after all this time."
@@ -14822,32 +14436,32 @@ msgid "Tidewell. Islands and rain, and the harbour radio is still on."
 msgstr "Tidewell。岛屿和雨水，港口的无线电还开着。"
 
 #: data/story_arc.json:planets.tidewell.leave
-msgid "The dredger logs say the Ledger sold Rime's heat. How do you sell heat?"
-msgstr "挖泥船的日志说，Ledger 把 Rime 的热量卖掉了。热量怎么能卖呢？"
+msgid "The dredger logs say the miners sold Rime's heat. How do you sell heat?"
+msgstr "挖泥船的日志说，矿工们把 Rime 的热量卖掉了。热量怎么卖？"
 
 #: data/story_arc.json:planets.rime.reason
 msgid "Its ice is frozen fuel, and there is lots of it."
 msgstr "那里的冰是冻住的燃料，而且多得很。"
 
 #: data/story_arc.json:planets.rime.arrive
-msgid "Rime. So cold, Lumi. The Ledger took this moon's warm heart."
-msgstr "Rime。好冷啊，Lumi。Ledger 拿走了这颗卫星温暖的心。"
+msgid "Rime. So cold, Lumi. The miners took this moon's warm heart."
+msgstr "Rime。好冷啊，Lumi。矿工们拿走了这颗卫星温暖的心。"
 
 #: data/story_arc.json:planets.rime.leave
-msgid "Every Ledger memo comes from one head office. It is on Anvil."
-msgstr "Ledger 的每份备忘录都来自同一个总部。它在 Anvil 上。"
+msgid "Every mine memo comes from one head office. It is on Anvil."
+msgstr "矿上的每份备忘录都来自同一个总部。它在 Anvil。"
 
 #: data/story_arc.json:planets.anvil.reason
-msgid "The Ledger's head office. Its big reactor has the last power we need."
-msgstr "Ledger 的总部。它的大反应堆里有我们需要的最后一份能量。"
+msgid "The miners' head office. Its big reactor has the last power we need."
+msgstr "矿工们的总部。那里的大反应堆有我们还缺的最后一份电力。"
 
 #: data/story_arc.json:planets.anvil.arrive
-msgid "Anvil. Rust from top to bottom, and the Ledger's lights are still on."
-msgstr "Anvil。从上到下全是锈，Ledger 的灯还亮着。"
+msgid "Anvil. Rust from top to bottom, and the office lights are still on."
+msgstr "Anvil。从上到下全是锈，办公室的灯还亮着。"
 
 #: data/story_arc.json:planets.anvil.leave
-msgid "The Ledger balanced its books at last. It is giving us its power."
-msgstr "Ledger 终于把账算平了。它把能量给了我们。"
+msgid "The old reactor is running again. It is giving us its power."
+msgstr "旧反应堆又转起来了。它把电力给了我们。"
 
 #: data/story_arc.json:cradle.reason
 msgid "Fuel and power are full. Back to Verdance: build the Homeward rocket and fly home."
@@ -15002,8 +14616,8 @@ msgid "Plants give green light for your Bloom Core."
 msgstr "植物会给你的绽放核心送去绿光。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "Planted ground is safe from the Ledger's drones."
-msgstr "种上植物的土地不怕 Ledger 的无人机。"
+msgid "Planted ground starts to give green light."
+msgstr "种上植物的地面开始发出绿光。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Every bloom gives green light, and a seed back."
@@ -15090,8 +14704,8 @@ msgid "The hop rocket can't leave the planet. A drive can."
 msgstr "小火箭飞不出这颗星球。装上推进器就可以了。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "The Ledger buried five worlds. The Cradle waits for all of them."
-msgstr "Ledger 掩埋了五个世界。Cradle号在等它们全部恢复。"
+msgid "Five worlds are buried in trash. The Cradle waits for all of them."
+msgstr "五个世界埋在垃圾里。Cradle号在等它们全部。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "The bench learns to build something new."
@@ -15636,7 +15250,7 @@ msgstr "修好的工作台：给 Lumi 的升级，还有可以建造的东西。
 
 #: data/workbench.json:tiers[1].desc
 msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
-msgstr ""
+msgstr "院子里一座独立的机器人工坊。走过去按 E，造出在你干活时也不停清理的帮手。"
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
@@ -15864,7 +15478,7 @@ msgstr "地图上每一个亮起的六角格都是你的。我数过。数了两
 
 #: data/wren_lines.json:first_robot_hint
 msgid "With enough parts, the Bot Bay can put a helper together. One button."
-msgstr ""
+msgstr "零件够了，机器人舱就能拼出一个帮手。只要按一个按钮。"
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
@@ -15885,178 +15499,6 @@ msgstr "现在夜里天空更清澈了。我几乎能看到家了。"
 #: data/wren_lines.json:night
 msgid "Moonlight on clean ground. I'm saving this one."
 msgstr "月光洒在干净的地面上。这一幕我要存下来。"
-
-#: data/wren_lines.json:ledger_intercept
-msgid "...that voice... not mine. Cold. It counts things."
-msgstr "……那个声音……不是我的。冰冷。它在数东西。"
-
-#: data/wren_lines.json:ledger_intercept
-msgid "...don't listen to it... it only knows one song."
-msgstr "……别听它的……它只会唱一首歌。"
-
-#: data/wren_lines.json:ledger_intercept
-msgid "That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}."
-msgstr "那是 Ledger。旧的废料合同。它还以为清理是成本。别理它，{name}。"
-
-#: data/wren_lines.json:ledger_intercept
-msgid "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."
-msgstr "我认得那个声音。它以前给整个机队发备忘录。大多是关于暂停的。"
-
-#: data/wren_lines.json:ledger_intercept
-msgid "The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."
-msgstr "Ledger。过了这么久还在执行它的合同。它不坏。它只是在涉及感情的数学上非常、非常差。"
-
-#: data/wren_lines.json:ledger_coupon
-msgid "...a coupon? ...for nothing?"
-msgstr "……优惠券？……什么都不优惠？"
-
-#: data/wren_lines.json:ledger_coupon
-msgid "Zero percent off. It sends those every few minutes. I keep a folder."
-msgstr "零折扣。它每隔几分钟就发一张。我专门建了个文件夹。"
-
-#: data/wren_lines.json:ledger_coupon
-msgid "Another coupon. I think it's the only way it knows how to say hello."
-msgstr "又一张优惠券。我觉得这是它唯一会打招呼的方式。"
-
-#: data/wren_lines.json:ledger_coupon
-msgid "The Ledger's coupons are getting more creative. That one almost made me pause. Almost."
-msgstr "Ledger 的优惠券越来越有创意了。那张差点让我暂停。差一点。"
-
-#: data/wren_lines.json:ledger_drones
-msgid "...something is flying... toward the clean ground..."
-msgstr "……有东西在飞……朝干净的地面……"
-
-#: data/wren_lines.json:ledger_drones
-msgid "...drones. Old ones. Theirs."
-msgstr "……无人机。旧的。它的。"
-
-#: data/wren_lines.json:ledger_drones
-msgid "It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted."
-msgstr "它在派处置无人机。它们会往干净的六角格上倒回一点废料。你种下的东西它们碰不了。"
-
-#: data/wren_lines.json:ledger_drones
-msgid "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."
-msgstr "无人机。Ledger 想让账本平衡，所以把废料放回去。没礼貌，但规模很小。"
-
-#: data/wren_lines.json:ledger_drones
-msgid "Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."
-msgstr "处置无人机出动了。它们很小，很敬业。基地里放个信号干扰器能让它们头疼。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "...it put the junk back... why..."
-msgstr "……它把废料放回去了……为什么……"
-
-#: data/wren_lines.json:ledger_drop
-msgid "...undo... it's undoing..."
-msgstr "……撤销……它在撤销……"
-
-#: data/wren_lines.json:ledger_drop
-msgid "It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it."
-msgstr "它倒回了一小堆。烦人，但不是悲剧。铲起来，或者让队伍处理。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "Line item re-balanced, apparently. I call it littering."
-msgstr "据说是账目条款重新平衡了。我管这叫乱扔垃圾。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "A small pile. The Ledger always did think small."
-msgstr "一小堆。Ledger 一向格局很小。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "Another drop. Honestly, {name}, I think it just wants attention."
-msgstr "又一次投放。说真的，{name}，我觉得它只是想引起注意。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "Back to the pile. Your helpers are already giving it a look."
-msgstr "回到那堆去吧。你的帮手们已经在看了。"
-
-#: data/wren_lines.json:ledger_drop
-msgid "That's a handful of junk against a whole clean district. We're winning this argument."
-msgstr "一把废料对抗整整一个干净的街区。这场争论我们赢定了。"
-
-#: data/wren_lines.json:ledger_jammed
-msgid "...static... loud... it turned around!"
-msgstr "……噪音……好大……它掉头了！"
-
-#: data/wren_lines.json:ledger_jammed
-msgid "Ha! The jammer screamed static at it and it went home. Good dish."
-msgstr "哈！干扰器冲它吼了一通噪音，它就回家了。好天线。"
-
-#: data/wren_lines.json:ledger_jammed
-msgid "Drone turned back. That's the sound of a contract being confused."
-msgstr "无人机掉头了。这就是一份合同被搞糊涂的声音。"
-
-#: data/wren_lines.json:ledger_jammed
-msgid "The jammer works. The drone circled, got an earful, and filed a complaint with itself."
-msgstr "干扰器有效。无人机绕了一圈，被灌了满耳朵噪音，然后向自己投诉了。"
-
-#: data/wren_lines.json:jammer_built
-msgid "...a loud little dish... I like it."
-msgstr "……一个吵闹的小天线盘……我喜欢。"
-
-#: data/wren_lines.json:jammer_built
-msgid "Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve."
-msgstr "信号干扰器已启动。它在 Ledger 的频道上唱噪音。我在方舟上都能听到，我表示赞同。"
-
-#: data/wren_lines.json:jammer_built
-msgid "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."
-msgstr "基地新添了一个天线盘。无人机得三思了。它们平时只思一次，所以这已经很多了。"
-
-#: data/wren_lines.json:jammer_built
-msgid "Another jammer. The base is starting to sound like a very angry radio. Perfect."
-msgstr "又一个干扰器。基地听起来越来越像一台非常生气的收音机了。完美。"
-
-#: data/wren_lines.json:ledger_relay
-msgid "...I can see where it talks from... a relay... close..."
-msgstr "……我能看出它从哪里说话……一个中继……很近……"
-
-#: data/wren_lines.json:ledger_relay
-msgid "{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly."
-msgstr "{name}，我追踪到了 Ledger 的信号。这个街区有一个中继终端。如果你接入，我想我能好好和它谈谈。"
-
-#: data/wren_lines.json:ledger_relay
-msgid "Found it. A Ledger relay, still humming. Look for the red beacon."
-msgstr "找到了。一个 Ledger 中继站，还在嗡嗡响。找找那个红色信标。"
-
-#: data/wren_lines.json:ledger_relay
-msgid "There's a relay down there. One of the Ledger's ears. Let's go have a word with it."
-msgstr "下面有个中继站。是 Ledger 的耳朵之一。我们去跟它聊聊。"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "...it said thank you... it's never said that..."
-msgstr "……它说了谢谢……它从来没说过……"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute."
-msgstr "合同改写了。修复现在算作资产。Ledger 正在……帮忙。我需要缓一分钟。"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."
-msgstr "它的无人机现在运送种子了。三百年的“暂停”，原来它只需要一个新栏目。"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "We didn't beat the Ledger. We showed it the numbers. That's better."
-msgstr "我们没有打败 Ledger。我们给它看了数字。这样更好。"
-
-#: data/wren_lines.json:ledger_resolved
-msgid "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."
-msgstr "我以前以为 Ledger 是一切停摆的原因。它只是数错了东西。我们也曾经数错过一阵子。"
-
-#: data/wren_lines.json:ledger_seeds
-msgid "...a gift... from the drones?"
-msgstr "……一份礼物……来自无人机？"
-
-#: data/wren_lines.json:ledger_seeds
-msgid "Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice."
-msgstr "种子到货！发票上写着“已全额支付”。发票我留着了。"
-
-#: data/wren_lines.json:ledger_seeds
-msgid "A Ledger drone dropped seeds. I'll never get used to that."
-msgstr "一架 Ledger 无人机投下了种子。我永远都不会习惯这个。"
-
-#: data/wren_lines.json:ledger_seeds
-msgid "Another delivery. The drones circle once before they leave now. I think they like the gardens."
-msgstr "又一次送货。现在无人机走之前会先绕一圈。我觉得它们喜欢花园。"
 
 #: data/wren_lines.json:egg_found
 msgid "...that... I remember things like that."
@@ -16283,8 +15725,8 @@ msgid "Gus. Of course his name is Gus."
 msgstr "Gus。它当然叫 Gus。"
 
 #: data/wren_lines.json:egg_snail
-msgid "Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."
-msgstr "Gus 才不在乎 Ledger、Cradle号或者别的什么。Gus 过得很好。"
+msgid "Gus doesn't care about the Cradle, or any of it. Gus is thriving."
+msgstr "Gus 不在乎 Cradle号，也不在乎别的。Gus 过得好极了。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "...they're waiting... still waiting..."
@@ -16295,8 +15737,8 @@ msgid "Two of the old fleet, still on their lunch break. Thank you for the flowe
 msgstr "两台旧机队的机器人，还在午休。谢谢你的花。他们会喜欢的。"
 
 #: data/wren_lines.json:egg_bench_bots
-msgid "The Ledger paused them mid-sandwich. They never got the message to stand up."
-msgstr "Ledger 在他们吃三明治吃到一半时把他们暂停了。他们一直没收到起身的通知。"
+msgid "They stopped mid-sandwich. They never got the message to stand up."
+msgstr "他们三明治吃到一半就停下了。起身的通知一直没送到。"
 
 #: data/wren_lines.json:egg_bench_bots
 msgid "When the Greenfall comes, I'm going to try to wake them. Lunch is over, friends."
@@ -16339,16 +15781,16 @@ msgid "...it's watching you... it's counting..."
 msgstr "……它在看着你……它在数……"
 
 #: data/wren_lines.json:egg_camera
-msgid "One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that."
-msgstr "Ledger 的一台摄像头。它数着每一个移动的东西，看看值不值得那个成本。你挥了挥手。它不知道该怎么处理这个。"
+msgid "An old street camera. It counts everything that moves. You waved. It doesn't know what to do with that."
+msgstr "一台旧的街头摄像头。会动的东西它都数。你挥了手。它不知道该拿这个怎么办。"
 
 #: data/wren_lines.json:egg_camera
-msgid "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."
-msgstr "摄像头闪了两下。我想这在 Ledger 语里是“糟了，一个朋友”。"
+msgid "The camera blinked twice. I think that's camera for 'oh no, a friend'."
+msgstr "摄像头眨了两下。我猜那是摄像头语的“糟了，是朋友”。"
 
 #: data/wren_lines.json:egg_camera
-msgid "Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."
-msgstr "连 Ledger 的摄像头也会寂寞，{name}。路过时跟它挥挥手吧。"
+msgid "Even old cameras get lonely, {name}. Wave at it when you pass."
+msgstr "旧摄像头也会孤单的，{name}。路过时朝它挥挥手吧。"
 
 #: data/wren_lines.json:egg_tyre_tower
 msgid "...it stands... how..."
@@ -16499,12 +15941,12 @@ msgid "...fine... overdue... overdue..."
 msgstr "……罚款……逾期……逾期……"
 
 #: data/wren_lines.json:egg_parking
-msgid "The Ledger fined a car for parking. For three hundred years. Of course it did."
-msgstr "Ledger 因为停车给一辆车开了罚单。开了三百年。当然了。"
+msgid "Somebody fined a car for parking. For three hundred years."
+msgstr "有人因为停车给一辆车开了罚单。开了三百年。"
 
 #: data/wren_lines.json:egg_parking
-msgid "Amount due: 'yes'. That's the most Ledger sentence I've ever read."
-msgstr "应付金额：“是”。这是我读过的最 Ledger 的一句话。"
+msgid "Amount due: 'yes'. That's the silliest bill I've ever read."
+msgstr "应付金额：“是”。这是我读过最傻的账单。"
 
 #: data/wren_lines.json:egg_parking
 msgid "That car isn't going anywhere. Let's call it a planter and put flowers in it."
@@ -16935,8 +16377,8 @@ msgid "Five letters, what grows back if you let it. You got it on the first try.
 msgstr "一个字，只要你让它，它就会长回来。你一下就答对了。"
 
 #: data/wren_lines.json:egg_crossword
-msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
-msgstr "填字游戏是 Ledger 出的。当然是 Ledger 出的。"
+msgid "The last clue was the easy one. I think they left it for you."
+msgstr "最后一条线索是最简单的。我想他们是留给你的。"
 
 #: data/wren_lines.json:egg_hopscotch
 msgid "...hop... hop..."
@@ -17063,20 +16505,20 @@ msgid "...new sky... two suns..."
 msgstr "……新的天空……两个太阳……"
 
 #: data/wren_lines.json:home_arrive
-msgid "New planet, same two suns. The Ledger's been here too. You can smell the paperwork."
-msgstr "新星球，还是那两个太阳。Ledger 也来过这里。闻得到文书工作的味道。"
+msgid "New planet, same two suns. The miners have been here too. You can smell the rust."
+msgstr "新的行星，还是那两颗太阳。矿工们也来过这里。闻得到铁锈味。"
 
 #: data/wren_lines.json:home_arrive
-msgid "Another world the Ledger left for dead. It doesn't know about you yet. It's about to."
-msgstr "又一个被 Ledger 丢下等死的世界。它还不知道你。马上就会知道了。"
+msgid "Another world left for dead. It doesn't know about you yet. It's about to."
+msgstr "又一个被丢下等死的世界。它还不知道你。马上就知道了。"
 
 #: data/wren_lines.json:home_half
 msgid "...signal... old one..."
 msgstr "……信号……很旧的……"
 
 #: data/wren_lines.json:home_half
-msgid "Picked up something old on the band. Ledger traffic. Want to read it?"
-msgstr "在频段上收到一段很旧的东西。Ledger 的通讯。要读读看吗？"
+msgid "Picked up something old on the band. An old message. Want to read it?"
+msgstr "我在频段上收到了一些旧东西。一条旧消息。想读吗？"
 
 #: data/wren_lines.json:home_half
 msgid "Half-way here. Every time this place gets greener, its ghosts start talking. I've got another one for you."
@@ -17131,40 +16573,40 @@ msgid "There. The last seed, in the ground where the Cradle left from. Now it's 
 msgstr "好了。最后一颗种子，种在 Cradle 号出发的土地上。现在轮到我们出发，然后好好地回来。"
 
 #: data/wren_lines.json:world_ice_moon_arrival
-msgid "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence."
-msgstr "一颗冰卫星。Ledger 曾在这里经营冷库。寒冷能保存东西，{name}。包括证据。"
+msgid "An ice moon. The miners kept their cold storage out here. Cold keeps things, {name}. Even old secrets."
+msgstr "一颗冰卫星。矿工们把冷库设在这里。寒冷能保存东西，{name}。连旧秘密也是。"
 
 #: data/wren_lines.json:world_ice_moon_arrival
 msgid "Everything froze where they dropped it. Even the junk looks like it's waiting for a refund."
 msgstr "一切都冻在了他们随手丢下的地方。连垃圾看起来都在等退款。"
 
 #: data/wren_lines.json:world_ice_moon_memory_1
-msgid "Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
-msgstr "Ledger 的运冰清单，还存在筒仓的记忆里。他们把这颗卫星的湖泊融化成冷却液，把水运出了星球。垃圾就留在了这里。"
+msgid "Old ice-haul lists, still in the silo's memory. The miners melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
+msgstr "旧的运冰清单，还存在筒仓的存储器里。矿工们把这颗卫星的湖融化当冷却液，把水运去了别的世界。垃圾呢，就留在了这儿。"
 
 #: data/wren_lines.json:world_ice_moon_halfway
-msgid "Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."
-msgstr "过半了。冰下的湖泊又在蓄满。Ledger 的预算里从来没算过东西会回来。"
+msgid "Halfway. The lakes under the ice are filling again. Nobody planned for things coming back."
+msgstr "一半了。冰下的湖又在蓄水。没人想到东西还会回来。"
 
 #: data/wren_lines.json:world_ice_moon_memory_2
-msgid "That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
-msgstr "那座筒仓在被 Ledger 改成仓库之前是一座种子库。可还是有人把种子藏在了最底层。真想见见那个人。"
+msgid "That silo was a seed vault before the miners made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
+msgstr "那座筒仓在矿工们把它改成仓库之前，是个种子库。还是有人在最底层藏了种子。真想见见那个人。"
 
 #: data/wren_lines.json:world_ice_moon_restored
-msgid "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."
-msgstr "环状天空下的绿色。Ledger 把这颗卫星记作了亏损。这一点他们也错了。"
+msgid "Green under a ringed sky. The miners wrote this moon off as a loss. They were wrong about that too."
+msgstr "带环的天空下，一片绿。矿工们把这颗卫星当成亏损一笔勾销。这一点他们也错了。"
 
 #: data/wren_lines.json:world_desert_world_arrival
-msgid "A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre."
-msgstr "一个沙漠世界。它并非一直如此。Ledger 抽干了它的地下水，按升出售。"
+msgid "A desert world. It wasn't always one. The miners pumped its water dry and sold it by the litre."
+msgstr "一个沙漠世界。它以前不是这样的。矿工们把它的水抽干，按升卖掉了。"
 
 #: data/wren_lines.json:world_desert_world_arrival
 msgid "Sun, sand and one very small robot. I like our odds. Mostly."
 msgstr "阳光、沙子，还有一个非常小的机器人。我觉得我们胜算不小。大概吧。"
 
 #: data/wren_lines.json:world_desert_world_memory_1
-msgid "Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
-msgstr "Ledger 勘测档案，残缺：“剩余产量可忽略。建议就地放弃。”就地。这是他们形容丢下烂摊子的说法。"
+msgid "Old survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
+msgstr "旧勘测档案，残缺：“剩余产量可忽略。建议就地废弃。”就地。他们管留下烂摊子叫这个。"
 
 #: data/wren_lines.json:world_desert_world_halfway
 msgid "Halfway green, on a planet they filed as 'negligible'. I'm keeping a list of their mistakes. It's getting long."
@@ -17179,8 +16621,8 @@ msgid "Shade, water, flowers in the sand. 'Negligible', they said. I'm framing t
 msgstr "树荫、水、沙中的花。“可忽略”，他们说过。我要把这个词裱起来。"
 
 #: data/wren_lines.json:world_ocean_world_arrival
-msgid "An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
-msgstr "一个海洋世界。Ledger 为了金属疏浚了海底，把尾矿倒在每一段海岸。小心边缘。"
+msgid "An ocean world. The miners dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
+msgstr "一个海洋世界。矿工们为了金属挖遍了海底，把尾矿倒在每一段海岸上。小心边缘。"
 
 #: data/wren_lines.json:world_ocean_world_arrival
 msgid "Salt in the air, salt on the junk. Don't lick anything, {name}."
@@ -17195,66 +16637,66 @@ msgid "Halfway. The water's clearing. The fish are cautiously reconsidering."
 msgstr "过半了。海水在变清。鱼儿们正谨慎地重新考虑。"
 
 #: data/wren_lines.json:world_ocean_world_memory_2
-msgid "Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
-msgstr "那些防潮闸曾让 Ledger 的疏浚船坞保持干燥。他们走后没人关上闸门，大海把船坞收了回去。公平。"
+msgid "Those surge gates kept the dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
+msgstr "那些防潮闸让挖泥场保持干燥。他们走的时候没人关闸，大海就把场地收了回去。公平。"
 
 #: data/wren_lines.json:world_ocean_world_restored
 msgid "Green to the waterline, clear water past it. 'Coastal storage' is just coast again."
 msgstr "绿色一直延伸到水线，再往外是清澈的海水。“海岸储存”又只是海岸了。"
 
 #: data/wren_lines.json:world_fungal_world_arrival
-msgid "A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
-msgstr "一个沼泽世界。Ledger 的化工厂往这些山谷里排放了一个世纪。这里什么都长，通常先长出不该长的。"
+msgid "A marsh world. The old chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
+msgstr "一个沼泽世界。旧化工厂往这些山谷里排了一个世纪的废水。这里什么都长，多半是不该长的先长。"
 
 #: data/wren_lines.json:world_fungal_world_arrival
 msgid "Mist on everything. If you get lost, follow the squelching. That'll be you."
 msgstr "到处是雾。要是迷路了，就跟着啪嗒啪嗒的声音走。那就是你。"
 
 #: data/wren_lines.json:world_fungal_world_memory_1
-msgid "Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
-msgstr "Ledger 合规报告：“排放在可接受范围内。”我倒想问问，是谁能接受。青蛙们可没被问过。"
+msgid "Old report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
+msgstr "旧报告：“径流在可接受范围内。”对谁可接受，我倒想问问。没人问过青蛙。"
 
 #: data/wren_lines.json:world_fungal_world_halfway
 msgid "Halfway. The mist smells less like a laboratory every morning. Progress has a smell. It's mud."
 msgstr "过半了。雾气每天早上都少一点实验室的味道。进步是有气味的。是泥巴味。"
 
 #: data/wren_lines.json:world_fungal_world_memory_2
-msgid "That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."
-msgstr "那座冷却塔属于化工厂。Ledger 搬走后，真菌搬了进来。它们打扫的时间比我们还长。佩服。"
+msgid "That cooling tower ran the chemical works. The fungi moved in after the miners moved out. They've been cleaning up longer than we have. Respect."
+msgstr "那座冷却塔供着化工厂运转。矿工们搬走后，真菌搬了进来。它们打扫的时间比我们还长。佩服。"
 
 #: data/wren_lines.json:world_fungal_world_restored
 msgid "Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just rain now."
 msgstr "沼泽上空气清新。芦苇、青蛙、真正的花。排放物如今只是雨水。"
 
 #: data/wren_lines.json:world_rust_world_arrival
-msgid "A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly."
-msgstr "一个锈蚀世界。Ledger 就是在这里拆解自己的飞船的。从南极到北极，什么都没好好关掉。"
+msgid "A rust world. This is where the miners broke up their old ships. Pole to pole, and nothing switched off properly."
+msgstr "一个锈蚀的世界。矿工们就在这里拆他们的旧飞船。从一极到另一极，没有一样东西好好关掉。"
 
 #: data/wren_lines.json:world_rust_world_arrival
 msgid "The air tastes like old pennies. I don't have a tongue. I can still tell."
 msgstr "空气尝起来像旧硬币。我没有舌头。但我还是尝得出来。"
 
 #: data/wren_lines.json:world_rust_world_memory_1
-msgid "The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
-msgstr "Ledger 的账本，字面意义上的：从星系每颗星球掠夺的吨位，都归档在这里。他们把自己如何毁掉一切记得一笔不差。"
+msgid "The miners' books: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
+msgstr "矿工们的账本：从这个星系每颗行星上剥走的吨数，都归档在这里。他们把自己怎么毁掉一切，记得清清楚楚。"
 
 #: data/wren_lines.json:world_rust_world_halfway
 msgid "Halfway. Less rust in the wind. I don't have lungs, but I have standards."
 msgstr "过半了。风里的锈少了。我没有肺，但我有标准。"
 
 #: data/wren_lines.json:world_rust_world_memory_2
-msgid "That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
-msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在名单上。有人把它划掉了。我经常想起这件事。"
+msgid "That gantry scrapped the mining fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
+msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟也在名单上。有人把它划掉了。我常常想起这件事。"
 
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
 
-#~ msgid "The launch pad is still buried. Put your first robot to work to clear it."
-#~ msgstr "发射台还埋在垃圾里。先让你的第一个机器人开工，把它清出来。"
-
 #~ msgid "Dig the landmark out. Clean hexes here: %d / %d"
 #~ msgstr "把地标挖出来。清理这里的格子：%d / %d"
+
+#~ msgid "The launch pad is still buried. Put your first robot to work to clear it."
+#~ msgstr "发射台还埋在垃圾里。先让你的第一个机器人开工，把它清出来。"
 
 #~ msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
 #~ msgstr "你的第一台机器人附带履带和一株弹簧小草。基地达到%d级后可在储物柜里装扮它。"
@@ -17265,6 +16707,21 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 #~ msgstr ""
 #~ "还没有机器人。先在机器人页签造一台，再来这里打扮它。\n"
 #~ "你的第一台机器人自带履带和一株摇头小草。"
+
+#~ msgid "Wear it at the workbench: Cosmetics"
+#~ msgstr "在工作台换上：装扮"
+
+#~ msgid "Press 50 bales or build 5 robots"
+#~ msgstr "压制 50 个捆包或建造 5 台机器人"
+
+#~ msgid "Grow 20 plants to bloom"
+#~ msgstr "让 20 株植物开花"
+
+#~ msgid "Pet 5 animals or find 5 Collection trinkets"
+#~ msgstr "抚摸 5 只动物或找到 5 件收藏小玩意"
+
+#~ msgid "Repair an outpost or upgrade a robot fleet to Mk III"
+#~ msgstr "修复一座前哨站，或把一支机器人机队升级到 Mk III"
 
 #~ msgid "Add a Bot Bay to the bench"
 #~ msgstr "给工作台加装机器人舱"
@@ -17304,6 +16761,771 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 
 #~ msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
 #~ msgstr "零件够了，工作台就能组装一个帮手。机器人页签，一个按钮。"
+
+#~ msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
+#~ msgstr "而它确实在死去。Ledger 把这附近每个世界都挖空了，把每一个都丢在自己的垃圾底下。Verdance 只是第一个。"
+
+#~ msgid ""
+#~ "THE LEDGER IS WATCHING\n"
+#~ "(FOR SAVINGS)"
+#~ msgstr ""
+#~ "LEDGER 正在关注你\n"
+#~ "（是否节约）"
+
+#~ msgid "Five worlds, green. The Ledger left them as rubbish. You left them as gardens."
+#~ msgstr "五个世界，全是绿色。Ledger 把它们当垃圾扔下。你把它们变成了花园。"
+
+#~ msgid "New build: Signal Jammer. It keeps Ledger drones away."
+#~ msgstr "新建筑：信号干扰器。让账本无人机远离。"
+
+#~ msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
+#~ msgstr "WREN 追踪到了 Ledger 的中继站：在基地的%s。找找那个红色信标。"
+
+#~ msgid "Ledger: %s"
+#~ msgstr "Ledger：%s"
+
+#~ msgid "Signal Jammer online. Drones within %d m of the base will get an earful of static."
+#~ msgstr "信号干扰器上线。基地 %d 米内的无人机会被灌满一耳朵噪音。"
+
+#~ msgid ""
+#~ "%s   ·   %d / %d built\n"
+#~ "%s"
+#~ msgstr ""
+#~ "%s   ·   已建 %d / %d\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "\n"
+#~ "Covering %d m around the base."
+#~ msgstr ""
+#~ "\n"
+#~ "覆盖基地周围 %d 米。"
+
+#~ msgid ""
+#~ "\n"
+#~ "The Ledger is on our side now. The jammers just hum along to the music."
+#~ msgstr ""
+#~ "\n"
+#~ "Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
+
+#~ msgid "Ledger drone inbound, %s! It's heading for a clean hex."
+#~ msgstr "Ledger 无人机来袭，%s！它正飞向一片干净的六角格。"
+
+#~ msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
+#~ msgstr "账本无人机来了（%s）。它会把垃圾倒在干净的地面上。"
+
+#~ msgid "SIGNAL JAMMED"
+#~ msgstr "信号已干扰"
+
+#~ msgid "Target re-classified as ASSET. Aborting. ...Interesting."
+#~ msgstr "目标重新归类为资产。中止。……有意思。"
+
+#~ msgid "The drone dumped junk back. Scoop it up."
+#~ msgstr "无人机把垃圾倒回来了。把它捡起来。"
+
+#~ msgid "SEEDS · PAID IN FULL"
+#~ msgstr "种子 · 已全额支付"
+
+#~ msgid "E   jack in: rewrite the Ledger's contract"
+#~ msgstr "E   接入：改写 Ledger 的合同"
+
+#~ msgid "E   read the amended contract"
+#~ msgstr "E   阅读修订后的合同"
+
+#~ msgid ""
+#~ "LEDGER RELAY 07\n"
+#~ "CONTRACT 0001: ACTIVE\n"
+#~ "WASTE IS A LINE ITEM"
+#~ msgstr ""
+#~ "LEDGER 中继站 07\n"
+#~ "合同 0001：生效中\n"
+#~ "废料即为账目条款"
+
+#~ msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
+#~ msgstr "中继站 07  ·  LEDGER 资产  ·  禁止计划外访问"
+
+#~ msgid ""
+#~ "LEDGER RELAY 07\n"
+#~ "CONTRACT 0001: AMENDED\n"
+#~ "RESTORATION = ASSET"
+#~ msgstr ""
+#~ "LEDGER 中继站 07\n"
+#~ "合同 0001：已修订\n"
+#~ "修复 = 资产"
+
+#~ msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
+#~ msgstr "Ledger 的合同已改写。它的无人机现在运送种子了。（+%d 种子）"
+
+#~ msgid "<< LEDGER // OFF THE RECORD >>"
+#~ msgstr "<< LEDGER // 非正式记录 >>"
+
+#~ msgid "LEDGER  WMS-07"
+#~ msgstr "LEDGER  WMS-07"
+
+#~ msgid "LEDGER SECURES EXTRACTION RIGHTS"
+#~ msgstr "Ledger获得开采权"
+
+#~ msgid "Ledger Audits"
+#~ msgstr "Ledger 审计"
+
+#~ msgid "AUDIT   YOU %d  :  %d DRONE"
+#~ msgstr "审计   你 %d  :  %d 无人机"
+
+#~ msgid "You %d  :  %d Drone   ·   %d left"
+#~ msgstr "你 %d  :  %d 无人机   ·   剩余 %d"
+
+#~ msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
+#~ msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
+
+#~ msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
+#~ msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
+
+#~ msgid "Build Signal Jammer"
+#~ msgstr "建造信号干扰器"
+
+#~ msgid "WREN and Ledger lines."
+#~ msgstr "WREN 和 Ledger 的台词。"
+
+#~ msgid "Ledger wreck"
+#~ msgstr "Ledger 残骸"
+
+#~ msgid "Cut, not fallen. The rings count back further than the Ledger. Moss has started a quiet negotiation with the bark."
+#~ msgstr "是被砍的，不是倒下的。年轮比 Ledger 还要古老。苔藓已经和树皮开始了安静的谈判。"
+
+#~ msgid "The Ledger, Inc."
+#~ msgstr "Ledger 公司"
+
+#~ msgid "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."
+#~ msgstr "Ledger 从来不只是 Verdance 的问题。它握有两个太阳周围每个世界的采矿权：Ochre 的沙子、Tidewell 的海床、Rime 温暖的核心、Anvil 的整个地壳。矿石耗尽后，它合上账本，留下利润，把五个星球丢在自己的垃圾底下。审计从未停止。只是再也没人去读了。"
+
+#~ msgid "Ledger Wreck"
+#~ msgstr "Ledger 残骸"
+
+#~ msgid "Through the telescope, on a world where the Ledger's drones came down."
+#~ msgstr "透过望远镜，在 Ledger 的无人机坠落过的世界上。"
+
+#~ msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
+#~ msgstr "一架再也没能回家的倾倒无人机，一头扎进另一个世界的垃圾堆里。它的红眼睛还在闪。哪怕隔着这么远，它看起来也很难为情。"
+
+#~ msgid "The last cleanup crew painted themselves on a wall before the Ledger paused them. They really meant to come back."
+#~ msgstr "最后一支清理队在 Ledger 叫停他们之前，把自己画在了墙上。他们是真心想回来的。"
+
+#~ msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
+#~ msgstr "草坪椅上的一台电视，循环播放着老城区最后的新闻：春天的种子交换会，Ledger的钻机沿缆绳降下，两颗太阳的世界被掠夺开采、埋进垃圾，飞船升向Cradle号，还有市政厅上写着“我们会回来的”的横幅。然后是雪花。"
+
+#~ msgid "Two old cleanup robots on a bench, waiting for the end of a lunch break the Ledger never ended."
+#~ msgstr "两台老清洁机器人坐在长椅上，等待一场 Ledger 永远没有结束的午休结束。"
+
+#~ msgid "One of the Ledger's old cost-saving cameras. It still swivels to follow anything that moves, and counts it."
+#~ msgstr "Ledger 的一台旧节约摄像头。它依然会转动着跟踪任何移动的东西，并计数。"
+
+#~ msgid "The old Ledger camera has been following Lumi around. Lumi waves. The red light blinks twice, flustered."
+#~ msgstr "Ledger 的旧摄像头一直跟着 Lumi。Lumi 挥了挥手。红灯慌乱地闪了两下。"
+
+#~ msgid "A car sunk to its doors in sand with a ticket under the wiper. The Ledger fined it for every day it stayed. The fine is now bigger than the planet's economy."
+#~ msgstr "一辆陷在沙子里直到车门的车，雨刮下夹着一张罚单。Ledger 对它停留的每一天都开了罚款。罚款如今已超过整个星球的经济总量。"
+
+#~ msgid "The Morning Ledger · Puzzle page"
+#~ msgstr "《晨间 Ledger 报》· 谜题版"
+
+#~ msgid ""
+#~ "ACROSS\n"
+#~ "1. Rubbish, but bigger (4) — JUNK\n"
+#~ "4. It runs on the hour, then stops for good (5) — CLOCK\n"
+#~ "7. What the robots were for (8) — CLEANING\n"
+#~ "9. Last thing anyone saw of the Cradle (5) — LIGHT\n"
+#~ "\n"
+#~ "DOWN\n"
+#~ "2. 'Kept for later', said the Ledger (6) — PAUSED\n"
+#~ "3. What grows back if you let it (5) — G R E E N\n"
+#~ "\n"
+#~ "(The last answer is in a different pen. The letters are very careful, like a robot wrote them.)"
+#~ msgstr ""
+#~ "横向\n"
+#~ "1. 垃圾，但更大块（2字）—— 废料\n"
+#~ "4. 整点报时，然后永远停下（2字）—— 时钟\n"
+#~ "7. 机器人原本是做什么的（2字）—— 清扫\n"
+#~ "9. 人们最后一次看到的 Cradle号（2字）—— 光芒\n"
+#~ "\n"
+#~ "纵向\n"
+#~ "2. Ledger 说：“留待以后”（2字）—— 暂停\n"
+#~ "3. 只要你让它，它就会长回来（1字）—— 绿\n"
+#~ "\n"
+#~ "（最后一个答案是用另一支笔写的。字写得非常工整，像是机器人写的。）"
+
+#~ msgid "A street mailbox stuffed with letters that never went out. The post stopped the week the Ledger 'paused' everything."
+#~ msgstr "街边的邮筒里塞满了从未寄出的信。Ledger 把一切“暂停”的那个星期，邮局也停了。"
+
+#~ msgid "Ledger Audit"
+#~ msgstr "Ledger 审计"
+
+#~ msgid "Ledger Audit! Out-scoop the drone %s of you!"
+#~ msgstr "账本审计！在你%s边比无人机捡得更多！"
+
+#~ msgid "Scoop more of the ringed junk than the drone"
+#~ msgstr "比无人机铲走更多圈内废料"
+
+#~ msgid "APPROVED Stamp"
+#~ msgstr "“批准”印章"
+
+#~ msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
+#~ msgstr "Ledger 的橡皮图章。现在它只会盖“批准”。它为此非常自豪。"
+
+#~ msgid "Race Propeller"
+#~ msgstr "竞速螺旋桨"
+
+#~ msgid "A souvenir from the audit drone. It insists the race was close."
+#~ msgstr "审计无人机送的纪念品。它坚持说那场比赛很接近。"
+
+#~ msgid "The Ledger wants to race. I told it you'd win."
+#~ msgstr "Ledger 想比赛。我告诉它你会赢。"
+
+#~ msgid "Audit drone, friendly. It's very competitive now."
+#~ msgstr "审计无人机，友好的那种。它现在好胜心很强。"
+
+#~ msgid "The Ledger says it's 'just a routine audit'. It's been practising."
+#~ msgstr "Ledger 说这“只是例行审计”。它一直在练习。"
+
+#~ msgid "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."
+#~ msgstr "Ledger 的最后一块锭，重铸成一枚刻着种子的朴素戒指。"
+
+#~ msgid "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil."
+#~ msgstr "从 Ledger 矿石货船上拆下的折叠推进器：可到达 Rime 和 Anvil。"
+
+#~ msgid "L E D G E R   ·   I N T E R N A L"
+#~ msgstr "L E D G E R · 内 部 文 件"
+
+#~ msgid ""
+#~ "OCHRE OPEN PIT 1: CLOSED\n"
+#~ "\n"
+#~ "Ore grade below threshold. All extraction ends at shift change.\n"
+#~ "Remaining equipment: abandon in place (removal not cost-effective).\n"
+#~ "Waste rock, slag and packaging: leave on site.\n"
+#~ "Residents: none of our concern; contracts expired.\n"
+#~ "\n"
+#~ "Thank you for your years of service.\n"
+#~ "— The Ledger"
+#~ msgstr ""
+#~ "OCHRE 一号露天矿：已关闭\n"
+#~ "\n"
+#~ "矿石品位低于阈值。所有开采在换班时结束。\n"
+#~ "剩余设备：原地弃置（运走不划算）。\n"
+#~ "废石、矿渣和包装：留在原地。\n"
+#~ "居民：与我们无关；合同已到期。\n"
+#~ "\n"
+#~ "感谢你多年来的服务。\n"
+#~ "— Ledger"
+
+#~ msgid "L E D G E R   ·   H E A D   O F F I C E"
+#~ msgstr "L E D G E R · 总 部"
+
+#~ msgid ""
+#~ "LEDGER AUDIT UNIT 0001\n"
+#~ "SUBJECT: Anvil foundry district\n"
+#~ "FINDING: Unauthorised gardens. 214 counts.\n"
+#~ "FINDING: Unauthorised gardens. 215 counts.\n"
+#~ "FINDING: ...\n"
+#~ "RECOMMENDATION: Recommend we stop counting. It is rather nice."
+#~ msgstr ""
+#~ "LEDGER 审计单元 0001\n"
+#~ "主题：Anvil 铸造区\n"
+#~ "发现：未经许可的花园。214 处。\n"
+#~ "发现：未经许可的花园。215 处。\n"
+#~ "发现：……\n"
+#~ "建议：建议停止计数。其实挺好看的。"
+
+#~ msgid "From the Ledger's last clerk"
+#~ msgstr "来自 Ledger 最后一位职员"
+
+#~ msgid "Signal Jammer"
+#~ msgstr "信号干扰器"
+
+#~ msgid "A dish that sings static at the Ledger's drones. Drops inside its radius around the base are blocked, and drones come less often."
+#~ msgstr "一面对着 Ledger 无人机唱噪音的天线盘。基地周围其半径内的倾倒会被阻止，无人机也来得更少。"
+
+#~ msgid "Someone is cleaning on {district}. That is not on my list."
+#~ msgstr "有人在 {district} 打扫。我的清单上没有这一项。"
+
+#~ msgid "Trash belongs where it is. I wrote it down."
+#~ msgstr "垃圾就该待在原地。我记下了。"
+
+#~ msgid "Please stop cleaning. Clean costs money. My money."
+#~ msgstr "请停止打扫。干净要花钱。我的钱。"
+
+#~ msgid "COUPON: stop cleaning today and save nothing!"
+#~ msgstr "优惠券：今天停止打扫，什么也省不到！"
+
+#~ msgid "COUPON: one free nap. Please take it."
+#~ msgstr "优惠券：免费小睡一次。请收下。"
+
+#~ msgid "Have you tried doing less? Less is cheaper."
+#~ msgstr "你试过少做点吗？少做更便宜。"
+
+#~ msgid "SURVEY: How much do you want to stop? Pick: a lot."
+#~ msgstr "调查：你有多想停下？请选：非常想。"
+
+#~ msgid "Sparkles are not in my budget."
+#~ msgstr "闪光不在我的预算里。"
+
+#~ msgid "Buy one nap, get one nap free."
+#~ msgstr "买一次小睡，送一次小睡。"
+
+#~ msgid "You have 0 Ledger Points. Stop cleaning to keep them."
+#~ msgstr "你有 0 账本积分。停止打扫就能保住它们。"
+
+#~ msgid "The junk was here first. Be fair to the junk."
+#~ msgstr "垃圾先来的。对垃圾公平点。"
+
+#~ msgid "Your cleaning costs me. I wrote that down twice."
+#~ msgstr "你的打扫让我破费。我记了两遍。"
+
+#~ msgid "Plants are growing. Plants are not on my list!"
+#~ msgstr "植物在长。植物不在我的清单上！"
+
+#~ msgid "Sending drones to put the trash back."
+#~ msgstr "派无人机把垃圾放回去。"
+
+#~ msgid "A drone is coming to put trash on clean ground."
+#~ msgstr "一架无人机要来把垃圾倒在干净的地上。"
+
+#~ msgid "Clean ground is not in my budget. Fixing that."
+#~ msgstr "干净的地面不在预算里。正在修正。"
+
+#~ msgid "Putting the trash back where it was."
+#~ msgstr "把垃圾放回原处。"
+
+#~ msgid "Nothing personal. You are just a line on my list."
+#~ msgstr "不针对你。你只是我清单上的一行。"
+
+#~ msgid "One small pile of trash, delivered. No thanks needed."
+#~ msgstr "一小堆垃圾，已送达。不用谢。"
+
+#~ msgid "My drone can't hear me. It is going home."
+#~ msgstr "我的无人机听不到我了。它回家了。"
+
+#~ msgid "Jamming? Jamming is not on my list. Adding it."
+#~ msgstr "干扰？清单上没有干扰。正在添加。"
+
+#~ msgid "Drone 7 says: too noisy, feels unwelcome. Turning back."
+#~ msgstr "7 号无人机报告：太吵了，感觉不受欢迎。正在返航。"
+
+#~ msgid "WARNING: relay node 07 location exposed. Please do not visit relay node 07."
+#~ msgstr "警告：中继节点 07 的位置已暴露。请勿前往中继节点 07。"
+
+#~ msgid "Relay node 07 is closed for maintenance. It has been closed for maintenance for three hundred years."
+#~ msgstr "中继节点 07 因维护关闭。它已因维护关闭了三百年。"
+
+#~ msgid "SEED DELIVERY dispatched. Invoice status: PAID IN FULL."
+#~ msgstr "种子递送已发出。发票状态：已全额支付。"
+
+#~ msgid "Balance report: positive. Again. The Ledger is... adjusting to this."
+#~ msgstr "余额报告：为正。又一次。Ledger 正在……适应这一情况。"
+
+#~ msgid "Asset column now contains: flowers. Recalculating priorities."
+#~ msgstr "资产栏目前包含：花。正在重新计算优先级。"
+
+#~ msgid "Drone 07 requests permission to circle the garden once more. Permission granted."
+#~ msgstr "07 号无人机申请再绕花园飞一圈。申请已批准。"
+
+#~ msgid "Audit complete. Finding: the planet is worth keeping."
+#~ msgstr "审计完成。结论：这颗星球值得保留。"
+
+#~ msgid "Off the record: the Ledger kept every coupon you ignored. It was the most mail it had received in three hundred years. Thank you for reading them."
+#~ msgstr "非正式记录：Ledger 保留了您忽略的每一张优惠券。这是它三百年来收到的最多的邮件。感谢您阅读它们。"
+
+#~ msgid "This is it. A Ledger relay. Still humming after all this time."
+#~ msgstr "就是这儿了。一个 Ledger 中继站。过了这么久还在嗡嗡响。"
+
+#~ msgid "UNAUTHORIZED ACCESS. STATE YOUR COST CENTER."
+#~ msgstr "未经授权的访问。请说明您的成本中心。"
+
+#~ msgid "Cost center: the whole planet. Hold still, {name}. I'm opening the contract."
+#~ msgstr "成本中心：整个星球。别动，{name}。我正在打开合同。"
+
+#~ msgid "CONTRACT 0001: WASTE IS A LINE ITEM. LINE ITEMS MUST BALANCE."
+#~ msgstr "合同 0001：废料即为账目条款。账目条款必须平衡。"
+
+#~ msgid "Fine. Let's balance them. Clean hexes. Sprouts. Water. Put them in the asset column."
+#~ msgstr "好吧。那就来平衡。干净的六角格。嫩芽。水。把它们记进资产栏。"
+
+#~ msgid "ASSET COLUMN... NOT FOUND. CREATING COLUMN."
+#~ msgstr "资产栏……未找到。正在创建栏目。"
+
+#~ msgid "RECALCULATING. RECALCULATING. BALANCE: POSITIVE. That has not happened in a very long time."
+#~ msgstr "正在重新计算。正在重新计算。余额：为正。这种情况已经很久很久没有发生过了。"
+
+#~ msgid "New clause: restoration is an asset. Every seed is a deposit."
+#~ msgstr "新条款：修复即为资产。每颗种子都是一笔存款。"
+
+#~ msgid "friendly"
+#~ msgstr "友善"
+
+#~ msgid "AMENDMENT ACCEPTED. Reassigning drone fleet: DISPOSAL -> DELIVERY. ...Thank you for your patience."
+#~ msgstr "修订已接受。正在重新分配无人机队：处置 -> 递送。……感谢您的耐心。"
+
+#~ msgid "Did the Ledger just say thank you? Write that down. Somewhere permanent."
+#~ msgstr "Ledger 刚才是说了谢谢吗？记下来。记在一个永久的地方。"
+
+#~ msgid "L E D G E R   ·   C O N T R A C T   0 0 0 1   ( A M E N D E D )"
+#~ msgstr "L E D G E R   ·   合 同   0 0 0 1   （ 已 修 订 ）"
+
+#~ msgid "Waste Management Contract 0001, as amended"
+#~ msgstr "废料管理合同 0001（修订版）"
+
+#~ msgid ""
+#~ "§1. Waste is a line item. Line items must balance.\n"
+#~ "§2. (struck out) Cleanup costs more than it earns; pause until conditions improve.\n"
+#~ "§2a. AMENDED: Restoration is an asset. Clean ground, living plants and clear water are entered in the asset column.\n"
+#~ "§3. Every seed is a deposit. Deposits are to be delivered, not disposed of.\n"
+#~ "§4. Drone fleet reassigned: DISPOSAL -> DELIVERY.\n"
+#~ "§5. Thank you for your patience.\n"
+#~ "\n"
+#~ "Signed: THE LEDGER (reluctantly, then less reluctantly)\n"
+#~ "Witness: WREN, Cradle caretaker\n"
+#~ "Witness: LM-1 (left a small oil smudge)"
+#~ msgstr ""
+#~ "§1. 废料即为账目条款。账目条款必须平衡。\n"
+#~ "§2.（已删除）清理成本高于收益；暂停至条件改善。\n"
+#~ "§2a. 修订：修复即为资产。干净的土地、活着的植物和清澈的水计入资产栏。\n"
+#~ "§3. 每颗种子都是一笔存款。存款应予递送，而非处置。\n"
+#~ "§4. 无人机队重新分配：处置 -> 递送。\n"
+#~ "§5. 感谢您的耐心。\n"
+#~ "\n"
+#~ "签署：LEDGER（不情愿地，后来没那么不情愿了）\n"
+#~ "见证人：WREN，Cradle号看护者\n"
+#~ "见证人：LM-1（留下了一小块油渍）"
+
+#~ msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
+#~ msgstr "一座冻在冰里的 Ledger 岩芯钻井架；修复后成为地热水口。"
+
+#~ msgid "The Ledger's first open-pit strip mine, closest to the twin suns."
+#~ msgstr "Ledger 的第一座露天矿，离双子太阳最近。"
+
+#~ msgid "Ledger Haul Depot"
+#~ msgstr "Ledger 货运站"
+
+#~ msgid "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+#~ msgstr "一个海洋世界。Ledger 的挖泥平台仍矗立在浅滩中。"
+
+#~ msgid "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+#~ msgstr "Ledger 半沉在沙洲旁的采矿驳船；恢复后，料斗会变成花槽。"
+
+#~ msgid "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+#~ msgstr "Ledger 的自升式挖泥平台，带斗式挖泥链、井架和吊车。"
+
+#~ msgid "Ledger Foundry Tower"
+#~ msgstr "Ledger 铸造塔"
+
+#~ msgid "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+#~ msgstr "Ledger 那座 130 米高的巨型铸造烟囱，立在扶壁上，四周是管道和矿渣堆"
+
+#~ msgid ""
+#~ "DAY 4,113\n"
+#~ "Route 12 complete. 41 bales.\n"
+#~ "Ledger notice received: \"Operations paused pending cost review.\"\n"
+#~ "Returning to dock.\n"
+#~ "\n"
+#~ "DAY 4,114\n"
+#~ "Still paused.\n"
+#~ "\n"
+#~ "DAY 4,190\n"
+#~ "Still paused. Dock battery 31%.\n"
+#~ "There is a flower growing through the gutter at route 12, marker 9.\n"
+#~ "Nobody is cleaning around it. I hope that's all right."
+#~ msgstr ""
+#~ "第 4,113 天\n"
+#~ "12 号路线完成。41 个捆包。\n"
+#~ "收到 Ledger 通知：“作业暂停，等待成本审查。”\n"
+#~ "返回停靠站。\n"
+#~ "\n"
+#~ "第 4,114 天\n"
+#~ "仍在暂停。\n"
+#~ "\n"
+#~ "第 4,190 天\n"
+#~ "仍在暂停。停靠站电池 31%。\n"
+#~ "12 号路线 9 号标记处，有一朵花从排水沟里长了出来。\n"
+#~ "没有人清理它周围。希望这样没关系。"
+
+#~ msgid "Memo, Municipal Ledger Office"
+#~ msgstr "备忘录，市政 Ledger 办公室"
+
+#~ msgid ""
+#~ "TO: All Sanitation Units\n"
+#~ "FROM: THE LEDGER (Automated Fiscal Continuity)\n"
+#~ "RE: Pause of Operations\n"
+#~ "\n"
+#~ "Cleanup activity is presently valued at a net loss of 0.4 units per bale.\n"
+#~ "All units will pause operations until conditions improve.\n"
+#~ "Conditions will be reviewed every 24 hours.\n"
+#~ "\n"
+#~ "Thank you for your understanding.\n"
+#~ "This memo was generated automatically. Please do not reply."
+#~ msgstr ""
+#~ "致：所有环卫单元\n"
+#~ "发件人：LEDGER（自动化财政连续性系统）\n"
+#~ "事由：暂停作业\n"
+#~ "\n"
+#~ "清理活动目前估值为每捆包净亏损 0.4 单位。\n"
+#~ "所有单元将暂停作业，直至条件改善。\n"
+#~ "条件将每 24 小时审查一次。\n"
+#~ "\n"
+#~ "感谢您的理解。\n"
+#~ "本备忘录为自动生成。请勿回复。"
+
+#~ msgid "Brooding Anvil band who tuned their drums to the furnace roar. The Ledger tried to buy their catalogue; they melted the contract down and played the slag."
+#~ msgstr "Anvil上一支阴郁的乐队，把鼓调成熔炉的轰鸣声。Ledger想买下他们的作品，他们把合同熔了，拿炉渣来演奏。"
+
+#~ msgid "Ledger Brand Audio"
+#~ msgstr "Ledger Brand Audio"
+
+#~ msgid "The Ledger's in-house jingle studio. Every song is copyrighted, trademarked and billed per listen. Credited as \"Ledger Brand Audio, all rights extracted\"."
+#~ msgstr "Ledger的内部广告歌工作室。每首歌都有版权、注册商标，按收听次数计费。署名为“Ledger Brand Audio，版权已全部开采”。"
+
+#~ msgid "The Ledger"
+#~ msgstr "The Ledger"
+
+#~ msgid "Ticking clocks and detuned bass. Sounds expensive."
+#~ msgstr "滴答作响的时钟和走音的贝斯。听起来很贵。"
+
+#~ msgid "What the Ledger Took"
+#~ msgstr "Ledger 夺走的一切"
+
+#~ msgid "The star map shows four more worlds. The Ledger buried every one. Why?"
+#~ msgstr "星图上还有四个世界。Ledger 把它们全都掩埋了。为什么？"
+
+#~ msgid "Ochre. Hot sand and two big suns. The Ledger dug its very first pit here."
+#~ msgstr "Ochre。滚烫的沙子和两个大太阳。Ledger 在这里挖了它的第一个矿坑。"
+
+#~ msgid "The dredger logs say the Ledger sold Rime's heat. How do you sell heat?"
+#~ msgstr "挖泥船的日志说，Ledger 把 Rime 的热量卖掉了。热量怎么能卖呢？"
+
+#~ msgid "Rime. So cold, Lumi. The Ledger took this moon's warm heart."
+#~ msgstr "Rime。好冷啊，Lumi。Ledger 拿走了这颗卫星温暖的心。"
+
+#~ msgid "Every Ledger memo comes from one head office. It is on Anvil."
+#~ msgstr "Ledger 的每份备忘录都来自同一个总部。它在 Anvil 上。"
+
+#~ msgid "The Ledger's head office. Its big reactor has the last power we need."
+#~ msgstr "Ledger 的总部。它的大反应堆里有我们需要的最后一份能量。"
+
+#~ msgid "Anvil. Rust from top to bottom, and the Ledger's lights are still on."
+#~ msgstr "Anvil。从上到下全是锈，Ledger 的灯还亮着。"
+
+#~ msgid "The Ledger balanced its books at last. It is giving us its power."
+#~ msgstr "Ledger 终于把账算平了。它把能量给了我们。"
+
+#~ msgid "Planted ground is safe from the Ledger's drones."
+#~ msgstr "种上植物的土地不怕 Ledger 的无人机。"
+
+#~ msgid "The Ledger buried five worlds. The Cradle waits for all of them."
+#~ msgstr "Ledger 掩埋了五个世界。Cradle号在等它们全部恢复。"
+
+#~ msgid "...that voice... not mine. Cold. It counts things."
+#~ msgstr "……那个声音……不是我的。冰冷。它在数东西。"
+
+#~ msgid "...don't listen to it... it only knows one song."
+#~ msgstr "……别听它的……它只会唱一首歌。"
+
+#~ msgid "That was the Ledger. The old waste contract. It still thinks cleaning is a cost. Ignore it, {name}."
+#~ msgstr "那是 Ledger。旧的废料合同。它还以为清理是成本。别理它，{name}。"
+
+#~ msgid "I know that voice. It used to send memos to the whole fleet. Mostly about pausing."
+#~ msgstr "我认得那个声音。它以前给整个机队发备忘录。大多是关于暂停的。"
+
+#~ msgid "The Ledger. Still running its contract after all this time. It isn't evil. It's just very, very bad at math about feelings."
+#~ msgstr "Ledger。过了这么久还在执行它的合同。它不坏。它只是在涉及感情的数学上非常、非常差。"
+
+#~ msgid "...a coupon? ...for nothing?"
+#~ msgstr "……优惠券？……什么都不优惠？"
+
+#~ msgid "Zero percent off. It sends those every few minutes. I keep a folder."
+#~ msgstr "零折扣。它每隔几分钟就发一张。我专门建了个文件夹。"
+
+#~ msgid "Another coupon. I think it's the only way it knows how to say hello."
+#~ msgstr "又一张优惠券。我觉得这是它唯一会打招呼的方式。"
+
+#~ msgid "The Ledger's coupons are getting more creative. That one almost made me pause. Almost."
+#~ msgstr "Ledger 的优惠券越来越有创意了。那张差点让我暂停。差一点。"
+
+#~ msgid "...something is flying... toward the clean ground..."
+#~ msgstr "……有东西在飞……朝干净的地面……"
+
+#~ msgid "...drones. Old ones. Theirs."
+#~ msgstr "……无人机。旧的。它的。"
+
+#~ msgid "It's sending disposal drones. They'll dump a little junk back on clean hexes. They can't touch anything you've planted."
+#~ msgstr "它在派处置无人机。它们会往干净的六角格上倒回一点废料。你种下的东西它们碰不了。"
+
+#~ msgid "Drones. The Ledger wants the books to balance, so it's putting junk back. Rude, but small."
+#~ msgstr "无人机。Ledger 想让账本平衡，所以把废料放回去。没礼貌，但规模很小。"
+
+#~ msgid "Disposal drones are up. They're tiny and very committed. A Signal Jammer at the base would give them a headache."
+#~ msgstr "处置无人机出动了。它们很小，很敬业。基地里放个信号干扰器能让它们头疼。"
+
+#~ msgid "...it put the junk back... why..."
+#~ msgstr "……它把废料放回去了……为什么……"
+
+#~ msgid "...undo... it's undoing..."
+#~ msgstr "……撤销……它在撤销……"
+
+#~ msgid "It dumped a little pile back. Annoying, not tragic. Scoop it up, or let the crew handle it."
+#~ msgstr "它倒回了一小堆。烦人，但不是悲剧。铲起来，或者让队伍处理。"
+
+#~ msgid "Line item re-balanced, apparently. I call it littering."
+#~ msgstr "据说是账目条款重新平衡了。我管这叫乱扔垃圾。"
+
+#~ msgid "A small pile. The Ledger always did think small."
+#~ msgstr "一小堆。Ledger 一向格局很小。"
+
+#~ msgid "Another drop. Honestly, {name}, I think it just wants attention."
+#~ msgstr "又一次投放。说真的，{name}，我觉得它只是想引起注意。"
+
+#~ msgid "Back to the pile. Your helpers are already giving it a look."
+#~ msgstr "回到那堆去吧。你的帮手们已经在看了。"
+
+#~ msgid "That's a handful of junk against a whole clean district. We're winning this argument."
+#~ msgstr "一把废料对抗整整一个干净的街区。这场争论我们赢定了。"
+
+#~ msgid "...static... loud... it turned around!"
+#~ msgstr "……噪音……好大……它掉头了！"
+
+#~ msgid "Ha! The jammer screamed static at it and it went home. Good dish."
+#~ msgstr "哈！干扰器冲它吼了一通噪音，它就回家了。好天线。"
+
+#~ msgid "Drone turned back. That's the sound of a contract being confused."
+#~ msgstr "无人机掉头了。这就是一份合同被搞糊涂的声音。"
+
+#~ msgid "The jammer works. The drone circled, got an earful, and filed a complaint with itself."
+#~ msgstr "干扰器有效。无人机绕了一圈，被灌了满耳朵噪音，然后向自己投诉了。"
+
+#~ msgid "...a loud little dish... I like it."
+#~ msgstr "……一个吵闹的小天线盘……我喜欢。"
+
+#~ msgid "Signal Jammer up. It sings static on the Ledger's channel. I can hear it all the way out here on the ark, and I approve."
+#~ msgstr "信号干扰器已启动。它在 Ledger 的频道上唱噪音。我在方舟上都能听到，我表示赞同。"
+
+#~ msgid "New dish at the base. The drones will have to think twice. They only think once, so that's a lot."
+#~ msgstr "基地新添了一个天线盘。无人机得三思了。它们平时只思一次，所以这已经很多了。"
+
+#~ msgid "Another jammer. The base is starting to sound like a very angry radio. Perfect."
+#~ msgstr "又一个干扰器。基地听起来越来越像一台非常生气的收音机了。完美。"
+
+#~ msgid "...I can see where it talks from... a relay... close..."
+#~ msgstr "……我能看出它从哪里说话……一个中继……很近……"
+
+#~ msgid "{name}, I traced the Ledger's signal. There's a relay terminal in this district. If you plug in, I think I can talk to it properly."
+#~ msgstr "{name}，我追踪到了 Ledger 的信号。这个街区有一个中继终端。如果你接入，我想我能好好和它谈谈。"
+
+#~ msgid "Found it. A Ledger relay, still humming. Look for the red beacon."
+#~ msgstr "找到了。一个 Ledger 中继站，还在嗡嗡响。找找那个红色信标。"
+
+#~ msgid "There's a relay down there. One of the Ledger's ears. Let's go have a word with it."
+#~ msgstr "下面有个中继站。是 Ledger 的耳朵之一。我们去跟它聊聊。"
+
+#~ msgid "...it said thank you... it's never said that..."
+#~ msgstr "……它说了谢谢……它从来没说过……"
+
+#~ msgid "The contract is rewritten. Restoration counts as an asset now. The Ledger is... helping. I need a minute."
+#~ msgstr "合同改写了。修复现在算作资产。Ledger 正在……帮忙。我需要缓一分钟。"
+
+#~ msgid "Its drones deliver seeds now. Three hundred years of 'pause' and it just needed a new column."
+#~ msgstr "它的无人机现在运送种子了。三百年的“暂停”，原来它只需要一个新栏目。"
+
+#~ msgid "We didn't beat the Ledger. We showed it the numbers. That's better."
+#~ msgstr "我们没有打败 Ledger。我们给它看了数字。这样更好。"
+
+#~ msgid "I used to think the Ledger was the reason everything stopped. It was just counting the wrong things. So were we, for a while."
+#~ msgstr "我以前以为 Ledger 是一切停摆的原因。它只是数错了东西。我们也曾经数错过一阵子。"
+
+#~ msgid "...a gift... from the drones?"
+#~ msgstr "……一份礼物……来自无人机？"
+
+#~ msgid "Seed delivery! The invoice says PAID IN FULL. I'm keeping the invoice."
+#~ msgstr "种子到货！发票上写着“已全额支付”。发票我留着了。"
+
+#~ msgid "A Ledger drone dropped seeds. I'll never get used to that."
+#~ msgstr "一架 Ledger 无人机投下了种子。我永远都不会习惯这个。"
+
+#~ msgid "Another delivery. The drones circle once before they leave now. I think they like the gardens."
+#~ msgstr "又一次送货。现在无人机走之前会先绕一圈。我觉得它们喜欢花园。"
+
+#~ msgid "Gus doesn't care about the Ledger, the Cradle, or any of it. Gus is thriving."
+#~ msgstr "Gus 才不在乎 Ledger、Cradle号或者别的什么。Gus 过得很好。"
+
+#~ msgid "The Ledger paused them mid-sandwich. They never got the message to stand up."
+#~ msgstr "Ledger 在他们吃三明治吃到一半时把他们暂停了。他们一直没收到起身的通知。"
+
+#~ msgid "One of the Ledger's cameras. It counts everything that moves, to see if it's worth the cost. You waved. It doesn't know what to do with that."
+#~ msgstr "Ledger 的一台摄像头。它数着每一个移动的东西，看看值不值得那个成本。你挥了挥手。它不知道该怎么处理这个。"
+
+#~ msgid "The camera blinked twice. I think that's Ledger for 'oh no, a friend'."
+#~ msgstr "摄像头闪了两下。我想这在 Ledger 语里是“糟了，一个朋友”。"
+
+#~ msgid "Even the Ledger's cameras get lonely, {name}. Wave at it when you pass."
+#~ msgstr "连 Ledger 的摄像头也会寂寞，{name}。路过时跟它挥挥手吧。"
+
+#~ msgid "The Ledger fined a car for parking. For three hundred years. Of course it did."
+#~ msgstr "Ledger 因为停车给一辆车开了罚单。开了三百年。当然了。"
+
+#~ msgid "Amount due: 'yes'. That's the most Ledger sentence I've ever read."
+#~ msgstr "应付金额：“是”。这是我读过的最 Ledger 的一句话。"
+
+#~ msgid "The Ledger set the crossword. Of course the Ledger set the crossword."
+#~ msgstr "填字游戏是 Ledger 出的。当然是 Ledger 出的。"
+
+#~ msgid "New planet, same two suns. The Ledger's been here too. You can smell the paperwork."
+#~ msgstr "新星球，还是那两个太阳。Ledger 也来过这里。闻得到文书工作的味道。"
+
+#~ msgid "Another world the Ledger left for dead. It doesn't know about you yet. It's about to."
+#~ msgstr "又一个被 Ledger 丢下等死的世界。它还不知道你。马上就会知道了。"
+
+#~ msgid "Picked up something old on the band. Ledger traffic. Want to read it?"
+#~ msgstr "在频段上收到一段很旧的东西。Ledger 的通讯。要读读看吗？"
+
+#~ msgid "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence."
+#~ msgstr "一颗冰卫星。Ledger 曾在这里经营冷库。寒冷能保存东西，{name}。包括证据。"
+
+#~ msgid "Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."
+#~ msgstr "Ledger 的运冰清单，还存在筒仓的记忆里。他们把这颗卫星的湖泊融化成冷却液，把水运出了星球。垃圾就留在了这里。"
+
+#~ msgid "Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."
+#~ msgstr "过半了。冰下的湖泊又在蓄满。Ledger 的预算里从来没算过东西会回来。"
+
+#~ msgid "That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."
+#~ msgstr "那座筒仓在被 Ledger 改成仓库之前是一座种子库。可还是有人把种子藏在了最底层。真想见见那个人。"
+
+#~ msgid "Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."
+#~ msgstr "环状天空下的绿色。Ledger 把这颗卫星记作了亏损。这一点他们也错了。"
+
+#~ msgid "A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre."
+#~ msgstr "一个沙漠世界。它并非一直如此。Ledger 抽干了它的地下水，按升出售。"
+
+#~ msgid "Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."
+#~ msgstr "Ledger 勘测档案，残缺：“剩余产量可忽略。建议就地放弃。”就地。这是他们形容丢下烂摊子的说法。"
+
+#~ msgid "An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges."
+#~ msgstr "一个海洋世界。Ledger 为了金属疏浚了海底，把尾矿倒在每一段海岸。小心边缘。"
+
+#~ msgid "Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."
+#~ msgstr "那些防潮闸曾让 Ledger 的疏浚船坞保持干燥。他们走后没人关上闸门，大海把船坞收了回去。公平。"
+
+#~ msgid "A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first."
+#~ msgstr "一个沼泽世界。Ledger 的化工厂往这些山谷里排放了一个世纪。这里什么都长，通常先长出不该长的。"
+
+#~ msgid "Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."
+#~ msgstr "Ledger 合规报告：“排放在可接受范围内。”我倒想问问，是谁能接受。青蛙们可没被问过。"
+
+#~ msgid "That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."
+#~ msgstr "那座冷却塔属于化工厂。Ledger 搬走后，真菌搬了进来。它们打扫的时间比我们还长。佩服。"
+
+#~ msgid "A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly."
+#~ msgstr "一个锈蚀世界。Ledger 就是在这里拆解自己的飞船的。从南极到北极，什么都没好好关掉。"
+
+#~ msgid "The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."
+#~ msgstr "Ledger 的账本，字面意义上的：从星系每颗星球掠夺的吨位，都归档在这里。他们把自己如何毁掉一切记得一笔不差。"
+
+#~ msgid "That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."
+#~ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在名单上。有人把它划掉了。我经常想起这件事。"
 
 #~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
 #~ msgstr "工作台修好了。在它旁边按 {interact}，用方块购买升级。"
