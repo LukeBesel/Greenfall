@@ -191,15 +191,15 @@ func refresh() -> void:
 	var nxt: Dictionary = hub.level_def(hub.level + 1)
 	_now.text = tr("Now: level %d, %s. Bales sell for +%d%%.") % [hub.level, tr(str(cur.get("name", ""))), int(round(hub.sell_mult() * 100.0))]
 	if nxt.is_empty():
-		_lv_lbl.text = tr("Hub level %d  ·  fully built") % hub.level
+		_lv_lbl.text = tr("Base level %d  ·  fully built") % hub.level
 		_name.text = tr(str(cur.get("name", "")))
 		_desc.text = tr(str(cur.get("desc", "")))
-		_set_gains([tr("Every hub level is built.")])
+		_set_gains([tr("Every base level is built.")])
 		_cost.set_cost({}, " ")
 		_btn.text = tr("Fully built")
 		_btn.disabled = true
 	else:
-		_lv_lbl.text = tr("Next: hub level %d") % (hub.level + 1)
+		_lv_lbl.text = tr("Next: base level %d") % (hub.level + 1)
 		_name.text = tr(str(nxt["name"]))
 		_desc.text = tr(str(nxt.get("desc", "")))
 		_set_gains(level_gains(hub, hub.level + 1))
@@ -221,7 +221,7 @@ func refresh() -> void:
 	var maxed: bool = hub.scrubbers >= int(sd.get("max", 6))
 	var line2: String
 	if locked:
-		line2 = tr("Opens at hub level %d.") % int(sd.get("requires_level", 2))
+		line2 = tr("Opens at base level %d.") % int(sd.get("requires_level", 2))
 	elif maxed:
 		line2 = tr("All built.")
 	else:

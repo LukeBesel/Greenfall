@@ -14,7 +14,7 @@ signal input_device_changed(pad: bool)
 const REBINDABLE: Array = [
 	["move_forward", "Move forward"], ["move_back", "Move back"],
 	["move_left", "Move left"], ["move_right", "Move right"],
-	["scoop", "Scoop junk"], ["cube", "Press a cube"], ["interact", "Interact"], ["drop", "Drop"],
+	["scoop", "Scoop junk"], ["cube", "Make a bale"], ["interact", "Interact"], ["drop", "Drop"],
 	["tool_scoop", "Tool: scoop"], ["tool_plant", "Tool: plant"], ["tool_water", "Tool: water"],
 	["open_upgrades", "Upgrades"], ["open_command", "Command view"], ["open_globe", "Globe map"],
 	["lens_view", "Lens view"], ["open_codex", "Codex"], ["pause", "Pause"],

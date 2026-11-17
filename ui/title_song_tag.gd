@@ -5,7 +5,7 @@ extends Control
 ## starts, then stays subtle.
 
 const BRIGHT_S: float = 5.0
-const SUBTLE: float = 0.42
+const SUBTLE: float = 0.8  # [v10ui] was 0.42: too faint to read
 
 var _label: Label
 var _note: Control
@@ -17,19 +17,30 @@ func _ready() -> void:
 	name = "TitleSongTag"
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)  # [qafix] QA #21: set_anchors_preset kept a 0x0 rect, so the tag sat off-screen
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# [v10ui] Critic 19: the bare text lay on the junk of the title view and could not be read.
+	# It sits on a soft dark plate now, and stays readable after the first bright seconds.
+	var plate := PanelContainer.new()
+	var sb: StyleBoxFlat = UITheme.box(Color(0.03, 0.04, 0.05, 0.66), Color(1.0, 0.96, 0.88, 0.1), 1, 10, 0)
+	sb.content_margin_left = 12
+	sb.content_margin_right = 14
+	sb.content_margin_top = 5
+	sb.content_margin_bottom = 5
+	plate.add_theme_stylebox_override("panel", sb)
+	plate.anchor_left = 1.0
+	plate.anchor_right = 1.0
+	plate.anchor_top = 1.0
+	plate.anchor_bottom = 1.0
+	plate.offset_right = -36
+	plate.offset_bottom = -36
+	plate.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	plate.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(plate)
 	var hb := HBoxContainer.new()
 	hb.add_theme_constant_override("separation", 8)
-	hb.anchor_left = 1.0
-	hb.anchor_right = 1.0
-	hb.anchor_top = 1.0
-	hb.anchor_bottom = 1.0
-	hb.offset_left = -560
-	hb.offset_right = -36
-	hb.offset_top = -64
-	hb.offset_bottom = -36
 	hb.alignment = BoxContainer.ALIGNMENT_END
 	hb.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(hb)
+	plate.add_child(hb)
 	_note = NoteIcon.new()
 	hb.add_child(_note)
 	_label = UITheme.label("", 15, Color(1.0, 0.96, 0.88))

@@ -73,8 +73,8 @@ msgid "Scoop junk"
 msgstr "Recoger chatarra"
 
 #: autoload/Settings.gd:17
-msgid "Press a cube"
-msgstr "Prensar un cubo"
+msgid "Make a bale"
+msgstr "Hacer una paca"
 
 #: autoload/Settings.gd:17
 msgid "Interact"
@@ -273,7 +273,7 @@ msgid "The launch pad is still buried. Put your first robot to work to clear it.
 msgstr "La plataforma de lanzamiento sigue enterrada. Pon a trabajar a tu primer robot para despejarla."
 
 #: automation/hub.gd:173
-msgid "Hub upgraded: %s."
+msgid "Base upgraded: %s."
 msgstr "Base mejorada: %s."
 
 #: automation/hub.gd:204
@@ -416,7 +416,7 @@ msgstr "Requiere investigación: %s."
 
 #: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
 #: ui/stations_panel.gd:98
-msgid "Requires hub level %d."
+msgid "Requires base level %d."
 msgstr "Requiere base de nivel %d."
 
 #: automation/stations.gd:146
@@ -654,7 +654,7 @@ msgstr "FLOREZCAMOS JUNTOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  AGUA  VIDA"
 
-#: planet/orbit_layers.gd:182 robots/sphere/command_overlay.gd:194
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:241 robots/sphere/command_overlay.gd:194
 msgid "Base %d"
 msgstr "Base %d"
 
@@ -840,10 +840,6 @@ msgstr "Primero mejora el cohete"
 msgid "%s site"
 msgstr "Lugar: %s"
 
-#: planet/sites/orbit_sites.gd:241
-msgid "Hub %d"
-msgstr "Base %d"
-
 #: planet/sites/sphere_water.gd:263
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "El agua... veo el fondo. Lumi, algo se mueve ahí abajo."
@@ -957,7 +953,7 @@ msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "Primero planta: pulsa  {tool_plant}  para la semilla"
 
 #: player/patch.gd:412
-msgid "Watering can is empty. Refill at the hub."
+msgid "Watering can is empty. Refill at the base."
 msgstr "Regadera vacía. Rellénala en la base."
 
 #: player/patch.gd:431
@@ -1129,7 +1125,7 @@ msgid "Locked · research %s"
 msgstr "Bloqueado · investigación %s"
 
 #: robots/fleet.gd:149
-msgid "Crew full (%d/%d): upgrade the hub"
+msgid "Crew full (%d/%d): upgrade the base"
 msgstr "Equipo completo (%d/%d): mejora la base"
 
 #: robots/fleet.gd:151 robots/fleet.gd:227
@@ -1155,11 +1151,11 @@ msgid "%s fleet upgraded to %s."
 msgstr "Flota de %s mejorada a %s."
 
 #: robots/robot.gd:247
-msgid "parked at hub"
+msgid "parked at base"
 msgstr "aparcado en la base"
 
 #: robots/robot.gd:247
-msgid "returning to hub"
+msgid "returning to base"
 msgstr "volviendo a la base"
 
 #: robots/robot.gd:249
@@ -1582,7 +1578,7 @@ msgid "E   Open the workbench"
 msgstr "E   Abrir el banco de trabajo"
 
 #: scenes/slice_orbit.gd:1026
-msgid "Upgrades need a workbench. Head back to the hub."
+msgid "Upgrades need a workbench. Head back to the base."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
 #: scenes/slice_orbit.gd:1126 systems/camp/camp.gd:242
@@ -2141,8 +2137,8 @@ msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Aquí no hay nada que recoger. Camina hasta donde haya más basura."
 
 #: story/planet_steps.gd:57
-msgid "Wake station %d of %d"
-msgstr "Despierta la estación %d de %d"
+msgid "Wake base %d of %d"
+msgstr "Despierta la base %d de %d"
 
 #: story/shards.gd:106
 msgid "Something surfaced in the cleared ground. A memory shard."
@@ -3633,6 +3629,10 @@ msgstr "Patio"
 msgid "Base level %d"
 msgstr "Base nivel %d"
 
+#: ui/bench_lists.gd:131
+msgid "Build base level %d"
+msgstr "Construir base nivel %d"
+
 #: ui/bench_tiers.gd:93
 msgid "Build the signal tower first."
 msgstr "Construye primero la torre de señal."
@@ -3840,16 +3840,16 @@ msgid "RESTART"
 msgstr "REINICIO"
 
 #: ui/checklist_card.gd:110
-msgid "RESTART CHECKLIST"
-msgstr "LISTA DE REINICIO"
+msgid "FIRST STEPS"
+msgstr "PRIMEROS PASOS"
 
 #: ui/checklist_card.gd:110
 msgid "NEXT STEP"
 msgstr "SIGUIENTE PASO"
 
 #: ui/checklist_card.gd:148
-msgid "RESTART CHECKLIST  ·  DONE"
-msgstr "LISTA DE REINICIO  ·  COMPLETA"
+msgid "FIRST STEPS  ·  DONE"
+msgstr "PRIMEROS PASOS  ·  COMPLETO"
 
 #: ui/codex_artists.gd:33
 msgid "ARTISTS"
@@ -4680,18 +4680,18 @@ msgid "How much is clean"
 msgstr "Cuánto está limpio"
 
 #: ui/globe_view.gd:611
-msgid "%d of %d areas clean"
-msgstr "%d de %d zonas limpias"
+msgid "%d of %d bases clean"
+msgstr "%d de %d bases limpias"
 
 #: ui/globe_view.gd:691
-msgid "of the ground around your hubs is clean"
+msgid "of the ground around your bases is clean"
 msgstr "del suelo alrededor de tus bases está limpio"
 
 #: ui/globe_view.gd:693
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "del planeta recuperado  ·  %s de %s hexágonos de tierra"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:354
+#: ui/goals_panel.gd:231 ui/list_detail.gd:509 ui/objective_card.gd:358
 msgid "DONE"
 msgstr "HECHO"
 
@@ -4760,11 +4760,11 @@ msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr "Ahora: nivel %d, %s. Las balas se venden por +%d%%."
 
 #: ui/hub_panel.gd:194
-msgid "Hub level %d  ·  fully built"
+msgid "Base level %d  ·  fully built"
 msgstr "Base nivel %d  ·  completa"
 
 #: ui/hub_panel.gd:197
-msgid "Every hub level is built."
+msgid "Every base level is built."
 msgstr "Todos los niveles de la base están construidos."
 
 #: ui/hub_panel.gd:199
@@ -4772,7 +4772,7 @@ msgid "Fully built"
 msgstr "Completa"
 
 #: ui/hub_panel.gd:202
-msgid "Next: hub level %d"
+msgid "Next: base level %d"
 msgstr "Siguiente: base nivel %d"
 
 #: ui/hub_panel.gd:209
@@ -4788,7 +4788,7 @@ msgid "Continue in the full game"
 msgstr "Continúa en el juego completo"
 
 #: ui/hub_panel.gd:224
-msgid "Opens at hub level %d."
+msgid "Opens at base level %d."
 msgstr "Se abre con la base en nivel %d."
 
 #: ui/hub_panel.gd:226
@@ -6234,15 +6234,15 @@ msgid "Ready to launch"
 msgstr "Listo para despegar"
 
 #: ui/system_map.gd:726 ui/system_map.gd:741
-msgid "Choose a district"
-msgstr "Elegir un distrito"
+msgid "Choose a base"
+msgstr "Elegir una base"
 
 #: ui/system_map.gd:726
 msgid "Launch from the rocket pad"
 msgstr "Despega desde la plataforma del cohete"
 
 #: ui/system_map.gd:731
-msgid "Hubs on this planet"
+msgid "Bases on this planet"
 msgstr "Bases en este planeta"
 
 #: ui/system_map.gd:760
@@ -10889,12 +10889,12 @@ msgstr "Base a nivel 4"
 
 #: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
 #: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
-msgid "Fly to the next station"
-msgstr "Vuela a la siguiente estación"
+msgid "Fly to the next base"
+msgstr "Vuela a la siguiente base"
 
 #: data/goals.json:goals[hub_wake_5].text
-msgid "Wake station 5 of 6"
-msgstr "Despierta la estación 5 de 6"
+msgid "Wake base 5 of 6"
+msgstr "Despierta la base 5 de 6"
 
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
@@ -10921,8 +10921,8 @@ msgid "Base to level 5"
 msgstr "Base a nivel 5"
 
 #: data/goals.json:goals[hub_wake_6].text
-msgid "Wake station 6 of 6"
-msgstr "Despierta la estación 6 de 6"
+msgid "Wake base 6 of 6"
+msgstr "Despierta la base 6 de 6"
 
 #: data/goals.json:goals[home_drive_5].text
 msgid "Build the Mk V Orbital drive"
@@ -11329,8 +11329,8 @@ msgid "Seed a new world"
 msgstr "Siembra un mundo nuevo"
 
 #: data/goals.json:goals[late_charm_20].text
-msgid "Reach 20 charm in one district"
-msgstr "Alcanza 20 de encanto en un distrito"
+msgid "Reach 20 charm at one base"
+msgstr "Alcanza 20 de encanto en una base"
 
 #: data/goals.json:goals[late_charm_20].short
 msgid "Reach 20 charm"
@@ -12126,8 +12126,8 @@ msgid "Something green is waking out there. Plant the first seed."
 msgstr "Algo verde está despertando ahí fuera. Planta la primera semilla."
 
 #: data/objectives.json:objectives[hub_wake_2].text
-msgid "Wake station 2 of 6"
-msgstr "Despierta la estación 2 de 6"
+msgid "Wake base 2 of 6"
+msgstr "Despierta la base 2 de 6"
 
 #: data/objectives.json:objectives[hex10].desc
 msgid "More clean ground, more room to plant. Robots help."
@@ -12150,8 +12150,8 @@ msgid "A bigger base makes more power, and power runs robots. Rebuild it at the 
 msgstr "Una base más grande da más energía, y la energía mueve a los robots. Reconstrúyela en el banco de trabajo."
 
 #: data/objectives.json:objectives[hub_wake_3].text
-msgid "Wake station 3 of 6"
-msgstr "Despierta la estación 3 de 6"
+msgid "Wake base 3 of 6"
+msgstr "Despierta la base 3 de 6"
 
 #: data/objectives.json:objectives[haul].desc
 msgid "Workbench, Bots tab. It carries bales to the scale for you."
@@ -12218,8 +12218,8 @@ msgid "One more base level, Lumi. Bigger machines need a stronger base."
 msgstr "Un nivel de base más, Lumi. Las máquinas grandes necesitan una base más fuerte."
 
 #: data/objectives.json:objectives[hub_wake_4].text
-msgid "Wake station 4 of 6"
-msgstr "Despierta la estación 4 de 6"
+msgid "Wake base 4 of 6"
+msgstr "Despierta la base 4 de 6"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -16651,6 +16651,87 @@ msgstr "Ese pórtico desguazó la flota minera cuando se acabó el dinero. El ar
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Press a cube"
+#~ msgstr "Prensar un cubo"
+
+#~ msgid "Reach 20 charm in one district"
+#~ msgstr "Alcanza 20 de encanto en un distrito"
+
+#~ msgid "Hub upgraded: %s."
+#~ msgstr "Base mejorada: %s."
+
+#~ msgid "Requires hub level %d."
+#~ msgstr "Requiere base de nivel %d."
+
+#~ msgid "Hub %d"
+#~ msgstr "Base %d"
+
+#~ msgid "Watering can is empty. Refill at the hub."
+#~ msgstr "Regadera vacía. Rellénala en la base."
+
+#~ msgid "Crew full (%d/%d): upgrade the hub"
+#~ msgstr "Equipo completo (%d/%d): mejora la base"
+
+#~ msgid "parked at hub"
+#~ msgstr "aparcado en la base"
+
+#~ msgid "returning to hub"
+#~ msgstr "volviendo a la base"
+
+#~ msgid "Upgrades need a workbench. Head back to the hub."
+#~ msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
+
+#~ msgid "Wake station %d of %d"
+#~ msgstr "Despierta la estación %d de %d"
+
+#~ msgid "RESTART CHECKLIST"
+#~ msgstr "LISTA DE REINICIO"
+
+#~ msgid "RESTART CHECKLIST  ·  DONE"
+#~ msgstr "LISTA DE REINICIO  ·  COMPLETA"
+
+#~ msgid "%d of %d areas clean"
+#~ msgstr "%d de %d zonas limpias"
+
+#~ msgid "of the ground around your hubs is clean"
+#~ msgstr "del suelo alrededor de tus bases está limpio"
+
+#~ msgid "Hub level %d  ·  fully built"
+#~ msgstr "Base nivel %d  ·  completa"
+
+#~ msgid "Every hub level is built."
+#~ msgstr "Todos los niveles de la base están construidos."
+
+#~ msgid "Next: hub level %d"
+#~ msgstr "Siguiente: base nivel %d"
+
+#~ msgid "Opens at hub level %d."
+#~ msgstr "Se abre con la base en nivel %d."
+
+#~ msgid "Choose a district"
+#~ msgstr "Elegir un distrito"
+
+#~ msgid "Hubs on this planet"
+#~ msgstr "Bases en este planeta"
+
+#~ msgid "Fly to the next station"
+#~ msgstr "Vuela a la siguiente estación"
+
+#~ msgid "Wake station 5 of 6"
+#~ msgstr "Despierta la estación 5 de 6"
+
+#~ msgid "Wake station 6 of 6"
+#~ msgstr "Despierta la estación 6 de 6"
+
+#~ msgid "Wake station 2 of 6"
+#~ msgstr "Despierta la estación 2 de 6"
+
+#~ msgid "Wake station 3 of 6"
+#~ msgstr "Despierta la estación 3 de 6"
+
+#~ msgid "Wake station 4 of 6"
+#~ msgstr "Despierta la estación 4 de 6"
 
 #~ msgid "Buy an upgrade: press  {interact}  at the bench"
 #~ msgstr "Compra una mejora: pulsa  {interact}  en el banco"

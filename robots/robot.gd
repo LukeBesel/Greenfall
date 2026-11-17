@@ -244,7 +244,7 @@ func _stay() -> bool:
 func status_text() -> String:
 	var f: Fleet = _fleet()
 	if f and f.mode_of(self) == "recall":
-		return _t("parked at hub") if global_position.distance_to(_park_pos()) < 2.5 else _t("returning to hub")
+		return _t("parked at base") if global_position.distance_to(_park_pos()) < 2.5 else _t("returning to base")
 	if _idling:
 		return _t("idle · %s") % _t(_idle_reason) if _idle_reason != "" else _t("idle")
 	match role():

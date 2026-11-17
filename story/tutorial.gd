@@ -78,6 +78,17 @@ func done() -> bool:
 	return step >= STEPS.size()
 
 
+## [v10ui] Critic 14: the card's picture for each target kind (the step's "pic" must match the
+## thing its marker points at: the bench is the gear, junk the scoop, the bin the bin).
+const TARGET_PICS: Dictionary = {"bench": "gear", "piece": "scoop", "pad": "bin"}
+const STEP_PICS: Dictionary = {"repair": "gear", "scoop": "scoop", "dump": "bin", "upgrade": "gear"}
+
+
+## [v10ui] The picture of the current step (ui/step_icons.gd kind), "" when done.
+func picture() -> String:
+	return "" if done() else str(STEP_PICS.get(step_id(), ""))
+
+
 func step_id() -> String:
 	return "" if done() else str(STEPS[step]["id"])
 

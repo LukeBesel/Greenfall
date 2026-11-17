@@ -52,6 +52,8 @@ var _plabel: String = ""  # the progress number, also while chips stand in for i
 ## into the trash bin", the first seed's "water it") replaces the card's text while it lasts.
 var substep: String = ""
 var substep_progress: Array = [-1.0, ""]
+## [v10ui] Critic 14: the sub-step's own picture (the bench step showed the bin of "Fill the bin").
+var substep_pic: String = ""
 
 
 func _ready() -> void:
@@ -217,6 +219,7 @@ func _set_texts(def: Dictionary) -> void:
 		if raw != "" and objectives and (objectives.situation_price or raw == ListDetail.short_text(objectives.call("_step_price"))):
 			raw = ""
 		set_title(substep)
+		_pic.set_kind(substep_pic if substep_pic != "" else picture_of(def))
 		_why.text = raw
 		_why.add_theme_color_override("font_color", HINT)
 		_why.visible = raw != ""
@@ -338,8 +341,9 @@ static func icon_of(def: Dictionary) -> String:
 
 
 ## [v2guide] Sets (or clears, with "") the sub-step shown in place of the objective; plain text.
-func set_substep(text: String, pr: Array = [-1.0, ""]) -> void:
+func set_substep(text: String, pr: Array = [-1.0, ""], pic: String = "") -> void:
 	substep_progress = pr
+	substep_pic = pic if text != "" else ""
 	if text == substep:
 		return
 	substep = text

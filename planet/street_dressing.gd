@@ -2482,11 +2482,12 @@ func _build_name_sign(broken: bool) -> void:
 	_deco.box(board_xf.translated_local(Vector3(0, -0.67, 0.02)), Vector3(4.9, 0.07, 0.1), trim)
 	var txt: String = district.to_upper()
 	if broken:
-		var chars: PackedStringArray = txt.split("")
-		for i: int in chars.size():
-			if chars[i] != " " and _rng.randf() < 0.35:
-				chars[i] = " "
-		txt = "".join(chars)
+		# [v10ui] Critic 17: a third of the letters used to drop out ("OL T W"), which reads as a
+		# glitch, not as an old sign. The broken board keeps its name (faded ink, hanging board);
+		# the draws stay so the rest of the dressing lands where it did.
+		for i: int in txt.length():
+			if txt[i] != " ":
+				_rng.randf()
 	var ink: Color = Color(0.96, 0.92, 0.78) if _sign_bg.get_luminance() < 0.5 else Color(0.35, 0.12, 0.08)
 	ink.a = 0.6 if broken else 0.92
 	_label(txt, board_xf.translated_local(Vector3(0, 0.14, 0.05)), 96, minf(0.0058, 4.3 / (txt.length() * 96 * 0.62)), ink)

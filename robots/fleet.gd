@@ -146,7 +146,7 @@ func build_block_reason(type_id: String) -> String:
 			return Research.robot_lock_text(type_id)
 		return tr("Locked · research %s") % tr(str(Research.def(Research.robot_requirement(type_id)).get("name", "?")))
 	if join_crew(type_id) == "":
-		return tr("Crew full (%d/%d): upgrade the hub") % [crew_size(crew_of_type(type_id)), crew_cap()]
+		return tr("Crew full (%d/%d): upgrade the base") % [crew_size(crew_of_type(type_id)), crew_cap()]
 	if not GameState.can_afford("parts", build_parts(type_id)):  # [ui2] builds cost Parts + cubes
 		return tr("Not enough parts")
 	if not GameState.can_afford("cubes", build_cost(type_id)):

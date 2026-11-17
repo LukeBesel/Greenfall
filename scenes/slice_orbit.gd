@@ -1023,7 +1023,7 @@ func open_upgrades() -> void:
 			hud.call("peek_hints")
 		if not GameState.flags.get("bench_hint_seen", false):
 			GameState.flags["bench_hint_seen"] = true
-			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
+			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the base."), "info")
 		return
 	if not Camp.bench_ok() and not DevHooks.has("open"):  # the first E repairs the broken bench
 		var camp: Camp = w.get("camp")

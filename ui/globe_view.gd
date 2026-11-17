@@ -87,7 +87,7 @@ var _hint: PromptLabel
 var hub_count: Callable = Callable()
 ## [v10ui] Owner, playtest 3 #109: "see how many sections you have left on the planet and what %
 ## you have done". With this set (the round game) the map is the planet's progress view: always
-## live and free, a whole-number "N% clean" over the base areas, "X of Y areas clean" and one row
+## live and free, a whole-number "N% clean" over the base areas, "X of Y bases clean" and one row
 ## per area (picture, name, bar, %, a tick when clean; an area not visited yet is a locked "?").
 ## Returns [{name, ok, n, kind: home|awake|asleep|locked, here}], in the order of the base path.
 var areas_fn: Callable = Callable()
@@ -188,7 +188,7 @@ func _ready() -> void:
 	_bar.add_theme_stylebox_override("fill", UITheme.box(_legend_col(PlanetData.State.CLEAN), Color(0, 0, 0, 0), 0, 4, 0))
 	_bar.add_theme_stylebox_override("background", UITheme.box(Color(_legend_col(PlanetData.State.JUNK), 0.35), Color(0, 0, 0, 0), 0, 4, 0))
 	b1.add_child(_bar)
-	_areas_lbl = UITheme.label("", 15, CREAM)  # [v10ui] "2 of 6 areas clean"
+	_areas_lbl = UITheme.label("", 15, CREAM)  # [v10ui] "2 of 6 bases clean"
 	_areas_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_areas_lbl.visible = false
 	b1.add_child(_areas_lbl)
@@ -608,7 +608,7 @@ func _refresh_progress() -> void:
 		_card_title.text = tr(str(Economy.planet.get("name", "Verdance")))
 		_card_sub.text = tr("How much is clean")
 	_bar.value = float(pr["frac"]) * 100.0
-	_areas_lbl.text = tr("%d of %d areas clean") % [int(pr["done"]), int(pr["total"])]
+	_areas_lbl.text = tr("%d of %d bases clean") % [int(pr["done"]), int(pr["total"])]
 	_areas_lbl.visible = true
 	_area_rows.visible = true
 	_legend.visible = true
@@ -688,7 +688,7 @@ func _area_row(a: Dictionary) -> Control:
 func headline(cleaned: int, land: int) -> Array:
 	if planet_fraction_fn.is_valid():
 		var f: float = clampf(float(planet_fraction_fn.call()), 0.0, 1.0)
-		return ["%s %%" % HUD.fmt_small_pct(100.0 * f), tr("of the ground around your hubs is clean"), f]
+		return ["%s %%" % HUD.fmt_small_pct(100.0 * f), tr("of the ground around your bases is clean"), f]
 	var frac: float = float(cleaned) / maxf(land, 1)
 	return ["%.3f %%" % (100.0 * frac), tr("of the planet reclaimed  ·  %s of %s land hexes") % [_num(cleaned), _num(land)], frac]
 

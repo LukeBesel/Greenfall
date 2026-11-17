@@ -82,7 +82,7 @@ static func block_reason(hub_level: int) -> String:
 		return TranslationServer.translate("Fully upgraded.")
 	var req: int = int(nd.get("requires_level", 1))
 	if hub_level < req:
-		return TranslationServer.translate("Requires hub level %d.") % req
+		return TranslationServer.translate("Requires base level %d.") % req
 	if not Hub.can_pay(nd.get("cost", {})):
 		return TranslationServer.translate("Not enough materials.")
 	return ""
