@@ -160,8 +160,7 @@ class CostRow extends HBoxContainer:
 			l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			add_child(l)
 			if not ok and show_missing:  # [ui2] say what's missing, not just "red"
-				var miss: float = ceilf(v - GameState.get_currency(id).to_float())
-				var ml: Label = UITheme.label(TranslationServer.translate("need %s") % Settings.fmt(BigNum.from_float(miss)), maxi(font_size - 4, 12), Color(BenchKit.SHORT, 0.85))
+				var ml: Label = UITheme.label(TranslationServer.translate("need %s") % Currencies.missing_text(id, v), maxi(font_size - 4, 12), Color(BenchKit.SHORT, 0.85))
 				ml.add_theme_constant_override("outline_size", 0)
 				ml.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 				add_child(ml)

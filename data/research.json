@@ -17,9 +17,9 @@
   "branches": [
     {"id": "cleaning", "name": "Cleaning", "color": "#ffb342"},
     {"id": "robotics", "name": "Robotics", "color": "#66b8ff"},
-    {"id": "botany", "name": "Botany", "color": "#8fdc8a"},
-    {"id": "hydrology", "name": "Hydrology", "color": "#5fd6d0"},
-    {"id": "logistics", "name": "Logistics", "color": "#d39cff"}
+    {"id": "botany", "name": "Plants", "color": "#8fdc8a"},
+    {"id": "hydrology", "name": "Water", "color": "#5fd6d0"},
+    {"id": "logistics", "name": "Hauling", "color": "#d39cff"}
   ],
   "nodes": [
     {"id": "scoop_beam", "branch": "cleaning", "tier": 0, "icon": "beam", "name": "Scoop Beam", "desc": "A soft blue guide beam on the scoop. Lumi reaches a little further.", "cost": 250, "time_s": 30, "requires": [], "effects": [{"stat": "scoop_reach", "mode": "add", "amount": 0.5}]},

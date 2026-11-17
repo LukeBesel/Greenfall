@@ -128,7 +128,7 @@ static func _base(world: Node) -> Array:
 			out.append({"id": "hub_level", "cat": "base", "icon": "hex", "icon_set": "ui", "name": "%s  ·  %s" % [TranslationServer.translate("Base level %d") % (hub.level + 1), _tr(str(nxt.get("name", "")))],
 				"desc": _tr(str(nxt.get("desc", ""))), "lv": hub.level, "max": (hub.data.get("levels", []) as Array).size(),
 				"price": cost, "state": _state(cost), "table": table, "requires": "",
-				"action": _tr("Build hub level %d") % (hub.level + 1), "act": func() -> bool: return hub.upgrade()})
+				"action": TranslationServer.translate("Build base level %d") % (hub.level + 1), "act": func() -> bool: return hub.upgrade()})
 	for e: Dictionary in HubBuilds.available(world, "tiered"):
 		var id: String = str(e["id"])
 		var reason: String = str(e.get("reason", ""))

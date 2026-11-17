@@ -422,12 +422,12 @@ func progress() -> Array:
 		var bn: float = float(BenchTiers.next_cost().get("cubes", 0.0))
 		if bn > 0.0 and BenchTiers.block_reason(world) == "":
 			var bh: float = minf(GameState.get_currency("cubes").to_float(), bn)
-			return [bh / bn, "%s / %s" % [Settings.fmt(BigNum.from_float(bh)), Settings.fmt(BigNum.from_float(bn))]]
+			return [bh / bn, "%s / %s" % [Currencies.have_text(bh), Settings.fmt(BigNum.from_float(bn))]]
 	if str(def.get("type", "")) == "bench" and BenchTiers.tier() < int(def.get("target", 2)):  # [v1guide] saving up: cubes toward the tier
 		var need: float = float(BenchTiers.next_cost().get("cubes", 0.0))
 		if need > 0.0:
 			var have: float = minf(GameState.get_currency("cubes").to_float(), need)
-			return [have / need, "%s / %s" % [Settings.fmt(BigNum.from_float(have)), Settings.fmt(BigNum.from_float(need))]]
+			return [have / need, "%s / %s" % [Currencies.have_text(have), Settings.fmt(BigNum.from_float(need))]]
 	var tgt: float = target_of(def)
 	var v: float = minf(value_of(def), tgt)
 	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower", "flag", "build"]:
@@ -437,7 +437,7 @@ func progress() -> Array:
 		var need_c: float = float(pc.get("cubes", 0.0))
 		var have_c: float = GameState.get_currency("cubes").to_float()
 		if need_c > 0.0 and have_c < need_c:
-			return [have_c / need_c, "%s / %s" % [Settings.fmt(BigNum.from_float(have_c)), Settings.fmt(BigNum.from_float(need_c))]]
+			return [have_c / need_c, "%s / %s" % [Currencies.have_text(have_c), Settings.fmt(BigNum.from_float(need_c))]]
 	if str(def.get("type", "")) == "core":
 		return [v / maxf(tgt, 0.0001), "%d%%" % int(floor(v * 100.0))]
 	if v < tgt and str(def.get("key", "")) in ORDINAL_KEYS and not _step_price().is_empty():
@@ -1058,7 +1058,7 @@ func _explain_signal() -> void:
 	if w and w.awake():  # [qafix] WREN only gets through once a tower is up; otherwise the toast says it
 		w.speak(tr("Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."), 1)  # [v4calm] the lamp is quiet now
 	else:  # [qafix] QA P1 #2: one line, not WREN and a toast saying the same thing
-		EventBus.toast.emit(tr("BURIED PART: walk toward it until the reading peaks, then dig it up."), "hint")
+		EventBus.toast.emit(tr("A part is buried nearby! Walk toward it until it beeps, then dig it up."), "hint")
 
 
 # --- Dev ---------------------------------------------------------------------------------------

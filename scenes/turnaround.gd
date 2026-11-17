@@ -67,6 +67,8 @@ func _ready() -> void:
 	var scr: GDScript = load(script_path)
 	_model = scr.new()
 	add_child(_model)
+	if DevHooks.has("happy") and _model.has_method("set_happy"):  # [v10ui] the face at a mood (title 0.9)
+		_model.call("set_happy", DevHooks.get_f("happy", 0.5))
 	_cam = Camera3D.new()
 	_cam.fov = 40.0
 	add_child(_cam)
@@ -80,6 +82,8 @@ func _ready() -> void:
 		[Vector3(2.0, 3.4, -2.2), Vector3(0, 0.4, 0)],            # high 3/4 (gameplay camera)
 		[Vector3(0.5, h + 0.6, -1.4), Vector3(0, h + 0.45, 0)],   # close-up on the head/lens
 	]
+	if DevHooks.has("face-only"):  # [v10ui] just the close-up
+		_views = [_views[5]]
 
 
 func _process(delta: float) -> void:
