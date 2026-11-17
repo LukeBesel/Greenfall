@@ -6,6 +6,8 @@ extends RefCounted
 ## players kept that churn constant, and when the mixer thread was stalled (a busy machine) it
 ## could still be copying retired details (a freed bus StringName). Fades now write only when the
 ## level really moved, at most 20 times a second per player; big jumps go through at once.
+## [v10quit] The race itself is closed by audio/mix_barrier.gd (no mix step can outlive two
+## frames now); this throttle stays as it saves the AudioServer work.
 
 const MIN_STEP_DB: float = 0.25
 const MIN_GAP_MS: int = 50
