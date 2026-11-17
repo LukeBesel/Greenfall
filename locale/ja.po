@@ -264,19 +264,19 @@ msgstr "%s 長押し"
 msgid "Hex clean! Green can grow here now."
 msgstr "ヘックスがきれいになった！ここに緑が育つよ。"
 
-#: automation/hub.gd:89
+#: automation/hub.gd:86
 msgid "Locked. Upgrade your base to level %d to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル%dに上げよう。"
 
-#: automation/hub.gd:90
-msgid "The launch pad is still buried. Put your first robot to work to clear it."
-msgstr "発射台はまだゴミにうまっている。最初のロボットを働かせて片づけよう。"
+#: automation/hub.gd:87
+msgid "No shuttle yet. Build it at the workbench when WREN finds a place to fly to."
+msgstr "シャトルはまだない。WREN が行き先を見つけたら、作業台で建てよう。"
 
-#: automation/hub.gd:173
+#: automation/hub.gd:170
 msgid "Hub upgraded: %s."
 msgstr "基地をアップグレード：%s。"
 
-#: automation/hub.gd:204
+#: automation/hub.gd:201
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "空気清浄機が稼働。ファンが長い、ほこりっぽいため息とともに回りだした。"
 
@@ -406,7 +406,7 @@ msgid "Rocket upgraded: %s."
 msgstr "ロケットをアップグレード：%s。"
 
 #: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
-#: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:97
+#: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "建設完了。"
 
@@ -414,7 +414,7 @@ msgstr "建設完了。"
 msgid "Requires research: %s."
 msgstr "研究が必要：%s。"
 
-#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
+#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:93
 #: ui/stations_panel.gd:98
 msgid "Requires hub level %d."
 msgstr "基地レベル %d が必要。"
@@ -456,9 +456,9 @@ msgid "Requires hub level %d or research: %s."
 msgstr "基地レベル %d または研究「%s」が必要。"
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:157
-#: systems/camp/hub_builds.gd:167 systems/camp/hub_builds.gd:177 systems/camp/yard_builds.gd:91
-#: ui/telescope_panel.gd:41
+#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:159
+#: systems/camp/hub_builds.gd:169 systems/camp/hub_builds.gd:179 systems/camp/hub_builds.gd:208
+#: systems/camp/yard_builds.gd:98 ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "素材が足りません。"
 
@@ -804,35 +804,35 @@ msgstr "%d つの基地がそろった。ロケットでドライブを建造し
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:122
+#: planet/sites/orbit_sites.gd:124
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:144
+#: planet/sites/orbit_sites.gd:146
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:182
+#: planet/sites/orbit_sites.gd:184
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:220
+#: planet/sites/orbit_sites.gd:222
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:220
+#: planet/sites/orbit_sites.gd:222
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:240
+#: planet/sites/orbit_sites.gd:242
 msgid "%s site"
 msgstr "%sの地点"
 
-#: planet/sites/orbit_sites.gd:241
+#: planet/sites/orbit_sites.gd:243
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -1195,7 +1195,7 @@ msgstr "%s で補給中（%d%%）"
 msgid "base barrel"
 msgstr "基地のたる"
 
-#: robots/robot.gd:263 systems/research.gd:404
+#: robots/robot.gd:263 systems/research.gd:416
 msgid "tank"
 msgstr "タンク"
 
@@ -1295,7 +1295,7 @@ msgstr "給水タンクを設置。近くの水やりロボはここで補給す
 msgid "WATER"
 msgstr "水"
 
-#: robots/fabricator/bot_fabricator.gd:94 systems/camp/yard_builds.gd:89
+#: robots/fabricator/bot_fabricator.gd:94 systems/camp/yard_builds.gd:96
 msgid "Not yet."
 msgstr "まだだめ。"
 
@@ -1564,19 +1564,19 @@ msgstr "ヘックス クリーン！  +%s"
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:613
+#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:613
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1039
+#: scenes/slice_orbit.gd:1060
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1139 systems/camp/camp.gd:242
+#: scenes/slice_orbit.gd:1160 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "作業台が直った！そばで %s を押してアップグレードを買おう。"
 
@@ -2223,63 +2223,63 @@ msgstr "<< LEDGER // オフレコ >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:241
+#: story/objectives.gd:282
 msgid "Reward: %s"
 msgstr "報酬：%s"
 
-#: story/objectives.gd:475
+#: story/objectives.gd:521
 msgid "Objective complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:502
+#: story/objectives.gd:548
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:943
+#: story/objectives.gd:1021
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "ベーラー設置！チェストを満たして [%s] でベールを作ろう。"
 
-#: story/objectives.gd:965 story/objectives.gd:1187
+#: story/objectives.gd:1043 story/objectives.gd:1267
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:981
+#: story/objectives.gd:1059
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:983
+#: story/objectives.gd:1061
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:1188
+#: story/objectives.gd:1268
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:1204 story/objectives.gd:1217
+#: story/objectives.gd:1284 story/objectives.gd:1297
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
-#: story/objectives.gd:1209
+#: story/objectives.gd:1289
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1292
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1292
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:1226
+#: story/objectives.gd:1306
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
-#: story/objectives.gd:1227
+#: story/objectives.gd:1307
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:1238
+#: story/objectives.gd:1318
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -2643,11 +2643,11 @@ msgstr "デフォルト"
 msgid "Best fleet: %s"
 msgstr "最高のフリート：%s"
 
-#: systems/designs.gd:154
+#: systems/designs.gd:156
 msgid "New look unlocked: %s. Try it on at the Locker."
 msgstr "新しい見た目を解放：%s。ロッカーで試してみよう。"
 
-#: systems/designs.gd:193
+#: systems/designs.gd:195
 msgid "Design: %s"
 msgstr "デザイン：%s"
 
@@ -3040,99 +3040,99 @@ msgstr "すでに予約済み"
 msgid "Queue is full"
 msgstr "予約がいっぱい"
 
-#: systems/research.gd:344 ui/codex_screen.gd:886
+#: systems/research.gd:356 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr "%d秒"
 
-#: systems/research.gd:391 systems/research.gd:452
+#: systems/research.gd:403 systems/research.gd:464
 msgid "Research: %s"
 msgstr "研究：%s"
 
-#: systems/research.gd:401
+#: systems/research.gd:413
 msgid "scoop reach"
 msgstr "スコップの届く距離"
 
-#: systems/research.gd:401
+#: systems/research.gd:413
 msgid "scoop width"
 msgstr "スコップの幅"
 
-#: systems/research.gd:401
+#: systems/research.gd:413
 msgid "compartment size"
 msgstr "コンテナ容量"
 
-#: systems/research.gd:402
+#: systems/research.gd:414
 msgid "bale value"
 msgstr "ベールの価値"
 
-#: systems/research.gd:402
+#: systems/research.gd:414
 msgid "magnet radius"
 msgstr "磁石の範囲"
 
-#: systems/research.gd:402
+#: systems/research.gd:414
 msgid "scoop speed"
 msgstr "スコップの速さ"
 
-#: systems/research.gd:403
+#: systems/research.gd:415
 msgid "field-note cubes"
 msgstr "フィールドノートのキューブ"
 
-#: systems/research.gd:403
+#: systems/research.gd:415
 msgid "research speed"
 msgstr "研究速度"
 
-#: systems/research.gd:403
+#: systems/research.gd:415
 msgid "lake clarity"
 msgstr "湖の透明度"
 
-#: systems/research.gd:404
+#: systems/research.gd:416
 msgid "speed"
 msgstr "速度"
 
-#: systems/research.gd:404
+#: systems/research.gd:416
 msgid "work rate"
 msgstr "作業効率"
 
-#: systems/research.gd:404
+#: systems/research.gd:416
 msgid "range"
 msgstr "範囲"
 
-#: systems/research.gd:405
+#: systems/research.gd:417
 msgid "bale quality"
 msgstr "ベールの品質"
 
-#: systems/research.gd:405
+#: systems/research.gd:417
 msgid "carry"
 msgstr "運搬量"
 
-#: systems/research.gd:406
+#: systems/research.gd:418
 msgid "plant growth"
 msgstr "植物の成長"
 
-#: systems/research.gd:406
+#: systems/research.gd:418
 msgid "seeds per bloom"
 msgstr "花1輪あたりの種"
 
-#: systems/research.gd:427
+#: systems/research.gd:439
 msgid "Unlocks the %s robot"
 msgstr "ロボット %s を解放"
 
-#: systems/research.gd:429
+#: systems/research.gd:441
 msgid "Unlocks %s seeds"
 msgstr "%sの種を解放"
 
-#: systems/research.gd:431
+#: systems/research.gd:443
 msgid "Unlocks: %s"
 msgstr "解放：%s"
 
-#: systems/research.gd:604
+#: systems/research.gd:616
 msgid "While you were away, research finished: %s."
 msgstr "留守のあいだに研究が完了：%s。"
 
-#: systems/research.gd:635
+#: systems/research.gd:647
 msgid "New robot plans: %s. %s"
 msgstr "新しいロボットの設計図：%s。%s"
 
-#: systems/research.gd:640
+#: systems/research.gd:652
 msgid "Research complete: %s."
 msgstr "研究完了：%s。"
 
@@ -3180,23 +3180,19 @@ msgstr "購入できません"
 msgid "Requests reward (%d of %d requests)"
 msgstr "依頼の報酬（%d / %d 件）"
 
-#: systems/robot_builder.gd:517
-msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
-msgstr "最初のボットにはキャタピラとゆらゆら植物が付いてきた。ハブがレベル%dになったらロッカーで飾ろう。"
-
-#: systems/robot_builder.gd:527
+#: systems/robot_builder.gd:536
 msgid "A Settler Fragment was tucked inside it: +%d parts."
 msgstr "中に入植者の欠片が入っていた：+%d パーツ。"
 
-#: systems/robot_builder.gd:559
+#: systems/robot_builder.gd:569
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "%s が緑で縁起のいいものを見つけた：幸運のクローバー！"
 
-#: systems/robot_builder.gd:562
+#: systems/robot_builder.gd:572
 msgid "%s spotted a Settler Fragment glinting in the junk: +%d parts."
 msgstr "%s がガラクタの中で光る入植者の欠片を見つけた：+%d パーツ。"
 
-#: systems/robot_builder.gd:569
+#: systems/robot_builder.gd:579
 msgid "%s spotted a %s: %s."
 msgstr "%sが%sを見つけた：%s。"
 
@@ -3230,43 +3226,47 @@ msgstr "月光"
 msgid "New CD: %s by %s, from %s"
 msgstr "新しいCD：%s（%s、%s出身）"
 
-#: systems/camp/camp.gd:414
+#: systems/camp/bot_bay.gd:94
+msgid "E   open the Bot Bay"
+msgstr "E   ボットベイを開く"
+
+#: systems/camp/camp.gd:427
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s（Lv %d）：アップグレード完了"
 
-#: systems/camp/camp.gd:420
+#: systems/camp/camp.gd:433
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s（Lv %d）：%s にアップグレード（%s）"
 
-#: systems/camp/camp.gd:426
+#: systems/camp/camp.gd:439
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "ゴミ箱をアップグレード：%s。ここではベールが %d%% で売れる。"
 
-#: systems/camp/hub_builds.gd:150
+#: systems/camp/hub_builds.gd:152
 msgid "Trash bin, level %d of %d"
 msgstr "ゴミ箱 レベル%d / %d"
 
-#: systems/camp/hub_builds.gd:155
+#: systems/camp/hub_builds.gd:157
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WRENは中継塔を通してしか話せない。段階が上がるほど声がはっきりする。"
 
-#: systems/camp/hub_builds.gd:159
+#: systems/camp/hub_builds.gd:161
 msgid "Tier %d of %d"
 msgstr "ティア %d / %d"
 
-#: systems/camp/hub_builds.gd:168 systems/camp/hub_builds.gd:179
+#: systems/camp/hub_builds.gd:170 systems/camp/hub_builds.gd:181
 msgid "%d of %d built"
 msgstr "%d / %d 建設済み"
 
-#: systems/camp/hub_builds.gd:195
+#: systems/camp/hub_builds.gd:197
 msgid "Museum"
 msgstr "博物館"
 
-#: systems/camp/hub_builds.gd:196
+#: systems/camp/hub_builds.gd:198
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "ルミが見つけたすべてを台座に飾るホール。次に来る誰かのために。"
 
-#: systems/camp/locker_cabinet.gd:33 tools/ui_audit_run.gd:223
+#: systems/camp/locker_cabinet.gd:45 tools/ui_audit_run.gd:223
 msgid "E   open locker"
 msgstr "E   ロッカーを開く"
 
@@ -3274,11 +3274,11 @@ msgstr "E   ロッカーを開く"
 msgid "%s built."
 msgstr "%s を建てた。"
 
-#: systems/camp/yard_builds.gd:83
+#: systems/camp/yard_builds.gd:90
 msgid "Repair the workbench first."
 msgstr "まず作業台を修理しよう。"
 
-#: systems/camp/yard_builds.gd:89
+#: systems/camp/yard_builds.gd:96
 msgid "Grow your first seed first."
 msgstr "まずは最初の種を育てよう。"
 
@@ -3559,7 +3559,7 @@ msgstr "Glim はまだスキャン中。少し待ってからもう一度。"
 msgid "Close"
 msgstr "閉じる"
 
-#: tools/walk_opening.gd:573 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:592 ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "終了"
 
@@ -3764,7 +3764,7 @@ msgstr[0] "まずヘックスを%d個片づけよう。"
 msgid "Not yet. Keep playing."
 msgstr "まだだよ。プレイを続けよう。"
 
-#: ui/bench_tiers.gd:124
+#: ui/bench_tiers.gd:127
 msgid "%s installed. New workbench tab: %s"
 msgstr "%s を取り付けた。作業台の新しいタブ：%s"
 
@@ -3863,12 +3863,8 @@ msgid "Retire"
 msgstr "引退"
 
 #: ui/builder_panel.gd:172
-msgid ""
-"No robots yet. Build one in the Bots tab, then style it here.\n"
-"Your first robot comes with treads and a bobble plant."
-msgstr ""
-"まだロボットがいない。ボットタブで1台作って、ここでコーディネートしよう。\n"
-"最初のロボットはキャタピラとゆらゆらプラント付き。"
+msgid "No robots yet. Build one at the Bot Bay, then style it here."
+msgstr "ロボットはまだいない。ボットベイで1体作ってから、ここで飾ろう。"
 
 #: ui/builder_panel.gd:227
 msgid "PART SLOTS"
@@ -4015,7 +4011,7 @@ msgstr "図鑑"
 msgid "Watch the story"
 msgstr "ストーリーを見る"
 
-#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:172
+#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:185
 msgid "Close  [%s]"
 msgstr "閉じる  [%s]"
 
@@ -4378,8 +4374,8 @@ msgid "NEW DESIGN UNLOCKED"
 msgstr "新しいデザインを解放"
 
 #: ui/design_toast.gd:66
-msgid "Wear it at the workbench: Cosmetics"
-msgstr "作業台で着替え：見た目"
+msgid "Wear it at the Locker"
+msgstr "ロッカーで着替えよう"
 
 #: ui/document_view.gd:45
 msgid "{interact}  [k]/ Esc  [/k]close"
@@ -6593,11 +6589,15 @@ msgstr "入手方法：  %s"
 msgid "Research"
 msgstr "研究"
 
-#: ui/upgrades_screen.gd:154
+#: ui/upgrades_screen.gd:27
+msgid "BOT BAY"
+msgstr "ボットベイ"
+
+#: ui/upgrades_screen.gd:167
 msgid "WORKBENCH"
 msgstr "作業台"
 
-#: ui/upgrades_screen.gd:278
+#: ui/upgrades_screen.gd:292
 msgid "Not open yet. Keep playing."
 msgstr "まだ開いていません。プレイを続けよう。"
 
@@ -7568,6 +7568,22 @@ msgstr "ロボット保育所"
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
 msgstr "花壇のある塀に囲まれた芝生。引退したロボットたちが庭の世話をして、チームを手伝ってくれる。"
+
+#: data/camp.json:builds.bot_bay.name data/workbench.json:tiers[1].name
+msgid "Bot Bay"
+msgstr "ボットベイ"
+
+#: data/camp.json:builds.bot_bay.desc
+msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
+msgstr "庭にある専用のロボット工房。近づいて E を押すとロボットを作れる。"
+
+#: data/camp.json:builds.shuttle.name
+msgid "Shuttle"
+msgstr "シャトル"
+
+#: data/camp.json:builds.shuttle.desc
+msgid "A small one-seat shuttle, built on the pad. It flies Lumi to the other old bases."
+msgstr "発着場で組み立てる、1人乗りの小さなシャトル。Lumiをほかの古い基地へ運ぶ。"
 
 #: data/camp.json:builds.glim.name data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
@@ -8942,8 +8958,8 @@ msgid "+5% bale value"
 msgstr "ベールの価値 +5%"
 
 #: data/designs.json:designs[bolt].unlock.text
-msgid "Press 50 bales or build 5 robots"
-msgstr "ベールを50個圧縮するか、ロボットを5台つくる"
+msgid "Press 600 bales or build 15 robots"
+msgstr "ベールを600個プレスするか、ロボットを15体作る"
 
 #: data/designs.json:designs[bolt].unlock.any[0].unit
 msgid "bales"
@@ -8966,8 +8982,8 @@ msgid "+8% plant growth"
 msgstr "植物の成長 +8%"
 
 #: data/designs.json:designs[sprout].unlock.text
-msgid "Grow 20 plants to bloom"
-msgstr "植物を20本咲かせる"
+msgid "Grow 80 plants to bloom"
+msgstr "植物を80本咲かせる"
 
 #: data/designs.json:designs[sprout].unlock.any[0].unit
 msgid "blooms"
@@ -8986,8 +9002,8 @@ msgid "+10% cleaning streak time"
 msgstr "清掃コンボの時間 +10%"
 
 #: data/designs.json:designs[pixel].unlock.text
-msgid "Pet 5 animals or find 5 Collection trinkets"
-msgstr "動物を5回なでるか、コレクションの小物を5個見つける"
+msgid "Pet 25 animals or find 12 Collection trinkets"
+msgstr "動物を25回なでるか、コレクションの小物を12個見つける"
 
 #: data/designs.json:designs[pixel].unlock.any[0].unit
 msgid "animals"
@@ -9034,8 +9050,8 @@ msgid "+6% robot work speed"
 msgstr "ロボットの作業速度 +6%"
 
 #: data/designs.json:designs[patch].unlock.text
-msgid "Repair an outpost or upgrade a robot fleet to Mk III"
-msgstr "前哨基地を修理するか、ロボットのフリートを Mk III にする"
+msgid "Repair 3 outposts or upgrade a robot fleet to Mk III"
+msgstr "前哨基地を3つ直すか、ロボット隊を Mk III に強化する"
 
 #: data/designs.json:designs[patch].unlock.any[0].unit
 msgid "outposts"
@@ -12416,32 +12432,28 @@ msgid "First, one clean hex. Clear the outlined one. Green starts on clean groun
 msgstr "まずはきれいなヘックスをひとつ。枠のついたヘックスを片づけて。緑はきれいな地面から始まるの。"
 
 #: data/objectives.json:objectives[bench2].text
-msgid "Add a Bot Bay to the bench"
-msgstr "作業台にボットベイを追加する"
-
-#: data/objectives.json:objectives[bench2].short
-msgid "Add a Bot Bay"
-msgstr "ボットベイを付ける"
+msgid "Build the Bot Bay"
+msgstr "ボットベイを建てる"
 
 #: data/objectives.json:objectives[bench2].desc
-msgid "Upgrades tab. A planet is too big for one small robot."
-msgstr "アップグレードタブ。惑星は小さなロボットひとりには大きすぎる。"
+msgid "Workbench, Build tab. One small robot can't do it all."
+msgstr "作業台の建造タブ。小さなロボット1体では手が足りない。"
 
 #: data/objectives.json:objectives[bench2].lines
-msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
-msgstr "作業台にボットベイを追加して。ひとりでやらなくていいんだよ。"
+msgid "Build a Bot Bay, Lumi. You shouldn't do this alone."
+msgstr "ボットベイを建てて、Lumi。ひとりでやることじゃないよ。"
 
 #: data/objectives.json:objectives[robot].text
 msgid "Build your first robot"
 msgstr "最初のロボットを作る"
 
 #: data/objectives.json:objectives[robot].desc
-msgid "Workbench, Bots tab. Robots clean for you."
-msgstr "作業台のボットタブ。ロボットが代わりに掃除してくれる。"
+msgid "Press {interact} at the Bot Bay. Robots clean for you."
+msgstr "ボットベイで {interact} を押す。ロボットが代わりに片づけてくれる。"
 
 #: data/objectives.json:objectives[robot].lines
-msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
-msgstr "ボットベイがうなってる！お手伝いを作れるよ。作業台のボットタブを見てみて。"
+msgid "The Bot Bay hums! Walk up to it and build a helper."
+msgstr "ボットベイがうなってる！近づいて、助っ人を作ろう。"
 
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
@@ -12479,17 +12491,73 @@ msgstr "掃除を続けよう。きれいな地面から種が見つかる。"
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "外で緑の何かが目を覚ましかけてる。最初の種を植えて。"
 
-#: data/objectives.json:objectives[hub_wake_2].text
-msgid "Wake station 2 of 6"
-msgstr "ステーション2/6を目覚めさせよう"
+#: data/objectives.json:objectives[robot2].text
+msgid "Build a second robot"
+msgstr "2体目のロボットを作る"
+
+#: data/objectives.json:objectives[robot2].desc
+msgid "Bot Bay. Two robots clean twice as fast."
+msgstr "ボットベイ。ロボット2体なら2倍速く片づく。"
+
+#: data/objectives.json:objectives[robot2].lines
+msgid "One robot can't clean a whole planet. Build another at the Bot Bay."
+msgstr "ロボット1体では星まるごとは片づけられない。ボットベイでもう1体作ろう。"
+
+#: data/objectives.json:objectives[haul].desc
+msgid "Bot Bay. It sells your robots' bales for you."
+msgstr "ボットベイ。ロボットのベールを代わりに売ってくれる。"
+
+#: data/objectives.json:objectives[haul].hint
+msgid "Keep cleaning. WREN is looking for Haul Bug plans."
+msgstr "掃除を続けよう。WREN が Haul Bug の設計図を探している。"
+
+#: data/objectives.json:objectives[haul].lines
+msgid "A Haul Bug carries bales for you. Build one at the Bot Bay."
+msgstr "Haul Bug がベールを運んでくれる。ボットベイで1体作ろう。"
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "More clean ground, more room to plant. Robots help."
-msgstr "きれいな地面が増えると、植える場所も増える。ロボットも手伝うよ。"
+msgid "Your robots help. Clean ground is room to plant."
+msgstr "ロボットも手伝う。きれいな地面は植える場所になる。"
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
 msgstr "次はきれいなヘックスを10個。ロボットたちはあなたを見て覚えているよ、Lumi。"
+
+#: data/objectives.json:objectives[map].text
+msgid "Look at the map"
+msgstr "マップを見る"
+
+#: data/objectives.json:objectives[map].desc
+msgid "Press {open_globe}. See how much of Verdance is clean."
+msgstr "{open_globe} を押す。Verdance がどれだけきれいになったか見よう。"
+
+#: data/objectives.json:objectives[map].lines
+msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
+msgstr "マップを開いて、Lumi。Verdance がまだどれだけ埋もれているかわかるよ。"
+
+#: data/objectives.json:objectives[shuttle].text
+msgid "Build the shuttle"
+msgstr "シャトルを建てる"
+
+#: data/objectives.json:objectives[shuttle].desc
+msgid "Workbench, Build tab. Garden Row has the seeds we need."
+msgstr "作業台の建造タブ。ガーデン通りに必要な種がある。"
+
+#: data/objectives.json:objectives[shuttle].lines
+msgid "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green."
+msgstr "Lumi、種の缶がもうすぐ空っぽ。種がないと Verdance は緑にならない。"
+
+#: data/objectives.json:objectives[shuttle].lines
+msgid "I found another old base, far away: Garden Row. It kept a big seed store."
+msgstr "遠くに、もうひとつ古い基地を見つけたよ。ガーデン通り。大きな種の倉庫があったんだ。"
+
+#: data/objectives.json:objectives[shuttle].lines
+msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
+msgstr "歩くには遠すぎる。ここの片づけはロボットに任せられる。発着場でシャトルを建てて、飛んで行こう。"
+
+#: data/objectives.json:objectives[hub_wake_2].text
+msgid "Wake station 2 of 6"
+msgstr "ステーション2/6を目覚めさせよう"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12506,18 +12574,6 @@ msgstr "基地が大きくなると電気が増えて、その電気でロボッ
 #: data/objectives.json:objectives[hub_wake_3].text
 msgid "Wake station 3 of 6"
 msgstr "ステーション3/6を目覚めさせよう"
-
-#: data/objectives.json:objectives[haul].desc
-msgid "Workbench, Bots tab. It carries bales to the scale for you."
-msgstr "作業台のボットタブ。ベールをはかりまで運んでくれる。"
-
-#: data/objectives.json:objectives[haul].hint
-msgid "Keep cleaning. WREN is looking for Haul Bug plans."
-msgstr "掃除を続けよう。WREN が Haul Bug の設計図を探している。"
-
-#: data/objectives.json:objectives[haul].lines
-msgid "A Haul Bug carries bales for you. Build one at the bench."
-msgstr "Haul Bug がベールを運んでくれるよ。作業台で作って。"
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -13668,8 +13724,8 @@ msgid "A sprout on a spring. Boings when it brakes."
 msgstr "バネの上の新芽。ブレーキをかけるとボヨンと揺れる。"
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
-msgid "Comes with your first robot"
-msgstr "最初のロボットに付属"
+msgid "Comes with the Locker"
+msgstr "ロッカーについてくる"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
@@ -15566,13 +15622,9 @@ msgstr "作業台"
 msgid "The repaired bench: upgrades for Lumi and things to build."
 msgstr "直した作業台：Lumi のアップグレードと、建てられるもの。"
 
-#: data/workbench.json:tiers[1].name
-msgid "Workbench Mk II: Bot Bay"
-msgstr "作業台 Mk II：ボットベイ"
-
 #: data/workbench.json:tiers[1].desc
-msgid "Adds a bot bay. Build helpers that keep cleaning while you work."
-msgstr "ボットベイを追加。あなたが働く間も掃除を続けるヘルパーを作ろう。"
+msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
+msgstr "庭にある専用のロボット工房。近づいて E を押すと、きみが働くあいだも片づけ続ける助っ人を作れる。"
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
@@ -15799,8 +15851,8 @@ msgid "Every lit hex on that map is yours. I counted. Twice."
 msgstr "地図で光ってるヘックスは全部君のもの。数えたよ。2回。"
 
 #: data/wren_lines.json:first_robot_hint
-msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
-msgstr "パーツが足りれば作業台で助っ人を組み立てられる。ボットタブ、ボタンひとつ。"
+msgid "With enough parts, the Bot Bay can put a helper together. One button."
+msgstr "パーツが足りれば、ボットベイで助っ人を組み立てられる。ボタンひとつでね。"
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
@@ -17185,6 +17237,73 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "The launch pad is still buried. Put your first robot to work to clear it."
+#~ msgstr "発射台はまだゴミにうまっている。最初のロボットを働かせて片づけよう。"
+
+#~ msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
+#~ msgstr "最初のボットにはキャタピラとゆらゆら植物が付いてきた。ハブがレベル%dになったらロッカーで飾ろう。"
+
+#~ msgid ""
+#~ "No robots yet. Build one in the Bots tab, then style it here.\n"
+#~ "Your first robot comes with treads and a bobble plant."
+#~ msgstr ""
+#~ "まだロボットがいない。ボットタブで1台作って、ここでコーディネートしよう。\n"
+#~ "最初のロボットはキャタピラとゆらゆらプラント付き。"
+
+#~ msgid "Wear it at the workbench: Cosmetics"
+#~ msgstr "作業台で着替え：見た目"
+
+#~ msgid "Press 50 bales or build 5 robots"
+#~ msgstr "ベールを50個圧縮するか、ロボットを5台つくる"
+
+#~ msgid "Grow 20 plants to bloom"
+#~ msgstr "植物を20本咲かせる"
+
+#~ msgid "Pet 5 animals or find 5 Collection trinkets"
+#~ msgstr "動物を5回なでるか、コレクションの小物を5個見つける"
+
+#~ msgid "Repair an outpost or upgrade a robot fleet to Mk III"
+#~ msgstr "前哨基地を修理するか、ロボットのフリートを Mk III にする"
+
+#~ msgid "Add a Bot Bay to the bench"
+#~ msgstr "作業台にボットベイを追加する"
+
+#~ msgid "Add a Bot Bay"
+#~ msgstr "ボットベイを付ける"
+
+#~ msgid "Upgrades tab. A planet is too big for one small robot."
+#~ msgstr "アップグレードタブ。惑星は小さなロボットひとりには大きすぎる。"
+
+#~ msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
+#~ msgstr "作業台にボットベイを追加して。ひとりでやらなくていいんだよ。"
+
+#~ msgid "Workbench, Bots tab. Robots clean for you."
+#~ msgstr "作業台のボットタブ。ロボットが代わりに掃除してくれる。"
+
+#~ msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
+#~ msgstr "ボットベイがうなってる！お手伝いを作れるよ。作業台のボットタブを見てみて。"
+
+#~ msgid "More clean ground, more room to plant. Robots help."
+#~ msgstr "きれいな地面が増えると、植える場所も増える。ロボットも手伝うよ。"
+
+#~ msgid "Workbench, Bots tab. It carries bales to the scale for you."
+#~ msgstr "作業台のボットタブ。ベールをはかりまで運んでくれる。"
+
+#~ msgid "A Haul Bug carries bales for you. Build one at the bench."
+#~ msgstr "Haul Bug がベールを運んでくれるよ。作業台で作って。"
+
+#~ msgid "Comes with your first robot"
+#~ msgstr "最初のロボットに付属"
+
+#~ msgid "Workbench Mk II: Bot Bay"
+#~ msgstr "作業台 Mk II：ボットベイ"
+
+#~ msgid "Adds a bot bay. Build helpers that keep cleaning while you work."
+#~ msgstr "ボットベイを追加。あなたが働く間も掃除を続けるヘルパーを作ろう。"
+
+#~ msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
+#~ msgstr "パーツが足りれば作業台で助っ人を組み立てられる。ボットタブ、ボタンひとつ。"
 
 #~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
 #~ msgstr "作業台を修理した。作業台で {interact} を押すとキューブでアップグレードできる。"

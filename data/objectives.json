@@ -104,7 +104,7 @@
     {
       "id": "bench2",
       "text": "Build the Bot Bay",
-      "desc": "Workbench, Build tab. A planet is too big for one small robot.",
+      "desc": "Workbench, Build tab. One small robot can't do it all.",
       "type": "bench",
       "target": 2,
       "lines": [
@@ -114,7 +114,7 @@
     {
       "id": "robot",
       "text": "Build your first robot",
-      "desc": "Walk to the Bot Bay and press {interact}. Robots clean for you.",
+      "desc": "Press {interact} at the Bot Bay. Robots clean for you.",
       "type": "robot",
       "key": "any",
       "target": 1,
@@ -171,7 +171,7 @@
     {
       "id": "haul",
       "text": "Build a Haul Bug",
-      "desc": "Bot Bay. It carries bales to the scale, so cubes come in by themselves.",
+      "desc": "Bot Bay. It sells your robots' bales for you.",
       "hint": "Keep cleaning. WREN is looking for Haul Bug plans.",
       "wait_flag": "haul_rig",
       "type": "robot",
@@ -184,7 +184,7 @@
     {
       "id": "hex10",
       "text": "Clean 10 hexes",
-      "desc": "Your robots clean with you. More clean ground, more room to plant.",
+      "desc": "Your robots help. Clean ground is room to plant.",
       "type": "stat",
       "key": "hexes_cleaned",
       "target": 10,
@@ -214,7 +214,7 @@
       "say_all": true,
       "lines": [
         "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green.",
-        "I found another old station, far away: Garden Row. It kept a big seed store.",
+        "I found another old base, far away: Garden Row. It kept a big seed store.",
         "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
       ]
     },

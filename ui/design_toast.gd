@@ -63,7 +63,7 @@ func _ready() -> void:
 	vb.add_child(_tag)
 	_buff = UITheme.label("", 15, UITheme.GREEN)
 	vb.add_child(_buff)
-	vb.add_child(UITheme.label(tr("Wear it at the workbench: Cosmetics"), 13, UITheme.MUTED))
+	vb.add_child(UITheme.label(tr("Wear it at the Locker"), 13, UITheme.MUTED))
 	_panel.modulate.a = 0.0
 	_play_next()
 

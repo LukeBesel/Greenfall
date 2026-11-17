@@ -264,19 +264,19 @@ msgstr "mantén %s"
 msgid "Hex clean! Green can grow here now."
 msgstr "¡Hexágono limpio! Aquí ya puede crecer el verde."
 
-#: automation/hub.gd:89
+#: automation/hub.gd:86
 msgid "Locked. Upgrade your base to level %d to build the launch pad."
 msgstr "Bloqueado. Sube tu base al nivel %d para construir la plataforma de lanzamiento."
 
-#: automation/hub.gd:90
-msgid "The launch pad is still buried. Put your first robot to work to clear it."
-msgstr "La plataforma de lanzamiento sigue enterrada. Pon a trabajar a tu primer robot para despejarla."
+#: automation/hub.gd:87
+msgid "No shuttle yet. Build it at the workbench when WREN finds a place to fly to."
+msgstr "Aún no hay lanzadera. Constrúyela en el banco de trabajo cuando WREN encuentre adónde volar."
 
-#: automation/hub.gd:173
+#: automation/hub.gd:170
 msgid "Hub upgraded: %s."
 msgstr "Base mejorada: %s."
 
-#: automation/hub.gd:204
+#: automation/hub.gd:201
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "Depurador de aire en marcha. Los ventiladores arrancan con un largo suspiro polvoriento."
 
@@ -406,7 +406,7 @@ msgid "Rocket upgraded: %s."
 msgstr "Cohete mejorado: %s."
 
 #: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
-#: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:97
+#: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "Construido."
 
@@ -414,7 +414,7 @@ msgstr "Construido."
 msgid "Requires research: %s."
 msgstr "Requiere investigación: %s."
 
-#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
+#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:93
 #: ui/stations_panel.gd:98
 msgid "Requires hub level %d."
 msgstr "Requiere base de nivel %d."
@@ -456,9 +456,9 @@ msgid "Requires hub level %d or research: %s."
 msgstr "Requiere base nivel %d o la investigación: %s."
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:157
-#: systems/camp/hub_builds.gd:167 systems/camp/hub_builds.gd:177 systems/camp/yard_builds.gd:91
-#: ui/telescope_panel.gd:41
+#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:159
+#: systems/camp/hub_builds.gd:169 systems/camp/hub_builds.gd:179 systems/camp/hub_builds.gd:208
+#: systems/camp/yard_builds.gd:98 ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "Materiales insuficientes."
 
@@ -805,35 +805,35 @@ msgstr "Las %d bases están en pie. Construye el propulsor en el cohete."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:122
+#: planet/sites/orbit_sites.gd:124
 msgid "The rocket is in flight."
 msgstr "El cohete está en vuelo."
 
-#: planet/sites/orbit_sites.gd:144
+#: planet/sites/orbit_sites.gd:146
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:182
+#: planet/sites/orbit_sites.gd:184
 msgid "E   Rocket: choose a destination"
 msgstr "E   Cohete: elige un destino"
 
-#: planet/sites/orbit_sites.gd:220
+#: planet/sites/orbit_sites.gd:222
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:220
+#: planet/sites/orbit_sites.gd:222
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "Upgrade the rocket first"
 msgstr "Primero mejora el cohete"
 
-#: planet/sites/orbit_sites.gd:240
+#: planet/sites/orbit_sites.gd:242
 msgid "%s site"
 msgstr "Lugar: %s"
 
-#: planet/sites/orbit_sites.gd:241
+#: planet/sites/orbit_sites.gd:243
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -1197,7 +1197,7 @@ msgstr "recargando en: %s (%d%%)"
 msgid "base barrel"
 msgstr "barril de la base"
 
-#: robots/robot.gd:263 systems/research.gd:404
+#: robots/robot.gd:263 systems/research.gd:416
 msgid "tank"
 msgstr "tanque"
 
@@ -1297,7 +1297,7 @@ msgstr "Tanque de agua colocado. Los regadores cercanos recargarán aquí."
 msgid "WATER"
 msgstr "AGUA"
 
-#: robots/fabricator/bot_fabricator.gd:94 systems/camp/yard_builds.gd:89
+#: robots/fabricator/bot_fabricator.gd:94 systems/camp/yard_builds.gd:96
 msgid "Not yet."
 msgstr "Todavía no."
 
@@ -1570,19 +1570,19 @@ msgstr "¡HEXÁGONO LIMPIO!  +%s"
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:613
+#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:613
 msgid "E   Fix the workbench"
 msgstr "E   Arreglar el banco de trabajo"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   Abrir el banco de trabajo"
 
-#: scenes/slice_orbit.gd:1039
+#: scenes/slice_orbit.gd:1060
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice_orbit.gd:1139 systems/camp/camp.gd:242
+#: scenes/slice_orbit.gd:1160 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "¡Banco de trabajo arreglado! Pulsa %s en él para comprar mejoras."
 
@@ -2229,63 +2229,63 @@ msgstr "<< LEDGER // EXTRAOFICIAL >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:241
+#: story/objectives.gd:282
 msgid "Reward: %s"
 msgstr "Recompensa: %s"
 
-#: story/objectives.gd:475
+#: story/objectives.gd:521
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo cumplido  ·  %s"
 
-#: story/objectives.gd:502
+#: story/objectives.gd:548
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo cumplido  ·  %s"
 
-#: story/objectives.gd:943
+#: story/objectives.gd:1021
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "¡Empacadora lista! Llena tu cofre y pulsa [%s] para una bala."
 
-#: story/objectives.gd:965 story/objectives.gd:1187
+#: story/objectives.gd:1043 story/objectives.gd:1267
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Tu pecho está lleno. Pulsa [%s] para hacer un fardo."
 
-#: story/objectives.gd:981
+#: story/objectives.gd:1059
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Tu detector ha encontrado una pieza de robot enterrada cerca. Sigue la lectura PIEZA ENTERRADA; pita cuando estás justo encima."
 
-#: story/objectives.gd:983
+#: story/objectives.gd:1061
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIEZA ENTERRADA: camina hacia ella hasta que la lectura llegue al máximo y desentiérrala."
 
-#: story/objectives.gd:1188
+#: story/objectives.gd:1268
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Tu pecho está lleno. Llévalo al cubo."
 
-#: story/objectives.gd:1204 story/objectives.gd:1217
+#: story/objectives.gd:1284 story/objectives.gd:1297
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesa demasiado. Mejora la Fuerza de elevación en el banco."
 
-#: story/objectives.gd:1209
+#: story/objectives.gd:1289
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Tu pecho está lleno. Vuelve a casa: el cubo está bajo el humo alto."
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1292
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Lleva tu fardo a casa: la báscula está bajo el humo alto."
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1292
 msgid "Carry your bale to the scale by the bin."
 msgstr "Lleva tu fardo a la báscula, junto al cubo."
 
-#: story/objectives.gd:1226
+#: story/objectives.gd:1306
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "El cohete espera en la plataforma. Casa es lo primero de su lista."
 
-#: story/objectives.gd:1227
+#: story/objectives.gd:1307
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Vuelve a casa: sigue el rayo hasta el humo alto."
 
-#: story/objectives.gd:1238
+#: story/objectives.gd:1318
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Aquí no hay nada que recoger. Camina hasta donde haya más basura."
 
@@ -2649,11 +2649,11 @@ msgstr "Por defecto"
 msgid "Best fleet: %s"
 msgstr "Mejor flota: %s"
 
-#: systems/designs.gd:154
+#: systems/designs.gd:156
 msgid "New look unlocked: %s. Try it on at the Locker."
 msgstr "Nuevo aspecto desbloqueado: %s. Pruébatelo en la Taquilla."
 
-#: systems/designs.gd:193
+#: systems/designs.gd:195
 msgid "Design: %s"
 msgstr "Diseño: %s"
 
@@ -3052,99 +3052,99 @@ msgstr "Ya en cola"
 msgid "Queue is full"
 msgstr "La cola está llena"
 
-#: systems/research.gd:344 ui/codex_screen.gd:886
+#: systems/research.gd:356 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr "%d s"
 
-#: systems/research.gd:391 systems/research.gd:452
+#: systems/research.gd:403 systems/research.gd:464
 msgid "Research: %s"
 msgstr "Investigación: %s"
 
-#: systems/research.gd:401
+#: systems/research.gd:413
 msgid "scoop reach"
 msgstr "alcance de pala"
 
-#: systems/research.gd:401
+#: systems/research.gd:413
 msgid "scoop width"
 msgstr "anchura de pala"
 
-#: systems/research.gd:401
+#: systems/research.gd:413
 msgid "compartment size"
 msgstr "tamaño del compartimento"
 
-#: systems/research.gd:402
+#: systems/research.gd:414
 msgid "bale value"
 msgstr "valor de pacas"
 
-#: systems/research.gd:402
+#: systems/research.gd:414
 msgid "magnet radius"
 msgstr "radio del imán"
 
-#: systems/research.gd:402
+#: systems/research.gd:414
 msgid "scoop speed"
 msgstr "velocidad de pala"
 
-#: systems/research.gd:403
+#: systems/research.gd:415
 msgid "field-note cubes"
 msgstr "cubos de notas de campo"
 
-#: systems/research.gd:403
+#: systems/research.gd:415
 msgid "research speed"
 msgstr "velocidad de investigación"
 
-#: systems/research.gd:403
+#: systems/research.gd:415
 msgid "lake clarity"
 msgstr "claridad del lago"
 
-#: systems/research.gd:404
+#: systems/research.gd:416
 msgid "speed"
 msgstr "velocidad"
 
-#: systems/research.gd:404
+#: systems/research.gd:416
 msgid "work rate"
 msgstr "ritmo de trabajo"
 
-#: systems/research.gd:404
+#: systems/research.gd:416
 msgid "range"
 msgstr "alcance"
 
-#: systems/research.gd:405
+#: systems/research.gd:417
 msgid "bale quality"
 msgstr "calidad de pacas"
 
-#: systems/research.gd:405
+#: systems/research.gd:417
 msgid "carry"
 msgstr "carga"
 
-#: systems/research.gd:406
+#: systems/research.gd:418
 msgid "plant growth"
 msgstr "crecimiento de plantas"
 
-#: systems/research.gd:406
+#: systems/research.gd:418
 msgid "seeds per bloom"
 msgstr "semillas por flor"
 
-#: systems/research.gd:427
+#: systems/research.gd:439
 msgid "Unlocks the %s robot"
 msgstr "Desbloquea el robot %s"
 
-#: systems/research.gd:429
+#: systems/research.gd:441
 msgid "Unlocks %s seeds"
 msgstr "Desbloquea semillas: %s"
 
-#: systems/research.gd:431
+#: systems/research.gd:443
 msgid "Unlocks: %s"
 msgstr "Desbloquea: %s"
 
-#: systems/research.gd:604
+#: systems/research.gd:616
 msgid "While you were away, research finished: %s."
 msgstr "Mientras no estabas, terminó una investigación: %s."
 
-#: systems/research.gd:635
+#: systems/research.gd:647
 msgid "New robot plans: %s. %s"
 msgstr "Nuevos planos de robot: %s. %s"
 
-#: systems/research.gd:640
+#: systems/research.gd:652
 msgid "Research complete: %s."
 msgstr "Investigación completada: %s."
 
@@ -3192,23 +3192,19 @@ msgstr "No se puede comprar"
 msgid "Requests reward (%d of %d requests)"
 msgstr "Recompensa de encargos (%d de %d encargos)"
 
-#: systems/robot_builder.gd:517
-msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
-msgstr "Tu primer bot vino con orugas y una planta saltarina. Dale estilo en la Taquilla cuando la base llegue al nivel %d."
-
-#: systems/robot_builder.gd:527
+#: systems/robot_builder.gd:536
 msgid "A Settler Fragment was tucked inside it: +%d parts."
 msgstr "Dentro había un fragmento de los Colonos: +%d piezas."
 
-#: systems/robot_builder.gd:559
+#: systems/robot_builder.gd:569
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "¡%s vio algo verde y afortunado: un trébol de la suerte!"
 
-#: systems/robot_builder.gd:562
+#: systems/robot_builder.gd:572
 msgid "%s spotted a Settler Fragment glinting in the junk: +%d parts."
 msgstr "%s vio un fragmento de los Colonos brillando entre la chatarra: +%d piezas."
 
-#: systems/robot_builder.gd:569
+#: systems/robot_builder.gd:579
 msgid "%s spotted a %s: %s."
 msgstr "%s encontró: %s, %s."
 
@@ -3242,43 +3238,47 @@ msgstr "Luz de luna"
 msgid "New CD: %s by %s, from %s"
 msgstr "Nuevo CD: %s de %s, de %s"
 
-#: systems/camp/camp.gd:414
+#: systems/camp/bot_bay.gd:94
+msgid "E   open the Bot Bay"
+msgstr "E   abrir la bahía de robots"
+
+#: systems/camp/camp.gd:427
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s (Nv %d): mejorado al máximo"
 
-#: systems/camp/camp.gd:420
+#: systems/camp/camp.gd:433
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s (Nv %d): mejorar a %s por %s"
 
-#: systems/camp/camp.gd:426
+#: systems/camp/camp.gd:439
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Cubo de basura mejorado: %s. Las pacas se venden aquí al %d%%."
 
-#: systems/camp/hub_builds.gd:150
+#: systems/camp/hub_builds.gd:152
 msgid "Trash bin, level %d of %d"
 msgstr "Contenedor, nivel %d de %d"
 
-#: systems/camp/hub_builds.gd:155
+#: systems/camp/hub_builds.gd:157
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WREN solo puede contactarte por el relé. Cada nivel la hace más clara."
 
-#: systems/camp/hub_builds.gd:159
+#: systems/camp/hub_builds.gd:161
 msgid "Tier %d of %d"
 msgstr "Nivel %d de %d"
 
-#: systems/camp/hub_builds.gd:168 systems/camp/hub_builds.gd:179
+#: systems/camp/hub_builds.gd:170 systems/camp/hub_builds.gd:181
 msgid "%d of %d built"
 msgstr "%d de %d construidos"
 
-#: systems/camp/hub_builds.gd:195
+#: systems/camp/hub_builds.gd:197
 msgid "Museum"
 msgstr "Museo"
 
-#: systems/camp/hub_builds.gd:196
+#: systems/camp/hub_builds.gd:198
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "Una sala con un pedestal para todo lo que Lumi encontró, para quien venga después."
 
-#: systems/camp/locker_cabinet.gd:33 tools/ui_audit_run.gd:223
+#: systems/camp/locker_cabinet.gd:45 tools/ui_audit_run.gd:223
 msgid "E   open locker"
 msgstr "E   abrir taquilla"
 
@@ -3286,11 +3286,11 @@ msgstr "E   abrir taquilla"
 msgid "%s built."
 msgstr "%s construido."
 
-#: systems/camp/yard_builds.gd:83
+#: systems/camp/yard_builds.gd:90
 msgid "Repair the workbench first."
 msgstr "Primero repara el banco de trabajo."
 
-#: systems/camp/yard_builds.gd:89
+#: systems/camp/yard_builds.gd:96
 msgid "Grow your first seed first."
 msgstr "Primero haz crecer tu primera semilla."
 
@@ -3571,7 +3571,7 @@ msgstr "Glim sigue escaneando. Inténtalo en un momento."
 msgid "Close"
 msgstr "Cerrar"
 
-#: tools/walk_opening.gd:573 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:592 ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "Salir"
 
@@ -3777,7 +3777,7 @@ msgstr[1] "Limpia primero %d hexágonos."
 msgid "Not yet. Keep playing."
 msgstr "Todavía no. Sigue jugando."
 
-#: ui/bench_tiers.gd:124
+#: ui/bench_tiers.gd:127
 msgid "%s installed. New workbench tab: %s"
 msgstr "%s instalado. Nueva pestaña del banco: %s"
 
@@ -3876,12 +3876,8 @@ msgid "Retire"
 msgstr "Jubilar"
 
 #: ui/builder_panel.gd:172
-msgid ""
-"No robots yet. Build one in the Bots tab, then style it here.\n"
-"Your first robot comes with treads and a bobble plant."
-msgstr ""
-"Aún no hay robots. Construye uno en la pestaña Bots y luego dale estilo aquí.\n"
-"Tu primer robot viene con orugas y una planta saltarina."
+msgid "No robots yet. Build one at the Bot Bay, then style it here."
+msgstr "Aún no hay robots. Construye uno en la bahía de robots y luego decóralo aquí."
 
 #: ui/builder_panel.gd:227
 msgid "PART SLOTS"
@@ -4029,7 +4025,7 @@ msgstr "CÓDICE"
 msgid "Watch the story"
 msgstr "Ver la historia"
 
-#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:172
+#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:185
 msgid "Close  [%s]"
 msgstr "Cerrar  [%s]"
 
@@ -4394,8 +4390,8 @@ msgid "NEW DESIGN UNLOCKED"
 msgstr "NUEVO DISEÑO DESBLOQUEADO"
 
 #: ui/design_toast.gd:66
-msgid "Wear it at the workbench: Cosmetics"
-msgstr "Póntelo en el banco de trabajo: Cosméticos"
+msgid "Wear it at the Locker"
+msgstr "Póntelo en la taquilla"
 
 #: ui/document_view.gd:45
 msgid "{interact}  [k]/ Esc  [/k]close"
@@ -6610,11 +6606,15 @@ msgstr "De dónde sale:  %s"
 msgid "Research"
 msgstr "Investigación"
 
-#: ui/upgrades_screen.gd:154
+#: ui/upgrades_screen.gd:27
+msgid "BOT BAY"
+msgstr "BAHÍA DE ROBOTS"
+
+#: ui/upgrades_screen.gd:167
 msgid "WORKBENCH"
 msgstr "BANCO DE TRABAJO"
 
-#: ui/upgrades_screen.gd:278
+#: ui/upgrades_screen.gd:292
 msgid "Not open yet. Keep playing."
 msgstr "Aún no está abierto. Sigue jugando."
 
@@ -7585,6 +7585,22 @@ msgstr "Guardería de robots"
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
 msgstr "Un césped con muros y parterres donde los robots jubilados cuidan el jardín y echan una mano a tu equipo."
+
+#: data/camp.json:builds.bot_bay.name data/workbench.json:tiers[1].name
+msgid "Bot Bay"
+msgstr "Bahía de robots"
+
+#: data/camp.json:builds.bot_bay.desc
+msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
+msgstr "Un taller de robots propio en el patio. Acércate y pulsa E para construir robots."
+
+#: data/camp.json:builds.shuttle.name
+msgid "Shuttle"
+msgstr "Lanzadera"
+
+#: data/camp.json:builds.shuttle.desc
+msgid "A small one-seat shuttle, built on the pad. It flies Lumi to the other old bases."
+msgstr "Una pequeña lanzadera de un asiento, construida en la plataforma. Lleva a Lumi a las otras bases antiguas."
 
 #: data/camp.json:builds.glim.name data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
@@ -8959,8 +8975,8 @@ msgid "+5% bale value"
 msgstr "+5 % de valor de pacas"
 
 #: data/designs.json:designs[bolt].unlock.text
-msgid "Press 50 bales or build 5 robots"
-msgstr "Prensa 50 pacas o construye 5 robots"
+msgid "Press 600 bales or build 15 robots"
+msgstr "Prensa 600 fardos o construye 15 robots"
 
 #: data/designs.json:designs[bolt].unlock.any[0].unit
 msgid "bales"
@@ -8983,8 +8999,8 @@ msgid "+8% plant growth"
 msgstr "+8 % de crecimiento de plantas"
 
 #: data/designs.json:designs[sprout].unlock.text
-msgid "Grow 20 plants to bloom"
-msgstr "Haz florecer 20 plantas"
+msgid "Grow 80 plants to bloom"
+msgstr "Haz florecer 80 plantas"
 
 #: data/designs.json:designs[sprout].unlock.any[0].unit
 msgid "blooms"
@@ -9003,8 +9019,8 @@ msgid "+10% cleaning streak time"
 msgstr "+10 % de duración de la racha de limpieza"
 
 #: data/designs.json:designs[pixel].unlock.text
-msgid "Pet 5 animals or find 5 Collection trinkets"
-msgstr "Acaricia 5 animales o encuentra 5 baratijas de la Colección"
+msgid "Pet 25 animals or find 12 Collection trinkets"
+msgstr "Acaricia 25 animales o encuentra 12 baratijas de colección"
 
 #: data/designs.json:designs[pixel].unlock.any[0].unit
 msgid "animals"
@@ -9051,8 +9067,8 @@ msgid "+6% robot work speed"
 msgstr "+6 % de velocidad de trabajo de los robots"
 
 #: data/designs.json:designs[patch].unlock.text
-msgid "Repair an outpost or upgrade a robot fleet to Mk III"
-msgstr "Repara un puesto avanzado o mejora una flota de robots a Mk III"
+msgid "Repair 3 outposts or upgrade a robot fleet to Mk III"
+msgstr "Repara 3 puestos avanzados o mejora una flota de robots a Mk III"
 
 #: data/designs.json:designs[patch].unlock.any[0].unit
 msgid "outposts"
@@ -12433,32 +12449,28 @@ msgid "First, one clean hex. Clear the outlined one. Green starts on clean groun
 msgstr "Primero, un hexágono limpio. Despeja el que está marcado. El verde empieza en suelo limpio."
 
 #: data/objectives.json:objectives[bench2].text
-msgid "Add a Bot Bay to the bench"
-msgstr "Añade una Bahía de robots al banco"
-
-#: data/objectives.json:objectives[bench2].short
-msgid "Add a Bot Bay"
-msgstr "Añade una bahía de robots"
+msgid "Build the Bot Bay"
+msgstr "Construye la bahía de robots"
 
 #: data/objectives.json:objectives[bench2].desc
-msgid "Upgrades tab. A planet is too big for one small robot."
-msgstr "Pestaña Mejoras. Un planeta es demasiado grande para un solo robot pequeño."
+msgid "Workbench, Build tab. One small robot can't do it all."
+msgstr "Banco de trabajo, pestaña Construir. Un robot pequeño no puede con todo."
 
 #: data/objectives.json:objectives[bench2].lines
-msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
-msgstr "Añade una Bahía de robots al banco. No deberías hacer esto a solas."
+msgid "Build a Bot Bay, Lumi. You shouldn't do this alone."
+msgstr "Construye una bahía de robots, Lumi. No deberías hacer esto solo."
 
 #: data/objectives.json:objectives[robot].text
 msgid "Build your first robot"
 msgstr "Construye tu primer robot"
 
 #: data/objectives.json:objectives[robot].desc
-msgid "Workbench, Bots tab. Robots clean for you."
-msgstr "Banco de trabajo, pestaña Bots. Los robots limpian por ti."
+msgid "Press {interact} at the Bot Bay. Robots clean for you."
+msgstr "Pulsa {interact} en la bahía de robots. Los robots limpian por ti."
 
 #: data/objectives.json:objectives[robot].lines
-msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
-msgstr "¡La Bahía de robots zumba! Puede construirte un ayudante. Prueba la pestaña Bots del banco de trabajo."
+msgid "The Bot Bay hums! Walk up to it and build a helper."
+msgstr "¡La bahía de robots zumba! Acércate y construye un ayudante."
 
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
@@ -12496,17 +12508,73 @@ msgstr "Sigue limpiando. Las semillas aparecen en suelo limpio."
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "Algo verde está despertando ahí fuera. Planta la primera semilla."
 
-#: data/objectives.json:objectives[hub_wake_2].text
-msgid "Wake station 2 of 6"
-msgstr "Despierta la estación 2 de 6"
+#: data/objectives.json:objectives[robot2].text
+msgid "Build a second robot"
+msgstr "Construye un segundo robot"
+
+#: data/objectives.json:objectives[robot2].desc
+msgid "Bot Bay. Two robots clean twice as fast."
+msgstr "Bahía de robots. Dos robots limpian el doble de rápido."
+
+#: data/objectives.json:objectives[robot2].lines
+msgid "One robot can't clean a whole planet. Build another at the Bot Bay."
+msgstr "Un robot no puede limpiar un planeta entero. Construye otro en la bahía de robots."
+
+#: data/objectives.json:objectives[haul].desc
+msgid "Bot Bay. It sells your robots' bales for you."
+msgstr "Bahía de robots. Vende por ti los fardos de tus robots."
+
+#: data/objectives.json:objectives[haul].hint
+msgid "Keep cleaning. WREN is looking for Haul Bug plans."
+msgstr "Sigue limpiando. WREN está buscando los planos del Haul Bug."
+
+#: data/objectives.json:objectives[haul].lines
+msgid "A Haul Bug carries bales for you. Build one at the Bot Bay."
+msgstr "Un Haul Bug lleva los fardos por ti. Construye uno en la bahía de robots."
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "More clean ground, more room to plant. Robots help."
-msgstr "Más suelo limpio, más sitio para plantar. Los robots ayudan."
+msgid "Your robots help. Clean ground is room to plant."
+msgstr "Tus robots ayudan. El suelo limpio es sitio para plantar."
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
 msgstr "A por diez hexágonos limpios. Tus robots aprenden de ti, Lumi."
+
+#: data/objectives.json:objectives[map].text
+msgid "Look at the map"
+msgstr "Mira el mapa"
+
+#: data/objectives.json:objectives[map].desc
+msgid "Press {open_globe}. See how much of Verdance is clean."
+msgstr "Pulsa {open_globe}. Mira cuánto de Verdance está limpio."
+
+#: data/objectives.json:objectives[map].lines
+msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
+msgstr "Abre el mapa, Lumi. Muestra cuánto de Verdance sigue enterrado."
+
+#: data/objectives.json:objectives[shuttle].text
+msgid "Build the shuttle"
+msgstr "Construye la lanzadera"
+
+#: data/objectives.json:objectives[shuttle].desc
+msgid "Workbench, Build tab. Garden Row has the seeds we need."
+msgstr "Banco de trabajo, pestaña Construir. La Calle de los Jardines tiene las semillas que necesitamos."
+
+#: data/objectives.json:objectives[shuttle].lines
+msgid "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green."
+msgstr "Lumi, la lata de semillas está casi vacía. Sin semillas, Verdance no puede reverdecer."
+
+#: data/objectives.json:objectives[shuttle].lines
+msgid "I found another old base, far away: Garden Row. It kept a big seed store."
+msgstr "He encontrado otra base antigua, muy lejos: la Calle de los Jardines. Guardaba un gran almacén de semillas."
+
+#: data/objectives.json:objectives[shuttle].lines
+msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
+msgstr "Está demasiado lejos para ir andando. Tus robots pueden seguir limpiando aquí. Construye una lanzadera en la plataforma y vuela hasta allí."
+
+#: data/objectives.json:objectives[hub_wake_2].text
+msgid "Wake station 2 of 6"
+msgstr "Despierta la estación 2 de 6"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12523,18 +12591,6 @@ msgstr "Una base más grande da más energía, y la energía mueve a los robots.
 #: data/objectives.json:objectives[hub_wake_3].text
 msgid "Wake station 3 of 6"
 msgstr "Despierta la estación 3 de 6"
-
-#: data/objectives.json:objectives[haul].desc
-msgid "Workbench, Bots tab. It carries bales to the scale for you."
-msgstr "Banco de trabajo, pestaña Bots. Lleva los fardos a la báscula por ti."
-
-#: data/objectives.json:objectives[haul].hint
-msgid "Keep cleaning. WREN is looking for Haul Bug plans."
-msgstr "Sigue limpiando. WREN está buscando los planos del Haul Bug."
-
-#: data/objectives.json:objectives[haul].lines
-msgid "A Haul Bug carries bales for you. Build one at the bench."
-msgstr "Un Haul Bug lleva los fardos por ti. Construye uno en el banco."
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -13685,8 +13741,8 @@ msgid "A sprout on a spring. Boings when it brakes."
 msgstr "Un brote en un muelle. Hace boing al frenar."
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
-msgid "Comes with your first robot"
-msgstr "Viene con tu primer robot"
+msgid "Comes with the Locker"
+msgstr "Viene con la taquilla"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
@@ -15583,13 +15639,9 @@ msgstr "Banco de trabajo"
 msgid "The repaired bench: upgrades for Lumi and things to build."
 msgstr "El banco reparado: mejoras para Lumi y cosas para construir."
 
-#: data/workbench.json:tiers[1].name
-msgid "Workbench Mk II: Bot Bay"
-msgstr "Banco de trabajo Mk II: Bahía de robots"
-
 #: data/workbench.json:tiers[1].desc
-msgid "Adds a bot bay. Build helpers that keep cleaning while you work."
-msgstr "Añade una bahía de robots. Construye ayudantes que siguen limpiando mientras trabajas."
+msgid "A robot workshop of its own in the yard. Walk up and press E to build helpers that keep cleaning while you work."
+msgstr "Un taller de robots propio en el patio. Acércate y pulsa E para construir ayudantes que siguen limpiando mientras trabajas."
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
@@ -15816,8 +15868,8 @@ msgid "Every lit hex on that map is yours. I counted. Twice."
 msgstr "Cada hexágono iluminado en ese mapa es tuyo. Lo he contado. Dos veces."
 
 #: data/wren_lines.json:first_robot_hint
-msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
-msgstr "Con suficientes piezas, el banco de trabajo puede montar un ayudante. Pestaña Bots, un botón."
+msgid "With enough parts, the Bot Bay can put a helper together. One button."
+msgstr "Con piezas suficientes, la bahía de robots puede montar un ayudante. Un solo botón."
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."
@@ -17202,6 +17254,73 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "The launch pad is still buried. Put your first robot to work to clear it."
+#~ msgstr "La plataforma de lanzamiento sigue enterrada. Pon a trabajar a tu primer robot para despejarla."
+
+#~ msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
+#~ msgstr "Tu primer bot vino con orugas y una planta saltarina. Dale estilo en la Taquilla cuando la base llegue al nivel %d."
+
+#~ msgid ""
+#~ "No robots yet. Build one in the Bots tab, then style it here.\n"
+#~ "Your first robot comes with treads and a bobble plant."
+#~ msgstr ""
+#~ "Aún no hay robots. Construye uno en la pestaña Bots y luego dale estilo aquí.\n"
+#~ "Tu primer robot viene con orugas y una planta saltarina."
+
+#~ msgid "Wear it at the workbench: Cosmetics"
+#~ msgstr "Póntelo en el banco de trabajo: Cosméticos"
+
+#~ msgid "Press 50 bales or build 5 robots"
+#~ msgstr "Prensa 50 pacas o construye 5 robots"
+
+#~ msgid "Grow 20 plants to bloom"
+#~ msgstr "Haz florecer 20 plantas"
+
+#~ msgid "Pet 5 animals or find 5 Collection trinkets"
+#~ msgstr "Acaricia 5 animales o encuentra 5 baratijas de la Colección"
+
+#~ msgid "Repair an outpost or upgrade a robot fleet to Mk III"
+#~ msgstr "Repara un puesto avanzado o mejora una flota de robots a Mk III"
+
+#~ msgid "Add a Bot Bay to the bench"
+#~ msgstr "Añade una Bahía de robots al banco"
+
+#~ msgid "Add a Bot Bay"
+#~ msgstr "Añade una bahía de robots"
+
+#~ msgid "Upgrades tab. A planet is too big for one small robot."
+#~ msgstr "Pestaña Mejoras. Un planeta es demasiado grande para un solo robot pequeño."
+
+#~ msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
+#~ msgstr "Añade una Bahía de robots al banco. No deberías hacer esto a solas."
+
+#~ msgid "Workbench, Bots tab. Robots clean for you."
+#~ msgstr "Banco de trabajo, pestaña Bots. Los robots limpian por ti."
+
+#~ msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
+#~ msgstr "¡La Bahía de robots zumba! Puede construirte un ayudante. Prueba la pestaña Bots del banco de trabajo."
+
+#~ msgid "More clean ground, more room to plant. Robots help."
+#~ msgstr "Más suelo limpio, más sitio para plantar. Los robots ayudan."
+
+#~ msgid "Workbench, Bots tab. It carries bales to the scale for you."
+#~ msgstr "Banco de trabajo, pestaña Bots. Lleva los fardos a la báscula por ti."
+
+#~ msgid "A Haul Bug carries bales for you. Build one at the bench."
+#~ msgstr "Un Haul Bug lleva los fardos por ti. Construye uno en el banco."
+
+#~ msgid "Comes with your first robot"
+#~ msgstr "Viene con tu primer robot"
+
+#~ msgid "Workbench Mk II: Bot Bay"
+#~ msgstr "Banco de trabajo Mk II: Bahía de robots"
+
+#~ msgid "Adds a bot bay. Build helpers that keep cleaning while you work."
+#~ msgstr "Añade una bahía de robots. Construye ayudantes que siguen limpiando mientras trabajas."
+
+#~ msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
+#~ msgstr "Con suficientes piezas, el banco de trabajo puede montar un ayudante. Pestaña Bots, un botón."
 
 #~ msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
 #~ msgstr "Banco de trabajo reparado. Pulsa {interact} en él para gastar cubos en mejoras."

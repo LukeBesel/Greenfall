@@ -44,7 +44,7 @@ static func day_length(id: String, fallback: float = 1200.0) -> float:
 ## [v10pace] The clock on a round planet (data/solar_system.json "globe_day", a planet's own block
 ## on top): {turn_min, day_speed, night_speed, start_time, night_lift_found}.
 static func globe_day(id: String) -> Dictionary:
-	var d: Dictionary = {"turn_min": 36.0, "day_speed": 0.7, "night_speed": 1.9, "start_time": 0.34, "night_lift_found": 0.65}
+	var d: Dictionary = {"turn_min": 36.0, "day_speed": 0.7, "night_speed": 1.9, "start_time": 0.32, "night_lift_found": 0.85}
 	for src: Variant in [cfg().get("globe_day", {}), planet(id).get("globe_day", {})]:
 		if src is Dictionary:
 			for k: String in d:

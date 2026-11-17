@@ -645,6 +645,9 @@ static func _hex_goal(id: String, goal: int) -> void:
 	Engine.time_scale = 1.0
 	_check(float(GameState.stats.get("hexes_cleaned", 0.0)) >= float(goal), "%s: %d Scoopies clean the last hex (%.0f s real at x8)" % [id, fl.count("scoopie"), (Time.get_ticks_msec() - t0) / 1000.0])
 	_check(_said("robot"), "%s: a robot's hex in this step says so on screen (%s)" % [id, str(_toasts.filter(func(t: String) -> bool: return "obot" in t))])
+	# [v10pace] After the robots worked: no heap of bales on the pad, none in the air, none on an E spot (tools/bale_watch.gd).
+	var br: Dictionary = BaleWatch.count(so)
+	_check(not br.is_empty() and BaleWatch.breaches(br).is_empty(), "%s: the robots' bales do not pile up on the pad (%s; pad %s, robots pressed %d)" % [id, "; ".join(BaleWatch.breaches(br)) if not br.is_empty() else "no count", str(br.get("pad", "-")), int(float(GameState.stats.get("robot_bales", 0.0)))])
 	var moved: bool = await _wait_step_not(id, 4.0)
 	_check(moved, "%s done: the card moves on (%s)" % [id, _step_id()])
 	if goal >= 20:

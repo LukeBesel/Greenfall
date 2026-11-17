@@ -1216,8 +1216,8 @@ func _arc(p: Patch) -> bool:
 			print("[arc] %.1f min  rocket Mk %d  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, RocketTiers.tier(), _planet_line(),
 				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
 		return false
-	if want_hub and os_.rocket_unlocked() and p_ok(p) and _at_base(p) and Hub.can_pay(fc) \
-			and arc_turn:
+	if want_hub and os_.rocket_unlocked() and not ShuttleBuild.building and p_ok(p) and _at_base(p) and Hub.can_pay(fc) \
+			and arc_turn:  # [v10pace] not while the shuttle is still going up on the pad (a player's E is off then)
 		var to: int = HubPlan.next_site(os_.sm.planet_id) if os_.purpose != null else -1
 		if to < 0:
 			for e: Dictionary in os_.destinations():

@@ -427,7 +427,7 @@ static func _bench2() -> void:
 	var parts0: float = GameState.get_currency("parts").to_float()
 	await _click_tag("bot_bay")
 	_check(BenchTiers.tier() >= 2 and BotBay.built(), "bench2: a click builds the Bot Bay")
-	_check(GameState.get_currency("parts").to_float() >= parts0 - 20.0 + 39.0, "bench2: the robot kit's 40 Parts are paid")
+	_check(GameState.get_currency("parts").to_float() >= parts0 - float(BenchTiers.def(2)["cost"]["parts"]) + 39.0, "bench2: the robot kit's 40 Parts are paid")
 	_check(not UpgradesScreen.tab_visible("bots", _w), "bench2: the workbench has no Bots tab")
 	await _close_bench()
 	await _secs(1.0)
@@ -447,6 +447,7 @@ static func _robot() -> void:
 	_check(_beam_at(bay.stand_point(), 3.0), "robot: the beam stands on the Bot Bay")
 	await _reload("robot, the Bot Bay built")
 	bay = BotBay.of(_w)
+	fl = _w.get("fleet") as Fleet  # the reload built a new world
 	_check(bay != null and bay.visible, "robot: the Bot Bay still stands after the reload")
 	await _open_bay()
 	_check(bay.is_open() and str(bay.screen.get("_tab")) == "bots", "robot: E at the Bot Bay opens its own screen (%s)" % (str(bay.screen.get("_tab")) if bay.screen else "-"))
