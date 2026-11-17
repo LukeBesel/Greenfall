@@ -1930,55 +1930,43 @@ msgstr ""
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr ""
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:16
 msgid "Wait. Hold it up to the light."
 msgstr ""
 
-#: story/first_seed.gd:16
-msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
-msgstr ""
-
 #: story/first_seed.gd:17
-msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
+msgid "A seed tin! The Settlers left it here, long ago."
 msgstr ""
 
 #: story/first_seed.gd:18
-msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
+msgid "Nothing grows here on its own any more. Somebody has to plant it."
 msgstr ""
 
 #: story/first_seed.gd:19
-msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
+msgid "That somebody is you, Lumi. Small. Stubborn. Perfect."
 msgstr ""
 
 #: story/first_seed.gd:20
-msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
+msgid "Find clean ground. Plant the seed. Then water it."
 msgstr ""
 
-#: story/first_seed.gd:21
-msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
-msgstr ""
-
-#: story/first_seed.gd:22
-msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
-msgstr ""
-
-#: story/first_seed.gd:167
+#: story/first_seed.gd:165
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr ""
 
-#: story/first_seed.gd:306
+#: story/first_seed.gd:304
 msgid "...It's green. Lumi, it's actually green."
 msgstr ""
 
-#: story/first_seed.gd:308
+#: story/first_seed.gd:306
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr ""
 
-#: story/first_seed.gd:459
+#: story/first_seed.gd:457
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr ""
 
-#: story/first_seed.gd:571
+#: story/first_seed.gd:569
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr ""
 

@@ -1938,55 +1938,43 @@ msgstr "发现奇物：%s（%d / %d）   %s"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "清单上的奇物全部找到了。Lumi 的收藏舱装满了回忆。"
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:16
 msgid "Wait. Hold it up to the light."
 msgstr "等等。对着光举起来看看。"
 
-#: story/first_seed.gd:16
-msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
-msgstr "那是定居者的种子罐。盖子上有 Cradle号的印章。是我们的，匆忙中落下的。"
-
 #: story/first_seed.gd:17
-msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
-msgstr "离开时，定居者把能带走的每一颗种子都封进了 Cradle号的种子库。你的种子库，Lumi。"
+msgid "A seed tin! The Settlers left it here, long ago."
+msgstr "一个种子罐！很久以前，拓荒者把它留在了这里。"
 
 #: story/first_seed.gd:18
-msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
-msgstr "计划很简单。等尘埃落定。回家。播种。他们把那一天称为 Greenfall。"
+msgid "Nothing grows here on its own any more. Somebody has to plant it."
+msgstr "这里再也不会自己长出东西了。得有人把它种下去。"
 
 #: story/first_seed.gd:19
-msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
-msgstr "然后三百年过去了，尘埃从未落定。直到一个守种者从天上掉了下来。"
+msgid "That somebody is you, Lumi. Small. Stubborn. Perfect."
+msgstr "这个人就是你，Lumi。小小的，倔强的，刚刚好。"
 
 #: story/first_seed.gd:20
-msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
-msgstr "现在什么都不会自己长了。土地忘了怎么长。得有人把种子种进土里。"
+msgid "Find clean ground. Plant the seed. Then water it."
+msgstr "找一块干净的地。种下种子。然后浇水。"
 
-#: story/first_seed.gd:21
-msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
-msgstr "那个人就是你。小小的。倔强的。只剩百分之四的电。完美。"
-
-#: story/first_seed.gd:22
-msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
-msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
-
-#: story/first_seed.gd:167
+#: story/first_seed.gd:165
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr "按  {tool_water}  拿起洒水壶，然后按住  {scoop}  给种子浇水"
 
-#: story/first_seed.gd:306
+#: story/first_seed.gd:304
 msgid "...It's green. Lumi, it's actually green."
 msgstr "……是绿色的。Lumi，真的是绿色的。"
 
-#: story/first_seed.gd:308
+#: story/first_seed.gd:306
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
-#: story/first_seed.gd:459
+#: story/first_seed.gd:457
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
 
-#: story/first_seed.gd:571
+#: story/first_seed.gd:569
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "按  {tool_plant}  拿出种子。然后在温室苗床上按住  {scoop}"
 
@@ -16663,6 +16651,27 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
+#~ msgstr "那是定居者的种子罐。盖子上有 Cradle号的印章。是我们的，匆忙中落下的。"
+
+#~ msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
+#~ msgstr "离开时，定居者把能带走的每一颗种子都封进了 Cradle号的种子库。你的种子库，Lumi。"
+
+#~ msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
+#~ msgstr "计划很简单。等尘埃落定。回家。播种。他们把那一天称为 Greenfall。"
+
+#~ msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
+#~ msgstr "然后三百年过去了，尘埃从未落定。直到一个守种者从天上掉了下来。"
+
+#~ msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
+#~ msgstr "现在什么都不会自己长了。土地忘了怎么长。得有人把种子种进土里。"
+
+#~ msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
+#~ msgstr "那个人就是你。小小的。倔强的。只剩百分之四的电。完美。"
+
+#~ msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
+#~ msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
 
 #~ msgid "The launch pad is still buried. Put your first robot to work to clear it."
 #~ msgstr "发射台还埋在垃圾里。先让你的第一个机器人开工，把它清出来。"

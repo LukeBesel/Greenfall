@@ -1941,55 +1941,43 @@ msgstr "[Çûŕîôšîţý ƒôûñð: %s  (%d / %d)   %s ~~~~~~~~~]"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "[Évéŕý çûŕîôšîţý ôñ ţĥé ļîšţ, ƒôûñð. Ļûmî'š çôļļéçţîôñ çômþàŕţméñţ îš véŕý ƒûļļ ôƒ mémôŕîéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:16
 msgid "Wait. Hold it up to the light."
 msgstr "[Ŵàîţ. Ĥôļð îţ ûþ ţô ţĥé ļîĝĥţ. ~~~~~~~]"
 
-#: story/first_seed.gd:16
-msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
-msgstr "[Ţĥàţ'š à Šéţţļéŕ šééð ţîñ. Çŕàðļé šţàmþ ôñ ţĥé ļîð. Ôñé ôƒ ôûŕš, ļéƒţ béĥîñð îñ ţĥé ŕûšĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
 #: story/first_seed.gd:17
-msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
-msgstr "[Ŵĥéñ ţĥéý ļéƒţ, ţĥé Šéţţļéŕš šéàļéð évéŕý šééð ţĥéý çôûļð çàŕŕý îñţô ţĥé Çŕàðļé'š vàûļţ. Ýôûŕ vàûļţ, Ļûmî. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A seed tin! The Settlers left it here, long ago."
+msgstr "[À šééð ţîñ! Ţĥé Šéţţļéŕš ļéƒţ îţ ĥéŕé, ļôñĝ àĝô. ~~~~~~~~~~~~~~]"
 
 #: story/first_seed.gd:18
-msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
-msgstr "[Ţĥé þļàñ ŵàš šîmþļé. Ŵàîţ ƒôŕ ţĥé ðûšţ ţô šéţţļé. Çômé ĥômé. Þļàñţ. Ţĥéý çàļļéð ţĥàţ ðàý ţĥé Ĝŕééñƒàļļ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Nothing grows here on its own any more. Somebody has to plant it."
+msgstr "[Ñôţĥîñĝ ĝŕôŵš ĥéŕé ôñ îţš ôŵñ àñý môŕé. Šômébôðý ĥàš ţô þļàñţ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/first_seed.gd:19
-msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
-msgstr "[Ţĥéñ ţĥŕéé ĥûñðŕéð ýéàŕš ŵéñţ bý, àñð ţĥé ðûšţ ñévéŕ šéţţļéð. Ûñţîļ à šééð-ķééþéŕ ƒéļļ ôûţ ôƒ ţĥé šķý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "That somebody is you, Lumi. Small. Stubborn. Perfect."
+msgstr "[Ţĥàţ šômébôðý îš ýôû, Ļûmî. Šmàļļ. Šţûbbôŕñ. Þéŕƒéçţ. ~~~~~~~~~~~~~~~~]"
 
 #: story/first_seed.gd:20
-msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
-msgstr "[Ñôţĥîñĝ ĝŕôŵš ôñ îţš ôŵñ àñýmôŕé. Ţĥé šôîļ ƒôŕĝôţ ĥôŵ. Šômébôðý ĥàš ţô þûţ îţ îñ ţĥé ĝŕôûñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Find clean ground. Plant the seed. Then water it."
+msgstr "[Fîñð çļéàñ ĝŕôûñð. Þļàñţ ţĥé šééð. Ţĥéñ ŵàţéŕ îţ. ~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:21
-msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
-msgstr "[Ţĥàţ šômébôðý îš ýôû. Šmàļļ. Šţûbbôŕñ. Ŕûññîñĝ ôñ ƒôûŕ þéŕçéñţ. Þéŕƒéçţ. ~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: story/first_seed.gd:22
-msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
-msgstr "[Fîñð çļéàñ ĝŕôûñð. Ðîĝ. Ðŕôþ îţ îñ. Þàţ îţ ðôŵñ. Àñð ţĥéñ — ţĥîš þàŕţ màţţéŕš — ŵàţéŕ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: story/first_seed.gd:167
+#: story/first_seed.gd:165
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr "[Þŕéšš  {tool_water}  ƒôŕ ţĥé ŵàţéŕîñĝ çàñ, ţĥéñ ĥôļð  {scoop}  ţô ŵàţéŕ ţĥé šééð ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:306
+#: story/first_seed.gd:304
 msgid "...It's green. Lumi, it's actually green."
 msgstr "[...Îţ'š ĝŕééñ. Ļûmî, îţ'š àçţûàļļý ĝŕééñ. ~~~~~~~~~~~]"
 
-#: story/first_seed.gd:308
+#: story/first_seed.gd:306
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "[Ķééþ îţ ŵàţéŕéð. Šééðš àŕé ŕàŕé ôûţ ĥéŕé, bûţ évéŕý bļôôm ĝîvéš ôñé bàçķ, àñð à ļîţţļé ĝŕééñ ļîĝĥţ ƒôŕ ýôûŕ çôŕé. Ţĥîš îš ĥôŵ îţ šţàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:459
+#: story/first_seed.gd:457
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "[Ļûmî. Î'm ĝéţţîñĝ à šîĝñàļ. Ĝŕééñ, ƒàîñţ, éàšţ ôƒ ţĥé ĥûb. Àñ ôļð ĝŕééñĥôûšé. Ĝô ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:571
+#: story/first_seed.gd:569
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "[Þŕéšš  {tool_plant}  ƒôŕ ţĥé šééð. Ţĥéñ ĥôļð  {scoop}  ôñ à ĝŕééñĥôûšé béð ~~~~~~~~~~~~~~~~~~~~~~~]"
 

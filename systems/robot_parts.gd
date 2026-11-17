@@ -32,12 +32,17 @@ static func gain_text(rarity: int) -> String:
 	return L10nFmt.amount("parts", value(rarity), true)
 
 
+## [v10pace] What an old held item was worth when the items became Parts (save v4). Finds pay
+## less now (data/parts.json, critic 11); a save's items keep the value they had.
+const ITEM_VALUE: Array[float] = [10.0, 25.0, 60.0, 150.0, 450.0]
+
+
 ## Folds an item list ([{type, rarity}]) into its Parts value.
 static func items_value(items: Array) -> float:
 	var total: float = 0.0
 	for p: Variant in items:
 		if p is Dictionary:
-			total += value(int((p as Dictionary).get("rarity", 0)))
+			total += ITEM_VALUE[clampi(int((p as Dictionary).get("rarity", 0)), 0, ITEM_VALUE.size() - 1)]
 	return total
 
 

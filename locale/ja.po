@@ -1938,55 +1938,43 @@ msgstr "珍品発見：%s（%d / %d）   %s"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "リストの珍品をぜんぶ見つけた。Lumi のコレクション室は思い出でいっぱい。"
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:16
 msgid "Wait. Hold it up to the light."
 msgstr "待って。光にかざしてみて。"
 
-#: story/first_seed.gd:16
-msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
-msgstr "それ、入植者の種の缶だ。ふたに Cradle号のスタンプ。私たちのものだよ。急いでいて置いていかれたんだ。"
-
 #: story/first_seed.gd:17
-msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
-msgstr "去るとき、入植者たちは運べるかぎりの種を Cradle号の保管庫に封じた。君の保管庫だよ、Lumi。"
+msgid "A seed tin! The Settlers left it here, long ago."
+msgstr "種の缶だ！ずっと昔、入植者たちがここに残していったんだ。"
 
 #: story/first_seed.gd:18
-msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
-msgstr "計画は簡単だった。ちりが落ち着くのを待つ。帰る。植える。その日を彼らは Greenfall と呼んだ。"
+msgid "Nothing grows here on its own any more. Somebody has to plant it."
+msgstr "ここではもう、何も自然には育たない。誰かが植えなきゃ。"
 
 #: story/first_seed.gd:19
-msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
-msgstr "そして三百年が過ぎ、ちりは落ち着かなかった。シードキーパーが空から落ちてくるまでは。"
+msgid "That somebody is you, Lumi. Small. Stubborn. Perfect."
+msgstr "その誰かは君だよ、Lumi。小さくて、がんこで、ぴったり。"
 
 #: story/first_seed.gd:20
-msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
-msgstr "もう何もひとりでは育たない。土が育て方を忘れたんだ。誰かが土に植えてあげないと。"
+msgid "Find clean ground. Plant the seed. Then water it."
+msgstr "きれいな地面を探して。種を植えて。それから水をあげて。"
 
-#: story/first_seed.gd:21
-msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
-msgstr "その誰かが君。小さくて。がんこで。残り4パーセントで動いてる。完璧だ。"
-
-#: story/first_seed.gd:22
-msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
-msgstr "きれいな地面を探して。掘って。入れて。土をぽんぽん。それから——ここが大事——水をあげて。"
-
-#: story/first_seed.gd:167
+#: story/first_seed.gd:165
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr "{tool_water}  でじょうろを持って、{scoop}  を長押しして種に水をやろう"
 
-#: story/first_seed.gd:306
+#: story/first_seed.gd:304
 msgid "...It's green. Lumi, it's actually green."
 msgstr "……緑だ。Lumi、ほんとうに緑だよ。"
 
-#: story/first_seed.gd:308
+#: story/first_seed.gd:306
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "水を切らさないでね。ここでは種は貴重だけど、花が咲くたびにひとつ返ってくるし、きみのコアにも小さな緑の光が届く。こうやって始まるんだ。"
 
-#: story/first_seed.gd:459
+#: story/first_seed.gd:457
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。シグナルを受信。緑で、かすかで、基地の東。古い温室だ。見てきて。"
 
-#: story/first_seed.gd:571
+#: story/first_seed.gd:569
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "{tool_plant}  で種を持って、温室の苗床の上で  {scoop}  を長押し"
 
@@ -16663,6 +16651,27 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
+#~ msgstr "それ、入植者の種の缶だ。ふたに Cradle号のスタンプ。私たちのものだよ。急いでいて置いていかれたんだ。"
+
+#~ msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
+#~ msgstr "去るとき、入植者たちは運べるかぎりの種を Cradle号の保管庫に封じた。君の保管庫だよ、Lumi。"
+
+#~ msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
+#~ msgstr "計画は簡単だった。ちりが落ち着くのを待つ。帰る。植える。その日を彼らは Greenfall と呼んだ。"
+
+#~ msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
+#~ msgstr "そして三百年が過ぎ、ちりは落ち着かなかった。シードキーパーが空から落ちてくるまでは。"
+
+#~ msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
+#~ msgstr "もう何もひとりでは育たない。土が育て方を忘れたんだ。誰かが土に植えてあげないと。"
+
+#~ msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
+#~ msgstr "その誰かが君。小さくて。がんこで。残り4パーセントで動いてる。完璧だ。"
+
+#~ msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
+#~ msgstr "きれいな地面を探して。掘って。入れて。土をぽんぽん。それから——ここが大事——水をあげて。"
 
 #~ msgid "The launch pad is still buried. Put your first robot to work to clear it."
 #~ msgstr "発射台はまだゴミにうまっている。最初のロボットを働かせて片づけよう。"

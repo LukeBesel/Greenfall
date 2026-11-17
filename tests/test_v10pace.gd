@@ -191,7 +191,7 @@ func test_bot_bay_screen_is_robots_only() -> void:
 
 func test_base_one_comes_before_the_first_flight() -> void:
 	var ids: Array[String] = _ids()
-	var order: Array[String] = ["bench2", "robot", "seed", "robot2", "haul", "hex10", "map", "shuttle", "hub_fly_2"]
+	var order: Array[String] = ["bench2", "robot", "seed", "robot2", "haul", "hex10", "map", "base2", "shuttle", "hub_fly_2"]  # base 2 before the shuttle: something new while saving up (critic 12)
 	for i: int in range(1, order.size()):
 		assert_gt(ids.find(order[i]), ids.find(order[i - 1]), "%s comes after %s" % [order[i], order[i - 1]])
 		assert_gt(ids.find(order[i - 1]), -1, order[i - 1])

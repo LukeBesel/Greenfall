@@ -64,7 +64,7 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		await tree.create_timer(0.25).timeout
 	await tree.create_timer(1.0).timeout
 	var only: String = DevHooks.get_s("walk-home-only", "")  # dev: --walk-home-only=hex2,base2 (iterating)
-	for part: String in ["hex2", "hex3", "garden", "robot2", "haul", "hex10", "map", "shuttle", "base2", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:  # [v10pace] the order of the card
+	for part: String in ["hex2", "hex3", "garden", "robot2", "haul", "hex10", "map", "base2", "shuttle", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:  # [v10pace] the order of the card
 		if (only == "" and part != "probe") or part in only.split(","):
 			await Callable(WalkHome, "_part_" + part).call()
 	print("[walk-home] %d reloads" % _reloads)

@@ -1944,55 +1944,43 @@ msgstr "Kuriosität gefunden: %s  (%d / %d)   %s"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Jede Kuriosität auf der Liste gefunden. Lumis Sammelfach ist randvoll mit Erinnerungen."
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:16
 msgid "Wait. Hold it up to the light."
 msgstr "Warte. Halt das mal ins Licht."
 
-#: story/first_seed.gd:16
-msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
-msgstr "Das ist eine Samendose der Siedler. Cradle-Stempel auf dem Deckel. Eine von uns, in der Eile zurückgelassen."
-
 #: story/first_seed.gd:17
-msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
-msgstr "Als sie gingen, versiegelten die Siedler alle Samen, die sie tragen konnten, im Tresor der Cradle. Deinem Tresor, Lumi."
+msgid "A seed tin! The Settlers left it here, long ago."
+msgstr "Eine Samendose! Die Siedler haben sie vor langer Zeit hier gelassen."
 
 #: story/first_seed.gd:18
-msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
-msgstr "Der Plan war einfach. Warten, bis der Staub sich legt. Heimkommen. Pflanzen. Diesen Tag nannten sie den Greenfall."
+msgid "Nothing grows here on its own any more. Somebody has to plant it."
+msgstr "Hier wächst nichts mehr von allein. Jemand muss ihn einpflanzen."
 
 #: story/first_seed.gd:19
-msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
-msgstr "Dann vergingen dreihundert Jahre, und der Staub legte sich nie. Bis ein Samenhüter vom Himmel fiel."
+msgid "That somebody is you, Lumi. Small. Stubborn. Perfect."
+msgstr "Dieser Jemand bist du, Lumi. Klein. Stur. Perfekt."
 
 #: story/first_seed.gd:20
-msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
-msgstr "Nichts wächst mehr von allein. Der Boden hat es vergessen. Jemand muss es in die Erde bringen."
+msgid "Find clean ground. Plant the seed. Then water it."
+msgstr "Such sauberen Boden. Pflanz den Samen. Dann gieß ihn."
 
-#: story/first_seed.gd:21
-msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
-msgstr "Dieser Jemand bist du. Klein. Stur. Läuft mit vier Prozent. Perfekt."
-
-#: story/first_seed.gd:22
-msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
-msgstr "Such sauberen Boden. Grab. Leg ihn hinein. Festdrücken. Und dann – das ist wichtig – gießen."
-
-#: story/first_seed.gd:167
+#: story/first_seed.gd:165
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr "Drück  {tool_water}  für die Gießkanne, dann halte  {scoop}  gedrückt, um den Samen zu gießen"
 
-#: story/first_seed.gd:306
+#: story/first_seed.gd:304
 msgid "...It's green. Lumi, it's actually green."
 msgstr "...Es ist grün. Lumi, es ist wirklich grün."
 
-#: story/first_seed.gd:308
+#: story/first_seed.gd:306
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Halte ihn feucht. Samen sind hier draußen selten, aber jede Blüte gibt einen zurück, dazu ein bisschen grünes Licht für deinen Kern. So fängt es an."
 
-#: story/first_seed.gd:459
+#: story/first_seed.gd:457
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi. Ich empfange ein Signal. Grün, schwach, östlich der Basis. Ein altes Gewächshaus. Sieh nach."
 
-#: story/first_seed.gd:571
+#: story/first_seed.gd:569
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "Drück  {tool_plant}  für den Samen. Dann halte  {scoop}  auf einem Gewächshausbeet"
 
@@ -16680,6 +16668,27 @@ msgstr "Dieser Portalkran verschrottete die Bergbauflotte, als das Geld ausging.
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
+
+#~ msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
+#~ msgstr "Das ist eine Samendose der Siedler. Cradle-Stempel auf dem Deckel. Eine von uns, in der Eile zurückgelassen."
+
+#~ msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
+#~ msgstr "Als sie gingen, versiegelten die Siedler alle Samen, die sie tragen konnten, im Tresor der Cradle. Deinem Tresor, Lumi."
+
+#~ msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
+#~ msgstr "Der Plan war einfach. Warten, bis der Staub sich legt. Heimkommen. Pflanzen. Diesen Tag nannten sie den Greenfall."
+
+#~ msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
+#~ msgstr "Dann vergingen dreihundert Jahre, und der Staub legte sich nie. Bis ein Samenhüter vom Himmel fiel."
+
+#~ msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
+#~ msgstr "Nichts wächst mehr von allein. Der Boden hat es vergessen. Jemand muss es in die Erde bringen."
+
+#~ msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
+#~ msgstr "Dieser Jemand bist du. Klein. Stur. Läuft mit vier Prozent. Perfekt."
+
+#~ msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
+#~ msgstr "Such sauberen Boden. Grab. Leg ihn hinein. Festdrücken. Und dann – das ist wichtig – gießen."
 
 #~ msgid "The launch pad is still buried. Put your first robot to work to clear it."
 #~ msgstr "Die Startrampe ist noch verschüttet. Lass deinen ersten Roboter arbeiten, damit sie frei wird."

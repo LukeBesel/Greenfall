@@ -152,10 +152,7 @@
       "wait_flag": "seed_signal",
       "type": "stat",
       "key": "plants_planted",
-      "target": 1,
-      "lines": [
-        "Something green is waking out there. Plant the first seed."
-      ]
+      "target": 1
     },
     {
       "id": "robot2",
@@ -204,6 +201,16 @@
       ]
     },
     {
+      "id": "base2",
+      "text": "Rebuild the base to level 2", "short": "Base to level 2",
+      "desc": "Workbench, Upgrades tab. A bigger base powers more robots.",
+      "type": "hub_level",
+      "target": 2,
+      "lines": [
+        "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
+      ]
+    },
+    {
       "id": "shuttle",
       "text": "Build the shuttle",
       "desc": "Workbench, Build tab. Garden Row has the seeds we need.",
@@ -231,16 +238,6 @@
       "type": "stat",
       "key": "hubs_woken",
       "target": 1
-    },
-    {
-      "id": "base2",
-      "text": "Rebuild the base to level 2", "short": "Base to level 2",
-      "desc": "Workbench, Upgrades tab. A bigger base powers more robots.",
-      "type": "hub_level",
-      "target": 2,
-      "lines": [
-        "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
-      ]
     },
     {
       "id": "hub_fly_3",

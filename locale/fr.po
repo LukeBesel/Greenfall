@@ -1944,55 +1944,43 @@ msgstr "Curiosité trouvée : %s  (%d / %d)   %s"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Toutes les curiosités de la liste sont trouvées. Le compartiment de collection de Lumi déborde de souvenirs."
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:16
 msgid "Wait. Hold it up to the light."
 msgstr "Attends. Lève-le vers la lumière."
 
-#: story/first_seed.gd:16
-msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
-msgstr "C'est une boîte à graines des Colons. Le tampon du Cradle sur le couvercle. Une des nôtres, oubliée dans la précipitation."
-
 #: story/first_seed.gd:17
-msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
-msgstr "En partant, les Colons ont scellé toutes les graines qu'ils pouvaient emporter dans la chambre forte du Cradle. Ta chambre forte, Lumi."
+msgid "A seed tin! The Settlers left it here, long ago."
+msgstr "Une boîte de graines ! Les Colons l'ont laissée ici, il y a longtemps."
 
 #: story/first_seed.gd:18
-msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
-msgstr "Le plan était simple. Attendre que la poussière retombe. Rentrer. Planter. Ils appelaient ce jour le Greenfall."
+msgid "Nothing grows here on its own any more. Somebody has to plant it."
+msgstr "Plus rien ne pousse tout seul ici. Quelqu'un doit la planter."
 
 #: story/first_seed.gd:19
-msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
-msgstr "Puis trois cents ans ont passé, et la poussière n'est jamais retombée. Jusqu'à ce qu'un gardien des graines tombe du ciel."
+msgid "That somebody is you, Lumi. Small. Stubborn. Perfect."
+msgstr "Ce quelqu'un, c'est toi, Lumi. Petit. Têtu. Parfait."
 
 #: story/first_seed.gd:20
-msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
-msgstr "Plus rien ne pousse tout seul. Le sol a oublié comment. Quelqu'un doit les mettre en terre."
+msgid "Find clean ground. Plant the seed. Then water it."
+msgstr "Trouve un sol propre. Plante la graine. Puis arrose-la."
 
-#: story/first_seed.gd:21
-msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
-msgstr "Ce quelqu'un, c'est toi. Petit. Têtu. Sur quatre pour cent de batterie. Parfait."
-
-#: story/first_seed.gd:22
-msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
-msgstr "Trouve un sol propre. Creuse. Dépose-la. Tasse. Et ensuite – c'est important – arrose."
-
-#: story/first_seed.gd:167
+#: story/first_seed.gd:165
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr "Appuie sur  {tool_water}  pour l'arrosoir, puis maintiens  {scoop}  pour arroser la graine"
 
-#: story/first_seed.gd:306
+#: story/first_seed.gd:304
 msgid "...It's green. Lumi, it's actually green."
 msgstr "...C'est vert. Lumi, c'est vraiment vert."
 
-#: story/first_seed.gd:308
+#: story/first_seed.gd:306
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Garde-la bien arrosée. Les graines sont rares par ici, mais chaque floraison en rend une, et un peu de lumière verte pour ton cœur. C'est comme ça que tout commence."
 
-#: story/first_seed.gd:459
+#: story/first_seed.gd:457
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi. Je capte un signal. Vert, faible, à l'est de la base. Une vieille serre. Va voir."
 
-#: story/first_seed.gd:571
+#: story/first_seed.gd:569
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "Appuie sur  {tool_plant}  pour la graine. Puis maintiens  {scoop}  sur un bac de la serre"
 
@@ -16680,6 +16668,27 @@ msgstr "Ce portique a mis à la casse la flotte minière quand l'argent a manqu�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pieds. Les comptes sont clos, {name}. Nous les avons équilibrés."
+
+#~ msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
+#~ msgstr "C'est une boîte à graines des Colons. Le tampon du Cradle sur le couvercle. Une des nôtres, oubliée dans la précipitation."
+
+#~ msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
+#~ msgstr "En partant, les Colons ont scellé toutes les graines qu'ils pouvaient emporter dans la chambre forte du Cradle. Ta chambre forte, Lumi."
+
+#~ msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
+#~ msgstr "Le plan était simple. Attendre que la poussière retombe. Rentrer. Planter. Ils appelaient ce jour le Greenfall."
+
+#~ msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
+#~ msgstr "Puis trois cents ans ont passé, et la poussière n'est jamais retombée. Jusqu'à ce qu'un gardien des graines tombe du ciel."
+
+#~ msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
+#~ msgstr "Plus rien ne pousse tout seul. Le sol a oublié comment. Quelqu'un doit les mettre en terre."
+
+#~ msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
+#~ msgstr "Ce quelqu'un, c'est toi. Petit. Têtu. Sur quatre pour cent de batterie. Parfait."
+
+#~ msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
+#~ msgstr "Trouve un sol propre. Creuse. Dépose-la. Tasse. Et ensuite – c'est important – arrose."
 
 #~ msgid "The launch pad is still buried. Put your first robot to work to clear it."
 #~ msgstr "La rampe de lancement est encore ensevelie. Mets ton premier robot au travail pour la dégager."
