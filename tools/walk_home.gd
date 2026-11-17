@@ -780,7 +780,20 @@ static func _part_heavy() -> void:
 	var took: int = await _scoop_until("heavy hex", func() -> int: return stuck, func() -> bool: return Pace.hex_stuck(so.globe.field, stuck), 300.0)
 	_check(Pace.hex_stuck(f, stuck), "heavy: everything liftable taken from hex %d (%d scoops, %.0f%%)" % [stuck, took, f.removed_fraction(stuck) * 100.0])
 	var hc: Vector3 = f.hex_center(stuck)
-	_stand(hc, hc + _north(hc) * 3.0)
+	# [v9a] Walk up to what is left in the hex and scoop at it, as a player does. Facing north from
+	# the centre, the beam's origin could lie past a small hex's edge and the card said "Too heavy"
+	# for the piece instead of "This hex needs Lift N" (home walk, 1 run in 5).
+	var left: int = -1
+	var ld2: float = INF
+	for pid: int in f.hex_pieces[stuck]:
+		if f.piece_alive[pid] == 1 and f.piece_pos[pid].distance_squared_to(hc) < ld2:
+			ld2 = f.piece_pos[pid].distance_squared_to(hc)
+			left = pid
+	var aim: Vector3 = f.piece_pos[left] if left >= 0 else hc + _north(hc) * 3.0
+	var back: Vector3 = hc - aim
+	back = back - aim.normalized() * back.dot(aim.normalized())
+	var reach_m: float = 1.2 + (pow(maxf(f.piece_vol[left], 0.01), 1.0 / 3.0) * 0.5 if left >= 0 else 0.0)  # clear of its bulk
+	_stand(aim + (back.normalized() if back.length() > 0.3 else -_north(hc)) * reach_m, aim)
 	await _frames(4)
 	p.compartment.take_all()
 	_toasts.clear()
@@ -788,7 +801,7 @@ static func _part_heavy() -> void:
 	await tree.create_timer(0.4).timeout
 	var c2: Array[String] = _card()
 	var need_h: int = Pace.hex_need(f, stuck)
-	_check(Pace.heavy_hex and (c2[1] + c2[2]).contains("This hex needs Lift %d" % need_h), "heavy: the stuck hex says it needs Lift %d (%s)" % [need_h, str(c2)])
+	_check(Pace.heavy_hex and (c2[1] + c2[2]).contains("This hex needs Lift %d" % need_h), "heavy: the stuck hex says it needs Lift %d (%s; hex %d, Lumi on %d, the piece %d m from its centre)" % [need_h, str(c2), stuck, f.hex_at(p.global_position), int(sqrt(ld2)) if ld2 < INF else -1])
 	_check(Vfx.heavy_node != null and Vfx.heavy_node.visible, "heavy: the stuck hex's nearest piece is marked")
 	await _shot("heavy_hex")
 
