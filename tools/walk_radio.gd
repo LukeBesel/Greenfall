@@ -15,6 +15,7 @@ extends RefCounted
 ##   6. "Random songs": a song comes up by itself once the wait is over, never the one just heard.
 ## --walk-radio-clean: instead of 2-6, the CD's hex comes clean without Lumi (a robot, the 95%
 ## sweep): the CD is given all the same.
+## --walk-radio-shots=/abs/dir (rendered) saves frames: the CD lying, the card, the radio open.
 ## --walk-radio[=S] (after S s, default 8): prints [walk-radio] lines, exit 1 on a failure.
 ## tools/check_exit.sh runs it.
 
@@ -94,12 +95,15 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		await WalkHome._frames(6)
 		if k == 0:
 			_check(not Tunes.first_cd_found(), "standing 5 m away does not pick it up")
+			await _shot("cd_lies")
 		var d0: float = WalkHome.p.global_position.distance_to(spot2)
 		await _drive_to(spot2, 25.0)  # scooping what is in the way; the CD flies to him (0.8 s)
 		if Tunes.first_cd_found():
 			break
 		print("[walk-radio] note: try %d: from %.1f m he got to %.1f m of the CD (paused %s)" % [k, d0, WalkHome.p.global_position.distance_to(spot2), str(tree.paused)])
 	_check(Tunes.first_cd_found(), "driving into the CD picks it up")
+	await _shot("cd_flying")
+	await _shot("cd_card")
 	_check(Tunes.now_playing() == song, "Sunbaked is the playing song at once (playing: '%s')" % Tunes.now_playing())
 	_check(Tunes.is_found(song) and song in Tunes.found(), "Sunbaked is in the collection")
 	var key: String = Settings.glyph(TunesPicker.ACTION)
@@ -226,6 +230,7 @@ static func _radio_pick(id: String) -> void:
 	_check(pk != null and pk.is_open, "the radio key opens the radio")
 	if pk == null or not pk.is_open:
 		return
+	await _shot("radio_" + (id if id != "" else "random"))
 	var b: Button = pk.row(id)
 	_check(b != null, "the radio lists %s" % (id if id != "" else "Random songs"))
 	if b == null:
@@ -233,6 +238,21 @@ static func _radio_pick(id: String) -> void:
 	await WalkHome._click(b)
 	await WalkHome._pframes(4)
 	_check(not pk.is_open, "a pick closes the radio")
+
+
+## --walk-radio-shots=/abs/dir (rendered runs): a frame of what the player sees now.
+static var _shot_n: int = 0
+static func _shot(name: String) -> void:
+	var dir: String = DevHooks.get_s("walk-radio-shots", "")
+	if dir == "" or DisplayServer.get_name() == "headless":
+		return
+	await WalkHome.tree.create_timer(0.6, true).timeout
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(dir)
+	var path: String = "%s/%02d_%s.png" % [dir, _shot_n, name]
+	_shot_n += 1
+	WalkHome.tree.root.get_texture().get_image().save_png(path)
+	print("[walk-radio] shot %s" % path)
 
 
 static func _check(ok: bool, what: String) -> void:

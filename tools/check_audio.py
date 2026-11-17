@@ -173,6 +173,7 @@ def flutter(x, rate):
 # song, a coo's wobble and a flock's wingbeats (7-13 Hz), which nobody hears as a motor.
 ROTOR_BAND = (15.0, 45.0)
 ROTOR_MIN_S = 0.7
+ROTOR_STEADY_S = 1.2  # a beat must go on this long without a break (beat_run)
 ROTOR_WIN_S = 2.0
 
 
@@ -208,9 +209,34 @@ def rotor(x, rate):
             sub = (f >= fk / div * 0.9) & (f <= fk / div * 1.1) & (f < ROTOR_BAND[0])
             if sub.any() and X[sub].max() > peak:
                 over = True
-        if not over and peak * peak >= 12.0 * np.median(X[band] ** 2) and peak > best[0]:
+        if not over and peak * peak >= 12.0 * np.median(X[band] ** 2) and peak > best[0] \
+                and beat_run(env, fk, hop / rate) >= ROTOR_STEADY_S:
             best = (float(peak), float(fk))
     return best
+
+
+def beat_run(env, fk, dt, piece_s=0.2, depth=0.15):
+    """[v10snd] Seconds the fk beat lasts without a break: the longest run of 0.2 s pieces of the
+    envelope that each beat at fk (+-3 Hz) with a depth of at least `depth`. A rotor goes on; a
+    short sound over a quieter bed does not. In a recorded mix by a pond, a frog's double croak
+    (fauna_frog_5: 1.0 s of 35 Hz pulses, exempt by name in the dump) was the only thing the rotor
+    rule caught once the purr was gone. The old purr (2.4 s) still fails."""
+    m = max(int(piece_s / dt), 4)
+    run = 0
+    longest = 0
+    for i in range(0, len(env) - m + 1, m):
+        p = env[i: i + m]
+        mu = p.mean()
+        hit = False
+        if mu > 0:
+            q = (p - mu) / mu
+            X = np.abs(np.fft.rfft(q * np.hanning(m), n=4 * m)) * 2.0 / (0.5 * m)
+            f = np.fft.rfftfreq(4 * m, dt)
+            near = (f >= fk - 3.0) & (f <= fk + 3.0)
+            hit = near.any() and X[near].max() >= depth
+        run = run + 1 if hit else 0
+        longest = max(longest, run)
+    return longest * m * dt
 
 
 def seam_step(x, loop_begin, loop_end):
