@@ -10,9 +10,13 @@ fail=0
 run() {
 	local name="$1"; shift
 	local log="screenshots/check_exit_${name}.log"
-	godot --headless --path . "$@" >"$log" 2>&1
+	timeout -k 30 "${CHECK_EXIT_TIMEOUT:-1800}" godot --headless --path . "$@" >"$log" 2>&1  # [v10quit] a hang fails, not blocks CI
 	local code=$?
-	if [ "$code" -ne 0 ]; then
+	if [ "$code" -eq 124 ] || [ "$code" -eq 137 ]; then
+		echo "[check_exit] FAIL $name: hang at exit (killed after ${CHECK_EXIT_TIMEOUT:-1800} s; see $log). Log tail:"
+		tail -n 15 "$log"
+		fail=1
+	elif [ "$code" -ne 0 ]; then
 		echo "[check_exit] FAIL $name: exit code $code (134 = crash at quit; see $log)"
 		grep -m60 -E "FAIL|SCRIPT ERROR|pause-watch\]|walk-opening\] stuck" "$log"  # [main] show the failing checks in CI logs ([v9a] and what held Lumi)
 		fail=1
