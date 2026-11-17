@@ -28,6 +28,7 @@ Vfx="*res://art/vfx.gd"
 DevHooks="*res://autoload/DevHooks.gd"
 CradleBoot="*res://systems/cradle_boot.gd"
 Loader="*res://ui/loading_screen.gd"
+MixBarrier="*res://audio/mix_barrier.gd"
 
 [debug]
 
