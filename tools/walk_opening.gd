@@ -517,7 +517,15 @@ static func _spot_test() -> void:
 	for sp: String in spots.split(";"):
 		var xz: PackedStringArray = sp.split(",")
 		var at: Vector3 = _so.globe.terrain.ground((xf * Vector3(float(xz[0]), 0.0, float(xz[1]))).normalized())
-		for goal: String in ["bench", "bin"]:
+		for goal: String in DevHooks.get_s("walk-opening-spot-goals", "bench,bin").split(","):  # [v9a] also "scale"
+			if goal == "scale":
+				var dp: Node3D = _w.get("depot") as Node3D
+				_stand(at, dp.global_position)
+				await _secs(1.0)
+				var ts: float = _gt()
+				await _walk_to(func() -> Vector3: return dp.global_position, func() -> bool: return dp.call("pad_contains", _p.global_position), "the scale")
+				print("%s spot %s -> scale: %.1f game s, ends %.1f m from it" % [TAG, sp, _gt() - ts, _flat(dp.global_position - _p.global_position).length()])
+				continue
 			_stand(at, _w.call("bench_pos"))
 			await _secs(1.0)
 			var tgt: Vector3 = _w.call("bench_pos") if goal == "bench" else Objectives.bin_point(_w)
