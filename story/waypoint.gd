@@ -11,9 +11,15 @@ extends Node3D
 ## stands straight on the round planet; the trail follows the globe's ground.
 
 const COLOR := Color(0.74, 0.48, 1.0)
-const TRAIL_N: int = 9
-const TRAIL_STEP_M: float = 1.7
-const TRAIL_START_M: float = 1.6
+const TRAIL_N: int = 7
+const TRAIL_STEP_M: float = 2.2  # [v10guide] critic 13: fewer, bigger, evenly spaced arrows (was 9 x 1.7 m)
+const TRAIL_START_M: float = 2.0
+## [v10guide] Critic 13: no trail when the target is this close and on screen (the beam says it).
+const TRAIL_HIDE_NEAR_M: float = 12.0
+## [v10guide] An arrow stands on whatever is under it up to this high (the pad, a kerb): the
+## arrows drawn on the terrain under the start pad were cut by its top into a "zigzag" and a "flat
+## triangle" (critic 13, owner's shots 22 and 25).
+const TRAIL_CLIMB_M: float = 1.6
 const NEAR_M: float = 3.0
 ## [v1guide] The sky beam: tall enough to read from across the yard and over junk heaps.
 const BEAM_H: float = 70.0
@@ -73,6 +79,7 @@ var arrow: EdgeArrow
 static var _shader: Shader
 static var _shader_mix: Shader  # [qafix]
 var _mat_trail: ShaderMaterial  # [qafix]
+var _trail_alpha: float = 1.0  # [v10guide] fades out when the target is close and on screen
 
 
 func _ready() -> void:
@@ -192,7 +199,10 @@ func _process(delta: float) -> void:
 			_beam.global_basis = Basis(up.cross(z).normalized(), up, z)
 	_ring.global_basis = _up_basis(up)
 	_ring.global_position = _pos + up * 0.12
-	_update_trail(p.global_position, _pos)
+	var near_seen: bool = cam != null and OrbitUp.ground_dist(p.global_position, _pos) < TRAIL_HIDE_NEAR_M \
+		and not cam.is_position_behind(_pos) and get_viewport().get_visible_rect().has_point(cam.unproject_position(_pos + up * 1.0))
+	_trail_alpha = move_toward(_trail_alpha, 0.0 if near_seen else 1.0, delta * 2.5)
+	_update_trail(p, _pos)
 	_update_arrow(cam)
 
 
@@ -232,7 +242,9 @@ static func edge_point(rect: Rect2, dir: Vector2) -> Vector2:
 	return c + dir * minf(tx, ty)
 
 
-func _update_trail(from: Vector3, to: Vector3) -> void:
+func _update_trail(lumi: Patch, to: Vector3) -> void:
+	var from: Vector3 = lumi.global_position
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state if is_inside_tree() else null
 	var mm: MultiMesh = _trail.multimesh
 	var up0: Vector3 = OrbitUp.up(from)
 	var d: Vector3 = to - from
@@ -253,6 +265,13 @@ func _update_trail(from: Vector3, to: Vector3) -> void:
 		if sf:  # [v1guide] on the globe: on the ground under the point, facing along it
 			var n: Vector3 = pt.normalized()
 			var g: Vector3 = sf.terrain.ground(n) + n * (0.08 + sf.ground_height(sf.hex_at(pt), pt))
+			if space != null and a > 0.0:  # [v10guide] on top of the pad / kerb, not cut by it
+				var q := PhysicsRayQueryParameters3D.create(g + n * TRAIL_CLIMB_M, g - n * 0.05)
+				q.exclude = [lumi.get_rid()]
+				q.collide_with_areas = false
+				var hit: Dictionary = space.intersect_ray(q)
+				if not hit.is_empty() and hit["collider"] is StaticBody3D:
+					g = (hit["position"] as Vector3) + n * 0.06
 			var fw: Vector3 = (dir - n * dir.dot(n)).normalized()
 			xf = Transform3D(Basis.looking_at(fw, n), g)
 		else:
@@ -263,21 +282,22 @@ func _update_trail(from: Vector3, to: Vector3) -> void:
 				y += f.ground_height(f.hex_at(pt), pt)
 			xf = Transform3D(Basis.looking_at(dir, Vector3.UP), Vector3(pt.x, y, pt.z))
 		mm.set_instance_transform(i, xf)
-		mm.set_instance_color(i, Color(1, 1, 1, a * 0.9))
+		mm.set_instance_color(i, Color(1, 1, 1, a * 0.95 * _trail_alpha))
 
 
-## A flat chevron pointing along -Z (Basis.looking_at's forward), 0.5 m wide.
+## A flat solid chevron pointing along -Z (Basis.looking_at's forward), 0.8 m wide.
+## [v10guide] Critic 13: the thin two-stroke V (two overlapping quads, 0.5 m) read as a zigzag from
+## the play camera's low angle; one solid arrowhead (an outer tip and a notch, no overlaps) reads
+## as an arrow from 10-15 m.
 static func _chevron() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var w: float = 0.1  # [qafix] QA #36: a little bolder (was 0.07)
-	var pts: Array[Vector3] = [Vector3(-0.25, 0, 0.12), Vector3(0, 0, -0.14), Vector3(0.25, 0, 0.12)]
-	for k: int in 2:
-		var a: Vector3 = pts[k]
-		var b: Vector3 = pts[k + 1]
-		var n: Vector3 = Vector3(0, 1, 0).cross(b - a).normalized() * w
-		var quad: Array[Vector3] = [a - n, a + n, b + n, b - n]
-		for idx: int in [0, 1, 2, 0, 2, 3]:
-			st.set_color(Color.WHITE)
-			st.add_vertex(quad[idx])
+	var tip := Vector3(0, 0, -0.32)
+	var notch := Vector3(0, 0, -0.02)  # the concave back: an arrowhead, not a triangle
+	var left := Vector3(-0.4, 0, 0.2)
+	var right := Vector3(0.4, 0, 0.2)
+	var tris: Array[Vector3] = [tip, left, notch, tip, notch, right]
+	for v: Vector3 in tris:
+		st.set_color(Color.WHITE)
+		st.add_vertex(v)
 	return st.commit()
