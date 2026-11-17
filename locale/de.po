@@ -12171,8 +12171,8 @@ msgid "I found another old base, far away: Garden Row. It kept a big seed store.
 msgstr "Ich habe eine andere alte Basis gefunden, weit weg: die Gartenzeile. Dort lag ein großes Samenlager."
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
-msgstr "Zu Fuß ist es zu weit. Deine Roboter können hier weiter aufräumen. Bau ein Shuttle auf dem Startplatz und flieg hin."
+msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+msgstr "Zu Fuß ist es zu weit. Deine Roboter räumen hier weiter auf. Bau ein Shuttle auf dem Startplatz und flieg hin."
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
@@ -16664,6 +16664,9 @@ msgstr "Dieser Portalkran verschrottete die Bergbauflotte, als das Geld ausging.
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
+
+#~ msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
+#~ msgstr "Zu Fuß ist es zu weit. Deine Roboter können hier weiter aufräumen. Bau ein Shuttle auf dem Startplatz und flieg hin."
 
 #~ msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
 #~ msgstr "Eine eigene Roboter-Werkstatt auf dem Hof. Geh hin und drück E, um Roboter zu bauen."

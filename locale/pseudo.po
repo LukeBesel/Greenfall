@@ -12168,8 +12168,8 @@ msgid "I found another old base, far away: Garden Row. It kept a big seed store.
 msgstr "[Î ƒôûñð àñôţĥéŕ ôļð bàšé, ƒàŕ àŵàý: Ĝàŕðéñ Ŕôŵ. Îţ ķéþţ à bîĝ šééð šţôŕé. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
-msgstr "[Îţ îš ţôô ƒàŕ ţô ŵàļķ. Ýôûŕ ŕôbôţš çàñ ķééþ çļéàñîñĝ ĥéŕé. Bûîļð à šĥûţţļé ôñ ţĥé þàð àñð ƒļý ţĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+msgstr "[Ţôô ƒàŕ ţô ŵàļķ. Ýôûŕ ŕôbôţš ķééþ çļéàñîñĝ ĥéŕé. Bûîļð à šĥûţţļé ôñ ţĥé þàð àñð ƒļý ţĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"

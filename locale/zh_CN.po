@@ -12154,8 +12154,8 @@ msgid "I found another old base, far away: Garden Row. It kept a big seed store.
 msgstr "我在很远的地方找到了另一座旧基地：花园街。那里存着一大批种子。"
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
-msgstr "走路太远了。你的机器人可以留在这里继续清理。在发射台上造一架穿梭机，飞过去吧。"
+msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+msgstr "走路太远了。你的机器人会留在这里继续清理。在发射台上造一架穿梭机，飞过去吧。"
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
@@ -16647,6 +16647,9 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
+#~ msgstr "走路太远了。你的机器人可以留在这里继续清理。在发射台上造一架穿梭机，飞过去吧。"
 
 #~ msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
 #~ msgstr "院子里一座独立的机器人工坊。走过去按 E 就能造机器人。"

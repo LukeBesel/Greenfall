@@ -12154,8 +12154,8 @@ msgid "I found another old base, far away: Garden Row. It kept a big seed store.
 msgstr "遠くに、もうひとつ古い基地を見つけたよ。ガーデン通り。大きな種の倉庫があったんだ。"
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
-msgstr "歩くには遠すぎる。ここの片づけはロボットに任せられる。発着場でシャトルを建てて、飛んで行こう。"
+msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+msgstr "歩くには遠すぎる。ここの片づけはロボットが続けてくれる。発着場でシャトルを建てて、飛んで行こう。"
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
@@ -16647,6 +16647,9 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
+#~ msgstr "歩くには遠すぎる。ここの片づけはロボットに任せられる。発着場でシャトルを建てて、飛んで行こう。"
 
 #~ msgid "A robot workshop of its own in the yard. Walk up and press E to build robots."
 #~ msgstr "庭にある専用のロボット工房。近づいて E を押すとロボットを作れる。"

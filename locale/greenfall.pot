@@ -11993,7 +11993,7 @@ msgid "I found another old base, far away: Garden Row. It kept a big seed store.
 msgstr ""
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
+msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
 msgstr ""
 
 #: data/objectives.json:objectives[hub_wake_2].text
