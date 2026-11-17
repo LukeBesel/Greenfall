@@ -12098,10 +12098,6 @@ msgstr "Pflanzen füllen deinen Blütenkern."
 msgid "Keep cleaning. Seeds turn up in clean ground."
 msgstr "Räum weiter auf. In sauberem Boden tauchen Samen auf."
 
-#: data/objectives.json:objectives[seed].lines
-msgid "Something green is waking out there. Plant the first seed."
-msgstr "Da draußen erwacht etwas Grünes. Pflanz den ersten Samen."
-
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
 msgstr "Bau einen zweiten Roboter"
@@ -12146,6 +12142,18 @@ msgstr "Drück {open_globe}. Sieh, wie viel von Verdance sauber ist."
 msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
 msgstr "Öffne die Karte, Lumi. Sie zeigt, wie viel von Verdance noch begraben ist."
 
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base to level 2"
+msgstr "Bau die Basis auf Stufe 2 aus"
+
+#: data/objectives.json:objectives[base2].desc
+msgid "Workbench, Upgrades tab. A bigger base powers more robots."
+msgstr "Werkbank, Tab „Upgrades“. Eine größere Basis versorgt mehr Roboter mit Strom."
+
+#: data/objectives.json:objectives[base2].lines
+msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
+msgstr "Eine größere Basis macht mehr Strom, und Strom treibt Roboter an. Bau sie an der Werkbank wieder auf."
+
 #: data/objectives.json:objectives[shuttle].text
 msgid "Build the shuttle"
 msgstr "Bau das Shuttle"
@@ -12169,18 +12177,6 @@ msgstr "Zu Fuß ist es zu weit. Deine Roboter können hier weiter aufräumen. Ba
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
 msgstr "Weck Station 2 von 6"
-
-#: data/objectives.json:objectives[base2].text
-msgid "Rebuild the base to level 2"
-msgstr "Bau die Basis auf Stufe 2 aus"
-
-#: data/objectives.json:objectives[base2].desc
-msgid "Workbench, Upgrades tab. A bigger base powers more robots."
-msgstr "Werkbank, Tab „Upgrades“. Eine größere Basis versorgt mehr Roboter mit Strom."
-
-#: data/objectives.json:objectives[base2].lines
-msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
-msgstr "Eine größere Basis macht mehr Strom, und Strom treibt Roboter an. Bau sie an der Werkbank wieder auf."
 
 #: data/objectives.json:objectives[hub_wake_3].text
 msgid "Wake station 3 of 6"
@@ -16668,6 +16664,9 @@ msgstr "Dieser Portalkran verschrottete die Bergbauflotte, als das Geld ausging.
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
+
+#~ msgid "Something green is waking out there. Plant the first seed."
+#~ msgstr "Da draußen erwacht etwas Grünes. Pflanz den ersten Samen."
 
 #~ msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
 #~ msgstr "Das ist eine Samendose der Siedler. Cradle-Stempel auf dem Deckel. Eine von uns, in der Eile zurückgelassen."

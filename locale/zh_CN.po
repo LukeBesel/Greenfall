@@ -12081,10 +12081,6 @@ msgstr "植物会充满你的绽放核心。"
 msgid "Keep cleaning. Seeds turn up in clean ground."
 msgstr "继续清理。干净的土地里会冒出种子。"
 
-#: data/objectives.json:objectives[seed].lines
-msgid "Something green is waking out there. Plant the first seed."
-msgstr "外面有绿色的东西正在醒来。种下第一颗种子吧。"
-
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
 msgstr "建造第二个机器人"
@@ -12129,6 +12125,18 @@ msgstr "按 {open_globe}。看看 Verdance 有多少已经干净了。"
 msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
 msgstr "打开地图，Lumi。它会显示 Verdance 还有多少被埋着。"
 
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base to level 2"
+msgstr "把基地重建到 2 级"
+
+#: data/objectives.json:objectives[base2].desc
+msgid "Workbench, Upgrades tab. A bigger base powers more robots."
+msgstr "工作台，升级页签。基地越大，能供电的机器人就越多。"
+
+#: data/objectives.json:objectives[base2].lines
+msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
+msgstr "基地越大，电就越多，机器人靠电干活。去工作台把它重建起来吧。"
+
 #: data/objectives.json:objectives[shuttle].text
 msgid "Build the shuttle"
 msgstr "建造穿梭机"
@@ -12152,18 +12160,6 @@ msgstr "走路太远了。你的机器人可以留在这里继续清理。在发
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
 msgstr "唤醒第 2 座站点(共 6 座)"
-
-#: data/objectives.json:objectives[base2].text
-msgid "Rebuild the base to level 2"
-msgstr "把基地重建到 2 级"
-
-#: data/objectives.json:objectives[base2].desc
-msgid "Workbench, Upgrades tab. A bigger base powers more robots."
-msgstr "工作台，升级页签。基地越大，能供电的机器人就越多。"
-
-#: data/objectives.json:objectives[base2].lines
-msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
-msgstr "基地越大，电就越多，机器人靠电干活。去工作台把它重建起来吧。"
 
 #: data/objectives.json:objectives[hub_wake_3].text
 msgid "Wake station 3 of 6"
@@ -16651,6 +16647,9 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Something green is waking out there. Plant the first seed."
+#~ msgstr "外面有绿色的东西正在醒来。种下第一颗种子吧。"
 
 #~ msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
 #~ msgstr "那是定居者的种子罐。盖子上有 Cradle号的印章。是我们的，匆忙中落下的。"

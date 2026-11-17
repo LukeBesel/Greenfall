@@ -11920,10 +11920,6 @@ msgstr ""
 msgid "Keep cleaning. Seeds turn up in clean ground."
 msgstr ""
 
-#: data/objectives.json:objectives[seed].lines
-msgid "Something green is waking out there. Plant the first seed."
-msgstr ""
-
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
 msgstr ""
@@ -11968,6 +11964,18 @@ msgstr ""
 msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
 msgstr ""
 
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base to level 2"
+msgstr ""
+
+#: data/objectives.json:objectives[base2].desc
+msgid "Workbench, Upgrades tab. A bigger base powers more robots."
+msgstr ""
+
+#: data/objectives.json:objectives[base2].lines
+msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
+msgstr ""
+
 #: data/objectives.json:objectives[shuttle].text
 msgid "Build the shuttle"
 msgstr ""
@@ -11990,18 +11998,6 @@ msgstr ""
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
-msgstr ""
-
-#: data/objectives.json:objectives[base2].text
-msgid "Rebuild the base to level 2"
-msgstr ""
-
-#: data/objectives.json:objectives[base2].desc
-msgid "Workbench, Upgrades tab. A bigger base powers more robots."
-msgstr ""
-
-#: data/objectives.json:objectives[base2].lines
-msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
 msgstr ""
 
 #: data/objectives.json:objectives[hub_wake_3].text
