@@ -182,6 +182,8 @@ static func join(task_id: int) -> void:
 		await pause("join")
 	if not _tasks.has(task_id):  # [v6qa] waited already (_prune)
 		return
+	while not WorkerThreadPool.is_task_completed(task_id):  # [v10quit] blocking (no budget): see finish_pending
+		_flush_for_workers()
 	WorkerThreadPool.wait_for_task_completion(task_id)
 	_tasks.erase(task_id)
 	_task_refs.erase(task_id)
@@ -194,16 +196,27 @@ static func join_group(group_id: int) -> void:
 		await pause("join")
 	if not _groups.has(group_id):  # [v6qa]
 		return
+	while not WorkerThreadPool.is_group_task_completed(group_id):  # [v10quit] see finish_pending
+		_flush_for_workers()
 	WorkerThreadPool.wait_for_group_task_completion(group_id)
 	_groups.erase(group_id)
 	_group_refs.erase(group_id)
 
 
 ## Quitting mid-build (Audio._exit_tree): wait for whatever is still running.
+## [v10quit] Never a bare blocking wait here: a worker that reads a mesh back from the rendering
+## server (AssetLib.surf_arrays' fallback, e.g. the globe's "junk meshes" warm task) waits for the
+## main thread's next rendering-server flush, and a main thread blocked in
+## wait_for_task_completion never flushes again: the game hung forever at quit (quit 4 s into a
+## rocket hop: tools/check_exit.sh quit_on_hop). So the main thread keeps flushing while it waits.
 static func finish_pending() -> void:
 	for id: int in _tasks:
+		while not WorkerThreadPool.is_task_completed(id):
+			_flush_for_workers()
 		WorkerThreadPool.wait_for_task_completion(id)
 	for id: int in _groups:
+		while not WorkerThreadPool.is_group_task_completed(id):
+			_flush_for_workers()
 		WorkerThreadPool.wait_for_group_task_completion(id)
 	_tasks.clear()
 	_groups.clear()
@@ -213,6 +226,13 @@ static func finish_pending() -> void:
 		if ResourceLoader.load_threaded_get_status(path) != ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
 			ResourceLoader.load_threaded_get(path)
 	_fetching.clear()
+
+
+## [v10quit] Main thread, while it blocks on a worker: runs the rendering server's queued calls
+## (a worker's read-back waits on them) and gives the worker a moment.
+static func _flush_for_workers() -> void:
+	RenderingServer.force_sync()
+	OS.delay_msec(1)
 
 
 ## Loads a resource file on a loader thread while the loading screen keeps drawing, and returns
