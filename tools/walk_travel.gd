@@ -188,6 +188,11 @@ static func _finish_station(so: SliceOrbit, site: int, ledger: bool) -> void:
 		_clean_cells(os_, site, int(st.get("need", 0)) - int(st.get("have", 0)))
 	await _wait(tree, 1.2)
 	st = hp.current_step(site)
+	if str(st.get("do", "")) == "build":  # [v10base] the base's own machine on its marked spot
+		await _far_sell(so, site, ledger)
+		await _build_spot(so, site, str(st.get("id", "bench")))
+		await _wait(tree, 1.2)
+		st = hp.current_step(site)
 	if str(st.get("do", "")) == "outposts":
 		var op: Variant = hp.outpost_target()
 		var wt: Variant = ob.waypoint_target()
@@ -257,7 +262,121 @@ static func _finish_station(so: SliceOrbit, site: int, ledger: bool) -> void:
 	_check(nid != step_id, "the card moves on: '%s' -> '%s'" % [step_id, nid])
 	var wt: Variant = ob.waypoint_target()
 	_check(not (wt is Vector3 and (wt as Vector3).distance_to(lm["pos"]) < 1.0), "nothing points at the woken landmark")
-	_check(hp.bench_point() is Vector3, "a field bench stands by the pad")
+	_check(hp.bench_point() is Vector3, "this base's workbench stands on its spot")
+
+
+# --- A far base's own yard (planet/sites/far_yard.gd) -------------------------------------------
+
+## [v10base] The far base's bin stands ready: a bale carried onto its scale sells there (real keys:
+## the bale key, or E by a bale lying about, then Lumi stood on the scale plate).
+static func _far_sell(so: SliceOrbit, site: int, must: bool) -> void:
+	var w: Node = so.w
+	var tree: SceneTree = w.get_tree()
+	var p: Patch = w.get("patch") as Patch
+	var fy: FarYard = FarYard.of(w)
+	var dep: Depot = fy.depot(site) if fy else null
+	_check(dep != null and dep.is_visible_in_tree(), "this base has its own trash bin and scale on the pad")
+	if dep == null:
+		return
+	var bp: Variant = Objectives.bin_point(w)
+	_check(bp is Vector3 and (bp as Vector3).distance_to(dep.global_position) < 8.0, "the card's bin is this base's bin (%.0f m from its scale)" % ((bp as Vector3).distance_to(dep.global_position) if bp is Vector3 else -1.0))
+	if DevHooks.has("walk-travel-shots"):
+		_stand(so, p, dep.global_position + dep.global_basis.z * 4.0, dep.global_position)
+		await _shot(tree, "far_bin_%d" % site)
+		return
+	if p.carried.is_empty() and p.compartment.fill > 0.0:
+		await _tap(tree, "cube")
+		await _wait(tree, 0.8)
+	if p.carried.is_empty():  # a bale set down while cleaning: E by it picks it up
+		var near: JunkCube = null
+		var bd: float = INF
+		for n: Node in tree.get_nodes_in_group("junk_cube"):
+			var c: JunkCube = n as JunkCube
+			if c == null or c.carried or c.claimed:
+				continue
+			var d: float = c.global_position.distance_to(p.global_position)
+			if d < bd:
+				bd = d
+				near = c
+		if near:
+			_stand(so, p, near.global_position + SphereGrid.frame(near.global_position.normalized()).x * 0.9, near.global_position)
+			await _frames(tree, 6)
+			await _tap(tree, "interact")
+			await _wait(tree, 0.5)
+	if p.carried.is_empty() and not must:  # no cleaning was played at this base: nothing to sell
+		print("%s   no bale at hand here: the sale is played at station 2" % TAG)
+		return
+	_check(not p.carried.is_empty(), "Lumi carries a bale to sell (%d)" % p.carried.size())
+	if p.carried.is_empty():
+		return
+	var c0: float = GameState.get_currency("cubes").to_float()
+	var sold0: int = dep.cashed
+	_stand(so, p, dep.global_position, dep.bin_world())
+	for k: int in 40:
+		await _wait(tree, 0.25)
+		if p.carried.is_empty() and GameState.get_currency("cubes").to_float() > c0:
+			break
+	_check(p.carried.is_empty() and GameState.get_currency("cubes").to_float() > c0,
+		"on this base's scale the bale sells: cubes %.0f -> %.0f (%d cashed here)" % [c0, GameState.get_currency("cubes").to_float(), dep.cashed - sold0])
+
+
+## The base's build step: the marked spot, its sign, the beam; E short of the price is refused with
+## a line; E with the price builds the machine there; it then works (the bench opens by E).
+static func _build_spot(so: SliceOrbit, site: int, id: String) -> void:
+	var w: Node = so.w
+	var tree: SceneTree = w.get_tree()
+	var ob: Objectives = w.get("objectives") as Objectives
+	var hp: HubPurpose = so.sites.purpose
+	var p: Patch = w.get("patch") as Patch
+	var fy: FarYard = FarYard.of(w)
+	var at: Variant = fy.spot_point(site, id) if fy else null
+	var mark: Node3D = fy.spot_node(site, id) if fy else null
+	_check(at is Vector3 and mark != null and mark.is_visible_in_tree() and mark.get_node_or_null("Sign") != null,
+		"the %s's build spot is marked on the pad, with its picture sign" % id)
+	if not (at is Vector3):
+		return
+	_check(hp.card_text.contains("marked spot"), "the base's card: '%s'" % hp.card_text)
+	await _wait(tree, 1.6)
+	var wt: Variant = ob.waypoint_target()
+	_check(wt is Vector3 and (wt as Vector3).distance_to(at) < 1.5, "the beam stands on the build spot")
+	var a3: Vector3 = at
+	_stand(so, p, a3, mark.global_position)
+	await _frames(tree, 6)
+	var ia: Interactables = w.get("interactables") as Interactables
+	var seen: String = ia.prompt(p.global_position) if ia else ""
+	_check(seen.begins_with("E") and seen.contains("Build"), "at the spot the prompt says '%s'" % seen)
+	await _shot(tree, "spot_%s_%d" % [id, site])
+	var cost: Dictionary = FarYard.cost(hp.planet, id)
+	var keep: Array = [GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float()]
+	_set_money(float(cost.get("cubes", 0)) * 0.5, 0.0)
+	_toasts.clear()
+	await _tap(tree, "interact")
+	await _frames(tree, 4)
+	_check(not FarYard.is_built(site, id) and _said("needs"), "E without the price: not built, a line why (%s)" % _quote("needs"))
+	_set_money(maxf(float(keep[0]), float(cost.get("cubes", 0)) + 20.0), maxf(float(keep[1]), float(cost.get("parts", 0)) + 2.0))
+	var c0: float = GameState.get_currency("cubes").to_float()
+	_toasts.clear()
+	await _tap(tree, "interact")
+	await _wait(tree, 1.5)
+	_check(FarYard.is_built(site, id) and GameState.get_currency("cubes").to_float() <= c0 - float(cost.get("cubes", 0)) + 0.5 and _said("Built"),
+		"E with the price builds it there and takes the price (%s)" % _quote("Built"))
+	_check(not is_instance_valid(mark) or not mark.is_inside_tree(), "the spot's marking is gone once it is built")
+	await _shot(tree, "built_%s_%d" % [id, site])
+	if id == "bench":
+		var bp: Variant = hp.bench_point()
+		_check(bp is Vector3, "the workbench stands on its spot")
+		if bp is Vector3:
+			_stand(so, p, a3, bp)
+			await _frames(tree, 6)
+			var pr: String = so.interact_prompt(p)
+			await _tap(tree, "interact")
+			await _wait(tree, 1.0)
+			var up: UpgradesScreen = w.get("upgrades") as UpgradesScreen
+			_check(up != null and up.is_open, "E at this base's workbench opens it (prompt '%s')" % pr)
+			if up and up.is_open:
+				await _tap(tree, "ui_cancel")
+				await _wait(tree, 0.6)
+	_set_money(float(keep[0]), float(keep[1]))
 
 
 # --- Home again: the yard still stands -------------------------------------------------------
@@ -339,7 +458,47 @@ static func _home_check(so: SliceOrbit, before: Dictionary, shown: Dictionary, w
 		_stand(so, p, bin + (so.sites.sm.pad_xf(0).origin - bin).normalized() * 1.4, bin)
 		await _frames(tree, 6)
 		var bprompt: String = ia.prompt(p.global_position) if ia else ""
-		_check(dep.is_visible_in_tree() and bprompt != "", "%s: the trash bin stands and answers ('%s')" % [what, bprompt])
+		# (Its E prompt is the bin's upgrade offer: it has none when nothing can be offered.)
+		_check(dep.is_visible_in_tree() and dep.bin_world().distance_to(bin) < 3.0, "%s: the trash bin stands in its bay (prompt '%s')" % [what, bprompt])
+
+
+## Where every loose bale lies.
+static func _bale_spots(tree: SceneTree) -> Array[Vector3]:
+	var out: Array[Vector3] = []
+	for n: Node in tree.get_nodes_in_group("junk_cube"):
+		var c: JunkCube = n as JunkCube
+		if c and not c.carried and not c.claimed and c.is_inside_tree():
+			out.append(c.global_position)
+	return out
+
+
+## Every bale is still where it lay (within a metre), on the ground, and none came to Lumi or
+## onto the home pad.
+static func _bales_stayed(so: SliceOrbit, was: Array[Vector3], what: String) -> void:
+	var tree: SceneTree = so.w.get_tree()
+	var p: Patch = so.w.get("patch") as Patch
+	var now: Array[Vector3] = _bale_spots(tree)
+	var moved: int = 0
+	var worst: float = 0.0
+	for a: Vector3 in was:
+		var best: float = INF
+		for b: Vector3 in now:
+			best = minf(best, a.distance_to(b))
+		worst = maxf(worst, best)
+		moved += 1 if best > 1.0 else 0
+	var air: int = 0
+	var by_lumi: int = 0
+	var pad: Vector3 = so.sites.sm.pad_xf(0).origin
+	for b: Vector3 in now:
+		var h: float = b.length() - so.globe.terrain.ground(b.normalized()).length()
+		air += 1 if h > 1.2 or h < -0.3 else 0
+		var was_here: bool = false
+		for a: Vector3 in was:
+			was_here = was_here or a.distance_to(b) < 1.0
+		if not was_here and (b.distance_to(p.global_position) < 15.0 or b.distance_to(pad) < 16.0):
+			by_lumi += 1
+	_check(now.size() >= was.size() and moved == 0 and air == 0 and by_lumi == 0,
+		"%s: the %d bales lie where they were left (%d now; moved over 1 m: %d, farthest %.2f m; in the air or under the ground: %d; turned up by Lumi or on the home pad: %d)" % [what, was.size(), now.size(), moved, worst, air, by_lumi])
 
 
 ## The pause key, a click on Quit, the title, a click on Continue: the world as the save holds it.
@@ -417,17 +576,38 @@ static func _there_and_back(so: SliceOrbit) -> void:
 	await _home_check(so, before, shown, "before leaving")
 	await _fly_by_click(so, site, true)
 	await _wait(tree, 6.0)  # long enough for a far town to be dropped
+	# [v10base] Bales pressed here stay here (they used to rain onto Lumi after a flight or a Continue).
+	var p: Patch = w.get("patch") as Patch
+	for k: int in 12:
+		if ob.target_hex >= 0:
+			break
+		await _wait(tree, 0.5)
+	for n: int in 2:
+		await _scoop_real(so, p)
+		await _tap(tree, "cube")
+		await _wait(tree, 0.8)
+		if not p.carried.is_empty():
+			await _tap(tree, "drop")
+			await _wait(tree, 0.8)
+	await _wait(tree, 2.0)
+	var bales: Array[Vector3] = _bale_spots(tree)
+	_check(bales.size() >= 1, "bales pressed at station 2 lie there (%d)" % bales.size())
 	so = await _reload(so, "at station 2")
 	if so == null:
 		return
 	os_ = so.sites
+	_bales_stayed(so, bales, "Continue at station 2")
 	_check(os_.sm.nearest == site and os_.rocket_site() == site and os_.rocket_spot.visible, "Continue at station 2: Lumi and the rocket are there (site %d, rocket at %d)" % [os_.sm.nearest, os_.rocket_site()])
 	await _fly_by_click(so, 0, false)
 	_check(os_.sm.nearest == 0, "flew home (at site %d)" % os_.sm.nearest)
+	await _wait(tree, 8.0)
+	_bales_stayed(so, bales, "home again")
 	await _home_check(so, before, shown, "home again")
 	so = await _reload(so, "at home")
 	if so == null:
 		return
+	await _wait(tree, 12.0)
+	_bales_stayed(so, bales, "home, after Continue")
 	await _home_check(so, before, shown, "home, after Continue")
 
 

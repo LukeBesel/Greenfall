@@ -415,6 +415,8 @@ func from_dirh(a: Array) -> Vector3:
 ## Cubes fall toward the planet's centre: one point-gravity area around the whole globe.
 func _build_gravity() -> void:
 	JunkCube.planet_radius = grid.radius_m
+	JunkCube.ground_fn = terrain.ground  # [v10base] bales left behind sleep where they lie (automation/junk_cube.gd)
+	JunkCube.near_fn = body_near
 	var area := Area3D.new()
 	area.name = "PlanetGravity"
 	area.gravity_space_override = Area3D.SPACE_OVERRIDE_REPLACE
@@ -436,6 +438,21 @@ func _build_gravity() -> void:
 
 func _exit_tree() -> void:
 	JunkCube.planet_radius = 0.0
+	JunkCube.ground_fn = Callable()
+	JunkCube.near_fn = Callable()
+
+
+## [v10base] Whether a tracked body (Lumi, a robot: the streamer's physics centres, whose ground
+## has colliders) is within BODY_NEAR_M of a world point.
+const BODY_NEAR_M: float = 48.0
+
+
+func body_near(p: Vector3) -> bool:
+	for k: String in trackers:
+		var b: Node3D = trackers[k]
+		if is_instance_valid(b) and b.is_inside_tree() and b.global_position.distance_squared_to(p) < BODY_NEAR_M * BODY_NEAR_M:
+			return true
+	return false
 
 
 # --- Loop ---------------------------------------------------------------------------------

@@ -453,6 +453,10 @@ func _update_context(delta: float, minimal: bool) -> void:
 	var want: float = (1.0 if (_context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) else 0.8) if text != "" else 0.0
 	if hotbar.celebrating():
 		want = 0.0
+	# [v10base] Play-tester item 22: by the rocket the prompt, the base's name and a WREN line sat
+	# on one spot. On the base's ground the name gives way while there is something to press.
+	if text == hex_text and h >= 0 and world and world.field.hex_hub[h] != 0 and _prompt.text.strip_edges() != "":
+		want = 0.0
 	if Subtitles.current and is_instance_valid(Subtitles.current) and Subtitles.current.current_text() != "":
 		want = 0.0  # [orbB] owner rule (onboard2): one message line on screen at a time
 	_context.modulate.a = move_toward(_context.modulate.a, want, delta * (4.0 if want > 0.0 else 1.2))

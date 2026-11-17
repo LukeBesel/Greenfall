@@ -1166,6 +1166,19 @@ func _arc(p: Patch) -> bool:
 				if stp == "outposts":
 					_set_far_step("outposts")
 					return _do_far_outpost(p)
+				if stp == "build":  # [v10base] the base's marked build spot: walk there, pay, build
+					_set_far_step("build")
+					var fy: FarYard = FarYard.of(world)
+					var bid: String = str(os_.purpose.current_step(_hop_to).get("id", "bench"))
+					var bt: Variant = fy.spot_point(_hop_to, bid) if fy else null
+					if bt is Vector3 and GameState.can_afford_all(FarYard.cost(os_.purpose.planet, bid)):
+						if p.global_position.distance_to(bt) > 2.0 and _task_t < 60.0:
+							_set_task("far_build")
+							_go(p, bt, 1.0)
+							return true
+						fy.build(_hop_to, bid)
+						return true
+					return false  # earn its price here
 				if stp == "wake":
 					_set_far_step("wake")
 					var lm: Dictionary = os_.purpose.landmark(_hop_to)
@@ -1644,7 +1657,7 @@ func _set_far_step(step: String) -> void:
 
 func _far_steps_line() -> String:
 	var parts: Array[String] = ["landed %.1f" % (_hop_t / 60.0)]
-	for k: String in ["clean", "outposts", "wake"]:
+	for k: String in ["clean", "build", "outposts", "wake"]:
 		if _far_steps.has(k):
 			parts.append("%s from %.1f" % [k, float(_far_steps[k]) / 60.0])
 	return ", ".join(parts)

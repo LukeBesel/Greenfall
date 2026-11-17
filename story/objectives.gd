@@ -966,6 +966,10 @@ func _bench_pos() -> Variant:
 
 ## [v2guide] The trash bin's body (the depot's chute), where the chest is emptied.
 static func bin_point(w: Node) -> Variant:
+	var fy: FarYard = FarYard.of(w)  # [v10base] at a far base: that base's own bin
+	var fb: Variant = fy.bin_point() if fy else null
+	if fb is Vector3:
+		return fb
 	var d: Variant = w.get("depot") if w else null
 	if d is Node3D and (d as Node3D).has_method("bin_world"):
 		return (d as Node3D).call("bin_world")
@@ -1180,6 +1184,10 @@ func _step_price() -> Dictionary:
 			var opm: Variant = world.get("outposts")
 			if opm is Outposts and (opm as Outposts).hub_index == os2.purpose.site:
 				return (opm as Outposts).repair_cost(0).duplicate()
+		if os2 and os2.purpose and os2.purpose.site > 0:  # [v10base] its build step: the machine's price
+			var bst: Dictionary = os2.purpose.current_step(os2.purpose.site)
+			if str(bst.get("do", "")) == "build":
+				return FarYard.cost(os2.purpose.planet, str(bst.get("id", "bench"))).duplicate()
 		var arc: Dictionary = arc_price(world, key)  # [v6pace] the hub, wake, rocket and drive steps
 		if not arc.is_empty():
 			return arc
@@ -1225,6 +1233,9 @@ func _arc_beam(def: Dictionary, key: String) -> Variant:
 		if st == "outposts":
 			var op: Variant = os_.purpose.outpost_target()
 			return op if op is Vector3 else "hex"
+		if st == "build":  # [v10base] the base's marked build spot (its price is the card's)
+			var bt: Variant = os_.purpose.build_target()
+			return bt if bt is Vector3 else "hex"
 		var lm: Variant = os_.purpose.goal_target("landmark")
 		if lm is Vector3:
 			return lm
@@ -1285,10 +1296,18 @@ func situation_hint(dt: float = 0.0) -> String:
 	var price: Dictionary = _step_price()
 	var short: bool = not price.is_empty() and not GameState.can_afford_all(price)
 	situation_kind = "chest"
+	# [v10base] Play-tester item 4: at a far base the bin and scale are that base's own (FarYard),
+	# not home's under the tall smoke.
+	var fy: FarYard = FarYard.of(world)
+	var far_base: bool = fy != null and fy.site() > 0
 	if full:
-		return tr("Your chest is full. Head home: the bin is under the tall smoke.") if far and not press else full_line
+		if far and not press:
+			return tr("Your chest is full. Follow the beam to this base's bin.") if far_base else tr("Your chest is full. Head home: the bin is under the tall smoke.")
+		return full_line
 	situation_kind = "bale"
 	if not p.carried.is_empty():
+		if far_base:
+			return tr("Carry your bale to this base's scale by its bin.")
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
 	# [v9c] At a far station with no hex the card can outline (none finishable with this Lift): say so.
 	if target_hex < 0 and _none_near and str(step_target(current()).get("to", "")) == "hex" and Pace.lift_class() < Pace.SIZE_LARGE \

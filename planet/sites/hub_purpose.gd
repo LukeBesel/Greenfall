@@ -34,7 +34,6 @@ var _t: float = 0.0
 var _lvl_t: float = 0.0
 var _spot: Node3D           # the landmark's interact anchor
 var _beacon: Node3D
-var _bench: Node3D
 var _way: Waypoint
 var _layer: CanvasLayer
 var _card: PanelContainer
@@ -235,6 +234,9 @@ func steps(i: int) -> Array:
 				d["need"] = int(s.get("count", 1))
 				d["have"] = mini(_outposts_here(i), int(d["need"]))
 				HubPlan.state(i)["outposts"] = int(d["have"])
+			"build":  # [v10base] this base's own machine on its marked spot (FarYard)
+				d["id"] = str(s.get("id", "bench"))
+				d["have"] = 1 if FarYard.is_built(i, str(d["id"])) else 0
 			"wake":
 				d["have"] = 1 if HubPlan.woken(i) else 0
 		d["done"] = HubPlan.woken(i) or int(d["have"]) >= int(d["need"])
@@ -264,6 +266,8 @@ func step_text(i: int, d: Dictionary) -> String:
 			return tr("Clean hexes here to wake the %s: %d / %d") % [HubPlan.landmark_name(planet, i), int(d["have"]), int(d["need"])]
 		"outposts":
 			return tr("Repair an outpost here: %d / %d") % [int(d["have"]), int(d["need"])]
+		"build":
+			return tr("Build on the marked spot: %s (%s)") % [FarYard.title(str(d.get("id", "bench"))), Currencies.cost_text(FarYard.cost(planet, str(d.get("id", "bench"))))]
 		"wake":
 			if HubPlan.at_limit(planet):
 				return tr("Upgrade the rocket, then wake the %s") % HubPlan.landmark_name(planet, i)
@@ -400,6 +404,13 @@ func crew_summary(i: int) -> Dictionary:
 
 func crew_line(i: int) -> String:
 	var s: Dictionary = crew_summary(i)
+	# [v10base] Play-tester item 10: the wake says "keeps cleaning when you fly on" and the rocket's
+	# list said "No robots here yet" for the same base. A woken base with no robots of its own does
+	# clean (planet/sites/base_keepers.gd): say so, with how fast.
+	if i > 0 and HubPlan.woken(i) and int(s.get("robots", 0)) <= 0:
+		var per_min: float = BaseKeepers.rate(sm.levels[i] if i < sm.levels.size() else 2, 0)
+		if per_min > 0.0:
+			return tr("Cleans by itself: %d hexes a minute") % int(round(per_min))
 	if str(s.get("text", "")) != "":
 		return str(s["text"])
 	var n: int = int(s.get("robots", 0))
@@ -472,6 +483,15 @@ func outpost_target() -> Variant:
 	return best
 
 
+## [v10base] Where to stand for the base's "build" step (in front of its marked spot), or null.
+func build_target() -> Variant:
+	var d: Dictionary = current_step(site) if site > 0 else {}
+	if str(d.get("do", "")) != "build":
+		return null
+	var fy: FarYard = sites.get_node_or_null("FarYard") as FarYard
+	return fy.spot_point(site, str(d.get("id", "bench"))) if fy else null
+
+
 ## For goal steps (story/objectives.gd step targets): where the beam should stand for
 ## "rocket" (the parked rocket: fly to the next hub, or upgrade it) and "landmark" (the landmark of
 ## the far hub Lumi is at). Null when there is nothing to point at.
@@ -485,12 +505,11 @@ func goal_target(kind: String) -> Variant:
 	return null
 
 
-## Where the workbench is for Lumi now: the field bench of the woken far hub he is at, else null
-## (the home bench).
+## Where the workbench is for Lumi now: the far base's own bench once it is built on its marked
+## spot (planet/sites/far_yard.gd), else null (the home bench).
 func bench_point() -> Variant:
-	if site > 0 and HubPlan.woken(site) and _bench and _bench.visible:
-		return _bench.global_position
-	return null
+	var fy: FarYard = sites.get_node_or_null("FarYard") as FarYard
+	return fy.bench_point() if fy and site > 0 else null
 
 
 func _refresh() -> void:
@@ -504,7 +523,6 @@ func _refresh() -> void:
 	_way.set_target(lm["pos"] if ready_now else null)
 	_show_beacon(far and not lm.is_empty() and HubPlan.woken(site), lm)
 	_show_mark(far and not lm.is_empty() and not HubPlan.woken(site), lm)
-	_show_bench(far and HubPlan.woken(site))
 	# The card.
 	var title: String = ""
 	var body: String = ""
@@ -645,23 +663,9 @@ static func _up_basis(up: Vector3) -> Basis:
 	return Basis(x, up, x.cross(up).normalized())
 
 
-## The field bench the rocket carries: stands by the pad of a woken far hub.
-func _show_bench(on: bool) -> void:
-	if not on:
-		if _bench:
-			_bench.visible = false
-		return
-	if _bench == null:
-		_bench = _make_bench()
-		add_child(_bench)
-	var pad: Transform3D = sm.pad_xf(site)
-	var at: Vector3 = pad * Vector3(-5.5, 0.0, 4.0)
-	var up: Vector3 = at.normalized()
-	var g: Vector3 = sm.terrain.ground(up) if sm.terrain else at
-	var b: Basis = _up_basis(up)
-	if not _bench.visible or _bench.global_position.distance_to(g) > 0.3:
-		_bench.global_transform = Transform3D(b, g)
-	_bench.visible = true
+## [v10base] A far base's workbench model (it stands on that base's build spot once built).
+func make_bench() -> Node3D:
+	return _make_bench()
 
 
 func _make_bench() -> Node3D:
@@ -901,6 +905,8 @@ func _dev_chain(i: int) -> void:
 	for s: Dictionary in HubPlan.chain(planet, i):
 		if str(s["do"]) == "outposts":
 			HubPlan.state(i)["outposts"] = int(s.get("count", 1))
+		elif str(s["do"]) == "build":
+			FarYard.mark_built(i, str(s.get("id", "bench")))
 	GameState.add_all(HubPlan.wake_cost(planet))
 	_refresh()
 	var lmd: Dictionary = landmark(i)
