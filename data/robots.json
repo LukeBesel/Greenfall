@@ -13,7 +13,7 @@
         "arm",
         "core"
       ],
-      "cost": 150,
+      "cost": 220,
       "parts": 40,
       "stats": {
         "speed": 1.6,

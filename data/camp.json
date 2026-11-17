@@ -86,7 +86,7 @@
       "_doc": "[v10pace] The shuttle (the Mk I rocket) is built by the player on the launch pad: no rocket stands before (data/hub.json rocket.build). Listed once WREN has said why to fly on (flags.shuttle_plans, set when the story step 'shuttle' starts). The price is the first big save of the game.",
       "name": "Shuttle",
       "desc": "A small one-seat shuttle, built on the pad. It flies Lumi to the other old bases.",
-      "cost": {"cubes": 3000, "parts": 100},
+      "cost": {"cubes": 2000, "parts": 100},
       "requires_level": 1,
       "requires_bench": true,
       "requires_flag": "shuttle_plans",
