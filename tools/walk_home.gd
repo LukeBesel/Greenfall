@@ -314,6 +314,7 @@ static func _base_state() -> void:
 		Research.grant("salvage_logic")
 	var fl: Fleet = w.get("fleet") as Fleet
 	if fl.robot_total() < 1:  # the first Scoopie ("robot")
+		_set_money(fl.build_cost("scoopie").to_float() + 1.0, fl.build_parts("scoopie").to_float() + 1.0)  # [v10pace] paid as in play
 		fl.build("scoopie", so.bench_position())
 	GameState.stats["robots_built"] = maxf(float(GameState.stats.get("robots_built", 0.0)), 1.0)
 	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0))
@@ -849,6 +850,10 @@ static func _part_base2() -> void:
 	await _close_bench()
 	var moved: bool = await _wait_step_not("base2", 4.0)
 	_check(moved, "base2 done: the card moves on (%s)" % _step_id())
+	# [v10pace] The next step (the shuttle) counts cubes: a nearly clean hex that heals and pays on
+	# load (item 82) would move that count. With the shuttle's price in hand the count stays full.
+	var sc: Dictionary = YardBuilds.def("shuttle").get("cost", {})
+	_set_money(float(sc.get("cubes", 0.0)) + 50.0, float(sc.get("parts", 0.0)) + 10.0)
 	await _reload("base2 just bought", func() -> Dictionary: return {"level": (w.get("hub") as Hub).level})
 
 
@@ -949,6 +954,10 @@ static func _part_robot2() -> void:
 	var fl: Fleet = w.get("fleet") as Fleet
 	if not await _goto("robot2"):
 		return
+	if fl.robot_total() < 1:  # the first Scoopie (an earlier part may have taken it): this is the second
+		_set_money(fl.build_cost("scoopie").to_float() + 1.0, fl.build_parts("scoopie").to_float() + 1.0)
+		fl.build("scoopie", so.bench_position())
+	GameState.stats["robots_built"] = maxf(float(GameState.stats.get("robots_built", 0.0)), 1.0)
 	_set_money(100.0, 10.0)
 	await tree.create_timer(0.6).timeout
 	var c: Array[String] = _card()
@@ -1010,13 +1019,19 @@ static func _part_map() -> void:
 static func _part_shuttle() -> void:
 	var os_: OrbitSites = OrbitSites.of(w)
 	# The state before: no rocket was ever built or flown, WREN has not asked for one.
+	# [v10pace] Base 2 comes right before the shuttle: step back to the map step so the shuttle
+	# step has not started yet (it is what sets shuttle_plans).
+	GameState.flags.erase("map_seen")
+	await _goto("map")
 	GameState.flags.erase("shuttle_plans")
+	await tree.create_timer(1.0).timeout
 	_check(not Hub.rocket_built() and not os_.rocket_unlocked() and not os_.rocket_spot.visible, "shuttle: no rocket stands on the pad before it is built")
 	_check(not HubBuilds.listed(w, "shuttle"), "shuttle: the Build tab does not list it before WREN asks")
 	var spot: Node3D = w.get_node_or_null("BuildSpot_shuttle") as Node3D
 	_check(spot != null and not spot.visible, "shuttle: its spot is not marked yet")
 	_check(not ob.chain.slice(0, ob.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find("shuttle")).any(func(d: Dictionary) -> bool: return str(d.get("key", "")) in ["hubs_seen", "hubs_woken"]),
 		"shuttle: no 'Fly to' or 'Wake' step stands before 'Build the shuttle'")
+	GameState.flags["map_seen"] = true
 	var cost: Dictionary = YardBuilds.def("shuttle").get("cost", {})
 	_set_money(200.0, 10.0)
 	_toasts.clear()
@@ -1029,7 +1044,8 @@ static func _part_shuttle() -> void:
 	_check(spot != null and is_instance_valid(spot) and spot.visible and spot.global_position.distance_to(os_.sm.pad_xf(0).origin) < 1.0, "shuttle: its spot on the launch pad is marked")
 	_check(ob.step_price() == cost, "shuttle: the card shows its price (%s)" % str(ob.step_price()))
 	var pr: Array = ob.progress()
-	_check(str(pr[1]).begins_with("200"), "shuttle: the card counts the cubes saved toward it (%s)" % str(pr))
+	var saved: float = str(pr[1]).get_slice(" /", 0).replace(",", "").to_float()
+	_check(saved >= 200.0 and saved < 400.0 and str(pr[1]).ends_with("/ " + Settings.fmt(BigNum.from_float(float(cost.get("cubes", 0.0))))), "shuttle: the card counts the cubes saved toward it (%s; robots may sell a bale meanwhile)" % str(pr))
 	await _shot("shuttle_start")
 	await _reload("shuttle, saving up", func() -> Dictionary: return {"plans": GameState.flags.get("shuttle_plans", false), "built": Hub.rocket_built()})
 	os_ = OrbitSites.of(w)
@@ -1048,7 +1064,7 @@ static func _part_shuttle() -> void:
 			break
 		await tree.create_timer(0.5).timeout
 	_check(Hub.rocket_built(), "shuttle: clicking its price tag builds it")
-	_check(GameState.get_currency("cubes").to_float() < 1.0, "shuttle: the price is paid (%.0f cubes left)" % GameState.get_currency("cubes").to_float())
+	_check(GameState.get_currency("cubes").to_float() < 1.0 + float(cost.get("cubes", 0.0)) * 0.05, "shuttle: the price is paid (%.0f cubes left; the robots sell bales meanwhile)" % GameState.get_currency("cubes").to_float())
 	await tree.create_timer(1.5).timeout
 	_check(not _up().is_open, "shuttle: the workbench closes by itself so the build is seen")
 	_check(ShuttleBuild.building, "shuttle: it is being put together on the pad")
