@@ -109,6 +109,7 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var hub0: int = GameState.current_hub
 	var tower0: bool = w.get_node_or_null("SignalTower") != null
 	var a: Dictionary = _snap()
+	print("[walk-home] trace %s: save: step %s card %s count %s cubes %.1f" % [tag, str(a["step"]), str(a["card"]), str(a["pr"]), float(a["_cubes"])])
 	var ea: Dictionary = extra.call() if extra.is_valid() else {}
 	var saved_at: float = Time.get_unix_time_from_system()
 	var fl0: Fleet = w.get("fleet") as Fleet
@@ -157,6 +158,10 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	_check(menu != null, "%s: back at the title with Continue (%s)" % [tag, "kill" if kill else "Quit"])
 	if menu == null:
 		return await _fatal(tag)
+	# [v9a] What the save on disk holds, to tell money the load made up from money earned in play.
+	var sv: Dictionary = SaveManager.read_dict(SaveManager.slot_path())
+	var cubes_file: float = BigNum.from_serialized((sv.get("currencies", {}) as Dictionary).get("cubes", [0.0, 0])).to_float()
+	var hexes_file: float = float((sv.get("stats", {}) as Dictionary).get("hexes_cleaned", 0.0))
 	await tree.create_timer(1.5).timeout
 	await _click(menu.get("_continue") as Button)
 	DevHooks.args.erase("menu")
@@ -171,7 +176,15 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	if not await _wait_world():
 		_check(false, "%s: the loaded world has its card and Lumi" % tag)
 		return await _fatal(tag)
+	# [v9a] dev: prove the check both ways. --walk-home-fault=TAG: money the load made up (fails);
+	# --walk-home-earn=TAG: the price earned in play right after the load (a note, passes).
+	var cost_now: float = float(ob._step_price().get("cubes", 0.0))
+	if tag in DevHooks.get_s("walk-home-fault", "").split(","):
+		GameState.add_currency("cubes", BigNum.from_float(cost_now))
 	var cubes_loaded: float = GameState.get_currency("cubes").to_float()  # [v9a] as the world comes up
+	var hexes_loaded: float = float(GameState.stats.get("hexes_cleaned", 0.0))
+	if tag in DevHooks.get_s("walk-home-earn", "").split(","):
+		GameState.add_currency("cubes", BigNum.from_float(cost_now))
 	await tree.create_timer(3.0).timeout  # the card fades in
 	# [main] The new card shows a step's reason first and its hint a few seconds later (ui/objective_card.gd):
 	# give the loaded card that long to show the same lines before comparing.
@@ -180,6 +193,7 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 			break
 		await tree.create_timer(0.3).timeout
 	var b: Dictionary = _snap()
+	print("[walk-home] trace %s: load: step %s card %s count %s cubes %.1f on load, %.1f compared" % [tag, str(b["step"]), str(b["card"]), str(b["pr"]), cubes_loaded, float(b["_cubes"])])
 	if GameState.current_hub != hub0 or (w.get_node_or_null("SignalTower") != null) != tower0:
 		print("[walk-home] note: %s: current hub %d -> %d, tower node %s -> %s" % [tag, hub0, GameState.current_hub, str(tower0), str(w.get_node_or_null("SignalTower") != null)])
 	var eb: Dictionary = extra.call() if extra.is_valid() else {}
@@ -203,17 +217,22 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 		print("[walk-home] note: %s: back after %.0f s with robots out: offline pay %.0f cubes (count and outline may move on)" % [tag, away, float(b["_cubes"]) - float(a["_cubes"])])
 	var pa: Array = a["pr"]
 	var pb: Array = b["pr"]
-	# [v9a] A price line ("0 / 900") turns into the step's own count once the money is there: right,
-	# if the money came after the load (robots selling) or as offline pay. Money that appears in the
-	# load itself would be a save fault, so that still fails, with the numbers.
+	# [v9a] A price line ("0 / 900") turns into the step's own count ("1 / 2") once the money is
+	# there. Robots keep cleaning while the walk saves, quits and loads (a hex they finish pays ~120
+	# cubes plus a research grant per note, 500-900 in all), and on a slow runner that round trip is
+	# long enough for one (CI: "0 / 900" -> "1 / 2" at tower2). Right if the save on disk holds the
+	# money the world had at the write and the load gave it back (or a hex was finished while it
+	# loaded); money that appears in the load itself is a save fault, so that still fails.
 	var pc: float = float((b["_price"] as Dictionary).get("cubes", 0.0))
-	var earned: bool = pc > 0.0 and float(b["_cubes"]) >= pc and float(a["_cubes"]) < pc and (cubes_loaded <= float(a["_cubes"]) + 1.0 or paid)
+	var kept_money: bool = absf(cubes_loaded - cubes_file) <= 1.0 or hexes_loaded > hexes_file
+	var earned: bool = pc > 0.0 and float(b["_cubes"]) >= pc and float(a["_cubes"]) < pc and (kept_money or paid)
 	if paid and float(pb[0]) >= float(pa[0]) - 0.01:
 		pass  # more money or more cleaned: the pay
 	elif earned:
-		print("[walk-home] note: %s: the price %s was earned after the load (cubes %.0f -> %.0f): the card shows the step's count %s" % [tag, str(pa[1]), float(a["_cubes"]), float(b["_cubes"]), str(pb[1])])
+		print("[walk-home] note: %s: the price %s was earned in play (cubes %.0f at the snapshot, %.0f in the save, %.0f on load, %.0f now; hexes cleaned %.0f saved, %.0f now): the card shows the step's count %s" % [tag,
+			str(pa[1]), float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), hexes_file, float(GameState.stats.get("hexes_cleaned", 0.0)), str(pb[1])])
 	elif absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
-		diff.append("count %s -> %s (cubes %.0f saved, %.0f on load, %.0f compared, %.0f s away)" % [str(pa), str(pb), float(a["_cubes"]), cubes_loaded, float(b["_cubes"]), away])
+		diff.append("count %s -> %s (cubes %.0f at the snapshot, %.0f in the save, %.0f on load, %.0f compared, %.0f s away)" % [str(pa), str(pb), float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), away])
 	# The outline is picked afresh on load (the most-cleared hex near Lumi): another hex is fine if
 	# the old one kept its progress and the new one is at least as far along.
 	var kept: float = (so.globe.field as HexField).removed_fraction(int(a["hex"])) if int(a["hex"]) >= 0 else 0.0
@@ -242,8 +261,8 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 		elif str(va) != str(vb):
 			diff.append("%s %s -> %s" % [k, str(va), str(vb)])
 	if not diff.is_empty():  # [v9a] what moved underneath
-		print("[walk-home] debug %s: cubes %.1f -> %.1f on load -> %.1f when compared, %.0f s away, robots %s; parts %.1f -> %.1f, Lumi moved %.1f m, hub %d -> %d, price %s -> %s, old hex kept %.2f" % [tag,
-			float(a["_cubes"]), cubes_loaded, float(b["_cubes"]), away, str(bots), float(a["_parts"]), float(b["_parts"]), (a["_pos"] as Vector3).distance_to(b["_pos"]), int(a["_hub"]), int(b["_hub"]), str(a["_price"]), str(b["_price"]), kept])
+		print("[walk-home] debug %s: cubes %.1f -> %.1f in the save -> %.1f on load -> %.1f when compared, %.0f s away, robots %s; parts %.1f -> %.1f, Lumi moved %.1f m, hub %d -> %d, price %s -> %s, old hex kept %.2f" % [tag,
+			float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), away, str(bots), float(a["_parts"]), float(b["_parts"]), (a["_pos"] as Vector3).distance_to(b["_pos"]), int(a["_hub"]), int(b["_hub"]), str(a["_price"]), str(b["_price"]), kept])
 	_check(diff.is_empty(), "%s: saved and loaded (%s): the same card, count, marker and bench row%s" % [tag, "kill" if kill else "Quit", "" if diff.is_empty() else ": " + "; ".join(diff)])
 	return true
 

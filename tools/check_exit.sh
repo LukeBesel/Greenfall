@@ -14,7 +14,7 @@ run() {
 	local code=$?
 	if [ "$code" -ne 0 ]; then
 		echo "[check_exit] FAIL $name: exit code $code (134 = crash at quit; see $log)"
-		grep -m60 -E "FAIL|SCRIPT ERROR|pause-watch\]|walk-opening\] stuck" "$log"  # [main] show the failing checks in CI logs ([v9a] and what held Lumi)
+		grep -m60 -E "FAIL|SCRIPT ERROR|pause-watch\]|walk-opening\] stuck|walk-home\] debug" "$log"  # [main] show the failing checks in CI logs ([v9a] and what held Lumi)
 		fail=1
 	elif grep -q "SCRIPT ERROR" "$log"; then
 		echo "[check_exit] FAIL $name: SCRIPT ERROR in $log"
