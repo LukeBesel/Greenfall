@@ -15,6 +15,16 @@ extends Node3D
 ## scratched}}, scratch_left: {planet: n}, scratch_cool, scratched (held), plays}.
 
 const PICK_R: float = 1.7
+## [v10snd] The first CD (owner: "the first song should play when you find a cd in the rubble close
+## by at the start"): it lies in the junk by the start pad from the first second of a new game,
+## in the nearest dirty hex to the trash bin that is at least FIRST_MIN_M away, on reachable ground
+## (TargetReach), hovering and glinting so it is seen over the junk. Coming within FIRST_PICK_R
+## (walking or scooping there) picks it up: Tunes.find_first_cd() plays its song at once and says
+## how to play CDs at will. Its hex is saved (flags.songs.pending) so it stays put over a reload.
+const FIRST_KEY: String = "first:"
+const FIRST_PICK_R: float = 2.4
+const FIRST_MIN_M: float = 5.0
+const FIRST_RINGS: int = 5
 const OFFSET := Vector3(-0.9, 0.04, 1.1)
 
 var world: Node
@@ -22,6 +32,8 @@ var rng := RandomNumberGenerator.new()
 var _discs: Dictionary = {}  # song id -> Node3D
 var _t: float = 0.0
 var _spin: float = 0.0
+var _first_t: float = 0.0
+var _first_done: bool = false
 
 
 func _ready() -> void:
@@ -128,6 +140,11 @@ static func roll_scratched(planet: String, hub: int, r: float, pick: float) -> S
 func on_hex_cleaned(hid: int) -> void:
 	if world == null or world.get("field") == null:
 		return
+	# [v10snd] The first CD can't be missed: its hex coming clean (a robot, the 95% sweep) gives it too.
+	for id: String in _discs.keys():
+		var fp: Variant = pending().get(id)
+		if id.begins_with(FIRST_KEY) and fp is Dictionary and int((fp as Dictionary).get("hex", -1)) == hid:
+			_take_first(id)
 	var planet: String = SolarSystem.current_id()
 	var id: String = roll(planet, GameState.current_hub, rng.randf(), rng.randf())
 	if id != "":
@@ -151,8 +168,147 @@ func _restore() -> void:
 			continue
 		if int(p.get("hub", -1)) == GameState.current_hub and str(p.get("planet", "")) == planet:
 			var hid: int = int(p.get("hex", -1))
-			if hid >= 0 and hid < world.field.hex_count() and world.field.is_clean(hid):
+			if hid >= 0 and hid < world.field.hex_count() and world.field.is_clean(hid) and not str(id).begins_with(FIRST_KEY):
 				_show(str(id), hid, false)
+
+
+## [v10snd] Puts the first CD out (a new game, or a save that has not found it yet) on the start
+## planet's first base.
+func _place_first() -> void:
+	var song: String = Tunes.first_cd_id()
+	if song == "" or Tunes.first_cd_found() or GameState.current_hub != 0 \
+			or SolarSystem.current_id() != str(Tunes.first_cd_cfg().get("planet", "verdance")):
+		return
+	var key: String = FIRST_KEY + song
+	var hid: int = -1
+	var p: Variant = pending().get(key)
+	if p is Dictionary and int((p as Dictionary).get("hub", -1)) == 0:
+		hid = int((p as Dictionary).get("hex", -1))
+	if hid < 0 or hid >= world.field.hex_count():
+		hid = first_hex()
+	if hid < 0 or world.field.is_clean(hid):  # nowhere dirty to lie, or its hex came clean: given, never lost
+		pending().erase(key)
+		if Tunes.find_first_cd():
+			_show_card(Tunes.first_cd_text(song))
+		return
+	pending()[key] = {"hub": 0, "hex": hid, "planet": SolarSystem.current_id(), "first": true}
+	_show(key, hid, false)
+
+
+## The hex the first CD lies in: the nearest land hex to the trash bin that still has its junk, is
+## not part of the base or a lake, and whose CD spot is at least FIRST_MIN_M from the bin. -1 if none.
+func first_hex() -> int:
+	var f: HexField = world.field
+	var bin: Node3D = world.get("depot") as Node3D  # the trash bin: Lumi comes back to it all the time
+	var so: Node = world.get("orbit")
+	var globe: OrbitPlanet = so.get("globe") as OrbitPlanet if so != null else null
+	var cells: Variant = globe.grid.cells_around(globe.start_cell(), FIRST_RINGS) if globe != null else range(f.hex_count())
+	var from: Vector3 = bin.global_position if bin != null else (f.hex_center(globe.start_cell()) if globe != null else Vector3.ZERO)
+	var best: int = -1
+	var best_d: float = INF
+	var why: Array[int] = [0, 0, 0]
+	for c: int in cells:
+		if f.hex_hub[c] != 0 or f.is_water(c) or f.is_clean(c):
+			why[0] += 1
+			continue
+		var d: float = f.hex_center(c).distance_to(from)
+		if d >= best_d or d > 40.0:
+			why[1] += 1
+			continue
+		var at: Vector3 = spot(c)
+		if at.distance_to(from) < FIRST_MIN_M or at.distance_to(f.hex_center(c)) > 6.0:
+			why[2] += 1
+			continue
+		best = c
+		best_d = d
+	if best < 0:
+		print("[tunes] first CD: hex %d at %.1f m from the bin (%d cells: %d base / water / clean, %d farther or over 40 m, %d spot too near the bin or off its hex)" % [best, best_d, (cells as Variant).size(), why[0], why[1], why[2]])
+	return best
+
+
+## [v10snd] The first CD is taken: it flies to Lumi in plain sight, then its song starts and a card
+## with a CD picture says how to play it again (ui: _show_card). Given at once if Lumi is gone.
+func _take_first(id: String) -> void:
+	if not _discs.has(id):
+		return
+	var n: Node3D = _discs[id]
+	_discs.erase(id)
+	pending().erase(id)
+	var song: String = Tunes.first_cd_id()
+	var patch: Node3D = world.get("patch") as Node3D
+	var land: Callable = func() -> void:
+		if is_instance_valid(n):
+			Vfx.burst("sparkle", n.global_position, Color(0.8, 0.95, 1.0), 1.0)
+			n.queue_free()
+		if Tunes.find_first_cd():
+			_show_card(Tunes.first_cd_text(song))
+	if patch == null or not is_inside_tree():
+		land.call()
+		return
+	var from: Vector3 = n.global_position
+	var up: Vector3 = from.normalized() if world.field is SphereField else Vector3.UP
+	var tw: Tween = create_tween()
+	tw.tween_method(func(k: float) -> void:
+		if is_instance_valid(n) and is_instance_valid(patch):
+			var to: Vector3 = patch.global_position + up * 0.9
+			n.global_position = from.lerp(to, k) + up * sin(PI * k) * 1.6  # an arc up and into his chest
+			n.scale = Vector3.ONE * lerpf(1.6, 0.5, k)
+			n.rotate_object_local(Vector3.UP, 0.5), 0.0, 1.0, 0.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_callback(land)
+
+
+## The first CD's card: a CD picture and one line, top centre, for about ten seconds.
+var first_card_text: String = ""
+func _show_card(text: String) -> void:
+	first_card_text = text
+	var layer := CanvasLayer.new()
+	layer.name = "FirstCdCard"
+	layer.layer = 24
+	add_child(layer)
+	var root := Control.new()
+	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.theme = UITheme.get_theme()
+	layer.add_child(root)
+	var pc := PanelContainer.new()
+	pc.add_theme_stylebox_override("panel", UITheme.box(Color(0.05, 0.055, 0.065, 0.92), Color(1, 1, 1, 0.14), 1, 12, 14))
+	pc.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	pc.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	pc.offset_top = 120
+	pc.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(pc)
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 14)
+	pc.add_child(hb)
+	var pic := Control.new()
+	pic.custom_minimum_size = Vector2(52, 52)
+	pic.draw.connect(func() -> void:
+		var c := Vector2(26, 26)
+		pic.draw_circle(c, 25.0, Color(0.86, 0.9, 0.95))
+		pic.draw_arc(c, 19.0, -1.2, 0.2, 16, Color(0.6, 0.85, 1.0), 6.0)
+		pic.draw_arc(c, 19.0, 1.9, 3.3, 16, Color(1.0, 0.8, 0.6), 6.0)
+		pic.draw_circle(c, 9.0, Color(0.95, 0.62, 0.22))
+		pic.draw_circle(c, 3.5, Color(0.05, 0.055, 0.065)))
+	hb.add_child(pic)
+	var lab: Label = UITheme.label(text, 18, UITheme.CREAM)
+	lab.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	lab.custom_minimum_size = Vector2(430, 0)
+	lab.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	hb.add_child(lab)
+	root.modulate.a = 0.0
+	var tw: Tween = layer.create_tween()
+	tw.tween_property(root, "modulate:a", 1.0, 0.3)
+	tw.tween_interval(10.0)
+	tw.tween_property(root, "modulate:a", 0.0, 0.8)
+	tw.tween_callback(layer.queue_free)
+
+
+## Where the first CD lies now (target audit); Vector3.INF when it is not out.
+func first_spot() -> Vector3:
+	for id: String in _discs:
+		if id.begins_with(FIRST_KEY):
+			return (_discs[id] as Node3D).global_position
+	return Vector3.INF
 
 
 ## Where a CD turns up in hex hid.
@@ -177,6 +333,9 @@ func _show(id: String, hid: int, fresh: bool) -> void:
 	var node: Node3D = build_cd(scratched)
 	add_child(node)
 	var pos: Vector3 = spot(hid, scratched)
+	if id.begins_with(FIRST_KEY):  # [v10snd] hovering over the junk, tipped toward the camera, so it is seen
+		pos += (pos.normalized() if world.field is SphereField else Vector3.UP) * 0.55
+		node.scale = Vector3.ONE * 1.6
 	node.global_position = pos
 	node.rotation.y = rng.randf() * TAU
 	if world.field is SphereField:  # [v4world] upright on the round ground
@@ -204,14 +363,30 @@ func _process(delta: float) -> void:
 	var patch: Node3D = world.get("patch") as Node3D
 	if patch == null:
 		return
+	if not _first_done:  # [v10snd] once the world is up (the bin stands, nothing is still building)
+		var ld: Node = get_node_or_null("/root/Loader")
+		if world.get("depot") is Node3D and not (ld != null and ld.has_method("busy") and bool(ld.call("busy"))):
+			_first_done = true
+			_place_first()
 	var d: Node = Tunes.director()
 	if d and d.get("listener") == null:
 		d.set("listener", patch)
 	for id: String in _discs.keys():
 		var n: Node3D = _discs[id]
-		if n.global_position.distance_to(patch.global_position) < PICK_R:
+		var first: bool = id.begins_with(FIRST_KEY)
+		if first:  # a slow turn and a sparkle now and then
+			n.rotate_object_local(Vector3.UP, 0.12 * 1.4)
+			_first_t += 0.12
+			if _first_t > 5.0:
+				_first_t = 0.0
+				Vfx.burst("sparkle", n.global_position, Color(0.8, 0.95, 1.0), 0.5)
+		if n.global_position.distance_to(patch.global_position) < (FIRST_PICK_R if first else PICK_R):
 			_discs.erase(id)
 			Vfx.burst("sparkle", n.global_position + Vector3(0, 0.4, 0), Color(0.8, 0.95, 1.0), 0.8)
+			if first:
+				_discs[id] = n  # still his until it has flown in
+				_take_first(id)
+				continue
 			n.queue_free()
 			if id.begins_with("s:"):
 				_take_scratched(id.trim_prefix("s:"))

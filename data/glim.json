@@ -65,7 +65,7 @@
       "id": "music",
       "name": "Music",
       "icon": "music",
-      "desc": "Glim downloads the CDs you've found: play any found song, anywhere, anytime.",
+      "desc": "Glim dances along to your songs and shows their notes.",
       "requires": {"light": 1},
       "values": [{"on": 0.0}, {"on": 1.0}],
       "tiers": [

@@ -59,6 +59,14 @@ func _ready() -> void:
 		photo_requested.emit())
 	photo_btn.name = "PhotoBtn"  # [camp3] hidden until Blink, the camera bot, is built
 	buttons.append(photo_btn)
+	var radio_btn: Button = _button(vb, tr("Radio  [%s]") % Settings.glyph(TunesPicker.ACTION), func() -> void:  # [v10snd]
+		close_menu()
+		var w: Node = get_tree().current_scene
+		var pk: Node = w.find_child("TunesPicker", true, false) if w else null
+		if pk:
+			pk.call_deferred("open"))
+	radio_btn.name = "RadioBtn"  # hidden until the first CD is found
+	buttons.append(radio_btn)
 	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # [late] Garden Mode, Ark Bridge
 	var keeps: Button = _button(vb, tr("Keepsakes"), func() -> void:  # [extras] radio, album, nursery, Seed of the Week
 		close_menu()
@@ -139,6 +147,9 @@ func open_menu() -> void:
 	var pb: Button = _menu.find_child("PhotoBtn", true, false) as Button  # [camp3]
 	if pb:
 		pb.visible = CameraBot.available()
+	var rb: Button = _menu.find_child("RadioBtn", true, false) as Button  # [v10snd]
+	if rb:
+		rb.visible = Tunes.radio_open()
 	var kb: Button = _menu.find_child("KeepsakesBtn", true, false) as Button  # [v6screens]
 	if kb:
 		kb.visible = not ExtrasPanel.open_tabs().is_empty()

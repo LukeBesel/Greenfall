@@ -5,27 +5,19 @@
  "main_theme": "greenfall_main",
  "song_db": -7.0,
  "restored_at": 0.55,
- "start": [
-  "clean_sweep",
-  "greenfall_main",
-  "morning_shift"
- ],
- "gap_s": [
-  360,
-  900
- ],
+ "start": ["greenfall_main"],
+ "gap_s": [180, 450],
  "first_gap_s": [
   60,
   120
  ],
- "_doc_gaps": "[main] Owner: songs then long breaks, like Minecraft (which waits about 10-20 min). gap_s: 6-15 min of only the world's own sounds between songs; first_gap_s: 1-2 min after loading a save. Shorter breaks: lower these numbers.",
- "landing_gap_s": [
-  540,
-  720
- ],
- "_doc_landing": "[main] Owner: after the crash landing it is a good while (about 10 min) before the first song. A new song also waits while WREN or a story line is speaking (audio/tunes_director.gd).",
+ "_doc_gaps": "[main] Owner: songs then breaks, like Minecraft. [v10snd] Owner, 2026-11-15: 'could use a bit more music': the breaks are halved. gap_s: 3-7.5 min of only the world's own sounds between songs (was 6-15); first_gap_s: 1-2 min after loading a save. Shorter breaks: lower these numbers. A song never starts over a spoken line and never twice in a row.",
+ "_doc_first_cd": "[v10snd] Owner, 2026-11-15: 'the first song should play when you find a cd in the rubble close by at the start. It should play sun baked ... Just allow all songs to play at random for now but first song is after CD and player can play sun baked whenever they want.' first_cd.song: the CD lying in the junk by the start pad of first_cd.planet (planet/cd_finds.gd); no song plays in the world before it is found, finding it plays the song at once and opens the radio (N). old_start: songs a save from before this rule owned from the start (it keeps them). shuffle_all: true = every song with a file may come up at random after the first CD, found or not ('for now'); false = only found songs. A new song: drop the file in audio/songs/ (it plays at random and is on the radio at once), or add one line here with \"unlock\": \"cd\", \"found_on\": \"verdance\" to make it a CD to find.",
+ "first_cd": {"song": "sunbaked", "planet": "verdance", "old_start": ["clean_sweep", "morning_shift", "sunbaked", "strip_mine_shuffle", "dune_caravan"]},
+ "shuffle_all": true,
+ "_doc_landing": "[v10snd] After the crash landing no song plays until the first CD is found (first_cd below; it replaced landing_gap_s, a fixed 9-12 min wait). A new song also waits while WREN or a story line is speaking (audio/tunes_director.gd).",
  "main_share": 0.6,
- "_doc_v1menu": "[v1menu] gap_s: silence between background songs; first_gap_s: after a load; landing_gap_s: after the pod lands in a new game; main_share: chance the main theme is picked when it may play (never twice in a row), so it stays the most common song.",
+ "_doc_v1menu": "[v1menu] gap_s: silence between background songs; first_gap_s: after a load; main_share: chance the main theme is picked when it may play (never twice in a row), so it stays the most common song.",
  "crossfade_s": 4.0,
  "other_planet_weight": 0.12,
  "story_weight": 0.5,
@@ -47,7 +39,7 @@
  "planets": {
   "_doc": "One block per planet, all the same shape. songs: extra song ids for this planet's playlist (its own group's songs are on it already). Any rule from the top of this file can be repeated here to change it on this planet only, e.g. \"gap_s\": [120, 240].",
   "verdance": {
-   "_doc": "[main] Owner, playtest: only three songs on Verdance got boring. Until more songs arrive, Ochre's three play here too (owned from the start) and the main theme comes up less often. Remove them from this list (and set their unlock back to cd) once Verdance has its own.",
+   "_doc": "[main] Owner, playtest: only three songs on Verdance got boring. Until more songs arrive, Ochre's three play here too and the main theme comes up less often. Remove them from this list once Verdance has its own. [v10snd] They are CDs again (Sunbaked is the first CD, by the start pad); with shuffle_all they still come up at random.",
    "songs": [
     "sunbaked",
     "strip_mine_shuffle",
@@ -233,7 +225,8 @@
    "group": "verdance",
    "kind": "playlist",
    "bpm": 120,
-   "unlock": "start"
+   "unlock": "cd",
+   "found_on": "verdance"
   },
   {
    "id": "little_helpers",
@@ -262,7 +255,8 @@
    "group": "verdance",
    "kind": "playlist",
    "bpm": 100,
-   "unlock": "start"
+   "unlock": "cd",
+   "found_on": "verdance"
   },
   {
    "id": "bale_by_bale",
@@ -321,7 +315,7 @@
    "group": "ochre",
    "kind": "playlist",
    "bpm": 118,
-   "unlock": "start",
+   "unlock": "cd",
    "found_on": "ochre"
   },
   {
@@ -331,7 +325,7 @@
    "group": "ochre",
    "kind": "playlist",
    "bpm": 112,
-   "unlock": "start",
+   "unlock": "cd",
    "found_on": "ochre"
   },
   {
@@ -341,7 +335,7 @@
    "group": "ochre",
    "kind": "playlist",
    "bpm": 105,
-   "unlock": "start",
+   "unlock": "cd",
    "found_on": "ochre"
   },
   {

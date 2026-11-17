@@ -85,6 +85,9 @@ static func run_dev(so: SliceOrbit) -> void:
 					if f.part_found[pi] == 0:
 						check.call("part", f.part_pos[pi], null)
 		if i == 0:
+			if cdf != null and cdf.has_method("first_spot") and (cdf.call("first_spot") as Vector3).is_finite():  # [v10snd]
+				var fsp: Vector3 = cdf.call("first_spot")
+				check.call("first_cd", fsp - fsp.normalized() * 0.55, null)
 			var sh: Variant = so.w.get("shards")
 			if sh is ShardSystem:
 				for hid: int in (sh as ShardSystem)._placed:
