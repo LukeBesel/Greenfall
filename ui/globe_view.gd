@@ -521,7 +521,7 @@ func _set_handheld(on: bool) -> void:
 		_dim.visible = false
 		_svc.visible = false
 		_anchor.scale = Vector3.ONE * 0.01
-		create_tween().tween_property(_anchor, "scale", Vector3.ONE * 0.3, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		create_tween().tween_property(_anchor, "scale", Vector3.ONE * 0.38, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		Audio.play("sparkle", 0.6, -10.0)
 		if world_root.get("hud") != null:
 			world_root.hud.visible = false
@@ -868,7 +868,7 @@ func _place_handheld(delta: float) -> void:
 	# [orbE] Local up: on a round planet "up" is the radial direction under Lumi.
 	var up: Vector3 = (holder.call("up") as Vector3) if holder.has_method("up") else Vector3.UP
 	var hand: Vector3 = model.hand_point() if model else holder.global_position + up * 1.0
-	var r: float = 0.3
+	var r: float = 0.38
 	var side: Vector3 = (model.global_basis.x if model else holder.global_basis.x).normalized()
 	var fwd0: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
 	fwd0 -= up * fwd0.dot(up)
@@ -876,7 +876,9 @@ func _place_handheld(delta: float) -> void:
 	# [v2map] Glitch pass: the globe floats in front of Lumi at eye height and the camera looks over
 	# his right shoulder at it. (It used to sit at his hand with the camera in front of him, so his
 	# big head covered most of the globe.)
-	var center: Vector3 = holder.global_position + up * 1.25 + fwd0 * 0.75 + side * 0.05
+	# [v10ui] Critic 12: Lumi's head still filled the lower middle and the globe took a seventh of the
+	# screen. The globe floats higher and a little bigger; the camera stands further to his right.
+	var center: Vector3 = holder.global_position + up * 1.55 + fwd0 * 0.85 + side * 0.05
 	_anchor.global_position = center
 	if up != Vector3.UP:
 		_anchor.global_basis = SphereMath.basis_from_up_fwd(up, fwd0).scaled(_anchor.scale)
@@ -890,7 +892,7 @@ func _place_handheld(delta: float) -> void:
 	_beam.global_transform = Transform3D(Basis(x * r * 0.9, y * h, z * r * 0.9), hand + axis * 0.5)
 	var right: Vector3 = fwd0.cross(up).normalized()
 	var dist: float = remap(_zoom, 1.4, 6.0, 1.1, 3.0)
-	var want: Vector3 = center - fwd0 * dist + right * dist * 0.3 + up * dist * 0.38
+	var want: Vector3 = center - fwd0 * dist + right * dist * 0.5 + up * dist * 0.22
 	_world_cam.global_position = _world_cam.global_position.lerp(want, clampf(delta * 4.0, 0.0, 1.0))
 	# Aim a little left of the globe so it sits right of centre, clear of the survey card.
 	_world_cam.look_at(center - right * dist * 0.2, up)

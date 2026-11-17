@@ -433,7 +433,8 @@ func _update_context(delta: float, minimal: bool) -> void:
 		else:
 			hex_text = _short_level(h)
 	elif h >= 0 and world:  # [onboard] on the hub ground: say where you are
-		hex_text = tr("%s  BASE") % str(world.district_name).to_upper()
+		var bn: String = str(world.call("base_name_here")) if world.has_method("base_name_here") else ""  # [v10ui] critic 7: this base's own name
+		hex_text = tr("%s  BASE") % (bn if bn != "" else str(world.district_name)).to_upper()
 	var strong: bool = _signal_text != "" and (_signal_strength >= 0.5 or not minimal)
 	if not patch.carried.is_empty():
 		text = tr("CARRYING %d/%d") % [patch.carried.size(), patch.carry_cap()]
