@@ -2068,7 +2068,7 @@ msgstr "Lumi— tiens bon— je n'arrive pas à faire demi-tour— tiens bon—"
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "L'arche ne pouvait pas faire demi-tour. La capsule est tombée pendant des jours."
 
-#: story/intro.gd:1951
+#: story/intro.gd:1967
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUMIÈRE VERTE  ·  RIEN DÉTECTÉ"
 
@@ -11780,42 +11780,6 @@ msgstr "Épurateur d'air"
 #: data/hub.json:buildings[air_scrubber].desc
 msgid "Pulls dusty air through filter banks. The sky clears faster."
 msgstr "Fait passer l'air poussiéreux à travers des filtres. Le ciel s'éclaircit plus vite."
-
-#: data/intro_shots.json:shots[cradle].lines
-msgid "title"
-msgstr ""
-
-#: data/intro_shots.json:shots[vault_wide].lines
-msgid "vault"
-msgstr ""
-
-#: data/intro_shots.json:shots[vault_hum].lines
-msgid "hum"
-msgstr ""
-
-#: data/intro_shots.json:shots[storm].lines
-msgid "storm"
-msgstr ""
-
-#: data/intro_shots.json:shots[alarm].lines
-msgid "breach"
-msgstr ""
-
-#: data/intro_shots.json:shots[eject].lines
-msgid "hold_on"
-msgstr ""
-
-#: data/intro_shots.json:shots[drift].lines
-msgid "fall"
-msgstr ""
-
-#: data/intro_shots.json:shots[station].lines
-msgid "brief_0"
-msgstr ""
-
-#: data/intro_shots.json:shots[alone].lines
-msgid "brief_1"
-msgstr ""
 
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"

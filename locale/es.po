@@ -2068,7 +2068,7 @@ msgstr "Lumi— aguanta— no puedo darle la vuelta— aguanta—"
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "El arca no pudo volver. La cápsula cayó durante días."
 
-#: story/intro.gd:1951
+#: story/intro.gd:1967
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUZ VERDE  ·  NADA DETECTADO"
 
@@ -11780,42 +11780,6 @@ msgstr "Depurador de aire"
 #: data/hub.json:buildings[air_scrubber].desc
 msgid "Pulls dusty air through filter banks. The sky clears faster."
 msgstr "Hace pasar el aire polvoriento por baterías de filtros. El cielo se despeja más rápido."
-
-#: data/intro_shots.json:shots[cradle].lines
-msgid "title"
-msgstr ""
-
-#: data/intro_shots.json:shots[vault_wide].lines
-msgid "vault"
-msgstr ""
-
-#: data/intro_shots.json:shots[vault_hum].lines
-msgid "hum"
-msgstr ""
-
-#: data/intro_shots.json:shots[storm].lines
-msgid "storm"
-msgstr ""
-
-#: data/intro_shots.json:shots[alarm].lines
-msgid "breach"
-msgstr ""
-
-#: data/intro_shots.json:shots[eject].lines
-msgid "hold_on"
-msgstr ""
-
-#: data/intro_shots.json:shots[drift].lines
-msgid "fall"
-msgstr ""
-
-#: data/intro_shots.json:shots[station].lines
-msgid "brief_0"
-msgstr ""
-
-#: data/intro_shots.json:shots[alone].lines
-msgid "brief_1"
-msgstr ""
 
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"
