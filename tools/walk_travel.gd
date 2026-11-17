@@ -189,7 +189,7 @@ static func _finish_station(so: SliceOrbit, site: int, redirty: bool) -> void:
 	await _wait(tree, 1.2)
 	st = hp.current_step(site)
 	if str(st.get("do", "")) == "build":  # [v10base] the base's own machine on its marked spot
-		await _far_sell(so, site, ledger)
+		await _far_sell(so, site, redirty)  # the stations played by real scooping have a bale to sell
 		await _build_spot(so, site, str(st.get("id", "bench")))
 		await _wait(tree, 1.2)
 		st = hp.current_step(site)
@@ -556,6 +556,9 @@ static func _there_and_back(so: SliceOrbit) -> void:
 	var ob: Objectives = w.get("objectives") as Objectives
 	var os_: OrbitSites = so.sites
 	var hp: HubPurpose = os_.purpose
+	YardBuilds.mark_built("shuttle")  # [v10pace] the rocket stands once the shuttle is built
+	GameState.flags["shuttle_plans"] = true
+	GameState.flags["map_seen"] = true
 	_set_story(ob, "hub_fly_2")
 	GameState.stats["plants_planted"] = maxf(float(GameState.stats.get("plants_planted", 0)), 1.0)
 	GameState.flags["seeds_unlocked"] = true
