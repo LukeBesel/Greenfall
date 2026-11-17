@@ -983,6 +983,7 @@ func _build_billboard() -> void:
 	_deco.box(Transform3D(Basis(), sc), Vector3(strip_w, strip_h, 0.04), Color(0.9, 0.86, 0.74, PAINT))
 	var l: Label3D = _label(slogan, Transform3D(Basis(), sc + Vector3(0, 0, 0.03)), 96, minf(0.0085, (strip_w - 0.8) / (slogan.length() * 96 * 0.62)), Color(0.16, 0.13, 0.12, 0.95))
 	l.visibility_range_end = 260.0
+	l.visibility_range_end_margin = VIS_MARGIN  # [v8bld]
 
 
 # --- Lines across streets: string lights, bunting, laundry ------------------------------
