@@ -13,7 +13,7 @@ The owner asked to end all work at a good stopping point.
   - v10pace (97 yard, 98, 99, 106, 107; critic 6, 9, 11, 12, 16).
   - v10ui (89, 93, 94, 95, 96, 109; critic 7, 14, 17, 18, 19).
   - The full local suite passed on these.
-- **CI on 8bd0593 failed:** GUT crashed with SIGSEGV right after test_frontiers.gd started (it passes locally). The cause is unknown; helper v10ci started on it (wt/v10ci).
+- **CI on 8bd0593 failed:** GUT crashed with SIGSEGV right after test_frontiers.gd started (it passes locally). The crash is on the main thread, in a GDScript lambda call (gdscript_lambda_callable.cpp). Most likely a timer, tween, deferred call or signal lambda left by an earlier test (test_fauna*, test_field, test_first_hour, test_first_seed_hint, test_flat_import) fires after its object was freed. Not reproduced yet.
 - **Merged on local main, not pushed** (the combined full run was stopped): v10guide 4148bc4 (critic 3, 5, 13, 20, 21, 23). Its own full run passed on its branch.
 - **WIP on helper branches** (local worktrees under /home/user/gf-wt), not merged:
   - v10base (101, 102, 104, far half of 97; critic 1 bale rain, 4, 10, 15, 22).
