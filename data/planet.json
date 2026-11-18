@@ -1,0 +1,17 @@
+{
+  "_doc": "Planet constants. slice_field.radius 4 since world2 (gen-2 junk: the whole district reads covered; older saves keep radius 3). total_hexes is the target sphere resolution (subdivision 6 = 40962 cells). The slice field counts toward it for the HUD teaser.",
+  "name": "Verdance",
+  "total_hexes": 40962,
+  "slice_field": {
+    "radius": 4,
+    "hex_size": 10.0,
+    "seed": 4471,
+    "pieces_per_hex": [
+      260,
+      420
+    ],
+    "clean_threshold": 0.97,
+    "bonus_base": 20.0,
+    "bonus_per_volume": 0.25
+  }
+}

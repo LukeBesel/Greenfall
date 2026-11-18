@@ -1,0 +1,368 @@
+class_name AssetLib
+extends RefCounted
+## Loads vendor models (glTF scenes) and textures by id.
+## Models are flattened into a single Mesh (all MeshInstances merged, surface materials kept) so
+## they can be drawn with MultiMesh. Single-mesh models keep their imported LODs.
+
+const MODEL_DIR: String = "res://art/vendor/polyhaven/models/%s/%s_1k.gltf"
+const TEX_DIR: String = "res://art/vendor/polyhaven/textures/%s/%s_%s_1k.jpg"
+
+static var _meshes: Dictionary = {}
+static var _aabbs: Dictionary = {}
+
+
+## Mesh for a model id, already in model-root space.
+static func model_mesh(id: String) -> Mesh:
+	if not _meshes.has(id):
+		_load_model(id)
+	return _meshes[id]
+
+
+static var _lite: Dictionary = {}
+
+
+## A lighter version of a model mesh using the importer-generated LOD closest to (but not above)
+## max_tris triangles per surface. Keeps materials. Falls back to the full mesh.
+static func model_mesh_lite(id: String, max_tris: int = 1500) -> Mesh:
+	var key: String = "%s@%d" % [id, max_tris]
+	if _lite.has(key):
+		return _lite[key]
+	if tracing and not traced.has("lite:" + key):  # [v5load] mesh simplification: 50-150 ms, not divisible
+		traced.append("lite:" + key)
+	var out: Mesh = lite(model_mesh(id), max_tris)
+	_lite[key] = out
+	return out
+
+
+static var _lite_by_rid: Dictionary = {}
+
+
+# [v5load] Surface data for worker threads. Reading a mesh back from the rendering server
+# (surface_get_arrays, mesh_get_surface) from a worker thread waits for the main thread's next
+# flush: about one read per frame, so a worker task that meshes and simplifies a hundred models
+# took ten seconds longer under a real renderer than on the main thread (and such reads are not
+# reliable on the dummy renderer). So the main thread snapshots the surfaces first
+# (snapshot_model), meshes made on a worker register theirs (surf_note), and every reader below
+# goes through surf_arrays / surf_lods, which only ask the server when nothing is cached.
+# surf_clear() drops the copies once the loader is done.
+static var _surf: Dictionary = {}  # mesh RID id -> Array (per surface) of [arrays, lods]
+
+
+static func surf_arrays(m: Mesh, s: int) -> Array:
+	var e: Variant = _surf.get(m.get_rid().get_id())
+	if e != null and s < (e as Array).size():
+		return ((e as Array)[s][0] as Array).duplicate(true)  # a deep copy: callers transform the packed arrays in place
+	return m.surface_get_arrays(s)
+
+
+static func surf_lods(m: Mesh, s: int) -> Array:
+	var e: Variant = _surf.get(m.get_rid().get_id())
+	if e != null and s < (e as Array).size():
+		return (e as Array)[s][1]
+	return RenderingServer.mesh_get_surface(m.get_rid(), s).get("lods", [])
+
+
+## Main thread: copy a mesh's surfaces (and importer LODs) for later readers.
+static func snapshot(m: Mesh) -> void:
+	if m == null or _surf.has(m.get_rid().get_id()):
+		return
+	var list: Array = []
+	for s: int in m.get_surface_count():
+		list.append([m.surface_get_arrays(s), RenderingServer.mesh_get_surface(m.get_rid(), s).get("lods", [])])
+	_surf[m.get_rid().get_id()] = list
+
+
+## Main thread: snapshot every mesh of a model's file (it must be loaded or loading).
+static func snapshot_model(id: String) -> void:
+	if _meshes.has(id):
+		snapshot(_meshes[id])
+		return
+	var ps: PackedScene = load(MODEL_DIR % [id, id])
+	if ps == null:
+		return
+	var root: Node = ps.instantiate()
+	var found: Array = []
+	_collect(root, Transform3D.IDENTITY, found)
+	for f: Dictionary in found:
+		snapshot((f["mi"] as MeshInstance3D).mesh)
+	root.free()
+
+
+## A mesh just built from `surfaces` (one arrays Array per surface, no LODs): later readers get
+## these instead of asking the server. Only while snapshots are in use (the loader).
+static func surf_note(m: Mesh, surfaces: Array) -> void:
+	if _surf.is_empty() or m == null:
+		return
+	var list: Array = []
+	for a: Variant in surfaces:
+		list.append([a, []])
+	_surf[m.get_rid().get_id()] = list
+
+
+static func surf_clear() -> void:
+	_surf.clear()
+
+
+## Lighter version of any mesh (see model_mesh_lite).
+static func lite(full: Mesh, max_tris: int) -> Mesh:
+	var key: String = "%d@%d" % [full.get_rid().get_id(), max_tris]
+	if _lite_by_rid.has(key):
+		return _lite_by_rid[key]
+	var out := ArrayMesh.new()
+	var total_full: int = 0
+	var total_lite: int = 0
+	var made: Array = []
+	for s: int in full.get_surface_count():
+		var arrays: Array = surf_arrays(full, s)
+		var idx_full: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
+		@warning_ignore("integer_division")
+		total_full += idx_full.size() / 3
+		var best: PackedInt32Array = idx_full
+		var vcount: int = (arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
+		@warning_ignore("integer_division")
+		var budget: int = max_tris * 3 / maxi(full.get_surface_count(), 1)
+		var lods: Array = surf_lods(full, s)
+		if best.size() > budget and lods.is_empty():
+			# No importer LODs (merged or odd meshes): generate them now.
+			var im := ImporterMesh.new()
+			im.add_surface(Mesh.PRIMITIVE_TRIANGLES, arrays)
+			im.generate_lods(25.0, 60.0, [])
+			for li: int in im.get_surface_lod_count(0):
+				var idx: PackedInt32Array = im.get_surface_lod_indices(0, li)
+				best = idx
+				if idx.size() <= budget:
+					break
+		if best.size() > budget:
+			for lod: Dictionary in lods:
+				var data: PackedByteArray = lod.get("index_data", PackedByteArray())
+				var wide: bool = vcount > 65535
+				@warning_ignore("integer_division")
+				var n: int = data.size() / (4 if wide else 2)
+				if n <= 0:
+					continue
+				var idx := PackedInt32Array()
+				idx.resize(n)
+				for i: int in n:
+					idx[i] = data.decode_u32(i * 4) if wide else data.decode_u16(i * 2)
+				best = idx
+				if n <= budget:
+					break
+		arrays[Mesh.ARRAY_INDEX] = best
+		arrays[Mesh.ARRAY_BONES] = null
+		arrays[Mesh.ARRAY_WEIGHTS] = null
+		@warning_ignore("integer_division")
+		total_lite += best.size() / 3
+		out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		out.surface_set_material(s, full.surface_get_material(s))
+		made.append(arrays)
+	if total_lite >= total_full:
+		_lite_by_rid[key] = full
+		return full
+	surf_note(out, made)
+	_lite_by_rid[key] = out
+	return out
+
+
+static func model_aabb(id: String) -> AABB:
+	if not _aabbs.has(id):
+		_load_model(id)
+	return _aabbs[id]
+
+
+static var _parts: Dictionary = {}
+
+
+## One named MeshInstance from a model (for files that bundle variants, e.g. fire_hydrant).
+static func model_part(id: String, node_name: String) -> Mesh:
+	var key: String = id + "::" + node_name
+	if _parts.has(key):
+		return _parts[key]
+	if tracing and not traced.has("part:" + id + "::" + node_name):
+		traced.append("part:" + id + "::" + node_name)
+	var t0: int = Time.get_ticks_usec()
+	var ps: PackedScene = load(MODEL_DIR % [id, id])
+	var root: Node = ps.instantiate()
+	var mesh: Mesh = null
+	var found: Array = []
+	_collect(root, Transform3D.IDENTITY, found)
+	for f: Dictionary in found:
+		if String((f["mi"] as Node).name) == node_name:
+			mesh = (f["mi"] as MeshInstance3D).mesh
+			_apply_overrides(f["mi"], mesh)
+	root.free()
+	if mesh == null:
+		mesh = model_mesh(id)
+	_parts[key] = mesh
+	_trace_time("part:" + key, t0)
+	return mesh
+
+
+## [leftovers] Behind the loading screen: load a model's file on a loader thread (frames keep
+## drawing) and build its mesh, so the next model_mesh(id) is a cache hit. Plain call otherwise.
+static func fetch_model(id: String) -> void:
+	if _meshes.has(id):
+		return
+	var keep: Resource = await BuildBudget.fetch(MODEL_DIR % [id, id])
+	if not _meshes.has(id):
+		var was: bool = tracing
+		tracing = false  # fetched: not a blocking load
+		_load_model(id)
+		tracing = was
+	keep = null
+
+
+## [leftovers] Model ids loaded (blocking) by _load_model / model_part while `tracing`: the
+## district build's preload list (scenes/slice.gd --record-preload).
+static var tracing: bool = false
+static var traced: Array[String] = []
+
+
+## [v5load] --load-report: every blocking model load over 15 ms, with its time.
+static func _trace_time(id: String, t0: int) -> void:
+	var d: int = Time.get_ticks_usec() - t0
+	if tracing and BuildBudget.lap_on and d > 15000:
+		print("[model] %.0f ms: %s" % [d / 1000.0, id])
+
+
+static func has_model(id: String) -> bool:
+	return ResourceLoader.exists(MODEL_DIR % [id, id])
+
+
+static func _load_model(id: String) -> void:
+	var path: String = MODEL_DIR % [id, id]
+	if tracing and not traced.has(id):
+		traced.append(id)
+	var t0: int = Time.get_ticks_usec()
+	var ps: PackedScene = load(path)
+	if ps == null:
+		push_error("Missing model %s" % id)
+		_meshes[id] = BoxMesh.new()
+		_aabbs[id] = AABB(Vector3(-0.1, 0, -0.1), Vector3(0.2, 0.2, 0.2))
+		return
+	var root: Node = ps.instantiate()
+	var found: Array = []
+	_collect(root, Transform3D.IDENTITY, found)
+	var mesh: Mesh
+	if found.size() == 1 and (found[0]["xform"] as Transform3D).is_equal_approx(Transform3D.IDENTITY):
+		mesh = found[0]["mi"].mesh
+		_apply_overrides(found[0]["mi"], mesh)
+	else:
+		mesh = _merge(found)
+	root.free()
+	if id in DEAD_LAMPS:
+		_kill_emission(mesh)
+	if mesh == null:  # [main] guard: never leave the id without an AABB
+		_aabbs[id] = AABB(Vector3(-0.1, 0, -0.1), Vector3(0.2, 0.2, 0.2))
+		return
+	_meshes[id] = mesh
+	_aabbs[id] = mesh.get_aabb()
+	_trace_time(id, t0)
+
+
+## [world3] Models whose lamps ship lit; in this world nothing works until it is fixed.
+const DEAD_LAMPS: Array[String] = ["ocean_buoy"]
+
+
+static func _kill_emission(mesh: Mesh) -> void:
+	for s: int in mesh.get_surface_count():
+		var m: StandardMaterial3D = mesh.surface_get_material(s) as StandardMaterial3D
+		if m and m.emission_enabled:
+			var d: StandardMaterial3D = m.duplicate()
+			d.emission_enabled = false
+			mesh.surface_set_material(s, d)
+
+
+static func _collect(n: Node, xf: Transform3D, out: Array) -> void:
+	var here: Transform3D = xf
+	if n is Node3D:
+		here = xf * (n as Node3D).transform
+	if n is MeshInstance3D and (n as MeshInstance3D).mesh:
+		out.append({"mi": n, "xform": here})
+	for c: Node in n.get_children():
+		_collect(c, here, out)
+
+
+static func _apply_overrides(mi: MeshInstance3D, mesh: Mesh) -> void:
+	for s: int in mesh.get_surface_count():
+		var o: Material = mi.get_surface_override_material(s)
+		if o:
+			mesh.surface_set_material(s, o)
+
+
+static func _merge(found: Array) -> ArrayMesh:
+	var out := ArrayMesh.new()
+	var made: Array = []
+	for f: Dictionary in found:
+		var mi: MeshInstance3D = f["mi"]
+		var xf: Transform3D = f["xform"]
+		var nb: Basis = xf.basis.inverse().transposed()
+		for s: int in mi.mesh.get_surface_count():
+			var arr: Array = surf_arrays(mi.mesh, s)
+			if arr.size() <= Mesh.ARRAY_VERTEX or arr[Mesh.ARRAY_VERTEX] == null:
+				continue  # [main] unreadable surface (intermittent on the dummy renderer): skip it
+			var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
+			for i: int in v.size():
+				v[i] = xf * v[i]
+			arr[Mesh.ARRAY_VERTEX] = v
+			if arr[Mesh.ARRAY_NORMAL] != null:
+				var nr: PackedVector3Array = arr[Mesh.ARRAY_NORMAL]
+				for i: int in nr.size():
+					nr[i] = (nb * nr[i]).normalized()
+				arr[Mesh.ARRAY_NORMAL] = nr
+			if arr[Mesh.ARRAY_TANGENT] != null:
+				var tg: PackedFloat32Array = arr[Mesh.ARRAY_TANGENT]
+				for i: int in range(0, tg.size(), 4):
+					var t: Vector3 = (xf.basis * Vector3(tg[i], tg[i + 1], tg[i + 2])).normalized()
+					tg[i] = t.x
+					tg[i + 1] = t.y
+					tg[i + 2] = t.z
+				arr[Mesh.ARRAY_TANGENT] = tg
+			# Drop arrays the merged mesh doesn't need (bones/weights would break without a skeleton).
+			arr[Mesh.ARRAY_BONES] = null
+			arr[Mesh.ARRAY_WEIGHTS] = null
+			out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+			made.append(arr)
+			var mat: Material = mi.get_surface_override_material(s)
+			if mat == null:
+				mat = mi.mesh.surface_get_material(s)
+			out.surface_set_material(out.get_surface_count() - 1, mat)
+	surf_note(out, made)
+	return out
+
+
+static func tex(id: String, map: String) -> Texture2D:
+	var p: String = TEX_DIR % [id, id, map]
+	if tracing and not ResourceLoader.has_cached(p) and ResourceLoader.exists(p):  # [v5load] blocking texture loads
+		var t0: int = Time.get_ticks_usec()
+		var r: Texture2D = load(p)
+		if not traced.has("tex:" + p):
+			traced.append("tex:" + p)
+		_trace_time("tex:" + p.get_file(), t0)
+		return r
+	return load(p) if ResourceLoader.exists(p) else null
+
+
+## A StandardMaterial3D from a Poly Haven texture set (diff / nor_gl / arm).
+static func pbr_material(id: String, uv_scale: float = 1.0, tint: Color = Color.WHITE, triplanar: bool = false) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_texture = tex(id, "diff")
+	m.albedo_color = tint
+	var n: Texture2D = tex(id, "nor_gl")
+	if n:
+		m.normal_enabled = true
+		m.normal_texture = n
+	var arm: Texture2D = tex(id, "arm")
+	if arm:
+		m.ao_enabled = true
+		m.ao_texture = arm
+		m.ao_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+		m.roughness_texture = arm
+		m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GREEN
+		m.metallic_texture = arm
+		m.metallic_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_BLUE
+		m.metallic = 1.0
+		m.roughness = 1.0
+	m.uv1_scale = Vector3.ONE * uv_scale
+	m.uv1_triplanar = triplanar
+	m.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
+	return m

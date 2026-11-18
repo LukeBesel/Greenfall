@@ -1,0 +1,32 @@
+{
+	"_note": "Models the district build loads on the main thread (scenes/slice.gd _preload_models). Regenerate: godot --headless --path . -- --fresh --record-preload --quit-after=30",
+	"models": [
+		"street_lamp_02",
+		"street_lamp_01",
+		"part:fire_hydrant::fire_hydrant_aged",
+		"water_manhole_cover",
+		"utility_box_01",
+		"weed_plant_02",
+		"dandelion_01",
+		"grass_medium_01",
+		"flower_gazania",
+		"celandine_01",
+		"flower_heliophila",
+		"metal_toolbox",
+		"clipboard",
+		"portable_generator",
+		"seeding_tray_01",
+		"fire_hydrant",
+		"security_camera_01",
+		"grass_medium_02",
+		"nettle_plant",
+		"covered_car",
+		"ocean_buoy",
+		"lifebuoy",
+		"crystalline_iceplant",
+		"moss_01",
+		"korean_public_payphone_01",
+		"wooden_crate_02",
+		"modular_street_seating"
+	]
+}

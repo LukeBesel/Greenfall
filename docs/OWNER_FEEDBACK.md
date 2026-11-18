@@ -1,0 +1,308 @@
+# Owner feedback checklist
+
+This is every note from the owner's playtests and requests, and who is working on each. A box is checked only after the change has been seen working in a merged build: a render, a headless check, or a test. Merging the helper's branch is not enough. Update it at every merge.
+
+Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, buddy, eggs2, orbit, hero, sysmap, p_ochre, p_tidewell, p_anvil.
+
+## Start, loading and intro (intro2)
+- [x] (intro2 merged; follow-up on claude/greenfall-leftovers: the district now builds across frames, the bar shows real progress and Lumi keeps moving; one ~0.5-0.8 s step remains at the end of the build) There is no purple "paused" screen at launch. A real loading screen shows a loading bar with the red Lumi picking up garbage in a line. No music plays during loading. (Reported in playtests #1 and #2.)
+- [x] Only one text line shows at a time.
+- [x] The text stays long enough to read, and the animation is slower and longer.
+- [x] Subtitles sit at the bottom and are readable against the background.
+- [x] Readable text has no heavy glitch effect. Heavy glitching is used only on redacted story text.
+- [x] SPACEBAR pauses the story.
+- [x] There is a way to rewatch the story ("Watch the story").
+- [ ] The loading screen is a tiny 3D scene of the real world, with the real red Lumi model scooping junk along the bar. (pod2)
+- [ ] Title screen: the camera starts high over the junk, drifts past the smoking pod at the crash site, and glides down to Lumi cleaning piece by piece. (pod2)
+- [ ] The ark is redesigned in our Seedglider style. (ship)
+- [ ] Lumi's eyes have no glitches, no double eyes, and don't close slowly.
+- [ ] The escape pod door looks good and doesn't glitch.
+- [ ] The pod matches the ship design, and its animations match the pod.
+- [ ] Crash site: the pod leans, smokes, and glitches with sparks until it's repaired. It looks great after each repair stage.
+
+## Story and WREN (onboard)
+- [ ] It's clear right away why Lumi cleans: picking up trash powers things and lets you build bots.
+- [ ] The SIGNAL % is explained. It is now the signal-tower strength.
+- [ ] WREN is introduced as the ark's caretaker AI. It leaves one last message as the pod crashes, then goes silent.
+- [ ] Signal towers bring WREN back: better towers unlock more messages, and they get clearer at higher signal.
+- [ ] Bird and WREN chatter is rare, never constant.
+- [ ] Only ONE message line is on screen at a time, anywhere in the game (subtitles, toasts, rewards, hints). Every message stays up long enough for an average reader. (onboard2)
+- [ ] Goal text after leaving the pod stays long enough to read.
+- [ ] Goal and task-bar text is easy to read.
+- [ ] Goals say "Clean a hex", never "this hex".
+- [ ] The target hex has a glowing laser outline on the floor that pulses softly. All hex outlines look like lasers.
+- [ ] The hex % (or the hub/base name) is always shown.
+- [ ] Every objective has a purple trail or waypoint (e.g. "Read a memory shard"), so the player always knows where to go.
+- [ ] Requests (the old contracts and events) unlock later in the game.
+- [ ] Nothing offers an event or goal that needs a locked ability (dig, bale, lift and so on).
+
+## World (world2)
+- [ ] The starting fences are gone.
+- [ ] Hitboxes work on every prop: you can't walk through fences, props or junk heaps.
+- [ ] You can't stand inside junk piles, so you can't vacuum a whole pile from inside it.
+- [ ] Bales sit on the ground and never clip into it.
+- [ ] Bales are solid (not transparent or blue) and look good.
+- [ ] A carried bale sits clearly outside Lumi.
+- [ ] The entire world is trashed. No cleared spots are visible from spawn, and there are no empty streets.
+- [ ] Starting hexes have no large items (fridges and the like).
+- [ ] When you land nothing works: no lit streetlamps, neon signs or string lights, and nothing powered. Everything is broken and comes back on only when you fix or build it (parts and cubes) or restore the area. (world3)
+- [ ] Walking off the edge never drops Lumi out of the world. (orbit)
+
+## Walk around the planet (orbit)
+- [ ] Each planet is a real, small, round planet you can walk all the way around, like moon sweeper games. The curve is subtle: planets are big, so the ground looks nearly flat nearby and only gently curves at the horizon. No exaggerated tiny-planet bending.
+- [ ] It is big enough that you never set foot on most hexes, because the bots clean those.
+- [ ] The whole planet is covered in hexes. Bases are sites on the globe, so far apart that you need the rocket to travel between hubs on the same planet.
+- [ ] Only the area near Lumi is loaded. Bots working far away are simulated cheaply.
+- [x] Order: a prototype and plan first, then the owner reviews, then a rollout split across helpers. (prototype done, lap test passes)
+- Owner decisions (Nov 8): BIG planets (164k hexes, R 1.84 km, 11.6 km around). Planet % counts the hub regions; the rest greens on its own. Travel is the x4 boost plus a buyable vehicle later, with the rocket between hubs. REAL day and night sides of the planet.
+- [ ] Rollout phase A: Lumi in the real game on the sphere. (orbit)
+- [ ] Rollout phases B-F: hex field and saves, robots and Command view, hub sites, future/system map/Homeward, Mac performance. (3-4 helpers)
+
+## Pacing and economy (pace)
+- [x] There are only 3 currencies: cubes, parts and seeds.
+- [x] You can pick up only a few pieces at a time at first. Upgrades grow this to today's speed.
+- [x] Picking up large items needs a lift-strength upgrade.
+- [x] Baling is an unlock upgrade.
+- [x] After two bales you can afford about 1 upgrade.
+- [x] Auto-cubing and automation come much later.
+- [x] Overpowered upgrades are slowed down.
+- [ ] The full game takes about 20 h: grindy, but upgrades speed it up and something new arrives every 5-20 min, never a long stretch with no goal. Planting ramps up around 1-2 h, and the first planet takes 3-4 h, with plenty going on throughout. (pace2)
+- [x] The magnet comes late, is capped, isn't glitchy, and never pulls pieces Lumi can't lift.
+- [ ] The first seed comes at about 20 min (or with super luck). Planting ramps up at about 1 h.
+- [x] Planting can come at 1-2 h: the garden takes off (Pollinator Survey) at about 75-110 min bot time (pace2: 106, was 163).
+- [ ] The whole game takes about 20 h, grindy but never boring: something new every 5-20 min, no goal-less stretch over 10-15 min. (pace2: targets and bot measurements in docs/BALANCE.md "Whole-game curve"; Verdance measured to 3.7 h bot, later planets still to measure.)
+- [ ] The first planet (Verdance, up to the launch to another planet) takes 3-4 h. (pace2: the Mk V opens at Verdance 50% or a level 3 base, 60k cubes.)
+- [x] You can unlock the next planet without 100% on the first one: drives open from partial progress (Mk V: Verdance 50% or a level 3 base; Mk VI: another planet at 50%); only the Homeward rocket needs the whole system.
+- [x] You can't 100% a planet until you bring tools from later planets (Deep Drill from Ochre, Tide Pump from Tidewell, Cryo Beacon from Rime, Heat Core from Anvil); the gated Verdance areas say "Needs Deep Drill: found on Ochre".
+- [x] The rare-part beam indicator is an upgrade, and dig events appear only once digging is unlocked.
+- [x] Supply crates never appear out of nowhere: supplies are only found in the world. Every reward toast names exactly what you got, in readable text.
+
+## Landing site and yard (camp)
+- [x] The yard holds only the pod, a broken workbench and the trash bin. Everything else appears when it is unlocked. (camp, camp2)
+- [x] Lumi plays a short repair animation on the workbench before it can be used. (camp)
+- [x] Nothing appears on its own (not even the composter): everything besides the bench and bin is a Hub build. One-time builds drop off the Hub build list once built. (camp2: data/builds.json + HubBuilds; Build/Upgrades tabs by ui3)
+- [x] The trash bin is upgradeable (bin → shredder): Dented Bin, Scrap Skip, Weigh Skip, Compactor, Shredder. (camp)
+- [x] There is no nursery at the start. It needs the first seed plus cubes. (camp)
+- [x] The radio is built later at the hub. It sits away from the workbench, and its prompt names it. (camp: CD player by the right fence)
+- [x] Yard interactables are at least about 3 m apart. (camp: test + --camp-report)
+- [~] The radio and jukebox stop the background music and play only their own song. (camp: radio + Audio.mute_score for tunes' songs; the jukebox egg is eggs2's)
+- [x] The observatory telescope sits away from spawn and its view doesn't glitch. (camp: back edge, zoom fixes)
+- [x] Buying a machine upgrade (belt drive, baler and so on) makes it visibly appear, with a build effect and a pointer to it. (Bug: they bought both and nothing appeared.) (camp: upgrades need their machine; every build gets a reveal)
+
+## Workbench and menus (ui2)
+- [ ] The workbench is simple, small and futuristic.
+- [ ] The Bots page is simple and uses parts only.
+- [ ] Trade is gone.
+- [ ] The hub page is simple and costs parts and cubes.
+- [ ] Currency icons look cool.
+- [ ] Locked tabs and options show a lock and can't be opened.
+- [ ] It's very clear what you can and can't afford.
+- [ ] Upgrade screens as simple as the owner's reference: a plain one-line list (icon, name, level pips, price tag, "?" locked rows) plus one detail panel with a big Install button. 3-4 tabs at most. (ui5)
+- [x] Photo mode comes with a camera-bot Hub build: unlocked early-ish, but it needs a good amount of parts. Before that, no photo mode. (camp3: Blink, hub level 2 or ~25 min, 400 cubes + 80 parts)
+- [ ] The Locker is a physical yard build bought with parts; open it with E for cosmetics. It is not a workbench tab. (ui5)
+- [ ] Workbench tabs: Upgrades holds everything with tiers; Build holds one-time buildings, which drop off once built. As few tabs as possible. (ui3 + camp2)
+- [ ] The upgrades page isn't glitchy or bulky.
+- [ ] Settings are simplified.
+- [ ] The pause menu has no Save button: saving is automatic. "Quit" saves and returns to the title screen. Fewer buttons, but Photo mode, Codex and Keepsakes stay.
+- [ ] The Requests page is simple.
+
+## Cosmetics and Locker (style, hero)
+- [ ] The Locker unlocks with the hub and combines cosmetics and the builder, with a selector for which bot you're editing.
+- [ ] Cosmetic parts unlock throughout the game.
+- [ ] Locked bot designs are hidden (silhouette or "???").
+- [ ] Character builder: colours, eyes, head piece, held item, companion, glow and laser colours.
+- [ ] The red antenna beacon stays on Lumi's head and never drifts off. (hero)
+- [ ] Aurora's model matches the concept art exactly: a round pill head, the stalk-and-paddle fin, the cyan chest band, arms up and out, and a chunky torso. It needs much more detail, with colours sampled from the reference down to the scuffs, speckles and glint colours. The owner reviews it again before the other 5 designs. The owner reviews it, then the other 5 designs follow.
+
+## Light buddy and night (buddy)
+- [ ] Nights are bright enough, or day lasts longer early on.
+- [ ] A light-bot companion follows Lumi.
+- [ ] Its hex scanner highlights the pieces left in your hex.
+- [ ] The buddy has upgrades and cosmetics.
+
+## Wildlife (fauna2)
+- [ ] Bird flapping and calls are rare, not constant, and don't glitch.
+- [ ] You can feed the birds.
+- [ ] Animals (cats, deer, fish) look real and cute.
+
+## Easter eggs (eggs2)
+- [ ] Gnomes and other collectibles are picked up into a Codex Collection page. No display at the base.
+- [ ] One Museum is built near the end (the Verdance launch phase), left behind for whoever comes after. It shows every collectible, with empty plinths for missing ones. Filling it is the 100% goal.
+- [ ] The jukebox stops the music and plays its own tune.
+- [ ] The brass telescope sits away from spawn and its view doesn't glitch.
+- [ ] The TV shows images that tell what happened to the world.
+
+## Ship, planets and system (ship, sysmap, p_*)
+- [ ] The spaceship has an original design and gets cooler with each tier, not just bigger.
+- [x] The solar-system map uses the detailed planet globes and zooms into the chosen planet. (sysmap, renders)
+- [ ] Planets unlock in order. Undiscovered planets are hidden or shown as a silhouette, and there is no "unvisited" label. (sysmap2)
+- [ ] Clean map view: no names, "you are here" or text over the planets, one small info panel, and no overlapping text anywhere. (sysmap2)
+- [x] Every planet has the same two suns, sized by distance.
+- [x] Planet globes are detailed from afar, with the ice-spike, sand and fire rings.
+- [x] Rime is merged.
+- [x] Rime at night is bright enough to read, and the gas giant is smaller. (rime2, render v2)
+- [ ] Ochre, Tidewell (ocean, hover over water) and Anvil (red, Nether vibe) are merged.
+- [ ] The next planet unlocks without 100% on the current one (about 50% plus the drive). Today the Mk V and Mk VI drives require a 100% planet; fixing that. Only the final launch home needs everything. (pace2)
+- [ ] You can't 100% a planet until you bring tools, bots and upgrades from later planets (e.g. a deep drill from Ochre, a water bot from Tidewell). Gated hexes say what they need, so you return later with new toys. (pace2)
+
+## Music and docs
+- [x] The Suno prompts doc has a grinding playlist per planet, with context in each prompt, as plain copyable text plus a .txt file.
+- [x] The owner's first 5 songs are in audio/songs/.
+- [ ] The main theme plays on the title screen and The Fall of LM-1 plays in the intro. (tunes)
+- [ ] You start with the main theme plus 1-2 songs. The rest unlock from CDs found in the rubble, with a readable "New song" toast. (tunes)
+- [ ] Unlocked songs shuffle at random with quiet gaps between them. The radio is a CD player with a Random mode, and it also lets you pick a song. (tunes)
+- [ ] Each song's intact CD is found on its home planet and unlocks it for good; the artist is shown as from that planet. (tunes)
+- [ ] 5-10 rare scratched CDs per planet hold songs from other planets. Each plays once (Play now / Keep), then breaks, and is clearly labelled as one listen. (tunes)
+- [ ] Later, a light-buddy "Music" upgrade downloads your CDs so you can play any found song anywhere. (tunes + buddy)
+- [ ] New MP3s can be dropped in by song name. (tunes)
+- [ ] Every song has a funny in-world artist with a short bio, drawn from a recurring cast of about 6-8 artists. Artists appear on the DVD toast, in the radio and on a Codex Artists page. The game never mentions Suno; the credits just say "Music by Lucas". (tunes)
+- [x] Music is frozen. Sound effects stay satisfying.
+
+## Download
+- [x] The Mac updater script works with no "Open Anyway" prompt (rolling `latest` release).
+
+## Nov 8 (art bar + helpers)
+- [ ] Every build and building on every planet must look as good as Moon Sweepers hubs (kit, yard, p_anvil, p_ochre, p_seas, orbD). The rejected example is the Anvil restored yard: white CG turbines, a flat slab, a flat green carpet.
+- [ ] Use as many helpers as needed, all aligned and not overwriting each other (file ownership in owners.md; main merges).
+- [ ] Fully build the walkable round planets (orbB to orbE).
+- [ ] Planets come in different sizes: Ochre (2nd) a bit smaller, later ones larger, Anvil (last) the largest. Later planets unlock more and speed things up so the game keeps moving (orbB grid sizes, orbD hub counts, pacing).
+- [ ] Planets grow much larger as you go; the last (Anvil) is about 4x the starter (radius 2x). Data has been set to 0.85 / 1.3 / 1.6 / 2.0x.
+- [ ] The 3rd planet (Tidewell) unlocks a bot-building bot (Bot Fabricator) so fleets reach "tons of bots"; bots go out and work on their own.
+- [ ] Finish the game to Moon Sweepers quality, with no glitches. Simple to understand, guide the player, keep it interesting and super visually appealing. All buildings look good and make sense. Run quality and visual tests.
+- [ ] Stay within the usage limit (owner: keep under about 10%): helpers resume after the weekly limit resets on Nov 10, 19:00 UTC.
+- [ ] All cosmetics live at the Locker: Lumi, Glim, bots and rockets. Nowhere else edits looks (ui).
+- [ ] Send a picture of the workbench view (main: render queued until memory frees).
+- [ ] Bots are BUILT at the workbench (Bots tab, Fabricator queue). Their LOOKS are designed at the Locker, per robot type or job, and every bot of that type wears the design (e.g. all planting bots green, including newly built ones) (ui, orbC).
+- [ ] Owner (Nov 8, later): no need to send pictures for now. Focus on finishing everything already agreed. Renders only where a helper needs one to check its own work.
+- [ ] Workbench (and Locker): simple is good, but restyle it futuristic and robot-like. Not full screen (like Moon Sweepers): floating modules with gaps that show the environment, slightly see-through glass, chamfered corners, thin glowing lines, a hologram open (ui).
+
+## 2026-11-08 playtest (round Verdance, from the start)
+Direction: the flat world's vibe is better, so build it into the round world: buildings, signs, colours, purple indicators. Make the round world close to flat, then remove the flat world. Focus only on the first planet (Verdance) for now.
+
+**Menus, audio and intro**
+1. The loading screen Lumi still has two sets of eyes overlapping. Make the loading screen simple and clean: Lumi (or the round guy) flying around, or just a loading circle, on a good background, animated continuously.
+2. Remove the Credits button.
+3. Changing the quality preset is very slow. Default it to Medium.
+4. If the settings only have basic options, drop the "Basic" header.
+5. Music:
+   - The main theme played twice in a row.
+   - Rules: main theme first when the game opens; it is the most common song; other songs mixed in; never the main theme back to back.
+   - Longer gaps between songs.
+   - Music started far too early after the pod landed: wait a few minutes.
+6. A voice-over for the intro text.
+7. The intro fall: the whole planet should look covered in trash. Parts not yet loaded looked clean.
+
+**Start area**
+8. Define the trash bin area clearly.
+9. The trash bin and workbench should be closer together.
+10. No vehicle at the start.
+11. The floating buddy is a build: you don't get him right away.
+12. The pod's hitbox is terrible.
+13. The pad should be cleaner and flatter. It looks like I'm standing on trash.
+14. Trash right outside the pad: there's a clean ring around it, so it's a long walk to reach trash.
+15. Way more trash, like the flat world, with more of it close to the pod. Bring back the city buildings.
+16. The water-to-land edge is glitchy and looks bad.
+
+**Guidance and progression**
+17. The objective markers are barely noticeable. Use a beam up to the sky with a ring around the target.
+18. The story doesn't say why we're picking up trash. WREN should say something like "pick up pieces and look for parts to build the receiver."
+19. Throwing trash in the bin needs a visual, glint or sound: it just disappears.
+20. It says to save up for the Baler, but the Baler isn't unlocked to save up for.
+21. No instructions on how to make a bale after the upgrade.
+22. A carried bale still clips into the body.
+23. "Build the signal tower" isn't an option in the workbench.
+24. The workbench shows Bots and Research early, before finding anything. Those come ~30 min in.
+25. Clicking an upgrade should show its details; only the price square buys.
+26. The start is too slow ("I already want to quit"): too much walking between trash and the bin. Speed it up.
+27. Upgrade types stay in a fixed row/order in the workbench, not moving around by price or affordability.
+28. Workbench tabs (Bots, Research, etc.) unlock by upgrading the workbench itself (workbench tiers), not on their own.
+
+## 2026-11-08 playtest 2
+29. Lumi's eyes still looked like two sets: fixed on main (one solid glowing eye per side) and needs checking. In the intro, when the pod lands, his eyes are almost closed and look weird.
+30. No human voice-over. Use robot beeps under the lines: done on main.
+31. No "New sighting" popups during the intro animation: done on main.
+32. Birds chirp far too much again.
+33. The purple indicator points at nothing. In the screenshot, the ring was on a road cell while the step was "Empty your chest into the trash bin". Also, two cards showed at once ("OBJECTIVE: Save up for the Baler" plus "NEXT STEP: Empty your chest..."): there must be only one.
+34. After the signal tower restores the connection, WREN only says hello. WREN should narrate the goals and what we're trying to do to get back home.
+35. The starting hexes can't hold large items, because then you can't fully clear a hex.
+36. When a hex reaches 95% clear, the rest of it clears automatically: the hex counts as clean and its leftover pieces are swept away.
+37. The purple beam/ring and the yellow pointer should NOT point at parts or leftover pieces. Use them only to lead to PLACES a goal needs (bench, bin, tower spot, greenhouse...), and only when necessary.
+38. After walking away I couldn't tell which way home was. The pod's smoke should be a super tall plume, a landmark for home visible from far away.
+39. A hex stuck at 96% with no findable leftovers: this is the 95% rule (item 36). It's the top priority.
+40. Map view (M) looks great but is a little glitched, and it's too close to Moon Sweepers (legal risk). Make it our own style. The launch/travel UI must NOT be in the map; it appears only when you press E at the rocket.
+
+## 2026-11-08 direction: Verdance must feel finished
+41. The first planet must be completely free of glitches, easy to make progress on, and simple enough that a young kid could understand and play it. Make it feel real and professional.
+42. The city feels empty: about 3 buildings and that's it. It doesn't feel whole or working. Verdance needs a full, lived-in city (streets, blocks, districts, signs, lights, parked junk), like the flat world's districts or better.
+
+## 2026-11-09 playtest 3
+43. The little floating bot (Glim) should be a build and a much bigger deal: a helper who followed you and clung to the pod to be with you.
+44. The water bot unlocks way too fast.
+45. Every time the water bot cleans a hex, WREN's "I can see the bottom…" line plays again. It should play once.
+46. Unlock the Scoopie first, and have just him for a while before the Hauler.
+47. After building bots the first time, the "I hear another voice" line must not repeat every time.
+48. The first seed is hard to find: after a bit, show an indicator to where it is.
+49. Far too many messages at once; it's hard to know what's happening. Cut them way down.
+50. The beeping is still super annoying: way less, or none.
+51. Planted plants can't be seen, so I don't know where to water or whether it's working.
+52. Haulers should also pick up the bales I make.
+53. The water still doesn't look like water.
+54. Lumi should need an upgrade to hover over water.
+55. The objective led me under a building I can't get to. Every target must be reachable.
+56. Overall: it still needs more polish.
+57. Balance the timing (base 3 and the rest) so the first planet takes 4–5 hours in total.
+58. Focus on making the first world fully playable, fun, well paced and good-looking; what works here feeds into the other worlds. Moving on to the next planet comes at 4–5 hours, NOT at 100% cleaned. The planet might be only about 20% cleaned at that point. Cleaning the rest is optional, for later.
+59. For cleanup work that doesn't much affect the game (removing the flat world and the like), use Opus helpers.
+60. The storyline must make sense: there must be real in-world reasons for what the player does, not "because it's a game".
+61. Before flying off Verdance (at 4–5 hours), the player should have seen about 6 of its bases (hubs).
+62. More songs are coming later. Set music up so songs are easy to add, swap and adjust (which planet, when, how often, volume) without code changes. The same goes for everything as the game grows to the other planets: keep it easy to change and adjustable per planet.
+63. Cubes should grow semi-exponentially, like an incremental game: income and prices multiply as you go (bigger numbers each base), not a flat or linear price ladder. Time per step stays roughly steady because income grows with the prices.
+64. Numbers should be big: a few thousand cubes is far too small for major steps. Upgrading the rocket enough to leave the planet should cost tens or hundreds of thousands of cubes.
+65. Only three songs on Verdance gets boring. Until more songs arrive, play more of the songs we have there (done: Ochre's three songs also play on Verdance, owned from the start, and the main theme comes up less often; see `data/songs.json` `planets.verdance`).
+66. The base names are up to us (kept: Landing Yard, Garden Row, Gantry Works, Signal Heights, Fairground, Stack Works).
+67. The people asleep on the ark are not "the Makers" (and not "the Gardeners"). The owner picked **the Settlers**.
+68. Songs and breaks like Minecraft: a song, then a long quiet stretch with only the world's own sounds (done: 6–15 min between songs, 1–2 min after loading; `data/songs.json` `gap_s`, `first_gap_s`).
+69. After the crash landing it should be a good while (about 10 min) before the first song, and a song must never start over WREN or a story line (done: `landing_gap_s` 9–12 min; a song waits while a line is spoken).
+70. Verdance must be fully ready to release and play: simple enough for a child, addictive, with a real story. The pace keeps you moving, but you still have to grind a bit to get there.
+71. Set the foundation for more planets made the way Verdance was: different themes, planet sizes and landmarks. Do not build the other planets yet.
+72. The story must leave room for the other planets and spill into them: across the planets we gather enough fuel and power to make it back home.
+73. Renders of the yard machines and landmarks look great, except the inside of the pod (through the open hatch it shows flat brown/orange streaks). Give the pod a proper interior.
+74. Standing rule: everything built from now on (machines, landmarks, props, other planets) keeps the same style and quality as the v6 yard machines and landmarks: chunky, friendly kit shapes, the same paint palette, hazard stripes, picture signs, soft glow. Reference shots: `screenshots/yard/v6_*.png`; models in `systems/camp/machine_art.gd` and `planet/sites/hub_landmarks.gd`.
+75. "45 mins for first bot seems too long tbh. should be like 25 mins." (person time; about 12-13 bot minutes, it was 22.6). Done: the Bot Bay costs 450 cubes (was 900) and opens after the first clean hex (was 3), the first Scoopie costs 250 (was 600), and "Clean 2 hexes" and "Clean 3 hexes" now come after the robot (with it helping) instead of before the Bot Bay (`data/workbench.json` `tiers[1]`, `data/robots.json` scoopie `cost`, `data/objectives.json`). Measured (short runs, three seeds): first robot at 15.3, 8.7 and 15.4 bot min (was 22.6). See docs/BALANCE.md.
+76. "numbers already verlapping the continue button" (MacBook, about 2000x1300, 3:2). The Continue button's second line ("Verdance · 51m · 1.75K cubes · 8 Nov 19:30") ran past the button's right edge: the line was a free Label inside a fixed 340 px button, so nothing sized the button to it, and the UI audit missed it (it only checked children of containers, used whatever save was on disk, and had no 3:2 size). Done: the menu buttons widen to fit their longest second line (up to half the screen, 560 px at most); if that is still not enough the line drops the clock time, then the date, and only as the last resort is cut with "…" (`ui/main_menu.gd` `_fit_subs`). The Profiles line does the same (drops the planet count). `--ui-audit` now audits the title with the longest line (`--menu-long-save`: "Verdance · 12h 51m · 999.99K cubes · 28 Nov 19:30"), adds 1500x1000, and flags text that runs out of a button or panel. Shots: `screenshots/v8/title_169.png`, `screenshots/v8/title_32.png`.
+77. "need much better loading screen ... it can be super simple like a circle or something just make it clean", then withdrawn by the owner the same day: "ok loading screen is fine actually leave it". The current loading screen stays as it is (no change made).
+78. "when i pause there is still sound coming out of game for the animation". The Audio autoload (its one-shot pool and loops such as the beam hum), the ambience beds and the rocket run with PROCESS_MODE_ALWAYS, so Godot's pause never paused their players: sounds with long tails (chimes) rang on, beds and birds kept going, the rocket's launch went on under the pause menu, and pausing a story cinematic (Space; it freezes time, not the tree) paused no sound at all. Done: while the game is paused (pause menu, settings, codex and every other pausing screen) or a cinematic is paused, every playing sound on a world bus is paused and resumes where it was after (`Audio.hold_world`, `Audio.holds`); menu sounds still play; music and songs keep their design (music plays on in the pause menu; a paused cinematic holds its song). Test: `tests/test_pause_audio.gd`; in game: `--pause-audio-probe=S`.
+79. Right after building the first Scoopie: "paint the hex to control bot? doesnt make any sense. Dont say anything about telling it where to go it just goes on its own for the scoopies". Done (v8bot): the "Show your robot where to clean first" step and both zone goals ("Give a robot a work zone", "Zone 6 hexes for your crews") are gone; after the first robot the card goes straight to "Clean 2 hexes" ("Your robot cleans on its own. Clean one more hex.") and at "Clean 3 hexes" WREN says "Your robot cleans on its own. One more hex, Lumi." (hex2 is often done before the robot, and a step done already is skipped without its line) A new Scoopie starts on the nearest dirty hex by itself (measured: working 3 s after the build, on the bench's hex); several spread over different hexes. The Command view (B) stays as an optional feature nothing asks for, and the first-minutes key strip no longer shows B. Old saves on the zone step move on.
+80. "there is this rattling noise consytantly sounds like my speakers blew out or something but its from the game" and "cat sounds like a helicopter" (MacBook Pro speakers, New Game on Verdance). Found by measurement (no one can listen in the cloud box): the start yard's dust-wind bed was raw single-sample spikes, about 43 a second, over a wind that was 57% under 80 Hz, and it plays whenever Lumi stands in junk (the whole early game). The cat's purr was sub-200 Hz noise chopped fully on and off 24 times a second, normalised to full scale and played at -3 dB. Fixed: soft filtered sand ticks and a high-passed wind, a band-limited gentle purr played 9 dB softer and at most every 6 s, every wind bed and the score's air and bass lifted out of the sub-bass, and a 60 Hz high-pass on the Master bus. Checks: `tools/check_audio.py` (every built-in sound, recorded mixes, retrigger rates) and `tests/test_audio_quality.gd`. See docs/ADJUSTING.md "Listen by numbers".
+81. Command view (screenshot: two painted hexes, "Cleaners: 3 waiting", "Bales are piling up. Build a Haul Bug.", a Salvage Surge banner over the view's hint, the hotbar and "E pet Pepper" still on screen): "painter is fine but it doesnt work to call robots there and you should be able to select how many robots come and it should choose the closest ones. Also overlapping text at the top". Done (v8bot): bales never stopped a Scoopie (there is no bale cap); "waiting" and the "!" came from the Haul Bug nag, which counted a robot cleaning while bales piled up as waiting, and the zone only applied at a robot's next hex. Now the nag waits for the Haul Bug's plans, the card counts working robots as working, and a painted zone calls robots at once: "Robots here: - N +" on the card (click, keys - +, D-pad left / right; default all) sends the N robots nearest by travel, the rest keep working on their own; the card shows how many are on the way and working there; erasing the paint releases them; saved with the zones. In the Command view the event banner and the play HUD (hotbar, level bar, hex readout, interact prompt, key strip) step aside. The UI audit raises an event and paints a zone for the command screen.
+82. "This starter hex i cleared but it says 94% and i dont get anything... fix the ones partially in the starting zone to make sure that doesnt happen". Done (v8hex), found by measurement with the new `--hex-audit` (every land hex within the start area, as if Lumi took everything the starter scoop can take where it lies): the hex just outside the pad's south-east corner (the one the First Seed greenhouse stands on, ~(11, 12) m from the yard centre) could only reach 91-94% on every seed tried (4471, 1234, 777, 90210): 5.8-8.7% of its junk lay under the greenhouse's planting beds, inside its frame or walled in between its posts, out of sight, and the rule "95% clears the rest" (item 36) never fired; a few other start hexes had 1-3.5% inside or under street furniture. Fixes: the greenhouse's ground keeps junk off (a junk-only clear box, so the seed tin stays reachable); start-area pieces that lie under or inside any collider move to open ground in their hex (planet/orbit/start_junk_tidy.gd); a new leftover rule: a land hex 80% or more cleaned whose remaining pieces are all hidden or out of reach counts as clean and pays (`data/start_area.json` `leftover_from`; planet/orbit/hex_leftovers.gd); a bite that carries a hex past 95% flips it too; and a save that already has a start-area hex stuck at 90% or more (the owner's) heals once on load and pays its bonus (`heal_from`). Lakes in the start area still wait for the Hover Jets. Regression check: `--hex-audit --hex-audit-quit` (in tools/check_exit.sh, exit 1 on a stuck hex) and tests/test_hex_leftovers.gd.
+83. "get rid of large items around base 1 like that large barrel". Done (v8hex): the red barrel was a kit prop in the start yard's lot dressing (a tipped barrel at the pad's west edge, plus two crate stacks at the pad corners), not junk, so Lumi could never take it. The start yard no longer has them, and within the start area (`data/start_area.json` `radius_m`, now 50 m from the yard centre, about four hex rings past the pad edge; was 40 m) there are no wreck landmarks, no landfill-lot debris, crate stacks or barrels, no building-door crates or barrels, no yard-corner drum or crate kits, and street wrecks start past it; the loose junk there is all liftable with the starter scoop (as before, now over the bigger radius). `--hex-audit` fails if a piece over Lift 0, a wreck landmark, kit lot junk or a junk-looking prop (`junk_look` names) stands inside it. Shot: screenshots/v8/yard_edge.png.
+84. "It wont let me plant in the dirt... i cant plant the first seed" (New Game, keyboard and mouse, MacBook), and "planting and watering circle thing looks way wrong too". The owner's shot shows the cause. The "dirt" was the ruined greenhouse's two planting beds. Its spot finder checked only colliders, slope and water, so the greenhouse stood on the road and crosswalk right by the pad, with its beds over the kerb. The beds were props: the garden's seed spots lay on the paving under them, and paving takes no seed. Holding the button there did nothing, apart from a toast every 6 s. The card said "Hold LMB on clean ground" but never named key 2 (the shot has the water can, key 3, in hand). The watering ring was scaled along the world's axes instead of the ground's (`Basis.scaled`), so on the globe it was sheared into a huge tilted band in the air. Done (v8seed): the beds are soil now (`Garden.add_bed`, saved as `garden.beds`) and the first seed goes there. The greenhouse stands off the town's paving (40 m east of the bench), and its beds reach into the ground. The card reads "Press 2 for the seed. Then hold LMB on a greenhouse bed", and the beacon stands on the beds. Every refused seed now has its own line: "Clean this hex first", "Seeds need soil, not road or the pad. Try the greenhouse beds", or "Plant first: press 2 for the seed" when the can is in hand. The tin's signal comes as soon as the step starts (it waited 75 s), and no world event starts during the step (`data/events.json` `schedule.quiet_steps`). A save sitting on the step gets the card back, with the seed tool and a seed. The rings lie flat on the real floor (bed top, plates or terrain), as thin lines: the can's real reach (2.8 m) and the next seed's spot. Check: `--seed-walk` plays the step with real key and mouse events and runs in `tools/check_exit.sh`. Shots: `screenshots/v8/ring_water_before.png`, `ring_water_after.png`, `ring_plant_after.png`, `seed_after_beds.png`.
+85. "building was glitching a bit then stopped" (MacBook, Forward+ on Metal; Lumi on the lake shore a short walk south of the Landing Yard, looking at the town's towers 40-100 m away, about 20-40 min into a fresh game). Measured on the same walk and view (`--bld-watch`): nothing near was rebuilt, re-streamed, swapped to another model or still building after the loader was ready; no shader appeared that the warm-up had not drawn. What was wrong was the buildings themselves: the layout gave the east and west sides of every standard city block (21.8 m, shorter than two 11 m rows) a 6-9 m building standing inside the corner buildings (22 of 79 in the start town, 63 of 211 in its outskirts), so two facades lay on one plane and z-fought: they flicker while the camera moves and look still when it stops, which matches "glitching a bit then stopped". Back-to-back rows also overlapped by 0.2 m, and setback towers, roofs, copings, cornices and plinths shared planes. In all: 20325 m2 of overlapping same-facing faces in the start town before, 3 m2 after (`--bld-zfight`). Done: the hidden buildings are dropped (every other building keeps its height, colours and seed: the town looks the same in renders from the lake), the rest keep a few centimetres apart (`CityLayout.drop_overlaps`, `BuildingDetail.TRIM_STEP`). Also: a mural on a facade popped on and off as the camera swung round Lumi at its range edge; every visibility range in the town dressing now has a margin (hysteresis). Loader 12.9 s / longest frame 119 ms before, 11.8 s / 104 ms after. Test: `tests/test_v8bld_zfight.gd`. Not checked on the Mac renderer itself; if a shimmer is still seen on the towers, the owner can try the Low preset (it turns off volumetric fog and SSAO, both temporal or noisy on thin fire escapes in motion) and say whether it goes away.
+86. "Also double check repeatative sounds because its super annoying to hear the same bird chirp so many times over and over and things like that. lively but just peaceful." Measured (nobody can listen in the cloud box) with a new repetition check, `tools/check_audio.py --repeat` on `--sound-log` runs at time-scale 1 (`--life-sound`, 5 min each: the start yard standing, scooping and baling, cleaned green ground with animals, night, 9 robots working, a walk): per sound its plays a minute, gaps, takes, pitch spread, longest run of the same take, metronome spacing and an annoyance score. Bird calls were already rare (0.7-1.6 a minute: one shared clock), but every call type had only 3-4 near-identical takes (the same short tweet at a few pitches), so over an hour each take came back about 20 times, and the same take could play 3 times running. Frogs had no clock at all: 15 croaks a minute by a pond, 19 at night, 3 takes. Scooping played the same rising arpeggio at full level on every combo (clink 42 a minute), Lumi's start/stop squeak had runs of 8 identical takes, and a robot's hex far away chimed at full level. Done (data/sound.json `variety` and `wildlife`, docs/ADJUSTING.md "Listen by numbers"): 8 chirps and 8 songs that differ in shape (notes, length, motif), 5 coos and gulls, 6 frogs; no sound plays the same take twice running; one species never calls twice within 45-60 s, at most 3 bird calls a minute, calls thin out (up to 2.5x rarer) while Lumi stands still, and now and then a bird answers itself once (a short phrase, then silence); frogs share one irregular clock (about 3-4 a minute); fast repeats come softer (the scoop is a patter: up to 5-6 dB under its first hit), the scoop ladder starts on a different root each combo; hex chimes and level-up sounds fall off with distance; fixed animal timers got jitter. After: frogs 15.3 -> 3.5 a minute by day (19.2 -> about 4 at night), birds 1-2 a minute with no take twice running, scoop clink -7.9 -> -11 dB average, squeak runs 8 -> 1, robot-hex chimes -3.3 -> -9.6 dB average. `tools/check_exit.sh` runs the check on green ground (`sound_repeat`). Not heard by anyone: whether the new bird and frog takes sound natural is for the owner's ear.
+87. "Can you do another audit of the game? I need to make sure all oals and all that work because for example getting stuck on the seeds essentially ruins the entire game because you cannot move on. It all needs to be visual and easy to understand and work." Goal audit (v9 helpers): every step played with real input by a walk in tools/walk_*.gd, findings in docs/GOAL_AUDIT.md.
+88. "Use fable to make the starting animationmuch better with no visual issues like a professional animation if possible." Done (v9intro): the opening was re-shot from scratch as a two-minute film in three beats (peace on the ark; the storm and the pod thrown clear; the long fall and Lumi waking), 19 shots played from a table (`data/intro_shots.json`: each shot's length, camera move and ease, fades, lines, sounds). What the old one got wrong, found by rendering it as frames first: the title sat on top of the ark; the planet was black-and-white blotches with a detached grey ring for air; meteors were a ball on an orange stick; the blast was a solid white ball; puffs were flat discs; the re-entry fire read as a bullseye; the ark's belly and the pods were black on black; a pod (and its smoke column) already stood on the ground before the pod landed; the fall onto the planet was a white dot; Lumi's eyes were overridden every frame, it shed rust flakes and fell asleep (with a "z") during WREN's message; the first frame of play had the pod between the camera and Lumi. All fixed at the source. New: the fall is seen from the air over the whole ruined town; the crash has a held breath, a flash, a dust ring and a pod that bounces and rocks to rest; Lumi turns to the old workbench (the first job) and the film's last camera move ends exactly on the game camera, so play starts with no cut. The story hits (meteor strike, the pod blown out, the crash) sit on the song's accents at 39.0, 52.8 and 78.3 s. Skipping at any moment leaves the same world as watching (`tools/check_intro.sh`). Kept as approved: the ark, the pod and its cabin, Lumi, the lines and their six languages, the song and the quiet after landing. Not judged here (software rendering, sampled frames, no sound): smoothness at 60 fps, the look on Forward+/Metal, the sync by ear. See docs/ADJUSTING.md "The opening film" to retime or re-aim any shot.
+
+## 2026-11-15 playtest 3 (build e3601bc, MacBook; shots in the session scratchpad `pt3/21-25.webp`)
+
+89. Title screen: "his eyes on starter messed up" (Lumi's eyes on the title show doubled/overlapping arcs). Done (v10ui): the face shader cross-faded two shapes, the round eye and the happy ^ arc, by one `happy` number, and the title set Lumi's mood to 0.9, which rested at 0.75: the arc drawn over the dimmed disc in each eye (the owner's shot exactly; any mood between 0.6 and 1.0 did it, on every preset and renderer, so it also showed for a moment in play each time Lumi cheered). Now the round eye shuts before the arc opens (`art/shaders/bot_face.gdshader`, as the builder's other eye shapes already did), the model rests only on 0 or 1 (`PatchModel.HAPPY_ARCS_FROM`), and the title shows the round eyes Lumi has in play. Checked: close-ups of the face at moods 0.5, 0.7 and 0.9 before and after (`scenes/turnaround.tscn -- --happy=0.9 --face-only`), the title at Low, Medium and High; `tests/test_v10ui.gd` runs every mood 0..1 and fails on a blend.
+90. "Way too much wind or waves sound whatever that is", "too much ambient noise like wind and birds and stuff", "Cats still sound like helicopter" (third report of the cat).
+91. "The sounds like when i get and upgrade and stuff are just so loud. quite them down and also add setting to adjust that."
+92. "could use a bit more music."
+93. Card text cut off: "Buy an upgrade: press E at the..." ("press E at the what?"). Done (v10ui): the card's title and hint were limited to two lines with "…", so anything longer was cut (this step, and worse the first seed's "Press 3 for the watering can, then hold LMB to water the seed"). The limit is gone: the title wraps and the card grows, and a title over three lines drops to a smaller size. The step now reads "Buy an upgrade at the bench" (the bench's own prompt shows the key). `tests/test_v10ui.gd` puts every objective, goal, checklist and first-seed text (title, short title, why, hint) on the card in all six languages and the pseudo locale and fails on a hidden line, an ellipsis, a title over four lines or a card taller than half of a 720p screen at 150% interface scale (tallest today: 177 px).
+94. "brighter days ahead sign messed up" (the OLD TOWN / BRIGHTER DAYS AHEAD sign and billboard by the start yard). Done (v10ui): two faults. The billboard had its slogan as a cream, dark-outlined label laid over the top of the mural, wider than its place (it hung off the board's left edge), and at the start base it was the same words as the name board right under it: a faint second print over the picture. The name board's face used the painted-board material, which flakes down to a grime texture in hand-sized patches: on a dark 4.8 m face that read as camouflage. Now the start base's billboard is the mural alone, other towns' billboards carry their slogan on a paper strip inside the board, and the name board is a clean enamel plate with OLD TOWN and one line under it (`planet/street_dressing.gd`). Checked in renders from the bench and close up (`--bld-watch --bld-yard-views=DIR`, new `view_4.png`: the sign from the back of the yard). Not rendered: the slogan strips of the far towns.
+95. "Counts are showing different numbers here on the top right and left" (HUD 24 cubes, card 23 / 80). Done (v10ui): the HUD rounded the cubes (23.6 showed 24) and the card rounded them down (23); Glim's panel rounded up. Every balance now goes through one formatter, `Currencies.have()` / `have_text()` (whole units, rounded down): HUD, card chips and progress, workbench header, Bot Bay, hotbar seeds, Glim, hub, stations and research panels. While coins are still flying into the corner counter the card follows the counter, so it never runs ahead. `tests/test_v10ui.gd`: HUD, card and bench text agree at 0.4, 3.5, 23.6, 79.6 and more, and while coins fly.
+96. "Default quality preset to high." Done (v10ui): a new install starts on High (`Settings.quality`, `QualityDetect.first_run_quality`); before, the first run picked Medium at most from the hardware and a frame-rate probe could step it down. Only hardware that cannot run High at all keeps the detected Low: a software or virtual GPU (the cloud box), the Compatibility or Mobile renderer, a Steam Deck. A preset the player chose in Settings is never touched; a preset the game picked by itself earlier (never changed by the player) moves to High once. High is not stepped down behind the player's back. Headless tool and test runs stay on Medium, `--quality=N` still wins. Tests in `tests/test_v10ui.gd`, `tests/test_deck.gd`.
+97. "Make the bot bay another thing like the tool bench. seperate from other stuff." Done (v10pace, base 1): the Bot Bay was "Workbench Mk II", an upgrade row that opened a Bots tab inside the workbench. It is a machine of its own now (`systems/camp/bot_bay.gd`, art in `YardArt.bot_bay`: a small assembly booth with a gantry, a console and the robot picture sign, in the pad's south-east corner across from the bench). Its unbuilt spot is marked on the ground (hazard corners, dashes, the sign on a post: `systems/camp/build_spot.gd`); it is bought once in the workbench's Build tab ("Build the Bot Bay"), goes up with the usual reveal, and E at it ("E  open the Bot Bay") opens its own screen: the robots list alone (build, tiers, fleet), no tabs. The workbench has no Bots tab any more; the card's beam for every robot step stands on the Bot Bay. State is per base (`BotBay.built(key)`), so the far bases get their own (v10base places them with the same class). A save that had the Bots tab has the Bot Bay standing. Checked with real input: `--walk-opening` builds it by a click in the Build tab, sees it stand, walks to it, presses E and builds the first Scoopie on its screen; `--walk-home` (robot2, haul) builds the second robot and the Haul Bug there, with a reload in between; `tests/test_v10pace.gd`. Rendered and looked at: screenshots/v10/pace_bay_screen.png (its own screen: the robot list alone, titled BOT BAY), pace_bay2.png (the bay in the yard).
+98. "I got a cosmetic wayyy to fast. Those are supposed to be super rare. I dont even have locker yet." Done (v10pace): three things handed out looks in the first half hour. The first robot came with "treads and a bobble plant" and a toast about the Locker (which needs base level 2); Lumi designs unlocked from the start on small counts (Pixel: pet 5 cats; Bolt: 50 bales or 5 robots) with a "NEW DESIGN UNLOCKED" card that said "Wear it at the workbench: Cosmetics" (no such tab); and a working robot could spot a Lucky Clover. Now nothing is given, dropped or unlocked before a Locker stands (`LockerCabinet.owned()`): the two starter robot looks are simply in the Locker when it is built, without a message; designs are only checked once a Locker exists, on long targets (Bolt 600 bales or 15 robots, Sprout 80 blooms, Pixel 25 animals or 12 trinkets, Patch 3 outposts or a Mk III fleet: the first comes about 90-100 bot minutes in, some three hours of play and over an hour after the Locker); the Lucky Clover, the one look that drops, is 1 in 120 robot finds (was 1 in 40), a find every 15 robot-minutes, so about 30 robot-hours: around 4 hours of play with 8 robots. The card says "Wear it at the Locker". Checked: `tests/test_v10pace.gd` (no unlock and no message whatever the stats before the Locker; the looks appear with it), `tests/test_designs.gd`; an autoplay run to 47 bot minutes showed no look message. Render looked at: screenshots/v10/pace_design.png (the card reads "Wear it at the Locker"). Not played by hand past the Locker.
+99. "The rocket just popped out of nowhere right after planting the seed. Wayyy to early." "I am moving on from the start way to fast. I didnt even build this shuttle and I dont even know why I am moving on yet." "You should have multiple bots and passive income far before new base." Done (v10pace): the rocket stood on the pad as soon as the first seed was planted (data/hub.json `rocket.after_objective: seed`) and the next card step was "Fly to the next station", 19 bot minutes in, with one robot and no Haul Bug (passive income came at the second base). Now no rocket stands until the player builds it: after the seed the card asks for a second robot, a Haul Bug, 10 clean hexes, a look at the map, base level 2 (moved here from after the first flight) and then "Build the shuttle", which WREN explains in three lines (the seed tin is nearly empty; Garden Row kept the seed store; it is too far to walk, your robots keep cleaning here). The Shuttle is a Build-tab build (2,000 cubes, 100 Parts) whose spot on the pad is marked; it goes up piece by piece and only then does the card say to fly. Robot bales reach the bin: the Haul Bug carries 6 a trip at 3.6 m/s (was 2 at 2.8; one Haul Bug sold 49 of 94 bales by minute 36). Finds pay half the Parts (critic 11), so the Bot Bay, the Haul Bug and base level 2 wait on Parts for a while. Measured with the autoplay (bot minutes; a person takes about twice as long): first robot 10.0 (was 15.9 in the stopped helper's run, 15.3 in the critic's), Haul Bug 19.9, base level 2 at 29.4, shuttle step to built 29.4-44.4 at the old 3,000 price (now 2,000), first flight about 44.5 (was 20.3); robot bales pressed vs sold at base 1: 34 / 33 at 20 min, 52 / 50 (2 waiting) at 30 min, 88 / 87 at 40 min; with Lumi away at the far bases base 1 had 22-25 waiting at 60 min (was 64-97 with carry 2/4). Parts in hand: 56 at 4 min, 90 at 10, 15-35 at 19-25 (short: base 2 waited on them), 137 at 40 (were 131 at 3 and 260 at 15). Checked: `--walk-home` plays robot2, haul, hex10, map, base2 and shuttle in the new order with real clicks and reloads; `tests/test_v10pace.gd` (order, shuttle price and listing, old saves keep their place), `tests/test_sphere_crew.gd` (three Scoopies and a Haul Bug sell over 70% of their bales near and far). Not done: a full playthrough by a person; the autoplay buys other things while the shuttle is on the card, so its 15-minute shuttle save is longer than a saver's.
+100. "The animation flew the ship backwords." Done (v10base): the ship model's nose is +Z and the hop (`planet/sites/hub_hop.gd`) turned it with `looking_at`, which points -Z down the path, so it flew tail first on both legs, for every ship tier (one model class). The legs now lead with the nose (`HubHop.nose_along`), and the ship turns from and to the way it stands parked while it hovers over the pad instead of snapping. Checked: `--walk-travel-back` watches a whole unskipped flight and fails unless the nose points along the travel all the way (nose . travel 1.00 at worst); looked at rendered frames of both legs.
+101. "Dig landmark out but there is no landmark."
+102. "There is no even a garbage at this new base", "the second base the trash is far from the landing spot too. All bases should have trash surrounding them right close by."
+103. "I returned back and there is no workbench anymore" (blocker). Done (v10base): the workbench, the trash bin, the lean-to, the pod and every yard machine are children of the start hub's town, built once at load. The site manager frees a town once Lumi is 650 m away, and a rocket hop is always farther, so it freed the Landing Yard and everything in it; on the way back it rebuilt the town but nothing rebuilt the yard (E at the bench's spot still opened the menu: only the models and the bin were gone). The start hub is now never freed, only hidden while Lumi is far (`SiteManager.free_hub`). Reproduced first with real input (bench 0 meshes, bin gone), then checked by `--walk-travel-back` (in `tools/check_exit.sh`): E at the rocket, a click on Fly, the whole flight, quit and Continue at station 2, fly home, quit and Continue at home; at home each time all 22 yard things stand as before, the bench shows and E opens it, the bin answers. The main `--walk-travel` checks the yard on its flight home too.
+104. "all bases need to have spots to build new workbench and locker and bot builder and all that."
+105. "remove this whole ledger thing it makes no sense." Done (v10ledger): the Ledger was a whole second story on top of the cleaning: a voice with a red LEDGER tag that sent "coupons" from the third clean hex on, drones that dumped junk back on clean ground after the first sprout, Signal Jammers to buy against them, a relay to find at base level 3 with its own cutscene, seed drones and a "Ledger Audit" race after that. None of it was a step on the card, so it read as noise. All of it is removed, not switched off: `story/ledger.gd`, `ledger_drone.gd`, `ledger_uplink.gd`, `data/ledger.json`, the Signal Jammer build and its model, the audit event and its two trinkets, the telescope's "Ledger wreck" and its Codex page, the LEDGER subtitle voice and its tick sound, the dev hooks. Nothing else waited on it: no card step, goal, achievement, tab or reward was gated by a Ledger step (the relay's 25 seeds and 450 cubes were a bonus), so no Steam achievement goes. Where the story named the Ledger it now says what a kid can follow: long ago, miners dug up the worlds and left their trash; the cleanup robots ran out of power. That is 75 texts (WREN's planet lines, the star-map reasons, the eggs, two memory shards, the Codex page now called "The Buried Worlds", planet and landmark names, three song and artist names), rewritten in all six languages; the planned villain song "The Ledger" is off the list. Old saves: save version 5 drops every Ledger key, keeps the memo shard and the Codex page as found under their new ids, and pays back any jammers that were built. Checked: `tests/test_ledger_gone.gd` (an old save taken mid-arc migrates and loads; no "Ledger" in data/ or locale/; still 8 shards), `tools/check_old_ledger_save.sh` in check_exit (a played save gets the old Ledger state written in, loads, plays on, and comes out clean), a long `--autoplay --clarity-log` run with no Ledger line, `--walk-goals`, `--target-reach` and the full tests.
+106. "How can i have a fraction of seeds." Done (v10pace): a bloom pays `seed_yield` 0.5 seeds times the yield bonuses, the compost press 1.5 and more per cycle, scooped metal 0.3 Parts a unit, and prices are scaled by multipliers, so the balance itself held fractions and the HUD printed them. Seeds and Parts are whole numbers now, in the save and on screen: every gain and payment goes through one place (`GameState._keep_whole`), which keeps the whole part and carries the rest out of sight until it adds up to a whole one (nothing is lost; an older save's 2.5 seeds loads as 2 with the half carried). The welcome-back panel's "+N seeds" is whole too. Checked: `tests/test_v10pace.gd` (37 fractional gains each of seeds and parts, a fractional price, an old save); the autoplay cards read "parts 45 / 45", never a fraction. Cubes keep their decimals inside (v10ui has the display, item 95).
+107. "Sun went down too fast." Done (v10pace): the planet turned once every 24 minutes, with day and night about equal (12.5 and 11.5 min once Glim was found, which is in the first ten minutes), and a new game landed at local time 0.42, so the first dusk fell 8 minutes after landing and nearly half of the early game was night (the play-tester's frames at 15, 18.5 and 22 min were all dark). The clock is data now (`data/solar_system.json` `globe_day`): one turn is 36 minutes, the clock runs at 0.7 by day and 1.9 by night, so a full cycle is 35.8 minutes: 26.7 of day and 9.1 of night. Dawn is local time 0.24, dusk 0.76. A new game lands in the morning (0.32): the first dusk comes 22.6 minutes of play after landing, the first night ends at 31.7, the second dusk is at 58. The clock also waits while the opening film plays. Nights with Glim are a little brighter (`night_lift_found` 0.85, was 0.65). Checked: `tests/test_v10pace.gd` (cycle 30-40 min, day more than twice the night, first dusk over 18 min); renders looked at: screenshots/v10/pace_morning.png (a fresh landing in morning light), pace_night.png (night with the pad, signs and junk readable; the lake still reads nearly black).
+108. "Also make sure the radio feature is added and the first song should play when you find a cd in the rubble close by at the start. It should play sun baked and tell you when you find cds you can play at will through glim. Random music playing is on but when I add more cds you will unlock more songs. Just allow all songs to play at random for now but first song is after CD and player can play sun baked whenever they want."
+109. "You should also unlock the hub or whatever way you see how many sections you have left on the planet and what % you have dond." Done (v10ui): the map (M) was there from the first second but did not say this: a paid snapshot ("Re-survey 40 cubes", "OUTDATED"), a number like "0.012 %", seven hex counts, no sections, and nothing pointed at it. The map is now the planet's progress view (`ui/globe_view.gd`, `OrbitLayers.map_areas`): always live and free, a big whole-number "N% clean" with a bar and "X of Y hexes around the bases" under it (the ground around the six bases, the same cells as the HUD's "N% CLEAN"; the whole % stays at 0 for most of the first hour, the hex count moves with every hex), "X of 6 bases clean", and a row per base with a picture, name, bar, % and a tick when clean; bases not visited yet are locked "?" rows, so six are always listed, and the row Lumi is in is gold. The first clean hex shows one line: "Press M to see how much of the planet is clean". Opening the map sets the flag `map_seen` (for a "Look at the map" step before the shuttle). Checked: `--walk-home` opens it with the key after a cleaned hex and after a reload and compares every number with the game's; `tests/test_v10ui.gd` fits the card on a 720p screen at 150% in all six languages.

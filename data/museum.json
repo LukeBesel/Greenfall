@@ -1,0 +1,22 @@
+{
+  "_doc": "[eggs2] Lumi's collection and the Museum (systems/museum.gd). Every collectible in the game is an exhibit here: the Codex Collection page lists them with counts and silhouettes, and the Museum (a late build at Verdance's Cradle Returns, once the Cradle has answered) shows each on a plinth; empty plinths show a ghost of what is missing. Filling every plinth is the 100% goal (flags.museum_complete, achievement museum_complete). kind: egg (flags.egg_<ref>), egg_parts (collected parts of a collect: true egg, total = its parts), eggs (curiosities found; total = every egg except where 'new_world'), shards (memory shards found), trinkets (Collection), relic (Homeward relic id), flag (any GameState flag, for other planets' finds). shape: the Codex silhouette (gnome, cat, capsule, tv, duck, star, cube, shard, box, gem, telescope, dot). prop: an EggProps kind built on the plinth (optional). planet: where it is found (display only). hint: shown while missing (egg kinds fall back to the egg's own hint). cost is in the three currencies.",
+  "cost": {"cubes": 1500000, "parts": 600, "seeds": 400},
+  "pos": [-15.0, 4.0],
+  "yaw_deg": 90.0,
+  "exhibits": [
+    {"id": "gnomes", "name": "Gnome Patrol", "planet": "verdance", "kind": "egg_parts", "ref": "gnomes", "shape": "gnome", "prop": "gnome", "hint": "Five garden gnomes guard Old Town's streets. Pick them up."},
+    {"id": "biscuit", "name": "Biscuit's Shell", "planet": "verdance", "kind": "egg", "ref": "lost_cat", "shape": "cat", "prop": "cat_shell"},
+    {"id": "time_capsule", "name": "Time Capsule", "planet": "verdance", "kind": "egg", "ref": "time_capsule", "shape": "capsule", "prop": "time_capsule"},
+    {"id": "broadcast", "name": "The Last Broadcast", "planet": "verdance", "kind": "egg", "ref": "tv", "shape": "tv", "prop": "tv", "hint": "A TV on a lawn chair is still on. Adjust the antenna."},
+    {"id": "duck", "name": "Duck on Duty", "planet": "verdance", "kind": "egg", "ref": "duck", "shape": "duck", "prop": "duck"},
+    {"id": "wren", "name": "WREN's Constellation", "planet": "verdance", "kind": "egg", "ref": "stars", "shape": "star", "prop": "telescope"},
+    {"id": "gold_cube", "name": "The Golden Cube", "planet": "verdance", "kind": "egg", "ref": "gold_cube", "shape": "cube", "prop": "pedestal"},
+    {"id": "curiosities", "name": "Cabinet of Curiosities", "planet": "all", "kind": "eggs", "shape": "star", "hint": "Every curiosity on every planet (Codex > Curiosities has the hints)."},
+    {"id": "shards", "name": "Memory Shards", "planet": "verdance", "kind": "shards", "shape": "shard", "hint": "Letters, notes and drawings surface as the ground is cleaned."},
+    {"id": "trinkets", "name": "Trinkets and Curios", "planet": "all", "kind": "trinkets", "shape": "box", "hint": "World events, requests, streaks and Curio Capsules."},
+    {"id": "ochre_glass", "name": "Ochre Sun-Glass", "planet": "ochre", "kind": "relic", "ref": "ochre_glass", "shape": "gem", "color": "#f0a040", "hint": "Restore Ochre."},
+    {"id": "tidewell_pearl", "name": "Tidewell Pearl", "planet": "tidewell", "kind": "relic", "ref": "tidewell_pearl", "shape": "gem", "color": "#e8f0ff", "hint": "Restore Tidewell."},
+    {"id": "rime_core", "name": "Rime Heart-Ice", "planet": "rime", "kind": "relic", "ref": "rime_core", "shape": "gem", "color": "#9fd8ff", "hint": "Restore Rime."},
+    {"id": "anvil_ingot", "name": "Anvil Ingot", "planet": "anvil", "kind": "relic", "ref": "anvil_ingot", "shape": "gem", "color": "#d0a070", "hint": "Restore Anvil."}
+  ]
+}

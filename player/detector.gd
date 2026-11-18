@@ -1,0 +1,137 @@
+class_name PartDetector
+extends Node3D
+## Patch's part detector. Beeps faster and blinks a red lamp as he closes in on a buried robot
+## part; near it, the lens readout shows the signal's rarity color. Interact to dig it up.
+
+signal readout_changed(text: String, color: Color, strength: float)
+
+var patch: Node3D
+var field: HexField
+var target: int = -1
+var strength: float = 0.0  # 0..1 signal strength
+var digging: float = 0.0
+
+var _cfg: Dictionary
+var _beep_timer: float = 0.0
+var _sound_t: float = 0.0  # [v2feel] time to the next audible beep
+const SOUND_NEAR_M: float = 3.0  # [v4calm] the beep is heard only this close to the part
+const SOUND_GAP_S: float = 2.0  # [v4calm] shortest gap between audible beeps (was 0.45)
+const SOUND_DB: float = -24.0  # [v4calm] quiet
+var _lamp: MeshInstance3D
+var _lamp_mat: StandardMaterial3D
+var _light: OmniLight3D
+var _flash: float = 0.0
+
+
+func _ready() -> void:
+	_cfg = Economy.parts.get("detector", {})
+	_lamp_mat = StandardMaterial3D.new()
+	_lamp_mat.albedo_color = Color(0.25, 0.02, 0.02)
+	_lamp_mat.emission_enabled = true
+	_lamp_mat.emission = Color(1.0, 0.08, 0.05)
+	_lamp_mat.emission_energy_multiplier = 0.0
+	_lamp = MeshInstance3D.new()
+	_lamp.mesh = ProcMesh.sphere(0.035, 10, 5)
+	_lamp.material_override = _lamp_mat
+	add_child(_lamp)
+	_light = OmniLight3D.new()
+	_light.light_color = Color(1.0, 0.1, 0.05)
+	_light.omni_range = 2.5
+	_light.light_energy = 0.0
+	add_child(_light)
+
+
+func range_m() -> float:
+	# Base 16 m lives in data/patch.json; the Detector Coil upgrade and Research mods scale it.
+	var r: float = Economy.stat("detector_range")
+	return r if r > 0.0 else float(_cfg.get("range", 16.0))
+
+
+func _process(delta: float) -> void:
+	if patch == null or field == null:
+		return
+	# Lamp sits on the sensor head (lens point, a little up and to the side).
+	# Small warning lamp on the crown, behind the antenna: never on the face, where it reads as an eye.
+	position = Vector3(-0.15, 1.06, 0.16)
+	_flash = maxf(0.0, _flash - delta * 9.0)
+	_lamp_mat.emission_energy_multiplier = 0.15 + _flash * 6.0
+	_light.light_energy = _flash * 1.6
+	if digging > 0.0:
+		return
+	if not active():  # [onboard] quiet during the restart checklist: one new thing at a time
+		target = -1
+		strength = 0.0
+		readout_changed.emit("", Color.WHITE, 0.0)
+		return
+	var r: float = range_m()
+	target = field.nearest_part(patch.global_position, r)
+	if target < 0:
+		strength = 0.0
+		readout_changed.emit("", Color.WHITE, 0.0)
+		return
+	var d: float = field.part_distance(target, patch.global_position)  # [orbB] along the ground (flat: x/z)
+	var sig: float = float(Economy.rarity(field.part_rarity[target]).get("signal", 1.0))
+	strength = clampf(1.0 - d / (r * sig), 0.0, 1.0)
+	var interval: float = lerpf(float(_cfg.get("max_interval", 1.4)), float(_cfg.get("min_interval", 0.08)), pow(strength, 1.6))
+	_beep_timer -= delta
+	if _beep_timer <= 0.0:
+		_beep_timer = interval
+		_flash = 1.0
+		# [v2feel] Owner item 32: the lamp's beep played nonstop (the globe always has a part in
+		# range). Far off the lamp only blinks; it beeps once Lumi is homing in, and never faster
+		# than SOUND_GAP_S.
+		# [v4calm] Owner item 50: still too much. Silent unless Lumi is right on it (SOUND_NEAR_M),
+		# one soft beep per SOUND_GAP_S at most.
+		if beep_allowed(d, _sound_t):
+			_sound_t = SOUND_GAP_S
+			Audio.play("detector", lerpf(1.0, 1.2, strength), SOUND_DB, 0.0)
+	_sound_t = maxf(0.0, _sound_t - delta)
+	var rar: Dictionary = Economy.rarity(field.part_rarity[target])
+	var text: String = ""
+	var col := Color(1, 0.3, 0.25)
+	if d < 4.0:
+		# [onboard] "BURIED PART" says what the signal is (it read "SIGNAL 62%", unexplained).
+		text = tr("BURIED PART  %s  ·  %.1f m") % [tr(str(rar.get("name", "?"))).to_upper(), d]
+		col = UITheme.rarity_color(field.part_rarity[target])
+	elif strength > 0.0:
+		text = tr("BURIED PART  ·  SIGNAL %d%%") % int(strength * 100.0)
+	readout_changed.emit(text, col, strength)
+
+
+## [v4calm] An audible beep: only within SOUND_NEAR_M, and once the gap timer has run out.
+static func beep_allowed(dist_m: float, gap_left: float) -> bool:
+	return dist_m <= SOUND_NEAR_M and gap_left <= 0.0
+
+
+## [onboard] The detector listens once the restart checklist is done (dev: --detector-on).
+static func active() -> bool:
+	return int(GameState.flags.get("tutorial_step", 0)) >= Tutorial.STEPS.size() or DevHooks.has("detector-on")
+
+
+func can_dig() -> bool:
+	if target < 0 or digging > 0.0:
+		return false
+	return field.part_distance(target, patch.global_position) <= float(_cfg.get("dig_range", 1.4))  # [orbB]
+
+
+## Starts digging; calls back on_found(part_index) when done.
+func dig(on_found: Callable) -> void:
+	if not can_dig():
+		return
+	var idx: int = target
+	digging = float(_cfg.get("dig_time", 1.3))
+	var p: Vector3 = field.part_pos[idx]
+	Audio.play("dig", 1.0, -6.0)
+	var tw := create_tween()
+	for k: int in 3:
+		tw.tween_callback(func() -> void:
+			Vfx.burst("soil", p + Vector3(0, 0.05, 0), Color(0.42, 0.34, 0.27))
+			Audio.play("dig", randf_range(0.9, 1.1), -9.0)
+			if patch.model.has_method("shudder"):
+				patch.model.shudder(0.15))
+		tw.tween_interval(digging / 3.0)
+	tw.tween_callback(func() -> void:
+		digging = 0.0
+		field.part_found[idx] = 1
+		target = -1
+		on_found.call(idx))
