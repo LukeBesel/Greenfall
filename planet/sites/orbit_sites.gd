@@ -245,7 +245,7 @@ func site_name(i: int) -> String:
 		if pl.city[cell] >= 0:
 			return tr(str(pl.cities[pl.city[cell]]["name"]))
 		return tr("%s site") % PlanetData.BIOMES[pl.biome[cell]].capitalize().replace("_", " ")
-	return tr("Hub %d") % i
+	return tr("Base %d") % i
 
 
 func _open_planets() -> void:

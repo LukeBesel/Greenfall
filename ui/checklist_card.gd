@@ -2,7 +2,7 @@ class_name ChecklistCard
 extends PanelContainer
 ## [first] The restart checklist as a compact HUD card (top-right, above the goal tracker), styled
 ## like the hotbar slots: soft glass backing, a hairline border, rounded corners.
-##   caption   "RESTART CHECKLIST" + one dot per step (done green, current ringed)
+##   caption   "FIRST STEPS" + one dot per step (done green, current ringed)
 ##   text      the one thing to do now, key glyphs in amber (Tutorial.glyphs_bb)
 ##   progress  a hairline bar + "3 / 8" for counted steps (scoops, hex %)
 ## A finished step ticks green for a beat, then the next one slides in. After the last step the
@@ -107,7 +107,7 @@ func _show(text: String, slide: bool) -> void:
 	_text.text = text
 	_flash = 0.0
 	var in_tutorial: bool = tutorial != null and not tutorial.done()
-	_cap.text = tr("RESTART CHECKLIST") if in_tutorial else tr("NEXT STEP")
+	_cap.text = tr("FIRST STEPS") if in_tutorial else tr("NEXT STEP")
 	_dots.visible = in_tutorial
 	_dots.queue_redraw()
 	_shown = 0.0
@@ -145,7 +145,7 @@ func _tick_then(next: Callable) -> void:
 func _show_done() -> void:
 	_text.text = "[color=#9edba8]%s[/color]" % tr(Tutorial.DONE_TEXT)
 	_text.modulate.a = 1.0
-	_cap.text = tr("RESTART CHECKLIST  ·  DONE")
+	_cap.text = tr("FIRST STEPS  ·  DONE")
 	_progress = -1.0
 	_bar.get_parent().visible = false
 	_dots.queue_redraw()

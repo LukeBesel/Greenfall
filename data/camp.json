@@ -76,7 +76,7 @@
     "bot_bay": {
       "_doc": "[v10pace] The Bot Bay machine (systems/camp/bot_bay.gd). Its name, text, price and conditions are the workbench tier that used to hold it: data/workbench.json tiers[1].",
       "name": "Bot Bay",
-      "desc": "A robot workshop of its own in the yard. Walk up and press E to build robots.",
+      "desc": "A robot workshop of its own in the yard. Walk up to it to build robots.",
       "requires_level": 1,
       "requires_bench": true,
       "pos": [8.0, 7.0],
@@ -86,7 +86,7 @@
       "_doc": "[v10pace] The shuttle (the Mk I rocket) is built by the player on the launch pad: no rocket stands before (data/hub.json rocket.build). Listed once WREN has said why to fly on (flags.shuttle_plans, set when the story step 'shuttle' starts). The price is the first big save of the game.",
       "name": "Shuttle",
       "desc": "A small one-seat shuttle, built on the pad. It flies Lumi to the other old bases.",
-      "cost": {"cubes": 3000, "parts": 100},
+      "cost": {"cubes": 2000, "parts": 100},
       "requires_level": 1,
       "requires_bench": true,
       "requires_flag": "shuttle_plans",

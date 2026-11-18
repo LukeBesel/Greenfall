@@ -50,10 +50,10 @@ func test_salvage_pays_parts_by_rarity() -> void:
 	var got: Array = []
 	var cb := func(t: int, r: int) -> void: got.append([t, r])
 	EventBus.part_found.connect(cb)
-	assert_almost_eq(RobotParts.salvage(2, 0), 10.0, 0.001)
-	assert_almost_eq(RobotParts.salvage(3, 3), 150.0, 0.001)
+	assert_almost_eq(RobotParts.salvage(2, 0), 5.0, 0.001)  # [v10pace] finds pay half (critic 11)
+	assert_almost_eq(RobotParts.salvage(3, 3), 75.0, 0.001)
 	EventBus.part_found.disconnect(cb)
-	assert_almost_eq(_parts_now(), 160.0, 0.001)
+	assert_almost_eq(_parts_now(), 80.0, 0.001)
 	assert_eq(GameState.parts.size(), 0, "no items are stored")
 	assert_eq(got.size(), 2, "finds are still announced")
 	for r: int in 5:

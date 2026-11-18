@@ -52,9 +52,9 @@ static func steps_for(p: String) -> Array:
 				"text": "Upgrade the rocket to Mk %s" % (ROMAN[tier] if tier < ROMAN.size() else str(tier)),
 				"why": _by_planet(p, "rocket_tier_%d" % tier), "_planet": p})
 		out.append({"id": "hub_fly_%d" % k, "type": "stat", "key": "hubs_seen", "target": k - 1,
-			"text": "Fly to the next station", "why": _fly_why(p, e, k), "_planet": p})
+			"text": "Fly to the next base", "why": _fly_why(p, e, k), "_planet": p})
 		out.append({"id": "hub_wake_%d" % k, "type": "stat", "key": "hubs_woken", "target": k - 1,
-			"text": TranslationServer.translate("Wake station %d of %d") % [k, total],
+			"text": TranslationServer.translate("Wake base %d of %d") % [k, total],
 			"why": _by_planet(p, "hub_wake_%d" % k), "_planet": p})
 	return out
 

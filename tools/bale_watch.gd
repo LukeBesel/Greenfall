@@ -44,9 +44,23 @@ func _process(delta: float) -> void:
 		return
 	var bad: Array[String] = BaleWatch.breaches(r)
 	var pressed: int = int(float(GameState.stats.get("robot_bales", 0.0)))
+	var home: String = ""
+	var cr: Variant = so.crews.crew if so.crews != null else null
+	if cr is SphereCrew:  # base 1 alone: bales waiting there, its Scoopies and Haul Bugs
+		var c: SphereCrew = cr as SphereCrew
+		var sc: int = 0
+		var hb: int = 0
+		var hm: Array[String] = []
+		for u: Dictionary in c.units:
+			if int(u["hub"]) == c.hub_cell:
+				sc += 1 if str(u["role"]) == "clean" else 0
+				if str(u["role"]) == "haul":
+					hb += 1
+					hm.append("%s%s%s" % [str(u["mode"]), ("/" + str(u.get("idle", ""))) if str(u.get("idle", "")) != "" else "", "" if u["bot"] != null else " far"])
+		home = "  base 1: %d waiting, %d cleaners, %d haulers %s, cashed %.0f cubes in all" % [c.bales_waiting(c.hub_cell), sc, hb, str(hm), c.cashed]
 	print("[bales] %.1f min  pad %d (crew %d, loose %d)  in air %d  top %.1f m  on E spots %d  records %d  robots pressed %d, still lying %d, sold or carried %d%s" % [
 		float(GameState.stats.get("time_played", 0.0)) / 60.0, int(r["pad"]), int(r["crew"]), int(r["loose"]), int(r["air"]), float(r["top"]),
-		int(r["e_spots"]), int(r["records"]), pressed, int(r["all_records"]), maxi(pressed - int(r["all_records"]), 0), ("  near: " + str(r["where"])) if int(r["pad"]) > 0 else ""])
+		int(r["e_spots"]), int(r["records"]), pressed, int(r["all_records"]), maxi(pressed - int(r["all_records"]), 0), (("  near: " + str(r["where"])) if int(r["pad"]) > 0 else "") + home])
 	if not bad.is_empty():
 		warns += 1
 		print("[bales] WARN %s" % "; ".join(bad))

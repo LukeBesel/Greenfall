@@ -74,16 +74,20 @@ static func pick(info: Dictionary) -> Dictionary:
 	var scale: float = 1.0
 	var why: String = ""
 	var handheld: bool = is_handheld(info)
+	var weak: bool = false  # [v10ui] hardware that cannot run the High default at all
 	if str(info.get("method", "forward_plus")) not in ["forward_plus", ""]:
 		q = LOW
 		why = "%s renderer" % str(info.get("method", "")).capitalize()
+		weak = true
 	elif type == RenderingDevice.DEVICE_TYPE_CPU or type == RenderingDevice.DEVICE_TYPE_VIRTUAL_GPU or _has_any(name, SOFTWARE_HINTS):
 		q = LOW
 		scale = 0.75
 		why = "software / virtual GPU"
+		weak = true
 	elif is_steam_deck(info):
 		q = LOW
 		why = "Steam Deck"
+		weak = true
 	elif os_name == "macOS":
 		if str(info.get("arch", "")) == "arm64" or "apple" in name or "apple" in vendor:
 			# Apple Silicon: base chips are integrated-class, Pro/Max/Ultra are not.
@@ -121,7 +125,14 @@ static func pick(info: Dictionary) -> Dictionary:
 		q -= 1
 		why += ", low memory"
 	return {"quality": q, "render_scale": scale, "ui_scale": 1.1 if handheld else 0.0,
-		"note": why, "handheld": handheld, "deck": is_steam_deck(info)}
+		"note": why, "handheld": handheld, "deck": is_steam_deck(info), "weak": weak}
+
+
+## [v10ui] The preset a new install starts on (owner, 2026-11-15: "Default quality preset to
+## high."): High, except on hardware that cannot run it at all (a software or virtual GPU, the
+## Compatibility / Mobile renderer, a Steam Deck), which keeps pick()'s Low.
+static func first_run_quality(picked: Dictionary) -> int:
+	return int(picked.get("quality", LOW)) if bool(picked.get("weak", false)) else HIGH
 
 
 static func preset_name(q: int) -> String:

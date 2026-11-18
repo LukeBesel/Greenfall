@@ -154,7 +154,7 @@
       "key": "plants_planted",
       "target": 1,
       "lines": [
-        "Something green is waking out there. Plant the first seed."
+        "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
       ]
     },
     {
@@ -204,6 +204,16 @@
       ]
     },
     {
+      "id": "base2",
+      "text": "Rebuild the base to level 2", "short": "Base to level 2",
+      "desc": "Workbench, Upgrades tab. A bigger base powers more robots.",
+      "type": "hub_level",
+      "target": 2,
+      "lines": [
+        "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
+      ]
+    },
+    {
       "id": "shuttle",
       "text": "Build the shuttle",
       "desc": "Workbench, Build tab. Garden Row has the seeds we need.",
@@ -215,43 +225,33 @@
       "lines": [
         "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green.",
         "I found another old base, far away: Garden Row. It kept a big seed store.",
-        "It is too far to walk. Your robots can keep cleaning here. Build a shuttle on the pad and fly there."
+        "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
       ]
     },
     {
       "id": "hub_fly_2",
-      "text": "Fly to the next station",
+      "text": "Fly to the next base",
       "type": "stat",
       "key": "hubs_seen",
       "target": 1
     },
     {
       "id": "hub_wake_2",
-      "text": "Wake station 2 of 6",
+      "text": "Wake base 2 of 6",
       "type": "stat",
       "key": "hubs_woken",
       "target": 1
     },
     {
-      "id": "base2",
-      "text": "Rebuild the base to level 2", "short": "Base to level 2",
-      "desc": "Workbench, Upgrades tab. A bigger base powers more robots.",
-      "type": "hub_level",
-      "target": 2,
-      "lines": [
-        "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
-      ]
-    },
-    {
       "id": "hub_fly_3",
-      "text": "Fly to the next station",
+      "text": "Fly to the next base",
       "type": "stat",
       "key": "hubs_seen",
       "target": 2
     },
     {
       "id": "hub_wake_3",
-      "text": "Wake station 3 of 6",
+      "text": "Wake base 3 of 6",
       "type": "stat",
       "key": "hubs_woken",
       "target": 2
@@ -309,14 +309,14 @@
     },
     {
       "id": "hub_fly_4",
-      "text": "Fly to the next station",
+      "text": "Fly to the next base",
       "type": "stat",
       "key": "hubs_seen",
       "target": 3
     },
     {
       "id": "hub_wake_4",
-      "text": "Wake station 4 of 6",
+      "text": "Wake base 4 of 6",
       "type": "stat",
       "key": "hubs_woken",
       "target": 3

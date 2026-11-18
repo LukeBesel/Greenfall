@@ -148,8 +148,9 @@ static func dress_cargo(bot: SphereBot, n: int) -> void:
 		mi.mesh = _cargo_mesh
 		mi.material_override = mat
 		mi.scale = Vector3.ONE * 0.38
-		mi.position = Vector3(0, 0.2 + k * 0.38, 0)
-		mi.rotation.y = 0.2 * k
+		# [v10pace] two stacks side by side (a Haul Bug carries up to 6 and more with Longer Forks)
+		mi.position = Vector3((float(k % 2) - 0.5) * 0.4 if n > 1 else 0.0, 0.2 + floorf(k / 2.0) * 0.38, 0)
+		mi.rotation.y = 0.2 * floorf(k / 2.0)
 		holder.add_child(mi)
 		var st := MeshInstance3D.new()
 		st.mesh = _strap

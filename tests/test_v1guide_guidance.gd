@@ -100,6 +100,8 @@ func test_every_step_has_a_target() -> void:
 	var o: Objectives = t[2]
 	var cfg: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/objectives.json"))
 	for d: Dictionary in cfg["objectives"]:
+		if str(d["id"]) == "map":
+			continue  # [v10pace] a key press (the card shows the map key), nothing to walk to
 		assert_ne(str(o.step_target(d).get("to", "")), "", "story step %s points somewhere" % d["id"])
 	for i: int in g.chain.size():
 		var d2: Dictionary = (g.chain[i] as Dictionary).duplicate()

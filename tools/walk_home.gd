@@ -64,7 +64,7 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		await tree.create_timer(0.25).timeout
 	await tree.create_timer(1.0).timeout
 	var only: String = DevHooks.get_s("walk-home-only", "")  # dev: --walk-home-only=hex2,base2 (iterating)
-	for part: String in ["hex2", "hex3", "garden", "robot2", "haul", "hex10", "map", "shuttle", "base2", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:  # [v10pace] the order of the card
+	for part: String in ["hex2", "hex3", "garden", "robot2", "haul", "hex10", "map", "base2", "shuttle", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:  # [v10pace] the order of the card
 		if (only == "" and part != "probe") or part in only.split(","):
 			await Callable(WalkHome, "_part_" + part).call()
 	print("[walk-home] %d reloads" % _reloads)
@@ -314,6 +314,7 @@ static func _base_state() -> void:
 		Research.grant("salvage_logic")
 	var fl: Fleet = w.get("fleet") as Fleet
 	if fl.robot_total() < 1:  # the first Scoopie ("robot")
+		_set_money(fl.build_cost("scoopie").to_float() + 1.0, fl.build_parts("scoopie").to_float() + 1.0)  # [v10pace] paid as in play
 		fl.build("scoopie", so.bench_position())
 	GameState.stats["robots_built"] = maxf(float(GameState.stats.get("robots_built", 0.0)), 1.0)
 	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0))
@@ -392,6 +393,68 @@ static func _part_hex2() -> void:
 	await tree.create_timer(2.5).timeout  # the card's DONE beat, then the next step slides in
 	c = _card()
 	_check(moved and _step_id() == "hex3" and c[0] == "Clean 3 hexes", "hex2 done: the card moves on to Clean 3 hexes (%s, %s)" % [_step_id(), str(c)])
+	# [v10ui] Owner #109: the map (M) is the planet's progress view, pointed at on the first clean hex.
+	_check(_said("how much of the planet is clean"), "map: the first clean hex points at the map key (%s)" % Settings.glyph("open_globe"))
+	var before: Dictionary = await _map_look("after a clean hex")
+	await _reload("hex2 done, the map looked at")
+	var after: Dictionary = await _map_look("after a reload")
+	# The walk starts hex2 with the stat set to 1 (no hex played before it), so the map is held to
+	# the hexes really cleaned on the ground (each pays once: GameState.orbit hexes_paid).
+	var real: int = (GameState.orbit.get("hexes_paid", {}) as Dictionary).size()
+	_check(not before.is_empty() and real >= 1 and int(before["ok"]) >= real, "map: the hexes cleaned are counted (%s, %d cleaned on the ground)" % [str(before.get("sub", "")), real])
+	_check(not before.is_empty() and not after.is_empty() and int(after["ok"]) == int(before["ok"]) and str(after["rows"]) == str(before["rows"]),
+		"map: the same numbers after a reload (%s%% / %s%%)" % [str(before.get("pct", "?")), str(after.get("pct", "?"))])
+
+
+## [v10ui] Opens the map with its key, checks the progress card against the game's own numbers
+## (SiteManager's cells, the HUD's line), closes it with the key. Returns what the card showed.
+static func _map_look(tag: String) -> Dictionary:
+	var gv: GlobeView = so.layers.survey
+	var sm: SiteManager = so.globe.site_manager
+	await _tap("open_globe")
+	for k: int in 40:
+		if gv.is_open:
+			break
+		await tree.create_timer(0.1).timeout
+	_check(gv.is_open, "map %s: %s opens it" % [tag, Settings.glyph("open_globe")])
+	if not gv.is_open:
+		return {}
+	await tree.create_timer(0.8).timeout
+	var rd: Dictionary = gv.read_progress()
+	var ok: int = 0
+	var n: int = 0
+	var rows_ok: bool = true
+	var areas: Array = so.layers.map_areas()
+	for i: int in areas.size():
+		ok += int(areas[i]["ok"])
+		n += int(areas[i]["n"])
+		rows_ok = rows_ok and int(rd["rows"][i]["pct"]) == int(floor(100.0 * float(areas[i]["ok"]) / maxf(1.0, float(areas[i]["n"])) + 0.0001))
+	var want: int = int(floor(100.0 * float(ok) / maxf(1.0, float(n)) + 0.0001))
+	_check(int(rd["total"]) == HubPlan.main_total(sm.planet_id) and int(rd["shown_rows"]) == int(rd["total"]),
+		"map %s: one row per base area, the ones not visited too (%d of %d)" % [tag, int(rd["shown_rows"]), HubPlan.main_total(sm.planet_id)])
+	_check(int(rd["ok"]) == ok and int(rd["n"]) == n and str(rd["sub"]).contains(GlobeView._num(ok)), "map %s: the hex count under it is the game's (%s)" % [tag, str(rd["sub"])])
+	_check(int(rd["pct"]) == want and rows_ok and str(rd["big"]).contains(str(want)) and not str(rd["big"]).contains("."),
+		"map %s: the big number is the areas' ground, whole (%s, cells %d / %d)" % [tag, str(rd["big"]), ok, n])
+	var home: Dictionary = rd["rows"][0]
+	var hud_pct: int = int(floor(sm.region_clean(0) * 100.0))
+	_check(str(home["kind"]) == "home" and bool(home["here"]) and int(home["pct"]) == hud_pct,
+		"map %s: the home row is where Lumi is and shows the HUD's %d%% (%s)" % [tag, hud_pct, str(home)])
+	var locked: int = 0
+	for r: Dictionary in rd["rows"]:
+		if str(r["kind"]) == "locked":
+			locked += 1
+	_check(locked >= 1, "map %s: areas not visited yet show as locked rows (%d)" % [tag, locked])
+	_check(bool(GameState.flags.get("map_seen", false)), "map %s: opening it sets map_seen" % tag)
+	_check(not gv._resurvey.visible, "map %s: nothing to pay" % tag)
+	await _shot("map_" + tag.replace(" ", "_"))
+	await _tap("open_globe")
+	for k: int in 40:
+		if not gv.is_open:
+			break
+		await tree.create_timer(0.1).timeout
+	_check(not gv.is_open, "map %s: the same key closes it" % tag)
+	await tree.create_timer(0.3).timeout
+	return rd
 
 
 ## Scoops (the scoop key held at the nearest liftable piece of hex_fn's hex) until done_fn says so.
@@ -768,6 +831,11 @@ static func _part_heavy() -> void:
 	await tree.create_timer(0.4).timeout
 	var c2: Array[String] = _card()
 	var need_h: int = Pace.hex_need(f, stuck)
+	for k: int in 16:  # [v10pace] a "chest is full" hint from the scooping just before is held a few seconds
+		if (c2[1] + c2[2]).contains("This hex needs Lift"):
+			break
+		await tree.create_timer(0.25).timeout
+		c2 = _card()
 	_check(Pace.heavy_hex and (c2[1] + c2[2]).contains("This hex needs Lift %d" % need_h), "heavy: the stuck hex says it needs Lift %d (%s)" % [need_h, str(c2)])
 	_check(Vfx.heavy_node != null and Vfx.heavy_node.visible, "heavy: the stuck hex's nearest piece is marked")
 	await _shot("heavy_hex")
@@ -849,6 +917,10 @@ static func _part_base2() -> void:
 	await _close_bench()
 	var moved: bool = await _wait_step_not("base2", 4.0)
 	_check(moved, "base2 done: the card moves on (%s)" % _step_id())
+	# [v10pace] The next step (the shuttle) counts cubes: a nearly clean hex that heals and pays on
+	# load (item 82) would move that count. With the shuttle's price in hand the count stays full.
+	var sc: Dictionary = YardBuilds.def("shuttle").get("cost", {})
+	_set_money(float(sc.get("cubes", 0.0)) + 50.0, float(sc.get("parts", 0.0)) + 10.0)
 	await _reload("base2 just bought", func() -> Dictionary: return {"level": (w.get("hub") as Hub).level})
 
 
@@ -949,6 +1021,10 @@ static func _part_robot2() -> void:
 	var fl: Fleet = w.get("fleet") as Fleet
 	if not await _goto("robot2"):
 		return
+	if fl.robot_total() < 1:  # the first Scoopie (an earlier part may have taken it): this is the second
+		_set_money(fl.build_cost("scoopie").to_float() + 1.0, fl.build_parts("scoopie").to_float() + 1.0)
+		fl.build("scoopie", so.bench_position())
+	GameState.stats["robots_built"] = maxf(float(GameState.stats.get("robots_built", 0.0)), 1.0)
 	_set_money(100.0, 10.0)
 	await tree.create_timer(0.6).timeout
 	var c: Array[String] = _card()
@@ -1010,13 +1086,19 @@ static func _part_map() -> void:
 static func _part_shuttle() -> void:
 	var os_: OrbitSites = OrbitSites.of(w)
 	# The state before: no rocket was ever built or flown, WREN has not asked for one.
+	# [v10pace] Base 2 comes right before the shuttle: step back to the map step so the shuttle
+	# step has not started yet (it is what sets shuttle_plans).
+	GameState.flags.erase("map_seen")
+	await _goto("map")
 	GameState.flags.erase("shuttle_plans")
+	await tree.create_timer(1.0).timeout
 	_check(not Hub.rocket_built() and not os_.rocket_unlocked() and not os_.rocket_spot.visible, "shuttle: no rocket stands on the pad before it is built")
 	_check(not HubBuilds.listed(w, "shuttle"), "shuttle: the Build tab does not list it before WREN asks")
 	var spot: Node3D = w.get_node_or_null("BuildSpot_shuttle") as Node3D
 	_check(spot != null and not spot.visible, "shuttle: its spot is not marked yet")
 	_check(not ob.chain.slice(0, ob.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find("shuttle")).any(func(d: Dictionary) -> bool: return str(d.get("key", "")) in ["hubs_seen", "hubs_woken"]),
 		"shuttle: no 'Fly to' or 'Wake' step stands before 'Build the shuttle'")
+	GameState.flags["map_seen"] = true
 	var cost: Dictionary = YardBuilds.def("shuttle").get("cost", {})
 	_set_money(200.0, 10.0)
 	_toasts.clear()
@@ -1029,7 +1111,8 @@ static func _part_shuttle() -> void:
 	_check(spot != null and is_instance_valid(spot) and spot.visible and spot.global_position.distance_to(os_.sm.pad_xf(0).origin) < 1.0, "shuttle: its spot on the launch pad is marked")
 	_check(ob.step_price() == cost, "shuttle: the card shows its price (%s)" % str(ob.step_price()))
 	var pr: Array = ob.progress()
-	_check(str(pr[1]).begins_with("200"), "shuttle: the card counts the cubes saved toward it (%s)" % str(pr))
+	var saved: float = str(pr[1]).get_slice(" /", 0).replace(",", "").to_float()
+	_check(saved >= 200.0 and saved < 400.0 and str(pr[1]).ends_with("/ " + Settings.fmt(BigNum.from_float(float(cost.get("cubes", 0.0))))), "shuttle: the card counts the cubes saved toward it (%s; robots may sell a bale meanwhile)" % str(pr))
 	await _shot("shuttle_start")
 	await _reload("shuttle, saving up", func() -> Dictionary: return {"plans": GameState.flags.get("shuttle_plans", false), "built": Hub.rocket_built()})
 	os_ = OrbitSites.of(w)
@@ -1048,7 +1131,7 @@ static func _part_shuttle() -> void:
 			break
 		await tree.create_timer(0.5).timeout
 	_check(Hub.rocket_built(), "shuttle: clicking its price tag builds it")
-	_check(GameState.get_currency("cubes").to_float() < 1.0, "shuttle: the price is paid (%.0f cubes left)" % GameState.get_currency("cubes").to_float())
+	_check(GameState.get_currency("cubes").to_float() < 1.0 + float(cost.get("cubes", 0.0)) * 0.05, "shuttle: the price is paid (%.0f cubes left; the robots sell bales meanwhile)" % GameState.get_currency("cubes").to_float())
 	await tree.create_timer(1.5).timeout
 	_check(not _up().is_open, "shuttle: the workbench closes by itself so the build is seen")
 	_check(ShuttleBuild.building, "shuttle: it is being put together on the pad")

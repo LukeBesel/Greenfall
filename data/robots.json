@@ -1,5 +1,5 @@
 {
-  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type.",
+  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type. [v10pace] The Haul Bug carries 6 bales a trip at 3.6 m/s (was 2 at 2.8): with 2 the one Haul Bug of base 1 sold 49 of 94 bales three Scoopies pressed by bot minute 36; once the Scoopies clean 150-250 m out, a trip is 300-500 m, so a hauler sold 1 bale a minute against 2 a minute a Scoopie presses.",
   "types": [
     {
       "id": "scoopie",
@@ -13,7 +13,7 @@
         "arm",
         "core"
       ],
-      "cost": 120,
+      "cost": 220,
       "parts": 40,
       "stats": {
         "speed": 1.6,
@@ -78,8 +78,8 @@
       "cost": 400,
       "parts": 40,
       "stats": {
-        "speed": 2.8,
-        "carry": 2.0
+        "speed": 3.6,
+        "carry": 6.0
       },
       "upgrades": [
         {

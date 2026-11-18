@@ -149,7 +149,7 @@ func _process(delta: float) -> void:
 
 
 func refresh() -> void:
-	_data_lbl.text = Settings.fmt(GameState.get_currency(Research.CURRENCY))
+	_data_lbl.text = Currencies.have(Research.CURRENCY)
 	for c: ResearchNodeCard in _graph.cards.values():
 		c.refresh()
 	_update_active()

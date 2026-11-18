@@ -100,6 +100,7 @@ func setup(p_world: Node, p_key: String = HOME) -> void:
 	EventBus.robot_built.connect(_on_robot_built)
 	if DevHooks.has("open-botbay") and key == HOME:  # dev (shots): --open-botbay[=S] builds it and opens its screen S s in
 		mark_built(HOME)
+		Research.grant("salvage_logic")  # as BenchTiers.buy: the Scoopie can be built
 		(func() -> void:
 			await DevHooks.wait_wall(DevHooks.get_f("open-botbay", 100.0))
 			if is_inside_tree():

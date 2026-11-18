@@ -63,13 +63,13 @@ static func mono_label(text: String, px: int, col: Color) -> Label:
 	return l
 
 
-## "LM-1 // WORKBENCH": a dim unit code, then the name; LEDs in front.
+## "WORKBENCH": the name, LEDs in front.
 static func header_title(name_: String) -> HBoxContainer:
 	var hb := HBoxContainer.new()
 	hb.add_theme_constant_override("separation", 10)
 	hb.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	hb.add_child(Leds.new())
-	hb.add_child(mono_label("LM-1 //", 17, Color(EDGE, 0.55)))
+	# [v10ui] Critic 18: the "LM-1 //" unit code before the name meant nothing to a child.
 	hb.add_child(mono_label(name_.to_upper(), 20, EDGE.lightened(0.35)))
 	return hb
 

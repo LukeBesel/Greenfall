@@ -410,7 +410,7 @@ func _refresh_presets() -> void:
 
 
 func _refresh_bin() -> void:
-	_bin.text = tr("%d styles unlocked   ·   Parts %s") % [RobotBuilder.inv().size(), Settings.fmt(GameState.get_currency("parts"))]  # [money] [ui2]
+	_bin.text = tr("%d styles unlocked   ·   Parts %s") % [RobotBuilder.inv().size(), Currencies.have("parts")]  # [money] [ui2]
 	_haggle.text = ""  # [ui2] no rotating stall: every shop part is always listed
 
 

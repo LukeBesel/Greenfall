@@ -344,7 +344,7 @@ func _draw_slots(cx: float, y: float) -> void:
 		var cnt: String = ""
 		var ccol: Color = UITheme.CREAM
 		if i == 1:
-			cnt = Settings.fmt(GameState.get_currency("seeds"))
+			cnt = Currencies.have("seeds")
 			ccol = UITheme.CREAM if GameState.get_currency("seeds").to_float() >= 1.0 else Color(1.0, 0.55, 0.4)
 		elif i == 2 and patch:
 			cnt = str(int(patch.water))
