@@ -84,6 +84,20 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		return _done()
 
 	# 3. Drive into it.
+	if DevHooks.has("walk-radio-shots") and DisplayServer.get_name() != "headless":  # a frame with the CD in view
+		var cam0: Camera3D = WalkHome.w.get_viewport().get_camera_3d()
+		var up0: Vector3 = spot2.normalized()
+		var cf: Vector3 = -cam0.global_transform.basis.z if cam0 else bin_at - spot2
+		cf = (cf - up0 * cf.dot(up0)).normalized()
+		WalkHome._stand(spot2 - cf * 3.0 + up0.cross(cf).normalized() * 2.0, spot2)  # the camera behind Lumi, the CD 3 m ahead and to one side
+		await _shot("cd_in_view", 3.0)
+		var cam1: Camera3D = WalkHome.w.get_viewport().get_camera_3d()
+		var cdn: Node3D = null
+		var cdf1: Node = WalkHome.w.find_child("CdFinds", true, false)
+		for c: Node in cdf1.get_children():
+			if c is Node3D:
+				cdn = c
+		print("[walk-radio] cd_in_view: CD at screen %s (behind %s), %.1f m from the camera, %.1f m from Lumi, visible %s, scale %s, node %s" % [str(cam1.unproject_position(spot2)), str(cam1.is_position_behind(spot2)), cam1.global_position.distance_to(spot2), WalkHome.p.global_position.distance_to(spot2), str(cdn.is_visible_in_tree()) if cdn else "-", str(cdn.scale) if cdn else "-", str(cdn.get_path()) if cdn else "-"])
 	_toasts.clear()
 	var up: Vector3 = spot2.normalized()
 	var away: Vector3 = spot2 - bin_at

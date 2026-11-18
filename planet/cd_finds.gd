@@ -25,6 +25,7 @@ const FIRST_KEY: String = "first:"
 const FIRST_PICK_R: float = 2.4
 const FIRST_MIN_M: float = 5.0
 const FIRST_RINGS: int = 5
+const FIRST_SCALE: float = 2.2  # the case is about 0.6 m across: a real CD is lost among the junk
 const OFFSET := Vector3(-0.9, 0.04, 1.1)
 
 var world: Node
@@ -252,7 +253,7 @@ func _take_first(id: String) -> void:
 		if is_instance_valid(n) and is_instance_valid(patch):
 			var to: Vector3 = patch.global_position + up * 0.9
 			n.global_position = from.lerp(to, k) + up * sin(PI * k) * 1.6  # an arc up and into his chest
-			n.scale = Vector3.ONE * lerpf(1.6, 0.5, k)
+			n.scale = Vector3.ONE * lerpf(FIRST_SCALE, 0.5, k)
 			n.rotate_object_local(Vector3.UP, 0.5), 0.0, 1.0, 0.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tw.tween_callback(land)
 
@@ -335,12 +336,23 @@ func _show(id: String, hid: int, fresh: bool) -> void:
 	var pos: Vector3 = spot(hid, scratched)
 	if id.begins_with(FIRST_KEY):  # [v10snd] hovering over the junk, tipped toward the camera, so it is seen
 		pos += (pos.normalized() if world.field is SphereField else Vector3.UP) * 0.55
-		node.scale = Vector3.ONE * 1.6
 	node.global_position = pos
 	node.rotation.y = rng.randf() * TAU
 	if world.field is SphereField:  # [v4world] upright on the round ground
 		var up: Vector3 = pos.normalized()
 		node.global_transform = Transform3D(Basis(up, node.rotation.y) * SphereGrid.frame(up), pos)
+	if id.begins_with(FIRST_KEY):  # [v10snd] after the orientation (it resets the scale): bigger, tipped up to be seen
+		node.rotate_object_local(Vector3.RIGHT, deg_to_rad(-35.0))
+		node.scale = Vector3.ONE * FIRST_SCALE
+		# A shining face on top, lit by itself: on Low and at dusk the metal disc read as a dark slab.
+		var shine := StandardMaterial3D.new()
+		shine.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		shine.albedo_color = Color(0.86, 0.95, 1.0)
+		var dot := StandardMaterial3D.new()
+		dot.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		dot.albedo_color = Color(1.0, 0.66, 0.25)
+		node.add_child(EggProps.mesh(ProcMesh.cyl(0.115, 0.115, 0.004, 32), shine, Vector3(0, 0.04, 0)))
+		node.add_child(EggProps.mesh(ProcMesh.cyl(0.045, 0.045, 0.005, 24), dot, Vector3(0, 0.043, 0)))
 	_discs[id] = node
 	print("[tunes] CD in the rubble: %s at hex %d%s" % [id, hid, "" if fresh else " (still there)"])
 	if fresh:
