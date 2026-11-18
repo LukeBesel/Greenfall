@@ -2,6 +2,32 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## Status at the stop, 18 Nov (owner playtest 3, items 89-109)
+
+The owner asked to end all work at a good stopping point.
+
+- **Pushed** (origin 8bd0593):
+  - Ledger removed (item 105).
+  - Audio-mixer crash fix (MixBarrier) and quit-hang fix (build_budget force_sync).
+  - Workbench gone after returning, fixed (103), and the ship now flies nose first (100).
+  - v10pace (97 yard, 98, 99, 106, 107; critic 6, 9, 11, 12, 16).
+  - v10ui (89, 93, 94, 95, 96, 109; critic 7, 14, 17, 18, 19).
+  - The full local suite passed on these.
+- **CI on 8bd0593 failed:** GUT crashed with SIGSEGV right after test_frontiers.gd started (it passes locally). The cause is unknown; helper v10ci started on it (wt/v10ci).
+- **Merged on local main, not pushed** (the combined full run was stopped): v10guide 4148bc4 (critic 3, 5, 13, 20, 21, 23). Its own full run passed on its branch.
+- **WIP on helper branches** (local worktrees under /home/user/gf-wt), not merged:
+  - v10base (101, 102, 104, far half of 97; critic 1 bale rain, 4, 10, 15, 22).
+  - v10snd (90, 91, 92, 108: sliders, quieter stingers and ambience, radio and first CD).
+  - v10ui follow-up renders.
+  - v9a walk fixes and Pace.heavy_hint.
+  - Each helper's final note is in its branch log.
+- **Open:**
+  - Message bursts at the tower and the seed.
+  - The night lake is nearly black.
+  - A 7-minute gap while saving for the shuttle; the 2000-cube shuttle price has not been through autoplay.
+  - walk_opening's occasional stuck spot by the workbench.
+  - A second play-tester pass after all merges.
+
 ## Current state of round Verdance (2026-11-10)
 
 The round world is the game, and the work is on its first planet, Verdance. The owner's bar: it must feel finished, with no glitches, easy progress, and simple enough for a young kid (docs/OWNER_FEEDBACK.md, items 1-56). This section is the one status summary; everything below it is the detail and the history.
