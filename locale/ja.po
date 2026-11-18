@@ -671,19 +671,19 @@ msgstr "ロッカー"
 msgid "Bot Bay"
 msgstr "ボットベイ"
 
-#: planet/sites/far_yard.gd:258 systems/camp/locker_cabinet.gd:45 tools/ui_audit_run.gd:223
+#: planet/sites/far_yard.gd:266 systems/camp/locker_cabinet.gd:45 tools/ui_audit_run.gd:223
 msgid "E   open locker"
 msgstr "E   ロッカーを開く"
 
-#: planet/sites/far_yard.gd:260
+#: planet/sites/far_yard.gd:268
 msgid "E   Build here: %s  (%s)"
 msgstr "E   ここに建てる：%s  (%s)"
 
-#: planet/sites/far_yard.gd:281
+#: planet/sites/far_yard.gd:289
 msgid "Building it needs %s."
 msgstr "建てるには %s が必要です。"
 
-#: planet/sites/far_yard.gd:294
+#: planet/sites/far_yard.gd:302
 msgid "Built: %s. It is this base's own."
 msgstr "完成：%s。この基地のものです。"
 
