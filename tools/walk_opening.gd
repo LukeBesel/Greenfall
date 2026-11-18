@@ -459,6 +459,13 @@ static func _stuck_report(what: String, target: Vector3) -> void:
 	print("%s stuck %s: at %s, velocity %.2f m/s (tangent %.2f), motor hv %.2f grounded %s ground normal tilt %.0f deg, on floor %s, in water %s (reach: %s), cubing %.1f, carried %d, input %s" % [TAG, what, _yard(_p.global_position),
 		_p.velocity.length(), _flat(_p.velocity).length(), m.hv.length() if m else -1.0, str(m.grounded) if m else "-", rad_to_deg(acos(clampf(m.ground_normal.dot(u), -1.0, 1.0))) if m else -1.0,
 		str(_p.is_on_floor()), str(_p.call("_water_at", _p.global_position)), _reach.why_ground(u) if _reach else "-", float(_p.get("_cubing")), _p.carried.size(), str(_keys)])
+	# [v9a] Why keys may not move him: input off (a scene took it), the shore rule (every way ahead
+	# is lake for the motor's hex test), a modal open.
+	var wdir: Vector3 = _flat(target - _p.global_position).normalized()
+	var clamp_out: Vector3 = Patch.shore_clamp_at(_p.global_position, u, wdir, 1.0, Callable(_p, "_water_at"))
+	var pm: Node = _w.get("pause_menu")
+	print("%s stuck why: input on %s, shore clamp toward the target %.2f (1 = free, 0 = all lake), hex here %d water %s, pause %s, ui modal %s, mouse %s" % [TAG, str(_input_on()), clamp_out.length(),
+		(_w.get("field") as HexField).hex_at(_p.global_position), str(_p.call("_water_at", _p.global_position)), str(pm != null and bool(pm.get("is_open"))), str(_tree.root.gui_get_focus_owner()), str(Input.mouse_mode)])
 	if m:
 		for h: KinematicCollision3D in m.hits:
 			var co: Object = h.get_collider()
