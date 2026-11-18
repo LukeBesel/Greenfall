@@ -175,6 +175,9 @@ func test_scoopies_ask_for_a_haul_bug_when_bales_pile_up() -> void:
 	crew.spawn("haulbug", 0, 100)
 	_run(crew, 2.0)
 	assert_false(CrewTalk.needs_hauler(crew, 100), "one Haul Bug is enough for a small pile")
+	# [v10guide] Critic 20: with a Haul Bug already there the line never says "Build a Haul Bug".
+	assert_eq(CrewTalk.pile_line(crew, 100), tr("Bales are piling up. One more Haul Bug would help."))
+	assert_eq(CrewTalk.pile_line(crew, 101), tr("Bales are piling up. Build a Haul Bug."))
 	GameState.flags = fl
 
 
