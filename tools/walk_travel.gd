@@ -20,6 +20,8 @@ extends RefCounted
 ## scoop cleared by the crews' own cell clean (the cleaning itself is the hex audit's to prove;
 ## --hex-audit-hubs shows each far pad has its four finishable hexes).
 ## --walk-travel[=S] (after S s, default 8): prints [walk-travel] lines, exit 1 on a failure.
+## --walk-travel-back: [v10base] the owner's trip of playtest 3 (there, Continue, back, Continue): the
+## start yard still stands and works, and the ship flies nose first (_there_and_back).
 ## --walk-travel-save: stops at station 2 mid-chain (two hexes cleaned) and saves; a second run
 ## with --walk-travel-resume (same --save-dir, no --fresh) checks the station came back and finishes it.
 ## tools/check_exit.sh runs all three.
@@ -34,7 +36,15 @@ static var _fails: Array[String] = []
 const TAG: String = "[walk-travel]"
 
 
+static var _live: bool = false
+static var _reborn: SliceOrbit = null
+
+
 static func run_dev(so: SliceOrbit) -> void:
+	if _live:  # [v10base] a Continue built a new world: the walk already running picks it up (_reload)
+		_reborn = so
+		return
+	_live = true
 	var tree: SceneTree = so.w.get_tree()
 	await tree.create_timer(DevHooks.get_f("walk-travel", 8.0)).timeout
 	var w: Node = so.w
@@ -63,6 +73,8 @@ static func run_dev(so: SliceOrbit) -> void:
 		await _resume(so)
 	elif DevHooks.has("walk-travel-end"):
 		await _after_end(so)
+	elif DevHooks.has("walk-travel-back"):
+		await _there_and_back(so)
 	else:
 		await _station_two(so)
 		if not DevHooks.has("walk-travel-save"):
@@ -85,7 +97,12 @@ static func _station_two(so: SliceOrbit) -> void:
 	var os_: OrbitSites = so.sites
 	var hp: HubPurpose = os_.purpose
 	var p: Patch = w.get("patch") as Patch
-	# The state the card reaches hub_fly_2 in: the seed planted (the rocket comes with that step).
+	# The state the card reaches hub_fly_2 in: the seed planted, three robots, ten hexes, and the
+	# shuttle built by the player ([v10pace]: no rocket stands before; tools/walk_home.gd plays the build).
+	_check(not os_.rocket_unlocked() and not os_.rocket_spot.visible, "no rocket stands on the pad before the shuttle is built")
+	YardBuilds.mark_built("shuttle")
+	GameState.flags["shuttle_plans"] = true
+	GameState.flags["map_seen"] = true
 	_set_story(ob, "hub_fly_2")
 	GameState.stats["plants_planted"] = maxf(float(GameState.stats.get("plants_planted", 0)), 1.0)
 	GameState.flags["seeds_unlocked"] = true
@@ -98,7 +115,7 @@ static func _station_two(so: SliceOrbit) -> void:
 	# 1. Short of the station's price: no beam on the rocket yet, the card says what is missing.
 	_set_money(float(cost.get("cubes", 0)) * 0.5, 0.0)
 	await _wait(tree, 1.6)
-	_check(os_.rocket_spot.visible, "the rocket stands on the pad once the seed is planted")
+	_check(os_.rocket_spot.visible, "the rocket stands on the pad once the shuttle is built")
 	var tgt: Dictionary = ob.step_target(ob.current())
 	_check(str(ob.current().get("id", "")) == "hub_fly_2" and tgt.get("pos", null) == null and ob.situation != "",
 		"short of the price: no beam on the rocket, the card says what is missing ('%s')" % ob.situation)
@@ -110,6 +127,12 @@ static func _station_two(so: SliceOrbit) -> void:
 		and ob.waypoint_target() is Vector3, "with the price: the beam stands on the rocket (%s, card '%s')" % [str(tgt), str(ob.current().get("id", ""))])
 	_stand(so, p, os_.sm.pad_xf(0) * Vector3(9.0, 0, 7.0), os_.rocket_spot.global_position)
 	await _shot(tree, "1_rocket_beam")
+	var yard: Dictionary = _yard(so)  # [v10base] what stands in the yard on leaving (checked on the way home)
+	var yard_shown: Dictionary = _yard_shown(yard)
+	var yard_had: Dictionary = {}
+	for k: String in yard:
+		if yard[k] != null:
+			yard_had[k] = true
 	# 3. E at the rocket opens its list; a click on Fly by NEXT STOP flies there.
 	await _fly_by_click(so, site, true)
 	_check(GameState.stats.get("hubs_seen", 0) >= 1 and str(ob.current().get("id", "")) == "hub_wake_2",
@@ -148,6 +171,7 @@ static func _station_two(so: SliceOrbit) -> void:
 	_set_money(0.0, 0.0)
 	await _fly_by_click(so, 0, false)
 	_check(hp.site == 0 or os_.sm.nearest == 0, "with no cubes the rocket flies home (at site %d)" % os_.sm.nearest)
+	await _home_check(so, yard_had, yard_shown, "home from station 2")
 
 
 ## The rest of a station's chain from wherever it stands, then the wake by E.
@@ -234,6 +258,178 @@ static func _finish_station(so: SliceOrbit, site: int, redirty: bool) -> void:
 	var wt: Variant = ob.waypoint_target()
 	_check(not (wt is Vector3 and (wt as Vector3).distance_to(lm["pos"]) < 1.0), "nothing points at the woken landmark")
 	_check(hp.bench_point() is Vector3, "a field bench stands by the pad")
+
+
+# --- Home again: the yard still stands -------------------------------------------------------
+
+## [v10base] Owner playtest 3 #103: "I returned back and there is no workbench anymore." What stands
+## in the start yard: name -> node (the things a player uses there).
+static func _yard(so: SliceOrbit) -> Dictionary:
+	var w: Node = so.w
+	var sp: SitePrefab = so.globe.site_manager.prefab(0)
+	var d: Dictionary = {"workbench": so.bench, "trash bin": w.get("depot"), "pod": w.get_meta("orbit_pod", null), "camp": w.get("camp"),
+		"garden": w.get("garden"), "greenhouse": w.get("first_seed"), "yard models": sp.get_node_or_null("YardSite") if sp else null,
+		"signal tower": w.get_node_or_null("SignalTower"), "locker": w.get_node_or_null("LockerCabinet"), "compost press": w.get("composter"),
+		"stations": w.get("stations")}
+	var ys: Variant = d["yard models"]
+	if ys is YardSite:
+		for k: String in (ys as YardSite).bits:
+			d["yard " + k] = (ys as YardSite).bits[k]
+	return d
+
+
+## "name: gone / off / moved" for everything in `before` that no longer stands as it did.
+static func _yard_lost(so: SliceOrbit, before: Dictionary, shown: Dictionary) -> PackedStringArray:
+	var lost: PackedStringArray = []
+	var now: Dictionary = _yard(so)
+	var pad: Vector3 = so.sites.sm.pad_xf(0).origin
+	for k: String in before:
+		if before[k] == null:
+			continue
+		var n: Variant = now.get(k)
+		if n == null or not is_instance_valid(n) or not (n as Node).is_inside_tree():
+			lost.append(k + ": gone")
+		elif n is Node3D:
+			if bool(shown.get(k, false)) and not (n as Node3D).is_visible_in_tree():
+				lost.append(k + ": hidden")
+			elif k != "garden" and (n as Node3D).global_position.distance_to(pad) > 160.0:
+				lost.append(k + ": %.0f m from the pad" % (n as Node3D).global_position.distance_to(pad))
+	return lost
+
+
+static func _yard_shown(d: Dictionary) -> Dictionary:
+	var s: Dictionary = {}
+	for k: String in d:
+		s[k] = d[k] is Node3D and is_instance_valid(d[k]) and (d[k] as Node3D).is_visible_in_tree()
+	return s
+
+
+## Home at the Landing Yard: everything that stood there still stands, and works with real input
+## (E at the bench opens it, the bin and the pod answer).
+static func _home_check(so: SliceOrbit, before: Dictionary, shown: Dictionary, what: String) -> void:
+	var w: Node = so.w
+	var tree: SceneTree = w.get_tree()
+	var p: Patch = w.get("patch") as Patch
+	await _wait(tree, 2.0)
+	var lost: PackedStringArray = _yard_lost(so, before, shown)
+	_check(lost.is_empty(), "%s: the yard stands as it was (%d things%s)" % [what, before.size(), "" if lost.is_empty() else "; " + ", ".join(lost)])
+	var bench: Node3D = so.bench
+	var ok_bench: bool = is_instance_valid(bench) and bench.is_inside_tree() and bench.is_visible_in_tree() and bench.global_position.distance_to(so.bench_position()) < 1.5
+	var meshes: int = 0
+	if ok_bench:
+		for m: Node in bench.find_children("*", "MeshInstance3D", true, false):
+			if (m as MeshInstance3D).is_visible_in_tree() and (m as MeshInstance3D).mesh != null:
+				meshes += 1
+	_check(ok_bench and meshes > 0, "%s: the workbench stands where E opens it (%d meshes shown)" % [what, meshes])
+	var bp: Vector3 = so.bench_position()
+	_stand(so, p, bp + (bp - so.sites.sm.pad_xf(0).origin).normalized() * 1.6, bp)
+	await _frames(tree, 6)
+	var seen: String = so.interact_prompt(p)
+	await _tap(tree, "interact")
+	await _wait(tree, 1.0)
+	var up: UpgradesScreen = w.get("upgrades") as UpgradesScreen
+	_check(up != null and up.is_open, "%s: E at the workbench opens it (prompt '%s')" % [what, seen])
+	if up and up.is_open:
+		await _tap(tree, "ui_cancel")
+		await _wait(tree, 0.6)
+	var dep: Depot = w.get("depot") as Depot
+	if dep and is_instance_valid(dep):
+		var ia: Interactables = w.get("interactables") as Interactables
+		var bin: Vector3 = so.yard_point("bin")
+		_stand(so, p, bin + (so.sites.sm.pad_xf(0).origin - bin).normalized() * 1.4, bin)
+		await _frames(tree, 6)
+		var bprompt: String = ia.prompt(p.global_position) if ia else ""
+		# (Its E prompt is the bin's upgrade offer: it has none when nothing can be offered.)
+		_check(dep.is_visible_in_tree() and dep.bin_world().distance_to(bin) < 3.0, "%s: the trash bin stands in its bay (prompt '%s')" % [what, bprompt])
+
+
+## The pause key, a click on Quit, the title, a click on Continue: the world as the save holds it.
+## Returns the new world's SliceOrbit (null if it did not come back).
+static func _reload(so: SliceOrbit, tag: String) -> SliceOrbit:
+	var w: Node = so.w
+	var tree: SceneTree = w.get_tree()
+	DevHooks.args.erase("fresh")
+	DevHooks.args["menu"] = "1"
+	_reborn = null
+	await _wait(tree, 1.0)
+	await _tap(tree, "pause")
+	await tree.create_timer(0.5).timeout
+	var pm: PauseMenu = w.get("pause_menu") as PauseMenu
+	var quit: Button = _find_button(pm, "Quit")
+	_check(pm != null and pm.is_open and quit != null, "%s: the pause key opens the pause menu with Quit" % tag)
+	if quit == null:
+		return null
+	await _click(tree, quit)
+	var menu: Node = null
+	for k: int in 240:
+		var cs: Node = tree.current_scene
+		if cs and cs.scene_file_path == PauseMenu.TITLE_SCENE and cs.get("_continue") != null and (cs.get("_continue") as Button).is_visible_in_tree():
+			menu = cs
+			break
+		await tree.create_timer(0.5).timeout
+	_check(menu != null, "%s: back at the title with Continue" % tag)
+	if menu == null:
+		return null
+	await tree.create_timer(1.5).timeout
+	await _click(tree, menu.get("_continue") as Button)
+	DevHooks.args.erase("menu")
+	for k: int in 600:
+		if _reborn != null:
+			break
+		await tree.create_timer(0.5).timeout
+	_check(_reborn != null, "%s: Continue builds the world again" % tag)
+	if _reborn == null:
+		return null
+	var so2: SliceOrbit = _reborn
+	for k: int in 480:
+		if not bool(so2.w.get("building")) and so2.w.get("objectives") != null and so2.sites != null and so2.sites.purpose != null and so2.w.get("camp") != null:
+			break
+		await tree.create_timer(0.5).timeout
+	await tree.create_timer(4.0).timeout
+	return so2
+
+
+## --walk-travel-back: the owner's trip (playtest 3). The Landing Yard, the hop to station 2 watched
+## to the end (the nose leads), quit and Continue there, the hop home, quit and Continue at home;
+## the yard is checked at home each time.
+static func _there_and_back(so: SliceOrbit) -> void:
+	var w: Node = so.w
+	var tree: SceneTree = w.get_tree()
+	var ob: Objectives = w.get("objectives") as Objectives
+	var os_: OrbitSites = so.sites
+	var hp: HubPurpose = os_.purpose
+	_set_story(ob, "hub_fly_2")
+	GameState.stats["plants_planted"] = maxf(float(GameState.stats.get("plants_planted", 0)), 1.0)
+	GameState.flags["seeds_unlocked"] = true
+	YardBuilds.state()["bench"] = true
+	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0)), 3.0)
+	_apply_state(S2)
+	await _wait(tree, 2.0)
+	var site: int = HubPlan.next_site(hp.planet)
+	var yard: Dictionary = _yard(so)
+	var shown: Dictionary = _yard_shown(yard)
+	var before: Dictionary = {}
+	var names: PackedStringArray = []
+	for k: String in yard:
+		if yard[k] != null:
+			before[k] = true
+			names.append(k + ("" if bool(shown[k]) else " (not shown)"))
+	print("%s   in the yard before leaving: %s" % [TAG, ", ".join(names)])
+	await _home_check(so, before, shown, "before leaving")
+	await _fly_by_click(so, site, true)
+	await _wait(tree, 6.0)  # long enough for a far town to be dropped
+	so = await _reload(so, "at station 2")
+	if so == null:
+		return
+	os_ = so.sites
+	_check(os_.sm.nearest == site and os_.rocket_site() == site and os_.rocket_spot.visible, "Continue at station 2: Lumi and the rocket are there (site %d, rocket at %d)" % [os_.sm.nearest, os_.rocket_site()])
+	await _fly_by_click(so, 0, false)
+	_check(os_.sm.nearest == 0, "flew home (at site %d)" % os_.sm.nearest)
+	await _home_check(so, before, shown, "home again")
+	so = await _reload(so, "at home")
+	if so == null:
+		return
+	await _home_check(so, before, shown, "home, after Continue")
 
 
 # --- Save mid-station, reload ------------------------------------------------------------------
@@ -432,6 +628,14 @@ static func _fly_by_click(so: SliceOrbit, to_site: int, first: bool) -> void:
 	await _stand_at_rocket(so)
 	var ia: Interactables = w.get("interactables") as Interactables
 	var seen: String = ia.prompt(p.global_position) if ia else ""
+	if seen != os_.rocket_prompt() and ia:  # an animal has wandered up: the other side of the ship
+		var rx: Transform3D = os_.sm.pad_xf(os_.rocket_site())
+		for off: Vector3 in [Vector3(-4.5, 0, 3.0), Vector3(4.5, 0, -3.0), Vector3(-4.5, 0, -3.0)]:
+			_stand(so, p, rx * off, rx.origin)
+			await _frames(tree, 6)
+			seen = ia.prompt(p.global_position)
+			if seen == os_.rocket_prompt():
+				break
 	_check(seen == os_.rocket_prompt(), "by the rocket the prompt says '%s'" % seen)
 	if seen != os_.rocket_prompt() and ia:  # what stands nearer
 		for e: Dictionary in ia._items:
@@ -456,15 +660,23 @@ static func _fly_by_click(so: SliceOrbit, to_site: int, first: bool) -> void:
 	await _click(tree, b)
 	await _frames(tree, 3)
 	_check(os_.hop.flying, "the click on Fly lifts off")
+	os_.hop.nose_dot_min = 1.0
+	if DevHooks.has("walk-travel-back") and first:  # the whole flight, unskipped: the nose leads all the way
+		for k: int in 400:
+			if not os_.hop.flying:
+				break
+			await tree.create_timer(0.25).timeout
 	await _wait(tree, 1.0)
-	await _tap(tree, "interact")  # skip the flight
+	_check(os_.hop.nose_dot_min > 0.9, "the ship flies nose first (nose . travel %.2f at worst)" % os_.hop.nose_dot_min)
+	if os_.hop.flying:
+		await _tap(tree, "interact")  # skip the flight
 	for k: int in 240:
 		if not os_.hop.flying:
 			break
 		await tree.create_timer(0.5).timeout
 	await _wait(tree, 1.0)
 	_check(not os_.hop.flying and p.visible and (p.input as PlayerInput).enabled and p.process_mode != Node.PROCESS_MODE_DISABLED,
-		"landed at %s: Lumi back in control" % nm)
+		"landed at %s: Lumi back in control (flying %s, shown %s, input %s, mode %d)" % [nm, os_.hop.flying, p.visible, (p.input as PlayerInput).enabled, p.process_mode])
 	var stock1: Array = [GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float(), GameState.get_currency("seeds").to_float()]
 	_check(stock1[0] >= stock0[0] - 0.5 and stock1[1] >= stock0[1] - 0.5 and stock1[2] >= stock0[2] - 0.5, "the trip cost nothing (cubes, Parts, seeds %s -> %s)" % [str(stock0), str(stock1)])
 	_check(p.global_position.distance_to(os_.sm.pad_xf(to_site).origin) < 12.0, "Lumi stands by the pad (%.1f m)" % p.global_position.distance_to(os_.sm.pad_xf(to_site).origin))

@@ -194,7 +194,7 @@ func _refresh_ups() -> void:
 			var can: bool = Economy.is_unlocked(uid) and GameState.can_afford("cubes", cost)
 			b.text = tr("+  %s cubes") % Settings.fmt(cost)
 			b.disabled = not can
-			b.tooltip_text = "" if can else tr("Need %s more cubes") % Settings.fmt(cost.sub(GameState.get_currency("cubes")))
+			b.tooltip_text = "" if can else tr("Need %s more cubes") % Currencies.missing_text("cubes", cost.to_float())
 
 
 static func _num(v: float) -> String:

@@ -125,6 +125,7 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	var out_fwd: Vector3 = axis.cross(dir_a).normalized()
 	cam.reset_frame(out_fwd)
 	# Out leg: lift off and head toward the target.
+	_pad_basis = a.basis.orthonormalized()
 	await _leg(dir_a, axis, 0.0, leg_ang, true, terrain, lumi, a.origin)
 	await _fade(1.0)
 	# Behind the veil: carry Lumi to the far leg, settle the ground there, build the site.
@@ -155,6 +156,7 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	else:
 		await _fade(0.0, false)
 		# In leg: approach low and land on the pad.
+		_pad_basis = b0.basis.orthonormalized()
 		await _leg(dir_a, axis, start_in, ang, false, terrain, lumi, b0.origin)
 		if _skipped:
 			await _fade(1.0)
@@ -200,6 +202,7 @@ func depart_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTe
 	var axis: Vector3 = SphereGrid.frame(dir_a).x
 	_board(a, lumi, cam)
 	Audio.play("whoosh", 0.6, -2.0)
+	_pad_basis = a.basis.orthonormalized()
 	await _leg(dir_a, axis, 0.0, cfg("leg_m", LEG_M) / terrain.R, true, terrain, lumi, a.origin)
 	await _fade(1.0)
 	flying = false
@@ -220,6 +223,7 @@ func arrive_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTe
 	_board(Transform3D(SphereGrid.frame(dir_a), terrain.ground(dir_a) + dir_a * cruise_alt()), lumi, cam)
 	_veil_now(1.0)
 	await _fade(0.0, true)
+	_pad_basis = b0.basis.orthonormalized()
 	await _leg(dir_a, axis, 0.0, -a0, false, terrain, lumi, b0.origin)
 	_step_off(sm, lumi, cam, terrain, to_i)
 	flying = false
@@ -320,6 +324,19 @@ func _veil_now(a: float) -> void:
 	_veil.color = Color(VEIL.r, VEIL.g, VEIL.b, a)
 
 
+## [v10base] The basis of a ship flying nose first (+Z) along `fwd`, `up` overhead.
+static func nose_along(fwd: Vector3, up: Vector3) -> Basis:
+	var z: Vector3 = (fwd - up * fwd.dot(up)).normalized()
+	var x: Vector3 = up.cross(z).normalized()
+	return Basis(x, up, z).orthonormalized()
+
+
+## How the ship stands on the pad this leg leaves from or lands on (Basis() = none: no turn).
+var _pad_basis: Basis = Basis()
+## The least (nose direction . direction of travel) seen in flight: 1 = nose first, -1 = tail first (checks).
+var nose_dot_min: float = 1.0
+
+
 ## One visible leg along the great circle from angle a0 to a1 (radians around `axis` from dir_a).
 ## The out leg ends in the air; the in leg ends on `land_at`.
 func _leg(dir_a: Vector3, axis: Vector3, a0: float, a1: float, outbound: bool, terrain: SphereTerrain, lumi: Node3D, land_at: Vector3) -> void:
@@ -343,7 +360,14 @@ func _leg(dir_a: Vector3, axis: Vector3, a0: float, a1: float, outbound: bool, t
 		fwd -= d * fwd.dot(d)
 		if fwd.length() < 0.001:
 			fwd = axis.cross(d)
-		ship.global_transform = Transform3D(Basis.looking_at(fwd.normalized(), d), pos)
+		# [v10base] Owner playtest 3 #100 ("The animation flew the ship backwords"): the ship's nose is
+		# +Z (ShipModel), and looking_at points -Z down the path. nose_along leads with the nose; near
+		# the pad the ship turns between how it stands parked and its heading while it hovers.
+		var fly: Basis = nose_along(fwd, d)
+		var turn: float = smoothstep(0.02, 0.3, k) if outbound else 1.0 - smoothstep(0.72, 0.98, k)
+		ship.global_transform = Transform3D(_pad_basis.slerp(fly, turn).orthonormalized() if _pad_basis != Basis() else fly, pos)
+		if turn > 0.99:
+			nose_dot_min = minf(nose_dot_min, ship.global_basis.z.normalized().dot(fwd.normalized()))
 		ship.set_lift(smoothstep(0.0, 0.25, k) if outbound else 1.0 - smoothstep(0.7, 1.0, k))
 		_focus.global_position = pos + d * 2.0
 		lumi.global_position = pos

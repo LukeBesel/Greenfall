@@ -6,7 +6,7 @@ extends Control
 ## the selected slot's editor (curated swatches + advanced HSV, part options with how to unlock
 ## the locked ones, wear slider, bonus picker, 5 saved looks). Footer: Randomize (Y), Reset to
 ## preset, Test laser (X), Cancel, Done (wears the look). LB / RB step through the slots;
-## B / Esc = Done. Opened from the workbench Cosmetics tab (or --lumi-builder).
+## B / Esc = Done. Opened from the Locker (or --lumi-builder).
 ##
 ## Locked presets, parts, swatches and bonuses show only "???" and how to unlock them (owner).
 ## Other dressable bots plug into the Locker through CosmeticTargets (systems/cosmetic_targets.gd).

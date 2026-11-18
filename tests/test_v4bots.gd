@@ -54,7 +54,7 @@ func test_story_unlocks_are_not_tree_cards() -> void:
 		assert_eq(Research.status(id), "locked")
 
 
-func test_haul_bug_arrives_twenty_minutes_after_the_first_robot() -> void:
+func test_haul_bug_arrives_minutes_after_the_first_robot() -> void:  # [v10pace] 7 min (was 20): it comes before the first flight
 	GameState.stats["robots_built"] = 0.0
 	GameState.stats["time_played"] = 1000.0
 	Research.grant("salvage_logic")
@@ -64,10 +64,10 @@ func test_haul_bug_arrives_twenty_minutes_after_the_first_robot() -> void:
 	GameState.stats["hexes_cleaned"] = 9.0
 	Research.check_story()
 	assert_eq(float(GameState.flags.get("first_robot_t", -1.0)), 1000.0, "the first robot's time is kept")
-	GameState.stats["time_played"] = 1000.0 + 1100.0
+	GameState.stats["time_played"] = 1000.0 + 400.0
 	assert_true(Research.check_story().is_empty(), "too soon: the Scoopie works alone for a while")
 	assert_false(Research.robot_unlocked("haulbug"))
-	GameState.stats["time_played"] = 1000.0 + 1250.0
+	GameState.stats["time_played"] = 1000.0 + 430.0
 	var got: Array[String] = Research.check_story()
 	assert_eq(got, ["haul_rig"] as Array[String])
 	assert_true(Research.robot_unlocked("haulbug"))
@@ -90,7 +90,7 @@ func test_late_bases_get_the_plans_at_once() -> void:
 	GameState.world["hub_level"] = hl
 
 
-func test_haul_objective_waits_after_base_two() -> void:
+func test_haul_objective_waits_for_its_plans() -> void:
 	var ids: Array = []
 	var haul: Dictionary = {}
 	for o: Dictionary in Economy.read_json("res://data/objectives.json")["objectives"]:
@@ -99,7 +99,8 @@ func test_haul_objective_waits_after_base_two() -> void:
 			haul = o
 	assert_eq(ids.find("zone"), -1, "[v8bot] no zone step: the robot cleans on its own")
 	assert_eq(ids.find("hex2"), ids.find("robot") + 1, "the story goes straight on after the first robot")
-	assert_gt(ids.find("haul"), ids.find("base2"), "the Haul Bug comes well after the first robot")
+	assert_gt(ids.find("haul"), ids.find("robot2"), "the Haul Bug comes after the second robot")
+	assert_lt(ids.find("haul"), ids.find("shuttle"), "[v10pace] and before the first flight: three robots at work and cubes coming in by themselves")
 	assert_eq(str(haul.get("wait_flag", "")), "haul_rig")
 	assert_true(haul.has("hint"))
 

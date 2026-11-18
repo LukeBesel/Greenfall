@@ -103,7 +103,7 @@ func test_recycler_destroys_bale_and_pays_parts() -> void:
 	var kg: float = c.mass
 	var got: Dictionary = s.recycler.recycle(c)
 	assert_gt(float(got["parts"]), 0.0)
-	assert_almost_eq(GameState.get_currency("parts").to_float() - parts0, float(got["parts"]), 0.001)
+	assert_almost_eq(GameState.get_currency("parts").to_float() - parts0, float(got["parts"]), 1.0)  # [v10pace] Parts are whole; the rest is carried
 	assert_eq(float(GameState.stats.get("bales_recycled", 0.0)), float(_stats.get("bales_recycled", 0.0)) + 1.0)
 	assert_almost_eq(float(GameState.stats.get("junk_destroyed_kg", 0.0)) - float(_stats.get("junk_destroyed_kg", 0.0)), kg, 0.01)
 	assert_true(c.is_queued_for_deletion(), "gone for good")

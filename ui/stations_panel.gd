@@ -95,7 +95,7 @@ func refresh() -> void:
 		var status: String = ""
 		if s.built(id):
 			status = tr("Built.")
-		elif reason.begins_with(tr("Requires research: %s.").get_slice("%", 0)) or reason.begins_with(tr("Requires hub level %d.").get_slice("%", 0)):  # [l10n]
+		elif reason.begins_with(tr("Requires research: %s.").get_slice("%", 0)) or reason.begins_with(tr("Requires base level %d.").get_slice("%", 0)):  # [l10n]
 			status = reason
 		else:
 			status = tr("Needs %s") % HubPanel.cost_text(d.get("cost", {}))
@@ -107,6 +107,6 @@ func refresh() -> void:
 	_route_btn.visible = s.recycler != null and s.conveyor != null
 	_route_btn.text = tr("Auto-route: %s") % Stations.route_text(s.route_n)
 	_stats.text = tr("Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s") % [int(GameState.stats.get("bales_recycled", 0.0)),  # [money]
-		Settings.fmt(BigNum.from_float(float(GameState.stats.get("junk_destroyed_kg", 0.0)))), Settings.fmt(GameState.get_currency("parts"))]
+		Settings.fmt(BigNum.from_float(float(GameState.stats.get("junk_destroyed_kg", 0.0)))), Currencies.have("parts")]
 	for c: UpgradeCard in _cards:
 		c.refresh()

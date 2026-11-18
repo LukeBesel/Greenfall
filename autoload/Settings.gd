@@ -14,7 +14,7 @@ signal input_device_changed(pad: bool)
 const REBINDABLE: Array = [
 	["move_forward", "Move forward"], ["move_back", "Move back"],
 	["move_left", "Move left"], ["move_right", "Move right"],
-	["scoop", "Scoop junk"], ["cube", "Press a cube"], ["interact", "Interact"], ["drop", "Drop"],
+	["scoop", "Scoop junk"], ["cube", "Make a bale"], ["interact", "Interact"], ["drop", "Drop"],
 	["tool_scoop", "Tool: scoop"], ["tool_plant", "Tool: plant"], ["tool_water", "Tool: water"],
 	["open_upgrades", "Upgrades"], ["open_command", "Command view"], ["open_globe", "Globe map"],
 	["lens_view", "Lens view"], ["open_codex", "Codex"], ["pause", "Pause"],
@@ -82,7 +82,10 @@ var best_value_tags: bool = true
 enum HudMode { FULL, MINIMAL, HIDDEN }
 var hud_mode: int = HudMode.MINIMAL
 enum Quality { LOW, MEDIUM, HIGH, ULTRA }
-var quality: int = Quality.MEDIUM  # [v1menu] Medium on a first run (owner, 2026-11-08)
+var quality: int = Quality.HIGH  # [v10ui] High on a first run (owner, 2026-11-15; was Medium)
+## Headless runs (tests, tools) with no saved preset stay on the old Medium, so their counts,
+## budgets and timings do not move with the player's default.
+const HEADLESS_QUALITY: int = Quality.MEDIUM
 var fullscreen: bool = false
 var vsync: bool = true
 ## 3D render resolution as a fraction of the window (UI stays sharp).
@@ -710,20 +713,32 @@ func apply_sun_quality(sun: DirectionalLight3D) -> void:
 ## Picks quality (and render / UI scale) from the hardware when the saved settings don't have
 ## them yet. Never overrides a saved choice. No-op headless (tests and tools keep the defaults).
 func auto_detect_display(cfg: ConfigFile) -> void:
-	if DisplayServer.get_name() == "headless" or settings_path != SETTINGS_PATH:
-		return
 	var has_q: bool = cfg.has_section_key("display", "quality")
+	if DisplayServer.get_name() == "headless" or settings_path != SETTINGS_PATH:
+		if not has_q and DisplayServer.get_name() == "headless":
+			quality = HEADLESS_QUALITY
+		return
+	# [v10ui] A preset the game picked by itself before High became the default (quality_auto
+	# still set: the player never chose one) moves to the new default once. A preset the player
+	# picked in Settings is never touched.
+	if has_q and quality_auto and not bool(QualityDetect.pick(QualityDetect.probe_info()).get("weak", false)):
+		has_q = false
 	var has_ui: bool = cfg.has_section_key("ui", "scale")
 	if has_q and has_ui:
 		return
 	var d: Dictionary = QualityDetect.pick(QualityDetect.probe_info())
 	if not has_q:
-		quality = mini(int(d["quality"]), Quality.MEDIUM)  # [v1menu] first run: Medium at most (weaker hardware still gets Low)
+		# [v10ui] A new install starts on High (owner: "Default quality preset to high."). Only
+		# hardware that cannot run it (software GPU, Compatibility / Mobile renderer, Steam Deck)
+		# gets the detected Low and the frame-rate probe; High is not stepped down behind the
+		# player's back.
+		quality = QualityDetect.first_run_quality(d)
+		var weak: bool = bool(d.get("weak", false))
 		if not cfg.has_section_key("display", "render_scale"):
-			render_scale = float(d["render_scale"])
-		quality_auto = true
-		quality_note = str(d["note"])
-		quality_probe_done = false
+			render_scale = float(d["render_scale"]) if weak else 1.0
+		quality_auto = weak
+		quality_note = str(d["note"]) if weak else ""
+		quality_probe_done = not weak
 		print("[quality] detected %s (%s), render scale %d%%" % [QualityDetect.preset_name(quality), quality_note, roundi(render_scale * 100.0)])
 	if not has_ui and float(d["ui_scale"]) > 0.0:
 		ui_scale = float(d["ui_scale"])

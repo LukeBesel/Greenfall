@@ -91,7 +91,7 @@ func _route_sub() -> void:
 			checklist.modulate.a = 0.0
 		var tut: Tutorial = checklist.tutorial
 		var pr: Array = tut.step_progress() if tut and not tut.done() else [-1.0, ""]
-		objective.set_substep(ChecklistCard._strip_bb(_sub).strip_edges().replace("  ", " "), pr)
+		objective.set_substep(ChecklistCard._strip_bb(_sub).strip_edges().replace("  ", " "), pr, tut.picture() if tut and _sub != "" else "")
 	else:
 		objective.set_substep("")
 		checklist.set_text(_sub)

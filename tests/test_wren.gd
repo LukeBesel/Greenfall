@@ -133,8 +133,13 @@ func test_wren_briefs_then_narrates_each_step_once() -> void:
 	assert_eq(wren._queue.size(), 4, "one line per step")
 	for d: Dictionary in ob.chain:
 		var ls: Array = Objectives.step_lines(d)  # [v6pace] hub steps: their story reason
-		assert_eq(ls.size(), 1, "%s: one short line" % d["id"])
-		assert_lt(str(ls[0]).length(), 100, "%s: subtitle-sized" % d["id"])
+		# [v10pace] a step with say_all (the shuttle: why fly on) may speak up to three short lines
+		if bool(d.get("say_all", false)):
+			assert_between(ls.size(), 1, 3, "%s: up to three short lines" % d["id"])
+		else:
+			assert_eq(ls.size(), 1, "%s: one short line" % d["id"])
+		for l: Variant in ls:
+			assert_lt(str(l).length(), 100, "%s: subtitle-sized" % d["id"])
 	ob.free()
 	GameState.flags = flags0
 	GameState.stats = stats0

@@ -191,6 +191,7 @@ const START_YARD_ANCHORS: Dictionary = {
 	"generator": [Vector3(-5.0, 0, 9.5), PI],
 	"composter": [Vector3(8.5, 0, 3.8), -PI * 0.5],  # [v1yard] east, where the depot was
 	"locker": [Vector3(8.5, 0, 0.2), -PI * 0.5],
+	"bot_bay": [Vector3(8.0, 0, 7.6), -PI * 0.5],  # [v10pace] the Bot Bay: the south-east corner, across the yard from the bench
 	"camera_bot": [Vector3(-5.0, 0, -2.0), PI * 0.5],
 	"nursery": [Vector3(-7.5, 0, -5.5), PI * 0.5],
 	"lamps_0": [Vector3(-3.6, 0, -10.0), 0.0],

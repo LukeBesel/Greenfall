@@ -169,7 +169,7 @@ func _build_mid() -> void:
 	_stats = VBoxContainer.new()
 	_stats.add_theme_constant_override("separation", 1)
 	_mid.add_child(_stats)
-	_empty = UITheme.label(tr("No robots yet. Build one in the Bots tab, then style it here.\nYour first robot comes with treads and a bobble plant."), 16, UITheme.MUTED)  # [ui2]
+	_empty = UITheme.label(tr("No robots yet. Build one at the Bot Bay, then style it here."), 16, UITheme.MUTED)  # [ui2]
 	_empty.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_empty.visible = false
 	_mid.add_child(_empty)
@@ -410,7 +410,7 @@ func _refresh_presets() -> void:
 
 
 func _refresh_bin() -> void:
-	_bin.text = tr("%d styles unlocked   ·   Parts %s") % [RobotBuilder.inv().size(), Settings.fmt(GameState.get_currency("parts"))]  # [money] [ui2]
+	_bin.text = tr("%d styles unlocked   ·   Parts %s") % [RobotBuilder.inv().size(), Currencies.have("parts")]  # [money] [ui2]
 	_haggle.text = ""  # [ui2] no rotating stall: every shop part is always listed
 
 

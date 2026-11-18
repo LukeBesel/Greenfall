@@ -115,6 +115,11 @@ func build_hub(i: int, sync: bool = false) -> SitePrefab:
 	s["planet"] = planet_id
 	s["hub_index"] = i
 	s["seed"] = _seed
+	# [v10ui] Critic 17: every far town's name board said "OLD TOWN" (no name reached the
+	# dressing, which falls back to the start town's). Each base's sign shows its own name; the
+	# start yard keeps "Old Town" (owner item 94).
+	if i != 0 and str(s.get("name", "")) == "" and HubPlan.has_plan(planet_id):
+		s["name"] = str(HubPlan.entry(planet_id, i).get("name", ""))
 	s["water_fn"] = water_fn(i)  # [v3city] the town keeps its buildings, streets and props off the lake cells
 	s["globe_ctx"] = {"terrain": terrain, "grid": grid, "cells": cells, "xf": sites[i]["transform"], "clear": _clear_cell, "keep_out": _keep_out(0)}  # [v3city] the outskirts
 	var p: SitePrefab = PlanetEnvs.build_site(roots[i], s, levels[i], restoration_of(i))
@@ -149,8 +154,13 @@ func water_fn(i: int) -> Callable:
 		return cs.state[g.cell_at(xf * Vector3(x, 0.0, z))] == 5
 
 
+## [v10base] The start hub is never freed. Its prefab carries the yard: the workbench, the trash
+## bin, the lean-to, the pod, the Bot Bay and every yard machine are its children, built once by
+## the slice at load. Freed with the town past FREE_R (a rocket hop to the next station), they
+## were gone for good: the town came back on the return, the yard did not (owner playtest 3 #103:
+## "I returned back and there is no workbench anymore"). Out of range it is only hidden.
 func free_hub(i: int) -> void:
-	if prefabs[i] == null:
+	if prefabs[i] == null or i == 0:
 		return
 	(prefabs[i] as Node).queue_free()
 	prefabs[i] = null
@@ -354,6 +364,10 @@ func _stream() -> void:
 			best = i
 		if d < BUILD_R and prefabs[i] == null and not _building:
 			build_hub(i)
+		elif i == 0 and prefabs[0] != null:  # [v10base] home is kept (free_hub): hidden while Lumi is far away
+			var near_home: bool = d <= FREE_R
+			if (prefabs[0] as Node3D).visible != near_home:
+				(prefabs[0] as Node3D).visible = near_home
 		elif d > FREE_R and prefabs[i] != null:
 			free_hub(i)
 	if best != nearest:
@@ -382,8 +396,15 @@ func _exit_tree() -> void:
 
 ## Mean clean share of hub i's region (0..1).
 func region_clean(i: int) -> float:
+	var rc: Vector2i = region_counts(i)
+	return float(rc.x) / maxf(1.0, float(rc.y))
+
+
+## [v10ui] Hub i's region as (clean cells, cells that count): the one source for an area's % on the
+## HUD, the rocket list and the map's progress card.
+func region_counts(i: int) -> Vector2i:
 	if cells == null or i >= regions.size():
-		return 0.0
+		return Vector2i.ZERO
 	var reg: PackedInt32Array = regions[i]
 	var n: int = 0
 	var ok: int = 0
@@ -395,7 +416,7 @@ func region_clean(i: int) -> float:
 		n += 1
 		if not cells.is_dirty(c):
 			ok += 1
-	return float(ok) / maxf(1.0, float(n))
+	return Vector2i(ok, n)
 
 
 ## Restoration shown on hub i's prefab: its region's clean share.

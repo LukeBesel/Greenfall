@@ -71,8 +71,8 @@ func test_junk_kg_uses_codex_weights() -> void:
 
 
 func test_research_and_meta_achievements() -> void:
-	Research.grant("scoop_beam")
-	Research.grant("tractor_beam")
+	Research._complete("scoop_beam")  # [v10pace] a finished project; a grant is not one (critic 6)
+	Research._complete("tractor_beam")
 	var got: Array[String] = Achievements.check_all()
 	assert_has(got, "research_1")
 	assert_has(got, "tractor")
