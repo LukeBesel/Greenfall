@@ -280,9 +280,11 @@ func _show_card(text: String) -> void:
 	root.add_child(pc)
 	var hb := HBoxContainer.new()
 	hb.add_theme_constant_override("separation", 14)
+	hb.mouse_filter = Control.MOUSE_FILTER_IGNORE  # the card never takes a click meant for the world or a panel
 	pc.add_child(hb)
 	var pic := Control.new()
 	pic.custom_minimum_size = Vector2(52, 52)
+	pic.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	pic.draw.connect(func() -> void:
 		var c := Vector2(26, 26)
 		pic.draw_circle(c, 25.0, Color(0.86, 0.9, 0.95))
