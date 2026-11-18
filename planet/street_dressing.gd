@@ -2372,7 +2372,7 @@ func _build_ruin() -> void:
 			_pole(bp, 5.6)
 			continue
 		var dir: Vector3 = (-bp).normalized().rotated(Vector3.UP, _rng.randf_range(-0.7, 0.7))
-		if kit_yard:  # [v10base] a far base's pad: outward, clear of its bin bay and build spots
+		if kit_yard and not start_base:  # [v10base] a far base's pad: outward, clear of its bin bay and build spots
 			dir = bp.normalized().rotated(Vector3.UP, _rng.randf_range(-0.5, 0.5))
 		_fallen_pole(bp, dir, 5.6)
 		if i < 2:  # only along the back: a wire to a front pole would hang across the view
@@ -2386,7 +2386,7 @@ func _build_ruin() -> void:
 		# [v10base] Owner playtest 3 #102: a far base's pad is left clear, with real junk right round
 		# it. These were kit props that looked like junk and could never be scooped, lying where
 		# the base's bin bay and build spots now are (planet/sites/far_yard.gd).
-		if placed >= 34 or kit_yard:
+		if placed >= 34 or (kit_yard and not start_base):
 			break
 		var p: Vector3
 		if _rng.randf() < 0.7:
