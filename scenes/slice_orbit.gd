@@ -798,9 +798,6 @@ func _start_intro_or_place_pod() -> void:
 	intro.world = w
 	w.add_child(intro)
 	w.set("intro", intro)
-	if not intro.should_play():
-		_place_pod()
-		return
 	intro.site_fn = func() -> Transform3D:
 		var at: Vector3 = yard_point("pod")
 		return Intro.site_for_anchor(Transform3D(SphereGrid.frame(at.normalized()), at))
@@ -819,6 +816,11 @@ func _start_intro_or_place_pod() -> void:
 			var pod_site: Node3D = w.get_meta("orbit_pod", null)
 			print("[intro] globe: Lumi %.2f m above the ground, %.1f m from the pod, pod placed=%s" % [
 				globe.surface.altitude(patch.global_position), patch.global_position.distance_to(pod_site.global_position) if pod_site else -1.0, str(pod_site != null)])
+	# [v11film] The film's frame, pod and yard hooks are set on every load, not only for a new
+	# game: watching it again from the pause menu or the Codex needs them too.
+	if not intro.should_play():
+		_place_pod()
+		return
 	var hud: Node = w.get("hud")
 	if hud:
 		hud.visible = false  # no one-frame HUD flash before the deferred intro starts (as the flat slice)

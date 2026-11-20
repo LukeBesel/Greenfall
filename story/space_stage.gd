@@ -570,6 +570,14 @@ func _build_vault_wind(root: Node3D) -> void:
 	root.add_child(_vault_mist)
 
 
+## Drop every leaf and wisp in the air (a shot that starts in still air starts clean).
+func vault_clear_fx() -> void:
+	for p: CPUParticles3D in [_vault_leaves, _vault_mist]:
+		p.emitting = false
+		p.restart()
+		p.emitting = false
+
+
 ## The hole in the vault's glass, in the stage's world space.
 static func vault_hole() -> Vector3:
 	return VAULT_AT + Vector3(0, 1.0, 0) + Vector3(VAULT_HOLE.x * VAULT_R, VAULT_HOLE.y * VAULT_R * VAULT_SY, VAULT_HOLE.z * VAULT_R)

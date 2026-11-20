@@ -590,6 +590,8 @@ func replay() -> void:
 		"tunes": Tunes.context(),
 		"subs": Subtitles.current,
 		"cinematic": world.get("music") != null and bool(world.music.get("_cinematic")),
+		# The film's song counts its plays in the save: a rewatch is not a play.
+		"songs": (GameState.flags["songs"] as Dictionary).duplicate(true) if GameState.flags.get("songs") is Dictionary else null,
 	}
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Vfx.process_mode = Node.PROCESS_MODE_ALWAYS  # the film's sparks and steam
@@ -623,6 +625,7 @@ func replay() -> void:
 ## The end of a rewatch: the film's own things go, and everything it hid is shown again.
 func _end_replay() -> void:
 	if _site and is_instance_valid(_site) and _site != _replay_site:
+		_site.remove_from_group("crash_site")
 		_site.queue_free()  # the film's own landing (its pod with it)
 	elif _pod and is_instance_valid(_pod) and _pod != _replay_pod:
 		_pod.queue_free()
@@ -645,9 +648,13 @@ func _end_replay() -> void:
 	if sd is SkyDirector and (sd as SkyDirector).sphere:
 		(sd as SkyDirector).call("_apply_sphere")  # the game's own sky again, before the world shows
 	Vfx.process_mode = int(_replay_keep.get("vfx", Node.PROCESS_MODE_INHERIT)) as Node.ProcessMode
-	Audio.film_plays = false
 	process_mode = int(_replay_keep.get("mode", Node.PROCESS_MODE_INHERIT)) as Node.ProcessMode
+	if _replay_keep.get("songs") is Dictionary:
+		GameState.flags["songs"] = _replay_keep["songs"]
+	elif _replay_keep.has("songs"):
+		GameState.flags.erase("songs")
 	get_tree().paused = bool(_replay_keep.get("paused", false))
+	Audio.film_plays = false
 	_placed = true
 	_replay = false
 	replay_restored.emit()
@@ -1170,6 +1177,8 @@ func _vault_base(broken: bool) -> void:
 	st.vault_breach = 1.0 if broken else 0.0
 	st.vault_wind = 1.0 if broken else 0.0
 	st.vault_power = 0.5 if broken else 1.0
+	if not broken:
+		st.vault_clear_fx()
 	if broken:  # the alarm's red is in the air of the room, not only in its sweeping lamp
 		st.env.ambient_light_color = Color(0.55, 0.22, 0.18)
 		st.env.ambient_light_energy = 0.55
@@ -1670,7 +1679,7 @@ func _run_apart(lt: float, _u: float, delta: float) -> void:
 	var far: Node3D = st.pod.get_node_or_null("FarGlow") as Node3D
 	if far:  # a slow blink, a little bigger as it gets further, so it stays a point of light
 		var blink: float = pow(maxf(0.0, sin(lt * TAU / 0.9)), 6.0)
-		far.scale = Vector3.ONE * (0.5 + (2.2 + 0.5 * tau) * blink)
+		far.scale = Vector3.ONE * (1.2 + (5.0 + 1.1 * tau) * blink)
 	_vent_dome(lt, delta, 0.7)
 
 

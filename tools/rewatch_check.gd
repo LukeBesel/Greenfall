@@ -161,10 +161,14 @@ static func _case(label: String, skip_at: float, pause_first: bool = false) -> v
 			did_pause = true
 			var pz: StoryPause = _intro.get("_pauser")
 			pz.set_paused(true)
+			await _tree.process_frame  # the frame in flight still carries its own time step
+			await _tree.process_frame
 			var t_hold: float = float(_intro.get("_t"))
 			for k: int in 12:
 				await _tree.process_frame
 			paused_ok = absf(float(_intro.get("_t")) - t_hold) < 0.001 and _tree.paused
+			if not paused_ok:
+				print("%s note: film time %.3f -> %.3f over 12 frames, time scale %.2f, pauser paused=%s, tree paused=%s" % [TAG, t_hold, float(_intro.get("_t")), Engine.time_scale, str(pz.paused), str(_tree.paused)])
 			pz.set_paused(false)
 		if skip_at >= 0.0 and t >= skip_at:
 			_intro.skip()
@@ -266,6 +270,10 @@ static func _run() -> void:
 	var at: Dictionary = {}
 	for s: Dictionary in tl:
 		at[str(s["id"])] = float(s["t0"])
+	if DevHooks.get_s("rewatch-check", "") == "pause":  # dev: this case alone
+		await _case("paused, resumed, skipped", 6.0, true)
+		_finish()
+		return
 	await _case("skipped in space", 3.0)
 	await _case("skipped in the fall", float(at.get("reentry", 66.0)) + 1.5)
 	await _case("skipped just after the crash", float(at.get("dust", 80.0)) + 0.5)
