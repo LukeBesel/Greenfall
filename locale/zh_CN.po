@@ -642,7 +642,7 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:243 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -767,7 +767,7 @@ msgstr "家：已清理 %d%%"
 msgid "Restored: %d%% clean"
 msgstr "已修复：已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:430 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:430
 msgid "New"
 msgstr "新建"
 
@@ -779,7 +779,7 @@ msgstr "可以唤醒"
 msgid "Asleep: %d / %d"
 msgstr "沉睡中：%d / %d"
 
-#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:618
+#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:667
 msgid "%s   %d%% CLEAN"
 msgstr "%s   已清理 %d%%"
 
@@ -799,31 +799,31 @@ msgstr "%d 个基地都立起来了。到火箭那里造推进器吧。"
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:124
+#: planet/sites/orbit_sites.gd:126
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:146
+#: planet/sites/orbit_sites.gd:148
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:184
+#: planet/sites/orbit_sites.gd:186
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:242
+#: planet/sites/orbit_sites.gd:244
 msgid "%s site"
 msgstr "%s地点"
 
@@ -1121,7 +1121,7 @@ msgstr "零件不足"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
-#: ui/globe_view.gd:555
+#: ui/globe_view.gd:604
 msgid "Not enough cubes"
 msgstr "方块不足"
 
@@ -1539,11 +1539,11 @@ msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格，�
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
-#: scenes/slice.gd:129 ui/rockets_panel.gd:60
+#: scenes/slice.gd:134 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr "走到发射台上的火箭旁，按 [%s] 选择要飞去的地方。"
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:39
+#: scenes/slice.gd:144 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
@@ -1555,19 +1555,19 @@ msgstr "六角格清理完毕！  +%s"
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:519 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
+#: scenes/slice_orbit.gd:519 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1047
+#: scenes/slice_orbit.gd:1056
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1147 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1156 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
@@ -1611,7 +1611,7 @@ msgstr "已建造机器人"
 msgid "Time played"
 msgstr "游戏时长"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:365
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:410
 msgid "Wishlist on Steam"
 msgstr "在 Steam 上加入愿望单"
 
@@ -1627,12 +1627,12 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:637
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
 #: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
-#: ui/globe_view.gd:709 ui/upgrade_card.gd:259
+#: ui/globe_view.gd:758 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d 分钟"
 
@@ -3406,13 +3406,54 @@ msgstr "只剩大件了"
 msgid "Glim is still scanning. Try again in a moment."
 msgstr "Glim 还在扫描。稍后再试。"
 
+#: tools/title_walk.gd:70 ui/main_menu.gd:381 ui/profile_picker.gd:110
+msgid "Continue"
+msgstr "继续"
+
+#: tools/title_walk.gd:70 tools/title_walk.gd:81 tools/title_walk.gd:86
+#: ui/profile_picker.gd:114
+msgid "Start over"
+msgstr "重新开始"
+
+#: tools/title_walk.gd:70 tools/title_walk.gd:80 ui/profile_picker.gd:115
+msgid "Rename"
+msgstr "重命名"
+
+#: tools/title_walk.gd:70 tools/title_walk.gd:72 tools/title_walk.gd:77
+#: tools/title_walk.gd:78 ui/profile_picker.gd:117 ui/profile_picker.gd:236
+msgid "Delete"
+msgstr "删除"
+
+#: tools/title_walk.gd:75 tools/title_walk.gd:84 ui/lumi_builder.gd:191
+#: ui/profile_picker.gd:255 ui/profile_picker.gd:272
+msgid "Cancel"
+msgstr "取消"
+
+#: tools/title_walk.gd:80 ui/main_menu.gd:393 ui/profile_picker.gd:112
+msgid "Play"
+msgstr "开始游戏"
+
+#: tools/title_walk.gd:87 ui/profile_picker.gd:216
+msgid "Erase and start"
+msgstr "删除并开始"
+
+#: tools/title_walk.gd:153 ui/main_menu.gd:411 ui/main_menu.gd:760
+#: ui/pause_menu.gd:68
+msgid "Settings"
+msgstr "设置"
+
+#: tools/title_walk.gd:153 tools/walk_opening.gd:593 ui/main_menu.gd:413
+#: ui/pause_menu.gd:72
+msgid "Quit"
+msgstr "退出"
+
 #: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "关闭"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:72
-msgid "Quit"
-msgstr "退出"
+#: tools/walk_map.gd:57 ui/hud.gd:437
+msgid "%s  BASE"
+msgstr "%s  基地"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -3514,7 +3555,7 @@ msgstr "播种新世界"
 msgid "The Cradle has to come home first."
 msgstr "Cradle号得先回家。"
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:496
 #: ui/rockets_panel.gd:88 ui/system_map.gd:745
 msgid "Launch"
 msgstr "发射"
@@ -3581,7 +3622,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "机器"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:244 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:265 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "火箭"
@@ -3685,7 +3726,7 @@ msgstr "喷洒范围"
 msgid "Refill"
 msgstr "补水"
 
-#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:223 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清理"
 
@@ -4029,7 +4070,7 @@ msgstr "不平整捆包"
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:798 ui/globe_view.gd:233 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
@@ -4204,7 +4245,7 @@ msgstr "用爱与废料制作"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "代码、程序化网格、合成音乐和音效以及文字均为 Greenfall 原创。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:749
+#: ui/credits_roll.gd:148 ui/main_menu.gd:815
 msgid "Music by Lucas"
 msgstr "音乐：Lucas"
 
@@ -4552,103 +4593,115 @@ msgstr "外观"
 msgid "???  %s"
 msgstr "???  %s"
 
-#: ui/globe_view.gd:176
+#: ui/globe_view.gd:197
 msgid "Survey"
 msgstr "勘测"
 
-#: ui/globe_view.gd:176
+#: ui/globe_view.gd:197
 msgid "Verdance  ·  seed-keeper's survey"
 msgstr "Verdance  ·  种子守护者的勘测"
 
-#: ui/globe_view.gd:202
+#: ui/globe_view.gd:223
 msgid "Trash"
 msgstr "垃圾"
 
-#: ui/globe_view.gd:202
+#: ui/globe_view.gd:223
 msgid "Green"
 msgstr "绿色"
 
-#: ui/globe_view.gd:211
+#: ui/globe_view.gd:232
 msgid "Not cleaned yet"
 msgstr "尚未清理"
 
-#: ui/globe_view.gd:211
+#: ui/globe_view.gd:232
 msgid "Cleaned"
 msgstr "已清理"
 
-#: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:233 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "已种植"
 
-#: ui/globe_view.gd:213 ui/system_map.gd:703 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:234 ui/system_map.gd:703 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "已恢复"
 
-#: ui/globe_view.gd:213
+#: ui/globe_view.gd:234
 msgid "Cities"
 msgstr "城市"
 
-#: ui/globe_view.gd:214
+#: ui/globe_view.gd:235
 msgid "Hubs"
 msgstr "基地"
 
-#: ui/globe_view.gd:229 ui/late_menu.gd:21
+#: ui/globe_view.gd:250 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "太阳系"
 
-#: ui/globe_view.gd:244
+#: ui/globe_view.gd:265
 msgid "Travel between bases"
 msgstr "在基地间旅行"
 
-#: ui/globe_view.gd:264
+#: ui/globe_view.gd:285
+msgid "Drag to turn the planet. Scroll to zoom."
+msgstr "拖动可以转动星球。滚动可以缩放。"
+
+#: ui/globe_view.gd:285
+msgid "{@look}  turn the planet     {zoom_out}{zoom_in}  zoom"
+msgstr "{@look}  转动星球     {zoom_out}{zoom_in}  缩放"
+
+#: ui/globe_view.gd:290
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {zoom_out}{zoom_in}  缩放     {@dpad}  发射列表     [/p]{open_globe}  关闭"
 
-#: ui/globe_view.gd:393
+#: ui/globe_view.gd:297 ui/globe_view.gd:432
+msgid "Find Lumi"
+msgstr "找到 Lumi"
+
+#: ui/globe_view.gd:432
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {zoom_out}{zoom_in}  缩放     [/p]{open_globe}  关闭"
 
-#: ui/globe_view.gd:448
+#: ui/globe_view.gd:493
 msgid "%d sectors away"
 msgstr "相隔 %d 个扇区"
 
-#: ui/globe_view.gd:589
+#: ui/globe_view.gd:638
 msgid "%s HEXES CLEAN"
 msgstr "%s 个六角格已清理"
 
-#: ui/globe_view.gd:591
+#: ui/globe_view.gd:640
 msgid "Surveyed %s ago%s"
 msgstr "%s前勘测%s"
 
-#: ui/globe_view.gd:591
+#: ui/globe_view.gd:640
 msgid "   ·   OUTDATED"
 msgstr "   ·   已过时"
 
-#: ui/globe_view.gd:592
+#: ui/globe_view.gd:641
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
-#: ui/globe_view.gd:603
+#: ui/globe_view.gd:652
 msgid "%d%% clean"
 msgstr "%d%% 干净"
 
-#: ui/globe_view.gd:606
+#: ui/globe_view.gd:655
 msgid "%s of %s hexes around the bases"
 msgstr "基地周围 %s / %s 个六角格"
 
-#: ui/globe_view.gd:609
+#: ui/globe_view.gd:658
 msgid "How much is clean"
 msgstr "已经干净了多少"
 
-#: ui/globe_view.gd:611
+#: ui/globe_view.gd:660
 msgid "%d of %d bases clean"
 msgstr "%d / %d 座基地已干净"
 
-#: ui/globe_view.gd:691
+#: ui/globe_view.gd:740
 msgid "of the ground around your bases is clean"
 msgstr "基地周围的土地已清理干净"
 
-#: ui/globe_view.gd:693
+#: ui/globe_view.gd:742
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
@@ -4784,52 +4837,48 @@ msgstr "WREN 信号   %d%%"
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:436
-msgid "%s  BASE"
-msgstr "%s  基地"
-
-#: ui/hud.gd:439
+#: ui/hud.gd:440
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:490
+#: ui/hud.gd:491
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:494
+#: ui/hud.gd:495
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:497
+#: ui/hud.gd:498
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:499
+#: ui/hud.gd:500
 msgid "  THIRSTY"
 msgstr "  缺水"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:529
+#: ui/hud.gd:530
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:530
+#: ui/hud.gd:531
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:531
+#: ui/hud.gd:532
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:532
+#: ui/hud.gd:533
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:533
+#: ui/hud.gd:534
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:534
+#: ui/hud.gd:535
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
@@ -5052,10 +5101,6 @@ msgstr "恢复预设"
 msgid "Test laser"
 msgstr "测试激光"
 
-#: ui/lumi_builder.gd:191 ui/profile_picker.gd:252 ui/profile_picker.gd:269
-msgid "Cancel"
-msgstr "取消"
-
 #: ui/lumi_builder.gd:192
 msgid "Done"
 msgstr "完成"
@@ -5156,110 +5201,101 @@ msgstr "有未保存的修改"
 msgid "Part of this look is still locked."
 msgstr "此外观的部分内容尚未解锁。"
 
-#: ui/main_menu.gd:331
+#: ui/main_menu.gd:334
 msgid "One small robot. One very big cleanup."
 msgstr "一个小机器人。一场超大的清扫。"
 
-#: ui/main_menu.gd:335
+#: ui/main_menu.gd:338
 msgid "DEMO  ·  the first district"
 msgstr "试玩版  ·  第一个街区"
 
-#: ui/main_menu.gd:347 ui/profile_picker.gd:110
-msgid "Continue"
-msgstr "继续"
+#: ui/main_menu.gd:402
+msgid "New profile"
+msgstr "新档案"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:362
-msgid "New Game"
-msgstr "新游戏"
-
-#: ui/main_menu.gd:359 ui/profile_picker.gd:126
-msgid "%d planet"
-msgid_plural "%d planets"
-msgstr[0] "%d 颗星球"
-
-#: ui/main_menu.gd:359
+#: ui/main_menu.gd:405
 msgid "Profiles"
 msgstr "存档"
 
-#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
-msgid "Settings"
-msgstr "设置"
+#: ui/main_menu.gd:405
+msgid "Rename, start over, delete"
+msgstr "改名、重新开始、删除"
 
-#: ui/main_menu.gd:375
+#: ui/main_menu.gd:420
 msgid "Made with Godot"
 msgstr "使用 Godot 制作"
 
-#: ui/main_menu.gd:582
+#: ui/main_menu.gd:637
 msgid "%dm"
 msgstr "%d分钟"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:589 ui/profile_picker.gd:133
+#: ui/main_menu.gd:644 ui/profile_picker.gd:136
 msgid "%s cubes"
 msgstr "%s 方块"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:691
+#: ui/main_menu.gd:760
 msgid "Credits"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:720
+#: ui/main_menu.gd:786
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:735 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:801 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "返回"
 
-#: ui/main_menu.gd:748
+#: ui/main_menu.gd:814
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5269,29 +5305,13 @@ msgstr ""
 "代码、程序化网格、合成音频和文字均为 Greenfall 原创。\n"
 "\n"
 
-#: ui/main_menu.gd:752
+#: ui/main_menu.gd:818
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "第三方资源：CC0，Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:770
+#: ui/main_menu.gd:836
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
-
-#: ui/main_menu.gd:804
-msgid "START A NEW GAME?"
-msgstr "开始新游戏？"
-
-#: ui/main_menu.gd:805
-msgid "Your current save will be erased. This can't be undone."
-msgstr "你当前的存档将被删除。此操作无法撤销。"
-
-#: ui/main_menu.gd:813
-msgid "Keep my save"
-msgstr "保留存档"
-
-#: ui/main_menu.gd:819 ui/profile_picker.gd:213
-msgid "Erase and start"
-msgstr "删除并开始"
 
 #: ui/pause_menu.gd:43
 msgid "PAUSED"
@@ -5563,53 +5583,50 @@ msgstr "存档管理"
 msgid "Each profile has its own planets and progress. Settings are shared."
 msgstr "每个存档都有自己的星球和进度。设置是共用的。"
 
-#: ui/profile_picker.gd:112
-msgid "Rename"
-msgstr "重命名"
-
-#: ui/profile_picker.gd:114 ui/profile_picker.gd:233
-msgid "Delete"
-msgstr "删除"
-
-#: ui/profile_picker.gd:122
+#: ui/profile_picker.gd:125
 msgid "Empty slot"
 msgstr "空存档位"
 
 #. Save profile summary: play time, number of planets, the current planet's name.
-#: ui/profile_picker.gd:125
+#: ui/profile_picker.gd:128
 msgid "%s  ·  %s  ·  on %s"
 msgstr "%s  ·  %s  ·  位于 %s"
 
+#: ui/profile_picker.gd:129
+msgid "%d planet"
+msgid_plural "%d planets"
+msgstr[0] "%d 颗星球"
+
 #. Save profile summary: how far the Bloom (restoration milestones) has come.
-#: ui/profile_picker.gd:131
+#: ui/profile_picker.gd:134
 msgid "Bloom %d%%"
 msgstr "复苏 %d%%"
 
-#: ui/profile_picker.gd:134
+#: ui/profile_picker.gd:137
 msgid "%s seeds"
 msgstr "%s 颗种子"
 
-#: ui/profile_picker.gd:211
+#: ui/profile_picker.gd:214
 msgid "START OVER IN %s?"
 msgstr "要在 %s 中重新开始吗？"
 
-#: ui/profile_picker.gd:212
+#: ui/profile_picker.gd:215
 msgid "Every world, Heirloom and Starseed in this profile will be erased. The other profiles stay as they are."
 msgstr "此存档中的所有世界、传家宝和星种都将被清除。其他存档保持不变。"
 
-#: ui/profile_picker.gd:231
+#: ui/profile_picker.gd:234
 msgid "DELETE %s?"
 msgstr "要删除 %s 吗？"
 
-#: ui/profile_picker.gd:232
+#: ui/profile_picker.gd:235
 msgid "This profile's worlds and progress will be erased. This can't be undone."
 msgstr "此存档的世界和进度将被清除。此操作无法撤销。"
 
-#: ui/profile_picker.gd:238
+#: ui/profile_picker.gd:241
 msgid "RENAME PROFILE"
 msgstr "重命名存档"
 
-#: ui/profile_picker.gd:252
+#: ui/profile_picker.gd:255
 msgid "Save"
 msgstr "保存"
 
@@ -16623,6 +16640,21 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Start a new game"
+#~ msgstr "开始新游戏"
+
+#~ msgid "New Game"
+#~ msgstr "新游戏"
+
+#~ msgid "START A NEW GAME?"
+#~ msgstr "开始新游戏？"
+
+#~ msgid "Your current save will be erased. This can't be undone."
+#~ msgstr "你当前的存档将被删除。此操作无法撤销。"
+
+#~ msgid "Keep my save"
+#~ msgstr "保留存档"
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "你离开期间（%s）："

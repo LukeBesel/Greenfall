@@ -80,6 +80,12 @@ run walk_goals -- --fresh --orbit --no-intro --walk-goals --save-dir=check_exit_
 # [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
 # with real keys and mouse clicks on the workbench (tools/walk_home.gd).
 run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$
+# [v10ui] Owner (Nov 20): "I should be able to manipulate globe with mouse": the M map turned by a
+# real mouse drag, zoomed by wheel / trackpad, Find Lumi, and play back after closing (tools/walk_map.gd).
+run walk_map -- --fresh --orbit --no-intro --walk-map --save-dir=check_exit_map_$$
+# [v10ui] Owner (Nov 20): "Remove new game button if we have profiles thing": the title's profile
+# buttons in every state, Start over and Delete behind their confirm, clicked for real (tools/title_walk.gd).
+run title_walk -- --menu --title-walk --save-dir=check_exit_title_$$
 if tools/check_old_ledger_save.sh >screenshots/check_exit_old_ledger.log 2>&1; then  # owner item 105
 	echo "[check_exit] PASS old_ledger_save (a save from mid Ledger arc loads clean and plays on)"
 else

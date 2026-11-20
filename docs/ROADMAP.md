@@ -2,6 +2,13 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## 20 Nov, v10ui: map mouse control (item 110), title without New Game (item 111)
+
+- **Map (M):** the globe is turned by dragging (the ground follows the cursor, a short coast, pole limits), zoomed by wheel / two-finger scroll / pinch, and "Find Lumi" (button, V, double-click) goes back to the opening view. The cause was the map's root Control swallowing the mouse. Proof: `--walk-map` (in tools/check_exit.sh), rendered frames looked at.
+- **Title:** no New Game button. The title lists the played profiles (CONTINUE for the last one, a button each for the others), PLAY on a first launch, NEW PROFILE while a slot is free; Start over and Delete are per profile on the Profiles page, each behind a question. Proof: `--menu --title-walk` (in tools/check_exit.sh), rendered frames looked at.
+- **HUD base name (critic 7):** the 72516d7 change never reached the HUD (the HUD asks the slice, the method was on the round-world object); wired through and checked on the pad by `--walk-map`.
+- **Open:** real MacBook trackpad feel (drag speed, coast, scroll speed) and a real controller on the new title list are not verified here. v10snd's `walk_radio` and v11film's rewatch option must use the title's `_continue` / `_play` buttons (there is no `_new_game` any more).
+
 ## Status at the stop, 18 Nov (owner playtest 3, items 89-109)
 
 The owner asked to end all work at a good stopping point.

@@ -19,10 +19,11 @@ var _main: Control
 var _fade: ColorRect
 var _settings: SettingsPanel
 var _credits: Control
-var _confirm: Control
-var _confirm_no: Button
-var _continue: Button
-var _new_game: Button
+var _continue: Button  # the active profile's button when it has a save (the walks click it)
+var _play: Button  # [v10ui] first launch: the one big button
+var _new_profile: Button  # [v10ui] a new game in an empty profile (only once somebody has played)
+var _profile_btns: Dictionary = {}  # [v10ui] slot -> the button that plays that profile
+var _first_btn: Button
 var _profiles_btn: Button  # [worlds2] save profiles, then worlds (ui/profile_picker.gd)
 var _picker: ProfilePicker  # [worlds2]
 var _leaving: bool = false
@@ -36,6 +37,8 @@ func _ready() -> void:
 	if not DevHooks.args.is_empty() and not DevHooks.has("menu"):
 		_go.call_deferred(false)
 		return
+	if DevHooks.has("title-walk"):  # [v10ui] the title's profile buttons clicked with a real mouse (tools/title_walk.gd)
+		TitleWalk.attach(get_tree())
 	if DevHooks.has("ui-audit"):  # [v6screens] layout audit of the title screen (tools/ui_audit_run.gd)
 		UIAuditRun.attach_title(get_tree())
 	# Nothing to save on the title screen: keep the autosave timer and focus-loss saves from
@@ -343,24 +346,66 @@ func _build_ui() -> void:
 	_menu_box.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	col.add_child(_menu_box)
 	var buttons: Array[Button] = []
-	if not _save.is_empty():
-		_continue = _menu_button(tr("Continue"), _on_continue, _save_summary_variants())
-		buttons.append(_continue)
 	if DevHooks.has("sample-worlds"):  # [worlds2] shots: a profile with some history
 		WorldPicker.dev_sample(int(DevHooks.get_f("sample-worlds", 4.0)))
-	# [worlds2] Save profiles (and each profile's worlds).
-	var pname: String = ProfileSlots.display_name(CradleMode.profile, SaveManager.profile_slot)
-	# TRANSLATORS: Profiles button subtitle: the active save profile's name and its number of planets.
-	# [qafix] QA #33: with no save, New Game comes first (and takes the focus), Profiles after it.
-	if _save.is_empty():
-		_new_game = _menu_button(tr("New Game"), _on_new_game)
-		buttons.append(_new_game)
-	var n_worlds: int = CradleMode.worlds().size()
-	_profiles_btn = _menu_button(tr("Profiles"), _open_profiles, ["%s  ·  %s" % [pname, tr_n("%d planet", "%d planets", n_worlds) % n_worlds], pname])
-	buttons.append(_profiles_btn)
+	if DevHooks.has("sample-profiles"):  # [v10ui] shots: the other slots played too (=2 or =3 in use)
+		for n: int in range(2, int(DevHooks.get_f("sample-profiles", 3.0)) + 1):
+			ProfileSlots.dev_summaries[n] = ProfileSlots.summary_from({"name": ["", "", "Mira", "Dad"][n], "worlds": [{"name": "Verdance", "slot": 0}]},
+				{"stats": {"time_played": 2700.0 * n}, "currencies": {"cubes": BigNum.from_float(1200.0 * n).serialize()}}, n)
+	# [v10ui] Owner, 20 Nov: "Remove new game button if we have profiles thing." The title had
+	# Continue, New Game and Profiles: three ways into the same saves. Now the title lists the
+	# profiles themselves: one button per profile that has been played (the one played last is
+	# CONTINUE), and one way to start a new game: PLAY on a first launch, NEW PROFILE after that
+	# (while a slot is free). Starting over, renaming and deleting are per profile, on the
+	# Profiles page, each behind its own confirm step (ui/profile_picker.gd).
+	var active: int = SaveManager.profile_slot
+	var others: Array[int] = []
+	var free_slot: int = active if _save.is_empty() else 0
+	for n: int in range(1, SaveManager.PROFILES + 1):
+		if n == active:
+			continue
+		if not _played(n):
+			if free_slot == 0:
+				free_slot = n
+		else:
+			others.append(n)
+	var pname: String = ProfileSlots.display_name(CradleMode.profile, active)
 	if not _save.is_empty():
-		_new_game = _menu_button(tr("New Game"), _on_new_game)
-		buttons.append(_new_game)
+		var subs: Array[String] = _save_summary_variants()
+		if not others.is_empty():  # several players: say whose this one is
+			var named: Array[String] = []
+			for v: String in subs:
+				named.append(pname + "  ·  " + v)
+			named.append(pname)
+			subs = named
+		_continue = _menu_button(tr("Continue"), _on_continue, subs)
+		_continue.name = "Continue"
+		_profile_btns[active] = _continue
+		buttons.append(_continue)
+	for n: int in others:
+		var sm: Dictionary = ProfileSlots.summary(n)
+		var line: String = ProfilePicker.summary_text(sm)[0]
+		var ob: Button = _menu_button(str(sm["name"]), _play_profile.bind(n), [line, ProfileSlots.hours(float(sm["time_s"]))])
+		ob.name = "Profile%d" % n
+		_profile_btns[n] = ob
+		buttons.append(ob)
+	if _save.is_empty() and others.is_empty():  # first launch: one big button
+		_play = _menu_button(tr("Play"), _play_profile.bind(active))
+		_play.name = "Play"
+		_play.add_theme_font_size_override("font_size", 30)
+		_play.set_meta("tall", true)
+		_play.custom_minimum_size.y = 76
+		_profile_btns[active] = _play
+		buttons.append(_play)
+	else:
+		if free_slot > 0:
+			_new_profile = _menu_button(tr("New profile"), _play_profile.bind(free_slot))
+			_new_profile.name = "NewProfile"
+			buttons.append(_new_profile)
+		_profiles_btn = _menu_button(tr("Profiles"), _open_profiles, tr("Rename, start over, delete"))
+		_profiles_btn.name = "Profiles"
+		buttons.append(_profiles_btn)
+	_first_btn = buttons[0]
 	if Demo.is_demo():  # [steam]
 		buttons.append(_menu_button(tr("Wishlist on Steam"), SteamService.open_store_page))
 	buttons.append(_menu_button(tr("Settings"), _open_settings))
@@ -386,7 +431,6 @@ func _build_ui() -> void:
 	_settings.closed.connect(_on_sub_closed.bind(2))
 	_ui.add_child(_settings)
 	_build_credits()
-	_build_confirm()
 	_picker = ProfilePicker.new()  # [worlds2]
 	_picker.go.connect(func() -> void: _go(true))
 	_picker.closed.connect(_on_profiles_closed)
@@ -406,7 +450,10 @@ func _build_ui() -> void:
 			_open_settings.call_deferred()
 			_settings.select_tab(int(DevHooks.get_f("tab", 0.0)))
 		"credits": _open_credits.call_deferred()
-		"confirm": _on_new_game.call_deferred()
+		"confirm":  # the start-over confirm of the active profile
+			(func() -> void:
+				_open_profiles()
+				_picker._new(SaveManager.profile_slot, false)).call_deferred()
 		"round-new", "round-continue":  # [orbB] dev / export checks: New Game or Continue from the title
 			(func() -> void:
 				if DevHooks.get_s("menu", "") == "round-new" or not SaveManager.has_save():
@@ -441,11 +488,19 @@ func _fit_title() -> void:
 		return
 	var h: float = _ui.size.y
 	var compact: bool = h < 680.0
+	# [v10ui] With a button per played profile the list can be taller than the room under the
+	# title: then the small-screen sizes are used on a normal screen too.
+	var rows_h: float = -10.0
+	for c: Node in _menu_box.get_children():
+		if c is Button:
+			rows_h += (76.0 if bool((c as Button).get_meta("tall", false)) else 56.0) + 10.0
+	var crowded: bool = not compact and rows_h > h - 350.0
+	compact = compact or crowded
 	var tiny: bool = h < 560.0
 	_main.add_theme_constant_override("margin_top", 70 if not compact else (22 if tiny else 36))
 	_main.add_theme_constant_override("margin_bottom", 48 if not compact else 16)
 	(_fit_refs["title"] as Label).add_theme_font_size_override("font_size", 92 if not compact else (54 if tiny else 68))
-	(_fit_refs["tagline"] as Control).visible = not tiny
+	(_fit_refs["tagline"] as Control).visible = not tiny and not crowded
 	(_fit_refs["spacer2"] as Control).custom_minimum_size.y = 26.0 if not compact else 6.0
 	(_fit_refs["version"] as Control).visible = not tiny
 	_menu_box.add_theme_constant_override("separation", 10 if not compact else 6)
@@ -618,15 +673,30 @@ func _on_continue() -> void:
 	_go(true)
 
 
-func _on_new_game() -> void:
-	if _save.is_empty():
-		_start_new()
-		return
-	_main.process_mode = Node.PROCESS_MODE_DISABLED
-	_confirm.visible = true
-	_confirm.modulate.a = 0.0
-	create_tween().tween_property(_confirm, "modulate:a", 1.0, 0.18)
-	_confirm_no.call_deferred("grab_focus")
+## [v10ui] Whether somebody has played in profile n (a slot that was only renamed, or started over
+## and never played, is still free).
+static func _played(n: int) -> bool:
+	if ProfileSlots.dev_summaries.has(n):
+		return not bool(ProfileSlots.dev_summaries[n]["empty"])
+	for nm: String in DirAccess.get_files_at(SaveManager.profile_dir(n)):
+		if nm.begins_with("slot_") and nm.ends_with(".save"):
+			return true
+	return false
+
+
+## [v10ui] A profile's button on the title: continue it, or start a new game in it if it is empty
+## (the opening film plays as for any new game). Other profiles are never touched.
+func _play_profile(n: int) -> void:
+	if (n == SaveManager.profile_slot and _save.is_empty()) or (n != SaveManager.profile_slot and not _played(n)):
+		_picker._use(n)
+		ProfilePicker.start_new_game()
+		_go(true)
+	elif n == SaveManager.profile_slot:
+		_go(true)
+	else:
+		if (ProfileSlots.read_profile(n).get("worlds", []) as Array).size() > 1:
+			_open_profiles()  # the world list shows over the Profiles page
+		_picker._continue(n)
 
 
 func _start_new() -> void:
@@ -679,13 +749,12 @@ func _open_credits() -> void:
 	(_credits.get_meta("back") as Button).call_deferred("grab_focus")
 
 
-## Back from a sub-screen (1 = credits, 2 = settings, 3 = confirm): refocus the right button.
+## Back from a sub-screen (1 = credits, 2 = settings, 4 = profiles): refocus the right button.
 func _on_sub_closed(which: int) -> void:
 	_credits.visible = false
-	_confirm.visible = false
 	_main.process_mode = Node.PROCESS_MODE_INHERIT
 	_main.visible = true
-	var target: Button = _new_game if which != 4 else _profiles_btn  # [worlds2]
+	var target: Button = _profiles_btn if which == 4 and _profiles_btn else _first_btn  # [worlds2]
 	for c: Node in _menu_box.get_children():
 		var b: Button = c as Button
 		if b and ((which == 1 and b.text == tr("Credits").to_upper()) or (which == 2 and b.text == tr("Settings").to_upper())):
@@ -699,9 +768,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		if _credits.visible:
 			_on_sub_closed(1)
-			get_viewport().set_input_as_handled()
-		elif _confirm.visible:
-			_on_sub_closed(3)
 			get_viewport().set_input_as_handled()
 
 
@@ -780,54 +846,3 @@ func _credits_bbcode() -> String:
 		out += "\n".join(PackedStringArray(by_type[kind])) + "\n\n"
 	out += "\n".join(PackedStringArray(tail))
 	return out
-
-
-func _build_confirm() -> void:
-	_confirm = Control.new()
-	_confirm.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_confirm.visible = false
-	_ui.add_child(_confirm)
-	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.02, 0.03, 0.6)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_confirm.add_child(dim)
-	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_confirm.add_child(center)
-	var pc := PanelContainer.new()
-	pc.custom_minimum_size = Vector2(500, 0)
-	pc.add_theme_stylebox_override("panel", UITheme.box(Color(0.06, 0.065, 0.07, 0.94), UITheme.GOLD, 1, 6, 24))
-	center.add_child(pc)
-	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 14)
-	pc.add_child(vb)
-	vb.add_child(UITheme.label(tr("START A NEW GAME?"), 24, UITheme.GOLD))
-	var msg := UITheme.label(tr("Your current save will be erased. This can't be undone."), 16)
-	msg.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	vb.add_child(msg)
-	var hb := HBoxContainer.new()
-	hb.add_theme_constant_override("separation", 12)
-	hb.alignment = BoxContainer.ALIGNMENT_END
-	vb.add_child(hb)
-	_confirm_no = Button.new()
-	_confirm_no.text = tr("Keep my save")
-	_confirm_no.custom_minimum_size = Vector2(170, 46)
-	_confirm_no.pressed.connect(_on_sub_closed.bind(3))
-	UITheme.juice(_confirm_no)
-	hb.add_child(_confirm_no)
-	var yes := Button.new()
-	yes.text = tr("Erase and start")
-	yes.custom_minimum_size = Vector2(190, 46)
-	UITheme.orange_button(yes)
-	yes.add_theme_stylebox_override("focus", UITheme.box(Color(0, 0, 0, 0), Color.WHITE, 2, 5, 8))
-	yes.pressed.connect(_start_new)
-	UITheme.juice(yes)
-	hb.add_child(yes)
-	_confirm_no.focus_neighbor_right = _confirm_no.get_path_to(yes)
-	yes.focus_neighbor_left = yes.get_path_to(_confirm_no)
-	for b: Button in [_confirm_no, yes]:
-		b.focus_neighbor_top = b.get_path_to(b)
-		b.focus_neighbor_bottom = b.get_path_to(b)
-
-
-

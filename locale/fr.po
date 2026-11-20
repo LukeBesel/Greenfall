@@ -642,7 +642,7 @@ msgstr "ENSEMBLE, FLEURISSONS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUMIÈRE  EAU  VIE"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:243 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "Base %d"
 
@@ -768,7 +768,7 @@ msgstr "Maison : %d%% propre"
 msgid "Restored: %d%% clean"
 msgstr "Restauré : %d%% propre"
 
-#: planet/sites/hub_purpose.gd:430 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:430
 msgid "New"
 msgstr "Nouveau"
 
@@ -780,7 +780,7 @@ msgstr "Prêt à être réveillé"
 msgid "Asleep: %d / %d"
 msgstr "Endormi : %d / %d"
 
-#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:618
+#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:667
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% PROPRE"
 
@@ -800,31 +800,31 @@ msgstr "Les %d bases sont debout. Construis le propulseur à la fusée."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:124
+#: planet/sites/orbit_sites.gd:126
 msgid "The rocket is in flight."
 msgstr "La fusée est en vol."
 
-#: planet/sites/orbit_sites.gd:146
+#: planet/sites/orbit_sites.gd:148
 msgid "Bases restored: %d of %d"
 msgstr "Bases restaurées : %d sur %d"
 
-#: planet/sites/orbit_sites.gd:184
+#: planet/sites/orbit_sites.gd:186
 msgid "E   Rocket: choose a destination"
 msgstr "E   Fusée : choisir une destination"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "HOME"
 msgstr "MAISON"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "NEXT STOP"
 msgstr "PROCHAIN ARRÊT"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "Upgrade the rocket first"
 msgstr "Améliore d'abord la fusée"
 
-#: planet/sites/orbit_sites.gd:242
+#: planet/sites/orbit_sites.gd:244
 msgid "%s site"
 msgstr "Site : %s"
 
@@ -1122,7 +1122,7 @@ msgstr "Pas assez de pièces"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
-#: ui/globe_view.gd:555
+#: ui/globe_view.gd:604
 msgid "Not enough cubes"
 msgstr "Pas assez de cubes"
 
@@ -1545,11 +1545,11 @@ msgstr[1] "Pendant ton absence, tes robots ici ont nettoyé %d hexagones et gagn
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s assemblé. Il regarde autour de lui, puis se met au travail."
 
-#: scenes/slice.gd:129 ui/rockets_panel.gd:60
+#: scenes/slice.gd:134 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr "Va jusqu'à la fusée sur l'aire de lancement et appuie sur [%s] pour choisir ta destination."
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:39
+#: scenes/slice.gd:144 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les remplissent plus vite."
 
@@ -1561,19 +1561,19 @@ msgstr "HEXAGONE PROPRE !  +%s"
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:519 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   Réparer l'établi"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
+#: scenes/slice_orbit.gd:519 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   Ouvrir l'établi"
 
-#: scenes/slice_orbit.gd:1047
+#: scenes/slice_orbit.gd:1056
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
-#: scenes/slice_orbit.gd:1147 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1156 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Établi réparé ! Appuie sur %s devant lui pour acheter des améliorations."
 
@@ -1617,7 +1617,7 @@ msgstr "Robots construits"
 msgid "Time played"
 msgstr "Temps de jeu"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:365
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:410
 msgid "Wishlist on Steam"
 msgstr "Ajouter à ma liste de souhaits Steam"
 
@@ -1633,12 +1633,12 @@ msgstr "Écran titre"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuer : le premier quartier reste ouvert, base au niveau %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:637
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
 #: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
-#: ui/globe_view.gd:709 ui/upgrade_card.gd:259
+#: ui/globe_view.gd:758 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d min"
 
@@ -3418,13 +3418,54 @@ msgstr "Il ne reste que les grosses pièces"
 msgid "Glim is still scanning. Try again in a moment."
 msgstr "Glim scanne encore. Réessaie dans un instant."
 
+#: tools/title_walk.gd:70 ui/main_menu.gd:381 ui/profile_picker.gd:110
+msgid "Continue"
+msgstr "Continuer"
+
+#: tools/title_walk.gd:70 tools/title_walk.gd:81 tools/title_walk.gd:86
+#: ui/profile_picker.gd:114
+msgid "Start over"
+msgstr "Recommencer"
+
+#: tools/title_walk.gd:70 tools/title_walk.gd:80 ui/profile_picker.gd:115
+msgid "Rename"
+msgstr "Renommer"
+
+#: tools/title_walk.gd:70 tools/title_walk.gd:72 tools/title_walk.gd:77
+#: tools/title_walk.gd:78 ui/profile_picker.gd:117 ui/profile_picker.gd:236
+msgid "Delete"
+msgstr "Supprimer"
+
+#: tools/title_walk.gd:75 tools/title_walk.gd:84 ui/lumi_builder.gd:191
+#: ui/profile_picker.gd:255 ui/profile_picker.gd:272
+msgid "Cancel"
+msgstr "Annuler"
+
+#: tools/title_walk.gd:80 ui/main_menu.gd:393 ui/profile_picker.gd:112
+msgid "Play"
+msgstr "Jouer"
+
+#: tools/title_walk.gd:87 ui/profile_picker.gd:216
+msgid "Erase and start"
+msgstr "Effacer et commencer"
+
+#: tools/title_walk.gd:153 ui/main_menu.gd:411 ui/main_menu.gd:760
+#: ui/pause_menu.gd:68
+msgid "Settings"
+msgstr "Paramètres"
+
+#: tools/title_walk.gd:153 tools/walk_opening.gd:593 ui/main_menu.gd:413
+#: ui/pause_menu.gd:72
+msgid "Quit"
+msgstr "Quitter"
+
 #: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Fermer"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:72
-msgid "Quit"
-msgstr "Quitter"
+#: tools/walk_map.gd:57 ui/hud.gd:437
+msgid "%s  BASE"
+msgstr "BASE %s"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -3526,7 +3567,7 @@ msgstr "ENSEMENCER UN NOUVEAU MONDE"
 msgid "The Cradle has to come home first."
 msgstr "Le Cradle doit d'abord rentrer au port."
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:496
 #: ui/rockets_panel.gd:88 ui/system_map.gd:745
 msgid "Launch"
 msgstr "Décoller"
@@ -3593,7 +3634,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "Machines"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:244 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:265 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "Fusée"
@@ -3698,7 +3739,7 @@ msgstr "Portée d'arrosage"
 msgid "Refill"
 msgstr "Recharge"
 
-#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:223 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "Nettoyer"
 
@@ -4043,7 +4084,7 @@ msgstr "Balles grumeleuses"
 msgid "Bales cashed in"
 msgstr "Balles encaissées"
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:798 ui/globe_view.gd:233 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Croissance"
 
@@ -4220,7 +4261,7 @@ msgstr "FAIT AVEC AMOUR ET FERRAILLE"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "Le code, les maillages procéduraux, la musique et les sons synthétisés et les textes sont des créations originales de Greenfall."
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:749
+#: ui/credits_roll.gd:148 ui/main_menu.gd:815
 msgid "Music by Lucas"
 msgstr "Musique de Lucas"
 
@@ -4568,103 +4609,115 @@ msgstr "LOOKS"
 msgid "???  %s"
 msgstr "???  %s"
 
-#: ui/globe_view.gd:176
+#: ui/globe_view.gd:197
 msgid "Survey"
 msgstr "Relevé"
 
-#: ui/globe_view.gd:176
+#: ui/globe_view.gd:197
 msgid "Verdance  ·  seed-keeper's survey"
 msgstr "Verdance  ·  relevé du gardien des graines"
 
-#: ui/globe_view.gd:202
+#: ui/globe_view.gd:223
 msgid "Trash"
 msgstr "Déchets"
 
-#: ui/globe_view.gd:202
+#: ui/globe_view.gd:223
 msgid "Green"
 msgstr "Vert"
 
-#: ui/globe_view.gd:211
+#: ui/globe_view.gd:232
 msgid "Not cleaned yet"
 msgstr "Pas encore nettoyé"
 
-#: ui/globe_view.gd:211
+#: ui/globe_view.gd:232
 msgid "Cleaned"
 msgstr "Nettoyé"
 
-#: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:233 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "Planté"
 
-#: ui/globe_view.gd:213 ui/system_map.gd:703 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:234 ui/system_map.gd:703 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "Restauré"
 
-#: ui/globe_view.gd:213
+#: ui/globe_view.gd:234
 msgid "Cities"
 msgstr "Villes"
 
-#: ui/globe_view.gd:214
+#: ui/globe_view.gd:235
 msgid "Hubs"
 msgstr "Bases"
 
-#: ui/globe_view.gd:229 ui/late_menu.gd:21
+#: ui/globe_view.gd:250 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "Système solaire"
 
-#: ui/globe_view.gd:244
+#: ui/globe_view.gd:265
 msgid "Travel between bases"
 msgstr "Voyager entre les bases"
 
-#: ui/globe_view.gd:264
+#: ui/globe_view.gd:285
+msgid "Drag to turn the planet. Scroll to zoom."
+msgstr "Fais glisser pour tourner la planète. Fais défiler pour zoomer."
+
+#: ui/globe_view.gd:285
+msgid "{@look}  turn the planet     {zoom_out}{zoom_in}  zoom"
+msgstr "{@look}  tourner la planète     {zoom_out}{zoom_in}  zoom"
+
+#: ui/globe_view.gd:290
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]Glisser pour tourner   ·   Molette pour zoomer   ·   [/k][p]{@look}  tourner     {zoom_out}{zoom_in}  zoom     {@dpad}  liste de vol     [/p]{open_globe}  fermer"
 
-#: ui/globe_view.gd:393
+#: ui/globe_view.gd:297 ui/globe_view.gd:432
+msgid "Find Lumi"
+msgstr "Trouver Lumi"
+
+#: ui/globe_view.gd:432
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr "[k]Glisser pour tourner   ·   Molette pour zoomer   ·   [/k][p]{@look}  tourner     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  fermer"
 
-#: ui/globe_view.gd:448
+#: ui/globe_view.gd:493
 msgid "%d sectors away"
 msgstr "à %d secteurs"
 
-#: ui/globe_view.gd:589
+#: ui/globe_view.gd:638
 msgid "%s HEXES CLEAN"
 msgstr "%s HEXAGONES PROPRES"
 
-#: ui/globe_view.gd:591
+#: ui/globe_view.gd:640
 msgid "Surveyed %s ago%s"
 msgstr "Relevé il y a %s%s"
 
-#: ui/globe_view.gd:591
+#: ui/globe_view.gd:640
 msgid "   ·   OUTDATED"
 msgstr "   ·   PÉRIMÉ"
 
-#: ui/globe_view.gd:592
+#: ui/globe_view.gd:641
 msgid "Re-survey      %s cubes"
 msgstr "Nouveau relevé      %s cubes"
 
-#: ui/globe_view.gd:603
+#: ui/globe_view.gd:652
 msgid "%d%% clean"
 msgstr "%d%% propre"
 
-#: ui/globe_view.gd:606
+#: ui/globe_view.gd:655
 msgid "%s of %s hexes around the bases"
 msgstr "%s hexagones sur %s autour des bases"
 
-#: ui/globe_view.gd:609
+#: ui/globe_view.gd:658
 msgid "How much is clean"
 msgstr "Ce qui est déjà propre"
 
-#: ui/globe_view.gd:611
+#: ui/globe_view.gd:660
 msgid "%d of %d bases clean"
 msgstr "%d bases propres sur %d"
 
-#: ui/globe_view.gd:691
+#: ui/globe_view.gd:740
 msgid "of the ground around your bases is clean"
 msgstr "du sol autour de tes bases est propre"
 
-#: ui/globe_view.gd:693
+#: ui/globe_view.gd:742
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "de la planète reconquis  ·  %s sur %s hexagones de terre"
 
@@ -4800,52 +4853,48 @@ msgstr "SIGNAL WREN   %d%%"
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% PROPRE"
 
-#: ui/hud.gd:436
-msgid "%s  BASE"
-msgstr "BASE %s"
-
-#: ui/hud.gd:439
+#: ui/hud.gd:440
 msgid "CARRYING %d/%d"
 msgstr "CHARGE %d/%d"
 
-#: ui/hud.gd:490
+#: ui/hud.gd:491
 msgid "HEX  CLEAR"
 msgstr "HEX  PROPRE"
 
-#: ui/hud.gd:494
+#: ui/hud.gd:495
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:497
+#: ui/hud.gd:498
 msgid "  SUSTAIN %d%%"
 msgstr "  DURABLE %d%%"
 
-#: ui/hud.gd:499
+#: ui/hud.gd:500
 msgid "  THIRSTY"
 msgstr "  ASSOIFFÉ"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:529
+#: ui/hud.gd:530
 msgid "%s   pick up bale"
 msgstr "%s   ramasser la balle"
 
-#: ui/hud.gd:530
+#: ui/hud.gd:531
 msgid "%s   dig up part"
 msgstr "%s   déterrer la pièce"
 
-#: ui/hud.gd:531
+#: ui/hud.gd:532
 msgid "%s   read memory shard"
 msgstr "%s   lire l'éclat de mémoire"
 
-#: ui/hud.gd:532
+#: ui/hud.gd:533
 msgid "%s   pick up the seed tin"
 msgstr "%s   ramasser la boîte à graines"
 
-#: ui/hud.gd:533
+#: ui/hud.gd:534
 msgid "%s   set bale down"
 msgstr "%s   poser la balle"
 
-#: ui/hud.gd:534
+#: ui/hud.gd:535
 msgid "%s   workbench"
 msgstr "%s   établi"
 
@@ -5068,10 +5117,6 @@ msgstr "Revenir au modèle"
 msgid "Test laser"
 msgstr "Tester le laser"
 
-#: ui/lumi_builder.gd:191 ui/profile_picker.gd:252 ui/profile_picker.gd:269
-msgid "Cancel"
-msgstr "Annuler"
-
 #: ui/lumi_builder.gd:192
 msgid "Done"
 msgstr "Terminé"
@@ -5172,111 +5217,101 @@ msgstr "Modifications non enregistrées"
 msgid "Part of this look is still locked."
 msgstr "Une partie de ce look est encore verrouillée."
 
-#: ui/main_menu.gd:331
+#: ui/main_menu.gd:334
 msgid "One small robot. One very big cleanup."
 msgstr "Un petit robot. Un très grand ménage."
 
-#: ui/main_menu.gd:335
+#: ui/main_menu.gd:338
 msgid "DEMO  ·  the first district"
 msgstr "DÉMO  ·  le premier quartier"
 
-#: ui/main_menu.gd:347 ui/profile_picker.gd:110
-msgid "Continue"
-msgstr "Continuer"
+#: ui/main_menu.gd:402
+msgid "New profile"
+msgstr "Nouveau profil"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:362
-msgid "New Game"
-msgstr "Nouvelle partie"
-
-#: ui/main_menu.gd:359 ui/profile_picker.gd:126
-msgid "%d planet"
-msgid_plural "%d planets"
-msgstr[0] "%d planète"
-msgstr[1] "%d planètes"
-
-#: ui/main_menu.gd:359
+#: ui/main_menu.gd:405
 msgid "Profiles"
 msgstr "Profils"
 
-#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
-msgid "Settings"
-msgstr "Paramètres"
+#: ui/main_menu.gd:405
+msgid "Rename, start over, delete"
+msgstr "Renommer, recommencer, supprimer"
 
-#: ui/main_menu.gd:375
+#: ui/main_menu.gd:420
 msgid "Made with Godot"
 msgstr "Fait avec Godot"
 
-#: ui/main_menu.gd:582
+#: ui/main_menu.gd:637
 msgid "%dm"
 msgstr "%d min"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:589 ui/profile_picker.gd:133
+#: ui/main_menu.gd:644 ui/profile_picker.gd:136
 msgid "%s cubes"
 msgstr "%s cubes"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Jan"
 msgstr "janv."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Feb"
 msgstr "févr."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Mar"
 msgstr "mars"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Apr"
 msgstr "avr."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "May"
 msgstr "mai"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Jun"
 msgstr "juin"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Jul"
 msgstr "juil."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Aug"
 msgstr "août"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Sep"
 msgstr "sept."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Oct"
 msgstr "oct."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:648
 msgid "Dec"
 msgstr "déc."
 
-#: ui/main_menu.gd:691
+#: ui/main_menu.gd:760
 msgid "Credits"
 msgstr "Crédits"
 
-#: ui/main_menu.gd:720
+#: ui/main_menu.gd:786
 msgid "CREDITS"
 msgstr "CRÉDITS"
 
-#: ui/main_menu.gd:735 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:801 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Retour"
 
-#: ui/main_menu.gd:748
+#: ui/main_menu.gd:814
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5286,29 +5321,13 @@ msgstr ""
 "Le code, les maillages procéduraux, l'audio synthétisé et les textes sont des créations originales de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:752
+#: ui/main_menu.gd:818
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Ressources tierces : CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:770
+#: ui/main_menu.gd:836
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]par %s[/color]"
-
-#: ui/main_menu.gd:804
-msgid "START A NEW GAME?"
-msgstr "COMMENCER UNE NOUVELLE PARTIE ?"
-
-#: ui/main_menu.gd:805
-msgid "Your current save will be erased. This can't be undone."
-msgstr "Ta sauvegarde actuelle sera effacée. C'est irréversible."
-
-#: ui/main_menu.gd:813
-msgid "Keep my save"
-msgstr "Garder ma sauvegarde"
-
-#: ui/main_menu.gd:819 ui/profile_picker.gd:213
-msgid "Erase and start"
-msgstr "Effacer et commencer"
 
 #: ui/pause_menu.gd:43
 msgid "PAUSED"
@@ -5580,53 +5599,51 @@ msgstr "PROFILS DE SAUVEGARDE"
 msgid "Each profile has its own planets and progress. Settings are shared."
 msgstr "Chaque profil a ses propres planètes et sa progression. Les paramètres sont partagés."
 
-#: ui/profile_picker.gd:112
-msgid "Rename"
-msgstr "Renommer"
-
-#: ui/profile_picker.gd:114 ui/profile_picker.gd:233
-msgid "Delete"
-msgstr "Supprimer"
-
-#: ui/profile_picker.gd:122
+#: ui/profile_picker.gd:125
 msgid "Empty slot"
 msgstr "Emplacement vide"
 
 #. Save profile summary: play time, number of planets, the current planet's name.
-#: ui/profile_picker.gd:125
+#: ui/profile_picker.gd:128
 msgid "%s  ·  %s  ·  on %s"
 msgstr "%s  ·  %s  ·  sur %s"
 
+#: ui/profile_picker.gd:129
+msgid "%d planet"
+msgid_plural "%d planets"
+msgstr[0] "%d planète"
+msgstr[1] "%d planètes"
+
 #. Save profile summary: how far the Bloom (restoration milestones) has come.
-#: ui/profile_picker.gd:131
+#: ui/profile_picker.gd:134
 msgid "Bloom %d%%"
 msgstr "Floraison %d%%"
 
-#: ui/profile_picker.gd:134
+#: ui/profile_picker.gd:137
 msgid "%s seeds"
 msgstr "%s graines"
 
-#: ui/profile_picker.gd:211
+#: ui/profile_picker.gd:214
 msgid "START OVER IN %s?"
 msgstr "RECOMMENCER DANS %s ?"
 
-#: ui/profile_picker.gd:212
+#: ui/profile_picker.gd:215
 msgid "Every world, Heirloom and Starseed in this profile will be erased. The other profiles stay as they are."
 msgstr "Chaque monde, Héritage et Graine d'étoile de ce profil sera effacé. Les autres profils restent tels quels."
 
-#: ui/profile_picker.gd:231
+#: ui/profile_picker.gd:234
 msgid "DELETE %s?"
 msgstr "SUPPRIMER %s ?"
 
-#: ui/profile_picker.gd:232
+#: ui/profile_picker.gd:235
 msgid "This profile's worlds and progress will be erased. This can't be undone."
 msgstr "Les mondes et la progression de ce profil seront effacés. Impossible d'annuler."
 
-#: ui/profile_picker.gd:238
+#: ui/profile_picker.gd:241
 msgid "RENAME PROFILE"
 msgstr "RENOMMER LE PROFIL"
 
-#: ui/profile_picker.gd:252
+#: ui/profile_picker.gd:255
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -16640,6 +16657,21 @@ msgstr "Ce portique a mis à la casse la flotte minière quand l'argent a manqu�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pieds. Les comptes sont clos, {name}. Nous les avons équilibrés."
+
+#~ msgid "Start a new game"
+#~ msgstr "Commencer une nouvelle partie"
+
+#~ msgid "New Game"
+#~ msgstr "Nouvelle partie"
+
+#~ msgid "START A NEW GAME?"
+#~ msgstr "COMMENCER UNE NOUVELLE PARTIE ?"
+
+#~ msgid "Your current save will be erased. This can't be undone."
+#~ msgstr "Ta sauvegarde actuelle sera effacée. C'est irréversible."
+
+#~ msgid "Keep my save"
+#~ msgstr "Garder ma sauvegarde"
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "Pendant ton absence (%s) :"

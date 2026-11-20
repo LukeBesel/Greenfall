@@ -99,7 +99,7 @@ func test_every_translation_keeps_placeholders() -> void:
 
 func test_sample_german_and_spanish() -> void:
 	TranslationServer.set_locale("de")
-	assert_eq(tr("New Game"), "Neues Spiel")
+	assert_eq(tr("Play"), "Spielen")
 	assert_eq(tr("Resume"), "Fortsetzen")
 	TranslationServer.set_locale("es")
 	assert_eq(tr("Settings"), "Ajustes")
