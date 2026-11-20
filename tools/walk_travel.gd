@@ -191,6 +191,9 @@ static func _finish_station(so: SliceOrbit, site: int, redirty: bool) -> void:
 	if str(st.get("do", "")) == "build":  # [v10base] the base's own machine on its marked spot
 		await _far_sell(so, site, redirty)  # the stations played by real scooping have a bale to sell
 		await _build_spot(so, site, str(st.get("id", "bench")))
+		if redirty:  # station 2, played in full: the two machines the player may add
+			await _build_spot(so, site, "locker", false)
+			await _build_spot(so, site, "bot_bay", false)
 		await _wait(tree, 1.2)
 		st = hp.current_step(site)
 	if str(st.get("do", "")) == "outposts":
@@ -342,6 +345,17 @@ static func _far_sell(so: SliceOrbit, site: int, must: bool) -> void:
 	_check(not p.carried.is_empty(), "Lumi carries a bale to sell (%d)" % p.carried.size())
 	if p.carried.is_empty():
 		return
+	# Play-tester item 4: with a bale in hand the card names this base's scale, and the beam stands on it
+	# (it said "Carry your bale home", and the beam went to the rocket).
+	var ob: Objectives = w.get("objectives") as Objectives
+	_stand(so, p, dep.global_position + dep.global_basis.z * 5.0, dep.global_position)
+	for k: int in 16:
+		await _wait(tree, 0.25)
+		if ob.situation.contains("scale"):
+			break
+	var bt: Variant = ob.waypoint_target()
+	_check(ob.situation == TranslationServer.translate("Carry your bale to this base's scale by its bin.") and bt is Vector3 and (bt as Vector3).distance_to(dep.global_position) < 1.5,
+		"carrying a bale here: the card says '%s', the beam stands %s m from this base's scale" % [ob.situation, "%.1f" % (bt as Vector3).distance_to(dep.global_position) if bt is Vector3 else "nowhere,"])
 	var c0: float = GameState.get_currency("cubes").to_float()
 	var sold0: int = dep.cashed
 	_stand(so, p, dep.global_position, dep.bin_world())
@@ -374,7 +388,7 @@ static func _junk_hex_near(so: SliceOrbit, site: int, at: Vector3, bin: Vector3)
 
 ## The base's build step: the marked spot, its sign, the beam; E short of the price is refused with
 ## a line; E with the price builds the machine there; it then works (the bench opens by E).
-static func _build_spot(so: SliceOrbit, site: int, id: String) -> void:
+static func _build_spot(so: SliceOrbit, site: int, id: String, chain: bool = true) -> void:
 	var w: Node = so.w
 	var tree: SceneTree = w.get_tree()
 	var ob: Objectives = w.get("objectives") as Objectives
@@ -387,15 +401,17 @@ static func _build_spot(so: SliceOrbit, site: int, id: String) -> void:
 		"the %s's build spot is marked on the pad, with its picture sign" % id)
 	if not (at is Vector3):
 		return
-	for k: int in 12:  # the station card refreshes on its own poll
-		if hp.card_text.contains("marked spot"):
-			break
-		await _wait(tree, 0.25)
-	_check(hp.card_text.contains("marked spot"), "the base's card: '%s'" % hp.card_text)
-	await _wait(tree, 1.6)
-	var wt: Variant = ob.waypoint_target()
-	_check(wt is Vector3 and (wt as Vector3).distance_to(at) < 1.5, "the beam stands on the build spot")
+	if chain:  # the base's chain asks for this one (the Locker and the Bot Bay are the player's choice)
+		for k: int in 12:  # the station card refreshes on its own poll
+			if hp.card_text.contains("marked spot"):
+				break
+			await _wait(tree, 0.25)
+		_check(hp.card_text.contains("marked spot"), "the base's card: '%s'" % hp.card_text)
+		await _wait(tree, 1.6)
+		var wt: Variant = ob.waypoint_target()
+		_check(wt is Vector3 and (wt as Vector3).distance_to(at) < 1.5, "the beam stands on the build spot")
 	var a3: Vector3 = at
+	var look: Vector3 = mark.global_position
 	_stand(so, p, a3, mark.global_position)
 	await _frames(tree, 6)
 	var ia: Interactables = w.get("interactables") as Interactables
@@ -439,6 +455,57 @@ static func _build_spot(so: SliceOrbit, site: int, id: String) -> void:
 			if up and up.is_open:
 				await _tap(tree, "ui_cancel")
 				await _wait(tree, 0.6)
+	elif id == "locker":  # the built Locker opens by E at its spot, and closes again
+		_stand(so, p, a3, look)
+		await _frames(tree, 6)
+		var lpr: String = ia.prompt(p.global_position) if ia else ""
+		await _tap(tree, "interact")
+		await _wait(tree, 1.0)
+		var lk: LockerCabinet = w.get_node_or_null("LockerCabinet") as LockerCabinet
+		var ov: Variant = lk.get("_overlay") if lk else null
+		_check(lpr.contains("locker") and ov is Node and is_instance_valid(ov), "E at this base's Locker opens the Locker (prompt '%s')" % lpr)
+		await _shot(tree, "locker_open_%d" % site)
+		await _tap(tree, "ui_cancel")
+		await _wait(tree, 1.0)
+		ov = lk.get("_overlay") if lk else null
+		_check(not (ov is Node and is_instance_valid(ov)) and (p.input as PlayerInput).enabled, "Esc shuts the Locker and Lumi moves again")
+	elif id == "bot_bay":  # the built Bot Bay: E opens its own screen; a robot built there rolls out at this base
+		var bay: BotBay = BotBay.of(w, str(site))
+		_check(bay != null and bay.is_visible_in_tree(), "this base's Bot Bay stands on its spot")
+		if bay == null:
+			return
+		Research.grant("salvage_logic")  # the Scoopie's plans: base 1's Bot Bay gives them when it is built (BenchTiers.buy), long before a flight
+		_stand(so, p, bay.stand_point(), bay.global_position)
+		await _frames(tree, 6)
+		var bpr: String = ia.prompt(p.global_position) if ia else ""
+		await _tap(tree, "interact")
+		await _wait(tree, 1.0)
+		_check(bpr.contains("Bot Bay") and bay.is_open() and str(bay.screen.get("_tab")) == "bots", "E at this base's Bot Bay opens its own screen (prompt '%s')" % bpr)
+		if not bay.is_open():
+			return
+		await _shot(tree, "botbay_open_%d" % site)
+		var fl: Fleet = w.get("fleet") as Fleet
+		_set_money(maxf(GameState.get_currency("cubes").to_float(), fl.build_cost("scoopie").to_float() + 20.0), maxf(GameState.get_currency("parts").to_float(), fl.build_parts("scoopie").to_float() + 2.0))
+		await _frames(tree, 4)
+		var had: int = int(hp.crew_summary(site).get("robots", 0))  # this base's own crew (the globe's robots are crew units)
+		var why_not: String = fl.build_block_reason("scoopie")
+		var ld: ListDetail = bay.screen.get("_panel") as ListDetail
+		var row: Button = (ld.get("_rows") as Dictionary).get("build_scoopie") as Button if ld else null
+		if row == null and ld:
+			ld.select_id("build_scoopie")
+			await _frames(tree, 3)
+			row = (ld.get("_rows") as Dictionary).get("build_scoopie") as Button
+		_check(row != null, "the Bot Bay's screen has the Scoopie's row")
+		if row:
+			await _click(tree, (row.get_meta("parts") as Array)[3] as Control)
+			await _wait(tree, 1.0)
+		var now_n: int = int(hp.crew_summary(site).get("robots", 0))
+		_check(now_n == had + 1, "a click builds a Scoopie; it joins this base's own crew (%d -> %d robots here%s)" % [had, now_n, "" if why_not == "" else "; '%s'" % why_not])
+		if bay.is_open():
+			await _tap(tree, "ui_cancel")
+			await _wait(tree, 0.8)
+		_check(not bay.is_open() and (p.input as PlayerInput).enabled, "the Bot Bay's screen is shut and Lumi moves again")
+		await _shot(tree, "botbay_robot_%d" % site)
 	_set_money(float(keep[0]), float(keep[1]))
 
 
@@ -890,10 +957,26 @@ static func _fly_by_click(so: SliceOrbit, to_site: int, first: bool) -> void:
 				print("%s   near: %s %.1f m r %.1f visible %s prompt '%s'" % [TAG, (n as Node).get_path(), (n as Node3D).global_position.distance_to(p.global_position), float(e["r"]), (n as Node3D).is_visible_in_tree(),
 					str((e["prompt"] as Callable).call()) if e["prompt"] is Callable else str(e["prompt"])])
 		print("%s   lumi at %s, rocket spot %s" % [TAG, p.global_position, os_.rocket_spot.global_position])
+	# Play-tester item 22: by the rocket the prompt, the base's name and a WREN line sat on one spot.
+	var hud: Node = w.get("hud")
+	if hud != null and seen == os_.rocket_prompt():
+		await _wait(tree, 1.5)
+		var pl: Label = hud.get("_prompt") as Label
+		var cl: Label = hud.get("_context") as Label
+		_check(pl != null and cl != null and pl.text.strip_edges() != "" and (cl.modulate.a < 0.05 or not cl.text.contains("BASE")),
+			"by the rocket only the prompt shows, not the base's name under it (prompt '%s', name '%s' at %.2f)" % [pl.text.strip_edges() if pl else "-", cl.text if cl else "-", cl.modulate.a if cl else -1.0])
 	await _tap(tree, "interact")
 	await _frames(tree, 4)
 	_check(os_.picker.is_open, "E at the rocket opens its list")
+	_check(Subtitles.current == null or Subtitles.current.hushed(), "while the rocket's list is open no WREN line shows through it")
 	await _shot(tree, "picker_%d" % to_site)
+	# Play-tester item 10: a woken base "keeps cleaning when you fly on"; its row must not say
+	# "No robots here yet".
+	for i: int in range(1, os_.sm.sites.size()):
+		if HubPlan.woken(i) and _row_of(os_.picker, HubPlan.hub_name(hp.planet, i)) != null:
+			var own: int = int(hp.crew_summary(i).get("robots", 0))
+			_check(not _row_has(os_.picker, HubPlan.hub_name(hp.planet, i), "No robots") and (own > 0 or _row_has(os_.picker, HubPlan.hub_name(hp.planet, i), "Cleans by itself")),
+				"the rocket's list, %s (woken, %d robots of its own): its row says how it cleans, never 'No robots here yet'" % [HubPlan.hub_name(hp.planet, i), own])
 	var nm: String = HubPlan.hub_name(hp.planet, to_site)
 	var b: Button = _fly_button(os_.picker, nm)
 	_check(b != null and not b.disabled, "%s has a Fly button%s" % [nm, " by NEXT STOP" if first else ""])
@@ -1154,7 +1237,9 @@ static func _outpost_no_parts(so: SliceOrbit, site: int) -> void:
 	await _tap(tree, "interact")
 	await _wait(tree, 1.0)
 	_check(ops.level_of(k) == 0 and _said("not enough"), "no Parts: E at the outpost refused with a line (%s)" % _quote("not enough"))
-	_check(ob.situation.contains(str(int(ops.repair_cost(k).get("parts", 0)))), "no Parts: the card says how many the outpost needs ('%s')" % ob.situation)
+	# How many are missing: a robot at an earlier base may have salvaged a few Parts since they were set to none.
+	var miss: int = int(ceilf(float(ops.repair_cost(k).get("parts", 0)) - GameState.get_currency("parts").to_float()))
+	_check(miss > 0 and (ob.situation.contains(str(miss)) or ob.situation.contains(str(miss + 1))), "no Parts: the card says how many more the outpost needs (%d; '%s')" % [miss, ob.situation])
 	print("%s   no Parts: station card '%s', objective card hint '%s', prompt '%s'" % [TAG, hp.card_text, ob.situation, so.interact_prompt(w.get("patch"))])
 	var have0: int = int(hp.current_step(site).get("have", 0))
 	var clean0: int = hp.cleaned_here(site)
@@ -1283,11 +1368,12 @@ static func _fly_button(picker: RocketPicker, hub_name: String) -> Button:
 
 
 static func _row_of(picker: RocketPicker, hub_name: String) -> Control:
+	var row: Control = null  # the innermost panel with the name: the list's own panel holds every row
 	for n: Node in picker.find_children("*", "PanelContainer", true, false):
 		for l: Node in n.find_children("*", "Label", true, false):
 			if (l as Label).text == hub_name:
-				return n as Control
-	return null
+				row = n as Control
+	return row
 
 
 static func _row_has(picker: RocketPicker, hub_name: String, text: String) -> bool:
