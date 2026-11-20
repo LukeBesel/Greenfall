@@ -324,55 +324,59 @@ msgstr ""
 msgid "Fully upgraded."
 msgstr ""
 
-#: automation/outposts.gd:409
+#: automation/outposts.gd:411
 msgid "Outpost %d repaired: a new scale for your Haul Bugs."
 msgstr ""
 
-#: automation/outposts.gd:410
+#: automation/outposts.gd:413
+msgid "Outpost %d repaired: a new scale for your bales."
+msgstr ""
+
+#: automation/outposts.gd:414
 msgid "OUTPOST ONLINE"
 msgstr ""
 
-#: automation/outposts.gd:432
+#: automation/outposts.gd:436
 msgid "Outpost %d upgraded: %s. %s"
 msgstr ""
 
-#: automation/outposts.gd:461
+#: automation/outposts.gd:465
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr ""
 
-#: automation/outposts.gd:462
+#: automation/outposts.gd:466
 msgid "E   Repair outpost · %s%s"
 msgstr ""
 
-#: automation/outposts.gd:462 automation/outposts.gd:465
+#: automation/outposts.gd:466 automation/outposts.gd:469
 msgid "  (need more)"
 msgstr ""
 
-#: automation/outposts.gd:464
+#: automation/outposts.gd:468
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr ""
 
-#: automation/outposts.gd:465
+#: automation/outposts.gd:469
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr ""
 
-#: automation/outposts.gd:475
+#: automation/outposts.gd:479
 msgid "Outpost %d: %s"
 msgstr ""
 
-#: automation/outposts.gd:482
+#: automation/outposts.gd:486
 msgid "Outpost %d upgrade: %s"
 msgstr ""
 
-#: automation/outposts.gd:485
+#: automation/outposts.gd:489
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr ""
 
-#: automation/outposts.gd:588
+#: automation/outposts.gd:592
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr ""
 
-#: automation/outposts.gd:589
+#: automation/outposts.gd:593
 msgid "OUTPOST %d  %s"
 msgstr ""
 
@@ -473,25 +477,8 @@ msgstr ""
 msgid "E   Telescope: look across the system"
 msgstr ""
 
-#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:287
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:709 ui/upgrade_card.gd:259
-msgid "%d min"
-msgstr ""
-
-#: core/offline.gd:142
-msgid "While you were away (%s):"
-msgstr ""
-
-#: core/offline.gd:144
-msgid "The fleet baled and delivered %s cubes."
-msgstr ""
-
 #: core/offline.gd:146
-msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
-msgstr ""
-
-#: core/offline.gd:148
-msgid "The scrubbers filtered the air the whole time. It's a little clearer."
+msgid "While you were away, your robots earned %s cubes."
 msgstr ""
 
 #: core/pace.gd:206
@@ -514,7 +501,7 @@ msgstr ""
 msgid "+%s cubes"
 msgstr ""
 
-#: core/pace.gd:338 tools/walk_opening.gd:323
+#: core/pace.gd:338 tools/walk_opening.gd:324
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr ""
 
@@ -654,7 +641,7 @@ msgstr ""
 msgid "LIGHT  WATER  LIFE"
 msgstr ""
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:248 robots/sphere/command_overlay.gd:194
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:248 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr ""
 
@@ -662,7 +649,7 @@ msgstr ""
 msgid "Press  {open_globe}  to see how much of the planet is clean"
 msgstr ""
 
-#: planet/orbit/orbit_crews.gd:223
+#: planet/orbit/orbit_crews.gd:226
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr ""
 
@@ -1388,77 +1375,77 @@ msgstr ""
 msgid "No robots here yet."
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:121 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+#: robots/sphere/command_overlay.gd:122 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
 msgid "Build one at the workbench."
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:124 robots/sphere/command_overlay.gd:196
+#: robots/sphere/command_overlay.gd:125 robots/sphere/command_overlay.gd:197
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] ""
 msgstr[1] ""
 
-#: robots/sphere/command_overlay.gd:126
+#: robots/sphere/command_overlay.gd:127
 msgid "About %d hexes an hour"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:139 robots/sphere/command_overlay.gd:197
+#: robots/sphere/command_overlay.gd:140 robots/sphere/command_overlay.gd:198
 msgid "%d working"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:141
+#: robots/sphere/command_overlay.gd:142
 msgid "%d working, %d waiting"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:143
+#: robots/sphere/command_overlay.gd:144
 msgid "%d waiting"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:148 robots/sphere/crew_talk.gd:81 robots/sphere/crew_talk.gd:85
+#: robots/sphere/command_overlay.gd:149 robots/sphere/crew_talk.gd:58
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:161
+#: robots/sphere/command_overlay.gd:162
 msgid "Robots here: all %d"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:162
+#: robots/sphere/command_overlay.gd:163
 msgid "Robots here: %d of %d"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:165
+#: robots/sphere/command_overlay.gd:166
 msgid "%d on the way, %d working here"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:168
+#: robots/sphere/command_overlay.gd:169
 msgid "D-pad left / right: how many come"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:169
+#: robots/sphere/command_overlay.gd:170
 msgid "Click - or + (or keys - +): how many come"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:190
+#: robots/sphere/command_overlay.gd:191
 msgid "OTHER BASES"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:206
+#: robots/sphere/command_overlay.gd:207
 msgid "Good! Your robots will work here first."
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:207
+#: robots/sphere/command_overlay.gd:208
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:208
+#: robots/sphere/command_overlay.gd:209
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Y: next job"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Tab: next job"
 msgstr ""
 
@@ -1514,68 +1501,72 @@ msgstr ""
 msgid "I can't find a way there. Trying another spot."
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:78
+#: robots/sphere/crew_talk.gd:57
+msgid "Bales are piling up. One more Haul Bug would help."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:87
 msgid "Hello! Looking around."
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:82
+#: robots/sphere/crew_talk.gd:91
 msgid "On my way to work."
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:88
+#: robots/sphere/crew_talk.gd:97
 msgid "Fetching a bale."
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:90
+#: robots/sphere/crew_talk.gd:99
 msgid "Carrying bales home."
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:92
+#: robots/sphere/crew_talk.gd:101
 msgid "Tipping junk into the baler."
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:94
+#: robots/sphere/crew_talk.gd:103
 msgid "Filling my water tank."
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:98
+#: robots/sphere/crew_talk.gd:107
 msgid "Looking for work."
 msgstr ""
 
 #. a robot kind and its Mk tier, e.g. "Scoopie (Mk II)".
-#: robots/sphere/crew_talk.gd:106
+#: robots/sphere/crew_talk.gd:115
 msgid "%s (%s)"
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:107
+#: robots/sphere/crew_talk.gd:116
 msgid "%s the %s: %s"
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:132
+#: robots/sphere/crew_talk.gd:141
 msgid "No robots here yet"
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:134
+#: robots/sphere/crew_talk.gd:143
 msgid "%d robot working here"
 msgid_plural "%d robots working here"
 msgstr[0] ""
 msgstr[1] ""
 
-#: robots/sphere/crew_talk.gd:136
+#: robots/sphere/crew_talk.gd:145
 msgid "%s, about %d hexes an hour"
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:147
+#: robots/sphere/crew_talk.gd:156
 msgid "While you were away, your robots here cleaned %d hex."
 msgid_plural "While you were away, your robots here cleaned %d hexes."
 msgstr[0] ""
 msgstr[1] ""
 
-#: robots/sphere/crew_talk.gd:149
+#: robots/sphere/crew_talk.gd:158
 msgid "While you were away, your robots here earned %s cubes."
 msgstr ""
 
-#: robots/sphere/crew_talk.gd:150
+#: robots/sphere/crew_talk.gd:159
 msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
 msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
 msgstr[0] ""
@@ -1675,6 +1666,11 @@ msgstr ""
 
 #: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
 msgid "%dh %02dm"
+msgstr ""
+
+#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
+#: ui/globe_view.gd:709 ui/upgrade_card.gd:259
+msgid "%d min"
 msgstr ""
 
 #: story/bloom_finale.gd:15
@@ -1995,7 +1991,7 @@ msgid "...It's green. Lumi, it's actually green."
 msgstr ""
 
 #: story/first_seed.gd:306
-msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
+msgid "Keep it watered. Every bloom gives seeds back, and a little green light for your core. This is how it starts."
 msgstr ""
 
 #: story/first_seed.gd:571
@@ -2079,7 +2075,7 @@ msgstr ""
 msgid "The ark could not turn back. The pod fell for days."
 msgstr ""
 
-#: story/intro.gd:1951
+#: story/intro.gd:1967
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr ""
 
@@ -2095,59 +2091,59 @@ msgstr ""
 msgid "Goal complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:1025
+#: story/objectives.gd:1050
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr ""
 
-#: story/objectives.gd:1047 story/objectives.gd:1278
+#: story/objectives.gd:1072 story/objectives.gd:1308 tools/walk_opening.gd:774
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
-#: story/objectives.gd:1063
+#: story/objectives.gd:1088
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr ""
 
-#: story/objectives.gd:1065
+#: story/objectives.gd:1090
 msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr ""
 
-#: story/objectives.gd:1279
+#: story/objectives.gd:1309
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:1295 story/objectives.gd:1316
+#: story/objectives.gd:1326 story/objectives.gd:1350
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
-#: story/objectives.gd:1305
+#: story/objectives.gd:1337
 msgid "Your chest is full. Follow the beam to this base's bin."
 msgstr ""
 
-#: story/objectives.gd:1305
+#: story/objectives.gd:1337
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1310
+#: story/objectives.gd:1343
 msgid "Carry your bale to this base's scale by its bin."
 msgstr ""
 
-#: story/objectives.gd:1311
+#: story/objectives.gd:1344
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1311
+#: story/objectives.gd:1344
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:1325
+#: story/objectives.gd:1360
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr ""
 
-#: story/objectives.gd:1326
+#: story/objectives.gd:1361
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1337
+#: story/objectives.gd:1372
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
@@ -3452,7 +3448,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: tools/walk_opening.gd:592 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr ""
 
@@ -11662,42 +11658,6 @@ msgstr ""
 
 #: data/hub.json:buildings[air_scrubber].desc
 msgid "Pulls dusty air through filter banks. The sky clears faster."
-msgstr ""
-
-#: data/intro_shots.json:shots[cradle].lines
-msgid "title"
-msgstr ""
-
-#: data/intro_shots.json:shots[vault_wide].lines
-msgid "vault"
-msgstr ""
-
-#: data/intro_shots.json:shots[vault_hum].lines
-msgid "hum"
-msgstr ""
-
-#: data/intro_shots.json:shots[storm].lines
-msgid "storm"
-msgstr ""
-
-#: data/intro_shots.json:shots[alarm].lines
-msgid "breach"
-msgstr ""
-
-#: data/intro_shots.json:shots[eject].lines
-msgid "hold_on"
-msgstr ""
-
-#: data/intro_shots.json:shots[drift].lines
-msgid "fall"
-msgstr ""
-
-#: data/intro_shots.json:shots[station].lines
-msgid "brief_0"
-msgstr ""
-
-#: data/intro_shots.json:shots[alone].lines
-msgid "brief_1"
 msgstr ""
 
 #: data/junk.json:types[metal].name

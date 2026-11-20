@@ -931,6 +931,9 @@ func waypoint_target() -> Variant:
 	if tut and not tut.done():  # #37: only places (bench, bin), never pieces
 		var tt: Dictionary = tut.target()
 		return tt.get("pos", null) if str(tt.get("kind", "")) in ["bench", "pad"] else null
+	var sit: Array = situation_target()
+	if not sit.is_empty():
+		return sit[0]
 	var stt: Dictionary = step_target(current())
 	var pos: Variant = stt.get("pos", null)
 	if pos == null and str(stt.get("to", "")) == "hex" and not (is_lost() and needs_home()):
@@ -938,6 +941,28 @@ func waypoint_target() -> Variant:
 	if pos == null and is_lost() and needs_home():  # [v3clear] lost on the way home: the beam stands on home (a place, owner #37)
 		pos = away_rocket() if away_rocket() is Vector3 else home_pos()  # [v6pace] from a far base home is a rocket hop
 	return pos
+
+
+## [v10guide] Critic 5 (the trail ran to the next dirty hex while the card said "Carry your bale
+## to the scale"; after Continue the beam stood on the bench): when the card's situation line names
+## a place, the beam stands there: [pos], or [] when the line names no place and the step's own
+## target holds. Away from home with a rocket, a place at home is reached by the rocket.
+func situation_target() -> Array:
+	if situation == "" or situation_to == "":
+		return []
+	match situation_to:
+		"home":
+			return [away_rocket() if away_rocket() is Vector3 else home_pos()]
+		"bin", "depot":
+			# [v10base] Every far base has its own bin and scale (FarYard): the line names them, so
+			# the beam stands on them, not on the rocket home.
+			var fy: FarYard = FarYard.of(world)
+			var fi: int = fy.site() if fy else -1
+			if fi > 0 and fy.depot(fi) != null and fy.depot(fi).is_inside_tree():
+				return [fy.depot(fi).bin_world() if situation_to == "bin" else fy.depot(fi).global_position]
+			if away_rocket() is Vector3:
+				return [away_rocket()]
+	return [_resolve({"to": situation_to, "row": []}).get("pos", null)]
 
 
 ## [v6pace] The field bench of the woken far base Lumi is at (it works like the home one), else null.
@@ -1114,6 +1139,10 @@ var situation: String = ""
 var situation_price: bool = false
 ## [v9d] The picture beside the situation line: chest, bale, lock (too heavy), house, scoop.
 var situation_kind: String = ""
+## [v10guide] Critic 5: the place the situation line names, so the beam, the trail and the card
+## agree: "bin", "depot" (the scale), "bench", "home", or "" (the line names no place, e.g. "press
+## the key for a bale": the beam stays on the step's own target).
+var situation_to: String = ""
 var _empty_t: float = 0.0
 var _was_full: bool = false
 
@@ -1268,6 +1297,7 @@ static func arc_price(w: Node, key: String) -> Dictionary:
 
 func situation_hint(dt: float = 0.0) -> String:
 	situation_price = false
+	situation_to = ""
 	var p: Patch = _patch()
 	if p == null or p.compartment == null:
 		return ""
@@ -1292,6 +1322,7 @@ func situation_hint(dt: float = 0.0) -> String:
 	# [main] Aiming at a piece that is too heavy is the thing in front of the player right now: for
 	# those few seconds it comes before the step's price (v9b's "Needs Lift N" met v9a's price rule).
 	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
+		situation_to = "bench"
 		return Pace.heavy_line() if Pace.heavy_need > 0 else tr("Too heavy. Upgrade Lift at the bench.")  # [v9b] which Lift
 	var price: Dictionary = _step_price()
 	var short: bool = not price.is_empty() and not GameState.can_afford_all(price)
@@ -1301,11 +1332,13 @@ func situation_hint(dt: float = 0.0) -> String:
 	var fy: FarYard = FarYard.of(world)
 	var far_base: bool = fy != null and fy.site() > 0
 	if full:
+		situation_to = "" if press else "bin"  # pressing a bale is done where Lumi stands: the step's target holds
 		if far and not press:
 			return tr("Your chest is full. Follow the beam to this base's bin.") if far_base else tr("Your chest is full. Head home: the bin is under the tall smoke.")
 		return full_line
 	situation_kind = "bale"
 	if not p.carried.is_empty():
+		situation_to = "depot"
 		if far_base:
 			return tr("Carry your bale to this base's scale by its bin.")
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
@@ -1313,6 +1346,7 @@ func situation_hint(dt: float = 0.0) -> String:
 	if target_hex < 0 and _none_near and str(step_target(current()).get("to", "")) == "hex" and Pace.lift_class() < Pace.SIZE_LARGE \
 			and (field_bench() is Vector3 or away_rocket() is Vector3) and _hold <= 0.0:
 		situation_kind = "lock"
+		situation_to = "bench"
 		return tr("Too heavy. Upgrade Lift at the bench.")
 	if short:
 		situation_price = true
@@ -1321,6 +1355,7 @@ func situation_hint(dt: float = 0.0) -> String:
 	situation_kind = "house"
 	var bench_here: bool = field_bench() is Vector3 and str(step_target(current()).get("to", "")) == "bench"  # [v6pace]
 	if far and needs_home() and not bench_here:
+		situation_to = "home"
 		if away_rocket() is Vector3:
 			return tr("The rocket waits on the pad. Home is first on its list.")  # [v6pace] a far base: fly home
 		return tr("Head home: follow the beam to the tall smoke.")

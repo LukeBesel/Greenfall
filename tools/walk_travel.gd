@@ -619,7 +619,8 @@ static func _there_and_back(so: SliceOrbit) -> void:
 	var ob: Objectives = w.get("objectives") as Objectives
 	var os_: OrbitSites = so.sites
 	var hp: HubPurpose = os_.purpose
-	YardBuilds.mark_built("shuttle")  # [v10pace] the rocket stands once the shuttle is built
+	# Under the base-1 order no rocket stands until the shuttle is built.
+	YardBuilds.mark_built("shuttle")
 	GameState.flags["shuttle_plans"] = true
 	GameState.flags["map_seen"] = true
 	_set_story(ob, "hub_fly_2")

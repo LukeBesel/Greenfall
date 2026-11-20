@@ -36,3 +36,17 @@ func test_capped_by_junk_left() -> void:
 	assert_eq(float(none["cubes"]), 0.0)
 	var some: Dictionary = Offline.compute(fleet, 0, 1.0, 8.0 * 3600.0, 50.0)
 	assert_almost_eq(float(some["units"]), 50.0, 0.001)
+
+
+## [v10guide] Critic 3: the away line says what was gained in kid words; no "hub", no advice about a
+## robot the player may not have; nothing at all when nothing was gained.
+func test_away_line_is_what_was_gained() -> void:
+	var lone: Dictionary = Offline.compute([{"type": "scoopie", "tier": 0}], 1, 1.0, 3600.0)
+	var line: String = Offline.summary_text(lone)
+	var want: float = float(lone["cubes"]) + float(lone["waiting_value"])
+	assert_gt(want, 1.0)
+	assert_true(line.begins_with("While you were away, your robots earned "), line)
+	assert_true(line.contains(Settings.fmt(BigNum.from_float(want))), line)
+	for bad: String in ["hub", "Haul Bug", "stacked", "scrubbers"]:
+		assert_false(line.contains(bad), "%s: %s" % [bad, line])
+	assert_eq(Offline.summary_text(Offline.compute([], 1, 1.0, 3600.0)), "", "nothing gained: no line")

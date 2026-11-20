@@ -49,6 +49,15 @@ static func needs_hauler(crew: SphereCrew, hub: int) -> bool:
 	return crew.bales_waiting(hub) >= PILE_NO_HAULER + haulers * PILE_PER_HAULER
 
 
+## [v10guide] Critic 20: "Build a Haul Bug" said while two Haul Bugs worked there. The line names
+## only what the player can do now: the first Haul Bug, else one more.
+static func pile_line(crew: SphereCrew, hub: int) -> String:
+	for u: Dictionary in crew.units:
+		if int(u["hub"]) == hub and str(u["role"]) == "haul":
+			return TranslationServer.translate("Bales are piling up. One more Haul Bug would help.")
+	return TranslationServer.translate("Bales are piling up. Build a Haul Bug.")
+
+
 static func state(crew: SphereCrew, u: Dictionary) -> int:
 	match str(u["mode"]):
 		"hello":
@@ -78,11 +87,11 @@ static func line(crew: SphereCrew, u: Dictionary) -> String:
 			return TranslationServer.translate("Hello! Looking around.")
 		"go":
 			if role == "clean" and bool(crew.short_haul.get(int(u["hub"]), false)):
-				return TranslationServer.translate("Bales are piling up. Build a Haul Bug.")
+				return pile_line(crew, int(u["hub"]))
 			return TranslationServer.translate("On my way to work.")
 		"work":
 			if role == "clean" and bool(crew.short_haul.get(int(u["hub"]), false)):
-				return TranslationServer.translate("Bales are piling up. Build a Haul Bug.")
+				return pile_line(crew, int(u["hub"]))
 			return TranslationServer.translate(str(WORK_LINE.get(role, WORK_LINE["clean"])))
 		"to_bale":
 			return TranslationServer.translate("Fetching a bale.")
