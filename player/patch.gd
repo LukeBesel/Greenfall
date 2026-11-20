@@ -666,14 +666,16 @@ func _handle_interact() -> void:
 	if _cubing > 0.0:
 		return
 	if input.interact_pressed():
-		if detector.can_dig() and carried.is_empty():
-			detector.dig(_on_part_found)
-			return
+		# [v10base] E does what the prompt says (_update_hints: the bale, then the buried part, then
+		# the world). The dig came first here, so with a bale at his feet on a buried part the
+		# prompt said "pick up" and E dug the part.
 		var c: JunkCube = nearest_loose_cube()
 		if c and carried.size() < carry_cap() and not _bench_first():
 			pick_up(c)
 		elif not carried.is_empty():
 			place_top_cube()
+		elif detector.can_dig():
+			detector.dig(_on_part_found)
 		elif world and world.has_method("try_interact"):
 			world.try_interact(self)
 	elif input.drop_pressed() and not carried.is_empty():
