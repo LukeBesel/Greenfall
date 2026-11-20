@@ -90,7 +90,7 @@ func _ready() -> void:
 	header.add_child(sp)
 	# [intro2] Rewatch the opening cinematic (owner playtest #2).
 	var story := Button.new()
-	story.text = tr("Watch the story")
+	story.text = tr("Watch the opening again")  # [v11film] the same words as the pause menu's entry
 	story.custom_minimum_size = Vector2(120, 44)  # [v6screens] was 170; wraps in long languages
 	story.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	story.focus_mode = Control.FOCUS_NONE
@@ -99,7 +99,10 @@ func _ready() -> void:
 		var w: Node = get_tree().current_scene
 		var intro: Variant = w.get("intro") if w else null
 		if intro is Intro:
-			get_tree().create_timer(0.25).timeout.connect((intro as Intro).replay))
+			if (intro as Intro).can_replay():
+				get_tree().create_timer(0.25).timeout.connect((intro as Intro).replay)
+			else:  # [v11film] the film is shot round the pod: its ground has to be loaded
+				Subtitles.say(tr("Go back to your pod to watch it.")))
 	header.add_child(story)
 	var close := Button.new()
 	Settings.bind_text(close, func() -> String: return tr("Close  [%s]") % Settings.glyph("open_codex" if not Settings.last_input_pad else "ui_cancel"))  # [deck]

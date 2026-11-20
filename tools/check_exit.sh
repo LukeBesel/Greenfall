@@ -59,6 +59,15 @@ else
 	echo "[check_exit] FAIL intro: see screenshots/check_exit_intro.log"
 	fail=1
 fi
+# [v11film] Watching the film again (pause menu, Codex) changes nothing: the save and the world
+# are compared before and after seven rewatches, skipped at different moments.
+if tools/check_rewatch.sh >screenshots/check_exit_rewatch.log 2>&1; then
+	echo "[check_exit] PASS rewatch (the world is the same after watching the film again)"
+else
+	echo "[check_exit] FAIL rewatch: see screenshots/check_exit_rewatch.log"
+	tail -n 20 screenshots/check_exit_rewatch.log
+	fail=1
+fi
 # [v9a] Goal audit: New Game to the first robot with real keys, mouse aim and bench clicks
 # (tools/walk_opening.gd): intro skip, checklist, bin, bench buys, bales, tower, Glim, hex, Bot Bay.
 run walk_opening -- --fresh --orbit --intro --walk-opening --save-dir=check_exit_open_$$

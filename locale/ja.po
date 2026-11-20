@@ -112,7 +112,7 @@ msgstr "地球儀マップ"
 msgid "Lens view"
 msgstr "レンズビュー"
 
-#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:52
+#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:53
 msgid "Codex"
 msgstr "図鑑"
 
@@ -642,7 +642,7 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:243 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -799,31 +799,31 @@ msgstr "%d つの基地がそろった。ロケットでドライブを建造し
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:124
+#: planet/sites/orbit_sites.gd:126
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:146
+#: planet/sites/orbit_sites.gd:148
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:184
+#: planet/sites/orbit_sites.gd:186
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:242
+#: planet/sites/orbit_sites.gd:244
 msgid "%s site"
 msgstr "%sの地点"
 
@@ -1595,7 +1595,7 @@ msgstr "基地は体験版で行けるところまで育った。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "製品版では、Lumi は基地をレベル5まで育て、地区まるごと緑で満たし、明るい未来都市へと成長させ、ロケットで星じゅうの数十の基地へ飛んでいきます。体験版の進行状況は引き継がれます。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:789
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:792
 msgid "Hexes cleaned"
 msgstr "片づけたヘックス"
 
@@ -1603,11 +1603,11 @@ msgstr "片づけたヘックス"
 msgid "Bales made"
 msgstr "作ったベール"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:804
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:807
 msgid "Robots built"
 msgstr "作ったロボット"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:812
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:815
 msgid "Time played"
 msgstr "プレイ時間"
 
@@ -1627,7 +1627,7 @@ msgstr "タイトル画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "プレイを続ける：最初の地区は基地レベル %d のまま遊べます。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:885 ui/main_menu.gd:582
 msgid "%dh %02dm"
 msgstr "%d時間%02d分"
 
@@ -2003,8 +2003,8 @@ msgid "The vault. Your vault. It looks exactly like you left it."
 msgstr "保管庫。あなたの保管庫。出ていったときのまま。"
 
 #: story/homecoming.gd:34
-msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
-msgstr "あのトレイを守るために、あなたは貨物ポッドに乗り込んだ。300年後、ちゃんと持って帰ってきた。"
+msgid "You climbed into a pod to save that tray. Now you have brought it home."
+msgstr "あなたはその苗のトレイを守るためにポッドに乗った。そして今、持ち帰ってくれたね。"
 
 #: story/homecoming.gd:35
 msgid "Hear that? Below decks. Doors. Voices. They're waking up, {name}."
@@ -2019,37 +2019,37 @@ msgstr "彼らが最初に見るのは、また緑になった世界。あなた
 msgid "Homecoming"
 msgstr "帰郷"
 
-#: story/intro.gd:360
-msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
-msgstr "三百年前、最後の種はアーク Cradle号に乗って Verdance を去った。"
+#: story/intro.gd:402
+msgid "Still no green down there, Lumi."
+msgstr "下にはまだ緑がないね、Lumi。"
 
-#: story/intro.gd:361
-msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
-msgstr "アークの小さなシードキーパー Lumi は、毎晩苗たちに歌を歌っていた。"
+#: story/intro.gd:403
+msgid "Nothing can grow in all that trash. So the people sleep up here, and we wait."
+msgstr "あんなにゴミがあっては何も育たない。だからみんなはここで眠って、私たちは待っているの。"
 
-#: story/intro.gd:362
-msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
-msgstr "また鼻歌かい、Lumi？聞こえてないんだよ。……でも、君が歌うと育つのが速いんだよね。"
+#: story/intro.gd:404
+msgid "Three hundred years. And you have kept the last plants alive."
+msgstr "三百年。そのあいだ、あなたが最後の植物を生かしてきた。"
 
-#: story/intro.gd:363
-msgid "Then, one night, the sky came apart."
-msgstr "そして、ある夜、空が裂けた。"
+#: story/intro.gd:405
+msgid "Lumi. Come away from the glass."
+msgstr "Lumi。ガラスから離れて。"
 
-#: story/intro.gd:364
-msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
-msgstr "保管庫ベイで船体破損！Lumi、トレイはいいから、離れて！"
+#: story/intro.gd:406
+msgid "The glass is breaking! Take the tray. Get to the pod!"
+msgstr "ガラスが割れる！トレイを持って。ポッドへ急いで！"
 
-#: story/intro.gd:365
-msgid "Lumi— hold on— I can't turn her around— hold on—"
-msgstr "Lumi——がんばって——向きを変えられない——がんばって——"
+#: story/intro.gd:407
+msgid "I can't keep you safe here. I have to let you go."
+msgstr "ここではあなたを守れない。行かせるしかないの。"
 
-#: story/intro.gd:366
-msgid "The ark could not turn back. The pod fell for days."
-msgstr "アークは引き返せなかった。ポッドは何日も落ち続けた。"
+#: story/intro.gd:408
+msgid "My engines are gone. I can't come after you."
+msgstr "エンジンがやられた。追いかけられない。"
 
-#: story/intro.gd:1967
-msgid "GREEN LIGHT  ·  NONE DETECTED"
-msgstr "緑の光  ·  検知なし"
+#: story/intro.gd:409
+msgid "Lumi— I will find you— I will find—"
+msgstr "Lumi— 必ず見つける— 必ず見つ—"
 
 #: story/objectives.gd:282
 msgid "Reward: %s"
@@ -2275,11 +2275,11 @@ msgstr "ガラクタの下のどこか。"
 msgid "Found on the planet it belongs to."
 msgstr "それが属する惑星で見つかった。"
 
-#: systems/codex.gd:200 ui/codex_screen.gd:384
+#: systems/codex.gd:200 ui/codex_screen.gd:387
 msgid "Old Town"
 msgstr "旧市街"
 
-#: systems/codex.gd:204 ui/codex_screen.gd:384
+#: systems/codex.gd:204 ui/codex_screen.gd:387
 msgid "Wilderness bases"
 msgstr "荒野の基地"
 
@@ -2287,7 +2287,7 @@ msgstr "荒野の基地"
 msgid " · often %s"
 msgstr " · よく出る場所：%s"
 
-#: systems/codex.gd:207 ui/codex_screen.gd:384 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:207 ui/codex_screen.gd:387 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "辺境"
 
@@ -2295,11 +2295,11 @@ msgstr "辺境"
 msgid " · %s"
 msgstr " · %s"
 
-#: systems/codex.gd:209 ui/codex_screen.gd:384
+#: systems/codex.gd:209 ui/codex_screen.gd:387
 msgid "Other worlds"
 msgstr "ほかの世界"
 
-#: systems/codex.gd:210 ui/codex_screen.gd:384
+#: systems/codex.gd:210 ui/codex_screen.gd:387
 msgid "Any district"
 msgstr "どの地区でも"
 
@@ -2891,7 +2891,7 @@ msgstr "すでに予約済み"
 msgid "Queue is full"
 msgstr "予約がいっぱい"
 
-#: systems/research.gd:356 ui/codex_screen.gd:886
+#: systems/research.gd:356 ui/codex_screen.gd:889
 msgid "%ds"
 msgstr "%d秒"
 
@@ -3314,7 +3314,7 @@ msgstr "ベールを約 %d 個プレスした"
 msgid "kept the base tidy"
 msgstr "基地をきれいに保った"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:796
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:799
 msgid "Cubes earned"
 msgstr "稼いだキューブ"
 
@@ -3406,11 +3406,15 @@ msgstr "大きいものだけ残っている"
 msgid "Glim is still scanning. Try again in a moment."
 msgstr "Glim はまだスキャン中。少し待ってからもう一度。"
 
+#: tools/rewatch_check.gd:196 ui/codex_screen.gd:93 ui/pause_menu.gd:61
+msgid "Watch the opening again"
+msgstr "オープニングをもう一度見る"
+
 #: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "閉じる"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:83
 msgid "Quit"
 msgstr "終了"
 
@@ -3838,7 +3842,7 @@ msgstr "%sのがれきで彼らのCDを見つけよう。"
 msgid "Your CDs (%d / %d): %s"
 msgstr "持っているCD（%d / %d）：%s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:818
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:821
 msgid "Achievements"
 msgstr "実績"
 
@@ -3862,36 +3866,36 @@ msgstr "アーティスト"
 msgid "CODEX"
 msgstr "図鑑"
 
-#: ui/codex_screen.gd:93
-msgid "Watch the story"
-msgstr "ストーリーを見る"
+#: ui/codex_screen.gd:105
+msgid "Go back to your pod to watch it."
+msgstr "ポッドのそばに戻ると見られるよ。"
 
-#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:185
+#: ui/codex_screen.gd:108 ui/upgrades_screen.gd:185
 msgid "Close  [%s]"
 msgstr "閉じる  [%s]"
 
-#: ui/codex_screen.gd:209
+#: ui/codex_screen.gd:212
 msgid "%d / %d curiosities"
 msgstr "珍品 %d / %d"
 
-#: ui/codex_screen.gd:211
+#: ui/codex_screen.gd:214
 msgid "%d / %d collectibles"
 msgstr "コレクション %d / %d"
 
-#: ui/codex_screen.gd:213
+#: ui/codex_screen.gd:216
 msgid "%d / %d achievements"
 msgstr "実績 %d / %d"
 
-#: ui/codex_screen.gd:215
+#: ui/codex_screen.gd:218
 msgid "%d / %d entries"
 msgstr "項目 %d / %d"
 
-#: ui/codex_screen.gd:344 ui/codex_screen.gd:464 ui/codex_screen.gd:630
-#: ui/codex_screen.gd:645
+#: ui/codex_screen.gd:347 ui/codex_screen.gd:467 ui/codex_screen.gd:633
+#: ui/codex_screen.gd:648
 msgid "Not found yet"
 msgstr "まだ見つかっていない"
 
-#: ui/codex_screen.gd:348
+#: ui/codex_screen.gd:351
 msgid ""
 "\n"
 "\n"
@@ -3901,211 +3905,211 @@ msgstr ""
 "\n"
 "これまでに片づけた量：%s"
 
-#: ui/codex_screen.gd:373
+#: ui/codex_screen.gd:376
 msgid "CURIOSITIES"
 msgstr "珍品"
 
-#: ui/codex_screen.gd:374 ui/codex_screen.gd:495
+#: ui/codex_screen.gd:377 ui/codex_screen.gd:498
 msgid "%d / %d found"
 msgstr "%d / %d 発見"
 
-#: ui/codex_screen.gd:468
+#: ui/codex_screen.gd:471
 msgid "Found  ·  %s"
 msgstr "発見  ·  %s"
 
-#: ui/codex_screen.gd:471
+#: ui/codex_screen.gd:474
 msgid "Parts found: %d / %d"
 msgstr "見つけたパーツ：%d / %d"
 
-#: ui/codex_screen.gd:472
+#: ui/codex_screen.gd:475
 msgid "Reward: a small surprise"
 msgstr "報酬：ちょっとしたサプライズ"
 
-#: ui/codex_screen.gd:494
+#: ui/codex_screen.gd:497
 msgid "COLLECTION"
 msgstr "コレクション"
 
-#: ui/codex_screen.gd:578
+#: ui/codex_screen.gd:581
 msgid "LUMI'S COLLECTION"
 msgstr "Lumiのコレクション"
 
-#: ui/codex_screen.gd:579
+#: ui/codex_screen.gd:582
 msgid "%d / %d complete"
 msgstr "%d / %d 完成"
 
-#: ui/codex_screen.gd:617
+#: ui/codex_screen.gd:620
 msgid "TRINKETS AND CURIOS"
 msgstr "小物と珍品"
 
-#: ui/codex_screen.gd:629
+#: ui/codex_screen.gd:632
 msgid "EVERY PLANET"
 msgstr "すべての惑星"
 
-#: ui/codex_screen.gd:632
+#: ui/codex_screen.gd:635
 msgid "In Lumi's collection. It has a plinth in the Museum."
 msgstr "Lumiのコレクションにある。博物館に台座がある。"
 
-#: ui/codex_screen.gd:634
+#: ui/codex_screen.gd:637
 msgid "Hint: %s"
 msgstr "ヒント：%s"
 
-#: ui/codex_screen.gd:636
+#: ui/codex_screen.gd:639
 msgid "The Museum: built"
 msgstr "博物館：完成"
 
-#: ui/codex_screen.gd:636
+#: ui/codex_screen.gd:639
 msgid "The Museum is built at Cradle Returns, near the end of the journey."
 msgstr "博物館は旅の終わり近く、Cradle Returnsに建てられる。"
 
-#: ui/codex_screen.gd:648
+#: ui/codex_screen.gd:651
 msgid "In your collection"
 msgstr "コレクション済み"
 
-#: ui/codex_screen.gd:653
+#: ui/codex_screen.gd:656
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "ヒント：維持・繁栄したヘックスに、恥ずかしがりやの訪問者がやってくる。カメラを持っていこう。"
 
-#: ui/codex_screen.gd:654
+#: ui/codex_screen.gd:657
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode ({photo_mode})."
 msgstr "ヒント：地面が癒えると動物が戻ってくる。フォトモード（{photo_mode}）で撮影しよう。"
 
-#: ui/codex_screen.gd:655
+#: ui/codex_screen.gd:658
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr "ヒント：依頼を %d 件こなそう（作業台の依頼タブ）。"
 
-#: ui/codex_screen.gd:656
+#: ui/codex_screen.gd:659
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr "ヒント：珍品カプセルは、作業台の依頼の報酬トラックにある。"
 
-#: ui/codex_screen.gd:657
+#: ui/codex_screen.gd:660
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "ヒント：コンボメーターがいっぱいになるまで休まずすくい続けよう。"
 
-#: ui/codex_screen.gd:658
+#: ui/codex_screen.gd:661
 msgid "Hint: turns up during %s."
 msgstr "ヒント：%sのあいだに現れる。"
 
-#: ui/codex_screen.gd:739
+#: ui/codex_screen.gd:742
 msgid "Unlocked  ·  %s"
 msgstr "解除  ·  %s"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:789
 msgid "Total"
 msgstr "合計"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:790
 msgid "Junk removed"
 msgstr "取り除いたガラクタ"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:790
 msgid "by type"
 msgstr "種類別"
 
-#: ui/codex_screen.gd:788 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:791 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清掃"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:793
 msgid "Hexes restored"
 msgstr "よみがえったヘックス"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:794
 msgid "Bales pressed"
 msgstr "圧縮したベール"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:795
 msgid "Pure bales"
 msgstr "ピュアベール"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:796
 msgid "Perfect bales"
 msgstr "パーフェクトベール"
 
-#: ui/codex_screen.gd:794
+#: ui/codex_screen.gd:797
 msgid "Lumpy bales"
 msgstr "でこぼこベール"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:798
 msgid "Bales cashed in"
 msgstr "換金したベール"
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:801 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "栽培"
 
-#: ui/codex_screen.gd:799
+#: ui/codex_screen.gd:802
 msgid "Seeds planted"
 msgstr "植えた種"
 
-#: ui/codex_screen.gd:800
+#: ui/codex_screen.gd:803
 msgid "Plants bloomed"
 msgstr "咲いた植物"
 
-#: ui/codex_screen.gd:801
+#: ui/codex_screen.gd:804
 msgid "Air filtered"
 msgstr "ろ過した空気"
 
-#: ui/codex_screen.gd:803 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:806 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "ロボット"
 
-#: ui/codex_screen.gd:805
+#: ui/codex_screen.gd:808
 msgid "Bales by robots"
 msgstr "ロボットのベール"
 
-#: ui/codex_screen.gd:806
+#: ui/codex_screen.gd:809
 msgid "Parts dug up"
 msgstr "掘り出したパーツ"
 
-#: ui/codex_screen.gd:808
+#: ui/codex_screen.gd:811
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:809
+#: ui/codex_screen.gd:812
 msgid "Distance rolled"
 msgstr "走った距離"
 
-#: ui/codex_screen.gd:810
+#: ui/codex_screen.gd:813
 msgid "Memory shards read"
 msgstr "読んだメモリーの破片"
 
-#: ui/codex_screen.gd:811
+#: ui/codex_screen.gd:814
 msgid "Codex entries"
 msgstr "図鑑の項目"
 
-#: ui/codex_screen.gd:814
+#: ui/codex_screen.gd:817
 msgid "Progress"
 msgstr "進行状況"
 
-#: ui/codex_screen.gd:815
+#: ui/codex_screen.gd:818
 msgid "Upgrades bought"
 msgstr "購入したアップグレード"
 
-#: ui/codex_screen.gd:816
+#: ui/codex_screen.gd:819
 msgid "Field notes logged"
 msgstr "記録したフィールドノート"
 
-#: ui/codex_screen.gd:817
+#: ui/codex_screen.gd:820
 msgid "Research done"
 msgstr "完了した研究"
 
-#: ui/codex_screen.gd:819
+#: ui/codex_screen.gd:822
 msgid "Best hub level"
 msgstr "最高基地レベル"
 
-#: ui/codex_screen.gd:870
+#: ui/codex_screen.gd:873
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:871
+#: ui/codex_screen.gd:874
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:875
+#: ui/codex_screen.gd:878
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:885
+#: ui/codex_screen.gd:888
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -4484,7 +4488,7 @@ msgstr "ボットファブリケーター"
 msgid "Mix: how many of each it builds in turn. New robots go to the hub that needs them most."
 msgstr "ミックス：それぞれを何台ずつ順番に作るか。新しいロボットは、いちばん必要な基地へ行く。"
 
-#: ui/fabricator_panel.gd:77 ui/pause_menu.gd:50
+#: ui/fabricator_panel.gd:77 ui/pause_menu.gd:51
 msgid "Resume"
 msgstr "再開"
 
@@ -5181,7 +5185,7 @@ msgstr[0] "%d 個の惑星"
 msgid "Profiles"
 msgstr "プロフィール"
 
-#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
+#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:79
 msgid "Settings"
 msgstr "設定"
 
@@ -5293,19 +5297,19 @@ msgstr "セーブを残す"
 msgid "Erase and start"
 msgstr "消去して始める"
 
-#: ui/pause_menu.gd:43
+#: ui/pause_menu.gd:44
 msgid "PAUSED"
 msgstr "ポーズ中"
 
-#: ui/pause_menu.gd:55
+#: ui/pause_menu.gd:56
 msgid "Codex  [%s]"
 msgstr "図鑑  [%s]"
 
-#: ui/pause_menu.gd:57
+#: ui/pause_menu.gd:68
 msgid "Photo mode  [%s]"
 msgstr "フォトモード  [%s]"
 
-#: ui/pause_menu.gd:63 data/achievements.json:achievements[home_relics].name
+#: ui/pause_menu.gd:74 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "思い出の品"
 
@@ -11902,12 +11906,12 @@ msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradl
 msgstr "植物は緑の光を出す。その光でブルームコアがたまるし、Cradle号に帰り道を教えてくれるんだ。"
 
 #: data/objectives.json:brief.lines
-msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
-msgstr "Lumi、WREN だよ。Cradle号の上にいるの。ポッドは古いおそうじステーションのそばに落ちたみたい。こっちの電波は弱いんだ。"
+msgid "Lumi... it's WREN. Can you hear me? I can hardly reach you down there."
+msgstr "Lumi……WREN よ。聞こえる？そこまでほとんど届かないの。"
 
 #: data/objectives.json:brief.lines
-msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr "そこのゴミ箱はゴミをキューブに変えるの。パーツを見つけて信号塔を建てれば、お話しできる。ずっと[glitch]聞いて——[/glitch]"
+msgid "Fix the old workbench. Pick up trash, find parts, and build a signal tower so we can [glitch]talk ag—[/glitch]"
+msgstr "古い作業台を直して。ゴミを拾って、パーツを見つけて、信号塔を建てて。そうすればまた[glitch]話せ——[/glitch]"
 
 #: data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
@@ -16623,6 +16627,42 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
+#~ msgstr "あのトレイを守るために、あなたは貨物ポッドに乗り込んだ。300年後、ちゃんと持って帰ってきた。"
+
+#~ msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
+#~ msgstr "三百年前、最後の種はアーク Cradle号に乗って Verdance を去った。"
+
+#~ msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
+#~ msgstr "アークの小さなシードキーパー Lumi は、毎晩苗たちに歌を歌っていた。"
+
+#~ msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
+#~ msgstr "また鼻歌かい、Lumi？聞こえてないんだよ。……でも、君が歌うと育つのが速いんだよね。"
+
+#~ msgid "Then, one night, the sky came apart."
+#~ msgstr "そして、ある夜、空が裂けた。"
+
+#~ msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
+#~ msgstr "保管庫ベイで船体破損！Lumi、トレイはいいから、離れて！"
+
+#~ msgid "Lumi— hold on— I can't turn her around— hold on—"
+#~ msgstr "Lumi——がんばって——向きを変えられない——がんばって——"
+
+#~ msgid "The ark could not turn back. The pod fell for days."
+#~ msgstr "アークは引き返せなかった。ポッドは何日も落ち続けた。"
+
+#~ msgid "GREEN LIGHT  ·  NONE DETECTED"
+#~ msgstr "緑の光  ·  検知なし"
+
+#~ msgid "Watch the story"
+#~ msgstr "ストーリーを見る"
+
+#~ msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
+#~ msgstr "Lumi、WREN だよ。Cradle号の上にいるの。ポッドは古いおそうじステーションのそばに落ちたみたい。こっちの電波は弱いんだ。"
+
+#~ msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "そこのゴミ箱はゴミをキューブに変えるの。パーツを見つけて信号塔を建てれば、お話しできる。ずっと[glitch]聞いて——[/glitch]"
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "留守のあいだに（%s）："

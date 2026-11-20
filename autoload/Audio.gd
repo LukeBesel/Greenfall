@@ -615,6 +615,12 @@ func _process(delta: float) -> void:
 ## a paused cinematic holds its song, TunesDirector.set_paused).
 const PAUSE_KEEP_BUSES: Array[String] = ["UI", "Music", "Songs"]
 var _world_holds: Dictionary = {}  # owner id -> true
+## [v11film] True while the opening film is watched again: the game is stopped (tree paused) so
+## nothing in the world can change, but the film's own sounds must play.
+var film_plays: bool = false:
+	set(v):
+		film_plays = v
+		_sync_world_pause()
 var _world_paused: bool = false
 var _held: Array[WeakRef] = []
 
@@ -638,7 +644,7 @@ func holds(p: Node) -> bool:
 
 
 func _sync_world_pause() -> void:
-	var want: bool = (is_inside_tree() and get_tree().paused) or not _world_holds.is_empty()
+	var want: bool = (is_inside_tree() and get_tree().paused and not film_plays) or not _world_holds.is_empty()
 	if want == _world_paused:
 		return
 	_world_paused = want
