@@ -169,7 +169,7 @@ func _ready() -> void:
 	UITheme.juice(_btn, 1.02)
 	vb.add_child(_btn)
 	_root.modulate.a = 0.0
-	(func() -> void: open()).call_deferred()
+	open.call_deferred()
 
 
 func open() -> void:

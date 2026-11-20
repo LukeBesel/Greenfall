@@ -408,17 +408,25 @@ func _build_ui() -> void:
 		"credits": _open_credits.call_deferred()
 		"confirm": _on_new_game.call_deferred()
 		"round-new", "round-continue":  # [orbB] dev / export checks: New Game or Continue from the title
-			(func() -> void:
-				if DevHooks.get_s("menu", "") == "round-new" or not SaveManager.has_save():
-					_start_new()
-				else:
-					_go(true)).call_deferred()
+			_dev_start.call_deferred()
 		"profiles":  # [worlds2]
 			_open_profiles.call_deferred()
 		"worlds":  # [worlds2] profile, then its worlds
-			(func() -> void:
-				_open_profiles()
-				_picker._continue(SaveManager.profile_slot)).call_deferred()
+			_dev_open_worlds.call_deferred()
+
+
+## Deferred from _build_ui (--menu=worlds) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_open_worlds() -> void:
+	_open_profiles()
+	_picker._continue(SaveManager.profile_slot)
+
+
+## Deferred from _build_ui (--menu=round-new / round-continue) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_start() -> void:
+	if DevHooks.get_s("menu", "") == "round-new" or not SaveManager.has_save():
+		_start_new()
+	else:
+		_go(true)
 
 
 func _title_font() -> FontVariation:
