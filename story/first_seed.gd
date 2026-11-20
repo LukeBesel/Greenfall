@@ -12,14 +12,12 @@ const BED_SPOTS: Array[Vector3] = [Vector3(1.4, BED_TOP, 0.3), Vector3(1.4, BED_
 	Vector3(-1.4, BED_TOP, 0.3), Vector3(-1.4, BED_TOP, 2.6)]
 # l10n:begin
 const LINES: Array[Array] = [
+	# [v10pace] Five short lines (was eight, 44 s of lore): critic 15, 16 WREN lines in 3 minutes round the seed.
 	["Wait. Hold it up to the light.", 3.5],
-	["That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush.", 5.0],
-	["When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi.", 6.0],
-	["The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall.", 7.5],
-	["Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky.", 5.5],
-	["Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground.", 6.0],
-	["That somebody is you. Small. Stubborn. Running on four percent. Perfect.", 4.5],
-	["Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it.", 6.0],
+	["A seed tin! The Settlers left it here, long ago.", 4.5],
+	["Nothing grows here on its own any more. Somebody has to plant it.", 5.0],
+	["That somebody is you, Lumi. Small. Stubborn. Perfect.", 4.5],
+	["Find clean ground. Plant the seed. Then water it.", 5.0],
 ]
 # l10n:end
 
@@ -305,7 +303,7 @@ func _sprout_moment(pos: Vector3) -> void:
 	Audio.play("fanfare", 0.8, -6.0)
 	world.wren.line_started.emit(tr("...It's green. Lumi, it's actually green."), 1)
 	await get_tree().create_timer(4.5).timeout
-	world.wren.line_started.emit(tr("Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."), 1)
+	world.wren.line_started.emit(tr("Keep it watered. Every bloom gives seeds back, and a little green light for your core. This is how it starts."), 1)
 	_card = ""  # [v7play]
 	EventBus.tutorial_changed.emit("")
 	GameState.flags["first_sprout"] = true
@@ -455,8 +453,10 @@ func give_signal(line: String = "") -> void:
 	if GameState.flags.get("seed_signal", false) or GameState.flags.get("seeds_unlocked", false):
 		return
 	GameState.flags["seed_signal"] = true
-	if world.get("wren") != null:
-		world.wren.line_started.emit(line if line != "" else tr("Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."), 1)
+	# [v10pace] The seed step's own WREN line is the signal line (data/objectives.json); it used to
+	# be said here as well, right after "Something green is waking out there" (critic 15).
+	if world.get("wren") != null and line != "":
+		world.wren.line_started.emit(line, 1)
 	Audio.play("detector", 0.7, -6.0)
 
 

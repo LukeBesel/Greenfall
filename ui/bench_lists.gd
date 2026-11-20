@@ -13,7 +13,7 @@ const BUILD_CATS: Array = [["story", "Story"], ["yard", "Yard"], ["machines", "M
 # l10n:end
 const BUILD_CAT_OF: Dictionary = {
 	"conveyor": "machines", "auto_baler": "machines", "recycler": "machines", "telescope": "machines", "air_scrubber": "machines",
-	"signal_tower": "story", "museum": "story",
+	"signal_tower": "story", "museum": "story", "bot_bay": "story", "shuttle": "story",  # [v10pace]
 	"bot_fabricator": "machines",  # [orbC]
 }
 
@@ -128,7 +128,7 @@ static func _base(world: Node) -> Array:
 			out.append({"id": "hub_level", "cat": "base", "icon": "hex", "icon_set": "ui", "name": "%s  ·  %s" % [TranslationServer.translate("Base level %d") % (hub.level + 1), _tr(str(nxt.get("name", "")))],
 				"desc": _tr(str(nxt.get("desc", ""))), "lv": hub.level, "max": (hub.data.get("levels", []) as Array).size(),
 				"price": cost, "state": _state(cost), "table": table, "requires": "",
-				"action": _tr("Build hub level %d") % (hub.level + 1), "act": func() -> bool: return hub.upgrade()})
+				"action": TranslationServer.translate("Build base level %d") % (hub.level + 1), "act": func() -> bool: return hub.upgrade()})
 	for e: Dictionary in HubBuilds.available(world, "tiered"):
 		var id: String = str(e["id"])
 		var reason: String = str(e.get("reason", ""))
@@ -144,7 +144,7 @@ static func _base(world: Node) -> Array:
 ## [v1guide] The next workbench tier (ui/bench_tiers.gd): it opens the next tab(s).
 static func _bench_tier(world: Node) -> Dictionary:
 	var nd: Dictionary = BenchTiers.next_def()
-	if nd.is_empty():
+	if nd.is_empty() or str(nd.get("build", "")) != "":  # [v10pace] the Bot Bay is a build of its own (Build tab), not a bench upgrade
 		return {}
 	var cost: Dictionary = nd.get("cost", {})
 	var why: String = BenchTiers.block_reason(world)

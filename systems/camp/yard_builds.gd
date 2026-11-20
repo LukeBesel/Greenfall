@@ -5,7 +5,7 @@ extends RefCounted
 ## State (per district): GameState.world["camp"] = {"bench": bool (repaired), "built": {id: true}}.
 
 const PATH: String = "res://data/camp.json"
-const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "locker", "camera_bot", "nursery"]  # [camp2] [ui6] [camp3]
+const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "locker", "camera_bot", "nursery", "bot_bay", "shuttle"]  # [camp2] [ui6] [camp3] [v10pace]
 
 static var _cfg: Dictionary = {}
 static var events: YardEvents = YardEvents.new()
@@ -39,12 +39,19 @@ static func state() -> Dictionary:
 
 
 static func built(id: String) -> bool:
+	if id == "bot_bay":  # [v10pace] the start yard's Bot Bay is the old workbench tier 2 (systems/camp/bot_bay.gd)
+		return BenchTiers.tier() >= 2
+	if id == "shuttle" and bool(GameState.orbit.get("rocket_owned", false)):  # [v10pace] a rocket that has flown is built
+		return true
 	if bool(def(id).get("global", false)):  # [camp3] one build for the whole game (the camera bot)
 		return bool(_global().get(id, false))
 	return bool((state()["built"] as Dictionary).get(id, false))
 
 
 static func mark_built(id: String) -> void:
+	if id == "bot_bay":  # [v10pace]
+		GameState.flags["bench_tier"] = maxi(BenchTiers.tier(), 2)
+		return
 	if bool(def(id).get("global", false)):  # [camp3]
 		_global()[id] = true
 		return
@@ -83,7 +90,7 @@ static func block_reason(id: String, hub_level: int) -> String:
 		return TranslationServer.translate("Repair the workbench first.")
 	var req: int = int(d.get("requires_level", 1))
 	if hub_level < req and not unlocked(id, hub_level):
-		return TranslationServer.translate("Requires hub level %d.") % req
+		return TranslationServer.translate("Requires base level %d.") % req
 	var flag: String = str(d.get("requires_flag", ""))
 	if flag != "" and not bool(GameState.flags.get(flag, false)):
 		return TranslationServer.translate("Grow your first seed first.") if flag == "first_sprout" else TranslationServer.translate("Not yet.")

@@ -514,3 +514,34 @@ func test_drips_refill_their_tank_and_water_again() -> void:
 	assert_gte(float(u["log"]["refills"]), 1.0, "it went to refill")
 	assert_gt(float(u["log"]["watered"]), 3.0, "and watered after")
 	assert_eq(crew.stuck_count(), 0)
+
+
+## [v10pace] Robot bales reach the bin: three Scoopies and one Haul Bug, near Lumi and far from
+## him (Lumi at another base). Measured with a Haul Bug carrying 2: 263 pressed vs 59 cashed by
+## bot minute 55 in play.
+func _pressed_vs_cashed(far: bool, secs: float) -> Array:
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	if far:
+		crew.focus = null
+	for i: int in 3:
+		crew.spawn("scoopie", 0, _g5.cells_around(100, 1)[i + 1])
+	crew.spawn("haulbug", 0, 100)
+	if far:
+		crew.run_far(secs, 1.0)
+	else:
+		_run(crew, secs, 0.2)
+	var pressed: float = 0.0
+	var hauled: float = 0.0
+	for u: Dictionary in crew.robots():
+		pressed += float(u["log"]["bales"])
+		hauled += float(u["log"]["hauled"])
+	gut.p("[v10pace] %s %.0f s: pressed %.0f, sold %.0f, waiting %d" % ["far" if far else "near", secs, pressed, hauled, crew.bales.size()])
+	return [pressed, hauled]
+
+
+func test_robot_bales_are_sold_near_and_far() -> void:
+	for far: bool in [false, true]:
+		var r: Array = _pressed_vs_cashed(far, 1200.0)
+		assert_gt(float(r[0]), 5.0, "the Scoopies press bales (%s)" % ("far" if far else "near"))
+		assert_gt(float(r[1]), float(r[0]) * 0.7, "the Haul Bug sells most of them (%s): %s" % ["far" if far else "near", str(r)])

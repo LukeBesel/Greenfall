@@ -136,14 +136,11 @@ static func apply(result: Dictionary) -> void:
 	GameState.inc_stat("air_filtered", float(result["air"]))
 
 
+## [v10guide] Critic 3: the away report is one kid-simple line saying what was gained, or "" when
+## nothing was (no "hub", no advice about robots the player may not have yet). The bales a fleet
+## with no hauler pressed are cashed in all the same, so they count as earned.
 static func summary_text(result: Dictionary) -> String:
-	var t: float = float(result["seconds"])
-	var when: String = (TranslationServer.translate("%d min") % int(t / 60.0)) if t < 3600.0 else ("%.1f h" % (t / 3600.0))
-	var lines: Array[String] = [TranslationServer.translate("While you were away (%s):") % when]
-	if float(result["cubes"]) > 0.0:
-		lines.append(TranslationServer.translate("The fleet baled and delivered %s cubes.") % Settings.fmt(BigNum.from_float(float(result["cubes"]))))
-	elif float(result["waiting_value"]) > 0.0:
-		lines.append(TranslationServer.translate("Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving.") % Settings.fmt(BigNum.from_float(float(result["waiting_value"]))))
-	if float(result["air"]) > 0.0:
-		lines.append(TranslationServer.translate("The scrubbers filtered the air the whole time. It's a little clearer."))
-	return "\n".join(lines)
+	var gain: float = float(result.get("cubes", 0.0)) + float(result.get("waiting_value", 0.0))
+	if gain < 1.0:
+		return ""
+	return TranslationServer.translate("While you were away, your robots earned %s cubes.") % Settings.fmt(BigNum.from_float(gain))

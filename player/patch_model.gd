@@ -65,6 +65,9 @@ var _shudder: float = 0.0
 var _press: float = 0.0
 var _happy: float = 0.5
 var _happy_target: float = 0.5
+## [v10ui] set_happy() at or above this shows the ^ ^ arcs; below it the round eyes.
+const HAPPY_ARCS_FROM: float = 0.75
+var _face_happy: float = 0.0
 var _look := Vector2.ZERO
 var _look_target := Vector2.ZERO
 var _head_yaw: float = 0.0
@@ -617,7 +620,10 @@ func _process(delta: float) -> void:
 		_blink = 1.0
 	_blink = maxf(0.0, _blink - delta * 7.0)
 	_face_mat.set_shader_parameter("look", _look)
-	_face_mat.set_shader_parameter("happy", maxf(clampf((_happy - 0.6) * 2.5, 0.0, 1.0), _happy_bias * (1.0 - minf(_eye_flash * 2.0, 1.0))))
+	# [v10ui] The eyes rest on ONE shape: round (0) or the ^ ^ arcs (1), never a blend. A mood of 0.9
+	# (the title) used to rest at 0.75 here, which drew the arc over the disc: "eyes messed up".
+	_face_happy = move_toward(_face_happy, 1.0 if _happy_target >= HAPPY_ARCS_FROM else 0.0, delta * 6.0)
+	_face_mat.set_shader_parameter("happy", maxf(_face_happy, _happy_bias * (1.0 - minf(_eye_flash * 2.0, 1.0))))
 	_face_mat.set_shader_parameter("blink", 1.0 if sleeping else _blink)  # [v2feel] asleep: cleanly shut (0.9 left a squashed sliver)
 	_eye_flash = maxf(0.0, _eye_flash - delta * 6.0)
 	# [v2feel] Awake eyes stay fully lit on a low core (the intro's wake read as half-closed at 0.9);

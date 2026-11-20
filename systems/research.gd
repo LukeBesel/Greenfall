@@ -331,9 +331,21 @@ static func _complete(id: String, counted: bool = true) -> void:
 ## [v9b] A grant (the Bot Bay's Salvage Logic, rewards) is not a research project the player
 ## finished: it no longer counts in research_done, so "Finish a research project" can't complete
 ## itself the moment the Bot Bay is bought (it did, before the Research tab even existed).
+## [v10pace] It is also silent: building the Bot Bay said "Research complete: Salvage Logic.", the
+## Codex counted "Research done 1 / 39" and the first-research achievement unlocked, half an hour
+## before the player could research anything. A grant announces nothing (the thing that brought
+## it says what it is) and is not a finished project anywhere (finished_count).
 static func grant(id: String) -> void:
 	if exists(id) and not has(id):
-		_complete(id, false)
+		done_list().append(id)
+		_mods_size = -1
+
+
+## Research projects the player finished (the Codex's count, the research achievements): grants
+## and story plans are not among them.
+static func finished_count() -> int:
+	var v: Variant = GameState.stats.get("research_done", 0.0)
+	return int(v) if (v is float or v is int) else 0
 
 
 static func time_text(s: float) -> String:

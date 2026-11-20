@@ -409,7 +409,7 @@ func _handle_tools(delta: float) -> void:
 		if water <= 0.0:
 			Audio.play("buzz", 1.0, -12.0)
 			_water_t = 1.5
-			EventBus.toast.emit(tr("Watering can is empty. Refill at the hub."), "info")
+			EventBus.toast.emit(tr("Watering can is empty. Refill at the base."), "info")
 			return
 		# The old can leaks: a bit is lost with every pour (an upgrade fixes it).
 		water = maxf(0.0, water - (1.0 if GameState.level_of("fix_can") > 0 else 1.3))

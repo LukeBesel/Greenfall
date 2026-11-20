@@ -53,7 +53,6 @@ func sell_mult() -> float:
 ## [v6pace] The base level that brings the rocket (data/hub.json "rocket_level"). It was level 5
 ## in code: on the globe that put the first hop to another hub past the planet's whole arc.
 static var _cfg: Dictionary = {}
-static var _rocket_step: int = -2
 static func _hub_cfg() -> Dictionary:
 	if _cfg.is_empty():
 		_cfg = Economy.read_json("res://data/hub.json")
@@ -64,21 +63,19 @@ static func rocket_level() -> int:
 	return int((_hub_cfg().get("rocket", {}) as Dictionary).get("level", 5))
 
 
-## Whether a base at `level` has its rocket: the level, and the story objective named in the data
-## done (flags.objective_step past it; a save from before the objectives counts as past it).
+## [v10pace] Owner: "The rocket just popped out of nowhere... I didnt even build this shuttle."
+## The rocket is a build the player makes (data/hub.json rocket.build = a data/camp.json build id,
+## bought in the workbench's Build tab, raised on the pad): nothing stands on the pad before.
+## A rocket that has already flown (GameState.orbit.rocket_owned: older saves, another planet)
+## counts as built.
+static func rocket_built() -> bool:
+	var id: String = str((_hub_cfg().get("rocket", {}) as Dictionary).get("build", ""))
+	return id == "" or YardBuilds.built(id)
+
+
+## Whether a base at `level` has its rocket: the level, and the rocket built.
 static func rocket_open(level: int) -> bool:
-	if level < rocket_level():
-		return false
-	var after: String = str((_hub_cfg().get("rocket", {}) as Dictionary).get("after_objective", ""))
-	if after == "":
-		return true
-	if _rocket_step == -2:
-		_rocket_step = -1
-		var ch: Array = Economy.read_json("res://data/objectives.json").get("objectives", [])
-		for i: int in ch.size():
-			if str((ch[i] as Dictionary).get("id", "")) == after:
-				_rocket_step = i
-	return _rocket_step < 0 or int(GameState.flags.get("objective_step", 0)) > _rocket_step
+	return level >= rocket_level() and rocket_built()
 
 
 ## Why there is no rocket yet (translated), "" when rocket_open(level).
@@ -87,7 +84,7 @@ static func rocket_lock_text(level: int) -> String:
 		return ""
 	if level < rocket_level():
 		return TranslationServer.translate("Locked. Upgrade your base to level %d to build the launch pad.") % rocket_level()
-	return TranslationServer.translate("The launch pad is still buried. Put your first robot to work to clear it.")
+	return TranslationServer.translate("No shuttle yet. Build it at the workbench when WREN finds a place to fly to.")
 
 
 ## The level a restored far hub stands at, and what restoring one costs when `n` far hubs are
@@ -170,7 +167,7 @@ func upgrade() -> bool:
 	GameState.world["hub_level"] = level
 	_build_level(level, true)
 	level_changed.emit(level)
-	EventBus.toast.emit(tr("Hub upgraded: %s.") % tr(str(next["name"])), "story")
+	EventBus.toast.emit(tr("Base upgraded: %s.") % tr(str(next["name"])), "story")
 	leveled.emit(level)
 	return true
 

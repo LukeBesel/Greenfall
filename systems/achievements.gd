@@ -94,7 +94,7 @@ static func value_of(cond: Dictionary) -> float:
 		"flag":
 			return 1.0 if GameState.flags.get(key, false) else 0.0
 		"research":
-			return float(Research.done_list().size())
+			return float(Research.finished_count())  # [v10pace] projects the player finished: not grants or story plans
 		"research_id":
 			return 1.0 if Research.has(key) else 0.0
 		"codex":

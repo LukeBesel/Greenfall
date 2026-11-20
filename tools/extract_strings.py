@@ -52,6 +52,7 @@ JSON_RULES: dict[str, dict] = {
     "homeward.json": {"keys": COMMON_KEYS | {"map_line", "drive_lines", "line", "hint"}},  # [v7play] the release gate ("closed")
     # Data-only files: nothing player-facing (asset lists, tuning, Steam API stat names).
     "assets.json": {"skip": True},
+    "intro_shots.json": {"skip": True},  # [v10guide] the film's shot table: "lines" holds line ids (story/intro.gd has the text)
     "steam.json": {"skip": True},
     "patch.json": {"skip": True},
     "planet.json": {"skip": True},

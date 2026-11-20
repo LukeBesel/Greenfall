@@ -50,10 +50,10 @@ func test_salvage_pays_parts_by_rarity() -> void:
 	var got: Array = []
 	var cb := func(t: int, r: int) -> void: got.append([t, r])
 	EventBus.part_found.connect(cb)
-	assert_almost_eq(RobotParts.salvage(2, 0), 10.0, 0.001)
-	assert_almost_eq(RobotParts.salvage(3, 3), 150.0, 0.001)
+	assert_almost_eq(RobotParts.salvage(2, 0), 5.0, 0.001)  # [v10pace] finds pay half (critic 11)
+	assert_almost_eq(RobotParts.salvage(3, 3), 75.0, 0.001)
 	EventBus.part_found.disconnect(cb)
-	assert_almost_eq(_parts_now(), 160.0, 0.001)
+	assert_almost_eq(_parts_now(), 80.0, 0.001)
 	assert_eq(GameState.parts.size(), 0, "no items are stored")
 	assert_eq(got.size(), 2, "finds are still announced")
 	for r: int in 5:
@@ -200,11 +200,12 @@ func test_hub_gains_list_the_next_level() -> void:
 func test_tabs_appear_once_open_and_stay() -> void:
 	GameState.flags.erase("bench_tabs")
 	assert_true(UpgradesScreen.tab_visible("patch"))
-	GameState.flags["bench_tier"] = 1  # [v1guide] Bots opens with the workbench's Mk II (ui/bench_tiers.gd)
-	assert_false(UpgradesScreen.tab_visible("bots"), "hidden on a fresh game")
-	GameState.flags["bench_tier"] = 2
-	assert_true(UpgradesScreen.tab_visible("bots"))
-	assert_true("bots" in GameState.flags.get("bench_tabs", []), "an opened tab is remembered")
+	GameState.flags["bench_tier"] = 2  # [v1guide] Research opens with the workbench's Research Desk (ui/bench_tiers.gd)
+	assert_false(UpgradesScreen.tab_visible("research"), "hidden before the desk")
+	GameState.flags["bench_tier"] = 3
+	assert_true(UpgradesScreen.tab_visible("research"))
+	assert_true("research" in GameState.flags.get("bench_tabs", []), "an opened tab is remembered")
+	assert_false(UpgradesScreen.tab_visible("bots"), "[v10pace] the Bot Bay has its own screen: never a workbench tab")
 
 
 func test_pause_menu_has_no_save_button() -> void:

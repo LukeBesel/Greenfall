@@ -48,7 +48,7 @@ func _build() -> void:
 	sky.fog_scale = 0.27 if so.view_mode == "command" else 1.0
 	w.add_child(sky)
 	var forced: bool = DevHooks.has("orbit-time") or not GameState.flags.has("orbit_spin")
-	sky.setup_sphere(day.env, day.sun, day.sky_mat, g.grid.radius_m, DevHooks.get_f("orbit-time", 0.42) if forced else -1.0)
+	sky.setup_sphere(day.env, day.sun, day.sky_mat, g.grid.radius_m, DevHooks.get_f("orbit-time", float(SolarSystem.globe_day(SkyDirector.current_planet_id())["start_time"])) if forced else -1.0)
 	if DevHooks.has("orbit-clouds"):
 		sky.clouds = DevHooks.get_f("orbit-clouds", 0.4)
 		sky.weather_frozen = true
@@ -99,7 +99,9 @@ func _build() -> void:
 	survey.travel_in_map = false  # [v2map] travel is at the rocket (planet/sites/orbit_sites.gd)
 	survey.planet_fraction_fn = func() -> float: return so.sites.planet_fraction() if so.sites else 0.0  # [v5text] the HUD's planet %
 	survey.hub_count = func() -> int: return g.site_manager.sites.size() if g.site_manager else g.planet.hubs.size()  # [v2map] the legend counted the flat hubs
+	survey.areas_fn = func() -> Array: return map_areas()  # [v10ui] the map is the planet's progress view
 	w.add_child(survey)
+	EventBus.hex_cleaned.connect(_map_hint)
 	survey.closed.connect(so.on_modal_closed)
 	w.set("globe", survey)
 	system_map = SystemMap.shared(w)  # [v5text] one map: the Homeward campaign uses this same node
@@ -149,12 +151,53 @@ func place_intro() -> bool:
 	return true
 
 
+## [v10ui] The base areas of this planet for the map's progress card, in the order of the base
+## path: [{name, ok, n, kind: home|awake|asleep|locked, here}]. Same cells as the HUD's "N% CLEAN"
+## (SiteManager.region_counts).
+func map_areas() -> Array:
+	var sm: SiteManager = so.globe.site_manager if so and so.globe else null
+	if sm == null:
+		return []
+	var pid: String = sm.planet_id
+	var plan: bool = HubPlan.has_plan(pid)
+	var idx: Array = []
+	if plan:
+		for e: Dictionary in HubPlan.entries(pid):
+			var s: int = int(e["site"])
+			if HubPlan.is_main(pid, s) and s < sm.sites.size():
+				idx.append(s)
+	else:
+		idx = range(sm.sites.size())
+	var out: Array = []
+	for i: int in idx:
+		var rc: Vector2i = sm.region_counts(i)
+		var kind: String = "locked"
+		if (plan and HubPlan.is_home(pid, i)) or (not plan and i == 0):
+			kind = "home"
+		elif HubPlan.woken(i):
+			kind = "awake"
+		elif HubPlan.seen(i) or not plan:
+			kind = "asleep"
+		var nm: String = HubPlan.hub_name(pid, i) if plan else ""
+		out.append({"name": nm if nm != "" else tr("Base %d") % (out.size() + 1), "ok": rc.x, "n": rc.y, "kind": kind, "here": i == sm.nearest})
+	return out
+
+
+## [v10ui] The first clean hex: one line that points at the map (once per save).
+func _map_hint(_hex: int, _pos: Vector3, _bonus: BigNum) -> void:
+	if bool(GameState.flags.get("map_hint", false)) or bool(GameState.flags.get("map_seen", false)):
+		return
+	GameState.flags["map_hint"] = true
+	EventBus.toast.emit(Tutorial.glyphs(tr("Press  {open_globe}  to see how much of the planet is clean")), "info")
+
+
 func open_survey() -> void:
 	if survey.is_open or system_map.is_open or so.any_modal_open():
 		return
 	if so.sites and so.sites.picker and so.sites.picker.is_open:  # [v2map] the rocket's list is up
 		return
 	so.set_input(false)
+	GameState.flags["map_seen"] = true  # [v10pace] the card's "Look at the map" step (item 109; v10ui's map sets it too)
 	survey.open_view()
 
 

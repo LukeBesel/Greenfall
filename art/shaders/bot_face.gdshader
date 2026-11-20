@@ -21,27 +21,36 @@ varying vec3 lp;
 varying vec3 ln;
 
 // Returns (core, hot, halo, glint).
+// [v10ui] happy never shows two shapes at once: the round eye shuts over 0..0.5 and the ^ arc
+// opens over 0.5..1 (as art/shaders/lumi_eyes does). The old cross-fade drew the arc over the
+// disc at any value in between ("his eyes on starter messed up", the title rested at 0.75).
 vec4 eye(vec2 p, vec2 c, float R, float bl) {
+	float hp = clamp(happy, 0.0, 1.0);
+	float s_open = 1.0 - smoothstep(0.0, 0.5, hp);
+	float a_open = smoothstep(0.5, 1.0, hp);
+	float s_on = smoothstep(0.0, 0.2, s_open);
+	float a_on = smoothstep(0.0, 0.2, a_open);
 	vec2 d = p - c;
-	d.y /= max(1.0 - bl * 0.92, 0.08);
+	d.y /= max((1.0 - bl * 0.92) * s_open, 0.08);
 	float r = length(d);
 	float aa = 0.02;
 	float disc = 1.0 - smoothstep(R - aa, R + aa, r);
 	// [main] One solid glowing eye per side (owner: the old C-ring + pupil ring read as two sets of
 	// eyes). A filled disc, brighter toward the middle, a soft outer halo and one small glint.
-	float core = disc;
-	float hot = disc * (1.0 - smoothstep(0.0, R * 0.85, r)) * 0.55;
-	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 55.0) * (1.0 - disc) * 0.6;
+	float core = disc * s_on;
+	float hot = core * (1.0 - smoothstep(0.0, R * 0.85, r)) * 0.55;
+	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 55.0) * (1.0 - disc) * 0.6 * s_on;
 	float glint = 1.0 - smoothstep(0.13 * R, 0.19 * R, length(d - vec2(-0.32, 0.34) * R));
-	glint *= disc;
+	glint *= core * step(0.5, s_open);
 	// Happy: an upper arc (an upside-down U) like ^ ^.
 	vec2 dh = p - c - vec2(0.0, -R * 0.5);
+	dh.y /= max(a_open * (1.0 - bl * 0.9), 0.08);
 	float dah = abs(length(dh) - R * 0.85);
 	float th = R * 0.2;
-	float arc = (1.0 - smoothstep(th - aa, th + aa, dah)) * smoothstep(-0.05, 0.12, dh.y);
+	float arc = (1.0 - smoothstep(th - aa, th + aa, dah)) * smoothstep(-0.05, 0.12, dh.y) * a_on;
 	float arc_hot = arc * (1.0 - smoothstep(0.0, th, dah)) * 0.6;
-	float arc_halo = exp(-max(dah - th, 0.0) * max(dah - th, 0.0) * 55.0) * smoothstep(-0.1, 0.12, dh.y) * 0.6 * (1.0 - arc);
-	return vec4(mix(core, arc, happy), mix(hot, arc_hot, happy), mix(halo, arc_halo, happy), glint * (1.0 - happy));
+	float arc_halo = exp(-max(dah - th, 0.0) * max(dah - th, 0.0) * 55.0) * smoothstep(-0.1, 0.12, dh.y) * 0.6 * (1.0 - arc) * a_on;
+	return vec4(core + arc, hot + arc_hot, halo + arc_halo, glint);
 }
 
 void vertex() {

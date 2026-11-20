@@ -143,6 +143,8 @@ static func progress_text(id: String) -> String:
 static func check_unlocks(quiet: bool = false) -> Array[String]:
 	var out: Array[String] = []
 	_dev_tick()
+	if not LockerCabinet.owned():  # [v10pace] no look before there is a Locker to wear it at
+		return out
 	var have: Array = unlocked()
 	for id: String in ids():
 		if id in have or not met(id):

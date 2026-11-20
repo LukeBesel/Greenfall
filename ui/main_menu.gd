@@ -157,7 +157,7 @@ func _build_stage() -> void:
 	_pivot.add_child(_model)
 	if skin != "":
 		_model.set_variant(skin)
-	_model.set_happy(0.9)
+	_model.set_happy(0.7)  # [v10ui] the round eyes Lumi has in play (0.9 rested between two shapes: doubled eyes)
 
 	_cam = Camera3D.new()
 	_cam.fov = 42.0

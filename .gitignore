@@ -16,3 +16,4 @@ __pycache__/
 godot-dl/
 /screenshots/sound_log_summary.json
 /screenshots/sound_log*.txt
+/screenshots/autoplay_report_*.json

@@ -126,6 +126,55 @@ static func cost_text(cost: Dictionary, mult: float = 1.0) -> String:
 	return "  ·  ".join(bits)
 
 
+# --- [v10ui] What the player HAS: one text for every screen ---------------------------------
+# Owner, playtest 3: "Counts are showing different numbers here on the top right and left" (the
+# HUD rounded 23.6 to 24, the card floored it to 23). Every place that shows how much of a
+# currency the player has goes through have_text(): whole units, rounded DOWN (you never see a
+# cube you cannot spend). Costs keep amount_text() (rounded up).
+
+static var _hud_shown: float = 0.0
+static var _hud_frame: int = -10
+
+
+## The amount as the player sees it: floored to whole units, then the number format.
+static func have_text(v: float) -> String:
+	return Settings.fmt(BigNum.from_float(floorf(maxf(v, 0.0) + 0.0001)))
+
+
+## How much of `id` to show right now. Cubes follow the HUD counter while it is on screen (it
+## counts up as the coins land), so the card never runs ahead of the corner; else the real amount.
+static func shown(id: String) -> float:
+	if id == "cubes" and Engine.get_process_frames() - _hud_frame <= 1:
+		return _hud_shown
+	return GameState.get_currency(id).to_float()
+
+
+## The HUD counter reports what it is showing this frame (ui/currency_cluster.gd).
+static func hud_shows(v: float) -> void:
+	_hud_shown = v
+	_hud_frame = Engine.get_process_frames()
+
+
+## "23" for what the player has of a currency now (HUD, card, bench, Bot Bay, panels).
+static func have(id: String) -> String:
+	return have_text(shown(id))
+
+
+## [v10ui] How many more are needed for a price of `need`: the price (rounded up, as it is shown)
+## minus the balance as it is shown (rounded down). 49.6 cubes and a price of 55: "49", "need 6".
+static func missing(id: String, need: float) -> float:
+	return maxf(0.0, ceilf(need - 0.0001) - floorf(maxf(GameState.get_currency(id).to_float(), 0.0) + 0.0001))
+
+
+static func missing_text(id: String, need: float) -> String:
+	return Settings.fmt(BigNum.from_float(missing(id, need)))
+
+
+## "23 cubes": what the player has, with its unit.
+static func have_amount_text(id: String) -> String:
+	return L10nFmt.amount(id, floorf(maxf(shown(id), 0.0) + 0.0001))
+
+
 ## "1.2K cubes" / "40 parts" / "3 seeds" (whole units, rounded up so a cost is never under-read).
 static func amount_text(id: String, v: float) -> String:
 	return L10nFmt.amount(id, ceilf(v - 0.0001))

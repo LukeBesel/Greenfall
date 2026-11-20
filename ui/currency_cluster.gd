@@ -64,7 +64,7 @@ func _on_currency(id: String, amount: BigNum) -> void:
 	var d: float = v - before
 	if absf(d) < 0.001 or (id == "seeds" and d < 0.0):  # planting: the hotbar's Plant slot counts seeds
 		return
-	_chip(id, Settings.fmt(amount), d)
+	_chip(id, Currencies.have_text(v), d)
 
 
 func _chip(id: String, amount_text: String, delta: float, note: String = "") -> void:
@@ -119,9 +119,12 @@ func _process(delta: float) -> void:
 		_shown = lerpf(_shown, target, clampf(delta * 8.0, 0.0, 1.0))
 		if absf(_shown - target) < 0.5:
 			_shown = target
-		_count.text = Settings.fmt(BigNum.from_float(round(_shown)))
+		_count.text = Currencies.have_text(_shown)  # [v10ui] floored like the card (it rounded: 24 beside 23 / 80)
 	else:
-		_count.text = Settings.fmt(cubes)
+		_shown = target
+		_count.text = Currencies.have_text(target)
+	if is_visible_in_tree():
+		Currencies.hud_shows(_shown)
 	_bump = maxf(0.0, _bump - delta * 2.5)
 	_since_cash += delta
 	_count.add_theme_color_override("font_color", UITheme.CREAM.lerp(UITheme.GOLD, _bump))

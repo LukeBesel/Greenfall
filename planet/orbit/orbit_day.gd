@@ -4,7 +4,7 @@ extends Node
 ## its own node; orbE merges SkyDirector into this). Two suns fixed in space light one side of
 ## the planet; the planet turns once every day_min minutes, so walking far changes local time.
 ## The sky shader (orbit_sky.gdshader) works in world space with the local up under the camera.
-## Dev: --orbit-day=MIN (rotation period, default 24), --orbit-time=0..1 (local time at the
+## Dev: --orbit-day=MIN (rotation period, default data/solar_system.json globe_day), --orbit-time=0..1 (local time at the
 ## start hub, 0.5 = noon).
 
 const DECLINATION: float = 0.25
@@ -14,7 +14,7 @@ var sun: DirectionalLight3D
 var sun2: DirectionalLight3D
 var sky_mat: ShaderMaterial
 var lamp: OmniLight3D
-var day_min: float = 24.0
+var day_min: float = 36.0
 var stats: Dictionary = {}
 ## Who stands where: the body whose local up decides daylight, and the camera for the sky.
 var body: Node3D
@@ -71,8 +71,9 @@ func build(root: Node3D, home: Vector3) -> void:
 	sun2.shadow_enabled = false
 	sun2.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
 	root.add_child(sun2)
-	day_min = DevHooks.get_f("orbit-day", 24.0)
-	_phi0 = atan2(home.x, home.z) + (DevHooks.get_f("orbit-time", 0.42) - 0.5) * TAU
+	var gd: Dictionary = SolarSystem.globe_day(SkyDirector.current_planet_id())  # [v10pace] the day's length is data
+	day_min = DevHooks.get_f("orbit-day", float(gd["turn_min"]))
+	_phi0 = atan2(home.x, home.z) + (DevHooks.get_f("orbit-time", float(gd["start_time"])) - 0.5) * TAU
 
 
 ## Lumi's own light: nights stay readable (Glim takes this over).
