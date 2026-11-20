@@ -325,55 +325,59 @@ msgstr "Répare-le d'abord."
 msgid "Fully upgraded."
 msgstr "Amélioré au max."
 
-#: automation/outposts.gd:409
+#: automation/outposts.gd:411
 msgid "Outpost %d repaired: a new scale for your Haul Bugs."
 msgstr "Avant-poste %d réparé : une nouvelle balance pour tes Haul Bugs."
 
-#: automation/outposts.gd:410
+#: automation/outposts.gd:413
+msgid "Outpost %d repaired: a new scale for your bales."
+msgstr "Avant-poste %d réparé : une nouvelle balance pour tes balles."
+
+#: automation/outposts.gd:414
 msgid "OUTPOST ONLINE"
 msgstr "AVANT-POSTE EN LIGNE"
 
-#: automation/outposts.gd:432
+#: automation/outposts.gd:436
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "Avant-poste %d amélioré : %s. %s"
 
-#: automation/outposts.gd:461
+#: automation/outposts.gd:465
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   Avant-poste en ruine · nettoie d'abord son hexagone (%d%% / %d%%)"
 
-#: automation/outposts.gd:462
+#: automation/outposts.gd:466
 msgid "E   Repair outpost · %s%s"
 msgstr "E   Réparer l'avant-poste · %s%s"
 
-#: automation/outposts.gd:462 automation/outposts.gd:465
+#: automation/outposts.gd:466 automation/outposts.gd:469
 msgid "  (need more)"
 msgstr "  (il en faut plus)"
 
-#: automation/outposts.gd:464
+#: automation/outposts.gd:468
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   Avant-poste %d · %s · balles +%d%%"
 
-#: automation/outposts.gd:465
+#: automation/outposts.gd:469
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   Améliorer l'avant-poste : %s · %s%s"
 
-#: automation/outposts.gd:475
+#: automation/outposts.gd:479
 msgid "Outpost %d: %s"
 msgstr "Avant-poste %d : %s"
 
-#: automation/outposts.gd:482
+#: automation/outposts.gd:486
 msgid "Outpost %d upgrade: %s"
 msgstr "Amélioration avant-poste %d : %s"
 
-#: automation/outposts.gd:485
+#: automation/outposts.gd:489
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "Avant-poste %d : %s. Les balles se vendent +%d%% ici ; les robots qui passent sur le plot gagnent un boost de vitesse."
 
-#: automation/outposts.gd:588
+#: automation/outposts.gd:592
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "AVANT-POSTE %d  EN RUINE · réparable à %d%% propre"
 
-#: automation/outposts.gd:589
+#: automation/outposts.gd:593
 msgid "OUTPOST %d  %s"
 msgstr "AVANT-POSTE %d  %s"
 
@@ -474,26 +478,9 @@ msgstr "OBSERVATOIRE"
 msgid "E   Telescope: look across the system"
 msgstr "E   Télescope : observer le système"
 
-#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:287
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:709 ui/upgrade_card.gd:259
-msgid "%d min"
-msgstr "%d min"
-
-#: core/offline.gd:142
-msgid "While you were away (%s):"
-msgstr "Pendant ton absence (%s) :"
-
-#: core/offline.gd:144
-msgid "The fleet baled and delivered %s cubes."
-msgstr "La flotte a pressé et livré %s cubes."
-
 #: core/offline.gd:146
-msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
-msgstr "Des balles d'une valeur de %s s'empilaient à la base sans personne pour les transporter. Lumi les a encaissées. Un Haul Bug les ferait circuler."
-
-#: core/offline.gd:148
-msgid "The scrubbers filtered the air the whole time. It's a little clearer."
-msgstr "Les épurateurs ont filtré l'air tout ce temps. Il est un peu plus clair."
+msgid "While you were away, your robots earned %s cubes."
+msgstr "Pendant ton absence, tes robots ont gagné %s cubes."
 
 #: core/pace.gd:206
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
@@ -515,7 +502,7 @@ msgstr "Pas encore de presse à balles. Apporte ton coffre à la poubelle."
 msgid "+%s cubes"
 msgstr "+%s cubes"
 
-#: core/pace.gd:338 tools/walk_opening.gd:323
+#: core/pace.gd:338 tools/walk_opening.gd:324
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Plus de déchets en vrac. Appuie sur [%s] pour une balle, puis pose-la sur la balance."
 
@@ -655,7 +642,7 @@ msgstr "ENSEMBLE, FLEURISSONS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUMIÈRE  EAU  VIE"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:194
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "Base %d"
 
@@ -663,7 +650,7 @@ msgstr "Base %d"
 msgid "Press  {open_globe}  to see how much of the planet is clean"
 msgstr "Appuie sur  {open_globe}  pour voir la part propre de la planète"
 
-#: planet/orbit/orbit_crews.gd:223
+#: planet/orbit/orbit_crews.gd:226
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "Ton robot a nettoyé un hex ! Il compte : %d / %d"
 
@@ -1357,77 +1344,77 @@ msgstr "COMMANDE DES ROBOTS"
 msgid "No robots here yet."
 msgstr "Pas encore de robots ici."
 
-#: robots/sphere/command_overlay.gd:121 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+#: robots/sphere/command_overlay.gd:122 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
 msgid "Build one at the workbench."
 msgstr "Construis-en un à l'établi."
 
-#: robots/sphere/command_overlay.gd:124 robots/sphere/command_overlay.gd:196
+#: robots/sphere/command_overlay.gd:125 robots/sphere/command_overlay.gd:197
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "%d robot"
 msgstr[1] "%d robots"
 
-#: robots/sphere/command_overlay.gd:126
+#: robots/sphere/command_overlay.gd:127
 msgid "About %d hexes an hour"
 msgstr "Environ %d hexagones par heure"
 
-#: robots/sphere/command_overlay.gd:139 robots/sphere/command_overlay.gd:197
+#: robots/sphere/command_overlay.gd:140 robots/sphere/command_overlay.gd:198
 msgid "%d working"
 msgstr "%d au travail"
 
-#: robots/sphere/command_overlay.gd:141
+#: robots/sphere/command_overlay.gd:142
 msgid "%d working, %d waiting"
 msgstr "%d au travail, %d en attente"
 
-#: robots/sphere/command_overlay.gd:143
+#: robots/sphere/command_overlay.gd:144
 msgid "%d waiting"
 msgstr "%d en attente"
 
-#: robots/sphere/command_overlay.gd:148 robots/sphere/crew_talk.gd:81 robots/sphere/crew_talk.gd:85
+#: robots/sphere/command_overlay.gd:149 robots/sphere/crew_talk.gd:58
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "Les balles s'entassent. Construis un Haul Bug."
 
-#: robots/sphere/command_overlay.gd:161
+#: robots/sphere/command_overlay.gd:162
 msgid "Robots here: all %d"
 msgstr "Robots ici : tous (%d)"
 
-#: robots/sphere/command_overlay.gd:162
+#: robots/sphere/command_overlay.gd:163
 msgid "Robots here: %d of %d"
 msgstr "Robots ici : %d sur %d"
 
-#: robots/sphere/command_overlay.gd:165
+#: robots/sphere/command_overlay.gd:166
 msgid "%d on the way, %d working here"
 msgstr "%d en route, %d au travail ici"
 
-#: robots/sphere/command_overlay.gd:168
+#: robots/sphere/command_overlay.gd:169
 msgid "D-pad left / right: how many come"
 msgstr "Croix gauche / droite : combien viennent"
 
-#: robots/sphere/command_overlay.gd:169
+#: robots/sphere/command_overlay.gd:170
 msgid "Click - or + (or keys - +): how many come"
 msgstr "Clique sur - ou + (ou touches - +) : combien viennent"
 
-#: robots/sphere/command_overlay.gd:190
+#: robots/sphere/command_overlay.gd:191
 msgid "OTHER BASES"
 msgstr "AUTRES BASES"
 
-#: robots/sphere/command_overlay.gd:206
+#: robots/sphere/command_overlay.gd:207
 msgid "Good! Your robots will work here first."
 msgstr "Bien ! Tes robots travailleront ici en premier."
 
-#: robots/sphere/command_overlay.gd:207
+#: robots/sphere/command_overlay.gd:208
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "Maintenir A : peindre   Maintenir X : effacer   %s : retour"
 
-#: robots/sphere/command_overlay.gd:208
+#: robots/sphere/command_overlay.gd:209
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "Clic gauche : peindre   Clic droit : effacer   %s : retour"
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Y: next job"
 msgstr "Y : tâche suivante"
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Tab: next job"
 msgstr "Tab : tâche suivante"
 
@@ -1483,68 +1470,72 @@ msgstr "Pas de déchets sur les lacs ici."
 msgid "I can't find a way there. Trying another spot."
 msgstr "Je ne trouve pas de chemin. J'essaie un autre endroit."
 
-#: robots/sphere/crew_talk.gd:78
+#: robots/sphere/crew_talk.gd:57
+msgid "Bales are piling up. One more Haul Bug would help."
+msgstr "Les balles s'entassent. Un Haul Bug de plus aiderait."
+
+#: robots/sphere/crew_talk.gd:87
 msgid "Hello! Looking around."
 msgstr "Bonjour ! Je regarde autour de moi."
 
-#: robots/sphere/crew_talk.gd:82
+#: robots/sphere/crew_talk.gd:91
 msgid "On my way to work."
 msgstr "En route pour le travail."
 
-#: robots/sphere/crew_talk.gd:88
+#: robots/sphere/crew_talk.gd:97
 msgid "Fetching a bale."
 msgstr "Je vais chercher une balle."
 
-#: robots/sphere/crew_talk.gd:90
+#: robots/sphere/crew_talk.gd:99
 msgid "Carrying bales home."
 msgstr "Je rapporte des balles."
 
-#: robots/sphere/crew_talk.gd:92
+#: robots/sphere/crew_talk.gd:101
 msgid "Tipping junk into the baler."
 msgstr "Je verse les déchets dans la presse à balles."
 
-#: robots/sphere/crew_talk.gd:94
+#: robots/sphere/crew_talk.gd:103
 msgid "Filling my water tank."
 msgstr "Je remplis mon réservoir d'eau."
 
-#: robots/sphere/crew_talk.gd:98
+#: robots/sphere/crew_talk.gd:107
 msgid "Looking for work."
 msgstr "Je cherche du travail."
 
 #. a robot kind and its Mk tier, e.g. "Scoopie (Mk II)".
-#: robots/sphere/crew_talk.gd:106
+#: robots/sphere/crew_talk.gd:115
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: robots/sphere/crew_talk.gd:107
+#: robots/sphere/crew_talk.gd:116
 msgid "%s the %s: %s"
 msgstr "%s (%s) : %s"
 
-#: robots/sphere/crew_talk.gd:132
+#: robots/sphere/crew_talk.gd:141
 msgid "No robots here yet"
 msgstr "Pas encore de robots ici"
 
-#: robots/sphere/crew_talk.gd:134
+#: robots/sphere/crew_talk.gd:143
 msgid "%d robot working here"
 msgid_plural "%d robots working here"
 msgstr[0] "%d robot travaille ici"
 msgstr[1] "%d robots travaillent ici"
 
-#: robots/sphere/crew_talk.gd:136
+#: robots/sphere/crew_talk.gd:145
 msgid "%s, about %d hexes an hour"
 msgstr "%s, environ %d hexagones par heure"
 
-#: robots/sphere/crew_talk.gd:147
+#: robots/sphere/crew_talk.gd:156
 msgid "While you were away, your robots here cleaned %d hex."
 msgid_plural "While you were away, your robots here cleaned %d hexes."
 msgstr[0] "Pendant ton absence, tes robots ici ont nettoyé %d hexagone."
 msgstr[1] "Pendant ton absence, tes robots ici ont nettoyé %d hexagones."
 
-#: robots/sphere/crew_talk.gd:149
+#: robots/sphere/crew_talk.gd:158
 msgid "While you were away, your robots here earned %s cubes."
 msgstr "Pendant ton absence, tes robots ici ont gagné %s cubes."
 
-#: robots/sphere/crew_talk.gd:150
+#: robots/sphere/crew_talk.gd:159
 msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
 msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
 msgstr[0] "Pendant ton absence, tes robots ici ont nettoyé %d hexagone et gagné %s cubes."
@@ -1645,6 +1636,11 @@ msgstr "Continuer : le premier quartier reste ouvert, base au niveau %d."
 #: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
+
+#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
+#: ui/globe_view.gd:709 ui/upgrade_card.gd:259
+msgid "%d min"
+msgstr "%d min"
 
 #: story/bloom_finale.gd:15
 msgid "Lumi. Stop for a second. Look up."
@@ -1973,8 +1969,8 @@ msgid "...It's green. Lumi, it's actually green."
 msgstr "...C'est vert. Lumi, c'est vraiment vert."
 
 #: story/first_seed.gd:306
-msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
-msgstr "Garde-la bien arrosée. Les graines sont rares par ici, mais chaque floraison en rend une, et un peu de lumière verte pour ton cœur. C'est comme ça que tout commence."
+msgid "Keep it watered. Every bloom gives seeds back, and a little green light for your core. This is how it starts."
+msgstr "Garde-la bien arrosée. Chaque floraison rend des graines, et un peu de lumière verte pour ton cœur. C'est comme ça que tout commence."
 
 #: story/first_seed.gd:571
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
@@ -2057,7 +2053,7 @@ msgstr "Lumi— tiens bon— je n'arrive pas à faire demi-tour— tiens bon—"
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "L'arche ne pouvait pas faire demi-tour. La capsule est tombée pendant des jours."
 
-#: story/intro.gd:1951
+#: story/intro.gd:1967
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUMIÈRE VERTE  ·  RIEN DÉTECTÉ"
 
@@ -2073,51 +2069,51 @@ msgstr "Objectif atteint  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:1021
+#: story/objectives.gd:1040
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "Presse installée ! Remplis ton coffre, puis appuie sur [%s] pour une balle."
 
-#: story/objectives.gd:1043 story/objectives.gd:1267
+#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:774
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Ton coffre est plein. Appuie sur [%s] pour faire un ballot."
 
-#: story/objectives.gd:1059
+#: story/objectives.gd:1078
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Ton détecteur a trouvé une pièce de robot enterrée tout près. Suis l'indication PIÈCE ENTERRÉE ; il bipe quand tu es juste au-dessus."
 
-#: story/objectives.gd:1061
+#: story/objectives.gd:1080
 msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr "Une pièce est enterrée près d'ici ! Avance vers elle jusqu'au bip, puis déterre-la."
 
-#: story/objectives.gd:1268
+#: story/objectives.gd:1292
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Ton coffre est plein. Apporte-le à la poubelle."
 
-#: story/objectives.gd:1284 story/objectives.gd:1297
+#: story/objectives.gd:1309 story/objectives.gd:1325
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Trop lourd. Améliore la Force de levage à l'établi."
 
-#: story/objectives.gd:1289
+#: story/objectives.gd:1315
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Ton coffre est plein. Rentre à la maison : la poubelle est sous la grande fumée."
 
-#: story/objectives.gd:1292
+#: story/objectives.gd:1319
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Rapporte ton ballot à la maison : la balance est sous la grande fumée."
 
-#: story/objectives.gd:1292
+#: story/objectives.gd:1319
 msgid "Carry your bale to the scale by the bin."
 msgstr "Porte ton ballot à la balance, près de la poubelle."
 
-#: story/objectives.gd:1306
+#: story/objectives.gd:1335
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "La fusée attend sur l'aire. La maison est en tête de sa liste."
 
-#: story/objectives.gd:1307
+#: story/objectives.gd:1336
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Rentre à la maison : suis le faisceau jusqu'à la grande fumée."
 
-#: story/objectives.gd:1318
+#: story/objectives.gd:1347
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Rien à ramasser ici. Va là où il y a plus de déchets."
 
@@ -3442,7 +3438,7 @@ msgstr "Glim scanne encore. Réessaie dans un instant."
 msgid "Close"
 msgstr "Fermer"
 
-#: tools/walk_opening.gd:592 ui/main_menu.gd:368 ui/pause_menu.gd:80
+#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:80
 msgid "Quit"
 msgstr "Quitter"
 
@@ -11842,42 +11838,6 @@ msgstr "Épurateur d'air"
 msgid "Pulls dusty air through filter banks. The sky clears faster."
 msgstr "Fait passer l'air poussiéreux à travers des filtres. Le ciel s'éclaircit plus vite."
 
-#: data/intro_shots.json:shots[cradle].lines
-msgid "title"
-msgstr ""
-
-#: data/intro_shots.json:shots[vault_wide].lines
-msgid "vault"
-msgstr ""
-
-#: data/intro_shots.json:shots[vault_hum].lines
-msgid "hum"
-msgstr ""
-
-#: data/intro_shots.json:shots[storm].lines
-msgid "storm"
-msgstr ""
-
-#: data/intro_shots.json:shots[alarm].lines
-msgid "breach"
-msgstr ""
-
-#: data/intro_shots.json:shots[eject].lines
-msgid "hold_on"
-msgstr ""
-
-#: data/intro_shots.json:shots[drift].lines
-msgid "fall"
-msgstr ""
-
-#: data/intro_shots.json:shots[station].lines
-msgid "brief_0"
-msgstr ""
-
-#: data/intro_shots.json:shots[alone].lines
-msgid "brief_1"
-msgstr ""
-
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"
 msgstr "Ferraille métallique"
@@ -16730,6 +16690,24 @@ msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pi
 
 #~ msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
 #~ msgstr "Glim télécharge les CD que tu as trouvés : joue n'importe quel morceau trouvé, partout, à tout moment."
+
+#~ msgid "While you were away (%s):"
+#~ msgstr "Pendant ton absence (%s) :"
+
+#~ msgid "The fleet baled and delivered %s cubes."
+#~ msgstr "La flotte a pressé et livré %s cubes."
+
+#~ msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
+#~ msgstr "Des balles d'une valeur de %s s'empilaient à la base sans personne pour les transporter. Lumi les a encaissées. Un Haul Bug les ferait circuler."
+
+#~ msgid "The scrubbers filtered the air the whole time. It's a little clearer."
+#~ msgstr "Les épurateurs ont filtré l'air tout ce temps. Il est un peu plus clair."
+
+#~ msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
+#~ msgstr "Garde-la bien arrosée. Les graines sont rares par ici, mais chaque floraison en rend une, et un peu de lumière verte pour ton cœur. C'est comme ça que tout commence."
+
+#~ msgid "Take it to the greenhouse beds. Dig. Drop it in. Pat it down. And then — this part matters — water it."
+#~ msgstr "Apporte-la aux bacs de la serre. Creuse. Dépose-la. Tasse. Et ensuite – c'est important – arrose."
 
 #~ msgid "Press a cube"
 #~ msgstr "Presser un cube"

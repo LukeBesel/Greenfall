@@ -672,6 +672,7 @@ func _pose(delta: float) -> void:
 		a = maxf(a, eased("inout", (_lt - (d - fo)) / fo))
 	var fc: Vector3 = _v3(s.get("fade_col"), Vector3.ZERO)
 	_fade.color = Color(fc.x, fc.y, fc.z, a)
+	_film_dust(s, u)
 	# Low battery: the core and eyes stutter, the readout blinks.
 	if _flicker > 0.0:
 		var model: PatchModel = _model()
@@ -681,6 +682,21 @@ func _pose(delta: float) -> void:
 		var on: bool = fmod(_t, 1.0) < 0.6
 		_battery_pct.modulate.a = 1.0 if on else 0.35
 		_battery_cells[0].color = Color(1.0, 0.35, 0.25, 0.9 if on else 0.4)
+
+
+## [v10guide] Critic 23: on the planet the film's sky is the dead world's dusty one (the shot's
+## "dust", default FILM_DUST); it clears over the hand-off into the game's own sky.
+const FILM_DUST: float = 1.0
+
+
+func _film_dust(s: Dictionary, u: float) -> void:
+	var sd: Variant = world.get("sky_director") if world else null
+	if not (sd is SkyDirector):
+		return
+	var d: float = float(s.get("dust", FILM_DUST)) if str(s["set"]) == "world" else 0.0
+	if str(s["id"]) == "handoff":
+		d *= 1.0 - u
+	(sd as SkyDirector).film_dust = d
 
 
 func _enter(i: int, lt: float) -> void:
@@ -1983,6 +1999,9 @@ func _finish() -> void:
 	ending = true
 	_film = false
 	_hold_tray = false
+	var sd: Variant = world.get("sky_director") if world else null
+	if sd is SkyDirector:  # [v10guide] the game's own sky, watched or skipped
+		(sd as SkyDirector).film_dust = 0.0
 	_flicker = 0.0
 	GameState.flags["intro_done"] = true
 	_tunes_land(1.2 if _skipped else 4.0)  # [tunes]

@@ -8,11 +8,19 @@ extends Node3D
 
 const CYAN := Color(0.5, 0.88, 1.0)
 const GREEN := Color(0.55, 1.0, 0.7)
+## [v10guide] Critic 21 ("Clean the glowing hex" does not glow: by day one thin pale line). The
+## additive cyan line went white on the pale dusty ground in daylight. The objective's outline now
+## is a saturated laser line drawn over the ground (blend_mix), a white-hot core, a taller curtain,
+## and a clear pulse (owner's rule: a glowing laser outline that pulses). The dim focus outline keeps
+## the soft additive look.
+const LASER := Color(0.0, 0.78, 1.0)
+const LASER_DONE := Color(0.2, 1.0, 0.4)
+const PULSE_HZ: float = 0.9
 const STEP_M: float = 0.25  ## contour grid spacing
-const WIDTH_M: float = 0.4  ## the ribbon (the bright core in the shader is ~1/4 of it) [v9d] was 0.22: hard to see from 12 m
+const WIDTH_M: float = 0.55  ## the ribbon (the bright core in the shader is ~1/4 of it) [v9d] was 0.22: hard to see from 12 m
 ## [v9d] A low glowing curtain stands on the border of the objective's hex (not the dimmer focus
 ## outline), so the target reads from across the street, over the junk (step frames, 13 Nov).
-const CURTAIN_M: float = 1.1
+const CURTAIN_M: float = 1.5
 const WASH_M: float = 0.7  ## the inner wash band
 const LIFT_M: float = 0.045
 const MIN_LOOP_M: float = 2.0  ## drop warp islands smaller than this
@@ -25,21 +33,24 @@ uniform vec4 tint : source_color = vec4(0.5, 0.88, 1.0, 1.0);
 uniform float alpha = 1.0;
 uniform float energy = 2.1;
 uniform float run = 1.0;
+uniform float hot = 0.0;
 void fragment() {
 	float a;
+	vec3 col = tint.rgb;
 	if (COLOR.a > 0.75) {
 		float d = abs(UV.y - 0.5) * 2.0;
 		float core = 1.0 - smoothstep(0.12, 0.3, d);
 		float halo = exp(-d * d * 7.0) * 0.28;
 		float runner = pow(0.5 + 0.5 * sin(UV.x * 0.55 - TIME * 1.6), 14.0) * run;
 		a = (core + halo) * (0.72 + 0.6 * runner);
+		col = mix(col, vec3(1.0), (1.0 - smoothstep(0.0, 0.14, d)) * hot);
 	} else if (COLOR.a > 0.25) {
 		float runner2 = pow(0.5 + 0.5 * sin(UV.x * 0.55 - TIME * 1.6), 8.0) * run;
 		a = pow(1.0 - UV.y, 1.8) * (0.32 + 0.25 * runner2);
 	} else {
 		a = pow(1.0 - UV.y, 2.2) * 0.1;
 	}
-	ALBEDO = tint.rgb * energy;
+	ALBEDO = col * energy;
 	ALPHA = clamp(a * alpha, 0.0, 1.0);
 }
 """
@@ -60,6 +71,7 @@ var _height_t: float = 0.0
 var _cache: Dictionary = {}  # hex -> loops (contours cost ~30 ms; Lumi walks back and forth)
 
 static var _shader: Shader
+static var _shader_mix: Shader  # [v10guide] the objective's laser line
 
 
 func _ready() -> void:
@@ -69,6 +81,13 @@ func _ready() -> void:
 		_shader.code = SHADER_CODE
 	_mat = ShaderMaterial.new()
 	_mat.shader = _shader
+	if strength >= 1.0:  # [v10guide] critic 21: the objective's outline reads in daylight
+		if _shader_mix == null:
+			_shader_mix = Shader.new()
+			_shader_mix.code = SHADER_CODE.replace("blend_add", "blend_mix")
+		_mat.shader = _shader_mix
+		_mat.set_shader_parameter("energy", 1.0)
+		_mat.set_shader_parameter("hot", 0.55)
 	_mi = MeshInstance3D.new()
 	_mi.material_override = _mat
 	_mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -110,8 +129,14 @@ func _process(delta: float) -> void:
 	if not visible:
 		return
 	var frac: float = f.removed_fraction(hex)
-	_mat.set_shader_parameter("alpha", strength * _alpha * (0.8 + 0.2 * sin(Time.get_ticks_msec() * 0.0021)))
-	_mat.set_shader_parameter("tint", CYAN.lerp(GREEN, clampf(frac, 0.0, 1.0)))
+	var laser: bool = _mat.shader == _shader_mix
+	var beat: float = 0.5 + 0.5 * sin(Time.get_ticks_msec() * 0.001 * TAU * PULSE_HZ)
+	if laser:  # [v10guide] a clear pulse, steady under reduced motion
+		_mat.set_shader_parameter("alpha", _alpha * (0.85 if Settings.reduced_motion else 0.7 + 0.3 * beat))
+		_mat.set_shader_parameter("tint", LASER.lerp(LASER_DONE, clampf(frac, 0.0, 1.0)))
+	else:
+		_mat.set_shader_parameter("alpha", strength * _alpha * (0.8 + 0.2 * sin(Time.get_ticks_msec() * 0.0021)))
+		_mat.set_shader_parameter("tint", CYAN.lerp(GREEN, clampf(frac, 0.0, 1.0)))
 	_mat.set_shader_parameter("run", 0.0 if Settings.reduced_motion else 1.0)
 	_label.text = "%d%%" % int(floor(frac * 100.0))
 	_label.visible = show_label

@@ -23,6 +23,11 @@ var night_tint := Color(0, 0, 0, 0)
 var grade: Dictionary = {}
 var grade_amt: float = 1.0
 var storm: float = 0.0
+## [v10guide] Critic 23: the opening film's dead, dusty planet had a clear blue sky with white
+## clouds wherever the camera looked up (the falling pod at 77.5 s). While the film plays on the
+## globe it sets this: the sky dome (and only the dome: the film's light stays) is dusted ochre as
+## by `storm`. 0 in play.
+var film_dust: float = 0.0
 ## [worlds2] Long Nights (systems/world_look.gd): how much darker nights are, 0..1.
 var night_dark: float = 0.0
 ## [worlds2] The binary star (planet/binary_sun.gd): the companion's disc and warm fill light.
@@ -434,7 +439,7 @@ func _apply_sphere() -> void:
 	sky_shader.set_shader_parameter("haze", haze)
 	sky_shader.set_shader_parameter("clouds", clouds)
 	sky_shader.set_shader_parameter("cloud_t", _cloud_t)
-	sky_shader.set_shader_parameter("storm", clampf(storm, 0.0, 1.0))
+	sky_shader.set_shader_parameter("storm", clampf(maxf(storm, film_dust), 0.0, 1.0))
 	sky_shader.set_shader_parameter("night_lift", night_lift())
 	sky_shader.set_shader_parameter("night_dark", clampf(night_dark, 0.0, 1.0))
 	# Ambient and exposure: the night side keeps a readable blue fill (owner: nights not too dark).
