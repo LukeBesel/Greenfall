@@ -908,7 +908,22 @@ static func _outpost_no_parts(so: SliceOrbit, site: int) -> void:
 	await _tap(tree, "interact")
 	await _wait(tree, 1.0)
 	_check(ops.level_of(k) == 0 and _said("not enough"), "no Parts: E at the outpost refused with a line (%s)" % _quote("not enough"))
-	_check(ob.situation.contains(str(int(ops.repair_cost(k).get("parts", 0)))), "no Parts: the card says how many the outpost needs ('%s')" % ob.situation)
+	# [v9a] The card as the player reads it (its hint line and cost chips). This read ob.situation,
+	# the one sentence behind the hint, which is the chest line whenever the chest is full ("Your
+	# chest is full" on a run that arrived with a full chest); the price then stands in the chips.
+	var need_parts: String = str(int(ops.repair_cost(k).get("parts", 0)))
+	var p0: Patch = w.get("patch") as Patch
+	_check(_card_hint(w).contains(need_parts), "no Parts: the card says how many the outpost needs ('%s', chest %.1f / %.1f)" % [_card_hint(w), p0.compartment.fill, p0.capacity()])
+	var fill0: float = p0.compartment.fill
+	p0.compartment.fill = p0.capacity()  # the same with a full chest: the chest line takes the hint, the chips keep the price
+	for i: int in int((ObjectiveCard.HINT_HOLD_S + 4.0) * Engine.physics_ticks_per_second):  # game time: the hint's own hold
+		if _card_hint(w).contains("chest is full"):
+			break
+		await tree.physics_frame
+	_check(ob.situation.contains("chest is full") and _card_hint(w).contains("chest is full") and _card_hint(w).contains("/ " + need_parts),
+		"no Parts, chest full: the card says the chest is full and still shows the outpost's price ('%s')" % _card_hint(w))
+	p0.compartment.fill = fill0
+	await _wait(tree, 0.6)
 	print("%s   no Parts: station card '%s', objective card hint '%s', prompt '%s'" % [TAG, hp.card_text, ob.situation, so.interact_prompt(w.get("patch"))])
 	var have0: int = int(hp.current_step(site).get("have", 0))
 	var clean0: int = hp.cleaned_here(site)
@@ -920,6 +935,14 @@ static func _outpost_no_parts(so: SliceOrbit, site: int) -> void:
 	await _outpost_repair(so, site)
 	await _wait(tree, 1.2)
 	_check(str(hp.current_step(site).get("do", "")) == "wake", "the outpost counts: the chain moves to the wake")
+
+
+## The objective card's hint line and cost chips, as the player reads them.
+static func _card_hint(w: Node) -> String:
+	var hud: Node = w.get("hud")
+	var gp: GoalsPanel = hud.get("goals") as GoalsPanel if hud else null
+	var oc: ObjectiveCard = gp.objective if gp else null
+	return oc.read()[2] if oc else ""
 
 
 ## Lumi by the nearest ruined outpost's kiosk, its hex cleared (the crews' cell clean): its index.
