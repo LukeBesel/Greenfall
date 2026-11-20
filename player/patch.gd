@@ -190,7 +190,9 @@ func _pocket_watch(delta: float, trying: bool) -> void:
 		return
 	if _shut_check > 0.0:
 		_shut_check -= delta
-		if _shut_check <= 0.0:
+		if _shut_check <= 0.0 and not sphere_motor.grounded:
+			_shut_check = 0.2  # in the air: look when he is down
+		elif _shut_check <= 0.0:
 			_shut = _is_shut()
 			if _shut:
 				_shut_check = 1.5  # look again: he may hop or walk out

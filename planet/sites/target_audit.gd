@@ -121,7 +121,7 @@ static func run_dev(so: SliceOrbit) -> void:
 		counts["hop_trap_check"] = 1
 		if jres.has("error"):
 			fails.append("hop(%s)" % str(jres["error"]))
-		for e: Array in jres.get("traps", []):
+		for e: Array in jres.get("bad_traps", []):
 			fails.append("hop_trap@(%.0f,%.0f)" % [(e[1] as Vector2).x, (e[1] as Vector2).y])
 		await SiteReach.fix_anchors(p, so.globe.terrain)
 		var ra: Dictionary = await SiteReach.audit(p, so.globe.terrain)

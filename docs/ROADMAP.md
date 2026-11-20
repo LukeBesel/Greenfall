@@ -2,6 +2,19 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## Jump (v11jump, 20 Nov, owner item 110)
+
+- **Built:** Lumi hops on Space / A (rebindable "Jump"; scoop's second key moved from Space to X). 0.6 m held, smaller on a tap, 0.41 s in the air; onto things up to about 0.85 m. Numbers in `data/patch.json` "jump", how-to in docs/ADJUSTING.md "Lumi's hop".
+- **Rules in code:** junk heaps stop him at any height; from a height he does not pass over what a hop from the ground below could not clear (no leaps over walls, no bale stairs); a rescue lift to open ground when a hop leaves him shut in and he keeps trying for 6 s.
+- **Checks:** `tests/test_jump.gd`, `--walk-jump` (in tools/check_exit.sh), `--city-walk` and `--target-reach` list what a hop opens (planet/sites/jump_reach.gd).
+- **Open:**
+  - Feel and sound on a real MacBook and controller were not judged (numbers and rendered frames only).
+  - On a controller A is "use" first, so there is no hop while carrying a bale; a free button would need another action moved.
+  - `--city-walk` used to run while the world was still loading on a busy machine and passed an empty town. Now that it waits, it reports one junk piece 1.5 m from walked ground at start-town (10.8, -51.0); not looked into (the hex audit passes).
+  - The start town has 8 small pockets among street furniture (seven of one 0.5 m cell, one of 2 m2) that the audit's generous hop can reach with no hop back; the rescue lift is their way out. Sealing such pockets when a town is built would remove them at the source.
+  - The first-minutes key strip does not show the jump (it is in the full list and in Controls).
+  - Other planets' towns were not audited (only Verdance's hubs).
+
 ## Status at the stop, 18 Nov (owner playtest 3, items 89-109)
 
 The owner asked to end all work at a good stopping point.

@@ -12,7 +12,8 @@ extends RefCounted
 ## Leaps follow the motor's rule (SphereMotor._air_walls): from a height he does not pass over
 ## what a hop from the ground below it could not clear.
 ## A TRAP is a spot the generous hop reaches that has no strict way back: reachable by jumping but
-## not leavable. Also listed: the ground a hop adds to walking (a fenced lot is a gate skipped) and
+## not leavable. Small ones on the ground (under POCKET_MAX_M2) are listed and left to the rescue
+## lift (Patch._pocket_watch); one up on something, or a bigger shut-in area, fails the audit. Also listed: the ground a hop adds to walking (a fenced lot is a gate skipped) and
 ## what he can get onto (by collider), so the jump height is chosen knowing what it opens.
 ## Junk heaps are left out (they are walls at any height for Lumi and go as the town is cleaned),
 ## lake cells are closed (no Hover Jets), bales add nothing (the motor's rule above: no stair).
@@ -25,6 +26,8 @@ const BODY_R: float = 0.45
 const BODY_H: float = 0.9
 const BODY_LIFT: float = 0.25   # his body rides this far off what he stands on
 const MAX_LV: int = 4
+## Shut-in ground a hop may reach, up to this size, is a pocket for the rescue lift, not a failure.
+const POCKET_MAX_M2: float = 6.0
 enum { WALK, STRICT, GENEROUS }
 
 var space: PhysicsDirectSpaceState3D
@@ -46,6 +49,7 @@ var _free: Dictionary = {}      # cell * 64 + height step -> bool
 var _q: PhysicsShapeQueryParameters3D
 var _ray: PhysicsRayQueryParameters3D
 var _owner_at: Dictionary = {}  # node id -> what he stands on there (collider path)
+var _shape_at: Dictionary = {}  # node id -> that collider's shape (instance id * 4096 + shape index)
 var _skip: Array[RID] = []
 ## Every surface under 2.5 m the rays met in the cells looked at: {owner: [cells, lowest, highest, cells he could stand on]}.
 var surfaces: Dictionary = {}
@@ -128,6 +132,26 @@ func free_at(c: int, h: float) -> bool:
 	return ok
 
 
+func _shape_key(co: Object, shape: int) -> int:
+	return (co.get_instance_id() % 1000000007) * 4096 + shape if co != null else 0
+
+
+## free_at, but the shape he took off from does not count (leaving a crate, his shadow still
+## overlaps it: the motor lets him move away from what he touches).
+func _free_but(c: int, h: float, but: int) -> bool:
+	if free_at(c, h):
+		return true
+	if but == 0:
+		return false
+	var up: Vector3 = _up(c)
+	_q.transform = Transform3D(SphereGrid.frame(up), terrain.ground(up) + up * (h + BODY_LIFT + BODY_H * 0.5 + 0.02))
+	for hit: Dictionary in space.intersect_shape(_q, 12):
+		var co: Object = hit.get("collider")
+		if not _ignored(co) and _shape_key(co, int(hit.get("shape", 0))) != but:
+			return false
+	return true
+
+
 ## The heights he can stand at in cell c, highest first (empty: nowhere, e.g. inside a wall, water).
 func levels(c: int) -> PackedFloat32Array:
 	if _lv[c] != null:
@@ -145,6 +169,7 @@ func levels(c: int) -> PackedFloat32Array:
 	var owners: Array[String] = []
 	var lowest: float = TOP_M  # the lowest surface the rays met
 	var all := PackedFloat32Array()
+	var keys: Array[int] = []
 	for k: int in 8:
 		if y <= 0.1:
 			break
@@ -179,13 +204,16 @@ func levels(c: int) -> PackedFloat32Array:
 		if stand:
 			out.append(h)
 			owners.append(_name(co))
+			keys.append(_shape_key(co, int(hit.get("shape", 0))))
 		y = h - 0.06
 	if lowest >= BODY_LIFT + 0.02 and free_at(c, 0.0):
 		out.append(0.0)
 		owners.append("")
+		keys.append(0)
 	for i: int in out.size():
 		if owners[i] != "":
 			_owner_at[c * MAX_LV + i] = owners[i]
+			_shape_at[c * MAX_LV + i] = keys[i]
 	if out.is_empty():
 		looked[2] += 1
 	all.append(0.0)
@@ -282,13 +310,13 @@ func moves(node: int, mode: int) -> PackedInt32Array:
 		if not entered:
 			edge = true
 	if edge and mode != WALK:
-		_leaps(c, a, mode, out)
+		_leaps(c, a, mode, out, int(_shape_at.get(node, 0)))
 	return out
 
 
 ## Leaps from an edge: through the air at about the hop's top, over what is in the way, down onto
 ## the first thing under him.
-func _leaps(c: int, a: float, mode: int, out: PackedInt32Array) -> void:
+func _leaps(c: int, a: float, mode: int, out: PackedInt32Array, but: int = 0) -> void:
 	var margin: float = 0.07 if mode == GENEROUS else -0.12
 	var fly: float = a + hop_h + margin
 	var land_up: float = (hop_h + BODY_LIFT + 0.08) if mode == GENEROUS else 0.0
@@ -312,7 +340,7 @@ func _leaps(c: int, a: float, mode: int, out: PackedInt32Array) -> void:
 			# The motor's wall from above (SphereMotor._air_walls): over a cell he must fit where a
 			# hop from what is under him there would put him, or he does not pass.
 			var ref: float = under(nb, fly)
-			if fly - ref > hop_h + 0.1 and not free_at(nb, ref + hop_h + margin):
+			if fly - ref > hop_h + 0.1 and not _free_but(nb, ref + hop_h + margin, but):
 				continue
 			var cell: int = field.grid.cell_at(_up(nb)) if field else 0
 			if cell < 0 or (field and field.is_water(cell)):
@@ -424,7 +452,15 @@ func run(start: Vector2) -> Dictionary:
 	out["looked"] = looked
 	out["traps"] = _clusters(trap_nodes)
 	out["walk_traps"] = _clusters(walk_trap_nodes)
-	out["ok"] = (out["traps"] as Array).is_empty()
+	# Small pockets on the ground are left to the rescue lift (Patch._pocket_watch: shut in after a
+	# hop, he is lifted to open ground). A failure is a trap up on something, or a shut-in area big
+	# enough to be a yard (a gate skipped, a lot walled off).
+	var bad: Array = []
+	for e: Array in out["traps"]:
+		if float(e[2]) >= 0.45 or int(e[0]) * STEP * STEP > POCKET_MAX_M2:
+			bad.append(e)
+	out["bad_traps"] = bad
+	out["ok"] = bad.is_empty()
 	return out
 
 
@@ -511,7 +547,9 @@ static func report(tag: String, r: Dictionary) -> PackedStringArray:
 		var s: PackedStringArray = []
 		for e: Array in tr_.slice(0, 12):
 			s.append("%d cells@(%.1f,%.1f) %.1f m up%s" % [int(e[0]), (e[1] as Vector2).x, (e[1] as Vector2).y, float(e[2]), "" if str(e[3]) == "" else " on " + str(e[3])])
-		lines.append("%s %s: %d spots with no way back: %s" % [tag, "walking alone" if which == "walk_traps" else "HOP TRAPS", tr_.size(), ", ".join(s)])
+		var n_bad: int = (r.get("bad_traps", []) as Array).size()
+		var head: String = "walking alone" if which == "walk_traps" else ("HOP TRAPS (%d too big or up on something: FAIL)" % n_bad if n_bad > 0 else "small pockets a hop may reach, the rescue lift is the way out")
+		lines.append("%s %s: %d spots with no hop back: %s" % [tag, head, tr_.size(), ", ".join(s)])
 	for d: Array in (r.get("doors", []) as Array).slice(0, 16):
 		var fl: Vector2 = d[1]
 		var tl: Vector2 = d[4]

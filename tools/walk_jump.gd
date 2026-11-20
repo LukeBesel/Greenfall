@@ -495,6 +495,8 @@ static func _pen() -> void:
 	var out: Vector3 = _p.global_position - c
 	out -= u * out.dot(u)
 	_check(_p.rescues == r0 + 1, "after %.1f s of trying he is lifted out (once)" % t)
+	if _p.rescues != r0 + 1:
+		print("%s debug pen: shut %s try %.1f is_shut %s grounded %s perch %.1f" % [TAG, str(_p._shut), _p._shut_try, str(_p._is_shut()), str(_p.sphere_motor.grounded), _p.sphere_motor._perch])
 	_check(out.length() > 2.2 and _p.sphere_motor.grounded and absf(_surface_alt()) < 0.08, "he stands on open ground %.1f m from the pen's middle" % out.length())
 	var tr2: TargetReach = TargetReach.for_world(_so.w, true, _p)
 	_check(not tr2.shut_in(_p.global_position), "and can walk away from there")
