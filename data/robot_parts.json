@@ -15,7 +15,7 @@
     {"id": "reach", "name": "Spray reach"},
     {"id": "scan", "name": "Scan"}
   ],
-  "salvage": {"_doc": "Working robots spot salvage now and then: chance per second = base * scan. A find is a stored part (mostly Rusty/Worn); 1 in fragment_one_in is a Settler Fragment.", "base_per_s": 0.0011, "fragment_one_in": 10, "clover_one_in": 40, "dig_fragment_chance": [0.02, 0.03, 0.05, 0.25, 0.5]},
+  "salvage": {"_doc": "Working robots spot salvage now and then: chance per second = base * scan. A find is a stored part (mostly Rusty/Worn); 1 in fragment_one_in is a Settler Fragment. [v10pace] The Lucky Clover is the one look that drops: never before a Locker stands (LockerCabinet.owned), then 1 find in clover_one_in. A working robot finds something every 1 / base_per_s = 909 s, so a clover takes 909 x 120 s = 30 robot-hours on average: about 4 hours of play with 8 robots at work.", "base_per_s": 0.0011, "fragment_one_in": 10, "clover_one_in": 120, "dig_fragment_chance": [0.02, 0.03, 0.05, 0.25, 0.5]},
   "haggle": {"_doc": "Haggle's builder stall: `offers` haggle-source parts, reshuffled every `rotate_s` seconds of play.", "offers": 3, "rotate_s": 480},
   "set_bonus": {"id": "maker", "name": "Settler Resonance", "mods": {"speed": 1.05, "work": 1.06}, "desc": "All three Settler parts fitted: +5% speed, +6% work."},
   "parts": [
@@ -47,7 +47,7 @@
     {"id": "antenna", "slot": "topper", "name": "Bulb Antenna", "desc": "A springy antenna with a soft glowing bulb.", "source": {"kind": "craft", "parts": 10, "part": ""}},
     {"id": "top_hat", "slot": "topper", "name": "Tiny Top Hat", "desc": "For the robot who means business.", "source": {"kind": "haggle", "cubes": 300, "parts": 10}},
     {"id": "crew_flag", "slot": "topper", "name": "Crew Flag", "desc": "A little flag in the crew's colour.", "source": {"kind": "craft", "parts": 15, "part": ""}},
-    {"id": "bobble_plant", "slot": "topper", "name": "Bobble Plant", "desc": "A sprout on a spring. Boings when it brakes.", "source": {"kind": "drop", "hint": "Comes with your first robot"}},
+    {"id": "bobble_plant", "slot": "topper", "name": "Bobble Plant", "desc": "A sprout on a spring. Boings when it brakes.", "source": {"kind": "drop", "hint": "Comes with the Locker"}},
     {"id": "traffic_cone", "slot": "topper", "name": "Traffic Cone", "desc": "Found it, kept it, wears it.", "source": {"kind": "haggle", "cubes": 200, "parts": 5}},
     {"id": "propeller_cap", "slot": "topper", "name": "Propeller Cap", "desc": "Spins when it hurries. Does not help.", "source": {"kind": "request", "requests": 3}},
     {"id": "lucky_clover", "slot": "topper", "name": "Lucky Clover", "desc": "A four-leaf clover that floats. Rare: a robot has to spot one.", "source": {"kind": "drop", "hint": "Rare salvage find (robots with a good Scan)"}},

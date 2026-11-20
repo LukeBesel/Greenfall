@@ -154,8 +154,13 @@ func water_fn(i: int) -> Callable:
 		return cs.state[g.cell_at(xf * Vector3(x, 0.0, z))] == 5
 
 
+## [v10base] The start hub is never freed. Its prefab carries the yard: the workbench, the trash
+## bin, the lean-to, the pod, the Bot Bay and every yard machine are its children, built once by
+## the slice at load. Freed with the town past FREE_R (a rocket hop to the next station), they
+## were gone for good: the town came back on the return, the yard did not (owner playtest 3 #103:
+## "I returned back and there is no workbench anymore"). Out of range it is only hidden.
 func free_hub(i: int) -> void:
-	if prefabs[i] == null:
+	if prefabs[i] == null or i == 0:
 		return
 	(prefabs[i] as Node).queue_free()
 	prefabs[i] = null
@@ -359,6 +364,10 @@ func _stream() -> void:
 			best = i
 		if d < BUILD_R and prefabs[i] == null and not _building:
 			build_hub(i)
+		elif i == 0 and prefabs[0] != null:  # [v10base] home is kept (free_hub): hidden while Lumi is far away
+			var near_home: bool = d <= FREE_R
+			if (prefabs[0] as Node3D).visible != near_home:
+				(prefabs[0] as Node3D).visible = near_home
 		elif d > FREE_R and prefabs[i] != null:
 			free_hub(i)
 	if best != nearest:

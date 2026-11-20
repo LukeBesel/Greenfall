@@ -2,6 +2,7 @@
   "_doc": "[camp] The landing yard (systems/camp/camp.gd, systems/camp/yard_builds.gd). A fresh base starts with only the pod, a broken workbench and the trash bin. Lumi repairs the bench (bench_repair_s) the first time E is pressed at it. Yard builds are bought in the Hub tab: requires_level is the hub level, requires_flag a GameState flag (first_sprout = the first seed has grown). pos is [x, z] in the yard (CityLayout.YARD_HALF = 8.5; the fence runs along the back and both sides, the front at +z is open). Keep every yard interactable at least min_gap metres from the next. Every yard structure is a Hub-tab build (systems/camp/hub_builds.gd): once-builds drop off the list when built; tiered ones (trash bin, signal tower) show only their next tier. requires_bench: only after the workbench is repaired. camera_bot (camp3): global (one build for the whole game, GameState.flags.yard_global), unlocked at hub level 2 or after or_played_s seconds of play, and not listed before that (hidden_until_unlocked). Photo mode needs him (ui/photo_mode.gd).",
   "bench_repair_s": 2.6,
   "min_gap": 3.0,
+  "_parts_doc": "[v10pace] Parts prices of the first half hour (critic B: 'parts are never short': about 130 Parts by minute 10 against prices of 5-40, so the Parts half of every early price was always already full). Glim 25 (was 10), generator 15 (5), lamps 25 (10), the Bot Bay 45 (20, data/workbench.json), the Shuttle 100: with about 8 Parts a minute coming in from scooping and digs, each is now a share of what the player holds, and the Shuttle's Parts are a goal of their own.",
   "builds": {
     "shack": {
       "name": "Lean-to",
@@ -17,7 +18,7 @@
       "desc": "A patched portable generator by the lean-to. It hums; the yard feels lived in.",
       "cost": {
         "cubes": 300,
-        "parts": 5
+        "parts": 15
       },
       "requires_level": 1,
       "requires_bench": true
@@ -27,7 +28,7 @@
       "desc": "The street lamp and the pole lamps along the fence, rewired. Light for the yard at night.",
       "cost": {
         "cubes": 450,
-        "parts": 10
+        "parts": 25
       },
       "requires_level": 1,
       "requires_bench": true
@@ -72,10 +73,30 @@
       "requires_level": 1,
       "requires_flag": "first_sprout"
     },
+    "bot_bay": {
+      "_doc": "[v10pace] The Bot Bay machine (systems/camp/bot_bay.gd). Its name, text, price and conditions are the workbench tier that used to hold it: data/workbench.json tiers[1].",
+      "name": "Bot Bay",
+      "desc": "A robot workshop of its own in the yard. Walk up to it to build robots.",
+      "requires_level": 1,
+      "requires_bench": true,
+      "pos": [8.0, 7.0],
+      "yaw_deg": -90.0
+    },
+    "shuttle": {
+      "_doc": "[v10pace] The shuttle (the Mk I rocket) is built by the player on the launch pad: no rocket stands before (data/hub.json rocket.build). Listed once WREN has said why to fly on (flags.shuttle_plans, set when the story step 'shuttle' starts). The price is the first big save of the game.",
+      "name": "Shuttle",
+      "desc": "A small one-seat shuttle, built on the pad. It flies Lumi to the other old bases.",
+      "cost": {"cubes": 2000, "parts": 100},
+      "requires_level": 1,
+      "requires_bench": true,
+      "requires_flag": "shuttle_plans",
+      "hidden_until_unlocked": true,
+      "global": true
+    },
     "glim": {
       "name": "Repair Glim",
       "desc": "The little lantern bot who held on to your pod all the way down. Patch him up and he'll follow you and light the way.",
-      "cost": {"cubes": 80, "parts": 10},
+      "cost": {"cubes": 80, "parts": 25},
       "requires_level": 1,
       "requires_bench": true,
       "requires_flag": "glim_ready",

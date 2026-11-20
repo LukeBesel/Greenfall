@@ -118,7 +118,8 @@ static func card_lines(p_cmd: SphereCommand) -> Array:
 	var n: int = int(sum["robots"])
 	if n == 0:
 		out.append({"text": TranslationServer.translate("No robots here yet."), "col": UITheme.CREAM, "size": 20})
-		out.append({"text": TranslationServer.translate("Build one at the workbench."), "col": UITheme.MUTED, "size": 16})
+		if hub == crew.hub_cell:  # [v10guide] critic 20: only home has a workbench that builds robots
+			out.append({"text": TranslationServer.translate("Build one at the workbench."), "col": UITheme.MUTED, "size": 16})
 		out.append_array(other_bases(crew, hub))
 		return out
 	out.append({"text": TranslationServer.translate_plural("%d robot", "%d robots", n) % n, "col": UITheme.CREAM, "size": 22})

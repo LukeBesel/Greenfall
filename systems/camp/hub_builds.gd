@@ -93,6 +93,8 @@ static func is_built(world: Node, id: String) -> bool:
 			return Museum.built()
 		"bot_fabricator":  # [orbC] per planet (robots/fabricator/bot_fabricator.gd)
 			return BotFabricator.built(world)
+		"shuttle":  # [v10pace] built once; a rocket that already flies counts
+			return Hub.rocket_built()
 	return YardBuilds.built(id)
 
 
@@ -173,6 +175,14 @@ static func entry(world: Node, id: String) -> Dictionary:
 			e["desc"] = TranslationServer.translate("A hall with a plinth for everything Lumi found, for whoever comes next.")
 			e["cost"] = Museum.cost()
 			e["reason"] = Museum.blocker()
+		"bot_bay":  # [v10pace] the Bot Bay: price and conditions of data/workbench.json tiers[1]
+			var bd: Dictionary = BenchTiers.def(2)
+			e["name"] = str(bd.get("name", "Bot Bay"))
+			e["desc"] = str(bd.get("desc", ""))
+			e["cost"] = bd.get("cost", {})
+			e["reason"] = BenchTiers.block_reason(world)
+			if str(e["reason"]) == "" and not GameState.can_afford_all(e["cost"]):
+				e["reason"] = TranslationServer.translate("Not enough materials.")
 		"bot_fabricator":  # [orbC]
 			e["name"] = str(BotFabricator.cfg().get("name", "Bot Fabricator"))
 			e["desc"] = str(BotFabricator.cfg().get("desc", ""))
@@ -262,6 +272,9 @@ static func build(world: Node, id: String) -> bool:
 			var fdp: Node3D = world.get("depot") as Node3D if world else null
 			if fdp:
 				MachineReveal.reveal(world, nm, fdp.global_position, false)
+		"bot_bay":  # [v10pace] BenchTiers pays, grants the robot kit and tells the yard (YardBuilds.events.built)
+			if BenchTiers.tier() != 1 or not BenchTiers.buy(world):
+				return false
 		_:
 			if not YardBuilds.build(id, _hub_level(world)):
 				return false  # Camp shows it and reveals it (YardBuilds.events.built)

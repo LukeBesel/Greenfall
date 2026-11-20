@@ -153,6 +153,9 @@ func cleaned_by_bots() -> int:
 var crew: SphereCrew
 
 const AWAY_MIN_S: float = 120.0  # the flat slice's threshold for an offline payout
+## [v10guide] Critic 3: the away line shows only after a real break (a quick quit and Continue pays
+## quietly; nobody wants a report after a minute).
+const AWAY_REPORT_S: float = 600.0
 
 # --- [v6crew] Looking at a robot; what a hub's crew did while Lumi was away ---------------------
 ## Lumi stands this close to a robot: its line shows as the prompt (what it does, or why it can't).
@@ -300,7 +303,9 @@ func restore_crew(so: Node, od: Dictionary, from_disk: bool) -> Dictionary:
 	var res: Dictionary = offline(away)
 	_away_quiet = 60.0  # [v6crew] the offline note covers it: no second "while you were away"
 	Offline.apply(res)
-	EventBus.toast.emit(Offline.summary_text(res), "info")
+	var line: String = Offline.summary_text(res)
+	if away >= AWAY_REPORT_S and line != "":
+		EventBus.toast.emit(line, "info")
 	return res
 
 

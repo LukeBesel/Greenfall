@@ -92,6 +92,7 @@ static func run_dev(so: SliceOrbit) -> void:
 	await _bench2()
 	await _robot()
 	_release_all()
+	_check(_guide_checks >= 8, "the beam and trail were checked against the card %d times" % _guide_checks)  # [v10guide]
 	if _full:
 		print("%s game minutes per step: %s" % [TAG, ", ".join(_times)])
 	print("%s %s" % [TAG, "PASS" if _fails.is_empty() else "FAIL: " + "; ".join(_fails)])
@@ -416,14 +417,23 @@ static func _bench2() -> void:
 		return
 	await _earn_parts(BenchTiers.next_cost())
 	await _reload("bench2, price in hand")
+	# [v10pace] The Bot Bay is its own machine: a build (Build tab) that then stands in the yard.
+	var bay: BotBay = BotBay.of(_w)
+	_check(bay != null and not bay.visible, "bench2: no Bot Bay stands before it is built")
+	var spot: Node3D = _w.get_node_or_null("BuildSpot_bot_bay") as Node3D
+	_check(spot != null and spot.visible, "bench2: its spot in the yard is marked")
 	await _open_bench()
-	_check(_sel(_ld()) == "bench_tier", "bench2: the bench opens on the Bot Bay (%s)" % _sel(_ld()))
+	var scr: UpgradesScreen = _w.get("upgrades") as UpgradesScreen
+	_check(str(scr.get("_tab")) == "build" and _sel(_ld()) == "bot_bay", "bench2: the bench opens on the Bot Bay in the Build tab (%s / %s)" % [str(scr.get("_tab")), _sel(_ld())])
 	var parts0: float = GameState.get_currency("parts").to_float()
-	await _click_tag("bench_tier")
-	_check(BenchTiers.tier() >= 2, "bench2: a click buys the Bot Bay")
-	_check(GameState.get_currency("parts").to_float() >= parts0 - 20.0 + 39.0, "bench2: the robot kit's 40 Parts are paid")
-	_check(UpgradesScreen.tab_visible("bots", _w), "bench2: the Bots tab is open")
+	await _click_tag("bot_bay")
+	_check(BenchTiers.tier() >= 2 and BotBay.built(), "bench2: a click builds the Bot Bay")
+	_check(GameState.get_currency("parts").to_float() >= parts0 - float(BenchTiers.def(2)["cost"]["parts"]) + 39.0, "bench2: the robot kit's 40 Parts are paid")
+	_check(not UpgradesScreen.tab_visible("bots", _w), "bench2: the workbench has no Bots tab")
 	await _close_bench()
+	await _secs(1.0)
+	_check(bay != null and bay.visible, "bench2: the Bot Bay stands in the yard")
+	_check(_w.get_node_or_null("BuildSpot_bot_bay") == null, "bench2: the spot's marks are gone")
 	await _done("bench2")
 
 
@@ -432,13 +442,23 @@ static func _robot() -> void:
 		return
 	var fl: Fleet = _w.get("fleet") as Fleet
 	await _earn_parts({"cubes": fl.build_cost("scoopie").to_float(), "parts": fl.build_parts("scoopie").to_float()})
-	await _open_bench()
-	var scr: UpgradesScreen = _w.get("upgrades") as UpgradesScreen
-	_check(str(scr.get("_tab")) == "bots", "robot: the bench opens on the Bots tab (%s)" % str(scr.get("_tab")))
+	# [v10pace] Robots are built at the Bot Bay: the beam stands on it, E opens its own screen.
+	var bay: BotBay = BotBay.of(_w)
+	await _secs(0.6)
+	_check(_beam_at(bay.stand_point(), 3.0), "robot: the beam stands on the Bot Bay")
+	await _reload("robot, the Bot Bay built")
+	bay = BotBay.of(_w)
+	fl = _w.get("fleet") as Fleet  # the reload built a new world
+	_check(bay != null and bay.visible, "robot: the Bot Bay still stands after the reload")
+	await _open_bay()
+	_check(bay.is_open() and str(bay.screen.get("_tab")) == "bots", "robot: E at the Bot Bay opens its own screen (%s)" % (str(bay.screen.get("_tab")) if bay.screen else "-"))
 	_check(_sel(_ld()) == "build_scoopie", "robot: on the Scoopie (%s)" % _sel(_ld()))
 	await _click_tag("build_scoopie")
 	_check(fl.robot_total() >= 1, "robot: a click builds the Scoopie")
-	await _close_bench()
+	await _secs(1.2)
+	_check(not bay.is_open() and _input_on(), "robot: the screen closes by itself to show the first robot roll out")
+	var os_: OrbitSites = OrbitSites.of(_w)
+	_check(os_ != null and not os_.rocket_spot.visible and not os_.rocket_unlocked(), "robot: no rocket stands on the pad yet")
 	await _reload("robot, just built")
 	await _done("robot")
 	_check(str(_ob.current().get("id", "")) == "hex2", "robot: the next step comes (%s)" % str(_ob.current().get("id", "")))
@@ -651,6 +671,9 @@ static func _reload(label: String) -> void:
 			continue
 		elif k == "chest":
 			same = absf(float(x) - float(y)) < 0.35
+		elif k == "clean" and int(a["robots"]) > 0:
+			# [v10pace] a robot out keeps cleaning between this look and the save at Quit: a little more is fine
+			same = float(y) >= float(x) - 0.001 and float(y) - float(x) <= 0.05
 		elif k == "beam":
 			# On a cleaning step the marker is the outlined hex ("hex", compared above); its beam to
 			# the nearest finishable hex comes and goes with where Lumi stands (main, v9d).
@@ -663,6 +686,7 @@ static func _reload(label: String) -> void:
 	_check(diff.is_empty() and _input_on(), "reload at %s: card '%s' %s, beam on %s, chest %.1f, carrying %d: the same after Continue%s (Lumi %.1f m from where he was)" % [
 		label, str(b["card"] if b["card"] != "" else b["checklist"]), str(b["count"]), str(b["to"]), float(b["chest"]), int(b["carried"]),
 		"" if diff.is_empty() else "; CHANGED: " + ", ".join(diff), moved])
+	_guide_check("reload at %s" % label)
 
 
 static func _short(v: Variant) -> String:
@@ -706,6 +730,7 @@ static func _on_step(id: String) -> bool:
 	var tgt: Dictionary = _ob.step_target(_ob.current())
 	var marked: bool = _ob.waypoint_target() is Vector3 or _ob.target_hex >= 0
 	_check(_card() != "" and marked, "%s: card '%s' / '%s', marker %s" % [id, _card(), _card(true), str(tgt.get("to", ""))])
+	_guide_check(id)
 	return true
 
 
@@ -731,6 +756,52 @@ static func _beam() -> Variant:
 	var wp: Waypoint = _ob.waypoint
 	var r: Variant = wp.get("_raw")
 	return r if r is Vector3 else wp.get("_target")
+
+
+## [v10guide] Critic 5: where the card's current line sends Lumi, worked out from what the card
+## says (its situation line and picture, else the step's own target), not from the beam. "skip" =
+## a cleaning step (the hex outline is the marker;
+## its beam to the nearest finishable hex comes and goes with where Lumi stands).
+static func _card_place() -> Variant:
+	var tut: Tutorial = _w.get("tutorial") as Tutorial
+	if tut and not tut.done():
+		return "skip"
+	var line: String = _ob.situation
+	var rocket: Variant = _ob.away_rocket()
+	if line != "" and not _ob.situation_price:
+		if _ob.situation_kind == "bale":  # "Carry your bale to the scale" (home: under the tall smoke)
+			return rocket if rocket is Vector3 else (_w.get("depot") as Node3D).global_position
+		var press: String = TranslationServer.translate("Your chest is full. Press [%s] to make a bale.") % Settings.glyph("cube")
+		if _ob.situation_kind == "chest" and line != press:  # "Bring it to the bin" (pressing a bale: no place, the step's target holds)
+			return rocket if rocket is Vector3 else Objectives.bin_point(_w)
+		if _ob.situation_kind == "lock":  # "Upgrade Lift at the bench"
+			return _ob._resolve({"to": "bench", "row": []}).get("pos", null)
+		if _ob.situation_kind == "house":  # "Head home: follow the beam" / "The rocket waits on the pad"
+			return rocket if rocket is Vector3 else _ob.home_pos()
+	var stt: Dictionary = _ob.step_target(_ob.current())
+	if str(stt.get("to", "")) in ["hex", ""] and stt.get("pos", null) == null:
+		return "skip"
+	return stt.get("pos", null)
+
+
+## [v10guide] Critic 5: the beam stands on the card's place and the trail runs toward it from Lumi.
+static func _guide_check(label: String) -> void:
+	var want: Variant = _card_place()
+	if want is String:
+		return
+	var b: Variant = _beam()
+	var ok: bool = (want == null and b == null) or (want is Vector3 and b is Vector3 and (want as Vector3).distance_to(b) < 2.5)
+	var wp: Waypoint = _ob.waypoint
+	var goal: Variant = wp.get("_target")
+	var trail_ok: bool = true
+	if ok and want is Vector3 and goal is Vector3:  # the trail ends on the beam's open-ground spot by the place
+		trail_ok = (goal as Vector3).distance_to(want) < 8.0
+	_check(ok and trail_ok, "%s: the beam and trail go where the card says (card '%s' / '%s': %s; beam on %s)" % [
+		label, _card(), _ob.situation, _short(want) if want is Vector3 else "no place", _short(b) if b is Vector3 else "nothing"])
+	_guide_checks += 1
+
+
+static var _guide_checks: int = 0
 
 
 static func _beam_at(at: Variant, m: float = 2.5) -> bool:
@@ -858,6 +929,8 @@ static func _make_and_sell_bale(reload_label: String = "") -> void:
 			var c: JunkCube = _p.nearest_loose_cube()
 			if c:
 				await _tap("interact")
+	await _secs(0.6)  # the card's next refresh
+	_guide_check("carrying a bale on %s" % str(_ob.current().get("id", "")))
 	if str(_ob.current().get("id", "")) == "power":
 		_check(str(_ob.step_target(_ob.current()).get("to", "")) == "depot" and _ob.waypoint_target() is Vector3, "bale: carrying it, the beam goes to the scale (%s)" % str(_ob.step_target(_ob.current()).get("to", "")))
 	var dp: Node3D = _w.get("depot") as Node3D
@@ -1033,7 +1106,31 @@ static func _close_bench() -> void:
 
 static func _ld() -> ListDetail:
 	var scr: UpgradesScreen = _w.get("upgrades") as UpgradesScreen
+	var bay: BotBay = BotBay.of(_w)
+	if bay and bay.is_open():  # [v10pace] the Bot Bay's own screen
+		scr = bay.screen
 	return scr.get("_panel") as ListDetail if scr else null
+
+
+## [v10pace] Walks to the Bot Bay and presses E: its own screen opens.
+static func _open_bay() -> void:
+	var bay: BotBay = BotBay.of(_w)
+	if bay == null or bay.is_open():
+		return
+	await _walk_to(func() -> Vector3: return bay.stand_point(), func() -> bool: return _p.global_position.distance_to(bay.stand_point()) < 1.6, "the Bot Bay", 1.2)
+	await _secs(0.4)
+	_check("Bot Bay" in str(_w.call("interact_prompt", _p)), "Bot Bay: the prompt names it (%s)" % str(_w.call("interact_prompt", _p)))
+	await _tap("interact")
+	await _secs(0.8)
+
+
+static func _close_bay() -> void:
+	var bay: BotBay = BotBay.of(_w)
+	if bay == null or not bay.is_open():
+		return
+	await _tap("open_upgrades")
+	await _secs(0.6)
+	_check(not bay.is_open() and _input_on(), "Bot Bay: %s closes it and Lumi moves again" % Settings.glyph("open_upgrades"))
 
 
 static func _sel(ld: ListDetail) -> String:

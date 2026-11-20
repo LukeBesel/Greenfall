@@ -2,6 +2,32 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## Status at the stop, 18 Nov (owner playtest 3, items 89-109)
+
+The owner asked to end all work at a good stopping point.
+
+- **Pushed** (origin 8bd0593):
+  - Ledger removed (item 105).
+  - Audio-mixer crash fix (MixBarrier) and quit-hang fix (build_budget force_sync).
+  - Workbench gone after returning, fixed (103), and the ship now flies nose first (100).
+  - v10pace (97 yard, 98, 99, 106, 107; critic 6, 9, 11, 12, 16).
+  - v10ui (89, 93, 94, 95, 96, 109; critic 7, 14, 17, 18, 19).
+  - The full local suite passed on these.
+- **CI on 8bd0593 failed:** GUT crashed with SIGSEGV right after test_frontiers.gd started (it passes locally). The crash is on the main thread, in a GDScript lambda call (gdscript_lambda_callable.cpp). Most likely a timer, tween, deferred call or signal lambda left by an earlier test (test_fauna*, test_field, test_first_hour, test_first_seed_hint, test_flat_import) fires after its object was freed. Not reproduced yet.
+- **Merged on local main, not pushed** (the combined full run was stopped): v10guide 4148bc4 (critic 3, 5, 13, 20, 21, 23). Its own full run passed on its branch.
+- **WIP on helper branches** (local worktrees under /home/user/gf-wt), not merged:
+  - v10base (101, 102, 104, far half of 97; critic 1 bale rain, 4, 10, 15, 22).
+  - v10snd (90, 91, 92, 108: sliders, quieter stingers and ambience, radio and first CD).
+  - v10ui follow-up renders.
+  - v9a walk fixes and Pace.heavy_hint.
+  - Each helper's final note is in its branch log.
+- **Open:**
+  - Message bursts at the tower and the seed.
+  - The night lake is nearly black.
+  - A 7-minute gap while saving for the shuttle; the 2000-cube shuttle price has not been through autoplay.
+  - walk_opening's occasional stuck spot by the workbench.
+  - A second play-tester pass after all merges.
+
 ## Current state of round Verdance (2026-11-10)
 
 The round world is the game, and the work is on its first planet, Verdance. The owner's bar: it must feel finished, with no glitches, easy progress, and simple enough for a young kid (docs/OWNER_FEEDBACK.md, items 1-56). This section is the one status summary; everything below it is the detail and the history.
@@ -14,6 +40,7 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Hexes:** a hex counts as clean at 95% and the rest is swept away. The first hexes hold no large items.
 - **Workbench:** tiers unlock the tabs (Bot Bay, Research Desk, Request Board). Rows keep a fixed order, a click shows details, and locked rows say what unlocks them.
 - **Robots:** the Scoopie comes first. Haul Bug and Skimmer plans arrive later by themselves. Haulers take Lumi's bales. The Command view works on a controller.
+- **Base 1 before the first flight (v10pace, playtest 3):** the Bot Bay is its own yard machine; after the seed: a second robot, the Haul Bug (carries 6), 10 hexes, the map, base level 2, then the Shuttle is built on the pad (2,000 cubes, 100 Parts) and only then the card says fly. Finds pay half the Parts, seeds and Parts are whole numbers, no look before the Locker, a 36-minute day that starts in the morning. Numbers in docs/OWNER_FEEDBACK.md items 97-99, 106, 107.
 - **Story order (v8bot, item 79):** clean the glowing hex, Bot Bay, first robot, "Clean 2 hexes" (card: "Your robot cleans on its own."), "Clean 3 hexes" (WREN: "Your robot cleans on its own. One more hex, Lumi."), the first seed. There is no "show your robot where to clean" step and no zone goal: every robot type works on its own around its hub (nearest work first, robots spread over different hexes). The Command view (B) and zone painting stay as an optional feature the game never asks for; the first-minutes key strip leaves B out (the full list keeps it). The autoplay paints zones only with `--autoplay-zones`. Old saves on the zone step move on to "Clean 2 hexes" (`Objectives._drop_zone_step`, flag `objectives_v3`).
 - **Command view calls (v8bot, item 81):** a painted zone calls the N robots of its job nearest by travel (`SphereCrew.zone_count` / `set_zone_count` / `_assign_zones`, `u["called"]`, saved as `zone_n`); the card's "Robots here: - N +" sets N (default all; click, keys - +, D-pad left / right) and shows how many are on the way / working there. A newly called robot drops a job outside the zone at once. The rest leave the zone to them while they have other work. The Haul Bug nag waits for its plans (`CrewTalk.needs_hauler`); in the Command view the event banner and the play HUD step aside. Dev: `--crew-zone=N --crew-zone-n=K --crew-zone-log`.
 - **Growing and water:** plants are visible (sizes, soil, thirst). The first seed has a beacon. Hover Jets are needed to cross lakes.

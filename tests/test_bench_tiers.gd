@@ -47,7 +47,7 @@ func test_earning_cubes_alone_opens_no_tab() -> void:
 	GameState.stats["cubes_earned_total"] = BigNum.from_float(1.0e6).serialize()
 	GameState.stats["robots_built"] = 3.0
 	GameState.stats["research_done"] = 2.0
-	assert_false(UpgradesScreen.tab_visible("bots"), "only a bench tier opens Bots")
+	assert_false(BenchTiers.tab_open("bots"), "only the Bot Bay opens robots")
 	assert_false(UpgradesScreen.tab_visible("research"), "only a bench tier opens Research")
 
 
@@ -58,7 +58,8 @@ func test_each_tier_opens_its_tab_in_order() -> void:
 			order.append(str(tab))
 	assert_eq(order, ["bots", "research", "contracts"] as Array[String], "Bots, then Research, then Requests")
 	GameState.flags["bench_tier"] = 2
-	assert_true(UpgradesScreen.tab_visible("bots"))
+	assert_true(BenchTiers.tab_open("bots"), "the Bot Bay stands: robots can be built")
+	assert_false(UpgradesScreen.tab_visible("bots"), "[v10pace] robots are the Bot Bay's own screen, never a workbench tab")
 	assert_false(UpgradesScreen.tab_visible("research"))
 	GameState.flags["bench_tier"] = 3
 	assert_true(UpgradesScreen.tab_visible("research"))
@@ -78,7 +79,7 @@ func test_tier_two_waits_for_the_tower_and_a_clean_hex_then_costs() -> void:
 	assert_true(BenchTiers.buy())
 	assert_eq(BenchTiers.tier(), 2)
 	assert_true(Research.has("salvage_logic"), "the Bot Bay brings the robot blueprint: a first robot can be built")
-	assert_true(UpgradesScreen.tab_visible("bots"))
+	assert_true(BenchTiers.tab_open("bots") and BotBay.built())
 
 
 func test_old_saves_keep_the_tabs_they_used() -> void:

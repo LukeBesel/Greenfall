@@ -103,7 +103,8 @@ func test_one_turn_per_day_period() -> void:
 	for i: int in 100:
 		_sd._process(1.0)  # 100 s = a tenth of a turn
 	var turned: float = fposmod(_sd.spin - s0, TAU) / TAU
-	assert_almost_eq(turned, 0.1, 0.01, "the spin is the only clock (daytime, Glim found)")
+	# [v10pace] by day the clock runs at globe_day.day_speed (data/solar_system.json, item 107)
+	assert_almost_eq(turned, 0.1 * float(SolarSystem.globe_day("verdance")["day_speed"]), 0.01, "the spin is the only clock (daytime, Glim found)")
 
 
 func test_binary_sun_on_the_globe() -> void:

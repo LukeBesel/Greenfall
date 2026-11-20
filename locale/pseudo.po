@@ -261,19 +261,19 @@ msgstr "[ĥôļð %s ~]"
 msgid "Hex clean! Green can grow here now."
 msgstr "[Ĥéx çļéàñ! Ĝŕééñ çàñ ĝŕôŵ ĥéŕé ñôŵ. ~~~~~~~~~]"
 
-#: automation/hub.gd:89
+#: automation/hub.gd:86
 msgid "Locked. Upgrade your base to level %d to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ %d ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~~]"
 
-#: automation/hub.gd:90
-msgid "The launch pad is still buried. Put your first robot to work to clear it."
-msgstr "[Ţĥé ļàûñçĥ þàð îš šţîļļ bûŕîéð. Þûţ ýôûŕ ƒîŕšţ ŕôbôţ ţô ŵôŕķ ţô çļéàŕ îţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
+#: automation/hub.gd:87
+msgid "No shuttle yet. Build it at the workbench when WREN finds a place to fly to."
+msgstr "[Ñô šĥûţţļé ýéţ. Bûîļð îţ àţ ţĥé ŵôŕķbéñçĥ ŵĥéñ ŴŔÉÑ ƒîñðš à þļàçé ţô ƒļý ţô. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: automation/hub.gd:173
+#: automation/hub.gd:170
 msgid "Base upgraded: %s."
 msgstr "[Bàšé ûþĝŕàðéð: %s. ~~~]"
 
-#: automation/hub.gd:204
+#: automation/hub.gd:201
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "[Àîŕ Šçŕûbbéŕ ôñļîñé. Ţĥé ƒàñš šþîñ ûþ ŵîţĥ à ļôñĝ, ðûšţý šîĝĥ. ~~~~~~~~~~~~~~~~~~~]"
 
@@ -322,55 +322,59 @@ msgstr "[Ŕéþàîŕ îţ ƒîŕšţ. ~~~]"
 msgid "Fully upgraded."
 msgstr "[Fûļļý ûþĝŕàðéð. ~~]"
 
-#: automation/outposts.gd:409
+#: automation/outposts.gd:411
 msgid "Outpost %d repaired: a new scale for your Haul Bugs."
 msgstr "[Ôûţþôšţ %d ŕéþàîŕéð: à ñéŵ šçàļé ƒôŕ ýôûŕ Ĥàûļ Bûĝš. ~~~~~~~~~~~~~~~]"
 
-#: automation/outposts.gd:410
+#: automation/outposts.gd:413
+msgid "Outpost %d repaired: a new scale for your bales."
+msgstr "[Ôûţþôšţ %d ŕéþàîŕéð: à ñéŵ šçàļé ƒôŕ ýôûŕ bàļéš. ~~~~~~~~~~~~~~]"
+
+#: automation/outposts.gd:414
 msgid "OUTPOST ONLINE"
 msgstr "[ÔÛŢÞÔŠŢ ÔÑĻÎÑÉ ~~]"
 
-#: automation/outposts.gd:432
+#: automation/outposts.gd:436
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "[Ôûţþôšţ %d ûþĝŕàðéð: %s. %s ~~~~~~]"
 
-#: automation/outposts.gd:461
+#: automation/outposts.gd:465
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   [Ŕûîñéð ôûţþôšţ · çļéàŕ îţš ĥéx ƒîŕšţ (%d%% / %d%%) ~~~~~~~~~~~~~~~]"
 
-#: automation/outposts.gd:462
+#: automation/outposts.gd:466
 msgid "E   Repair outpost · %s%s"
 msgstr "E   [Ŕéþàîŕ ôûţþôšţ · %s%s ~~~~]"
 
-#: automation/outposts.gd:462 automation/outposts.gd:465
+#: automation/outposts.gd:466 automation/outposts.gd:469
 msgid "  (need more)"
 msgstr "  [(ñééð môŕé) ~~]"
 
-#: automation/outposts.gd:464
+#: automation/outposts.gd:468
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   [Ôûţþôšţ %d · %s · bàļéš +%d%% ~~~~~~~]"
 
-#: automation/outposts.gd:465
+#: automation/outposts.gd:469
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   [Ûþĝŕàðé ôûţþôšţ: %s · %s%s ~~~~~~]"
 
-#: automation/outposts.gd:475
+#: automation/outposts.gd:479
 msgid "Outpost %d: %s"
 msgstr "[Ôûţþôšţ %d: %s ~~]"
 
-#: automation/outposts.gd:482
+#: automation/outposts.gd:486
 msgid "Outpost %d upgrade: %s"
 msgstr "[Ôûţþôšţ %d ûþĝŕàðé: %s ~~~~~]"
 
-#: automation/outposts.gd:485
+#: automation/outposts.gd:489
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "[Ôûţþôšţ %d: %s. Bàļéš šéļļ ƒôŕ +%d%% ĥéŕé; ŕôbôţš çŕôššîñĝ ţĥé þàð ĝéţ à šþééð çĥàŕĝé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: automation/outposts.gd:588
+#: automation/outposts.gd:592
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "[ÔÛŢÞÔŠŢ %d  ŔÛÎÑÉÐ · ŕéþàîŕ àţ %d%% çļéàŕ ~~~~~~~~~~~]"
 
-#: automation/outposts.gd:589
+#: automation/outposts.gd:593
 msgid "OUTPOST %d  %s"
 msgstr "[ÔÛŢÞÔŠŢ %d  %s ~~]"
 
@@ -403,7 +407,7 @@ msgid "Rocket upgraded: %s."
 msgstr "[Ŕôçķéţ ûþĝŕàðéð: %s. ~~~~]"
 
 #: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
-#: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:97
+#: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "[Bûîļţ. ~]"
 
@@ -411,7 +415,7 @@ msgstr "[Bûîļţ. ~]"
 msgid "Requires research: %s."
 msgstr "[Ŕéqûîŕéš ŕéšéàŕçĥ: %s. ~~~~~]"
 
-#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
+#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:93
 #: ui/stations_panel.gd:98
 msgid "Requires base level %d."
 msgstr "[Ŕéqûîŕéš bàšé ļévéļ %d. ~~~~~]"
@@ -453,8 +457,9 @@ msgid "Requires hub level %d or research: %s."
 msgstr "[Ŕéqûîŕéš ĥûb ļévéļ %d ôŕ ŕéšéàŕçĥ: %s. ~~~~~~~~~~]"
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:145
-#: systems/camp/hub_builds.gd:155 systems/camp/yard_builds.gd:91 ui/telescope_panel.gd:41
+#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
+#: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
+#: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "[Ñôţ éñôûĝĥ màţéŕîàļš. ~~~~]"
 
@@ -470,26 +475,9 @@ msgstr "[ÔBŠÉŔVÀŢÔŔÝ ~]"
 msgid "E   Telescope: look across the system"
 msgstr "E   [Ţéļéšçôþé: ļôôķ àçŕôšš ţĥé šýšţém ~~~~~~~~~]"
 
-#: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:287
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:709 ui/upgrade_card.gd:259
-msgid "%d min"
-msgstr "[%d mîñ ~]"
-
-#: core/offline.gd:142
-msgid "While you were away (%s):"
-msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý (%s): ~~~~~~]"
-
-#: core/offline.gd:144
-msgid "The fleet baled and delivered %s cubes."
-msgstr "[Ţĥé ƒļééţ bàļéð àñð ðéļîvéŕéð %s çûbéš. ~~~~~~~~~~~]"
-
 #: core/offline.gd:146
-msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
-msgstr "[Bàļéš ŵôŕţĥ %s ŵéŕé šţàçķéð àţ ţĥé ĥûb ŵîţĥ ñôbôðý ţô ĥàûļ ţĥém. Ļûmî çàšĥéð ţĥém îñ. À Ĥàûļ Bûĝ ŵôûļð ķééþ ţĥém môvîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: core/offline.gd:148
-msgid "The scrubbers filtered the air the whole time. It's a little clearer."
-msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
+msgid "While you were away, your robots earned %s cubes."
+msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš éàŕñéð %s çûbéš. ~~~~~~~~~~~~~~]"
 
 #: core/pace.gd:206
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
@@ -511,7 +499,7 @@ msgstr "[Ñô Bàļéŕ ýéţ. Bŕîñĝ ýôûŕ çĥéšţ ţô ţĥé bîñ.
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
-#: core/pace.gd:338 tools/walk_opening.gd:323
+#: core/pace.gd:338 tools/walk_opening.gd:324
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "[Ñô ļôôšé ţŕàšĥ ñôŵ. Þŕéšš [%s] ƒôŕ à bàļé, ţĥéñ þûţ îţ ôñ ţĥé šçàļé. ~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -651,7 +639,7 @@ msgstr "[ŢÔĜÉŢĤÉŔ ŴÉ BĻÔÔM ~~~]"
 msgid "LIGHT  WATER  LIFE"
 msgstr "[ĻÎĜĤŢ  ŴÀŢÉŔ  ĻÎFÉ ~~~]"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:241 robots/sphere/command_overlay.gd:194
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:243 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "[Bàšé %d ~]"
 
@@ -659,7 +647,7 @@ msgstr "[Bàšé %d ~]"
 msgid "Press  {open_globe}  to see how much of the planet is clean"
 msgstr "[Þŕéšš  {open_globe}  ţô šéé ĥôŵ mûçĥ ôƒ ţĥé þļàñéţ îš çļéàñ ~~~~~~~~~~~~~~~~~~]"
 
-#: planet/orbit/orbit_crews.gd:223
+#: planet/orbit/orbit_crews.gd:226
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "[Ýôûŕ ŕôbôţ çļéàñéð à ĥéx! Îţ çôûñţš: %d / %d ~~~~~~~~~~~~]"
 
@@ -809,31 +797,31 @@ msgstr "[Àļļ %d bàšéš šţàñð. Bûîļð ţĥé ðŕîvé àţ ţĥé 
 msgid "%s  ·  the %s"
 msgstr "[%s  ·  ţĥé %s ~~]"
 
-#: planet/sites/orbit_sites.gd:122
+#: planet/sites/orbit_sites.gd:124
 msgid "The rocket is in flight."
 msgstr "[Ţĥé ŕôçķéţ îš îñ ƒļîĝĥţ. ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:144
+#: planet/sites/orbit_sites.gd:146
 msgid "Bases restored: %d of %d"
 msgstr "[Bàšéš ŕéšţôŕéð: %d ôƒ %d ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:182
+#: planet/sites/orbit_sites.gd:184
 msgid "E   Rocket: choose a destination"
 msgstr "E   [Ŕôçķéţ: çĥôôšé à ðéšţîñàţîôñ ~~~~~~~]"
 
-#: planet/sites/orbit_sites.gd:220
+#: planet/sites/orbit_sites.gd:222
 msgid "HOME"
 msgstr "[ĤÔMÉ ~]"
 
-#: planet/sites/orbit_sites.gd:220
+#: planet/sites/orbit_sites.gd:222
 msgid "NEXT STOP"
 msgstr "[ÑÉXŢ ŠŢÔÞ ~]"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "Upgrade the rocket first"
 msgstr "[Ûþĝŕàðé ţĥé ŕôçķéţ ƒîŕšţ ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:240
+#: planet/sites/orbit_sites.gd:242
 msgid "%s site"
 msgstr "[%s šîţé ~]"
 
@@ -1197,7 +1185,7 @@ msgstr "[ŕéƒîļļîñĝ àţ %s (%d%%) ~~~~~]"
 msgid "base barrel"
 msgstr "[bàšé bàŕŕéļ ~]"
 
-#: robots/robot.gd:263 systems/research.gd:404
+#: robots/robot.gd:263 systems/research.gd:416
 msgid "tank"
 msgstr "[ţàñķ ~]"
 
@@ -1297,7 +1285,7 @@ msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
-#: robots/fabricator/bot_fabricator.gd:94 systems/camp/yard_builds.gd:89
+#: robots/fabricator/bot_fabricator.gd:94 systems/camp/yard_builds.gd:96
 msgid "Not yet."
 msgstr "[Ñôţ ýéţ. ~]"
 
@@ -1353,77 +1341,77 @@ msgstr "[ŔÔBÔŢ ÇÔMMÀÑÐ ~~]"
 msgid "No robots here yet."
 msgstr "[Ñô ŕôbôţš ĥéŕé ýéţ. ~~~~]"
 
-#: robots/sphere/command_overlay.gd:121 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+#: robots/sphere/command_overlay.gd:122 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
 msgid "Build one at the workbench."
 msgstr "[Bûîļð ôñé àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:124 robots/sphere/command_overlay.gd:196
+#: robots/sphere/command_overlay.gd:125 robots/sphere/command_overlay.gd:197
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "[%d ŕôbôţ ~]"
 msgstr[1] "[%d ŕôbôţš ~]"
 
-#: robots/sphere/command_overlay.gd:126
+#: robots/sphere/command_overlay.gd:127
 msgid "About %d hexes an hour"
 msgstr "[Àbôûţ %d ĥéxéš àñ ĥôûŕ ~~~~~]"
 
-#: robots/sphere/command_overlay.gd:139 robots/sphere/command_overlay.gd:197
+#: robots/sphere/command_overlay.gd:140 robots/sphere/command_overlay.gd:198
 msgid "%d working"
 msgstr "[%d ŵôŕķîñĝ ~]"
 
-#: robots/sphere/command_overlay.gd:141
+#: robots/sphere/command_overlay.gd:142
 msgid "%d working, %d waiting"
 msgstr "[%d ŵôŕķîñĝ, %d ŵàîţîñĝ ~~~~~]"
 
-#: robots/sphere/command_overlay.gd:143
+#: robots/sphere/command_overlay.gd:144
 msgid "%d waiting"
 msgstr "[%d ŵàîţîñĝ ~]"
 
-#: robots/sphere/command_overlay.gd:148 robots/sphere/crew_talk.gd:81 robots/sphere/crew_talk.gd:85
+#: robots/sphere/command_overlay.gd:149 robots/sphere/crew_talk.gd:58
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "[Bàļéš àŕé þîļîñĝ ûþ. Bûîļð à Ĥàûļ Bûĝ. ~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:161
+#: robots/sphere/command_overlay.gd:162
 msgid "Robots here: all %d"
 msgstr "[Ŕôbôţš ĥéŕé: àļļ %d ~~~~]"
 
-#: robots/sphere/command_overlay.gd:162
+#: robots/sphere/command_overlay.gd:163
 msgid "Robots here: %d of %d"
 msgstr "[Ŕôbôţš ĥéŕé: %d ôƒ %d ~~~~]"
 
-#: robots/sphere/command_overlay.gd:165
+#: robots/sphere/command_overlay.gd:166
 msgid "%d on the way, %d working here"
 msgstr "[%d ôñ ţĥé ŵàý, %d ŵôŕķîñĝ ĥéŕé ~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:168
+#: robots/sphere/command_overlay.gd:169
 msgid "D-pad left / right: how many come"
 msgstr "[Ð-þàð ļéƒţ / ŕîĝĥţ: ĥôŵ màñý çômé ~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:169
+#: robots/sphere/command_overlay.gd:170
 msgid "Click - or + (or keys - +): how many come"
 msgstr "[Çļîçķ - ôŕ + (ôŕ ķéýš - +): ĥôŵ màñý çômé ~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:190
+#: robots/sphere/command_overlay.gd:191
 msgid "OTHER BASES"
 msgstr "[ÔŢĤÉŔ BÀŠÉŠ ~]"
 
-#: robots/sphere/command_overlay.gd:206
+#: robots/sphere/command_overlay.gd:207
 msgid "Good! Your robots will work here first."
 msgstr "[Ĝôôð! Ýôûŕ ŕôbôţš ŵîļļ ŵôŕķ ĥéŕé ƒîŕšţ. ~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:207
+#: robots/sphere/command_overlay.gd:208
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "[Ĥôļð À: þàîñţ   Ĥôļð X: éŕàšé   %s: bàçķ ~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:208
+#: robots/sphere/command_overlay.gd:209
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "[Ļéƒţ môûšé: þàîñţ   Ŕîĝĥţ môûšé: éŕàšé   %s: bàçķ ~~~~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Y: next job"
 msgstr "[Ý: ñéxţ ĵôb ~]"
 
-#: robots/sphere/command_overlay.gd:210
+#: robots/sphere/command_overlay.gd:211
 msgid "Tab: next job"
 msgstr "[Ţàb: ñéxţ ĵôb ~~]"
 
@@ -1479,68 +1467,72 @@ msgstr "[Ñô ĵûñķ ôñ ţĥé ļàķéš ĥéŕé. ~~~~~~]"
 msgid "I can't find a way there. Trying another spot."
 msgstr "[Î çàñ'ţ ƒîñð à ŵàý ţĥéŕé. Ţŕýîñĝ àñôţĥéŕ šþôţ. ~~~~~~~~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:78
+#: robots/sphere/crew_talk.gd:57
+msgid "Bales are piling up. One more Haul Bug would help."
+msgstr "[Bàļéš àŕé þîļîñĝ ûþ. Ôñé môŕé Ĥàûļ Bûĝ ŵôûļð ĥéļþ. ~~~~~~~~~~~~~~~]"
+
+#: robots/sphere/crew_talk.gd:87
 msgid "Hello! Looking around."
 msgstr "[Ĥéļļô! Ļôôķîñĝ àŕôûñð. ~~~~~]"
 
-#: robots/sphere/crew_talk.gd:82
+#: robots/sphere/crew_talk.gd:91
 msgid "On my way to work."
 msgstr "[Ôñ mý ŵàý ţô ŵôŕķ. ~~~]"
 
-#: robots/sphere/crew_talk.gd:88
+#: robots/sphere/crew_talk.gd:97
 msgid "Fetching a bale."
 msgstr "[Féţçĥîñĝ à bàļé. ~~~]"
 
-#: robots/sphere/crew_talk.gd:90
+#: robots/sphere/crew_talk.gd:99
 msgid "Carrying bales home."
 msgstr "[Çàŕŕýîñĝ bàļéš ĥômé. ~~~~]"
 
-#: robots/sphere/crew_talk.gd:92
+#: robots/sphere/crew_talk.gd:101
 msgid "Tipping junk into the baler."
 msgstr "[Ţîþþîñĝ ĵûñķ îñţô ţĥé bàļéŕ. ~~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:94
+#: robots/sphere/crew_talk.gd:103
 msgid "Filling my water tank."
 msgstr "[Fîļļîñĝ mý ŵàţéŕ ţàñķ. ~~~~~]"
 
-#: robots/sphere/crew_talk.gd:98
+#: robots/sphere/crew_talk.gd:107
 msgid "Looking for work."
 msgstr "[Ļôôķîñĝ ƒôŕ ŵôŕķ. ~~~]"
 
 #. a robot kind and its Mk tier, e.g. "Scoopie (Mk II)".
-#: robots/sphere/crew_talk.gd:106
+#: robots/sphere/crew_talk.gd:115
 msgid "%s (%s)"
 msgstr "[%s (%s)]"
 
-#: robots/sphere/crew_talk.gd:107
+#: robots/sphere/crew_talk.gd:116
 msgid "%s the %s: %s"
 msgstr "[%s ţĥé %s: %s ~~]"
 
-#: robots/sphere/crew_talk.gd:132
+#: robots/sphere/crew_talk.gd:141
 msgid "No robots here yet"
 msgstr "[Ñô ŕôbôţš ĥéŕé ýéţ ~~~]"
 
-#: robots/sphere/crew_talk.gd:134
+#: robots/sphere/crew_talk.gd:143
 msgid "%d robot working here"
 msgid_plural "%d robots working here"
 msgstr[0] "[%d ŕôbôţ ŵôŕķîñĝ ĥéŕé ~~~~]"
 msgstr[1] "[%d ŕôbôţš ŵôŕķîñĝ ĥéŕé ~~~~~]"
 
-#: robots/sphere/crew_talk.gd:136
+#: robots/sphere/crew_talk.gd:145
 msgid "%s, about %d hexes an hour"
 msgstr "[%s, àbôûţ %d ĥéxéš àñ ĥôûŕ ~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:147
+#: robots/sphere/crew_talk.gd:156
 msgid "While you were away, your robots here cleaned %d hex."
 msgid_plural "While you were away, your robots here cleaned %d hexes."
 msgstr[0] "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš ĥéŕé çļéàñéð %d ĥéx. ~~~~~~~~~~~~~~~~]"
 msgstr[1] "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš ĥéŕé çļéàñéð %d ĥéxéš. ~~~~~~~~~~~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:149
+#: robots/sphere/crew_talk.gd:158
 msgid "While you were away, your robots here earned %s cubes."
 msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš ĥéŕé éàŕñéð %s çûbéš. ~~~~~~~~~~~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:150
+#: robots/sphere/crew_talk.gd:159
 msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
 msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
 msgstr[0] "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš ĥéŕé çļéàñéð %d ĥéx àñð éàŕñéð %s çûbéš. ~~~~~~~~~~~~~~~~~~~~~~~]"
@@ -1566,19 +1558,19 @@ msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   [Ôþéñ ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:1026
+#: scenes/slice_orbit.gd:1047
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé bàšé. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice_orbit.gd:1126 systems/camp/camp.gd:242
+#: scenes/slice_orbit.gd:1147 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð! Þŕéšš %s àţ îţ ţô bûý ûþĝŕàðéš. ~~~~~~~~~~~~~~]"
 
@@ -1641,6 +1633,11 @@ msgstr "[Ķééþ þļàýîñĝ: ţĥé ƒîŕšţ ðîšţŕîçţ šţàýš 
 #: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
 msgid "%dh %02dm"
 msgstr "[%dĥ %02dm ~]"
+
+#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
+#: ui/globe_view.gd:709 ui/upgrade_card.gd:259
+msgid "%d min"
+msgstr "[%d mîñ ~]"
 
 #: story/bloom_finale.gd:15
 msgid "Lumi. Stop for a second. Look up."
@@ -1940,53 +1937,37 @@ msgstr "[Çûŕîôšîţý ƒôûñð: %s  (%d / %d)   %s ~~~~~~~~~]"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "[Évéŕý çûŕîôšîţý ôñ ţĥé ļîšţ, ƒôûñð. Ļûmî'š çôļļéçţîôñ çômþàŕţméñţ îš véŕý ƒûļļ ôƒ mémôŕîéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:16
 msgid "Wait. Hold it up to the light."
 msgstr "[Ŵàîţ. Ĥôļð îţ ûþ ţô ţĥé ļîĝĥţ. ~~~~~~~]"
 
-#: story/first_seed.gd:16
-msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
-msgstr "[Ţĥàţ'š à Šéţţļéŕ šééð ţîñ. Çŕàðļé šţàmþ ôñ ţĥé ļîð. Ôñé ôƒ ôûŕš, ļéƒţ béĥîñð îñ ţĥé ŕûšĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
 #: story/first_seed.gd:17
-msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
-msgstr "[Ŵĥéñ ţĥéý ļéƒţ, ţĥé Šéţţļéŕš šéàļéð évéŕý šééð ţĥéý çôûļð çàŕŕý îñţô ţĥé Çŕàðļé'š vàûļţ. Ýôûŕ vàûļţ, Ļûmî. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "A seed tin! The Settlers left it here, long ago."
+msgstr "[À šééð ţîñ! Ţĥé Šéţţļéŕš ļéƒţ îţ ĥéŕé, ļôñĝ àĝô. ~~~~~~~~~~~~~~]"
 
 #: story/first_seed.gd:18
-msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
-msgstr "[Ţĥé þļàñ ŵàš šîmþļé. Ŵàîţ ƒôŕ ţĥé ðûšţ ţô šéţţļé. Çômé ĥômé. Þļàñţ. Ţĥéý çàļļéð ţĥàţ ðàý ţĥé Ĝŕééñƒàļļ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Nothing grows here on its own any more. Somebody has to plant it."
+msgstr "[Ñôţĥîñĝ ĝŕôŵš ĥéŕé ôñ îţš ôŵñ àñý môŕé. Šômébôðý ĥàš ţô þļàñţ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/first_seed.gd:19
-msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
-msgstr "[Ţĥéñ ţĥŕéé ĥûñðŕéð ýéàŕš ŵéñţ bý, àñð ţĥé ðûšţ ñévéŕ šéţţļéð. Ûñţîļ à šééð-ķééþéŕ ƒéļļ ôûţ ôƒ ţĥé šķý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "That somebody is you, Lumi. Small. Stubborn. Perfect."
+msgstr "[Ţĥàţ šômébôðý îš ýôû, Ļûmî. Šmàļļ. Šţûbbôŕñ. Þéŕƒéçţ. ~~~~~~~~~~~~~~~~]"
 
 #: story/first_seed.gd:20
-msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
-msgstr "[Ñôţĥîñĝ ĝŕôŵš ôñ îţš ôŵñ àñýmôŕé. Ţĥé šôîļ ƒôŕĝôţ ĥôŵ. Šômébôðý ĥàš ţô þûţ îţ îñ ţĥé ĝŕôûñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Find clean ground. Plant the seed. Then water it."
+msgstr "[Fîñð çļéàñ ĝŕôûñð. Þļàñţ ţĥé šééð. Ţĥéñ ŵàţéŕ îţ. ~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:21
-msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
-msgstr "[Ţĥàţ šômébôðý îš ýôû. Šmàļļ. Šţûbbôŕñ. Ŕûññîñĝ ôñ ƒôûŕ þéŕçéñţ. Þéŕƒéçţ. ~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: story/first_seed.gd:22
-msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
-msgstr "[Fîñð çļéàñ ĝŕôûñð. Ðîĝ. Ðŕôþ îţ îñ. Þàţ îţ ðôŵñ. Àñð ţĥéñ — ţĥîš þàŕţ màţţéŕš — ŵàţéŕ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: story/first_seed.gd:167
+#: story/first_seed.gd:165
 msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr "[Þŕéšš  {tool_water}  ƒôŕ ţĥé ŵàţéŕîñĝ çàñ, ţĥéñ ĥôļð  {scoop}  ţô ŵàţéŕ ţĥé šééð ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:306
+#: story/first_seed.gd:304
 msgid "...It's green. Lumi, it's actually green."
 msgstr "[...Îţ'š ĝŕééñ. Ļûmî, îţ'š àçţûàļļý ĝŕééñ. ~~~~~~~~~~~]"
 
-#: story/first_seed.gd:308
-msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
-msgstr "[Ķééþ îţ ŵàţéŕéð. Šééðš àŕé ŕàŕé ôûţ ĥéŕé, bûţ évéŕý bļôôm ĝîvéš ôñé bàçķ, àñð à ļîţţļé ĝŕééñ ļîĝĥţ ƒôŕ ýôûŕ çôŕé. Ţĥîš îš ĥôŵ îţ šţàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: story/first_seed.gd:459
-msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
-msgstr "[Ļûmî. Î'm ĝéţţîñĝ à šîĝñàļ. Ĝŕééñ, ƒàîñţ, éàšţ ôƒ ţĥé bàšé. Àñ ôļð ĝŕééñĥôûšé. Ĝô ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+#: story/first_seed.gd:306
+msgid "Keep it watered. Every bloom gives seeds back, and a little green light for your core. This is how it starts."
+msgstr "[Ķééþ îţ ŵàţéŕéð. Évéŕý bļôôm ĝîvéš šééðš bàçķ, àñð à ļîţţļé ĝŕééñ ļîĝĥţ ƒôŕ ýôûŕ çôŕé. Ţĥîš îš ĥôŵ îţ šţàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/first_seed.gd:571
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
@@ -2069,67 +2050,67 @@ msgstr "[Ļûmî— ĥôļð ôñ— Î çàñ'ţ ţûŕñ ĥéŕ àŕôûñð�
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "[Ţĥé àŕķ çôûļð ñôţ ţûŕñ bàçķ. Ţĥé þôð ƒéļļ ƒôŕ ðàýš. ~~~~~~~~~~~~~~~]"
 
-#: story/intro.gd:1951
+#: story/intro.gd:1967
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "[ĜŔÉÉÑ ĻÎĜĤŢ  ·  ÑÔÑÉ ÐÉŢÉÇŢÉÐ ~~~~~~~]"
 
-#: story/objectives.gd:241
+#: story/objectives.gd:282
 msgid "Reward: %s"
 msgstr "[Ŕéŵàŕð: %s ~]"
 
-#: story/objectives.gd:475
+#: story/objectives.gd:521
 msgid "Objective complete  ·  %s"
 msgstr "[Ôbĵéçţîvé çômþļéţé  ·  %s ~~~~~~]"
 
-#: story/objectives.gd:502
+#: story/objectives.gd:548
 msgid "Goal complete  ·  %s"
 msgstr "[Ĝôàļ çômþļéţé  ·  %s ~~~~]"
 
-#: story/objectives.gd:943
+#: story/objectives.gd:1040
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "[Bàļéŕ îñ! Fîļļ ýôûŕ çĥéšţ, ţĥéñ þŕéšš [%s] ƒôŕ à bàļé. ~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:965 story/objectives.gd:1187
+#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:774
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Þŕéšš [%s] ţô màķé à bàļé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:981
+#: story/objectives.gd:1078
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "[Ýôûŕ ðéţéçţôŕ'š ƒôûñð à ŕôbôţ þàŕţ bûŕîéð ñéàŕbý. Fôļļôŵ ţĥé BÛŔÎÉÐ ÞÀŔŢ ŕéàðîñĝ; îţ bééþš ôñçé ýôû'ŕé ŕîĝĥţ ôñ ţôþ ôƒ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:983
+#: story/objectives.gd:1080
 msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr "[À þàŕţ îš bûŕîéð ñéàŕbý! Ŵàļķ ţôŵàŕð îţ ûñţîļ îţ bééþš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1188
+#: story/objectives.gd:1292
 msgid "Your chest is full. Bring it to the bin."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Bŕîñĝ îţ ţô ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:1204 story/objectives.gd:1217
+#: story/objectives.gd:1309 story/objectives.gd:1325
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "[Ţôô ĥéàvý. Ûþĝŕàðé Ļîƒţ àţ ţĥé béñçĥ. ~~~~~~~~~~]"
 
-#: story/objectives.gd:1209
+#: story/objectives.gd:1315
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Ĥéàð ĥômé: ţĥé bîñ îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1319
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "[Çàŕŕý ýôûŕ bàļé ĥômé: ţĥé šçàļé îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1212
+#: story/objectives.gd:1319
 msgid "Carry your bale to the scale by the bin."
 msgstr "[Çàŕŕý ýôûŕ bàļé ţô ţĥé šçàļé bý ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:1226
+#: story/objectives.gd:1335
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "[Ţĥé ŕôçķéţ ŵàîţš ôñ ţĥé þàð. Ĥômé îš ƒîŕšţ ôñ îţš ļîšţ. ~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1227
+#: story/objectives.gd:1336
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "[Ĥéàð ĥômé: ƒôļļôŵ ţĥé béàm ţô ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1238
+#: story/objectives.gd:1347
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "[Ñôţĥîñĝ ţô þîçķ ûþ ĥéŕé. Ŵàļķ ţô môŕé ţŕàšĥ. ~~~~~~~~~~~~]"
 
@@ -2494,11 +2475,11 @@ msgstr "[Ðéƒàûļţ ~]"
 msgid "Best fleet: %s"
 msgstr "[Béšţ ƒļééţ: %s ~~]"
 
-#: systems/designs.gd:154
+#: systems/designs.gd:156
 msgid "New look unlocked: %s. Try it on at the Locker."
 msgstr "[Ñéŵ ļôôķ ûñļôçķéð: %s. Ţŕý îţ ôñ àţ ţĥé Ļôçķéŕ. ~~~~~~~~~~~~~]"
 
-#: systems/designs.gd:193
+#: systems/designs.gd:195
 msgid "Design: %s"
 msgstr "[Ðéšîĝñ: %s ~]"
 
@@ -2919,99 +2900,99 @@ msgstr "[Àļŕéàðý qûéûéð ~~]"
 msgid "Queue is full"
 msgstr "[Qûéûé îš ƒûļļ ~~]"
 
-#: systems/research.gd:344 ui/codex_screen.gd:886
+#: systems/research.gd:356 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr "[%dš ~]"
 
-#: systems/research.gd:391 systems/research.gd:452
+#: systems/research.gd:403 systems/research.gd:464
 msgid "Research: %s"
 msgstr "[Ŕéšéàŕçĥ: %s ~]"
 
-#: systems/research.gd:401
+#: systems/research.gd:413
 msgid "scoop reach"
 msgstr "[šçôôþ ŕéàçĥ ~]"
 
-#: systems/research.gd:401
+#: systems/research.gd:413
 msgid "scoop width"
 msgstr "[šçôôþ ŵîðţĥ ~]"
 
-#: systems/research.gd:401
+#: systems/research.gd:413
 msgid "compartment size"
 msgstr "[çômþàŕţméñţ šîžé ~~~]"
 
-#: systems/research.gd:402
+#: systems/research.gd:414
 msgid "bale value"
 msgstr "[bàļé vàļûé ~]"
 
-#: systems/research.gd:402
+#: systems/research.gd:414
 msgid "magnet radius"
 msgstr "[màĝñéţ ŕàðîûš ~~]"
 
-#: systems/research.gd:402
+#: systems/research.gd:414
 msgid "scoop speed"
 msgstr "[šçôôþ šþééð ~]"
 
-#: systems/research.gd:403
+#: systems/research.gd:415
 msgid "field-note cubes"
 msgstr "[ƒîéļð-ñôţé çûbéš ~~~]"
 
-#: systems/research.gd:403
+#: systems/research.gd:415
 msgid "research speed"
 msgstr "[ŕéšéàŕçĥ šþééð ~~]"
 
-#: systems/research.gd:403
+#: systems/research.gd:415
 msgid "lake clarity"
 msgstr "[ļàķé çļàŕîţý ~]"
 
-#: systems/research.gd:404
+#: systems/research.gd:416
 msgid "speed"
 msgstr "[šþééð ~]"
 
-#: systems/research.gd:404
+#: systems/research.gd:416
 msgid "work rate"
 msgstr "[ŵôŕķ ŕàţé ~]"
 
-#: systems/research.gd:404
+#: systems/research.gd:416
 msgid "range"
 msgstr "[ŕàñĝé ~]"
 
-#: systems/research.gd:405
+#: systems/research.gd:417
 msgid "bale quality"
 msgstr "[bàļé qûàļîţý ~]"
 
-#: systems/research.gd:405
+#: systems/research.gd:417
 msgid "carry"
 msgstr "[çàŕŕý ~]"
 
-#: systems/research.gd:406
+#: systems/research.gd:418
 msgid "plant growth"
 msgstr "[þļàñţ ĝŕôŵţĥ ~]"
 
-#: systems/research.gd:406
+#: systems/research.gd:418
 msgid "seeds per bloom"
 msgstr "[šééðš þéŕ bļôôm ~~]"
 
-#: systems/research.gd:427
+#: systems/research.gd:439
 msgid "Unlocks the %s robot"
 msgstr "[Ûñļôçķš ţĥé %s ŕôbôţ ~~~~]"
 
-#: systems/research.gd:429
+#: systems/research.gd:441
 msgid "Unlocks %s seeds"
 msgstr "[Ûñļôçķš %s šééðš ~~~]"
 
-#: systems/research.gd:431
+#: systems/research.gd:443
 msgid "Unlocks: %s"
 msgstr "[Ûñļôçķš: %s ~]"
 
-#: systems/research.gd:604
+#: systems/research.gd:616
 msgid "While you were away, research finished: %s."
 msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý, ŕéšéàŕçĥ ƒîñîšĥéð: %s. ~~~~~~~~~~~~]"
 
-#: systems/research.gd:635
+#: systems/research.gd:647
 msgid "New robot plans: %s. %s"
 msgstr "[Ñéŵ ŕôbôţ þļàñš: %s. %s ~~~~~]"
 
-#: systems/research.gd:640
+#: systems/research.gd:652
 msgid "Research complete: %s."
 msgstr "[Ŕéšéàŕçĥ çômþļéţé: %s. ~~~~~]"
 
@@ -3059,23 +3040,19 @@ msgstr "[Çàñ'ţ bé bôûĝĥţ ~~]"
 msgid "Requests reward (%d of %d requests)"
 msgstr "[Ŕéqûéšţš ŕéŵàŕð (%d ôƒ %d ŕéqûéšţš) ~~~~~~~~~]"
 
-#: systems/robot_builder.gd:517
-msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
-msgstr "[Ýôûŕ ƒîŕšţ bôţ çàmé ŵîţĥ ţŕéàðš àñð à bôbbļé þļàñţ. Šţýļé îţ îñ ţĥé Ļôçķéŕ ôñçé ţĥé ĥûb ŕéàçĥéš ļévéļ %d. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: systems/robot_builder.gd:527
+#: systems/robot_builder.gd:536
 msgid "A Settler Fragment was tucked inside it: +%d parts."
 msgstr "[À Šéţţļéŕ Fŕàĝméñţ ŵàš ţûçķéð îñšîðé îţ: +%d þàŕţš. ~~~~~~~~~~~~~~~]"
 
-#: systems/robot_builder.gd:559
+#: systems/robot_builder.gd:569
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "[%s šþôţţéð šôméţĥîñĝ ĝŕééñ àñð ļûçķý: à Ļûçķý Çļôvéŕ! ~~~~~~~~~~~~~~~~]"
 
-#: systems/robot_builder.gd:562
+#: systems/robot_builder.gd:572
 msgid "%s spotted a Settler Fragment glinting in the junk: +%d parts."
 msgstr "[%s šþôţţéð à Šéţţļéŕ Fŕàĝméñţ ĝļîñţîñĝ îñ ţĥé ĵûñķ: +%d þàŕţš. ~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/robot_builder.gd:569
+#: systems/robot_builder.gd:579
 msgid "%s spotted a %s: %s."
 msgstr "[%s šþôţţéð à %s: %s. ~~~~]"
 
@@ -3109,43 +3086,47 @@ msgstr "[Môôñļîĝĥţ ~]"
 msgid "New CD: %s by %s, from %s"
 msgstr "[Ñéŵ ÇÐ: %s bý %s, ƒŕôm %s ~~~~~~]"
 
-#: systems/camp/camp.gd:414
+#: systems/camp/bot_bay.gd:94
+msgid "E   open the Bot Bay"
+msgstr "E   [ôþéñ ţĥé Bôţ Bàý ~~~]"
+
+#: systems/camp/camp.gd:427
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   [%s (Ļv %d): ƒûļļý ûþĝŕàðéð ~~~~~~]"
 
-#: systems/camp/camp.gd:420
+#: systems/camp/camp.gd:433
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   [%s (Ļv %d): ûþĝŕàðé ţô %s ƒôŕ %s ~~~~~~~~]"
 
-#: systems/camp/camp.gd:426
+#: systems/camp/camp.gd:439
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "[Ţŕàšĥ bîñ ûþĝŕàðéð: %s. Bàļéš šéļļ ƒôŕ %d%% ĥéŕé. ~~~~~~~~~~~~~~]"
 
-#: systems/camp/hub_builds.gd:138
+#: systems/camp/hub_builds.gd:140
 msgid "Trash bin, level %d of %d"
 msgstr "[Ţŕàšĥ bîñ, ļévéļ %d ôƒ %d ~~~~~~]"
 
-#: systems/camp/hub_builds.gd:143
+#: systems/camp/hub_builds.gd:145
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "[ŴŔÉÑ çàñ ôñļý ŕéàçĥ ýôû ţĥŕôûĝĥ ţĥé ŕéļàý. Éàçĥ ţîéŕ màķéš ĥéŕ çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/camp/hub_builds.gd:147
+#: systems/camp/hub_builds.gd:149
 msgid "Tier %d of %d"
 msgstr "[Ţîéŕ %d ôƒ %d ~~]"
 
-#: systems/camp/hub_builds.gd:156
+#: systems/camp/hub_builds.gd:158
 msgid "%d of %d built"
 msgstr "[%d ôƒ %d bûîļţ ~~]"
 
-#: systems/camp/hub_builds.gd:172
+#: systems/camp/hub_builds.gd:174
 msgid "Museum"
 msgstr "[Mûšéûm ~]"
 
-#: systems/camp/hub_builds.gd:173
+#: systems/camp/hub_builds.gd:175
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "[À ĥàļļ ŵîţĥ à þļîñţĥ ƒôŕ évéŕýţĥîñĝ Ļûmî ƒôûñð, ƒôŕ ŵĥôévéŕ çôméš ñéxţ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/camp/locker_cabinet.gd:33 tools/ui_audit_run.gd:223
+#: systems/camp/locker_cabinet.gd:45 tools/ui_audit_run.gd:223
 msgid "E   open locker"
 msgstr "E   [ôþéñ ļôçķéŕ ~]"
 
@@ -3153,11 +3134,11 @@ msgstr "E   [ôþéñ ļôçķéŕ ~]"
 msgid "%s built."
 msgstr "[%s bûîļţ. ~]"
 
-#: systems/camp/yard_builds.gd:83
+#: systems/camp/yard_builds.gd:90
 msgid "Repair the workbench first."
 msgstr "[Ŕéþàîŕ ţĥé ŵôŕķbéñçĥ ƒîŕšţ. ~~~~~~]"
 
-#: systems/camp/yard_builds.gd:89
+#: systems/camp/yard_builds.gd:96
 msgid "Grow your first seed first."
 msgstr "[Ĝŕôŵ ýôûŕ ƒîŕšţ šééð ƒîŕšţ. ~~~~~~]"
 
@@ -3438,7 +3419,7 @@ msgstr "[Ĝļîm îš šţîļļ šçàññîñĝ. Ţŕý àĝàîñ îñ à mô
 msgid "Close"
 msgstr "[Çļôšé ~]"
 
-#: tools/walk_opening.gd:573 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "[Qûîţ ~]"
 
@@ -3648,7 +3629,7 @@ msgstr[1] "[Çļéàñ %d ĥéxéš ƒîŕšţ. ~~~~]"
 msgid "Not yet. Keep playing."
 msgstr "[Ñôţ ýéţ. Ķééþ þļàýîñĝ. ~~~~~]"
 
-#: ui/bench_tiers.gd:124
+#: ui/bench_tiers.gd:127
 msgid "%s installed. New workbench tab: %s"
 msgstr "[%s îñšţàļļéð. Ñéŵ ŵôŕķbéñçĥ ţàb: %s ~~~~~~~~~]"
 
@@ -3747,12 +3728,8 @@ msgid "Retire"
 msgstr "[Ŕéţîŕé ~]"
 
 #: ui/builder_panel.gd:172
-msgid ""
-"No robots yet. Build one in the Bots tab, then style it here.\n"
-"Your first robot comes with treads and a bobble plant."
-msgstr ""
-"[Ñô ŕôbôţš ýéţ. Bûîļð ôñé îñ ţĥé Bôţš ţàb, ţĥéñ šţýļé îţ ĥéŕé.\n"
-"Ýôûŕ ƒîŕšţ ŕôbôţ çôméš ŵîţĥ ţŕéàðš àñð à bôbbļé þļàñţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "No robots yet. Build one at the Bot Bay, then style it here."
+msgstr "[Ñô ŕôbôţš ýéţ. Bûîļð ôñé àţ ţĥé Bôţ Bàý, ţĥéñ šţýļé îţ ĥéŕé. ~~~~~~~~~~~~~~~~~~]"
 
 #: ui/builder_panel.gd:227
 msgid "PART SLOTS"
@@ -3900,7 +3877,7 @@ msgstr "[ÇÔÐÉX ~]"
 msgid "Watch the story"
 msgstr "[Ŵàţçĥ ţĥé šţôŕý ~~]"
 
-#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:172
+#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:185
 msgid "Close  [%s]"
 msgstr "[Çļôšé  [%s] ~]"
 
@@ -4265,8 +4242,8 @@ msgid "NEW DESIGN UNLOCKED"
 msgstr "[ÑÉŴ ÐÉŠÎĜÑ ÛÑĻÔÇĶÉÐ ~~~~]"
 
 #: ui/design_toast.gd:66
-msgid "Wear it at the workbench: Cosmetics"
-msgstr "[Ŵéàŕ îţ àţ ţĥé ŵôŕķbéñçĥ: Çôšméţîçš ~~~~~~~~~]"
+msgid "Wear it at the Locker"
+msgstr "[Ŵéàŕ îţ àţ ţĥé Ļôçķéŕ ~~~~]"
 
 #: ui/document_view.gd:45
 msgid "{interact}  [k]/ Esc  [/k]close"
@@ -6496,11 +6473,15 @@ msgstr "[Ŵĥéŕé îţ çôméš ƒŕôm:  %s ~~~~~]"
 msgid "Research"
 msgstr "[Ŕéšéàŕçĥ ~]"
 
-#: ui/upgrades_screen.gd:154
+#: ui/upgrades_screen.gd:27
+msgid "BOT BAY"
+msgstr "[BÔŢ BÀÝ ~]"
+
+#: ui/upgrades_screen.gd:167
 msgid "WORKBENCH"
 msgstr "[ŴÔŔĶBÉÑÇĤ ~]"
 
-#: ui/upgrades_screen.gd:278
+#: ui/upgrades_screen.gd:292
 msgid "Not open yet. Keep playing."
 msgstr "[Ñôţ ôþéñ ýéţ. Ķééþ þļàýîñĝ. ~~~~~~]"
 
@@ -7471,6 +7452,22 @@ msgstr "[Ŕôbôţ Ñûŕšéŕý ~~]"
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
 msgstr "[À ŵàļļéð ļàŵñ ŵîţĥ ƒļôŵéŕ béðš ŵĥéŕé ŕéţîŕéð ŕôbôţš ţéñð ţĥé ĝàŕðéñ àñð ļéñð ýôûŕ çŕéŵ à ĥàñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/camp.json:builds.bot_bay.name data/workbench.json:tiers[1].name
+msgid "Bot Bay"
+msgstr "[Bôţ Bàý ~]"
+
+#: data/camp.json:builds.bot_bay.desc
+msgid "A robot workshop of its own in the yard. Walk up to it to build robots."
+msgstr "[À ŕôbôţ ŵôŕķšĥôþ ôƒ îţš ôŵñ îñ ţĥé ýàŕð. Ŵàļķ ûþ ţô îţ ţô bûîļð ŕôbôţš. ~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/camp.json:builds.shuttle.name
+msgid "Shuttle"
+msgstr "[Šĥûţţļé ~]"
+
+#: data/camp.json:builds.shuttle.desc
+msgid "A small one-seat shuttle, built on the pad. It flies Lumi to the other old bases."
+msgstr "[À šmàļļ ôñé-šéàţ šĥûţţļé, bûîļţ ôñ ţĥé þàð. Îţ ƒļîéš Ļûmî ţô ţĥé ôţĥéŕ ôļð bàšéš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/camp.json:builds.glim.name data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
@@ -8833,8 +8830,8 @@ msgid "+5% bale value"
 msgstr "[+5% bàļé vàļûé ~~]"
 
 #: data/designs.json:designs[bolt].unlock.text
-msgid "Press 50 bales or build 5 robots"
-msgstr "[Þŕéšš 50 bàļéš ôŕ bûîļð 5 ŕôbôţš ~~~~~~~~]"
+msgid "Press 600 bales or build 15 robots"
+msgstr "[Þŕéšš 600 bàļéš ôŕ bûîļð 15 ŕôbôţš ~~~~~~~~~]"
 
 #: data/designs.json:designs[bolt].unlock.any[0].unit
 msgid "bales"
@@ -8857,8 +8854,8 @@ msgid "+8% plant growth"
 msgstr "[+8% þļàñţ ĝŕôŵţĥ ~~~]"
 
 #: data/designs.json:designs[sprout].unlock.text
-msgid "Grow 20 plants to bloom"
-msgstr "[Ĝŕôŵ 20 þļàñţš ţô bļôôm ~~~~~]"
+msgid "Grow 80 plants to bloom"
+msgstr "[Ĝŕôŵ 80 þļàñţš ţô bļôôm ~~~~~]"
 
 #: data/designs.json:designs[sprout].unlock.any[0].unit
 msgid "blooms"
@@ -8877,8 +8874,8 @@ msgid "+10% cleaning streak time"
 msgstr "[+10% cļéàñîñĝ šţŕéàķ ţîmé ~~~~~~]"
 
 #: data/designs.json:designs[pixel].unlock.text
-msgid "Pet 5 animals or find 5 Collection trinkets"
-msgstr "[Þéţ 5 àñîmàļš ôŕ ƒîñð 5 Çôļļéçţîôñ ţŕîñķéţš ~~~~~~~~~~~~]"
+msgid "Pet 25 animals or find 12 Collection trinkets"
+msgstr "[Þéţ 25 àñîmàļš ôŕ ƒîñð 12 Çôļļéçţîôñ ţŕîñķéţš ~~~~~~~~~~~~~]"
 
 #: data/designs.json:designs[pixel].unlock.any[0].unit
 msgid "animals"
@@ -8925,8 +8922,8 @@ msgid "+6% robot work speed"
 msgstr "[+6% ŕôbôţ ŵôŕķ šþééð ~~~~]"
 
 #: data/designs.json:designs[patch].unlock.text
-msgid "Repair an outpost or upgrade a robot fleet to Mk III"
-msgstr "[Ŕéþàîŕ àñ ôûţþôšţ ôŕ ûþĝŕàðé à ŕôbôţ ƒļééţ ţô Mķ ÎÎÎ ~~~~~~~~~~~~~~~]"
+msgid "Repair 3 outposts or upgrade a robot fleet to Mk III"
+msgstr "[Ŕéþàîŕ 3 ôûţþôšţš ôŕ ûþĝŕàðé à ŕôbôţ ƒļééţ ţô Mķ ÎÎÎ ~~~~~~~~~~~~~~~]"
 
 #: data/designs.json:designs[patch].unlock.any[0].unit
 msgid "outposts"
@@ -11806,42 +11803,6 @@ msgstr "[Àîŕ Šçŕûbbéŕ ~]"
 msgid "Pulls dusty air through filter banks. The sky clears faster."
 msgstr "[Þûļļš ðûšţý àîŕ ţĥŕôûĝĥ ƒîļţéŕ bàñķš. Ţĥé šķý çļéàŕš ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~]"
 
-#: data/intro_shots.json:shots[cradle].lines
-msgid "title"
-msgstr "[ţîţļé ~]"
-
-#: data/intro_shots.json:shots[vault_wide].lines
-msgid "vault"
-msgstr "[vàûļţ ~]"
-
-#: data/intro_shots.json:shots[vault_hum].lines
-msgid "hum"
-msgstr "[ĥûm ~]"
-
-#: data/intro_shots.json:shots[storm].lines
-msgid "storm"
-msgstr "[šţôŕm ~]"
-
-#: data/intro_shots.json:shots[alarm].lines
-msgid "breach"
-msgstr "[bŕéàçĥ ~]"
-
-#: data/intro_shots.json:shots[eject].lines
-msgid "hold_on"
-msgstr "[ĥôļð_ôñ ~]"
-
-#: data/intro_shots.json:shots[drift].lines
-msgid "fall"
-msgstr "[ƒàļļ ~]"
-
-#: data/intro_shots.json:shots[station].lines
-msgid "brief_0"
-msgstr "[bŕîéƒ_0 ~]"
-
-#: data/intro_shots.json:shots[alone].lines
-msgid "brief_1"
-msgstr "[bŕîéƒ_1 ~]"
-
 #: data/junk.json:types[metal].name
 msgid "Scrap Metal"
 msgstr "[Šçŕàþ Méţàļ ~]"
@@ -12059,32 +12020,28 @@ msgid "First, one clean hex. Clear the outlined one. Green starts on clean groun
 msgstr "[Fîŕšţ, ôñé çļéàñ ĥéx. Çļéàŕ ţĥé ôûţļîñéð ôñé. Ĝŕééñ šţàŕţš ôñ çļéàñ ĝŕôûñð. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[bench2].text
-msgid "Add a Bot Bay to the bench"
-msgstr "[Àðð à Bôţ Bàý ţô ţĥé béñçĥ ~~~~~~]"
-
-#: data/objectives.json:objectives[bench2].short
-msgid "Add a Bot Bay"
-msgstr "[Àðð à Bôţ Bàý ~~]"
+msgid "Build the Bot Bay"
+msgstr "[Bûîļð ţĥé Bôţ Bàý ~~~]"
 
 #: data/objectives.json:objectives[bench2].desc
-msgid "Upgrades tab. A planet is too big for one small robot."
-msgstr "[Ûþĝŕàðéš ţàb. À þļàñéţ îš ţôô bîĝ ƒôŕ ôñé šmàļļ ŕôbôţ. ~~~~~~~~~~~~~~~~]"
+msgid "Workbench, Build tab. One small robot can't do it all."
+msgstr "[Ŵôŕķbéñçĥ, Bûîļð ţàb. Ôñé šmàļļ ŕôbôţ çàñ'ţ ðô îţ àļļ. ~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[bench2].lines
-msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
-msgstr "[Àðð à Bôţ Bàý ţô ţĥé béñçĥ. Ýôû šĥôûļðñ'ţ ðô ţĥîš àļôñé. ~~~~~~~~~~~~~~~~~]"
+msgid "Build a Bot Bay, Lumi. You shouldn't do this alone."
+msgstr "[Bûîļð à Bôţ Bàý, Ļûmî. Ýôû šĥôûļðñ'ţ ðô ţĥîš àļôñé. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[robot].text
 msgid "Build your first robot"
 msgstr "[Bûîļð ýôûŕ ƒîŕšţ ŕôbôţ ~~~~~]"
 
 #: data/objectives.json:objectives[robot].desc
-msgid "Workbench, Bots tab. Robots clean for you."
-msgstr "[Ŵôŕķbéñçĥ, Bôţš ţàb. Ŕôbôţš çļéàñ ƒôŕ ýôû. ~~~~~~~~~~~~]"
+msgid "Press {interact} at the Bot Bay. Robots clean for you."
+msgstr "[Þŕéšš {interact} àţ ţĥé Bôţ Bàý. Ŕôbôţš çļéàñ ƒôŕ ýôû. ~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[robot].lines
-msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
-msgstr "[Ţĥé Bôţ Bàý ĥûmš! Îţ çàñ bûîļð ýôû à ĥéļþéŕ. Ţŕý ţĥé Bôţš ţàb àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "The Bot Bay hums! Walk up to it and build a helper."
+msgstr "[Ţĥé Bôţ Bàý ĥûmš! Ŵàļķ ûþ ţô îţ àñð bûîļð à ĥéļþéŕ. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
@@ -12119,20 +12076,52 @@ msgid "Keep cleaning. Seeds turn up in clean ground."
 msgstr "[Ķééþ çļéàñîñĝ. Šééðš ţûŕñ ûþ îñ çļéàñ ĝŕôûñð. ~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[seed].lines
-msgid "Something green is waking out there. Plant the first seed."
-msgstr "[Šôméţĥîñĝ ĝŕééñ îš ŵàķîñĝ ôûţ ţĥéŕé. Þļàñţ ţĥé ƒîŕšţ šééð. ~~~~~~~~~~~~~~~~~]"
+msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
+msgstr "[Ļûmî. Î'm ĝéţţîñĝ à šîĝñàļ. Ĝŕééñ, ƒàîñţ, éàšţ ôƒ ţĥé bàšé. Àñ ôļð ĝŕééñĥôûšé. Ĝô ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: data/objectives.json:objectives[hub_wake_2].text
-msgid "Wake base 2 of 6"
-msgstr "[Ŵàķé bàšé 2 ôƒ 6 ~~~]"
+#: data/objectives.json:objectives[robot2].text
+msgid "Build a second robot"
+msgstr "[Bûîļð à šéçôñð ŕôbôţ ~~~~]"
+
+#: data/objectives.json:objectives[robot2].desc
+msgid "Bot Bay. Two robots clean twice as fast."
+msgstr "[Bôţ Bàý. Ţŵô ŕôbôţš çļéàñ ţŵîçé àš ƒàšţ. ~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[robot2].lines
+msgid "One robot can't clean a whole planet. Build another at the Bot Bay."
+msgstr "[Ôñé ŕôbôţ çàñ'ţ çļéàñ à ŵĥôļé þļàñéţ. Bûîļð àñôţĥéŕ àţ ţĥé Bôţ Bàý. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[haul].desc
+msgid "Bot Bay. It sells your robots' bales for you."
+msgstr "[Bôţ Bàý. Îţ šéļļš ýôûŕ ŕôbôţš' bàļéš ƒôŕ ýôû. ~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[haul].hint
+msgid "Keep cleaning. WREN is looking for Haul Bug plans."
+msgstr "[Ķééþ çļéàñîñĝ. ŴŔÉÑ îš ļôôķîñĝ ƒôŕ Ĥàûļ Bûĝ þļàñš. ~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[haul].lines
+msgid "A Haul Bug carries bales for you. Build one at the Bot Bay."
+msgstr "[À Ĥàûļ Bûĝ çàŕŕîéš bàļéš ƒôŕ ýôû. Bûîļð ôñé àţ ţĥé Bôţ Bàý. ~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "More clean ground, more room to plant. Robots help."
-msgstr "[Môŕé çļéàñ ĝŕôûñð, môŕé ŕôôm ţô þļàñţ. Ŕôbôţš ĥéļþ. ~~~~~~~~~~~~~~~]"
+msgid "Your robots help. Clean ground is room to plant."
+msgstr "[Ýôûŕ ŕôbôţš ĥéļþ. Çļéàñ ĝŕôûñð îš ŕôôm ţô þļàñţ. ~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
 msgstr "[Ôñ ţô ţéñ çļéàñ ĥéxéš. Ýôûŕ ŕôbôţš àŕé ļéàŕñîñĝ ƒŕôm ýôû, Ļûmî. ~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[map].text
+msgid "Look at the map"
+msgstr "[Ļôôķ àţ ţĥé màþ ~~]"
+
+#: data/objectives.json:objectives[map].desc
+msgid "Press {open_globe}. See how much of Verdance is clean."
+msgstr "[Þŕéšš {open_globe}. Šéé ĥôŵ mûçĥ ôƒ Véŕðàñçé îš çļéàñ. ~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[map].lines
+msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
+msgstr "[Ôþéñ ţĥé màþ, Ļûmî. Îţ šĥôŵš ĥôŵ mûçĥ ôƒ Véŕðàñçé îš šţîļļ bûŕîéð. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12146,21 +12135,33 @@ msgstr "[Ŵôŕķbéñçĥ, Ûþĝŕàðéš ţàb. À bîĝĝéŕ bàšé þô�
 msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
 msgstr "[À bîĝĝéŕ bàšé màķéš môŕé þôŵéŕ, àñð þôŵéŕ ŕûñš ŕôbôţš. Ŕébûîļð îţ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
+#: data/objectives.json:objectives[shuttle].text
+msgid "Build the shuttle"
+msgstr "[Bûîļð ţĥé šĥûţţļé ~~~]"
+
+#: data/objectives.json:objectives[shuttle].desc
+msgid "Workbench, Build tab. Garden Row has the seeds we need."
+msgstr "[Ŵôŕķbéñçĥ, Bûîļð ţàb. Ĝàŕðéñ Ŕôŵ ĥàš ţĥé šééðš ŵé ñééð. ~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[shuttle].lines
+msgid "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green."
+msgstr "[Ļûmî, ţĥé šééð ţîñ îš àļmôšţ émþţý. Ŵîţĥôûţ šééðš, Véŕðàñçé çàñ'ţ ţûŕñ ĝŕééñ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[shuttle].lines
+msgid "I found another old base, far away: Garden Row. It kept a big seed store."
+msgstr "[Î ƒôûñð àñôţĥéŕ ôļð bàšé, ƒàŕ àŵàý: Ĝàŕðéñ Ŕôŵ. Îţ ķéþţ à bîĝ šééð šţôŕé. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[shuttle].lines
+msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+msgstr "[Ţôô ƒàŕ ţô ŵàļķ. Ýôûŕ ŕôbôţš ķééþ çļéàñîñĝ ĥéŕé. Bûîļð à šĥûţţļé ôñ ţĥé þàð àñð ƒļý ţĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[hub_wake_2].text
+msgid "Wake base 2 of 6"
+msgstr "[Ŵàķé bàšé 2 ôƒ 6 ~~~]"
+
 #: data/objectives.json:objectives[hub_wake_3].text
 msgid "Wake base 3 of 6"
 msgstr "[Ŵàķé bàšé 3 ôƒ 6 ~~~]"
-
-#: data/objectives.json:objectives[haul].desc
-msgid "Workbench, Bots tab. It carries bales to the scale for you."
-msgstr "[Ŵôŕķbéñçĥ, Bôţš ţàb. Îţ çàŕŕîéš bàļéš ţô ţĥé šçàļé ƒôŕ ýôû. ~~~~~~~~~~~~~~~~~~]"
-
-#: data/objectives.json:objectives[haul].hint
-msgid "Keep cleaning. WREN is looking for Haul Bug plans."
-msgstr "[Ķééþ çļéàñîñĝ. ŴŔÉÑ îš ļôôķîñĝ ƒôŕ Ĥàûļ Bûĝ þļàñš. ~~~~~~~~~~~~~~~]"
-
-#: data/objectives.json:objectives[haul].lines
-msgid "A Haul Bug carries bales for you. Build one at the bench."
-msgstr "[À Ĥàûļ Bûĝ çàŕŕîéš bàļéš ƒôŕ ýôû. Bûîļð ôñé àţ ţĥé béñçĥ. ~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -13303,8 +13304,8 @@ msgid "A sprout on a spring. Boings when it brakes."
 msgstr "[À šþŕôûţ ôñ à šþŕîñĝ. Bôîñĝš ŵĥéñ îţ bŕàķéš. ~~~~~~~~~~~~]"
 
 #: data/robot_parts.json:parts[bobble_plant].source.hint
-msgid "Comes with your first robot"
-msgstr "[Çôméš ŵîţĥ ýôûŕ ƒîŕšţ ŕôbôţ ~~~~~~]"
+msgid "Comes with the Locker"
+msgstr "[Çôméš ŵîţĥ ţĥé Ļôçķéŕ ~~~~]"
 
 #: data/robot_parts.json:parts[traffic_cone].name
 msgid "Traffic Cone"
@@ -15193,13 +15194,9 @@ msgstr "[Ŵôŕķbéñçĥ ~]"
 msgid "The repaired bench: upgrades for Lumi and things to build."
 msgstr "[Ţĥé ŕéþàîŕéð béñçĥ: ûþĝŕàðéš ƒôŕ Ļûmî àñð ţĥîñĝš ţô bûîļð. ~~~~~~~~~~~~~~~~~]"
 
-#: data/workbench.json:tiers[1].name
-msgid "Workbench Mk II: Bot Bay"
-msgstr "[Ŵôŕķbéñçĥ Mķ ÎÎ: Bôţ Bàý ~~~~~]"
-
 #: data/workbench.json:tiers[1].desc
-msgid "Adds a bot bay. Build helpers that keep cleaning while you work."
-msgstr "[Àððš à bôţ bàý. Bûîļð ĥéļþéŕš ţĥàţ ķééþ çļéàñîñĝ ŵĥîļé ýôû ŵôŕķ. ~~~~~~~~~~~~~~~~~~~]"
+msgid "A robot workshop of its own in the yard. Walk up to it to build helpers that keep cleaning while you work."
+msgstr "[À ŕôbôţ ŵôŕķšĥôþ ôƒ îţš ôŵñ îñ ţĥé ýàŕð. Ŵàļķ ûþ ţô îţ ţô bûîļð ĥéļþéŕš ţĥàţ ķééþ çļéàñîñĝ ŵĥîļé ýôû ŵôŕķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
@@ -15426,8 +15423,8 @@ msgid "Every lit hex on that map is yours. I counted. Twice."
 msgstr "[Évéŕý ļîţ ĥéx ôñ ţĥàţ màþ îš ýôûŕš. Î çôûñţéð. Ţŵîçé. ~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:first_robot_hint
-msgid "With enough parts, the workbench can put a helper together. Bots tab, one button."
-msgstr "[Ŵîţĥ éñôûĝĥ þàŕţš, ţĥé ŵôŕķbéñçĥ çàñ þûţ à ĥéļþéŕ ţôĝéţĥéŕ. Bôţš ţàb, ôñé bûţţôñ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "With enough parts, the Bot Bay can put a helper together. One button."
+msgstr "[Ŵîţĥ éñôûĝĥ þàŕţš, ţĥé Bôţ Bàý çàñ þûţ à ĥéļþéŕ ţôĝéţĥéŕ. Ôñé bûţţôñ. ~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/wren_lines.json:first_robot_hint
 msgid "Electronics junk sometimes hides parts. So does the ground, if you listen for it."

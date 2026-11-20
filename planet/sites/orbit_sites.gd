@@ -54,6 +54,8 @@ func _setup() -> void:
 	_build_water()
 	if DevHooks.has("soak"):  # dev QA soak (planet/sites/soak_watch.gd)
 		SoakWatch.attach(so)
+	if DevHooks.has("soak") or DevHooks.has("bale-watch"):  # [v10pace] bales heaped on the pad (tools/bale_watch.gd)
+		BaleWatch.attach(so)
 	if DevHooks.has("site-reach"):
 		_reach_audit.call_deferred()
 	if DevHooks.has("city-walk"):  # [v3city] dev: walk check of the start town (planet/sites/city_walk.gd)
@@ -165,8 +167,8 @@ func _wire_survey() -> void:
 		hop_to(pick)
 
 
-## Whether Lumi has a rocket on this globe: the base level `Hub.rocket_level()` builds it,
-## and once Lumi has flown (a hop or an arrival from another planet) it travels with him.
+## Whether Lumi has a rocket on this globe: [v10pace] the player builds it (the shuttle,
+## Hub.rocket_built), and once Lumi has flown (a hop or an arrival from another planet) it travels with him.
 func rocket_unlocked() -> bool:
 	var hub: Variant = so.w.get("hub")
 	return DevHooks.has("rocket") or bool(GameState.orbit.get("rocket_owned", false)) \
@@ -289,7 +291,7 @@ func _register_rocket() -> bool:
 		return _rocket_registered
 	var ia: Variant = so.w.get("interactables")
 	if ia is Interactables:
-		(ia as Interactables).register(rocket_spot, 6.5, rocket_prompt, open_rocket, func() -> bool: return rocket_spot.visible and not hop.flying)
+		(ia as Interactables).register(rocket_spot, 6.5, rocket_prompt, open_rocket, func() -> bool: return rocket_spot.visible and not hop.flying and not ShuttleBuild.building)  # [v10pace] not while it is being put together
 		_rocket_registered = true
 	return _rocket_registered
 
