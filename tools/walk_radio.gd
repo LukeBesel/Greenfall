@@ -89,6 +89,16 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		var up0: Vector3 = spot2.normalized()
 		var cf: Vector3 = -cam0.global_transform.basis.z if cam0 else bin_at - spot2
 		cf = (cf - up0 * cf.dot(up0)).normalized()
+		var back: Vector3 = bin_at - spot2
+		back = (back - up0 * back.dot(up0)).normalized()
+		WalkHome._stand(bin_at + back * 2.0, spot2)  # what the player sees of it from the trash bin
+		var sc: Node = WalkHome.p.get("sphere_cam")
+		if sc != null and sc.has_method("reset_frame"):  # the camera behind him, looking the way he looks
+			sc.call("reset_frame", -back)
+			sc.call("snap")
+		await _shot("cd_from_bin", 3.0)
+		var camb: Camera3D = WalkHome.w.get_viewport().get_camera_3d()
+		print("[walk-radio] cd_from_bin: CD %.1f m from the camera, %.1f m from Lumi" % [camb.global_position.distance_to(spot2), WalkHome.p.global_position.distance_to(spot2)])
 		WalkHome._stand(spot2 - cf * 3.0 + up0.cross(cf).normalized() * 2.0, spot2)  # the camera behind Lumi, the CD 3 m ahead and to one side
 		await _shot("cd_in_view", 3.0)
 		var cam1: Camera3D = WalkHome.w.get_viewport().get_camera_3d()

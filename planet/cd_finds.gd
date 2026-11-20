@@ -25,7 +25,9 @@ const FIRST_KEY: String = "first:"
 const FIRST_PICK_R: float = 2.4
 const FIRST_MIN_M: float = 5.0
 const FIRST_RINGS: int = 5
-const FIRST_SCALE: float = 2.2  # the case is about 0.6 m across: a real CD is lost among the junk
+const FIRST_DISC_R: float = 0.6  # the first CD shows as a big disc on edge, turning over the junk: seen from the pad
+const FIRST_DISC_UP: float = 1.0  # over the hovering spot: its middle is about Lumi's head height
+const FIRST_RAY_H: float = 9.0
 const OFFSET := Vector3(-0.9, 0.04, 1.1)
 
 var world: Node
@@ -253,8 +255,8 @@ func _take_first(id: String) -> void:
 		if is_instance_valid(n) and is_instance_valid(patch):
 			var to: Vector3 = patch.global_position + up * 0.9
 			n.global_position = from.lerp(to, k) + up * sin(PI * k) * 1.6  # an arc up and into his chest
-			n.scale = Vector3.ONE * lerpf(FIRST_SCALE, 0.5, k)
-			n.rotate_object_local(Vector3.UP, 0.5), 0.0, 1.0, 0.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+			n.scale = Vector3.ONE * lerpf(1.0, 0.3, k)
+			_face_first(n), 0.0, 1.0, 0.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tw.tween_callback(land)
 
 
@@ -333,28 +335,16 @@ func _show(id: String, hid: int, fresh: bool) -> void:
 	if _discs.has(id):
 		return
 	var scratched: bool = id.begins_with("s:")
-	var node: Node3D = build_cd(scratched)
+	var node: Node3D = build_first_cd() if id.begins_with(FIRST_KEY) else build_cd(scratched)
 	add_child(node)
 	var pos: Vector3 = spot(hid, scratched)
-	if id.begins_with(FIRST_KEY):  # [v10snd] hovering over the junk, tipped toward the camera, so it is seen
+	if id.begins_with(FIRST_KEY):  # [v10snd] hovering over the junk so it is seen
 		pos += (pos.normalized() if world.field is SphereField else Vector3.UP) * 0.55
 	node.global_position = pos
 	node.rotation.y = rng.randf() * TAU
 	if world.field is SphereField:  # [v4world] upright on the round ground
 		var up: Vector3 = pos.normalized()
 		node.global_transform = Transform3D(Basis(up, node.rotation.y) * SphereGrid.frame(up), pos)
-	if id.begins_with(FIRST_KEY):  # [v10snd] after the orientation (it resets the scale): bigger, tipped up to be seen
-		node.rotate_object_local(Vector3.RIGHT, deg_to_rad(-35.0))
-		node.scale = Vector3.ONE * FIRST_SCALE
-		# A shining face on top, lit by itself: on Low and at dusk the metal disc read as a dark slab.
-		var shine := StandardMaterial3D.new()
-		shine.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		shine.albedo_color = Color(0.86, 0.95, 1.0)
-		var dot := StandardMaterial3D.new()
-		dot.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		dot.albedo_color = Color(1.0, 0.66, 0.25)
-		node.add_child(EggProps.mesh(ProcMesh.cyl(0.115, 0.115, 0.004, 32), shine, Vector3(0, 0.04, 0)))
-		node.add_child(EggProps.mesh(ProcMesh.cyl(0.045, 0.045, 0.005, 24), dot, Vector3(0, 0.043, 0)))
 	_discs[id] = node
 	print("[tunes] CD in the rubble: %s at hex %d%s" % [id, hid, "" if fresh else " (still there)"])
 	if fresh:
@@ -368,6 +358,8 @@ func _process(delta: float) -> void:
 	for id: String in _discs:
 		var n: Node3D = _discs[id]
 		var glint: OmniLight3D = n.get_node_or_null("Glint") as OmniLight3D
+		if id.begins_with(FIRST_KEY):
+			_face_first(n)
 		if glint:
 			glint.light_energy = 0.5 + 0.35 * maxf(0.0, sin(_spin * 2.4 + float(id.length())))
 	_t += delta
@@ -388,12 +380,11 @@ func _process(delta: float) -> void:
 	for id: String in _discs.keys():
 		var n: Node3D = _discs[id]
 		var first: bool = id.begins_with(FIRST_KEY)
-		if first:  # a slow turn and a sparkle now and then
-			n.rotate_object_local(Vector3.UP, 0.12 * 1.4)
+		if first:  # a sparkle now and then
 			_first_t += 0.12
-			if _first_t > 5.0:
+			if _first_t > 2.5:
 				_first_t = 0.0
-				Vfx.burst("sparkle", n.global_position, Color(0.8, 0.95, 1.0), 0.5)
+				Vfx.burst("sparkle", n.to_global(Vector3(0, FIRST_DISC_UP, 0)), Color(1.0, 0.9, 0.55), 0.7)
 		if n.global_position.distance_to(patch.global_position) < (FIRST_PICK_R if first else PICK_R):
 			_discs.erase(id)
 			Vfx.burst("sparkle", n.global_position + Vector3(0, 0.4, 0), Color(0.8, 0.95, 1.0), 0.8)
@@ -417,6 +408,92 @@ func _take_scratched(song_id: String) -> void:
 		ui.call("ask", song_id)
 	elif not Tunes.hold(song_id):
 		EventBus.toast.emit(tr("Your CD case is full."), "info")
+
+
+## [v10snd] The first CD as the player sees it (the jewel case, even at 2.2x, was lost among the
+## junk from the game camera): a big CD at head height, its flat side always to the camera, self-lit,
+## dark-rimmed so it stands out against pale litter, bobbing, in a ray of gold light. Gold, not the
+## guide's purple: it is a find, not the next step. No collider.
+static func build_first_cd() -> Node3D:
+	var root := Node3D.new()
+	root.name = "CD"
+	var face := Node3D.new()  # turned to the camera every frame (_face_first): never seen edge-on
+	face.name = "Face"
+	root.add_child(face)
+	var disc := Node3D.new()
+	disc.name = "Disc"
+	disc.position = Vector3(0, FIRST_DISC_UP, 0)
+	disc.rotation_degrees = Vector3(90, 0, 0)  # flat side to the camera
+	face.add_child(disc)
+	var r: float = FIRST_DISC_R
+	var rings: Array = [  # radius, thickness, colour: each inner one a little thicker, so it lies in front
+		[1.1, 0.020, Color(0.07, 0.09, 0.2)],
+		[1.0, 0.026, Color(0.9, 0.96, 1.0)],
+		[0.84, 0.032, Color(0.45, 0.85, 1.0)],
+		[0.7, 0.038, Color(1.0, 0.6, 0.85)],
+		[0.58, 0.044, Color(0.92, 0.97, 1.0)],
+		[0.42, 0.050, Color(1.0, 0.6, 0.15)],
+		[0.13, 0.056, Color(0.07, 0.09, 0.2)],
+	]
+	for row: Array in rings:
+		var m := StandardMaterial3D.new()
+		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		m.albedo_color = row[2]
+		disc.add_child(EggProps.mesh(ProcMesh.cyl(r * float(row[0]), r * float(row[0]), float(row[1]), 40), m))
+	var q := QuadMesh.new()  # the ray: a strip of gold light behind the CD, strongest at the foot
+	q.size = Vector2(1.3, FIRST_RAY_H)
+	q.center_offset = Vector3(0, FIRST_RAY_H * 0.5, -0.1)
+	var mi := MeshInstance3D.new()
+	mi.name = "Ray"
+	mi.mesh = q
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var sm := ShaderMaterial.new()
+	sm.shader = _ray_shader()
+	mi.material_override = sm
+	face.add_child(mi)
+	var glint := OmniLight3D.new()
+	glint.name = "Glint"
+	glint.light_color = Color(1.0, 0.9, 0.6)
+	glint.light_energy = 0.6
+	glint.omni_range = 3.0
+	glint.position = Vector3(0, FIRST_DISC_UP, 0)
+	root.add_child(glint)
+	return root
+
+
+## Turns the first CD's face to the camera (about the ground's up) and bobs the disc.
+func _face_first(n: Node3D) -> void:
+	var face: Node3D = n.get_node_or_null("Face") as Node3D
+	var cam: Camera3D = get_viewport().get_camera_3d()
+	if face == null or cam == null:
+		return
+	var up: Vector3 = n.global_basis.y.normalized()
+	var to: Vector3 = cam.global_position - n.global_position
+	to -= up * to.dot(up)
+	if to.length() > 0.05:
+		to = to.normalized()
+		face.global_basis = Basis(up.cross(to), up, to).scaled(n.scale)
+	var disc: Node3D = face.get_node_or_null("Disc") as Node3D
+	if disc:
+		disc.visible = cam.global_position.distance_to(disc.global_position) > 2.6  # not a wall of CD when the camera passes through it
+		disc.position.y = FIRST_DISC_UP + 0.1 * sin(_spin * 2.0)
+		disc.rotation.z = 0.25 * sin(_spin * 1.3)  # a slow wobble
+
+
+static var _ray: Shader
+static func _ray_shader() -> Shader:
+	if _ray == null:
+		_ray = Shader.new()
+		_ray.code = """shader_type spatial;
+render_mode unshaded, blend_mix, cull_disabled, depth_draw_never, shadows_disabled;
+void fragment() {
+	float side = 1.0 - abs(UV.x - 0.5) * 2.0;
+	float up = UV.y;  // 1 at the foot
+	ALBEDO = vec3(1.0, 0.8, 0.25);
+	ALPHA = 0.7 * smoothstep(0.0, 0.7, side) * up * smoothstep(2.0, 6.0, length(VERTEX));  // fades out near the camera: never a yellow screen
+}
+"""
+	return _ray
 
 
 ## A CD in a cracked jewel case, lying half out of it in the dirt. Scratched: a duller, greyer
