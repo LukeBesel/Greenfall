@@ -16,7 +16,7 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "NOUVEL ÉQUIPIER  ·  %s"
 
-#: art/vfx.gd:458
+#: art/vfx.gd:487
 msgid "Needs Lift %d"
 msgstr "Force de levage %d requise"
 
@@ -144,119 +144,123 @@ msgstr "Glim : scanner (maintenir : améliorations)"
 msgid "Hover boost"
 msgstr "Poussée de vol"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:26
+msgid "Jump"
+msgstr "Sauter"
+
+#: autoload/Settings.gd:35
 msgid "View"
 msgstr "Vue"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:35
 msgid "Menu"
 msgstr "Menu"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:35
 msgid "LS"
 msgstr "JG"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "RS"
 msgstr "JD"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "LB"
 msgstr "LB"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "RB"
 msgstr "RB"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:37
 msgid "D-pad up"
 msgstr "Croix haut"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:37
 msgid "D-pad down"
 msgstr "Croix bas"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:38
 msgid "D-pad left"
 msgstr "Croix gauche"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:38
 msgid "D-pad right"
 msgstr "Croix droite"
 
-#: autoload/Settings.gd:35
+#: autoload/Settings.gd:39
 msgid "Share"
 msgstr "Partager"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:40
 msgid "Touchpad"
 msgstr "Pavé tactile"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:40
 msgid "Paddle 1"
 msgstr "Palette 1"
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:554
 msgid "LMB"
 msgstr "Clic G"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:555
 msgid "RMB"
 msgstr "Clic D"
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:556
 msgid "MMB"
 msgstr "Clic M"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:557
 msgid "Wheel up"
 msgstr "Molette haut"
 
-#: autoload/Settings.gd:551
+#: autoload/Settings.gd:558
 msgid "Wheel down"
 msgstr "Molette bas"
 
-#: autoload/Settings.gd:552
+#: autoload/Settings.gd:559
 msgid "Mouse %d"
 msgstr "Souris %d"
 
-#: autoload/Settings.gd:554
+#: autoload/Settings.gd:561
 msgid "Button %d"
 msgstr "Bouton %d"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:566
 msgid "LS left"
 msgstr "JG gauche"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:566
 msgid "LS right"
 msgstr "JG droite"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:567
 msgid "LS up"
 msgstr "JG haut"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:567
 msgid "LS down"
 msgstr "JG bas"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:568
 msgid "RS left"
 msgstr "JD gauche"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:568
 msgid "RS right"
 msgstr "JD droite"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:569
 msgid "RS up"
 msgstr "JD haut"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:569
 msgid "RS down"
 msgstr "JD bas"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:580
 msgid "hold %s"
 msgstr "maintenir %s"
 
@@ -642,7 +646,7 @@ msgstr "ENSEMBLE, FLEURISSONS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUMIÈRE  EAU  VIE"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:243 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "Base %d"
 
@@ -800,31 +804,31 @@ msgstr "Les %d bases sont debout. Construis le propulseur à la fusée."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:124
+#: planet/sites/orbit_sites.gd:126
 msgid "The rocket is in flight."
 msgstr "La fusée est en vol."
 
-#: planet/sites/orbit_sites.gd:146
+#: planet/sites/orbit_sites.gd:148
 msgid "Bases restored: %d of %d"
 msgstr "Bases restaurées : %d sur %d"
 
-#: planet/sites/orbit_sites.gd:184
+#: planet/sites/orbit_sites.gd:186
 msgid "E   Rocket: choose a destination"
 msgstr "E   Fusée : choisir une destination"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "HOME"
 msgstr "MAISON"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "NEXT STOP"
 msgstr "PROCHAIN ARRÊT"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "Upgrade the rocket first"
 msgstr "Améliore d'abord la fusée"
 
-#: planet/sites/orbit_sites.gd:242
+#: planet/sites/orbit_sites.gd:244
 msgid "%s site"
 msgstr "Site : %s"
 
@@ -916,79 +920,79 @@ msgstr "PIÈCE ENTERRÉE  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "PIÈCE ENTERRÉE  ·  SIGNAL %d%%"
 
-#: player/patch.gd:178
+#: player/patch.gd:246
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi remonte dans la cour en cliquetant. C'était bizarre."
 
-#: player/patch.gd:232
+#: player/patch.gd:300
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi ne sait pas nager. Avec les Jets de vol de l'établi, il flotte au-dessus des lacs."
 
-#: player/patch.gd:357
+#: player/patch.gd:432
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "Prends d'abord la boîte de graines : suis le rayon jusqu'à la serre."
 
-#: player/patch.gd:358
+#: player/patch.gd:433
 msgid "No seeds yet. Keep cleaning."
 msgstr "Pas encore de graines. Continue de nettoyer."
 
-#: player/patch.gd:401 player/patch.gd:429
+#: player/patch.gd:476 player/patch.gd:504
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Plus de graines. Les plantes en fleur en donnent d'autres."
 
-#: player/patch.gd:408
+#: player/patch.gd:483
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "Plante d'abord : appuie sur  {tool_plant}  pour la graine"
 
-#: player/patch.gd:412
+#: player/patch.gd:487
 msgid "Watering can is empty. Refill at the base."
 msgstr "Arrosoir vide. Remplis-le à la base."
 
-#: player/patch.gd:431
+#: player/patch.gd:506
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "Nettoie d'abord cet hexagone. Les graines ont besoin d'un sol propre."
 
-#: player/patch.gd:433
+#: player/patch.gd:508
 msgid "Something is growing here already. Try a free spot."
 msgstr "Quelque chose pousse déjà ici. Essaie une place libre."
 
-#: player/patch.gd:434
+#: player/patch.gd:509
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "Les graines ont besoin de terre, pas de route ni de plateforme. Essaie les bacs de la serre."
 
-#: player/patch.gd:435
+#: player/patch.gd:510
 msgid "Seeds need soil, not road or the pad."
 msgstr "Les graines ont besoin de terre, pas de route ni de plateforme."
 
-#: player/patch.gd:596
+#: player/patch.gd:671
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "Ton coffre est vide. Ramasse d'abord des déchets."
 
-#: player/patch.gd:636
+#: player/patch.gd:711
 msgid "PERFECT BALE  %s"
 msgstr "BALLE PARFAITE  %s"
 
-#: player/patch.gd:642
+#: player/patch.gd:717
 msgid "OVERSTUFFED  %s"
 msgstr "TROP PLEINE  %s"
 
-#: player/patch.gd:646
+#: player/patch.gd:721
 msgid "PURE  %s"
 msgstr "PURE  %s"
 
-#: player/patch.gd:648
+#: player/patch.gd:723
 msgid "SURGE  %s"
 msgstr "BOOST  %s"
 
-#: player/patch.gd:651
+#: player/patch.gd:726
 msgid "  (streak +%d%%)"
 msgstr "  (série +%d%%)"
 
-#: player/patch.gd:700
+#: player/patch.gd:775
 msgid "Salvaged: %s"
 msgstr "Récupéré : %s"
 
-#: player/patch.gd:731
+#: player/patch.gd:806
 msgid "Recovered: %s"
 msgstr "Retrouvé : %s"
 
@@ -4888,6 +4892,10 @@ msgstr "établi"
 #: ui/key_hints.gd:33
 msgid "photo"
 msgstr "photo"
+
+#: ui/key_hints.gd:33
+msgid "jump"
+msgstr "sauter"
 
 #: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"

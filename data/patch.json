@@ -43,5 +43,19 @@
     "_doc": "[v6feel] How Lumi meets things on a round planet. max_step: kerbs, steps and low planters up to this high (m) are hovered over. round_keep: the share of his speed kept while rounding a prop he clipped nearly head-on (0 = a plain slide).",
     "max_step": 0.45,
     "round_keep": 0.6
+  },
+  "jump": {
+    "_doc": "[v11jump] Lumi's hop (Space / A; player/patch.gd apply_jump_cfg, planet/sphere/sphere_motor.gd). height_m: how high a held hop lifts him. He gets onto things up to about height_m + 0.25 m high (his body rides 0.25 m off the ground): bales, kerbs, benches, low crates; NOT fences, walls, the workbench or junk heaps (heaps stop him at any height). Raising it changes what he can reach: rerun --city-walk and --target-reach (they list what a hop can get onto and fail on a spot he could hop into and not out of). rise_s / fall_s: seconds up to the top and back down from it. cut_speed: letting go early drops his rise to this speed (m/s), so a tap is a small hop. coyote_s: he can still hop this long after gliding off an edge. buffer_s: a press this long before landing hops on landing. air_control: share of his ground steering he keeps in the air. puff / dust: size of the take-off haze and the landing dust (1 = normal). hop_db / land_db: loudness of the two sounds (quiet on purpose).",
+    "height_m": 0.6,
+    "rise_s": 0.22,
+    "fall_s": 0.19,
+    "cut_speed": 2.2,
+    "coyote_s": 0.12,
+    "buffer_s": 0.14,
+    "air_control": 0.6,
+    "puff": 1.0,
+    "dust": 0.6,
+    "hop_db": -15.0,
+    "land_db": -16.0
   }
 }

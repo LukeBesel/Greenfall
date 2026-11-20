@@ -47,6 +47,8 @@
   "scoop:pop": 0.35,
   "purr": 6.0,
   "lumi:squeak": 2.5,
+  "lumi:hop": 0.3,
+  "lumi:land": 0.3,
   "sweep:whoosh": 1.5,
   "lights:clunk": 1.2,
   "robot:clink": 1.5,

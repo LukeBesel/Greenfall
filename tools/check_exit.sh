@@ -80,6 +80,10 @@ run walk_goals -- --fresh --orbit --no-intro --walk-goals --save-dir=check_exit_
 # [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
 # with real keys and mouse clicks on the workbench (tools/walk_home.gd).
 run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$
+# [v11jump] Owner (20 Nov): "Also build in jump mechanic". Lumi's hop with real keys and a
+# controller's A (tools/walk_jump.gd): held, tapped, pressed early, with the scoop, with a bale,
+# onto a bale, with the map open, and on the far side of the globe.
+run walk_jump -- --fresh --orbit --no-intro --walk-jump --save-dir=check_exit_jump_$$
 if tools/check_old_ledger_save.sh >screenshots/check_exit_old_ledger.log 2>&1; then  # owner item 105
 	echo "[check_exit] PASS old_ledger_save (a save from mid Ledger arc loads clean and plays on)"
 else

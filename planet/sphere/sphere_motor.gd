@@ -32,6 +32,28 @@ var boost_ramp: float = 0.8
 var boost_lift: float = 0.35
 var jump_speed: float = 6.5
 var air_control: float = 0.35
+## [v11jump] The hop (Patch sets these from data/patch.json "jump"; the defaults keep the plain jump).
+## gravity_up / gravity_down: the pull while rising / falling in the air (0 = `gravity`): a quick
+## rise and a quicker fall read as a snappy hop. jump_cut_speed: letting go of the button while he
+## still rises faster than this drops him to it (a tap is a small hop, a hold the full one; 0 = no
+## cut). coyote_s: he can still hop this long after gliding off an edge. jump_buffer_s: a press this
+## long before he lands still hops on landing. jump_hold: the button is down (the caller sets it).
+var gravity_up: float = 0.0
+var gravity_down: float = 0.0
+var jump_cut_speed: float = 0.0
+var coyote_s: float = 0.0
+var jump_buffer_s: float = 0.0
+var jump_hold: bool = true
+## [v11jump] False = no hop starts (the caller's rules: pressing a bale, a film, the sled).
+var can_jump: bool = true
+## [v11jump] True from a hop's take-off to its landing (not while falling off a ledge).
+var hopping: bool = false
+## [v11jump] How high the last hop rose above its take-off point (m), and its seconds in the air.
+var hop_peak: float = 0.0
+var hop_time: float = 0.0
+## [v11jump] Junk heaps (PhysLayers.MOUND) stay walls however high he is: he cannot hop onto or
+## over a heap (playtest 2: standing in a heap and vacuuming the whole pile was "OP").
+var mound_mask: int = 0
 var ride_height: float = 0.0
 var spring_k: float = 160.0
 var max_slope: float = deg_to_rad(42.0)
@@ -66,6 +88,11 @@ var ground_normal := Vector3.UP
 var altitude: float = 0.0
 var _last_up := Vector3.ZERO
 var _jump_lock: float = 0.0
+var _buffer: float = 0.0
+var _coyote: float = 0.0
+var _hop_from: float = 0.0   # analytic altitude at take-off
+var _perch: float = 0.0      # [v11jump] extra ride height while he rests on a body the ground ray does not see (a bale)
+var _mound_q: PhysicsShapeQueryParameters3D
 
 
 func _init(p_surface: SphereSurface = null) -> void:
@@ -85,6 +112,9 @@ func place(body: CharacterBody3D, pos: Vector3, facing: Vector3) -> void:
 	hv = Vector3.ZERO
 	vv = 0.0
 	grounded = true
+	hopping = false
+	_perch = 0.0
+	_buffer = 0.0
 	body.up_direction = u
 	body.global_basis = SphereMath.basis_from_up_fwd(u, fwd)
 
@@ -164,24 +194,65 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 			_climb = move_toward(_climb, 0.0, delta * 2.0)
 		_under = maxf(0.0, surface.altitude(p0) - altitude)  # what he is over already (a kerb's top)
 		ride = maxf(ride, _climb - _under)
-	if grounded:
-		if jump and _jump_lock <= 0.0:
-			vv = jump_speed
-			grounded = false
-			_jump_lock = 0.25
-			jumped.emit()
+	# [v11jump] Resting on something the ground ray does not see (a bale, a robot's back): hold that
+	# height while it is still under him, else let go (he drops like off any ledge).
+	if _perch > 0.0:
+		if not grounded or not body.test_move(body.global_transform, -u * 0.12):
+			_perch = 0.0
 		else:
-			var c: float = 2.0 * sqrt(spring_k)
-			vv += (spring_k * (ride - altitude) - c * vv) * delta
-			vv = clampf(vv, -8.0, 8.0)
-			if _climb_t > 0.0 and altitude < ride - 0.02:  # [v6feel] a quick thruster kick over the kerb
-				vv = maxf(vv, minf(3.5, (ride - altitude) * 16.0))
-			if altitude > ride + 0.6:  # ground dropped away (ledge): fall
-				grounded = false
+			ride = maxf(ride, altitude)
+	# [v11jump] A press is remembered for jump_buffer_s, the ground for coyote_s.
+	if jump:
+		_buffer = maxf(jump_buffer_s, delta * 1.5)
+	if not can_jump:
+		_buffer = 0.0
+	if grounded:
+		_coyote = coyote_s
+	# No hop from a perch: a bale under him adds nothing to what a hop can reach (else a stair of
+	# bales would climb any wall, and he could drop in where no hop gets him out).
+	var hop_now: bool = _buffer > 0.0 and can_jump and _jump_lock <= 0.0 and _perch <= 0.0 and (grounded or _coyote > 0.0)
+	_buffer = maxf(0.0, _buffer - delta)
 	if not grounded:
-		vv -= gravity * delta
+		_coyote = maxf(0.0, _coyote - delta)
+	if hop_now:
+		# The top of a hop is jump height above what he stands on, also when something has lifted
+		# him already (the boost's lift, the kick over a kerb): take that lift off the push.
+		var up0: float = maxf(0.0, altitude - ride_height) if grounded else 0.0
+		var g_r: float = gravity_up if gravity_up > 0.0 else gravity
+		vv = sqrt(maxf(jump_speed * jump_speed - 2.0 * g_r * up0, jump_speed * jump_speed * 0.1))
+		grounded = false
+		hopping = true
+		hop_peak = 0.0
+		hop_time = 0.0
+		_hop_from = surface.altitude(p0)
+		_perch = 0.0
+		_buffer = 0.0
+		_coyote = 0.0
+		_jump_lock = 0.12
+		jumped.emit()
+	elif grounded:
+		var c: float = 2.0 * sqrt(spring_k)
+		vv += (spring_k * (ride - altitude) - c * vv) * delta
+		vv = clampf(vv, -8.0, 8.0)
+		if _climb_t > 0.0 and altitude < ride - 0.02:  # [v6feel] a quick thruster kick over the kerb
+			vv = maxf(vv, minf(3.5, (ride - altitude) * 16.0))
+		if altitude > ride + 0.6:  # ground dropped away (ledge): fall
+			grounded = false
+	if not grounded:
+		if hopping:
+			hop_time += delta
+			hop_peak = maxf(hop_peak, surface.altitude(p0) - _hop_from)
+			if jump_cut_speed > 0.0 and not jump_hold and vv > jump_cut_speed:
+				vv = jump_cut_speed  # the button was let go: a small hop
+		var g_air: float = gravity
+		if vv > 0.0 and gravity_up > 0.0:
+			g_air = gravity_up
+		elif vv <= 0.0 and gravity_down > 0.0:
+			g_air = gravity_down
+		vv -= g_air * delta
 		if altitude <= ride + 0.02 and vv <= 0.0 and _jump_lock <= 0.0:
 			grounded = true
+			hopping = false
 			landed.emit(-vv)
 			vv = 0.0
 	body.velocity = hv + u * vv
@@ -209,6 +280,14 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 	var real_v: Vector3 = (p1 - p0) / maxf(delta, 1e-5)  # [v6feel] our delta, either path
 	if not grounded and vv < -2.0 and real_v.dot(u1) > vv * 0.3:
 		grounded = true
+		hopping = false
+		# [v11jump] On a bale or a crate's edge he stays at this height (see the top of the vertical
+		# part) instead of falling again every few frames. Not at a junk heap's foot: that is the ground.
+		var kc := KinematicCollision3D.new()
+		if body.test_move(body.global_transform, -u1 * 0.12, kc):
+			var under: Object = kc.get_collider()
+			if not (under is CollisionObject3D and ((under as CollisionObject3D).collision_layer & PhysLayers.MOUND) != 0):
+				_perch = 1.0
 		landed.emit(-vv)
 		vv = 0.0
 	vv = clampf(vv, -40.0, 40.0)
@@ -242,6 +321,8 @@ func _level_slide(body: CharacterBody3D, u: Vector3, delta: float) -> void:
 	if not PhysicsServer3D.body_get_space(body.get_rid()).is_valid():  # [v7play] out of every space for a frame (a rocket hop): no test motion
 		return
 	var motion: Vector3 = hv * delta
+	if mound_mask != 0:
+		motion = _mound_wall(body, u, motion)
 	for i: int in 4:
 		if motion.length_squared() < 1e-10:
 			break
@@ -254,7 +335,7 @@ func _level_slide(body: CharacterBody3D, u: Vector3, delta: float) -> void:
 		if _can_climb(body, col, u, n):
 			break  # he keeps his speed and goes on as soon as the lift clears it
 		if n.length() < 0.15:  # the top or underside of something: nothing to slide on
-			if n3.dot(u) > 0.0:
+			if n3.dot(u) > 0.0 and grounded:  # [v11jump] not in the air: a hop that clips a fence's top is not carried over it
 				_climb = maxf(_climb, altitude + _under + 0.06)
 				_climb_t = 0.2
 			break
@@ -308,3 +389,56 @@ func _can_climb(body: CharacterBody3D, col: KinematicCollision3D, u: Vector3, n_
 	_climb = maxf(_climb, top + _under + 0.03)  # over the planet's own ground
 	_climb_t = 0.35
 	return true
+
+
+## [v11jump] Off the ground (a hop, a kerb, a crate's top) junk heaps still stop him as they do on
+## the ground: his shape, set down at ground height, is swept along `motion` against `mound_mask`.
+## Returns the motion that is left (slid along the heap); takes the blocked part out of hv.
+func _mound_wall(body: CharacterBody3D, u: Vector3, motion: Vector3) -> Vector3:
+	var lift: float = surface.altitude(body.global_position) - ride_height
+	if lift < 0.08 or motion.length_squared() < 1e-10 or body.get_child_count() == 0:
+		return motion
+	var cs: CollisionShape3D = null
+	for ch: Node in body.get_children():
+		if ch is CollisionShape3D and not (ch as CollisionShape3D).disabled:
+			cs = ch
+			break
+	if cs == null or cs.shape == null:
+		return motion
+	if _mound_q == null:
+		_mound_q = PhysicsShapeQueryParameters3D.new()
+		_mound_q.collision_mask = mound_mask
+		_mound_q.margin = 0.0
+	_mound_q.shape = cs.shape
+	var space: PhysicsDirectSpaceState3D = body.get_world_3d().direct_space_state
+	var xf: Transform3D = cs.global_transform
+	xf.origin -= u * lift
+	_mound_q.motion = Vector3.ZERO
+	# Where the move would end, set down on the ground: inside a heap? Then only the part of the
+	# move along the heap's side (or away from it) is kept. (A sweep is no use here: the engine's
+	# cast_motion ignores what the shape already touches, and at a heap's foot he always does.)
+	for i: int in 3:
+		_mound_q.transform = Transform3D(xf.basis, xf.origin + motion)
+		var rest: Dictionary = space.get_rest_info(_mound_q)
+		if rest.is_empty():
+			return motion
+		var n: Vector3 = SphereMath.tangent(body.global_position + motion - (rest["point"] as Vector3), u)
+		if n.length() < 0.05:
+			n = SphereMath.tangent(rest["normal"], u)
+		if n.length() < 0.01:
+			n = -SphereMath.tangent(motion, u)
+		if n.length() < 1e-6:
+			return Vector3.ZERO
+		n = n.normalized()
+		if motion.dot(n) >= -1e-7:
+			return motion
+		if hv.dot(n) < 0.0:
+			hv = hv.slide(n)
+		motion = SphereMath.tangent(motion.slide(n), u)
+	return motion
+
+
+## [v11jump] Forget a remembered press and the edge grace (input went away: a menu, a film).
+func clear_jump() -> void:
+	_buffer = 0.0
+	_coyote = 0.0

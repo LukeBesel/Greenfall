@@ -72,6 +72,8 @@ func _setup() -> void:
 		WalkGoals.run_dev(so)
 	if DevHooks.has("step-shots"):  # [v9d] dev: a rendered frame as each story step starts (tools/step_shots.gd)
 		StepShots.run_dev(so)
+	if DevHooks.has("walk-jump"):  # [v11jump] dev: Lumi's hop played with real keys (tools/walk_jump.gd)
+		WalkJump.run_dev(so)
 	if DevHooks.has("walk-home"):  # [v9b] dev: the home steps after the first robot, real input (tools/walk_home.gd)
 		WalkHome.run_dev(so)
 	if DevHooks.has("target-reach"):  # [v4world] dev: every collectible and objective target reachable (planet/sites/target_audit.gd)
