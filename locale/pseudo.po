@@ -3460,7 +3460,7 @@ msgstr "[Qûîţ ~]"
 msgid "Close"
 msgstr "[Çļôšé ~]"
 
-#: tools/walk_map.gd:57 ui/hud.gd:437
+#: tools/walk_map.gd:69 ui/hud.gd:429
 msgid "%s  BASE"
 msgstr "[%s  BÀŠÉ ~]"
 
@@ -4846,52 +4846,52 @@ msgstr "[ÔĻÐ ŢÔŴÑ   0% ~~]"
 msgid "WREN SIGNAL   %d%%"
 msgstr "[ŴŔÉÑ ŠÎĜÑÀĻ   %d%% ~~~]"
 
-#: ui/hud.gd:432
+#: ui/hud.gd:425
 msgid "HEX  %d%% CLEAR"
 msgstr "[ĤÉX  %d%% ÇĻÉÀŔ ~~]"
 
-#: ui/hud.gd:440
+#: ui/hud.gd:444
 msgid "CARRYING %d/%d"
 msgstr "[ÇÀŔŔÝÎÑĜ %d/%d ~~]"
 
-#: ui/hud.gd:491
+#: ui/hud.gd:495
 msgid "HEX  CLEAR"
 msgstr "[ĤÉX  ÇĻÉÀŔ ~]"
 
-#: ui/hud.gd:495
+#: ui/hud.gd:499
 msgid "HEX  %s"
 msgstr "[ĤÉX  %s ~]"
 
-#: ui/hud.gd:498
+#: ui/hud.gd:502
 msgid "  SUSTAIN %d%%"
 msgstr "  [ŠÛŠŢÀÎÑ %d%% ~~]"
 
-#: ui/hud.gd:500
+#: ui/hud.gd:504
 msgid "  THIRSTY"
 msgstr "  [ŢĤÎŔŠŢÝ ~]"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:530
+#: ui/hud.gd:534
 msgid "%s   pick up bale"
 msgstr "[%s   þîçķ ûþ bàļé ~~~]"
 
-#: ui/hud.gd:531
+#: ui/hud.gd:535
 msgid "%s   dig up part"
 msgstr "[%s   ðîĝ ûþ þàŕţ ~~~]"
 
-#: ui/hud.gd:532
+#: ui/hud.gd:536
 msgid "%s   read memory shard"
 msgstr "[%s   ŕéàð mémôŕý šĥàŕð ~~~~~]"
 
-#: ui/hud.gd:533
+#: ui/hud.gd:537
 msgid "%s   pick up the seed tin"
 msgstr "[%s   þîçķ ûþ ţĥé šééð ţîñ ~~~~~~]"
 
-#: ui/hud.gd:534
+#: ui/hud.gd:538
 msgid "%s   set bale down"
 msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 
-#: ui/hud.gd:535
+#: ui/hud.gd:539
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 

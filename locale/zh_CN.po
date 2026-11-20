@@ -3451,7 +3451,7 @@ msgstr "退出"
 msgid "Close"
 msgstr "关闭"
 
-#: tools/walk_map.gd:57 ui/hud.gd:437
+#: tools/walk_map.gd:69 ui/hud.gd:429
 msgid "%s  BASE"
 msgstr "%s  基地"
 
@@ -4833,52 +4833,52 @@ msgstr "老城区   0%"
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:432
+#: ui/hud.gd:425
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:440
+#: ui/hud.gd:444
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:491
+#: ui/hud.gd:495
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:495
+#: ui/hud.gd:499
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:498
+#: ui/hud.gd:502
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:500
+#: ui/hud.gd:504
 msgid "  THIRSTY"
 msgstr "  缺水"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:530
+#: ui/hud.gd:534
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:531
+#: ui/hud.gd:535
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:532
+#: ui/hud.gd:536
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:533
+#: ui/hud.gd:537
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:534
+#: ui/hud.gd:538
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:535
+#: ui/hud.gd:539
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
