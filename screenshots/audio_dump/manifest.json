@@ -1,0 +1,1642 @@
+[
+ {
+  "file": "loop_beam_hum.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 22050,
+  "name": "loop_beam_hum"
+ },
+ {
+  "file": "sfx_clink_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_clink_0"
+ },
+ {
+  "file": "sfx_clink_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_clink_1"
+ },
+ {
+  "file": "sfx_clink_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_clink_2"
+ },
+ {
+  "file": "sfx_clink_3.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_clink_3"
+ },
+ {
+  "file": "sfx_crunch_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_crunch_0"
+ },
+ {
+  "file": "sfx_crunch_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_crunch_1"
+ },
+ {
+  "file": "sfx_crunch_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_crunch_2"
+ },
+ {
+  "file": "sfx_steam_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_steam_0"
+ },
+ {
+  "file": "sfx_steam_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_steam_1"
+ },
+ {
+  "file": "sfx_steam_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_steam_2"
+ },
+ {
+  "file": "sfx_pop_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_pop_0"
+ },
+ {
+  "file": "sfx_pop_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_pop_1"
+ },
+ {
+  "file": "sfx_pop_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_pop_2"
+ },
+ {
+  "file": "sfx_chime_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_chime_0"
+ },
+ {
+  "file": "sfx_chime_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_chime_1"
+ },
+ {
+  "file": "sfx_chime_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_chime_2"
+ },
+ {
+  "file": "sfx_coin_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_coin_0"
+ },
+ {
+  "file": "sfx_coin_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_coin_1"
+ },
+ {
+  "file": "sfx_coin_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_coin_2"
+ },
+ {
+  "file": "sfx_click_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_click_0"
+ },
+ {
+  "file": "sfx_click_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_click_1"
+ },
+ {
+  "file": "sfx_click_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_click_2"
+ },
+ {
+  "file": "sfx_buy_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_buy_0"
+ },
+ {
+  "file": "sfx_buy_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_buy_1"
+ },
+ {
+  "file": "sfx_buy_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_buy_2"
+ },
+ {
+  "file": "sfx_squeak_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_squeak_0"
+ },
+ {
+  "file": "sfx_squeak_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_squeak_1"
+ },
+ {
+  "file": "sfx_squeak_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_squeak_2"
+ },
+ {
+  "file": "sfx_buzz_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_buzz_0"
+ },
+ {
+  "file": "sfx_buzz_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_buzz_1"
+ },
+ {
+  "file": "sfx_buzz_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_buzz_2"
+ },
+ {
+  "file": "sfx_ding_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_ding_0"
+ },
+ {
+  "file": "sfx_ding_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_ding_1"
+ },
+ {
+  "file": "sfx_ding_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_ding_2"
+ },
+ {
+  "file": "sfx_thud_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_thud_0"
+ },
+ {
+  "file": "sfx_thud_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_thud_1"
+ },
+ {
+  "file": "sfx_thud_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_thud_2"
+ },
+ {
+  "file": "sfx_whoosh_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_whoosh_0"
+ },
+ {
+  "file": "sfx_whoosh_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_whoosh_1"
+ },
+ {
+  "file": "sfx_whoosh_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_whoosh_2"
+ },
+ {
+  "file": "sfx_beep_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_beep_0"
+ },
+ {
+  "file": "sfx_beep_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_beep_1"
+ },
+ {
+  "file": "sfx_beep_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_beep_2"
+ },
+ {
+  "file": "sfx_beep_3.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_beep_3"
+ },
+ {
+  "file": "sfx_sparkle_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_sparkle_0"
+ },
+ {
+  "file": "sfx_sparkle_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_sparkle_1"
+ },
+ {
+  "file": "sfx_sparkle_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_sparkle_2"
+ },
+ {
+  "file": "sfx_detector_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_detector_0"
+ },
+ {
+  "file": "sfx_detector_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_detector_1"
+ },
+ {
+  "file": "sfx_detector_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_detector_2"
+ },
+ {
+  "file": "sfx_dig_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_dig_0"
+ },
+ {
+  "file": "sfx_dig_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_dig_1"
+ },
+ {
+  "file": "sfx_dig_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_dig_2"
+ },
+ {
+  "file": "sfx_hydraulic_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_hydraulic_0"
+ },
+ {
+  "file": "sfx_hydraulic_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_hydraulic_1"
+ },
+ {
+  "file": "sfx_hydraulic_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_hydraulic_2"
+ },
+ {
+  "file": "sfx_groan_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_groan_0"
+ },
+ {
+  "file": "sfx_groan_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_groan_1"
+ },
+ {
+  "file": "sfx_groan_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_groan_2"
+ },
+ {
+  "file": "sfx_clunk_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_clunk_0"
+ },
+ {
+  "file": "sfx_clunk_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_clunk_1"
+ },
+ {
+  "file": "sfx_clunk_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_clunk_2"
+ },
+ {
+  "file": "sfx_servo_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_servo_0"
+ },
+ {
+  "file": "sfx_servo_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_servo_1"
+ },
+ {
+  "file": "sfx_servo_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_servo_2"
+ },
+ {
+  "file": "sfx_blip_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_blip_0"
+ },
+ {
+  "file": "sfx_blip_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_blip_1"
+ },
+ {
+  "file": "sfx_blip_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_blip_2"
+ },
+ {
+  "file": "sfx_blip_3.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_blip_3"
+ },
+ {
+  "file": "sfx_bird_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_bird_0"
+ },
+ {
+  "file": "sfx_bird_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_bird_1"
+ },
+ {
+  "file": "sfx_bird_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_bird_2"
+ },
+ {
+  "file": "sfx_bird_3.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_bird_3"
+ },
+ {
+  "file": "sfx_fanfare_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_fanfare_0"
+ },
+ {
+  "file": "sfx_roar_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_roar_0"
+ },
+ {
+  "file": "sfx_roar_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_roar_1"
+ },
+ {
+  "file": "sfx_siren_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_siren_0"
+ },
+ {
+  "file": "sfx_charge_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_charge_0"
+ },
+ {
+  "file": "sfx_confirm_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_confirm_0"
+ },
+ {
+  "file": "sfx_confirm_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_confirm_1"
+ },
+ {
+  "file": "sfx_confirm_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_confirm_2"
+ },
+ {
+  "file": "sfx_thunk_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_thunk_0"
+ },
+ {
+  "file": "sfx_thunk_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_thunk_1"
+ },
+ {
+  "file": "sfx_thunk_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_thunk_2"
+ },
+ {
+  "file": "sfx_hop_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_hop_0"
+ },
+ {
+  "file": "sfx_hop_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_hop_1"
+ },
+ {
+  "file": "sfx_hop_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_hop_2"
+ },
+ {
+  "file": "sfx_land_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_land_0"
+ },
+ {
+  "file": "sfx_land_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_land_1"
+ },
+ {
+  "file": "sfx_land_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_land_2"
+ },
+ {
+  "file": "sfx_tick_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_tick_0"
+ },
+ {
+  "file": "sfx_tick_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_tick_1"
+ },
+ {
+  "file": "sfx_tick_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_tick_2"
+ },
+ {
+  "file": "sfx_sweep_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_sweep_0"
+ },
+ {
+  "file": "sfx_sweep_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_sweep_1"
+ },
+ {
+  "file": "sfx_sweep_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "sfx_sweep_2"
+ },
+ {
+  "file": "music_pad_warm.wav",
+  "kind": "note",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 44100,
+  "name": "music_pad_warm"
+ },
+ {
+  "file": "music_pad_bright.wav",
+  "kind": "note",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 44100,
+  "name": "music_pad_bright"
+ },
+ {
+  "file": "music_piano.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_piano"
+ },
+ {
+  "file": "music_kalimba.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_kalimba"
+ },
+ {
+  "file": "music_bell.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_bell"
+ },
+ {
+  "file": "music_bass.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_bass"
+ },
+ {
+  "file": "music_shaker0.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_shaker0"
+ },
+ {
+  "file": "music_shaker1.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_shaker1"
+ },
+ {
+  "file": "music_shaker2.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_shaker2"
+ },
+ {
+  "file": "music_kick.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_kick"
+ },
+ {
+  "file": "music_air.wav",
+  "kind": "note",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 165375,
+  "name": "music_air"
+ },
+ {
+  "file": "music_marimba.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_marimba"
+ },
+ {
+  "file": "music_rim.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_rim"
+ },
+ {
+  "file": "music_hat.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_hat"
+ },
+ {
+  "file": "music_conga_hi.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_conga_hi"
+ },
+ {
+  "file": "music_conga_lo.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_conga_lo"
+ },
+ {
+  "file": "music_clap.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_clap"
+ },
+ {
+  "file": "music_bass_short.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_bass_short"
+ },
+ {
+  "file": "music_pluck.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_pluck"
+ },
+ {
+  "file": "music_pad_reed.wav",
+  "kind": "note",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 44100,
+  "name": "music_pad_reed"
+ },
+ {
+  "file": "music_frame.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_frame"
+ },
+ {
+  "file": "music_harp.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_harp"
+ },
+ {
+  "file": "music_pad_ocean.wav",
+  "kind": "note",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 44100,
+  "name": "music_pad_ocean"
+ },
+ {
+  "file": "music_steelpan.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_steelpan"
+ },
+ {
+  "file": "music_glass.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_glass"
+ },
+ {
+  "file": "music_pad_ice.wav",
+  "kind": "note",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 44100,
+  "name": "music_pad_ice"
+ },
+ {
+  "file": "music_choir.wav",
+  "kind": "note",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 44100,
+  "name": "music_choir"
+ },
+ {
+  "file": "music_pulse.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_pulse"
+ },
+ {
+  "file": "music_anvil.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_anvil"
+ },
+ {
+  "file": "music_pad_brass.wav",
+  "kind": "note",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 44100,
+  "name": "music_pad_brass"
+ },
+ {
+  "file": "music_synth.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_synth"
+ },
+ {
+  "file": "music_metal.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_metal"
+ },
+ {
+  "file": "music_sub.wav",
+  "kind": "note",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "music_sub"
+ },
+ {
+  "file": "amb_wind_warm.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 198450,
+  "name": "amb_wind_warm"
+ },
+ {
+  "file": "amb_wind_sea.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 176400,
+  "name": "amb_wind_sea"
+ },
+ {
+  "file": "amb_wind_eerie.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 176400,
+  "name": "amb_wind_eerie"
+ },
+ {
+  "file": "amb_wind_dust.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 198450,
+  "name": "amb_wind_dust"
+ },
+ {
+  "file": "amb_heat_buzz.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 88200,
+  "name": "amb_heat_buzz"
+ },
+ {
+  "file": "amb_waves.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 280035,
+  "name": "amb_waves"
+ },
+ {
+  "file": "amb_water.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 132300,
+  "name": "amb_water"
+ },
+ {
+  "file": "amb_cicadas.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 132300,
+  "name": "amb_cicadas"
+ },
+ {
+  "file": "amb_leaves.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 176400,
+  "name": "amb_leaves"
+ },
+ {
+  "file": "amb_creak_0.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "amb_creak_0"
+ },
+ {
+  "file": "amb_creak_1.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "amb_creak_1"
+ },
+ {
+  "file": "amb_creak_2.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "amb_creak_2"
+ },
+ {
+  "file": "amb_geyser.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "amb_geyser"
+ },
+ {
+  "file": "amb_buoy.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "amb_buoy"
+ },
+ {
+  "file": "amb_devil.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "amb_devil"
+ },
+ {
+  "file": "amb_spray.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 44099,
+  "name": "amb_spray"
+ },
+ {
+  "file": "tunes_crackle.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "tunes_crackle"
+ },
+ {
+  "file": "fauna_wind.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 198450,
+  "name": "fauna_wind"
+ },
+ {
+  "file": "fauna_insects.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 176400,
+  "name": "fauna_insects"
+ },
+ {
+  "file": "fauna_lapping.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 176400,
+  "name": "fauna_lapping"
+ },
+ {
+  "file": "fauna_crickets.wav",
+  "kind": "bed",
+  "loop": true,
+  "loop_begin": 0,
+  "loop_end": 88200,
+  "name": "fauna_crickets"
+ },
+ {
+  "file": "fauna_purr_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_purr_0"
+ },
+ {
+  "file": "fauna_purr_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_purr_1"
+ },
+ {
+  "file": "fauna_purr_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_purr_2"
+ },
+ {
+  "file": "fauna_meow_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_meow_0"
+ },
+ {
+  "file": "fauna_meow_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_meow_1"
+ },
+ {
+  "file": "fauna_meow_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_meow_2"
+ },
+ {
+  "file": "fauna_coo_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_coo_0"
+ },
+ {
+  "file": "fauna_coo_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_coo_1"
+ },
+ {
+  "file": "fauna_coo_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_coo_2"
+ },
+ {
+  "file": "fauna_coo_3.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_coo_3"
+ },
+ {
+  "file": "fauna_coo_4.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_coo_4"
+ },
+ {
+  "file": "fauna_chirp_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_chirp_0"
+ },
+ {
+  "file": "fauna_chirp_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_chirp_1"
+ },
+ {
+  "file": "fauna_chirp_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_chirp_2"
+ },
+ {
+  "file": "fauna_chirp_3.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_chirp_3"
+ },
+ {
+  "file": "fauna_chirp_4.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_chirp_4"
+ },
+ {
+  "file": "fauna_chirp_5.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_chirp_5"
+ },
+ {
+  "file": "fauna_chirp_6.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_chirp_6"
+ },
+ {
+  "file": "fauna_chirp_7.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_chirp_7"
+ },
+ {
+  "file": "fauna_song_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_song_0"
+ },
+ {
+  "file": "fauna_song_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_song_1"
+ },
+ {
+  "file": "fauna_song_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_song_2"
+ },
+ {
+  "file": "fauna_song_3.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_song_3"
+ },
+ {
+  "file": "fauna_song_4.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_song_4"
+ },
+ {
+  "file": "fauna_song_5.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_song_5"
+ },
+ {
+  "file": "fauna_song_6.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_song_6"
+ },
+ {
+  "file": "fauna_song_7.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_song_7"
+ },
+ {
+  "file": "fauna_quack_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_quack_0"
+ },
+ {
+  "file": "fauna_quack_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_quack_1"
+ },
+ {
+  "file": "fauna_quack_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_quack_2"
+ },
+ {
+  "file": "fauna_quack_3.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_quack_3"
+ },
+ {
+  "file": "fauna_gull_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_gull_0"
+ },
+ {
+  "file": "fauna_gull_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_gull_1"
+ },
+ {
+  "file": "fauna_gull_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_gull_2"
+ },
+ {
+  "file": "fauna_gull_3.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_gull_3"
+ },
+ {
+  "file": "fauna_gull_4.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_gull_4"
+ },
+ {
+  "file": "fauna_frog_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_frog_0"
+ },
+ {
+  "file": "fauna_frog_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_frog_1"
+ },
+ {
+  "file": "fauna_frog_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_frog_2"
+ },
+ {
+  "file": "fauna_frog_3.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_frog_3"
+ },
+ {
+  "file": "fauna_frog_4.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_frog_4"
+ },
+ {
+  "file": "fauna_frog_5.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_frog_5"
+ },
+ {
+  "file": "fauna_seal_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_seal_0"
+ },
+ {
+  "file": "fauna_seal_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_seal_1"
+ },
+ {
+  "file": "fauna_seal_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_seal_2"
+ },
+ {
+  "file": "fauna_flutter_0.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_flutter_0"
+ },
+ {
+  "file": "fauna_flutter_1.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_flutter_1"
+ },
+ {
+  "file": "fauna_flutter_2.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "fauna_flutter_2"
+ },
+ {
+  "file": "story_quack.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "story_quack"
+ },
+ {
+  "file": "story_glitch.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "story_glitch"
+ },
+ {
+  "file": "story_purr.wav",
+  "kind": "animal",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "story_purr"
+ },
+ {
+  "file": "story_phone_ring.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "story_phone_ring"
+ },
+ {
+  "file": "story_arcade.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "story_arcade"
+ },
+ {
+  "file": "story_tv_static.wav",
+  "kind": "shot",
+  "loop": false,
+  "loop_begin": 0,
+  "loop_end": 0,
+  "name": "story_tv_static"
+ }
+]

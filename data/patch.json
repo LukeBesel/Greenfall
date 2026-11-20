@@ -55,7 +55,7 @@
     "air_control": 0.6,
     "puff": 1.0,
     "dust": 0.6,
-    "hop_db": -15.0,
-    "land_db": -16.0
+    "hop_db": -9.0,
+    "land_db": -14.0
   }
 }

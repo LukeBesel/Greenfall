@@ -2,7 +2,8 @@ extends GutTest
 ## [v11jump] Owner, 20 Nov: "Also build in jump mechanic". Lumi's hop on a round planet: along his
 ## own up anywhere on the globe, a held hop reaches the height in data/patch.json, a tap is a small
 ## one, a press just before landing and just after gliding off an edge still hops, junk heaps stay
-## walls in the air, a bale holds him, and Space / A are the keys (A shared with "use").
+## walls in the air, a bale holds him but is no stair over a wall, a leap from a height does not
+## clear what a hop from the ground could not, and Space / A are the keys (A shared with "use").
 
 const R: float = 1840.0
 ## The tests count in 60ths of a second; the game's physics may tick faster (120 Hz).
@@ -383,3 +384,99 @@ func test_puff_and_dust_rise_along_the_local_up() -> void:
 			assert_gt(p.global_basis.y.dot(up), 0.999, "%s points up at %s" % [kind, str(up)])
 			assert_gt(p.gravity.normalized().dot(up), 0.999, "%s drifts up there too" % kind)
 	JunkCube.planet_radius = was
+
+
+func _bale(at: Vector3, size: float = 0.6) -> StaticBody3D:
+	var s := BoxShape3D.new()
+	s.size = Vector3(size, size, size)
+	return _solid(s, at + Vector3(0, size * 0.5, 0), PhysLayers.CUBE)
+
+
+## Walks north and hops `n` times; returns the furthest north he got (m) and his greatest height.
+func _hop_north(n: int) -> Array:
+	inp.stick = Vector3(0, 0, -1)
+	var far: float = 0.0
+	var top: float = 0.0
+	for k: int in n:
+		await _ticks(14)
+		inp.jump = true
+		inp.jump_hold = true
+		for t: int in 26 * SCALE:
+			await get_tree().physics_frame
+			far = maxf(far, -lumi.global_position.z)
+			top = maxf(top, _alt())
+	inp.stick = Vector3.ZERO
+	await _ticks(40)
+	return [far, top]
+
+
+func test_a_bale_is_no_stair_over_a_wall() -> void:
+	# A wall 1.0 m high (a hop from the ground reaches 0.85 m) with two bales before it. Hopping
+	# from a bale his body is above the wall's top, and still he does not cross.
+	_box(Vector3(12, 1.0, 0.3), Vector3(0, 0.5, -3.0))
+	_bale(Vector3(0, 0, -2.5))
+	_bale(Vector3(0, 0, -1.85))
+	await _ticks(20)
+	var r: Array = await _hop_north(10)
+	assert_gt(float(r[1]), 0.8, "he did get up on the bales (%.2f m up)" % float(r[1]))
+	assert_lt(float(r[0]), 2.9, "but not over the wall (z -%.2f)" % float(r[0]))
+	assert_gt(lumi.global_position.z, -2.9, "he ends on his side")
+
+
+func test_hop_from_a_bale_like_from_the_ground() -> void:
+	_bale(Vector3(0, 0, -1.6))
+	await _ticks(20)
+	# Up onto it (a running hop; again from further back if he misses).
+	for attempt: int in 4:
+		inp.stick = Vector3(0, 0, -1)
+		await _ticks(5)
+		inp.jump = true
+		inp.jump_hold = true
+		await _ticks(14 + attempt * 2)
+		inp.stick = Vector3.ZERO
+		await _ticks(60)
+		if lumi.sphere_motor.altitude > 0.2 and lumi.sphere_motor.grounded:
+			break
+		lumi.place_on_sphere(Vector3(0, R, 0.1 * attempt), Vector3(0, 0, -1))
+		await _ticks(20)
+	assert_gt(lumi.sphere_motor.altitude, 0.2, "he is on the bale")
+	var a0: float = _alt()
+	var hops: Array = [0]
+	lumi.sphere_motor.jumped.connect(func() -> void: hops[0] += 1)
+	inp.jump = true
+	inp.jump_hold = true
+	var top: float = 0.0
+	for k: int in 50 * SCALE:
+		await get_tree().physics_frame
+		top = maxf(top, _alt() - a0)
+	assert_eq(hops[0], 1, "he hops from a bale")
+	assert_almost_eq(top, float(_cfg()["height_m"]), 0.1, "as high as from the ground (%.2f m above the bale)" % top)
+	await _ticks(40)
+	assert_true(lumi.sphere_motor.grounded)
+
+
+func test_a_leap_from_a_height_does_not_clear_a_wall() -> void:
+	# He stands on a 1.6 m platform; 1.5 m past its edge runs a 1.2 m wall. Leaping off he is far
+	# above the wall's top, and still comes down on the platform's side of it.
+	_box(Vector3(3, 1.6, 4), Vector3(0, 0.8, 1.0))  # the platform ends at z = -1
+	_box(Vector3(12, 1.2, 0.3), Vector3(0, 0.6, -2.65))  # the wall's near face at z = -2.5
+	lumi.place_on_sphere(Vector3(0, R + 1.6, 0), Vector3(0, 0, -1))
+	lumi.global_position = Vector3(0, R + 1.6, 1.5)
+	await _ticks(30)
+	assert_almost_eq(_alt(), 1.6, 0.06, "stands on the platform")
+	inp.stick = Vector3(0, 0, -1)
+	inp.boost = true
+	await _ticks(36)
+	inp.jump = true
+	inp.jump_hold = true
+	var north: float = 0.0
+	for k: int in 120 * SCALE:
+		await get_tree().physics_frame
+		north = maxf(north, -lumi.global_position.z)
+	inp.stick = Vector3.ZERO
+	inp.boost = false
+	await _ticks(40)
+	assert_gt(north, 1.2, "he left the platform (z -%.2f)" % north)
+	assert_lt(north, 2.1, "and did not pass the wall (z -%.2f; its near face is at -2.5)" % north)
+	assert_almost_eq(_alt(), 0.0, 0.06, "down on the ground between them")
+	assert_true(lumi.sphere_motor.grounded)

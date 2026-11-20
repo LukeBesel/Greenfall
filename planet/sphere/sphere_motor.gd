@@ -54,6 +54,9 @@ var hop_time: float = 0.0
 ## [v11jump] Junk heaps (PhysLayers.MOUND) stay walls however high he is: he cannot hop onto or
 ## over a heap (playtest 2: standing in a heap and vacuuming the whole pile was "OP").
 var mound_mask: int = 0
+## [v11jump] On: higher than a hop above what is under him, he does not pass over anything a hop
+## from down there could not clear (see _air_walls). Off = plain flight (the walker demo).
+var wall_from_above: bool = false
 var ride_height: float = 0.0
 var spring_k: float = 160.0
 var max_slope: float = deg_to_rad(42.0)
@@ -92,7 +95,7 @@ var _buffer: float = 0.0
 var _coyote: float = 0.0
 var _hop_from: float = 0.0   # analytic altitude at take-off
 var _perch: float = 0.0      # [v11jump] extra ride height while he rests on a body the ground ray does not see (a bale)
-var _mound_q: PhysicsShapeQueryParameters3D
+var _wall_q: PhysicsShapeQueryParameters3D
 
 
 func _init(p_surface: SphereSurface = null) -> void:
@@ -208,16 +211,15 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 		_buffer = 0.0
 	if grounded:
 		_coyote = coyote_s
-	# No hop from a perch: a bale under him adds nothing to what a hop can reach (else a stair of
-	# bales would climb any wall, and he could drop in where no hop gets him out).
-	var hop_now: bool = _buffer > 0.0 and can_jump and _jump_lock <= 0.0 and _perch <= 0.0 and (grounded or _coyote > 0.0)
+	var hop_now: bool = _buffer > 0.0 and can_jump and _jump_lock <= 0.0 and (grounded or _coyote > 0.0)
 	_buffer = maxf(0.0, _buffer - delta)
 	if not grounded:
 		_coyote = maxf(0.0, _coyote - delta)
 	if hop_now:
 		# The top of a hop is jump height above what he stands on, also when something has lifted
 		# him already (the boost's lift, the kick over a kerb): take that lift off the push.
-		var up0: float = maxf(0.0, altitude - ride_height) if grounded else 0.0
+		# (Not on a bale: he hops off it as off the ground. _air_walls keeps bales from being a stair.)
+		var up0: float = maxf(0.0, altitude - ride_height) if grounded and _perch <= 0.0 else 0.0
 		var g_r: float = gravity_up if gravity_up > 0.0 else gravity
 		vv = sqrt(maxf(jump_speed * jump_speed - 2.0 * g_r * up0, jump_speed * jump_speed * 0.1))
 		grounded = false
@@ -321,8 +323,8 @@ func _level_slide(body: CharacterBody3D, u: Vector3, delta: float) -> void:
 	if not PhysicsServer3D.body_get_space(body.get_rid()).is_valid():  # [v7play] out of every space for a frame (a rocket hop): no test motion
 		return
 	var motion: Vector3 = hv * delta
-	if mound_mask != 0:
-		motion = _mound_wall(body, u, motion)
+	if mound_mask != 0 or wall_from_above:
+		motion = _air_walls(body, u, motion)
 	for i: int in 4:
 		if motion.length_squared() < 1e-10:
 			break
@@ -391,12 +393,21 @@ func _can_climb(body: CharacterBody3D, col: KinematicCollision3D, u: Vector3, n_
 	return true
 
 
-## [v11jump] Off the ground (a hop, a kerb, a crate's top) junk heaps still stop him as they do on
-## the ground: his shape, set down at ground height, is swept along `motion` against `mound_mask`.
-## Returns the motion that is left (slid along the heap); takes the blocked part out of hv.
-func _mound_wall(body: CharacterBody3D, u: Vector3, motion: Vector3) -> Vector3:
+## [v11jump] Two walls a hop must not get him past, tested with a copy of his shape set lower down:
+## - Junk heaps (`mound_mask`), with the shape at ground height: off the ground (a hop, a kerb, a
+##   crate's top) a heap stops him as it does on the ground.
+## - Everything solid (`step_mask`), with the shape where it is at the top of a hop from what is
+##   under his middle, when he is higher than that (leaving a roof or a crate, on a pile of bales):
+##   what a hop from the ground below could not clear, he does not pass over from above either.
+##   So a leap from a height never drops him behind a wall he could not hop back over, and bales
+##   are no stair over a wall.
+## Returns the motion that is left (slid along what it met); takes the blocked part out of hv.
+func _air_walls(body: CharacterBody3D, u: Vector3, motion: Vector3) -> Vector3:
+	if motion.length_squared() < 1e-10:
+		return motion
 	var lift: float = surface.altitude(body.global_position) - ride_height
-	if lift < 0.08 or motion.length_squared() < 1e-10 or body.get_child_count() == 0:
+	var over: float = altitude - ride_height - hop_height() if wall_from_above else 0.0
+	if lift < 0.08 and over < 0.03:
 		return motion
 	var cs: CollisionShape3D = null
 	for ch: Node in body.get_children():
@@ -405,36 +416,53 @@ func _mound_wall(body: CharacterBody3D, u: Vector3, motion: Vector3) -> Vector3:
 			break
 	if cs == null or cs.shape == null:
 		return motion
-	if _mound_q == null:
-		_mound_q = PhysicsShapeQueryParameters3D.new()
-		_mound_q.collision_mask = mound_mask
-		_mound_q.margin = 0.0
-	_mound_q.shape = cs.shape
+	if lift >= 0.08 and mound_mask != 0:
+		motion = _wall(body, cs, u, motion, mound_mask, lift)
+	if over >= 0.03:
+		motion = _wall(body, cs, u, motion, step_mask, over)
+	return motion
+
+
+## The top of a full hop above where it starts (m).
+func hop_height() -> float:
+	var g_r: float = gravity_up if gravity_up > 0.0 else gravity
+	return jump_speed * jump_speed / (2.0 * maxf(g_r, 0.01))
+
+
+## One wall test: his shape `lower` m further down, where `motion` would end. Inside something on
+## `mask` there? Then only the part of the move along its side (or away from it) is kept. (A sweep
+## is no use: the engine's cast_motion ignores what the shape already touches.)
+func _wall(body: CharacterBody3D, cs: CollisionShape3D, u: Vector3, motion: Vector3, mask: int, lower: float) -> Vector3:
+	if _wall_q == null:
+		_wall_q = PhysicsShapeQueryParameters3D.new()
+		_wall_q.margin = 0.0
+		_wall_q.exclude = [body.get_rid()]
+	_wall_q.shape = cs.shape
+	_wall_q.collision_mask = mask
 	var space: PhysicsDirectSpaceState3D = body.get_world_3d().direct_space_state
 	var xf: Transform3D = cs.global_transform
-	xf.origin -= u * lift
-	_mound_q.motion = Vector3.ZERO
-	# Where the move would end, set down on the ground: inside a heap? Then only the part of the
-	# move along the heap's side (or away from it) is kept. (A sweep is no use here: the engine's
-	# cast_motion ignores what the shape already touches, and at a heap's foot he always does.)
+	xf.origin -= u * lower
 	for i: int in 3:
-		_mound_q.transform = Transform3D(xf.basis, xf.origin + motion)
-		var rest: Dictionary = space.get_rest_info(_mound_q)
-		if rest.is_empty():
-			return motion
-		var n: Vector3 = SphereMath.tangent(body.global_position + motion - (rest["point"] as Vector3), u)
-		if n.length() < 0.05:
-			n = SphereMath.tangent(rest["normal"], u)
-		if n.length() < 0.01:
-			n = -SphereMath.tangent(motion, u)
-		if n.length() < 1e-6:
-			return Vector3.ZERO
-		n = n.normalized()
-		if motion.dot(n) >= -1e-7:
-			return motion
-		if hv.dot(n) < 0.0:
-			hv = hv.slide(n)
-		motion = SphereMath.tangent(motion.slide(n), u)
+		_wall_q.transform = Transform3D(xf.basis, xf.origin + motion)
+		var pts: Array[Vector3] = space.collide_shape(_wall_q, 6)
+		var hit: bool = false
+		var k: int = 1
+		while k < pts.size():  # pairs: the point on his shape, then the point on the other
+			var n: Vector3 = SphereMath.tangent(body.global_position + motion - pts[k], u)
+			k += 2
+			if n.length() < 0.02:
+				n = -SphereMath.tangent(motion, u)
+			if n.length() < 1e-6:
+				continue
+			n = n.normalized()
+			if motion.dot(n) >= -1e-7:
+				continue  # along it or away from it
+			hit = true
+			if hv.dot(n) < 0.0:
+				hv = hv.slide(n)
+			motion = SphereMath.tangent(motion.slide(n), u)
+		if not hit:
+			break
 	return motion
 
 

@@ -6,15 +6,16 @@ extends RefCounted
 ## tops of props, kerbs, low roofs: rays down from TOP_M, then his body must fit there), and floods
 ## from the start three ways:
 ##   WALK   what walking reaches (steps up to max_step, any drop),
-##   HOP    what hopping can reach at the most (GENEROUS: up to the hop's reach + a margin, leaps
-##          from an edge over what is in the way and across gaps, a boosted run-up),
-##   HOME   the spots that lead back to the start (STRICT: a hop a little lower than the real one,
-##          short leaps only).
+##   HOP    what hopping can reach at the most (GENEROUS: steps up to the hop's reach + a margin,
+##          leaps from an edge across gaps with a boosted run-up),
+##   HOME   the spots that lead back to the start (STRICT: the same steps, short low leaps only).
+## Leaps follow the motor's rule (SphereMotor._air_walls): from a height he does not pass over
+## what a hop from the ground below it could not clear.
 ## A TRAP is a spot the generous hop reaches that has no strict way back: reachable by jumping but
 ## not leavable. Also listed: the ground a hop adds to walking (a fenced lot is a gate skipped) and
 ## what he can get onto (by collider), so the jump height is chosen knowing what it opens.
 ## Junk heaps are left out (they are walls at any height for Lumi and go as the town is cleaned),
-## lake cells are closed (no Hover Jets), bales add nothing (no hop from a bale: SphereMotor).
+## lake cells are closed (no Hover Jets), bales add nothing (the motor's rule above: no stair).
 ## Used by --city-walk (the start town) and --target-reach (every hub): planet/sites/city_walk.gd,
 ## target_audit.gd. `--jump-reach-h=M` tries another hop height; `--jump-reach-debug` lists more.
 
@@ -40,6 +41,7 @@ var leap_gen: int = 17
 var leap_strict: int = 2
 
 var _lv: Array = []             # per cell: PackedFloat32Array of standable heights (highest first), or null
+var _surf: Dictionary = {}      # cell -> PackedFloat32Array of every surface height the rays met (highest first), the ground last
 var _free: Dictionary = {}      # cell * 64 + height step -> bool
 var _q: PhysicsShapeQueryParameters3D
 var _ray: PhysicsRayQueryParameters3D
@@ -102,7 +104,12 @@ func _ignored(co: Object) -> bool:
 	if not (co is CollisionObject3D):
 		return true
 	var o: CollisionObject3D = co
-	return o.is_in_group("ground") or (o.collision_layer & PhysLayers.MOUND) != 0 or o is CharacterBody3D or o is RigidBody3D
+	return _is_ground(o) or (o.collision_layer & PhysLayers.MOUND) != 0 or o is CharacterBody3D or o is RigidBody3D
+
+
+## The planet's own ground (its chunk bodies sit at the planet's centre; planet/orbit/hex_leftovers.gd).
+func _is_ground(o: Object) -> bool:
+	return o is Node3D and ((o as Node).is_in_group("ground") or (o as Node3D).global_position.length() < 100.0)
 
 
 ## His body fits at height h (above the ground) in cell c.
@@ -137,6 +144,7 @@ func levels(c: int) -> PackedFloat32Array:
 	var y: float = TOP_M
 	var owners: Array[String] = []
 	var lowest: float = TOP_M  # the lowest surface the rays met
+	var all := PackedFloat32Array()
 	for k: int in 8:
 		if y <= 0.1:
 			break
@@ -156,12 +164,13 @@ func levels(c: int) -> PackedFloat32Array:
 		if co is CollisionObject3D and ((co as CollisionObject3D).collision_layer & PhysLayers.MOUND) != 0 or co is CharacterBody3D or co is RigidBody3D:
 			_skip.append((co as CollisionObject3D).get_rid())  # heaps, bales, Lumi: not part of the town
 			continue
-		if h < 0.08 or (co is Node and (co as Node).is_in_group("ground")):
+		if h < 0.08 or _is_ground(co):
 			break
 		# A surface less than his ride height above this one buries it (a pad's slab over the
 		# ground, a plate on a crate): the body test alone would not see that.
 		var buried: bool = lowest - h < BODY_LIFT + 0.02
 		lowest = h
+		all.append(h)
 		var stand: bool = not buried and (hit["normal"] as Vector3).dot(up) > 0.5 and out.size() < MAX_LV - 1 and free_at(c, h)
 		if h < 2.5:  # what there is to get onto, standable or not (for the report)
 			var nm: String = _name(co)
@@ -179,8 +188,19 @@ func levels(c: int) -> PackedFloat32Array:
 			_owner_at[c * MAX_LV + i] = owners[i]
 	if out.is_empty():
 		looked[2] += 1
+	all.append(0.0)
+	_surf[c] = all
 	_lv[c] = out
 	return out
+
+
+## What is under his middle in cell c when he is z up: the highest surface at or below z (the ground: 0).
+func under(c: int, z: float) -> float:
+	levels(c)
+	for h: float in _surf.get(c, PackedFloat32Array([0.0])):
+		if h <= z + 0.05:
+			return h
+	return 0.0
 
 
 func _name(co: Object) -> String:
@@ -231,9 +251,9 @@ func moves(node: int, mode: int) -> PackedInt32Array:
 	var c: int = node / MAX_LV
 	var a: float = height_of(node)
 	var up_lim: float = max_step
-	if mode == STRICT:
-		up_lim = maxf(max_step, hop_h + BODY_LIFT - 0.12)
-	elif mode == GENEROUS:
+	if mode != WALK:
+		# The same step up both ways: a wall he can hop is no trap, whichever side he is on. What
+		# differs between the way in and the way home is the leaps (see _leaps).
 		up_lim = maxf(max_step, hop_h + BODY_LIFT + 0.08)
 	var edge: bool = false  # a neighbour he cannot simply step into: a leap may start here
 	for nb: int in _nbs(c):
@@ -269,7 +289,8 @@ func moves(node: int, mode: int) -> PackedInt32Array:
 ## Leaps from an edge: through the air at about the hop's top, over what is in the way, down onto
 ## the first thing under him.
 func _leaps(c: int, a: float, mode: int, out: PackedInt32Array) -> void:
-	var fly: float = a + hop_h + (0.07 if mode == GENEROUS else -0.12)
+	var margin: float = 0.07 if mode == GENEROUS else -0.12
+	var fly: float = a + hop_h + margin
 	var land_up: float = (hop_h + BODY_LIFT + 0.08) if mode == GENEROUS else 0.0
 	var rng: int = leap_strict
 	if mode == GENEROUS:  # from the ground a leap only crosses what is in the way; from a height it can cross gaps
@@ -288,6 +309,11 @@ func _leaps(c: int, a: float, mode: int, out: PackedInt32Array) -> void:
 		for nb: int in _nbs(at):
 			if seen.has(nb) or not _in_disc(nb) or not free_at(nb, fly):
 				continue
+			# The motor's wall from above (SphereMotor._air_walls): over a cell he must fit where a
+			# hop from what is under him there would put him, or he does not pass.
+			var ref: float = under(nb, fly)
+			if fly - ref > hop_h + 0.1 and not free_at(nb, ref + hop_h + margin):
+				continue
 			var cell: int = field.grid.cell_at(_up(nb)) if field else 0
 			if cell < 0 or (field and field.is_water(cell)):
 				continue  # the shore stops him in the air too
@@ -301,16 +327,18 @@ func _leaps(c: int, a: float, mode: int, out: PackedInt32Array) -> void:
 					break
 
 
+## Everything reached from `start` in a mode: {node: the node it was first reached from}.
 func _flood(start: int, mode: int) -> Dictionary:
-	var seen: Dictionary = {start: true}
-	var stack: PackedInt32Array = [start]
-	while not stack.is_empty():
-		var at: int = stack[stack.size() - 1]
-		stack.resize(stack.size() - 1)
+	var seen: Dictionary = {start: -1}
+	var queue: PackedInt32Array = [start]
+	var qi: int = 0
+	while qi < queue.size():  # breadth first: `from` is on a short way there
+		var at: int = queue[qi]
+		qi += 1
 		for nx: int in moves(at, mode):
 			if not seen.has(nx):
-				seen[nx] = true
-				stack.append(nx)
+				seen[nx] = at
+				queue.append(nx)
 	return seen
 
 
@@ -365,6 +393,28 @@ func run(start: Vector2) -> Dictionary:
 			trap_nodes.append(node)
 			if walk.has(node):
 				walk_trap_nodes.append(node)
+	# The one-way door of each trap: the last spot with a way home on the way in, and the move after it.
+	var doors: Dictionary = {}
+	for node: int in trap_nodes:
+		var at: int = node
+		var guard: int = 0
+		while guard < 100000 and int(hop[at]) >= 0 and not home.has(int(hop[at])):
+			at = int(hop[at])
+			guard += 1
+		var from: int = int(hop[at])
+		if from < 0:
+			continue
+		var key: int = from * 4096 + (at % 4096)
+		if not doors.has(key):
+			@warning_ignore("integer_division")
+			var fl: Vector2 = local_of(from / MAX_LV)
+			@warning_ignore("integer_division")
+			var tl: Vector2 = local_of(at / MAX_LV)
+			doors[key] = [0, fl, height_of(from), str(_owner_at.get(from, "ground")), tl, height_of(at), str(_owner_at.get(at, "ground"))]
+		(doors[key] as Array)[0] = int((doors[key] as Array)[0]) + 1
+	var dl: Array = doors.values()
+	dl.sort_custom(func(a: Array, b: Array) -> bool: return int(a[0]) > int(b[0]))
+	out["doors"] = dl
 	out["walk_m2"] = walk_g * STEP * STEP
 	out["hop_m2"] = hop_g * STEP * STEP
 	out["new_ground"] = _clusters(new_ground)
@@ -462,4 +512,9 @@ static func report(tag: String, r: Dictionary) -> PackedStringArray:
 		for e: Array in tr_.slice(0, 12):
 			s.append("%d cells@(%.1f,%.1f) %.1f m up%s" % [int(e[0]), (e[1] as Vector2).x, (e[1] as Vector2).y, float(e[2]), "" if str(e[3]) == "" else " on " + str(e[3])])
 		lines.append("%s %s: %d spots with no way back: %s" % [tag, "walking alone" if which == "walk_traps" else "HOP TRAPS", tr_.size(), ", ".join(s)])
+	for d: Array in (r.get("doors", []) as Array).slice(0, 16):
+		var fl: Vector2 = d[1]
+		var tl: Vector2 = d[4]
+		lines.append("%s   way in (%d spots behind it): from (%.1f,%.1f) %.2f m up on %s to (%.1f,%.1f) %.2f m up on %s, %.1f m apart" % [
+			tag, int(d[0]), fl.x, fl.y, float(d[2]), str(d[3]), tl.x, tl.y, float(d[5]), str(d[6]), fl.distance_to(tl)])
 	return lines

@@ -142,20 +142,25 @@ func apply_jump_cfg(j: Dictionary) -> void:
 	m.jump_buffer_s = float(j.get("buffer_s", 0.14))
 	m.air_control = float(j.get("air_control", 0.6))
 	m.mound_mask = PhysLayers.MOUND
+	m.wall_from_above = true
 	_hop_fx = j
 
 
 ## [v11jump] Take-off: a soft thruster puff under him, a quiet whiff, the model crouches and stretches.
 func _on_hop() -> void:
+	_was_hop = true
 	model.hop(1.0)
 	var u: Vector3 = up()
 	Vfx.burst("puff", global_position + u * 0.1, Color(0.78, 0.95, 1.0, 0.55), float(_hop_fx.get("puff", 1.0)))
-	Audio.play("hop", 1.0, float(_hop_fx.get("hop_db", -15.0)), 0.07, "lumi")
+	Audio.play("hop", 1.0, float(_hop_fx.get("hop_db", -9.0)), 0.07, "lumi")
 	_idle_time = 0.0
 
 
 ## [v11jump] Landing: the model settles, a little dust, a soft pat (louder falls stay soft too).
 func _on_landed(impact: float) -> void:
+	if _was_hop:
+		_was_hop = false
+		_shut_check = 0.4  # the pocket watch: is there a way out of where the hop put him?
 	if impact <= 2.0:
 		model.air = false
 		return
@@ -163,7 +168,77 @@ func _on_landed(impact: float) -> void:
 	rumble(0.0, clampf(impact * 0.06, 0.1, 0.4), 0.1)  # [v6feel]
 	model.land(k)
 	Vfx.burst("dust", global_position + up() * 0.08, Color(0.8, 0.68, 0.52, 0.55), float(_hop_fx.get("dust", 0.6)) * k)
-	Audio.play("land", lerpf(1.1, 0.9, k), float(_hop_fx.get("land_db", -16.0)) + linear_to_db(lerpf(0.6, 1.0, k)), 0.07, "lumi")
+	Audio.play("land", lerpf(1.1, 0.9, k), float(_hop_fx.get("land_db", -14.0)) + linear_to_db(lerpf(0.6, 1.0, k)), 0.07, "lumi")
+
+
+## [v11jump] The safety net under the hop: a moment after a hop lands on the ground, is there a
+## walking way out of where he is (TargetReach.shut_in: walls, props and water count, junk does
+## not)? If not, and the player keeps trying to move for RESCUE_AFTER_S and is still shut in, his
+## thrusters lift him to the nearest open ground. So no hop can leave a player stuck, in any town
+## on any planet. Only after a hop: the autoplay bot never hops, so a spot that traps a walker
+## still shows up in the audits.
+const RESCUE_AFTER_S: float = 6.0
+var _was_hop: bool = false
+var _shut_check: float = 0.0
+var _shut: bool = false
+var _shut_try: float = 0.0
+var rescues: int = 0
+
+
+func _pocket_watch(delta: float, trying: bool) -> void:
+	if sphere_motor == null or world == null or not (world.get("field") is SphereField):
+		return
+	if _shut_check > 0.0:
+		_shut_check -= delta
+		if _shut_check <= 0.0:
+			_shut = _is_shut()
+			if _shut:
+				_shut_check = 1.5  # look again: he may hop or walk out
+			else:
+				_shut_try = 0.0
+	if not _shut:
+		return
+	if trying:
+		_shut_try += delta
+	if _shut_try >= RESCUE_AFTER_S and sphere_motor.grounded and _is_shut():
+		_rescue()
+
+
+## Standing on the ground (not on a crate, a bale, the sled or in a film) with no walking way out.
+func _is_shut() -> bool:
+	var m: SphereMotor = sphere_motor
+	if not m.grounded or cine_hold or m._perch > 0.0 or sphere.altitude(global_position) - m.ride_height > 0.45 or not can_hop():
+		return false
+	var t: TargetReach = TargetReach.for_world(world, true, self)
+	if t == null:
+		return false
+	return t.shut_in(global_position, _junk_node(), can_hover_water())
+
+
+func _junk_node() -> Node:
+	var g: Variant = world.get("orbit").get("globe") if world.get("orbit") != null else null
+	return g.get("junk_view") as Node if g is Object else null
+
+
+func _rescue() -> void:
+	_shut = false
+	_shut_try = 0.0
+	_shut_check = 0.0
+	var t: TargetReach = TargetReach.for_world(world, true, self)
+	if t == null:
+		return
+	var soft: Node = _junk_node()
+	var hover: bool = can_hover_water()
+	var from: Vector3 = global_position
+	var to: Vector3 = t.open_spot(from, func(p: Vector3) -> bool: return t.shut_in(p, soft, hover))
+	if to.distance_to(from) < 0.6:
+		return  # nowhere better was found
+	Vfx.burst("puff", from + up() * 0.1, Color(0.78, 0.95, 1.0, 0.6), 1.5)
+	place_on_sphere(to, forward())
+	Vfx.burst("puff", to + up() * 0.1, Color(0.78, 0.95, 1.0, 0.6), 1.5)
+	Audio.play("hop", 0.85, float(_hop_fx.get("hop_db", -9.0)), 0.05, "lumi")
+	rescues += 1
+	print("[hop] Lumi was shut in at %s: lifted %.1f m to open ground" % [str(from.snapped(Vector3.ONE * 0.1)), to.distance_to(from)])
 
 
 ## [v11jump] Whether a hop may start now. Not while pressing a bale, in a film, on the sled or
@@ -339,6 +414,7 @@ func _move(delta: float) -> void:
 		jump = jump and sphere_motor.can_jump and not _use_takes_press()
 		sphere_motor.jump_hold = input.has_method("jump_held") and bool(input.call("jump_held"))
 		sphere_motor.step(self, wish, delta, boost, jump)
+		_pocket_watch(delta, wish.length() > 0.3 or sphere_motor.jump_hold)
 	else:
 		var target: Vector3 = wish * speed
 		var hv := Vector3(velocity.x, 0.0, velocity.z)

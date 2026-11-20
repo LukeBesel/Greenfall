@@ -143,6 +143,14 @@ static func run(p: SitePrefab, terrain: SphereTerrain, field: SphereField, half_
 					bad_pieces += 1
 					if bad_at.size() < 8:
 						bad_at.append(Vector2(lp.x, lp.z))
+						# [v11jump] How far off the walked ground it lies (the scoop reaches a little further than 1 m).
+						var best: float = 99.0
+						for dz2: int in range(-8, 9):
+							for dx2: int in range(-8, 9):
+								var j5: int = idx.call(lp.x + dx2 * STEP, lp.z + dz2 * STEP)
+								if j5 >= 0 and seen[j5] == 1:
+									best = minf(best, Vector2(dx2, dz2).length() * STEP)
+						print("[walk] junk piece %d at (%.1f, %.1f): nearest walked ground %s" % [pid, lp.x, lp.z, "%.1f m" % best if best < 99.0 else "over 4 m"])
 						if DevHooks.has("walk-debug"):
 							var ko: Variant = field.keep_out
 							print("[walk] piece %d cell %d at (%.1f, %.1f) keep-out %s mid %s" % [pid, c3, lp.x, lp.z,

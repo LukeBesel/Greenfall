@@ -216,7 +216,12 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 - `air_control` (0.6): the share of his ground steering he keeps in the air.
 - `puff`, `dust`: size of the take-off haze and the landing dust. `hop_db`, `land_db`: loudness of the two sounds (quiet on purpose; `data/sound.json` `min_gap_s` `lumi:hop` / `lumi:land` stop them stacking).
 
-Rules the code keeps (planet/sphere/sphere_motor.gd, player/patch.gd): the top of a hop is `height_m` above what he stands on, also when the boost or a kerb has already lifted him; no hop from a bale (a stair of bales would climb any wall); no hop while pressing a bale, in a film, on the hover-sled, wading, or with a menu, the map or the Command view open; the camera leaves out most of the rise (planet/sphere/sphere_cam.gd `HOP_KEEP_OUT`).
+Rules the code keeps (planet/sphere/sphere_motor.gd, player/patch.gd):
+- The top of a hop is `height_m` above what he stands on, also when the boost or a kerb has already lifted him.
+- From a height (a crate, a roof, a pile of bales) he does not pass over anything a hop from the ground below could not clear. So a leap never drops him behind a wall he could not hop back over, and bales are no stair over a wall.
+- No hop while pressing a bale, in a film, on the hover-sled, wading, or with a menu, the map or the Command view open. Carrying bales, a full chest and the scoop do not stop it.
+- The safety net: a moment after a hop lands, the game checks for a walking way out. If there is none and the player keeps trying to move for 6 s (`Patch.RESCUE_AFTER_S`), his thrusters lift him to the nearest open ground. Junk never counts as a wall for this.
+- The camera leaves out most of the rise (planet/sphere/sphere_cam.gd `HOP_KEEP_OUT`).
 
 After changing `height_m`, rerun `godot --headless --path . -- --fresh --orbit --no-intro --city-walk` and `--target-reach`. Both print what the hop adds (ground it opens, what he can get onto, what is just out of reach) and fail on any spot he could hop into and not out of (planet/sites/jump_reach.gd). `--jump-reach-h=0.8` tries a height without editing the file. Then `--walk-jump` (real keys) and `tests/test_jump.gd`.
 

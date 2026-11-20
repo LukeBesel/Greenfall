@@ -6,9 +6,11 @@ extends RefCounted
 ##     time as data/patch.json "jump"), straight up along his own up, one landing, the camera
 ##     barely moves; a tap = a small hop; a press just before landing hops again on landing;
 ##   - while the scoop is held; with the map open (no hop, and no hop when it closes);
-##   - a bale: E picks it up, he hops with it and still has it; put down, he hops onto it, cannot
-##     hop from it (a stair of bales would climb any wall) and walks off it;
+##   - a bale: E picks it up, he hops with it and still has it; put down, he hops onto it, hops
+##     from it, and walks off it;
 ##   - a controller: A hops where there is nothing to use, and uses (picks the bale up) where there is;
+##   - shut in a pen with no way out, he is lifted to open ground after a few seconds of trying
+##     (the safety net under the hop, Patch._pocket_watch); a pen with an open side: no lift;
 ##   - on the far side of the globe (the antipode's nearest dry ground): the same hop, along the
 ##     up there, and back home.
 ## --walk-jump[=S] (after S s, default 8): prints [walk-jump] lines, exit 1 on a failure.
@@ -89,7 +91,10 @@ static func run_dev(so: SliceOrbit) -> void:
 	await _bale()
 	# 7. A controller's A.
 	await _pad()
-	# 8. The far side of the globe.
+	_check(_p.rescues == 0, "all that hopping on open ground: no rescue lift (%d)" % _p.rescues)
+	# 8. Shut in with no way out: the thrusters lift him to open ground.
+	await _pen()
+	# 9. The far side of the globe.
 	await _far_side(want_h, want_t)
 	# Home again, and still fine.
 	WalkGoals._stand(so, _p, home, home + SphereGrid.frame(home.normalized()).z * -4.0)
@@ -325,11 +330,16 @@ static func _bale() -> void:
 		await _secs(1.0)
 		_check(absf(_alt() - a) < 0.02 and _lands == l0, "on the bale he stands still (no bobbing, no landing after landing)")
 		h0 = _hops
+		var b0: float = _alt()
+		var btop: float = 0.0
 		WalkGoals._send("jump", true)
-		await _secs(0.4)
+		for k: int in 100:
+			await _tree.physics_frame
+			btop = maxf(btop, _alt() - b0)
 		WalkGoals._send("jump", false)
-		await _secs(0.4)
-		_check(_hops == h0, "from a bale he does not hop (bales are no stair)")
+		await _secs(0.6)
+		_check(_hops == h0 + 1 and absf(btop - float(Economy.read_json("res://data/patch.json")["jump"]["height_m"])) < 0.12, "from the bale he hops as from the ground (%.2f m above it)" % btop)
+		_check(m.grounded, "and lands again (%.2f m up)" % _surface_alt())
 		WalkGoals._send("move_forward", true)
 		await _secs(1.0)
 		WalkGoals._send("move_forward", false)
@@ -427,6 +437,69 @@ static func _pad() -> void:
 	await _secs(0.3)
 	WalkGoals._send("move_back", false)
 	await _settle()
+
+
+## A pen of four 1.3 m walls round him (too high to hop): he hops, keeps trying to move, and after a
+## few seconds is lifted out to open ground. With a gap in the pen nothing lifts him.
+static func _pen() -> void:
+	await _settle()
+	var c: Vector3 = await _open_spot(_p.global_position)
+	var u: Vector3 = c.normalized()
+	var fr: Basis = _p.global_basis
+	var pen := StaticBody3D.new()
+	pen.collision_layer = PhysLayers.PROP
+	pen.collision_mask = 0
+	_so.w.add_child(pen)
+	pen.global_transform = Transform3D(fr, c)
+	var gate: CollisionShape3D = null
+	for k: int in 4:
+		var cs := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = Vector3(3.4, 1.3, 0.3)
+		cs.shape = box
+		cs.transform = Transform3D(Basis(Vector3.UP, k * PI * 0.5), Basis(Vector3.UP, k * PI * 0.5) * Vector3(0, 0.65, -1.55))
+		pen.add_child(cs)
+		if k == 0:
+			gate = cs
+	# First with one side open: hopping about inside is not being stuck.
+	gate.disabled = true
+	await _secs(0.5)
+	var r0: int = _p.rescues
+	await _hop(0.3)
+	WalkGoals._send("move_right", true)
+	await _secs(4.0)
+	WalkGoals._send("move_right", false)
+	await _hop(0.3)
+	WalkGoals._send("move_left", true)
+	await _secs(4.0)
+	WalkGoals._send("move_left", false)
+	_check(_p.rescues == r0, "in a pen with an open side: no lift, he can walk out")
+	WalkGoals._stand(_so, _p, c, c - fr.z * 4.0)
+	gate.disabled = false
+	await _secs(0.6)
+	# Shut: he hops and pushes at the walls.
+	var h0: int = _hops
+	await _hop(0.7)
+	_check(_hops == h0 + 1 and (_p.global_position - c).length() < 1.6, "shut in a pen of 1.3 m walls: a hop does not get him out")
+	WalkGoals._send("move_forward", true)
+	var t: float = 0.0
+	while t < 14.0 and _p.rescues == r0:
+		await _secs(0.25)
+		t += 0.25
+		if int(t * 4.0) % 8 == 0:
+			WalkGoals._send("jump", true)
+			await _secs(0.1)
+			WalkGoals._send("jump", false)
+	WalkGoals._send("move_forward", false)
+	await _settle()
+	var out: Vector3 = _p.global_position - c
+	out -= u * out.dot(u)
+	_check(_p.rescues == r0 + 1, "after %.1f s of trying he is lifted out (once)" % t)
+	_check(out.length() > 2.2 and _p.sphere_motor.grounded and absf(_surface_alt()) < 0.08, "he stands on open ground %.1f m from the pen's middle" % out.length())
+	var tr2: TargetReach = TargetReach.for_world(_so.w, true, _p)
+	_check(not tr2.shut_in(_p.global_position), "and can walk away from there")
+	pen.queue_free()
+	await _secs(0.3)
 
 
 static func _far_side(want_h: float, want_t: float) -> void:
