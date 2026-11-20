@@ -3,7 +3,7 @@ extends Node
 ## Runs the fixed-rate simulation tick (10 Hz) independent of frame rate.
 
 const SIM_HZ: float = 10.0
-const SAVE_VERSION: int = 5  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts; v5: the Ledger dropped (item 105)
+const SAVE_VERSION: int = 6  # v6: away / offline earnings dropped, research and rocket cells on the play clock (item 110); [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts; v5: the Ledger dropped (item 105)
 const RATE_WINDOW_S: float = 60.0
 
 var currencies: Dictionary = {}  # id -> BigNum
@@ -27,6 +27,9 @@ var orbit: Dictionary = {}
 var flat_world: Variant = null
 ## Set while switching districts: the next scene load uses the in-memory state (not saved).
 var reload_in_memory: bool = false
+## When this save was made and last written, by the system clock. For display and for picking the
+## newer file only (the title's "last played", Steam Cloud). The game NEVER works out what
+## happened "since" them: a save loads as it was saved, whatever the clock says (owner item 110).
 var created_unix: float = 0.0
 var saved_unix: float = 0.0
 
@@ -245,7 +248,7 @@ func to_dict() -> Dictionary:
 	var cur: Dictionary = {}
 	for k: String in currencies:
 		cur[k] = (currencies[k] as BigNum).serialize()
-	# Keep the in-memory stamp in step with the file, so offline time is measured from the last save.
+	# The stamp is for the title screen and Steam Cloud ("which file is newer"), nothing else.
 	saved_unix = Time.get_unix_time_from_system()
 	return {
 		"version": SAVE_VERSION,

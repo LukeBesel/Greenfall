@@ -82,9 +82,9 @@ Same upgrades bought, no errors.
 | Outposts | works | | Per hub; `orbit_outpost*`. Robots delivering to outposts wait on orbC's real Fleet. |
 | Signal Tower | works | | Built on its anchor. |
 | Telescope (+ remote progress) | works | | `orbit_telescope_at_anchor`. |
-| Extras: CD player, nursery, album, welcome back, Seed of the Week | works | | `orbit_radio_*`; the nursery is on its anchor. |
+| Extras: CD player, nursery, album, Seed of the Week (welcome back removed, owner item 110) | works | | `orbit_radio_*`; the nursery is on its anchor. |
 | Glim (light, scanner, upgrades) | works | | `orbit_glim_scan_marks`. |
-| Cargo pods (other districts' robots pay) | retired | | Far crews on the globe are records that keep working (orbC, `orbit_offline_2h_within_10pct`). |
+| Cargo pods (other districts' robots pay) | retired | | Far crews on the globe are records that keep working (orbC, `orbit_robot_near_far`). |
 | Feel FX (bale press juice, hex reveal) | partial | orbB | The bale press squash runs (Patch calls it). The rest (bale pop, upgrade show-off, hex sweep on the local up) is in a stash on wt/orbB ("orbB Feel FX WIP"). |
 
 ## Robots and Command view
@@ -92,7 +92,7 @@ Same upgrades bought, no errors.
 | System | Status | Owner | Evidence and notes |
 |---|---|---|---|
 | Near robots (scoopie, haulbug, ...) | works | | `SphereCrew`; the `[bots]` table, stuck=0. |
-| Far crews and offline | works | | `orbit_robot_near_far`, `orbit_robot_positions_within_1m`, `orbit_offline_2h_within_10pct`. |
+| Far crews (no offline pay: owner item 110) | works | | `orbit_robot_near_far`, `orbit_robot_positions_within_1m`, `orbit_closed_time_pays_nothing`, `orbit_other_planet_2h_play_within_10pct`. |
 | Fleet (`world.fleet`) and robot builder (parts, presets, traits) | partial | orbC | `world.fleet` is null on the globe; SphereCrew runs the robots. `RobotBuilder` isn't built. Autoplay buys no robots on either game in 13 minutes. |
 | Water net (Drip refills) | missing | orbC | Outposts expose refill points; nothing reads them on the globe yet. |
 | Bot Fabricator | works | | Built by `OrbitCrews`. |

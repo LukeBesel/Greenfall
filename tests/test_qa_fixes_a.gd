@@ -1,5 +1,5 @@
 extends GutTest
-## Regression tests for QA fixes: modal-close press leaking into gameplay, offline payout,
+## Regression tests for QA fixes: modal-close press leaking into gameplay,
 ## saved_unix tracking.
 
 
@@ -35,17 +35,6 @@ func test_reenabled_input_ignores_the_closing_press() -> void:
 	await get_tree().physics_frame
 	Input.action_release("drop")
 	assert_true(probe.results.has(true), "a fresh press works: %s" % str(probe.results))
-
-
-func test_offline_waiting_bales_are_credited() -> void:
-	var cleaners: Array = [{"type": "scoopie", "tier": 0}]
-	var r: Dictionary = Offline.compute(cleaners, 0, 1.0, 3600.0)
-	assert_gt(float(r["waiting_value"]), 0.0)
-	var before: float = GameState.get_currency("cubes").to_float()
-	Offline.apply(r)
-	var after: float = GameState.get_currency("cubes").to_float()
-	assert_almost_eq(after - before, float(r["waiting_value"]), maxf(0.01, after * 1e-6))
-	GameState.spend("cubes", BigNum.from_float(after - before))
 
 
 func test_to_dict_updates_saved_unix() -> void:

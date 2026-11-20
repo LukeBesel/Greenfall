@@ -158,13 +158,13 @@ func test_save_falls_back_to_tmp_when_rename_was_interrupted() -> void:
 func test_rocket_recharge_survives_a_clock_change() -> void:
 	var saved: float = RocketTiers.now_override
 	RocketTiers.now_override = 5000.0
-	GameState.flags["rocket_ready_unix"] = 1.0e9  # a timestamp from another clock
+	GameState.flags["rocket_ready_at"] = 1.0e9  # a timestamp from another clock
 	var left: float = RocketTiers.recharge_left()
 	assert_lte(left, float(RocketTiers.def().get("recharge_s", 0.0)))
 	RocketTiers.now_override = 5000.0 + left + 1.0
 	assert_eq(RocketTiers.recharge_left(), 0.0, "it counts down instead of sticking at full")
 	RocketTiers.now_override = saved
-	GameState.flags.erase("rocket_ready_unix")
+	GameState.flags.erase("rocket_ready_at")
 
 
 func test_garden_robots_wait_for_base_level_3() -> void:

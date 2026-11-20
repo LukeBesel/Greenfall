@@ -2,7 +2,9 @@ class_name Research
 extends Node
 ## Research tree (data/research.json). Static helpers own the rules; state lives in
 ## GameState.flags["research"] = {done: [ids], active: {id, start, dur}, queue: [ids]}.
-## Research runs on wall-clock unix time, so it keeps going while paused, in menus and offline.
+## Research runs on the play clock (GameState.stats.time_played): it moves only while the game is
+## being played. Not while paused, loading or closed (owner item 110: nothing happens while the
+## game is off); the system clock is never read.
 ## Other systems gate on `Research.has(id)`; stat effects reach the game through Economy.stat
 ## (see `stat_mod`). An instance of this node (added by the slice) awards Data and finishes
 ## research while playing.
@@ -79,8 +81,9 @@ static func reward(kind: String) -> float:
 	return float(_cfg.get("data_rewards", {}).get(kind, 0.0))
 
 
+## The play clock, in seconds played on this save. Tests and tools pin it with now_override.
 static func now() -> float:
-	return now_override if now_override >= 0.0 else Time.get_unix_time_from_system()
+	return now_override if now_override >= 0.0 else float(GameState.stats.get("time_played", 0.0))
 
 
 # --- State -----------------------------------------------------------------------
@@ -293,8 +296,8 @@ static func remaining(t: float = -1.0) -> float:
 	return maxf(0.0, float(a["start"]) + float(a["dur"]) - at)
 
 
-## Finishes everything that is due by time t (chains through the queue, so offline time
-## completes several nodes). Returns the ids completed, in order.
+## Finishes everything that is due by time t (chains through the queue, so a long step of the
+## play clock completes several nodes). Returns the ids completed, in order.
 static func update(t: float = -1.0) -> Array[String]:
 	var at: float = now() if t < 0.0 else t
 	var out: Array[String] = []
@@ -606,14 +609,7 @@ func _ready() -> void:
 	EventBus.hex_restored.connect(func(_h: int) -> void: award_data(reward("hex_restored")))
 	for k: String in ["plants_bloomed", "shards_found", "robot_bales"]:
 		_seen[k] = float(GameState.stats.get(k, 0.0))
-	# Finish whatever completed while we were away (quietly, then one summary toast).
-	var finished: Array[String] = update()
 	EventBus.research_completed.connect(_on_completed)
-	if not finished.is_empty():
-		var names: Array[String] = []
-		for id: String in finished:
-			names.append(tr(str(def(id).get("name", id))))
-		(func() -> void: EventBus.toast.emit(tr("While you were away, research finished: %s.") % ", ".join(names), "story")).call_deferred()
 
 
 func _process(delta: float) -> void:

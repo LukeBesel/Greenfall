@@ -1,13 +1,13 @@
-class_name SphereOffline
+class_name SphereWork
 extends RefCounted
-## [orbC] Offline progress (and far-crew work) on a round planet, per hub region and by cell id.
-## The maths is the flat game's (core/offline.gd: Offline.compute / unit_rate / units_value); this
-## only turns junk units into cells: the dirty cells of a hub region, nearest the hub first, lose
-## their junk (SphereCells.junk) and cells that a near ring has materialized are settled into the
-## SphereField ledger (pieces removed, so the junk view hides them).
+## [orbC] Robots' work on a round planet, per hub region and by cell id: the region's cells, how
+## much junk a cell holds, and the one way a cell's junk is written (write_cell). Far crews
+## (robots/sphere/sphere_crew.gd) use it every tick. catch_up() turns play time a crew worked
+## unwatched on ANOTHER planet into cleaned cells when Lumi lands there (systems/remote_progress.gd).
+## Nothing here reads the system clock: time with the game closed never counts (owner item 110).
 ##
 ## A globe cell holds UNITS_PER_CELL units of junk when untouched: SphereField.FULL_PIECES pieces
-## at Offline's ~0.9 units per piece. That keeps a Scoopie's work per hour the same in both games.
+## at CrewRate's ~0.9 units per piece.
 
 const UNITS_PER_CELL: float = SphereField.FULL_PIECES * 0.9
 ## A lake hex's floating junk (SphereField.FLOAT_PIECES floaters): Skimmers' work.
@@ -16,7 +16,7 @@ const UNITS_PER_WATER_CELL: float = SphereField.FLOAT_PIECES * 0.9
 ## planets scale it with their area per hub (region_rings), since planets differ in size and hub
 ## count (docs/DECISIONS.md "Planets differ in size"). Hex size stays 10 m everywhere, so
 ## UNITS_PER_CELL and the per-robot rates do not change; bigger planets go faster only through
-## their bots and tools (Economy stats, which Offline.unit_rate reads).
+## their bots and tools (Economy stats, which CrewRate.unit_rate reads).
 const REGION_RINGS: int = 16
 const REF_CELLS_PER_HUB: float = 163842.0 / 10.0
 ## A planet's hub count: data/planets.json `globe` (GlobeSpec).
@@ -130,15 +130,15 @@ static func take_units(cells: SphereCells, field: SphereField, list: PackedInt32
 	return out
 
 
-## The offline jump for a whole planet. `hubs` = [{cell, robots: [{type, tier}], rings?,
-## scrubbers?, filter_per_s?}]; rings default to the planet's region size (rings_for). Each hub earns Offline.compute() over its own region's junk and
-## the region's cells are cleaned by the units it baled. Returns compute()'s keys summed over the
-## hubs (seconds, units, cubes, waiting_value, air) plus cells, pieces and per-hub results in
-## "hubs". Does NOT add currency: Offline.apply() the result once.
-static func simulate(grid: SphereGrid, cells: SphereCells, field: SphereField, hubs: Array, seconds: float, planet_id: String = "verdance") -> Dictionary:
+## A planet's crews catch up on `play_s` seconds of play they worked unwatched, at `pace` of the
+## full rate. `hubs` = [{cell, robots: [{type, tier}], rings?}]; rings default to the planet's
+## region size (rings_for). Each hub's fleet bales CrewRate.fleet_work() over its own region's junk
+## and the region's cells are cleaned by those units. Returns {seconds, units, cubes,
+## waiting_value, cells, pieces, hubs (per-hub results)}. Does NOT add currency.
+static func catch_up(grid: SphereGrid, cells: SphereCells, field: SphereField, hubs: Array, play_s: float, planet_id: String = "verdance", pace: float = 1.0) -> Dictionary:
 	var def_rings: int = rings_for(grid, planet_id)
-	var total: Dictionary = {"seconds": clampf(seconds, 0.0, Offline.CAP_S), "units": 0.0, "cubes": 0.0, "waiting_value": 0.0,
-		"air": 0.0, "cells": 0, "pieces": PackedInt32Array(), "hubs": []}
+	var total: Dictionary = {"seconds": maxf(play_s, 0.0), "units": 0.0, "cubes": 0.0, "waiting_value": 0.0,
+		"cells": 0, "pieces": PackedInt32Array(), "hubs": []}
 	for h: Dictionary in hubs:
 		var rings: int = int(h.get("rings", def_rings))
 		var list: PackedInt32Array = region(grid, cells, int(h["cell"]), rings)
@@ -153,12 +153,11 @@ static func simulate(grid: SphereGrid, cells: SphereCells, field: SphereField, h
 				land.append(r)
 				if role == "haul":
 					skim.append(r)  # haulers serve both
-		var res: Dictionary = Offline.compute(land, int(h.get("scrubbers", 0)), float(h.get("filter_per_s", 1.0)),
-			seconds, units_left(cells, list))
+		var res: Dictionary = CrewRate.fleet_work(land, play_s, units_left(cells, list), pace)
 		var took: Dictionary = take_units(cells, field, list, float(res["units"]))
 		if not skim.is_empty():
 			var wl: PackedInt32Array = region_water(grid, cells, int(h["cell"]), rings)
-			var wres: Dictionary = Offline.compute(skim, 0, 1.0, seconds, units_left(cells, wl))
+			var wres: Dictionary = CrewRate.fleet_work(skim, play_s, units_left(cells, wl), pace)
 			var wt: Dictionary = take_units(cells, field, wl, float(wres["units"]))
 			for k: String in ["units", "cubes", "waiting_value"]:
 				res[k] = float(res[k]) + float(wres[k])
@@ -166,7 +165,7 @@ static func simulate(grid: SphereGrid, cells: SphereCells, field: SphereField, h
 			(took["pieces"] as PackedInt32Array).append_array(wt["pieces"])
 		res["cells"] = took["cells"]
 		res["hub"] = int(h["cell"])
-		for k: String in ["units", "cubes", "waiting_value", "air"]:
+		for k: String in ["units", "cubes", "waiting_value"]:
 			total[k] = float(total[k]) + float(res[k])
 		total["cells"] = int(total["cells"]) + int(took["cells"])
 		(total["pieces"] as PackedInt32Array).append_array(took["pieces"])

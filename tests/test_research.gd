@@ -84,12 +84,12 @@ func test_research_takes_real_time() -> void:
 	assert_eq(Research.active_id(), "")
 
 
-func test_queue_chains_through_offline_time() -> void:
+func test_queue_chains_through_a_long_step_of_the_clock() -> void:
 	_give(1000)
 	Research.start("scoop_beam", 1000.0)
 	Research.start("wide_beam", 1000.0)
 	Research.start("soil_survey", 1000.0)
-	# Hours later (offline): all three finish in order, back to back.
+	# An hour of play later: all three finish in order, back to back.
 	var done: Array[String] = Research.update(1000.0 + 3600.0)
 	assert_eq(done, ["scoop_beam", "wide_beam", "soil_survey"] as Array[String])
 	assert_true(Research.queue().is_empty())

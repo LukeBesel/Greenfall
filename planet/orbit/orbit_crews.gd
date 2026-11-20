@@ -3,7 +3,7 @@ extends Node
 ## [orbB] The robots' side of a globe (phase A's VerdanceGlobe crew code as its own node; orbC
 ## ports the real Fleet onto it). Near robots are SphereBots on the hex graph (this node is their
 ## `graph`: claim_dirty, path, work_cell, junk_left, release); far crews are data only, each
-## clearing whole cells nearest its hub at `rate` cells per minute (the shape of Offline.compute).
+## clearing whole cells nearest its hub at `rate` cells per minute (the shape of CrewRate.fleet_work).
 ## [orbC] The real crew is SphereCrew (robots/sphere/), plugged in at the bottom of this file.
 
 var globe: OrbitPlanet
@@ -146,16 +146,11 @@ func cleaned_by_bots() -> int:
 # --- [orbC] The phase C crew (robots/sphere/): near SphereBots, far records, jobs by cell id ---
 ## SphereCrew does the work; this node plugs it into the slice (scenes/slice_orbit.gd calls
 ## build_crew, save_crew, restore_crew and on_view): saving in GameState.orbit["robots"]
-## (directions, never x/z) and the offline jump on load, per hub region by cell id with the flat
-## game's maths (SphereOffline over Offline.compute). The stand-in bots and far crews above stay
+## (directions, never x/z). Loading a save restores exactly what was saved: no time is made up
+## for the hours the game was closed (owner item 110). The stand-in bots and far crews above stay
 ## for --orbit-bots only.
 
 var crew: SphereCrew
-
-const AWAY_MIN_S: float = 120.0  # the flat slice's threshold for an offline payout
-## [v10guide] Critic 3: the away line shows only after a real break (a quick quit and Continue pays
-## quietly; nobody wants a report after a minute).
-const AWAY_REPORT_S: float = 600.0
 
 # --- [v6crew] Looking at a robot; what a hub's crew did while Lumi was away ---------------------
 ## Lumi stands this close to a robot: its line shows as the prompt (what it does, or why it can't).
@@ -287,30 +282,20 @@ func save_crew() -> Dictionary:
 	return crew.to_dict() if crew != null else {}
 
 
-## Restores the crew from GameState.orbit and, when the game was reopened from disk after a while
-## away, runs the offline jump for its robots (grouped by hub) and pays it.
-func restore_crew(so: Node, od: Dictionary, from_disk: bool) -> Dictionary:
+## Restores the crew from GameState.orbit: the robots as they were saved, nothing more. The
+## system clock is never read here (owner item 110: no work while the game is closed).
+func restore_crew(_so: Node, od: Dictionary) -> void:
 	if crew == null:
-		return {}
+		return
 	var rd: Dictionary = od.get("robots", {})
 	if not rd.is_empty():
 		crew.from_dict(rd)
-	if not from_disk:
-		return {}
-	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix
-	if GameState.saved_unix <= 0.0 or away <= AWAY_MIN_S or crew.robots().is_empty():
-		return {}
-	var res: Dictionary = offline(away)
-	_away_quiet = 60.0  # [v6crew] the offline note covers it: no second "while you were away"
-	Offline.apply(res)
-	var line: String = Offline.summary_text(res)
-	if away >= AWAY_REPORT_S and line != "":
-		EventBus.toast.emit(line, "info")
-	return res
 
 
-## The offline jump for every hub that has robots. Pieces it removes are hidden in the junk view.
-func offline(seconds: float) -> Dictionary:
+## This planet's crews catch up on `play_s` seconds of PLAY they worked while Lumi was on another
+## planet (systems/remote_progress.gd counts them while the game runs), at `pace` of the full
+## rate, hub by hub. Pieces it removes are hidden in the junk view. Does not pay: the caller does.
+func catch_up(play_s: float, pace: float = 1.0) -> Dictionary:
 	var g: OrbitPlanet = globe
 	var by_hub: Dictionary = {}
 	for u: Dictionary in crew.robots():
@@ -321,14 +306,15 @@ func offline(seconds: float) -> Dictionary:
 	var hubs: Array = []
 	for h: int in by_hub:
 		hubs.append({"cell": h, "robots": by_hub[h]})
-	var res: Dictionary = SphereOffline.simulate(g.get("grid"), g.get("cells"), g.get("field"), hubs, seconds, crew.planet_id)
+	var res: Dictionary = SphereWork.catch_up(g.get("grid"), g.get("cells"), g.get("field"), hubs, play_s, crew.planet_id, pace)
+	_away_quiet = 60.0  # [v6crew] the arrival note covers it: no second "while you were away"
 	var jv: Object = g.get("junk_view")
 	if jv != null:
 		for pid: int in res["pieces"]:
 			jv.call("hide_piece", pid)
 		if jv.has_method("refresh_hex"):
 			for h: Dictionary in res["hubs"]:
-				for c: int in SphereOffline.region(g.grid, g.cells, int(h["hub"]), crew.rings):
+				for c: int in SphereWork.region(g.grid, g.cells, int(h["hub"]), crew.rings):
 					if g.field.materialized[c] == 1:
 						jv.call("refresh_hex", c)
 	return res

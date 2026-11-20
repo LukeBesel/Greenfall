@@ -114,7 +114,6 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var tower0: bool = w.get_node_or_null("SignalTower") != null
 	var a: Dictionary = _snap()
 	var ea: Dictionary = extra.call() if extra.is_valid() else {}
-	var saved_at: float = Time.get_unix_time_from_system()
 	var fl0: Fleet = w.get("fleet") as Fleet
 	var bots: bool = fl0 != null and fl0.robot_total() > 0
 	_reloads += 1
@@ -197,26 +196,17 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var cb: String = digits.sub(str((b["card"] as Array).slice(0, 2)), "#", true)
 	if ca != cb:  # the count: below, with the bar
 		diff.append("card %s -> %s" % [str(a["card"]), str(b["card"])])
-	# [v9a] Back after more than OrbitCrews.AWAY_MIN_S with robots out, the game pays their offline
-	# work on load (cubes up, cells cleaned): by design. On a slow runner the quit-title-Continue
-	# round trip itself takes that long (CI: "5.5 / 600 -> done", the outline on another hex).
-	var away: float = Time.get_unix_time_from_system() - saved_at
-	var paid: bool = bots and away > OrbitCrews.AWAY_MIN_S and float(b["_cubes"]) > float(a["_cubes"]) + 1.0
-	if paid:
-		print("[walk-home] note: %s: back after %.0f s with robots out: offline pay %.0f cubes (count and outline may move on)" % [tag, away, float(b["_cubes"]) - float(a["_cubes"])])
+	# Owner item 110: nothing is earned or cleaned while the game is closed, however long the quit
+	# and Continue took (it used to pay for the closed time after two minutes, which a slow runner hit).
 	var pa: Array = a["pr"]
 	var pb: Array = b["pr"]
-	if paid and float(pb[0]) >= float(pa[0]) - 0.01:
-		pass  # more money or more cleaned: the pay
-	elif absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
+	if absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
 		diff.append("count %s -> %s" % [str(pa), str(pb)])
 	# The outline is picked afresh on load (the most-cleared hex near Lumi): another hex is fine if
 	# the old one kept its progress and the new one is at least as far along.
 	var kept: float = (so.globe.field as HexField).removed_fraction(int(a["hex"])) if int(a["hex"]) >= 0 else 0.0
 	if int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and int(b["hex"]) >= 0 and absf(kept - float(a["frac"])) <= 0.05 and float(b["frac"]) >= float(a["frac"]) - 0.01:
 		print("[walk-home] note: %s: the outline moved to hex %d (%.0f%%); hex %d kept %.0f%%" % [tag, int(b["hex"]), float(b["frac"]) * 100.0, int(a["hex"]), kept * 100.0])
-	elif paid:
-		pass  # offline work cleaned cells: the outline may be on another hex
 	elif int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and kept >= 0.95:
 		print("[walk-home] note: %s: hex %d finished (%.0f%%); the outline moved on to hex %d (%.0f%%)" % [tag, int(a["hex"]), kept * 100.0, int(b["hex"]), float(b["frac"]) * 100.0])
 	elif int(a["hex"]) >= 0 and (int(b["hex"]) < 0 or float(b["frac"]) < float(a["frac"]) - 0.05):  # [v9d] robots may have cleaned on meanwhile: more is fine

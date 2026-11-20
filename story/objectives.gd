@@ -757,7 +757,7 @@ func step_target(def: Dictionary) -> Dictionary:
 				out = {"to": "bench" if BenchTiers.block_reason(world) == "" and GameState.can_afford_all(BenchTiers.next_cost()) else "hex", "row": ["build", "bot_bay"]}
 			"robot", "robot2":
 				out = {"to": "bench", "row": ["bots", ""]}
-			"map":  # [v10pace] item 109: a key press, nothing to walk to
+			"map":  # [v10pace] item 110: a key press, nothing to walk to
 				out["to"] = ""
 			"shuttle":  # [v10pace] to the bench once it can be paid; else earn
 				out = {"to": "bench" if GameState.can_afford_all(YardBuilds.def("shuttle").get("cost", {})) else "hex", "row": ["build", "shuttle"]}

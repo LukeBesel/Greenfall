@@ -85,7 +85,7 @@ Sizes in use:
 
 A power of two (64, 128, 256) uses the level grid cache. Any other f builds and caches its own
 grid on first use, in `user://sphere_grid_f<f>.bin`, which takes a few seconds once. Hub regions,
-offline work and the far view scale with the size (`SphereOffline.region_rings`,
+offline work and the far view scale with the size (`SphereWork.region_rings`,
 `OrbitQuality`). Bigger planets are not faster to clean: hexes stay 10 m.
 
 ### Step 3. Hubs and landmarks: `hubs[]` (and `data/landmarks.json`)
@@ -323,7 +323,7 @@ Severity:
 | scenes/slice_orbit.gd:68-72 | A save of another planet, loaded with `--orbit-planet`, is thrown away (`GameState.orbit = {}`) | low (dev) | Only use `--orbit-planet` with `--fresh` or a `--save-dir` |
 | planet/planets/planet_envs.gd:67 `GLOBE_DEFAULTS` | A second, older size table, used only when a planet has no `globe` block | low | Delete it once every planet has `globe` (all do now) |
 | planet/sky_director.gd:268, planet/sphere/sphere_terrain.gd:9, planet/sphere/sphere_surface.gd:11, planet/sites/town_outskirts.gd:26 | `1840.0` defaults | low | Overwritten from the grid at build; harmless |
-| core/sphere_offline.gd:21 | `REF_CELLS_PER_HUB = 163842 / 10` | low | A reference size; regions scale from it |
+| core/sphere_work.gd:21 | `REF_CELLS_PER_HUB = 163842 / 10` | low | A reference size; regions scale from it |
 
 ### The four older planets on the globe (smoke results)
 

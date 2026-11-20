@@ -32,7 +32,6 @@ var _sprout_mm: MultiMesh
 var _piece_hex: PackedInt32Array
 var _piece_xf: Array[Transform3D] = []
 var _base_units: float = 0.0  # pending units at open
-var _t0_unix: float = 0.0
 var _live_units: float = 0.0
 var _rate: float = 0.0  # remote units per second (estimate)
 var _noise: FastNoiseLite
@@ -63,8 +62,7 @@ func setup(p_snap: Dictionary, p_world: Dictionary) -> void:
 	# What the crew has done since Lumi left: whole hexes first (nearest the base), then a share.
 	var pend: Dictionary = RemoteProgress.pending(snap, world_rec)
 	_base_units = float(pend["units"])
-	_t0_unix = Time.get_unix_time_from_system()
-	var later: Dictionary = RemoteProgress.pending(snap, world_rec, _t0_unix + 60.0)
+	var later: Dictionary = RemoteProgress.pending(snap, world_rec, 60.0)
 	_rate = maxf(0.0, (float(later["units"]) - _base_units) / 60.0)
 	_apply_units(_base_units)
 	_build_ground()

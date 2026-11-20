@@ -4,9 +4,9 @@ extends Node3D
 ## are records. One brain runs both, so a robot behaves the same whether you watch it or not:
 ## - Jobs by cell id: claim_dirty() (nearest dirty cell of the hub region, or of the painted zone),
 ##   route() (SpherePath.astar_grid, water blocked except for skimmers), work_cell() (writes
-##   SphereCells and the SphereField ledger through SphereOffline.write_cell).
-## - Work rate: Offline.unit_rate(), the same per-robot maths as the offline jump (core/offline.gd,
-##   core/sphere_offline.gd). One code path for "off-screen" and "offline".
+##   SphereCells and the SphereField ledger through SphereWork.write_cell).
+## - Work rate: CrewRate.unit_rate() (core/crew_rate.gd), the same per-robot maths near and far. It
+##   runs on the frame delta only: a paused or closed game does no work (owner item 110).
 ## - Far crews: past DEMOTE_M from the focus (Lumi) a robot is demoted to a record and moved by
 ##   SphereCrewSim.advance (exact great-circle steps, no nodes); it is promoted back inside PROMOTE_M.
 ## - Every working near robot registers a streamer centre with its own small near ring, so its
@@ -40,8 +40,8 @@ var junk_view: Node  # hide_piece(pid)
 var focus: Node3D  # Lumi (null: every robot is far)
 var hub_cell: int = -1
 var depot_cell: int = -1
-## Hub region size in rings: scales with the planet's area per hub (SphereOffline.rings_for).
-var rings: int = SphereOffline.REGION_RINGS
+## Hub region size in rings: scales with the planet's area per hub (SphereWork.rings_for).
+var rings: int = SphereWork.REGION_RINGS
 var planet_id: String = "verdance"
 var visuals: bool = true
 ## Seconds between far-crew steps (records are cheap; a step can be any length).
@@ -134,7 +134,7 @@ func _exit_tree() -> void:
 func setup(p_grid: SphereGrid, p_cells: SphereCells, p_field: SphereField, p_surface: SphereSurface, p_swarm: SphereSwarm = null, p_streamer: SphereStreamer = null, p_planet: String = "verdance") -> void:
 	active = self  # [v3qa]
 	planet_id = p_planet
-	rings = SphereOffline.rings_for(p_grid, p_planet)
+	rings = SphereWork.rings_for(p_grid, p_planet)
 	if visuals and bale_view == null:
 		bale_view = SphereBales.new()
 		bale_view.name = "Bales"
@@ -679,7 +679,7 @@ func water_dirty(c: int) -> bool:
 
 ## Junk units in an untouched cell: a land hex, or a lake hex's floaters.
 func units_per(c: int) -> float:
-	return SphereOffline.UNITS_PER_WATER_CELL if cells.state[c] == 5 else SphereOffline.UNITS_PER_CELL
+	return SphereWork.UNITS_PER_WATER_CELL if cells.state[c] == 5 else SphereWork.UNITS_PER_CELL
 
 
 func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
@@ -735,7 +735,7 @@ func junk_left(c: int) -> float:
 func work_cell(c: int, left: float) -> void:
 	_touched[c] = true
 	var was_dirty: bool = cells.is_dirty(c) or water_dirty(c)
-	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
+	var gone: PackedInt32Array = SphereWork.write_cell(cells, field, c, left)
 	if left > SphereCells.CLEAN_LEFT and (cells.is_dirty(c) or water_dirty(c)):  # [v2feel]
 		_left[c] = [left, _real_left(c)]
 	else:
@@ -1276,7 +1276,7 @@ func _work(u: Dictionary, dt: float) -> void:
 		return
 	var upc: float = units_per(c)
 	var have: float = junk_left(c) * upc
-	var take: float = minf(have, Offline.unit_rate(str(u["type"]), int(u["tier"])) * dt)
+	var take: float = minf(have, CrewRate.unit_rate(str(u["type"]), int(u["tier"])) * dt)
 	work_cell(c, (have - take) / upc)
 	u["hopper"] = float(u["hopper"]) + take
 	u["log"]["junk"] = float(u["log"]["junk"]) + take
@@ -1288,7 +1288,7 @@ func _work(u: Dictionary, dt: float) -> void:
 
 
 ## A near robot on a hex with real pieces: it drives to the nearest piece, scoops it (the arm
-## animates while `working`) and takes it whole, at the same Offline.unit_rate as everywhere else
+## animates while `working`) and takes it whole, at the same CrewRate.unit_rate as everywhere else
 ## (work time accrues while it drives, as in the flat game's rate: travel + pick).
 const REACH_M: float = 1.1
 const PIECE_GIVEUP_S: float = 6.0
@@ -1312,7 +1312,7 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 		b.go_to_point(u["reach_at"])
 	var per_unit: float = units_per(c) / maxf(field.hex_total[c], 0.001)
 	var units: float = field.piece_vol[pid] * per_unit
-	u["acc"] = minf(float(u.get("acc", 0.0)) + Offline.unit_rate(str(u["type"]), int(u["tier"])) * dt, units * 2.0)
+	u["acc"] = minf(float(u.get("acc", 0.0)) + CrewRate.unit_rate(str(u["type"]), int(u["tier"])) * dt, units * 2.0)
 	u["piece_t"] = float(u.get("piece_t", 0.0)) + dt
 	var at: Vector3 = u.get("reach_at", field.piece_pos[pid])
 	var near: bool = b.global_position.distance_to(at) <= REACH_M + 0.4
@@ -1332,7 +1332,7 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 		if junk_view.has_method("refresh_hex"):
 			junk_view.call("refresh_hex", c)
 	var left: float = 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
-	SphereOffline.write_cell(cells, field, c, left)
+	SphereWork.write_cell(cells, field, c, left)
 	cell_worked.emit(c)
 	u["pid"] = -1
 	u["hopper"] = float(u["hopper"]) + units
@@ -1465,7 +1465,7 @@ func _drop_bale(u: Dictionary) -> void:
 		return
 	u["hopper"] = 0.0
 	_bale_seq += 1
-	var value: float = Offline.units_value([{"type": u["type"], "tier": u["tier"]}], units_in)
+	var value: float = CrewRate.units_value([{"type": u["type"], "tier": u["tier"]}], units_in)
 	# Dropped beside the robot (a little to its side, so a crew's bales don't stack in one spot).
 	var d: Vector3 = unit_dir(u)
 	var side: Vector3 = SphereMath.any_perpendicular(d).rotated(d, randf() * TAU)

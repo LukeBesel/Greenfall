@@ -86,6 +86,13 @@ else
 	echo "[check_exit] FAIL old_ledger_save: see screenshots/check_exit_old_ledger.log"
 	fail=1
 fi
+if tools/check_clock_save.sh >screenshots/check_exit_clock_save.log 2>&1; then  # owner item 110: "not when i log off"
+	echo "[check_exit] PASS clock_save (a save loads as it was saved: closed 2 h / 30 days, clock set back, old save)"
+else
+	echo "[check_exit] FAIL clock_save: see screenshots/check_exit_clock_save.log"
+	grep "^\[clock\] \(DIFF\|FAIL\)" screenshots/check_exit_clock_save.log | head -20
+	fail=1
+fi
 # [v9s] Owner (Nov 13): "super annoying to hear the same bird chirp so many times over and over".
 # Two and a half minutes standing on green ground by the start (birds, frogs, the life bed), every
 # sound logged; tools/check_audio.py --repeat fails on a sound that repeats more than its category

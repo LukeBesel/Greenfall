@@ -44,7 +44,7 @@ msgstr "%s Lv %dが必要"
 msgid "Needs research: %s"
 msgstr "研究が必要：%s"
 
-#: autoload/Economy.gd:195 systems/research.gd:206
+#: autoload/Economy.gd:195 systems/research.gd:209
 msgid "Needs base level %d"
 msgstr "基地レベル %d が必要"
 
@@ -393,23 +393,23 @@ msgstr "リフトオフ"
 msgid "Space / Esc  skip"
 msgstr "Space / Esc  スキップ"
 
-#: automation/rocket_tiers.gd:56 ui/robot_card.gd:252
+#: automation/rocket_tiers.gd:57 ui/robot_card.gd:252
 msgid "Top tier"
 msgstr "最高ティア"
 
-#: automation/rocket_tiers.gd:59
+#: automation/rocket_tiers.gd:60
 msgid "Needs the Rocket Cargo research"
 msgstr "研究「ロケット貨物」が必要"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:596
+#: automation/rocket_tiers.gd:62 systems/homeward.gd:596
 msgid "Not enough cubes or parts"
 msgstr "キューブかパーツが足りない"
 
-#: automation/rocket_tiers.gd:75
+#: automation/rocket_tiers.gd:76
 msgid "Rocket upgraded: %s."
 msgstr "ロケットをアップグレード：%s。"
 
-#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
+#: automation/stations.gd:122 automation/telescope.gd:101 robots/fabricator/bot_fabricator.gd:92
 #: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "建設完了。"
@@ -455,32 +455,28 @@ msgstr "ベール3個に1個をリサイクラーへ"
 msgid "Every %dth bale to the recycler"
 msgstr "ベール%d個に1個をリサイクラーへ"
 
-#: automation/telescope.gd:102
+#: automation/telescope.gd:105
 msgid "Requires hub level %d or research: %s."
 msgstr "基地レベル %d または研究「%s」が必要。"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
+#: automation/telescope.gd:107 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
 #: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
 #: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "素材が足りません。"
 
-#: automation/telescope.gd:115
+#: automation/telescope.gd:118
 msgid "Telescope built. Walk up to it and press {interact} to look across the system."
 msgstr "望遠鏡が完成した。近づいて {interact} を押すと、星系を見渡せる。"
 
-#: automation/telescope.gd:260 ui/telescope_panel.gd:11
+#: automation/telescope.gd:263 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "天文台"
 
-#: automation/telescope.gd:312
+#: automation/telescope.gd:315
 msgid "E   Telescope: look across the system"
 msgstr "E   望遠鏡：星系を見わたす"
-
-#: core/offline.gd:146
-msgid "While you were away, your robots earned %s cubes."
-msgstr "るすの間に、ロボットがキューブを%s個かせいだ。"
 
 #: core/pace.gd:206
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
@@ -642,7 +638,7 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:243 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -650,7 +646,7 @@ msgstr "基地 %d"
 msgid "Press  {open_globe}  to see how much of the planet is clean"
 msgstr "{open_globe}  を押すと、星がどれだけきれいか見られるよ"
 
-#: planet/orbit/orbit_crews.gd:226
+#: planet/orbit/orbit_crews.gd:221
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "ロボットがヘックスを1つきれいにしたよ！これも数に入る：%d / %d"
 
@@ -799,31 +795,31 @@ msgstr "%d つの基地がそろった。ロケットでドライブを建造し
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:124
+#: planet/sites/orbit_sites.gd:126
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:146
+#: planet/sites/orbit_sites.gd:148
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:184
+#: planet/sites/orbit_sites.gd:186
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:242
+#: planet/sites/orbit_sites.gd:244
 msgid "%s site"
 msgstr "%sの地点"
 
@@ -1120,7 +1116,7 @@ msgid "Not enough parts"
 msgstr "パーツが足りません"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
-#: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: systems/research.gd:213 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 #: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr "キューブが足りない"
@@ -1186,7 +1182,7 @@ msgstr "%s で補給中（%d%%）"
 msgid "base barrel"
 msgstr "基地のたる"
 
-#: robots/robot.gd:263 systems/research.gd:416
+#: robots/robot.gd:263 systems/research.gd:419
 msgid "tank"
 msgstr "タンク"
 
@@ -1539,35 +1535,35 @@ msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけ�
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取りかかった。"
 
-#: scenes/slice.gd:129 ui/rockets_panel.gd:60
+#: scenes/slice.gd:128 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr "発射台のロケットまで歩いて、[%s]を押して行き先を選ぼう。"
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:39
+#: scenes/slice.gd:138 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice_orbit.gd:425
+#: scenes/slice_orbit.gd:423
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice_orbit.gd:441
+#: scenes/slice_orbit.gd:439
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:508 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
+#: scenes/slice_orbit.gd:508 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1047
+#: scenes/slice_orbit.gd:1045
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1147 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1145 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "作業台が直った！そばで %s を押してアップグレードを買おう。"
 
@@ -1631,8 +1627,8 @@ msgstr "プレイを続ける：最初の地区は基地レベル %d のまま�
 msgid "%dh %02dm"
 msgstr "%d時間%02d分"
 
-#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
-#: ui/globe_view.gd:709 ui/upgrade_card.gd:259
+#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:312 ui/globe_view.gd:709
+#: ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d 分"
 
@@ -2067,7 +2063,7 @@ msgstr "目標達成  ·  %s"
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "ベーラー設置！チェストを満たして [%s] でベールを作ろう。"
 
-#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:774
+#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:767
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
@@ -2411,19 +2407,19 @@ msgstr "依頼 %d 件で解放"
 msgid "Locked"
 msgstr "ロック中"
 
-#: systems/cradle_mode.gd:263
+#: systems/cradle_mode.gd:264
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
 msgstr "家宝を解放：%s、レベル %d。Lumi といっしょにどの世界へも旅をする。"
 
-#: systems/cradle_mode.gd:313 systems/cradle_mode.gd:319
+#: systems/cradle_mode.gd:314 systems/cradle_mode.gd:320
 msgid "Fully grown"
 msgstr "最大レベル"
 
-#: systems/cradle_mode.gd:320
+#: systems/cradle_mode.gd:321
 msgid "Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)"
 msgstr "惑星を再生すると選択がもらえる。またはアークの節目で解放（次：%s、再生度 %d）"
 
-#: systems/cradle_mode.gd:333
+#: systems/cradle_mode.gd:334
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "家宝：%s、レベル %d。Lumi といっしょにどの世界へも旅をする。"
 
@@ -2435,7 +2431,7 @@ msgstr "コレクションの発見が %d 必要（いまは %d）"
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr "「今週のシード」のペイントチップが %d 枚必要（いま %d 枚）"
 
-#: systems/decor.gd:124 systems/research.gd:202 systems/robot_builder.gd:348
+#: systems/decor.gd:124 systems/research.gd:205 systems/robot_builder.gd:348
 #: systems/robot_builder.gd:404 ui/stations_panel.gd:101 ui/telescope_panel.gd:44
 msgid "Needs %s"
 msgstr "%s が必要"
@@ -2855,135 +2851,131 @@ msgstr "フレームレート確認の結果、下げました"
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr "なめらかに動くようグラフィックを%sに設定しました。設定で変更できます。"
 
-#: systems/remote_progress.gd:288
-msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
-msgstr "留守のあいだ（%s）、ここのクルーは遠隔のゆっくりペースで働き続けた：%s キューブ。"
+#: systems/remote_progress.gd:313
+msgid "While you were on another planet (%s of play), your robots here earned %s cubes."
+msgstr "別の星にいるあいだ（プレイ時間 %s）、ここのロボットが %s キューブかせいだよ。"
 
-#: systems/remote_progress.gd:302
+#: systems/remote_progress.gd:325
 msgid "No world in view."
 msgstr "視界に世界がない。"
 
-#: systems/remote_progress.gd:304
+#: systems/remote_progress.gd:327
 msgid "A care package is already on its way."
 msgstr "支援物資はもう向かっている。"
 
-#: systems/remote_progress.gd:306
+#: systems/remote_progress.gd:329
 msgid "Needs %s cubes."
 msgstr "%s キューブが必要。"
 
-#: systems/research.gd:184
+#: systems/research.gd:187
 msgid "Unknown research"
 msgstr "不明な研究"
 
-#: systems/research.gd:192
+#: systems/research.gd:195
 msgid "Already researched"
 msgstr "研究済み"
 
-#: systems/research.gd:194
+#: systems/research.gd:197
 msgid "Researching now"
 msgstr "研究中"
 
-#: systems/research.gd:196
+#: systems/research.gd:199
 msgid "Already queued"
 msgstr "すでに予約済み"
 
-#: systems/research.gd:208
+#: systems/research.gd:211
 msgid "Queue is full"
 msgstr "予約がいっぱい"
 
-#: systems/research.gd:356 ui/codex_screen.gd:886
+#: systems/research.gd:359 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr "%d秒"
 
-#: systems/research.gd:403 systems/research.gd:464
+#: systems/research.gd:406 systems/research.gd:467
 msgid "Research: %s"
 msgstr "研究：%s"
 
-#: systems/research.gd:413
+#: systems/research.gd:416
 msgid "scoop reach"
 msgstr "スコップの届く距離"
 
-#: systems/research.gd:413
+#: systems/research.gd:416
 msgid "scoop width"
 msgstr "スコップの幅"
 
-#: systems/research.gd:413
+#: systems/research.gd:416
 msgid "compartment size"
 msgstr "コンテナ容量"
 
-#: systems/research.gd:414
+#: systems/research.gd:417
 msgid "bale value"
 msgstr "ベールの価値"
 
-#: systems/research.gd:414
+#: systems/research.gd:417
 msgid "magnet radius"
 msgstr "磁石の範囲"
 
-#: systems/research.gd:414
+#: systems/research.gd:417
 msgid "scoop speed"
 msgstr "スコップの速さ"
 
-#: systems/research.gd:415
+#: systems/research.gd:418
 msgid "field-note cubes"
 msgstr "フィールドノートのキューブ"
 
-#: systems/research.gd:415
+#: systems/research.gd:418
 msgid "research speed"
 msgstr "研究速度"
 
-#: systems/research.gd:415
+#: systems/research.gd:418
 msgid "lake clarity"
 msgstr "湖の透明度"
 
-#: systems/research.gd:416
+#: systems/research.gd:419
 msgid "speed"
 msgstr "速度"
 
-#: systems/research.gd:416
+#: systems/research.gd:419
 msgid "work rate"
 msgstr "作業効率"
 
-#: systems/research.gd:416
+#: systems/research.gd:419
 msgid "range"
 msgstr "範囲"
 
-#: systems/research.gd:417
+#: systems/research.gd:420
 msgid "bale quality"
 msgstr "ベールの品質"
 
-#: systems/research.gd:417
+#: systems/research.gd:420
 msgid "carry"
 msgstr "運搬量"
 
-#: systems/research.gd:418
+#: systems/research.gd:421
 msgid "plant growth"
 msgstr "植物の成長"
 
-#: systems/research.gd:418
+#: systems/research.gd:421
 msgid "seeds per bloom"
 msgstr "花1輪あたりの種"
 
-#: systems/research.gd:439
+#: systems/research.gd:442
 msgid "Unlocks the %s robot"
 msgstr "ロボット %s を解放"
 
-#: systems/research.gd:441
+#: systems/research.gd:444
 msgid "Unlocks %s seeds"
 msgstr "%sの種を解放"
 
-#: systems/research.gd:443
+#: systems/research.gd:446
 msgid "Unlocks: %s"
 msgstr "解放：%s"
 
-#: systems/research.gd:616
-msgid "While you were away, research finished: %s."
-msgstr "留守のあいだに研究が完了：%s。"
-
-#: systems/research.gd:647
+#: systems/research.gd:643
 msgid "New robot plans: %s. %s"
 msgstr "新しいロボットの設計図：%s。%s"
 
-#: systems/research.gd:652
+#: systems/research.gd:648
 msgid "Research complete: %s."
 msgstr "研究完了：%s。"
 
@@ -3301,54 +3293,6 @@ msgstr "チャレンジ達成"
 #: systems/extras/weekly_run.gd:123
 msgid "Keep exploring"
 msgstr "探索を続ける"
-
-#: systems/extras/welcome_back.gd:57
-msgid "%d h %d min"
-msgstr "%d 時間 %d 分"
-
-#: systems/extras/welcome_back.gd:69
-msgid "baled about %d bales"
-msgstr "ベールを約 %d 個プレスした"
-
-#: systems/extras/welcome_back.gd:71
-msgid "kept the base tidy"
-msgstr "基地をきれいに保った"
-
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:796
-msgid "Cubes earned"
-msgstr "稼いだキューブ"
-
-#: systems/extras/welcome_back.gd:76
-msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
-msgstr "運搬役なし：積まれたベールは Lumi が換金した。Haul Bug がいれば流れが止まらない。"
-
-#: systems/extras/welcome_back.gd:78
-msgid "Plants grew"
-msgstr "育った植物"
-
-#: systems/extras/welcome_back.gd:80
-msgid "Bloomed (seeds)"
-msgstr "開花（種）"
-
-#: systems/extras/welcome_back.gd:82
-msgid "Scrubbers cleaned the air"
-msgstr "スクラバーが空気をきれいにした"
-
-#: systems/extras/welcome_back.gd:141
-msgid "WELCOME BACK"
-msgstr "おかえり"
-
-#: systems/extras/welcome_back.gd:142
-msgid "Away %s"
-msgstr "%s 不在"
-
-#: systems/extras/welcome_back.gd:163
-msgid "Robots work up to %d h while you're away."
-msgstr "不在のあいだ、ロボットは最大 %d 時間働く。"
-
-#: systems/extras/welcome_back.gd:166
-msgid "Back to work"
-msgstr "仕事に戻る"
 
 #: systems/glim/glim.gd:14
 msgid "Find Glim first"
@@ -4028,6 +3972,10 @@ msgstr "でこぼこベール"
 #: ui/codex_screen.gd:795
 msgid "Bales cashed in"
 msgstr "換金したベール"
+
+#: ui/codex_screen.gd:796
+msgid "Cubes earned"
+msgstr "稼いだキューブ"
 
 #: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
@@ -5634,8 +5582,8 @@ msgid "CUBES"
 msgstr "キューブ"
 
 #: ui/research_panel.gd:41
-msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
-msgstr "研究はキューブと実時間がかかる。プレイ中も留守中も進む。"
+msgid "Research costs cubes and takes time. It keeps going while you play."
+msgstr "研究にはキューブと時間がかかるよ。遊んでいるあいだ進むよ。"
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -6369,11 +6317,11 @@ msgstr ""
 
 #: ui/telescope_view.gd:657
 msgid ""
-"Remote pace (%d%% of offline)\n"
+"Your robots there work while you play here.\n"
 "Waiting for you: %s cubes%s"
 msgstr ""
-"遠隔ペース（オフラインの %d%%）\n"
-"受け取り待ち：%s キューブ%s"
+"ここで遊んでいるあいだ、あっちのロボットも働くよ。\n"
+"待っているキューブ：%s%s"
 
 #: ui/telescope_view.gd:660
 msgid "Send a care package (%s cubes)"
@@ -12934,8 +12882,8 @@ msgid "Irrigation"
 msgstr "灌漑"
 
 #: data/research.json:nodes[irrigation].desc
-msgid "Buried drip lines. The meadow drinks while you sleep."
-msgstr "地中に埋めた点滴チューブ。君が眠っているあいだも草原が水を飲む。"
+msgid "Buried drip lines. The meadow drinks while you are busy."
+msgstr "土にうめた点滴ホース。きみがいそがしいあいだに、草原が水をのむ。"
 
 #: data/research.json:nodes[field_notebook].name
 msgid "Field Notebook"
@@ -16623,6 +16571,61 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "While you were away, your robots earned %s cubes."
+#~ msgstr "るすの間に、ロボットがキューブを%s個かせいだ。"
+
+#~ msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
+#~ msgstr "留守のあいだ（%s）、ここのクルーは遠隔のゆっくりペースで働き続けた：%s キューブ。"
+
+#~ msgid "While you were away, research finished: %s."
+#~ msgstr "留守のあいだに研究が完了：%s。"
+
+#~ msgid "%d h %d min"
+#~ msgstr "%d 時間 %d 分"
+
+#~ msgid "baled about %d bales"
+#~ msgstr "ベールを約 %d 個プレスした"
+
+#~ msgid "kept the base tidy"
+#~ msgstr "基地をきれいに保った"
+
+#~ msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
+#~ msgstr "運搬役なし：積まれたベールは Lumi が換金した。Haul Bug がいれば流れが止まらない。"
+
+#~ msgid "Plants grew"
+#~ msgstr "育った植物"
+
+#~ msgid "Bloomed (seeds)"
+#~ msgstr "開花（種）"
+
+#~ msgid "Scrubbers cleaned the air"
+#~ msgstr "スクラバーが空気をきれいにした"
+
+#~ msgid "WELCOME BACK"
+#~ msgstr "おかえり"
+
+#~ msgid "Away %s"
+#~ msgstr "%s 不在"
+
+#~ msgid "Robots work up to %d h while you're away."
+#~ msgstr "不在のあいだ、ロボットは最大 %d 時間働く。"
+
+#~ msgid "Back to work"
+#~ msgstr "仕事に戻る"
+
+#~ msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
+#~ msgstr "研究はキューブと実時間がかかる。プレイ中も留守中も進む。"
+
+#~ msgid ""
+#~ "Remote pace (%d%% of offline)\n"
+#~ "Waiting for you: %s cubes%s"
+#~ msgstr ""
+#~ "遠隔ペース（オフラインの %d%%）\n"
+#~ "受け取り待ち：%s キューブ%s"
+
+#~ msgid "Buried drip lines. The meadow drinks while you sleep."
+#~ msgstr "地中に埋めた点滴チューブ。君が眠っているあいだも草原が水を飲む。"
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "留守のあいだに（%s）："

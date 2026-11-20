@@ -44,7 +44,7 @@ msgstr "Benötigt %s St. %d"
 msgid "Needs research: %s"
 msgstr "Benötigt Forschung: %s"
 
-#: autoload/Economy.gd:195 systems/research.gd:206
+#: autoload/Economy.gd:195 systems/research.gd:209
 msgid "Needs base level %d"
 msgstr "Benötigt Basisstufe %d"
 
@@ -393,23 +393,23 @@ msgstr "ABHEBEN"
 msgid "Space / Esc  skip"
 msgstr "Leertaste / Esc  überspringen"
 
-#: automation/rocket_tiers.gd:56 ui/robot_card.gd:252
+#: automation/rocket_tiers.gd:57 ui/robot_card.gd:252
 msgid "Top tier"
 msgstr "Höchste Stufe"
 
-#: automation/rocket_tiers.gd:59
+#: automation/rocket_tiers.gd:60
 msgid "Needs the Rocket Cargo research"
 msgstr "Benötigt die Forschung Raketenfracht"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:596
+#: automation/rocket_tiers.gd:62 systems/homeward.gd:596
 msgid "Not enough cubes or parts"
 msgstr "Nicht genug Würfel oder Teile"
 
-#: automation/rocket_tiers.gd:75
+#: automation/rocket_tiers.gd:76
 msgid "Rocket upgraded: %s."
 msgstr "Rakete verbessert: %s."
 
-#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
+#: automation/stations.gd:122 automation/telescope.gd:101 robots/fabricator/bot_fabricator.gd:92
 #: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "Gebaut."
@@ -455,32 +455,28 @@ msgstr "Jeder 3. Ballen zum Recycler"
 msgid "Every %dth bale to the recycler"
 msgstr "Jeder %d. Ballen zum Recycler"
 
-#: automation/telescope.gd:102
+#: automation/telescope.gd:105
 msgid "Requires hub level %d or research: %s."
 msgstr "Erfordert Basisstufe %d oder Forschung: %s."
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
+#: automation/telescope.gd:107 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
 #: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
 #: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "Nicht genug Material."
 
-#: automation/telescope.gd:115
+#: automation/telescope.gd:118
 msgid "Telescope built. Walk up to it and press {interact} to look across the system."
 msgstr "Teleskop gebaut. Geh hin und drück {interact}, um über das System zu blicken."
 
-#: automation/telescope.gd:260 ui/telescope_panel.gd:11
+#: automation/telescope.gd:263 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "OBSERVATORIUM"
 
-#: automation/telescope.gd:312
+#: automation/telescope.gd:315
 msgid "E   Telescope: look across the system"
 msgstr "E   Teleskop: über das System blicken"
-
-#: core/offline.gd:146
-msgid "While you were away, your robots earned %s cubes."
-msgstr "Während du weg warst, haben deine Roboter %s Würfel verdient."
 
 #: core/pace.gd:206
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
@@ -642,7 +638,7 @@ msgstr "GEMEINSAM ERBLÜHEN"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LICHT  WASSER  LEBEN"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:243 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "Basis %d"
 
@@ -650,7 +646,7 @@ msgstr "Basis %d"
 msgid "Press  {open_globe}  to see how much of the planet is clean"
 msgstr "Drück  {open_globe}  und sieh, wie viel vom Planeten sauber ist"
 
-#: planet/orbit/orbit_crews.gd:226
+#: planet/orbit/orbit_crews.gd:221
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "Dein Roboter hat ein Hex gereinigt! Es zählt: %d / %d"
 
@@ -800,31 +796,31 @@ msgstr "Alle %d Basen stehen. Bau den Antrieb an der Rakete."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:124
+#: planet/sites/orbit_sites.gd:126
 msgid "The rocket is in flight."
 msgstr "Die Rakete ist unterwegs."
 
-#: planet/sites/orbit_sites.gd:146
+#: planet/sites/orbit_sites.gd:148
 msgid "Bases restored: %d of %d"
 msgstr "Basen wiederhergestellt: %d von %d"
 
-#: planet/sites/orbit_sites.gd:184
+#: planet/sites/orbit_sites.gd:186
 msgid "E   Rocket: choose a destination"
 msgstr "E   Rakete: Ziel wählen"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "HOME"
 msgstr "ZUHAUSE"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "NEXT STOP"
 msgstr "NÄCHSTER HALT"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "Upgrade the rocket first"
 msgstr "Erst die Rakete aufrüsten"
 
-#: planet/sites/orbit_sites.gd:242
+#: planet/sites/orbit_sites.gd:244
 msgid "%s site"
 msgstr "Ort: %s"
 
@@ -1121,7 +1117,7 @@ msgid "Not enough parts"
 msgstr "Nicht genug Teile"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
-#: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: systems/research.gd:213 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 #: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr "Nicht genug Würfel"
@@ -1188,7 +1184,7 @@ msgstr "tankt an %s (%d%%)"
 msgid "base barrel"
 msgstr "Basisfass"
 
-#: robots/robot.gd:263 systems/research.gd:416
+#: robots/robot.gd:263 systems/research.gd:419
 msgid "tank"
 msgstr "Tank"
 
@@ -1545,35 +1541,35 @@ msgstr[1] "Während du weg warst, haben deine Roboter hier %d Hexfelder geräumt
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s zusammengebaut. Er schaut sich um und legt los."
 
-#: scenes/slice.gd:129 ui/rockets_panel.gd:60
+#: scenes/slice.gd:128 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr "Geh zur Rakete auf der Startrampe und drück [%s], um dein Ziel zu wählen."
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:39
+#: scenes/slice.gd:138 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Energiezellen laden: %s. Raketen-Upgrades füllen sie schneller."
 
-#: scenes/slice_orbit.gd:425
+#: scenes/slice_orbit.gd:423
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXFELD SAUBER!  +%s"
 
-#: scenes/slice_orbit.gd:441
+#: scenes/slice_orbit.gd:439
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:508 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   Werkbank reparieren"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
+#: scenes/slice_orbit.gd:508 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   Werkbank öffnen"
 
-#: scenes/slice_orbit.gd:1047
+#: scenes/slice_orbit.gd:1045
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 
-#: scenes/slice_orbit.gd:1147 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1145 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Werkbank repariert! Drück dort %s, um Upgrades zu kaufen."
 
@@ -1637,8 +1633,8 @@ msgstr "Weiterspielen: Der erste Bezirk bleibt offen, auf Basisstufe %d."
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
-#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
-#: ui/globe_view.gd:709 ui/upgrade_card.gd:259
+#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:312 ui/globe_view.gd:709
+#: ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d Min."
 
@@ -2073,7 +2069,7 @@ msgstr "Ziel erreicht  ·  %s"
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "Ballenpresse drin! Füll deine Truhe, dann drück [%s] für einen Ballen."
 
-#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:774
+#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:767
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Dein Brustfach ist voll. Drück [%s] für einen Ballen."
 
@@ -2417,19 +2413,19 @@ msgstr "Frei nach %d Aufträgen"
 msgid "Locked"
 msgstr "Gesperrt"
 
-#: systems/cradle_mode.gd:263
+#: systems/cradle_mode.gd:264
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
 msgstr "Erbstück freigeschaltet: %s, Stufe %d. Es reist mit Lumi auf jede Welt."
 
-#: systems/cradle_mode.gd:313 systems/cradle_mode.gd:319
+#: systems/cradle_mode.gd:314 systems/cradle_mode.gd:320
 msgid "Fully grown"
 msgstr "Voll ausgebaut"
 
-#: systems/cradle_mode.gd:320
+#: systems/cradle_mode.gd:321
 msgid "Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)"
 msgstr "Stelle einen Planeten wieder her für eine Wahl, oder es wird mit Archen-Meilensteinen freigeschaltet (nächstes: %s, bei %d Wiederherstellung)"
 
-#: systems/cradle_mode.gd:333
+#: systems/cradle_mode.gd:334
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "Erbstück: %s, Stufe %d. Es reist mit Lumi auf jede Welt."
 
@@ -2441,7 +2437,7 @@ msgstr "Braucht %d Sammlungsfunde (bisher %d)"
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr "Braucht %d Farbchips aus „Saat der Woche“ (%d bisher)"
 
-#: systems/decor.gd:124 systems/research.gd:202 systems/robot_builder.gd:348
+#: systems/decor.gd:124 systems/research.gd:205 systems/robot_builder.gd:348
 #: systems/robot_builder.gd:404 ui/stations_panel.gd:101 ui/telescope_panel.gd:44
 msgid "Needs %s"
 msgstr "Benötigt %s"
@@ -2867,135 +2863,131 @@ msgstr "nach einer Bildraten-Prüfung gesenkt"
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr "Grafik auf %s gestellt, damit alles flüssig läuft. Du kannst das in den Einstellungen ändern."
 
-#: systems/remote_progress.gd:288
-msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
-msgstr "Während du weg warst (%s), hat die Crew hier in ruhigem Fernbetrieb weitergearbeitet: %s Würfel."
+#: systems/remote_progress.gd:313
+msgid "While you were on another planet (%s of play), your robots here earned %s cubes."
+msgstr "Während du auf einem anderen Planeten warst (%s Spielzeit), haben deine Roboter hier %s Würfel verdient."
 
-#: systems/remote_progress.gd:302
+#: systems/remote_progress.gd:325
 msgid "No world in view."
 msgstr "Keine Welt im Blick."
 
-#: systems/remote_progress.gd:304
+#: systems/remote_progress.gd:327
 msgid "A care package is already on its way."
 msgstr "Ein Hilfspaket ist schon unterwegs."
 
-#: systems/remote_progress.gd:306
+#: systems/remote_progress.gd:329
 msgid "Needs %s cubes."
 msgstr "Braucht %s Würfel."
 
-#: systems/research.gd:184
+#: systems/research.gd:187
 msgid "Unknown research"
 msgstr "Unbekannte Forschung"
 
-#: systems/research.gd:192
+#: systems/research.gd:195
 msgid "Already researched"
 msgstr "Bereits erforscht"
 
-#: systems/research.gd:194
+#: systems/research.gd:197
 msgid "Researching now"
 msgstr "Wird gerade erforscht"
 
-#: systems/research.gd:196
+#: systems/research.gd:199
 msgid "Already queued"
 msgstr "Schon in der Warteschlange"
 
-#: systems/research.gd:208
+#: systems/research.gd:211
 msgid "Queue is full"
 msgstr "Warteschlange voll"
 
-#: systems/research.gd:356 ui/codex_screen.gd:886
+#: systems/research.gd:359 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr "%ds"
 
-#: systems/research.gd:403 systems/research.gd:464
+#: systems/research.gd:406 systems/research.gd:467
 msgid "Research: %s"
 msgstr "Forschung: %s"
 
-#: systems/research.gd:413
+#: systems/research.gd:416
 msgid "scoop reach"
 msgstr "Schaufelreichweite"
 
-#: systems/research.gd:413
+#: systems/research.gd:416
 msgid "scoop width"
 msgstr "Schaufelbreite"
 
-#: systems/research.gd:413
+#: systems/research.gd:416
 msgid "compartment size"
 msgstr "Fachgröße"
 
-#: systems/research.gd:414
+#: systems/research.gd:417
 msgid "bale value"
 msgstr "Ballenwert"
 
-#: systems/research.gd:414
+#: systems/research.gd:417
 msgid "magnet radius"
 msgstr "Magnetradius"
 
-#: systems/research.gd:414
+#: systems/research.gd:417
 msgid "scoop speed"
 msgstr "Schaufeltempo"
 
-#: systems/research.gd:415
+#: systems/research.gd:418
 msgid "field-note cubes"
 msgstr "Würfel aus Feldnotizen"
 
-#: systems/research.gd:415
+#: systems/research.gd:418
 msgid "research speed"
 msgstr "Forschungstempo"
 
-#: systems/research.gd:415
+#: systems/research.gd:418
 msgid "lake clarity"
 msgstr "Seeklarheit"
 
-#: systems/research.gd:416
+#: systems/research.gd:419
 msgid "speed"
 msgstr "Tempo"
 
-#: systems/research.gd:416
+#: systems/research.gd:419
 msgid "work rate"
 msgstr "Arbeitsrate"
 
-#: systems/research.gd:416
+#: systems/research.gd:419
 msgid "range"
 msgstr "Reichweite"
 
-#: systems/research.gd:417
+#: systems/research.gd:420
 msgid "bale quality"
 msgstr "Ballenqualität"
 
-#: systems/research.gd:417
+#: systems/research.gd:420
 msgid "carry"
 msgstr "Tragkraft"
 
-#: systems/research.gd:418
+#: systems/research.gd:421
 msgid "plant growth"
 msgstr "Pflanzenwachstum"
 
-#: systems/research.gd:418
+#: systems/research.gd:421
 msgid "seeds per bloom"
 msgstr "Samen pro Blüte"
 
-#: systems/research.gd:439
+#: systems/research.gd:442
 msgid "Unlocks the %s robot"
 msgstr "Schaltet den Roboter %s frei"
 
-#: systems/research.gd:441
+#: systems/research.gd:444
 msgid "Unlocks %s seeds"
 msgstr "Schaltet %s-Samen frei"
 
-#: systems/research.gd:443
+#: systems/research.gd:446
 msgid "Unlocks: %s"
 msgstr "Schaltet frei: %s"
 
-#: systems/research.gd:616
-msgid "While you were away, research finished: %s."
-msgstr "Während du weg warst, wurde Forschung abgeschlossen: %s."
-
-#: systems/research.gd:647
+#: systems/research.gd:643
 msgid "New robot plans: %s. %s"
 msgstr "Neue Roboterpläne: %s. %s"
 
-#: systems/research.gd:652
+#: systems/research.gd:648
 msgid "Research complete: %s."
 msgstr "Forschung abgeschlossen: %s."
 
@@ -3313,54 +3305,6 @@ msgstr "HERAUSFORDERUNG GESCHAFFT"
 #: systems/extras/weekly_run.gd:123
 msgid "Keep exploring"
 msgstr "Weiter erkunden"
-
-#: systems/extras/welcome_back.gd:57
-msgid "%d h %d min"
-msgstr "%d Std. %d Min."
-
-#: systems/extras/welcome_back.gd:69
-msgid "baled about %d bales"
-msgstr "hat etwa %d Ballen gepresst"
-
-#: systems/extras/welcome_back.gd:71
-msgid "kept the base tidy"
-msgstr "hat die Basis aufgeräumt"
-
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:796
-msgid "Cubes earned"
-msgstr "Würfel verdient"
-
-#: systems/extras/welcome_back.gd:76
-msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
-msgstr "Kein Transporter: Lumi hat die gestapelten Ballen eingelöst. Ein Haul Bug hält sie in Bewegung."
-
-#: systems/extras/welcome_back.gd:78
-msgid "Plants grew"
-msgstr "Pflanzen gewachsen"
-
-#: systems/extras/welcome_back.gd:80
-msgid "Bloomed (seeds)"
-msgstr "Erblüht (Samen)"
-
-#: systems/extras/welcome_back.gd:82
-msgid "Scrubbers cleaned the air"
-msgstr "Die Filter haben die Luft gereinigt"
-
-#: systems/extras/welcome_back.gd:141
-msgid "WELCOME BACK"
-msgstr "WILLKOMMEN ZURÜCK"
-
-#: systems/extras/welcome_back.gd:142
-msgid "Away %s"
-msgstr "%s weg"
-
-#: systems/extras/welcome_back.gd:163
-msgid "Robots work up to %d h while you're away."
-msgstr "Roboter arbeiten bis zu %d Std., während du weg bist."
-
-#: systems/extras/welcome_back.gd:166
-msgid "Back to work"
-msgstr "Zurück an die Arbeit"
 
 #: systems/glim/glim.gd:14
 msgid "Find Glim first"
@@ -4042,6 +3986,10 @@ msgstr "Klumpige Ballen"
 #: ui/codex_screen.gd:795
 msgid "Bales cashed in"
 msgstr "Ballen eingelöst"
+
+#: ui/codex_screen.gd:796
+msgid "Cubes earned"
+msgstr "Würfel verdient"
 
 #: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
@@ -5651,8 +5599,8 @@ msgid "CUBES"
 msgstr "WÜRFEL"
 
 #: ui/research_panel.gd:41
-msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
-msgstr "Forschung kostet Würfel und dauert echte Zeit. Sie läuft weiter, während du spielst oder weg bist."
+msgid "Research costs cubes and takes time. It keeps going while you play."
+msgstr "Forschung kostet Würfel und braucht Zeit. Sie läuft weiter, während du spielst."
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -6386,10 +6334,10 @@ msgstr ""
 
 #: ui/telescope_view.gd:657
 msgid ""
-"Remote pace (%d%% of offline)\n"
+"Your robots there work while you play here.\n"
 "Waiting for you: %s cubes%s"
 msgstr ""
-"Ferntempo (%d%% von offline)\n"
+"Deine Roboter dort arbeiten, während du hier spielst.\n"
 "Wartet auf dich: %s Würfel%s"
 
 #: ui/telescope_view.gd:660
@@ -12951,8 +12899,8 @@ msgid "Irrigation"
 msgstr "Bewässerung"
 
 #: data/research.json:nodes[irrigation].desc
-msgid "Buried drip lines. The meadow drinks while you sleep."
-msgstr "Vergrabene Tropfschläuche. Die Wiese trinkt, während du schläfst."
+msgid "Buried drip lines. The meadow drinks while you are busy."
+msgstr "Vergrabene Tropfschläuche. Die Wiese trinkt, während du zu tun hast."
 
 #: data/research.json:nodes[field_notebook].name
 msgid "Field Notebook"
@@ -16640,6 +16588,61 @@ msgstr "Dieser Portalkran verschrottete die Bergbauflotte, als das Geld ausging.
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
+
+#~ msgid "While you were away, your robots earned %s cubes."
+#~ msgstr "Während du weg warst, haben deine Roboter %s Würfel verdient."
+
+#~ msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
+#~ msgstr "Während du weg warst (%s), hat die Crew hier in ruhigem Fernbetrieb weitergearbeitet: %s Würfel."
+
+#~ msgid "While you were away, research finished: %s."
+#~ msgstr "Während du weg warst, wurde Forschung abgeschlossen: %s."
+
+#~ msgid "%d h %d min"
+#~ msgstr "%d Std. %d Min."
+
+#~ msgid "baled about %d bales"
+#~ msgstr "hat etwa %d Ballen gepresst"
+
+#~ msgid "kept the base tidy"
+#~ msgstr "hat die Basis aufgeräumt"
+
+#~ msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
+#~ msgstr "Kein Transporter: Lumi hat die gestapelten Ballen eingelöst. Ein Haul Bug hält sie in Bewegung."
+
+#~ msgid "Plants grew"
+#~ msgstr "Pflanzen gewachsen"
+
+#~ msgid "Bloomed (seeds)"
+#~ msgstr "Erblüht (Samen)"
+
+#~ msgid "Scrubbers cleaned the air"
+#~ msgstr "Die Filter haben die Luft gereinigt"
+
+#~ msgid "WELCOME BACK"
+#~ msgstr "WILLKOMMEN ZURÜCK"
+
+#~ msgid "Away %s"
+#~ msgstr "%s weg"
+
+#~ msgid "Robots work up to %d h while you're away."
+#~ msgstr "Roboter arbeiten bis zu %d Std., während du weg bist."
+
+#~ msgid "Back to work"
+#~ msgstr "Zurück an die Arbeit"
+
+#~ msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
+#~ msgstr "Forschung kostet Würfel und dauert echte Zeit. Sie läuft weiter, während du spielst oder weg bist."
+
+#~ msgid ""
+#~ "Remote pace (%d%% of offline)\n"
+#~ "Waiting for you: %s cubes%s"
+#~ msgstr ""
+#~ "Ferntempo (%d%% von offline)\n"
+#~ "Wartet auf dich: %s Würfel%s"
+
+#~ msgid "Buried drip lines. The meadow drinks while you sleep."
+#~ msgstr "Vergrabene Tropfschläuche. Die Wiese trinkt, während du schläfst."
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "Während du weg warst (%s):"

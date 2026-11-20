@@ -44,7 +44,7 @@ msgstr "需要%s %d级"
 msgid "Needs research: %s"
 msgstr "需要研究：%s"
 
-#: autoload/Economy.gd:195 systems/research.gd:206
+#: autoload/Economy.gd:195 systems/research.gd:209
 msgid "Needs base level %d"
 msgstr "需要基地等级 %d"
 
@@ -393,23 +393,23 @@ msgstr "升空"
 msgid "Space / Esc  skip"
 msgstr "空格 / Esc  跳过"
 
-#: automation/rocket_tiers.gd:56 ui/robot_card.gd:252
+#: automation/rocket_tiers.gd:57 ui/robot_card.gd:252
 msgid "Top tier"
 msgstr "最高等级"
 
-#: automation/rocket_tiers.gd:59
+#: automation/rocket_tiers.gd:60
 msgid "Needs the Rocket Cargo research"
 msgstr "需要研究“火箭货运”"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:596
+#: automation/rocket_tiers.gd:62 systems/homeward.gd:596
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
-#: automation/rocket_tiers.gd:75
+#: automation/rocket_tiers.gd:76
 msgid "Rocket upgraded: %s."
 msgstr "火箭已升级：%s。"
 
-#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
+#: automation/stations.gd:122 automation/telescope.gd:101 robots/fabricator/bot_fabricator.gd:92
 #: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "已建造。"
@@ -455,32 +455,28 @@ msgstr "每 3 个捆包送 1 个去回收炉"
 msgid "Every %dth bale to the recycler"
 msgstr "每 %d 个捆包送 1 个去回收炉"
 
-#: automation/telescope.gd:102
+#: automation/telescope.gd:105
 msgid "Requires hub level %d or research: %s."
 msgstr "需要基地等级 %d 或研究：%s。"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
+#: automation/telescope.gd:107 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
 #: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
 #: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "材料不足。"
 
-#: automation/telescope.gd:115
+#: automation/telescope.gd:118
 msgid "Telescope built. Walk up to it and press {interact} to look across the system."
 msgstr "望远镜已建成。走过去按 {interact}，眺望整个星系。"
 
-#: automation/telescope.gd:260 ui/telescope_panel.gd:11
+#: automation/telescope.gd:263 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "天文台"
 
-#: automation/telescope.gd:312
+#: automation/telescope.gd:315
 msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
-
-#: core/offline.gd:146
-msgid "While you were away, your robots earned %s cubes."
-msgstr "你不在的时候，机器人赚了 %s 个方块。"
 
 #: core/pace.gd:206
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
@@ -642,7 +638,7 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:243 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -650,7 +646,7 @@ msgstr "基地 %d"
 msgid "Press  {open_globe}  to see how much of the planet is clean"
 msgstr "按  {open_globe}  看看星球有多少已经干净"
 
-#: planet/orbit/orbit_crews.gd:226
+#: planet/orbit/orbit_crews.gd:221
 msgid "Your robot cleaned a hex! It counts: %d / %d"
 msgstr "你的机器人清理了一个六边形！也算数：%d / %d"
 
@@ -799,31 +795,31 @@ msgstr "%d 个基地都立起来了。到火箭那里造推进器吧。"
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:124
+#: planet/sites/orbit_sites.gd:126
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:146
+#: planet/sites/orbit_sites.gd:148
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:184
+#: planet/sites/orbit_sites.gd:186
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:242
+#: planet/sites/orbit_sites.gd:244
 msgid "%s site"
 msgstr "%s地点"
 
@@ -1120,7 +1116,7 @@ msgid "Not enough parts"
 msgstr "零件不足"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
-#: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: systems/research.gd:213 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 #: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr "方块不足"
@@ -1186,7 +1182,7 @@ msgstr "正在补水：%s（%d%%）"
 msgid "base barrel"
 msgstr "基地水桶"
 
-#: robots/robot.gd:263 systems/research.gd:416
+#: robots/robot.gd:263 systems/research.gd:419
 msgid "tank"
 msgstr "水箱"
 
@@ -1539,35 +1535,35 @@ msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格，�
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
-#: scenes/slice.gd:129 ui/rockets_panel.gd:60
+#: scenes/slice.gd:128 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr "走到发射台上的火箭旁，按 [%s] 选择要飞去的地方。"
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:39
+#: scenes/slice.gd:138 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice_orbit.gd:425
+#: scenes/slice_orbit.gd:423
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: scenes/slice_orbit.gd:441
+#: scenes/slice_orbit.gd:439
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:508 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
+#: scenes/slice_orbit.gd:508 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1047
+#: scenes/slice_orbit.gd:1045
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1147 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1145 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
@@ -1631,8 +1627,8 @@ msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
-#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
-#: ui/globe_view.gd:709 ui/upgrade_card.gd:259
+#: steam/demo_end_screen.gd:124 systems/remote_progress.gd:312 ui/globe_view.gd:709
+#: ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d 分钟"
 
@@ -2067,7 +2063,7 @@ msgstr "目标完成  ·  %s"
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "打包机装好了！装满箱子，然后按 [%s] 打包。"
 
-#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:774
+#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:767
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
@@ -2411,19 +2407,19 @@ msgstr "完成 %d 个委托后解锁"
 msgid "Locked"
 msgstr "未解锁"
 
-#: systems/cradle_mode.gd:263
+#: systems/cradle_mode.gd:264
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
 msgstr "传家宝已解锁：%s，等级 %d。它会随 Lumi 去往每个世界。"
 
-#: systems/cradle_mode.gd:313 systems/cradle_mode.gd:319
+#: systems/cradle_mode.gd:314 systems/cradle_mode.gd:320
 msgid "Fully grown"
 msgstr "已满级"
 
-#: systems/cradle_mode.gd:320
+#: systems/cradle_mode.gd:321
 msgid "Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)"
 msgstr "恢复一个星球可获得一次选择，或随方舟里程碑解锁（下一个：%s，恢复度 %d）"
 
-#: systems/cradle_mode.gd:333
+#: systems/cradle_mode.gd:334
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "传家宝：%s，等级 %d。它会随 Lumi 前往每一个世界。"
 
@@ -2435,7 +2431,7 @@ msgstr "需要 %d 件收藏品（目前 %d 件）"
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr "需要 %d 枚“每周种子”色片（目前 %d 枚）"
 
-#: systems/decor.gd:124 systems/research.gd:202 systems/robot_builder.gd:348
+#: systems/decor.gd:124 systems/research.gd:205 systems/robot_builder.gd:348
 #: systems/robot_builder.gd:404 ui/stations_panel.gd:101 ui/telescope_panel.gd:44
 msgid "Needs %s"
 msgstr "需要 %s"
@@ -2855,135 +2851,131 @@ msgstr "经帧率检测后降低"
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr "画质已设为%s，以保持流畅。你可以在设置中更改。"
 
-#: systems/remote_progress.gd:288
-msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
-msgstr "你离开的这段时间（%s），这里的机器人队伍以远程节奏稳稳地干着活：%s 方块。"
+#: systems/remote_progress.gd:313
+msgid "While you were on another planet (%s of play), your robots here earned %s cubes."
+msgstr "你在别的星球时（游戏时间 %s），这里的机器人赚了 %s 个方块。"
 
-#: systems/remote_progress.gd:302
+#: systems/remote_progress.gd:325
 msgid "No world in view."
 msgstr "视野中没有世界。"
 
-#: systems/remote_progress.gd:304
+#: systems/remote_progress.gd:327
 msgid "A care package is already on its way."
 msgstr "补给包已经在路上了。"
 
-#: systems/remote_progress.gd:306
+#: systems/remote_progress.gd:329
 msgid "Needs %s cubes."
 msgstr "需要 %s 方块。"
 
-#: systems/research.gd:184
+#: systems/research.gd:187
 msgid "Unknown research"
 msgstr "未知研究"
 
-#: systems/research.gd:192
+#: systems/research.gd:195
 msgid "Already researched"
 msgstr "已研究"
 
-#: systems/research.gd:194
+#: systems/research.gd:197
 msgid "Researching now"
 msgstr "正在研究"
 
-#: systems/research.gd:196
+#: systems/research.gd:199
 msgid "Already queued"
 msgstr "已在队列中"
 
-#: systems/research.gd:208
+#: systems/research.gd:211
 msgid "Queue is full"
 msgstr "队列已满"
 
-#: systems/research.gd:356 ui/codex_screen.gd:886
+#: systems/research.gd:359 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr "%d秒"
 
-#: systems/research.gd:403 systems/research.gd:464
+#: systems/research.gd:406 systems/research.gd:467
 msgid "Research: %s"
 msgstr "研究：%s"
 
-#: systems/research.gd:413
+#: systems/research.gd:416
 msgid "scoop reach"
 msgstr "铲子范围"
 
-#: systems/research.gd:413
+#: systems/research.gd:416
 msgid "scoop width"
 msgstr "铲子宽度"
 
-#: systems/research.gd:413
+#: systems/research.gd:416
 msgid "compartment size"
 msgstr "储物舱容量"
 
-#: systems/research.gd:414
+#: systems/research.gd:417
 msgid "bale value"
 msgstr "捆包价值"
 
-#: systems/research.gd:414
+#: systems/research.gd:417
 msgid "magnet radius"
 msgstr "磁铁半径"
 
-#: systems/research.gd:414
+#: systems/research.gd:417
 msgid "scoop speed"
 msgstr "铲子速度"
 
-#: systems/research.gd:415
+#: systems/research.gd:418
 msgid "field-note cubes"
 msgstr "野外笔记方块"
 
-#: systems/research.gd:415
+#: systems/research.gd:418
 msgid "research speed"
 msgstr "研究速度"
 
-#: systems/research.gd:415
+#: systems/research.gd:418
 msgid "lake clarity"
 msgstr "湖水清澈度"
 
-#: systems/research.gd:416
+#: systems/research.gd:419
 msgid "speed"
 msgstr "速度"
 
-#: systems/research.gd:416
+#: systems/research.gd:419
 msgid "work rate"
 msgstr "工作效率"
 
-#: systems/research.gd:416
+#: systems/research.gd:419
 msgid "range"
 msgstr "范围"
 
-#: systems/research.gd:417
+#: systems/research.gd:420
 msgid "bale quality"
 msgstr "捆包品质"
 
-#: systems/research.gd:417
+#: systems/research.gd:420
 msgid "carry"
 msgstr "载重"
 
-#: systems/research.gd:418
+#: systems/research.gd:421
 msgid "plant growth"
 msgstr "植物生长"
 
-#: systems/research.gd:418
+#: systems/research.gd:421
 msgid "seeds per bloom"
 msgstr "每朵花的种子"
 
-#: systems/research.gd:439
+#: systems/research.gd:442
 msgid "Unlocks the %s robot"
 msgstr "解锁 %s 机器人"
 
-#: systems/research.gd:441
+#: systems/research.gd:444
 msgid "Unlocks %s seeds"
 msgstr "解锁%s种子"
 
-#: systems/research.gd:443
+#: systems/research.gd:446
 msgid "Unlocks: %s"
 msgstr "解锁：%s"
 
-#: systems/research.gd:616
-msgid "While you were away, research finished: %s."
-msgstr "你离开期间，研究完成了：%s。"
-
-#: systems/research.gd:647
+#: systems/research.gd:643
 msgid "New robot plans: %s. %s"
 msgstr "新的机器人图纸：%s。%s"
 
-#: systems/research.gd:652
+#: systems/research.gd:648
 msgid "Research complete: %s."
 msgstr "研究完成：%s。"
 
@@ -3301,54 +3293,6 @@ msgstr "挑战完成"
 #: systems/extras/weekly_run.gd:123
 msgid "Keep exploring"
 msgstr "继续探索"
-
-#: systems/extras/welcome_back.gd:57
-msgid "%d h %d min"
-msgstr "%d 小时 %d 分钟"
-
-#: systems/extras/welcome_back.gd:69
-msgid "baled about %d bales"
-msgstr "压了大约 %d 个捆包"
-
-#: systems/extras/welcome_back.gd:71
-msgid "kept the base tidy"
-msgstr "把基地收拾得整整齐齐"
-
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:796
-msgid "Cubes earned"
-msgstr "赚到的方块"
-
-#: systems/extras/welcome_back.gd:76
-msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
-msgstr "没有搬运机器人：Lumi 兑现了堆着的捆包。有 Haul Bug 才能让它们流转起来。"
-
-#: systems/extras/welcome_back.gd:78
-msgid "Plants grew"
-msgstr "植物生长"
-
-#: systems/extras/welcome_back.gd:80
-msgid "Bloomed (seeds)"
-msgstr "开花（种子）"
-
-#: systems/extras/welcome_back.gd:82
-msgid "Scrubbers cleaned the air"
-msgstr "净化器清洁了空气"
-
-#: systems/extras/welcome_back.gd:141
-msgid "WELCOME BACK"
-msgstr "欢迎回来"
-
-#: systems/extras/welcome_back.gd:142
-msgid "Away %s"
-msgstr "离开了 %s"
-
-#: systems/extras/welcome_back.gd:163
-msgid "Robots work up to %d h while you're away."
-msgstr "你不在时，机器人最多工作 %d 小时。"
-
-#: systems/extras/welcome_back.gd:166
-msgid "Back to work"
-msgstr "回去干活"
 
 #: systems/glim/glim.gd:14
 msgid "Find Glim first"
@@ -4028,6 +3972,10 @@ msgstr "不平整捆包"
 #: ui/codex_screen.gd:795
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
+
+#: ui/codex_screen.gd:796
+msgid "Cubes earned"
+msgstr "赚到的方块"
 
 #: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
@@ -5634,8 +5582,8 @@ msgid "CUBES"
 msgstr "方块"
 
 #: ui/research_panel.gd:41
-msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
-msgstr "研究需要方块和真实时间。无论你在玩还是离开，它都会继续。"
+msgid "Research costs cubes and takes time. It keeps going while you play."
+msgstr "研究要花方块，也要花时间。你玩的时候它会继续。"
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -6369,11 +6317,11 @@ msgstr ""
 
 #: ui/telescope_view.gd:657
 msgid ""
-"Remote pace (%d%% of offline)\n"
+"Your robots there work while you play here.\n"
 "Waiting for you: %s cubes%s"
 msgstr ""
-"远程节奏（离线的 %d%%）\n"
-"等你来取：%s 方块%s"
+"你在这里玩的时候，那边的机器人也在干活。\n"
+"等你来拿：%s 个方块%s"
 
 #: ui/telescope_view.gd:660
 msgid "Send a care package (%s cubes)"
@@ -12934,8 +12882,8 @@ msgid "Irrigation"
 msgstr "灌溉"
 
 #: data/research.json:nodes[irrigation].desc
-msgid "Buried drip lines. The meadow drinks while you sleep."
-msgstr "埋在地下的滴灌管。你睡觉时草地也在喝水。"
+msgid "Buried drip lines. The meadow drinks while you are busy."
+msgstr "埋在地下的滴灌管。你忙别的时候，草地自己喝水。"
 
 #: data/research.json:nodes[field_notebook].name
 msgid "Field Notebook"
@@ -16623,6 +16571,61 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "While you were away, your robots earned %s cubes."
+#~ msgstr "你不在的时候，机器人赚了 %s 个方块。"
+
+#~ msgid "While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes."
+#~ msgstr "你离开的这段时间（%s），这里的机器人队伍以远程节奏稳稳地干着活：%s 方块。"
+
+#~ msgid "While you were away, research finished: %s."
+#~ msgstr "你离开期间，研究完成了：%s。"
+
+#~ msgid "%d h %d min"
+#~ msgstr "%d 小时 %d 分钟"
+
+#~ msgid "baled about %d bales"
+#~ msgstr "压了大约 %d 个捆包"
+
+#~ msgid "kept the base tidy"
+#~ msgstr "把基地收拾得整整齐齐"
+
+#~ msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
+#~ msgstr "没有搬运机器人：Lumi 兑现了堆着的捆包。有 Haul Bug 才能让它们流转起来。"
+
+#~ msgid "Plants grew"
+#~ msgstr "植物生长"
+
+#~ msgid "Bloomed (seeds)"
+#~ msgstr "开花（种子）"
+
+#~ msgid "Scrubbers cleaned the air"
+#~ msgstr "净化器清洁了空气"
+
+#~ msgid "WELCOME BACK"
+#~ msgstr "欢迎回来"
+
+#~ msgid "Away %s"
+#~ msgstr "离开了 %s"
+
+#~ msgid "Robots work up to %d h while you're away."
+#~ msgstr "你不在时，机器人最多工作 %d 小时。"
+
+#~ msgid "Back to work"
+#~ msgstr "回去干活"
+
+#~ msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
+#~ msgstr "研究需要方块和真实时间。无论你在玩还是离开，它都会继续。"
+
+#~ msgid ""
+#~ "Remote pace (%d%% of offline)\n"
+#~ "Waiting for you: %s cubes%s"
+#~ msgstr ""
+#~ "远程节奏（离线的 %d%%）\n"
+#~ "等你来取：%s 方块%s"
+
+#~ msgid "Buried drip lines. The meadow drinks while you sleep."
+#~ msgstr "埋在地下的滴灌管。你睡觉时草地也在喝水。"
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "你离开期间（%s）："
