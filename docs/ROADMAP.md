@@ -2,6 +2,57 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## Walks reliable, 20-24 Nov (v9a, task 195)
+
+What the failing walks were, by evidence (logs under screenshots/, spot tests in tools/walk_opening.gd):
+
+- **Game fault, fixed (719cef2): Lumi froze on the lake's edge by the bin.** The hex under a point was
+  decided with 32-bit dot products, so within a few centimetres of a hex edge land and water speckled from one
+  5 mm step to the next. The shore rule slid Lumi into that band and its "ended in water: put back, no speed"
+  rule then held him still whatever key was held. Lumi's water tests now use `hex_at_exact` (64-bit, one sharp
+  edge) and the shore clamp wants land all the way to its probe, so a corner of the lake nearer than 1.2 m
+  turns him too. Check: `--walk-opening-spot=x,z --walk-opening-spot-goals=shore` (64 key pairs against the
+  shore; 3 dead spots before, 0 after), in tools/check_exit.sh as walk_opening_spots.
+- **Game fault, fixed (719cef2): E dug a buried part while the prompt said "pick up"** (a bale pressed over a
+  part: the opening walk's "bale: E picks it up", then "carrying it, the beam goes to the scale" and
+  "stepping on the scale sells it" fail after it). E now follows the prompt's order (player/patch.gd
+  `_handle_interact`). Check: spot goal `digbale` (failed at yard (-7.0, -3.0) and (-14.7, 5.1) before: E dug,
+  +5 parts; passes after), in walk_opening_spots.
+- **Walker faults, fixed:** the opening walk pacing by the Shack's back wall on the way to the Bot Bay (main
+  ded0ea2's CI run) and by the workbench came from the walker before it planned a way round (1393892): the
+  wall is visible and its collider matches it, Lumi moved at 3.85 m/s along it. walk_opening_spots now also
+  walks from that spot (yard -10.5, 7.7) to the Bot Bay (`x,z@goal+goal` gives a spot its own goals).
+  walk_travel "no Parts" read the sentence behind the card instead of the card (the chest line wins the hint
+  when the chest is full; the price stays in the chips), and the travel walk skipped the restart checklist
+  without telling the card, so at station 2 the card still read "Fix the Settlers' old bench".
+- **Walker faults, fixed (walk_home, main's runs on 5807cd9 and v10snd):** the game pays while the walk reads
+  the card. Measured: a start-area hex a robot finishes pays 221.75 cubes at once (bonus 122 + field notes),
+  25 more for its first level, and a Lumi level pays 30 s of income up to 0.4% of all cubes earned (400 at
+  300K earned). "shuttle: the card counts the cubes saved toward it" wanted 200-400 two seconds after the walk
+  set 200 (and read "1.42K" as 1.42): it now wants exactly the 200 plus the game's payments since. "shuttle
+  just built: saved and loaded (kill)" saw "0 / 600" become a full bar: a robot finished the outlined hex
+  while the walk quit and came back (cubes 0 -> 1466.8), the price was covered, so the card shows the step's
+  own count, as in play. That is af48bf9's case (money earned in play while the walk reloads; money that
+  appears in the load itself still fails), which main did not have yet. "shuttle: the price is paid" (1322
+  left right after the click) now checks the change log: the price taken, and what is left equals what the
+  game paid since. Every payment of 300+ and every Lumi level is printed as a `[walk-home] note`, and the
+  change log after the shuttle is built; `--walk-home-paylog` prints every payment with its payer. Also
+  measured: base level 2 and the shuttle stand on no start-area junk, so a load has nothing new to tidy.
+- **OPEN: 1.2K-1.5K cubes in the seconds after the shuttle is built** (2 of 10 home walks here, main's run,
+  v10snd's): 1,346.75 per robot hex that finished next to the yard then (one run 1, one run 2: the toasts
+  say so), of which bonus + notes + level are 246.75; none of it one payment of 300 or more. Not reproduced
+  since the change log went in (0 of 6). If a
+  player sees it, it is in play (no reload needed), so the walks no longer count it as a save fault; what
+  pays it is not known.
+- **Game fault, fixed (0188201): the fauna perch scan raised a SCRIPT ERROR** on a mesh the headless
+  renderer held no arrays for (FaunaSpace.top_point; 7 times in one home walk). Skipped, named once.
+- walk_travel "E by the cleared outpost ... repairs it" failed once in 6 (prompt named the repair, the
+  outpost stayed at level 0): the check now says what E met (block, Lumi's own prompt, input hold, toasts).
+- From the code, not played: the Shack's side panel (planet/sites/yard_site.gd "side") has no collider (the
+  StaticBody holds the back wall and the two front posts), so Lumi could walk through it. Not a stuck.
+- Other code still uses the 32-bit `hex_at` (robots, junk, the card's hex): the speckle at edges is still
+  there for them. Not known to break anything; worth a look if a robot dithers on a shoreline.
+
 ## 20 Nov: the opening film rewritten and re-shot (v11film, owner items 110-113)
 
 - The film is new end to end: 21 shots, one voice (WREN, ten lines), about 117 s
@@ -44,8 +95,8 @@ The owner asked to end all work at a good stopping point.
     station 3 5.6 (was 9.4) once the bot stopped walking across the town to the far Workbench. Still open:
     the main card says only "Wake base N of 6" through the cleaning (the step and its count are on the far
     base's own card, HubPurpose), and the wake's
-    6 toasts and 2 WREN lines come together (critic 15). walk_opening fails now and then on the walker's way
-    round the Shack (main too); v9a's way-round planner (1393892, not merged yet) is the fix.
+    6 toasts and 2 WREN lines come together (critic 15). The opening walk's stuck spots by the Shack were the
+    walker's (v9a's way-round planner, merged).
   - v10snd (90, 91, 92, 108: sliders, quieter stingers and ambience, radio and first CD).
   - v10ui follow-up renders.
   - v9a walk fixes and Pace.heavy_hint.

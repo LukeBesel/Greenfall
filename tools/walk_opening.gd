@@ -472,6 +472,35 @@ static func _robot() -> void:
 static var _trail: Array[String] = []
 
 
+## [v9a] He never left the spot with the keys held: what the game was given and what it did with it.
+static func _freeze_report(what: String, target: Vector3) -> void:
+	var u: Vector3 = _p.global_position.normalized()
+	var cam: Node = _p.get("sphere_cam")
+	var fr: Basis = cam.get("frame") if cam and "frame" in cam else _p.global_basis
+	var mv: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	var wish: Vector3 = fr.x * mv.x + fr.z * mv.y
+	var wdir: Vector3 = _flat(target - _p.global_position).normalized()
+	var pm: Node = _w.get("pause_menu")
+	var scr: Node = _w.get("upgrades")
+	print("%s frozen %s at %s: walker keys %s, Input vector %s, cam view %s frame det %.2f, wish %.2f m toward the target %.2f, shore clamp of the wish %.2f (of the straight way %.2f), input on %s, tree paused %s, time scale %.2f, pause menu %s, bench open %s, cubing %.2f, speed stat %.2f, motor speed %.2f hv %.2f, velocity %.2f, carried %d, chest %.1f pending %.1f" % [TAG, what, _yard(_p.global_position).split(" =")[0], str(_keys), str(mv),
+		str(cam.get("view")) if cam else "-", fr.determinant(), wish.length(), wish.normalized().dot(wdir),
+		Patch.shore_clamp_at(_p.global_position, u, wish, 1.2, Callable(_p, "_water_at")).length() if wish.length() > 0.01 else -1.0,
+		Patch.shore_clamp_at(_p.global_position, u, wdir, 1.2, Callable(_p, "_water_at")).length(),
+		str(_input_on()), str(_tree.paused), Engine.time_scale, str(pm != null and bool(pm.get("is_open"))), str(scr != null and bool(scr.get("is_open"))),
+		float(_p.get("_cubing")), _p.stat("move_speed"), (_p.get("sphere_motor") as SphereMotor).speed, (_p.get("sphere_motor") as SphereMotor).hv.length(), _p.velocity.length(), _p.carried.size(), _p.compartment.fill, _p.compartment.pending])
+
+
+	# Round him, every 22.5 degrees from the straight way: land (.) or water (~) one tick's first
+	# step ahead (5 mm), at 0.15 m, 0.6 m and at the shore rule's probe (1.2 m).
+	var rows: Array[String] = []
+	for dist: float in [0.005, 0.15, 0.6, 1.2]:
+		var row: String = ""
+		for k: int in 16:
+			row += "~" if bool(_p.call("_water_at", _p.global_position + wdir.rotated(u, TAU * k / 16.0) * dist)) else "."
+		rows.append("%s m %s" % [str(dist), row])
+	print("%s frozen ring (from the straight way, turning): %s; hex here %d water %s" % [TAG, " | ".join(rows), (_w.get("field") as HexField).hex_at(_p.global_position), str(_p.call("_water_at", _p.global_position))])
+
+
 static func _stuck_report(what: String, target: Vector3) -> void:
 	print("%s stuck trail (each game s): %s" % [TAG, " ".join(_trail)])
 	var m: SphereMotor = _p.get("sphere_motor") as SphereMotor
@@ -479,6 +508,13 @@ static func _stuck_report(what: String, target: Vector3) -> void:
 	print("%s stuck %s: at %s, velocity %.2f m/s (tangent %.2f), motor hv %.2f grounded %s ground normal tilt %.0f deg, on floor %s, in water %s (reach: %s), cubing %.1f, carried %d, input %s" % [TAG, what, _yard(_p.global_position),
 		_p.velocity.length(), _flat(_p.velocity).length(), m.hv.length() if m else -1.0, str(m.grounded) if m else "-", rad_to_deg(acos(clampf(m.ground_normal.dot(u), -1.0, 1.0))) if m else -1.0,
 		str(_p.is_on_floor()), str(_p.call("_water_at", _p.global_position)), _reach.why_ground(u) if _reach else "-", float(_p.get("_cubing")), _p.carried.size(), str(_keys)])
+	# [v9a] Why keys may not move him: input off (a scene took it), the shore rule (every way ahead
+	# is lake for the motor's hex test), a modal open.
+	var wdir: Vector3 = _flat(target - _p.global_position).normalized()
+	var clamp_out: Vector3 = Patch.shore_clamp_at(_p.global_position, u, wdir, 1.0, Callable(_p, "_water_at"))
+	var pm: Node = _w.get("pause_menu")
+	print("%s stuck why: input on %s, shore clamp toward the target %.2f (1 = free, 0 = all lake), hex here %d water %s, pause %s, ui modal %s, mouse %s" % [TAG, str(_input_on()), clamp_out.length(),
+		(_w.get("field") as HexField).hex_at(_p.global_position), str(_p.call("_water_at", _p.global_position)), str(pm != null and bool(pm.get("is_open"))), str(_tree.root.gui_get_focus_owner()), str(Input.mouse_mode)])
 	if m:
 		for h: KinematicCollision3D in m.hits:
 			var co: Object = h.get_collider()
@@ -528,16 +564,143 @@ static func _stuck_report(what: String, target: Vector3) -> void:
 ## Dev: --walk-opening-spot=x,z[;x,z...] (yard metres): after the card is up, Lumi is put at each
 ## spot and walks (keys) to the bench and to the bin; a stuck prints the report above.
 static func _spot_test() -> void:
+	_steer_log = DevHooks.has("walk-opening-steer-log")
 	await _wait(func() -> bool: return _ob.revealed and _input_on(), 300.0)
 	_p.compartment.fill = _p.capacity()  # a full chest, as when he heads for the bin
 	var xf: Transform3D = _so.globe.sites[0]["transform"] as Transform3D
+	if DevHooks.has("walk-opening-yard-dump"):  # [v9a] dev: the yard's salvage colliders against the ways to the scale
+		var spots: Dictionary = {"start": _p.global_position, "bench": _w.call("bench_pos"), "bin": Objectives.bin_point(_w), "scale": (_w.get("depot") as Node3D).global_position}
+		for k: String in spots:
+			print("%s yard %s at %s" % [TAG, k, _yard(spots[k]).split(" =")[0]])
+		var inv: Transform3D = xf.affine_inverse()
+		for n: Node in _w.find_children("*", "CollisionShape3D", true, false):
+			if not str(n.get_path()).contains("Salvage"):
+				continue
+			var c: Vector3 = (n as Node3D).global_position
+			var l: Vector3 = inv * c
+			var line: Array[String] = []
+			for k: String in ["start", "bench", "bin"]:
+				var a: Vector3 = inv * (spots[k] as Vector3)
+				var b: Vector3 = inv * (spots["scale"] as Vector3)
+				var ab := Vector2(b.x - a.x, b.z - a.z)
+				var t: float = clampf(Vector2(l.x - a.x, l.z - a.z).dot(ab) / maxf(ab.length_squared(), 0.001), 0.0, 1.0)
+				line.append("%s-scale %.1f m" % [k, Vector2(l.x - a.x, l.z - a.z).distance_to(ab * t)])
+			print("%s yard salvage %s at (%.1f, %.1f) h %.1f: %s" % [TAG, str(n.get_path()).get_slice("Dressing/", 1), l.x, l.z, l.y, ", ".join(line)])
 	var spots: String = DevHooks.get_s("walk-opening-spot", "")
 	if not spots.contains(","):
 		spots = "-20.1,5.4;-21.3,5.6"  # the two CI wedges
-	for sp: String in spots.split(";"):
+	for sp_goals: String in spots.split(";"):
+		# [v9a] "x,z" plays every --walk-opening-spot-goals goal there; "x,z@g1+g2" only its own goals
+		var sp: String = sp_goals.get_slice("@", 0)
+		var goals: PackedStringArray = sp_goals.get_slice("@", 1).split("+") if "@" in sp_goals else DevHooks.get_s("walk-opening-spot-goals", "bench,bin").split(",")
 		var xz: PackedStringArray = sp.split(",")
 		var at: Vector3 = _so.globe.terrain.ground((xf * Vector3(float(xz[0]), 0.0, float(xz[1]))).normalized())
-		for goal: String in ["bench", "bin"]:
+		for goal: String in goals:  # [v9a] also "scale"
+			if goal == "shore":  # [v9a] pressed against the lake's edge, every key direction either moves him or is all lake
+				_stand(at, _w.call("bench_pos"))
+				await _secs(0.5)
+				var combos: Array = [["move_forward"], ["move_forward", "move_right"], ["move_right"], ["move_right", "move_back"], ["move_back"], ["move_back", "move_left"], ["move_left"], ["move_left", "move_forward"]]
+				var cam2: Node = _p.get("sphere_cam")
+				var dead: int = 0
+				var wet: int = 0
+				for into: Array in combos:
+					for along: Array in combos:
+						for a: String in into:  # into the shore first (as far as the lake lets him)
+							_hold_action(a, true)
+						await _secs(1.2)
+						_release_all()
+						await _frames(2)
+						var p0: Vector3 = _p.global_position
+						for a: String in along:
+							_hold_action(a, true)
+						await _secs(0.8)
+						var mv: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+						var fr2: Basis = cam2.get("frame")
+						var wish: Vector3 = fr2.x * mv.x + fr2.z * mv.y
+						var uu: Vector3 = _p.global_position.normalized()
+						var cl: float = Patch.shore_clamp_at(_p.global_position, uu, wish, 1.2, Callable(_p, "_water_at")).length()
+						var went: float = _flat(_p.global_position - p0).length()
+						var bumped: bool = not (_p.get("sphere_motor") as SphereMotor).hits.is_empty()  # against the bin or a prop: not the lake's doing
+						if bool(_p.call("_water_at", _p.global_position)):
+							wet += 1
+							print("%s spot %s shore: IN THE LAKE at %s after %s then %s" % [TAG, sp, _yard(_p.global_position).split(" =")[0], str(into), str(along)])
+						if went < minf(0.15, 0.3 * _p.stat("move_speed") * cl * 0.8) and cl > 0.05 and not bumped:  # (a slide at 85 degrees is slow, not dead)
+							dead += 1
+							print("%s spot %s shore: DEAD after pressing %s into the shore, %s held 0.8 s moved %.3f m though the shore rule lets him go (clamp %.2f) at %s" % [TAG, sp, str(into), str(along), went, cl, _yard(_p.global_position).split(" =")[0]])
+							_freeze_report("the shore", _p.global_position + wish * 3.0)
+						_release_all()
+						await _frames(2)
+					_stand(at, _w.call("bench_pos"))
+					await _secs(0.3)
+				_check(dead == 0, "shore %s: on the lake's edge every key direction moves Lumi or is all lake (%d dead of 64)" % [sp, dead])
+				_check(wet == 0, "shore %s: the keys never took him into the lake (%d of 64)" % [sp, wet])
+				continue
+			if goal.begins_with("pt:"):  # [v9a] to a yard point, "pt:x:z" (the Bot Bay's stand point is 6.0:7.6)
+				var gx: PackedStringArray = goal.split(":")
+				var gp: Vector3 = _so.globe.terrain.ground((xf * Vector3(float(gx[1]), 0.0, float(gx[2]))).normalized())
+				_stand(at, gp)
+				await _secs(1.0)
+				var tp: float = _gt()
+				await _walk_to(func() -> Vector3: return gp, func() -> bool: return _flat(_p.global_position - gp).length() < 1.6, "the point %s" % goal, 1.2)
+				print("%s spot %s -> %s: %.1f game s, ends %.1f m from it" % [TAG, sp, goal, _gt() - tp, _flat(gp - _p.global_position).length()])
+				continue
+			if goal == "digbale":  # [v9a] a bale pressed on a buried part: E does what the prompt says (pick it up)
+				var f2: HexField = _w.get("field") as HexField
+				var det2: PartDetector = _p.get("detector") as PartDetector
+				var pi: int = f2.nearest_part(at, 80.0)
+				if pi < 0:
+					_check(false, "digbale %s: a buried part within 80 m" % sp)
+					continue
+				_stand(f2.part_pos[pi] + _flat(at - f2.part_pos[pi]).normalized() * 0.5, f2.part_pos[pi])
+				await _wait(func() -> bool: return det2.can_dig(), 6.0)
+				GameState.upgrades["baler"] = maxi(1, GameState.level_of("baler"))
+				_p.compartment.fill = 0.0
+				_p.compartment.contents.clear()
+				_p.compartment.add("metal", _p.capacity())
+				await _tap("cube")
+				await _wait(func() -> bool: return _p.nearest_loose_cube() != null and float(_p.get("_cubing")) <= 0.0, 8.0)
+				await _secs(0.6)
+				var parts1: float = GameState.get_currency("parts").to_float()
+				var pr: String = str(_p.prompt)
+				print("%s spot %s digbale: on a buried part (can dig %s) with a bale %s: the prompt says '%s'" % [TAG, sp, str(det2.can_dig()), "in reach" if _p.nearest_loose_cube() != null else "out of reach", pr])
+				await _tap("interact")
+				await _secs(2.0)
+				_check(det2.can_dig() or GameState.get_currency("parts").to_float() > parts1 or pr != "pick_up" or not _p.carried.is_empty(), "digbale %s: (set-up) there was a part to dig and a bale to pick up" % sp)
+				_check(pr == "pick_up" and not _p.carried.is_empty() and GameState.get_currency("parts").to_float() == parts1,
+					"digbale %s: the prompt said '%s' and E did that (carrying %d, parts %+.0f)" % [sp, pr, _p.carried.size(), GameState.get_currency("parts").to_float() - parts1])
+				continue
+			if goal == "refuse":  # [v9a] the walk's freeze: loose junk refused at the bin after the Baler, then off to more junk
+				GameState.upgrades["baler"] = maxi(1, GameState.level_of("baler"))
+				_stand(at, Objectives.bin_point(_w))
+				_p.compartment.fill = 0.0
+				_p.compartment.contents.clear()
+				_p.compartment.add("metal", _p.capacity() * float(DevHooks.get_f("walk-opening-spot-fill", 0.7)))
+				await _secs(1.0)
+				var tr0: float = _gt()
+				await _to_bin()
+				await _secs(1.5)
+				print("%s spot %s refuse: at the bin %s after %.1f game s, chest %.1f" % [TAG, sp, _yard(_p.global_position).split(" =")[0], _gt() - tr0, _p.compartment.fill])
+				await _scoop_load(0.95, 60.0)
+				print("%s spot %s refuse -> junk: chest %.1f / %.1f at %s" % [TAG, sp, _p.compartment.fill, _p.capacity(), _yard(_p.global_position).split(" =")[0]])
+				continue
+			if goal == "scale":
+				var dp: Node3D = _w.get("depot") as Node3D
+				_stand(at, dp.global_position)
+				await _secs(1.0)
+				if DevHooks.has("walk-opening-spot-bale"):  # carrying a bale pressed on the spot, as in the walk
+					GameState.upgrades["baler"] = maxi(1, GameState.level_of("baler"))
+					_p.compartment.fill = 0.0
+					_p.compartment.contents.clear()
+					_p.compartment.add("metal", _p.capacity())
+					await _tap("cube")
+					await _secs(1.5)
+					await _tap("interact")
+					await _secs(0.5)
+					print("%s spot %s: carrying %d" % [TAG, sp, _p.carried.size()])
+				var ts: float = _gt()
+				await _walk_to(func() -> Vector3: return dp.global_position, func() -> bool: return dp.call("pad_contains", _p.global_position), "the scale")
+				print("%s spot %s -> scale: %.1f game s, ends %.1f m from it" % [TAG, sp, _gt() - ts, _flat(dp.global_position - _p.global_position).length()])
+				continue
 			_stand(at, _w.call("bench_pos"))
 			await _secs(1.0)
 			var tgt: Vector3 = _w.call("bench_pos") if goal == "bench" else Objectives.bin_point(_w)
@@ -1283,12 +1446,16 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 	var detour: Vector3 = Vector3.ZERO
 	var best_d: float = INF
 	var from_pos: Vector3 = _p.global_position
+	var path: Array[Vector3] = []
+	var plans: int = 0
 	_trail.clear()
 	var trail_t: float = 0.0
 	while not bool(arrived.call()):
 		if _gt() - t0 > max_s:
-			_release_all()
 			var at: Vector3 = to.call()
+			if _flat(_p.global_position - from_pos).length() < 0.5:  # [v9a] never left the spot: why (keys still held)
+				_freeze_report(what, at)
+			_release_all()
 			if what == "a piece":  # wedged somewhere (across the bin bay's shore): a player goes elsewhere
 				print("%s note: a piece at %s out of the walker's way, took junk elsewhere" % [TAG, _yard(at)])
 				var f: HexField = _w.get("field") as HexField
@@ -1303,12 +1470,25 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 			await _frames(4)
 			return
 		var tgt: Vector3 = to.call()
+		# [v9a] Blocked: look at the ground round him as a player does and take the way round (a path
+		# over a 0.5 m map of what stands at knee to chest height, his body's width clear). Pushing
+		# straight on and stepping aside left and right paced him along a knee-high salvage prop for
+		# 40 s south of the bin bay (CI: "could not get to the scale").
+		if tries > plans and plans < 4:
+			plans = tries
+			path = _plan_path(tgt)
+			print("%s note: %s: blocked at %s, a way round %d points long" % [TAG, what, _yard(_p.global_position).split(" =")[0], path.size()])
+		while not path.is_empty() and _flat(path[0] - _p.global_position).length() < 0.7:
+			path.pop_front()
+			still = 0.0  # going round is progress
+		if not path.is_empty():
+			tgt = path[0]
 		# Blocked a while (a wall of the bin's bay, a crate): go round by the open yard first, as a
 		# player would: a point 4 m from the target on the yard-centre side, then the target.
-		if tries >= 3 and detour == Vector3.ZERO:
+		elif tries >= 3 and plans >= 4 and detour == Vector3.ZERO:
 			var c: Vector3 = (_so.globe.sites[0]["transform"] as Transform3D).origin
 			detour = tgt + _flat(c - tgt).normalized() * 4.0
-		if detour != Vector3.ZERO:
+		if detour != Vector3.ZERO and path.is_empty():
 			if _flat(detour - _p.global_position).length() < 0.8:
 				detour = Vector3.INF  # reached: the target again
 			elif detour != Vector3.INF:
@@ -1316,12 +1496,12 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 		var cam: Node = _p.get("sphere_cam")
 		var fr: Basis = cam.get("frame") if cam and "frame" in cam else _p.global_basis
 		var d: Vector3 = _flat(tgt - _p.global_position)
-		if stop_m > 0.0 and d.length() < stop_m and (detour == Vector3.ZERO or detour == Vector3.INF):
+		if stop_m > 0.0 and d.length() < stop_m and path.is_empty() and (detour == Vector3.ZERO or detour == Vector3.INF):
 			break
 		# Steer round what stands in the way, as a player does: the first free direction turning
 		# out from the straight line (a ray 1.6 m ahead at knee and chest height).
 		var dir: Vector3 = _steer(d.normalized(), minf(d.length(), 1.6), side_dir)
-		if side > 0.0:  # still wedged: commit to the other side for a moment
+		if side > 0.0 and path.is_empty():  # still wedged: commit to the other side for a moment
 			side -= 0.05
 			dir = _steer(dir.rotated(_p.global_position.normalized(), PI * 0.5 * side_dir), 1.2, side_dir)
 		var x: float = dir.dot(fr.x)
@@ -1354,10 +1534,88 @@ static func _walk_to(to: Callable, arrived: Callable, what: String, stop_m: floa
 	await _frames(3)
 
 
+static var _steer_log: bool = false
+
+
+## [v9a] A way round from Lumi toward `target` over a 0.5 m map (31 m across) of what stands from
+## knee to chest height, his body's width clear, on land: waypoints (each 1 m or so) to the free
+## cell nearest the target. Empty if none gets nearer than he is.
+static func _plan_path(target: Vector3) -> Array[Vector3]:
+	var out: Array[Vector3] = []
+	var space: PhysicsDirectSpaceState3D = _p.get_world_3d().direct_space_state
+	var u: Vector3 = _p.global_position.normalized()
+	var fr: Basis = SphereGrid.frame(u)
+	var q := PhysicsShapeQueryParameters3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(0.9, 0.5, 0.9)  # his width; from 0.3 m (steps he walks over) to 0.8 m
+	q.shape = box
+	q.collision_mask = _p.collision_mask
+	q.exclude = [_p.get_rid()]
+	const N: int = 31  # cells each side
+	var w: int = 2 * N + 1
+	var at: Callable = func(i: int) -> Vector3:
+		return _p.global_position + fr.x * ((i % w - N) * 0.5) + fr.z * ((i / w - N) * 0.5)
+	var free := PackedByteArray()
+	free.resize(w * w)
+	for i: int in w * w:
+		var c: Vector3 = at.call(i)
+		var ok: bool = not bool(_p.call("_water_at", c)) and not (_reach and _reach.why_ground(c.normalized()) == "water")
+		if ok:
+			q.transform = Transform3D(fr, _so.globe.terrain.ground(c.normalized()) + u * 0.55)
+			for hit: Dictionary in space.intersect_shape(q, 4):
+				if not (hit.get("collider") is JunkCube):
+					ok = false
+					break
+		free[i] = 1 if ok else 0
+	var start: int = N * w + N
+	free[start] = 1
+	var prev := PackedInt32Array()
+	prev.resize(w * w)
+	prev.fill(-2)
+	prev[start] = -1
+	var queue: Array[int] = [start]
+	var best: int = start
+	var best_d: float = _flat(target - _p.global_position).length()
+	var head: int = 0
+	while head < queue.size():
+		var i: int = queue[head]
+		head += 1
+		var dd: float = _flat(target - at.call(i)).length()
+		if dd < best_d:
+			best_d = dd
+			best = i
+		if dd < 0.6:
+			break
+		var x: int = i % w
+		var z: int = i / w
+		for o: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var nx: int = x + o.x
+			var nz: int = z + o.y
+			if nx < 0 or nz < 0 or nx >= w or nz >= w:
+				continue
+			var j: int = nz * w + nx
+			if free[j] == 1 and prev[j] == -2:
+				prev[j] = i
+				queue.append(j)
+	if best == start:
+		return out
+	var cells: Array[int] = []
+	var k: int = best
+	while k != -1:
+		cells.push_front(k)
+		k = prev[k]
+	for n: int in range(2, cells.size(), 2):
+		out.append(at.call(cells[n]))
+	if (cells.size() - 1) % 2 == 1:
+		out.append(at.call(cells[-1]))
+	return out
+
+
 static func _steer(dir: Vector3, ahead: float, prefer: int) -> Vector3:
 	var space: PhysicsDirectSpaceState3D = _p.get_world_3d().direct_space_state
 	var u: Vector3 = _p.global_position.normalized()
 	var in_water: bool = bool(_p.call("_water_at", _p.global_position))
+	var why: Array[String] = []  # [v9a] dev --walk-opening-steer-log: what each blocked heading met
 	for k: int in [0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5]:
 		var dd: Vector3 = dir.rotated(u, deg_to_rad(25.0) * k * prefer)
 		# On land he stops at the shore (water ahead is a wall); in the water he can always wade out.
@@ -1367,11 +1625,22 @@ static func _steer(dir: Vector3, ahead: float, prefer: int) -> Vector3:
 			var q := PhysicsRayQueryParameters3D.create(from, from + dd * maxf(ahead, 0.6), _p.collision_mask)
 			q.exclude = [_p.get_rid()]
 			var hit: Dictionary = space.intersect_ray(q)
-			if not hit.is_empty() and not (hit["collider"] is JunkCube):
+			# [v9a] Ground he can walk up is not a wall: a knee-high ray ran into a rise in the yard's
+			# ground south of the bin bay and the walker paced sideways there for 40 s with nothing in
+			# its way (CI and a spot test: no contact, only the terrain chunk near).
+			if not hit.is_empty() and not (hit["collider"] is JunkCube) and (hit["normal"] as Vector3).dot(u) < 0.7:
 				free = false
+				if _steer_log:
+					why.append("%d:%s@%.2f/%.1fm n%.2f" % [k, str((hit["collider"] as Node).name) if hit["collider"] is Node else "?", h, _flat(hit["position"] - _p.global_position).length(), (hit["normal"] as Vector3).dot(u)])
 				break
+		if not free and _steer_log and why.size() < 12 and (why.is_empty() or not why[-1].begins_with(str(k) + ":")):
+			why.append("%d:water" % k)
 		if free:
+			if _steer_log and k != 0:
+				print("%s steer at %s: k=%d (%s)" % [TAG, _yard(_p.global_position).split(" =")[0], k, ", ".join(why)])
 			return dd
+	if _steer_log:
+		print("%s steer at %s: nothing free (%s)" % [TAG, _yard(_p.global_position).split(" =")[0], ", ".join(why)])
 	return dir
 
 

@@ -197,6 +197,22 @@ func test_shore_stops_and_slides() -> void:
 	assert_lt(slid.x * 0.9 / slid.length() + 0.5, 1.0, "and stays on land")
 
 
+# [v9a] A corner of the lake nearer than the far probe: land at the probe, water on the way.
+# The old rule let that through; he stepped in, was put back with no speed, and froze there.
+func test_shore_sees_a_near_corner() -> void:
+	var up := Vector3.UP
+	var corner: Callable = func(p: Vector3) -> bool: return p.x > 0.05 and p.x < 0.5 and absf(p.z) < 0.3  # a 45 cm tongue of water just ahead
+	var east := Vector3(4, 0, 0)
+	var out: Vector3 = Patch.shore_clamp_at(Vector3.ZERO, up, east, 1.2, corner)
+	assert_ne(out, east, "water between him and the probe: not straight on")
+	assert_gt(out.length(), 0.1, "he goes round it")
+	var dir: Vector3 = out.normalized()
+	for m: float in [0.02, 0.08, 0.3, 0.6, 1.2]:
+		assert_false(bool(corner.call(dir * m)), "the way he is turned stays on land at %.2f m" % m)
+	var open_way := Vector3(0, 0, 4)
+	assert_eq(Patch.shore_clamp_at(Vector3.ZERO, up, open_way, 1.2, corner), open_way, "along the shore: unchanged")
+
+
 func test_hover_jets_upgrade() -> void:
 	var u: Dictionary = Economy.upgrade_defs.get("hover_jets", {})
 	assert_false(u.is_empty())

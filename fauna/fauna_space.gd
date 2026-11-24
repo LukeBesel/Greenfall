@@ -24,6 +24,7 @@ var by_node: Dictionary = {}  # node name -> props stamped (debug)
 ## Perches for songbirds: the top of tall slim things (lamp posts, poles, trees, roof crowns).
 var perches := PackedVector3Array()
 static var _tops: Dictionary = {}  # mesh RID id -> local top point (Vector3)
+static var _told_empty: bool = false
 ## [orbB] The globe: scan() maps world geometry into this frame (Fauna's hub frame) and keeps
 ## only props within reach metres (xz) of center. Identity / unlimited on the flat game.
 var frame := Transform3D.IDENTITY
@@ -207,6 +208,10 @@ static func top_point(m: Mesh) -> Vector3:
 	var verts: Array[PackedVector3Array] = []
 	for si: int in m.get_surface_count():
 		var arr: Array = m.surface_get_arrays(si)
+		# [v9a] A mesh the renderer does not hold (yet) gives no arrays (headless home walk: "Parameter
+		# m is null" in mesh_get_surface, then a SCRIPT ERROR here); its box gives the top below.
+		if arr.size() <= Mesh.ARRAY_VERTEX or not (arr[Mesh.ARRAY_VERTEX] is PackedVector3Array):
+			continue
 		var pv: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 		verts.append(pv)
 		for v: Vector3 in pv:
@@ -219,6 +224,11 @@ static func top_point(m: Mesh) -> Vector3:
 				acc += v2
 				n += 1
 	var out: Vector3 = acc / float(n) if n > 0 else m.get_aabb().get_center() + Vector3(0, m.get_aabb().size.y * 0.5, 0)
+	if n == 0:
+		if not _told_empty:  # once: which mesh it was
+			_told_empty = true
+			print("[fauna] perch scan: a %s (%s, %d surfaces) has no vertex arrays in the renderer" % [m.get_class(), m.resource_name if m.resource_name != "" else m.resource_path, m.get_surface_count()])
+		return out  # not cached: read again once the renderer holds it
 	out.y = top
 	_tops[k] = out
 	return out

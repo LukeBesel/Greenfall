@@ -479,27 +479,27 @@ msgstr "E   [Ţéļéšçôþé: ļôôķ àçŕôšš ţĥé šýšţém ~~~~~~
 msgid "While you were away, your robots earned %s cubes."
 msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš éàŕñéð %s çûbéš. ~~~~~~~~~~~~~~]"
 
-#: core/pace.gd:206
+#: core/pace.gd:209
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
 msgstr "[Ţĥîš ĥéx ñééðš Ļîƒţ %d ţô ƒîñîšĥ. Ûþĝŕàðé àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~]"
 
-#: core/pace.gd:207
+#: core/pace.gd:210
 msgid "Too heavy: this needs Lift %d. Upgrade at the workbench."
 msgstr "[Ţôô ĥéàvý: ţĥîš ñééðš Ļîƒţ %d. Ûþĝŕàðé àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~]"
 
-#: core/pace.gd:252
+#: core/pace.gd:255
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "[Ñôţĥîñĝ ĥéŕé ƒîţš. Þŕéšš [%s] ţô màķé à bàļé. ~~~~~~~~~~~~~]"
 
-#: core/pace.gd:264
+#: core/pace.gd:267
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "[Ñô Bàļéŕ ýéţ. Bŕîñĝ ýôûŕ çĥéšţ ţô ţĥé bîñ. ~~~~~~~~~~~~]"
 
-#: core/pace.gd:320 systems/events.gd:513 ui/goals_panel.gd:284
+#: core/pace.gd:323 systems/events.gd:513 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
-#: core/pace.gd:338 tools/walk_opening.gd:324
+#: core/pace.gd:341 tools/walk_opening.gd:324
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "[Ñô ļôôšé ţŕàšĥ ñôŵ. Þŕéšš [%s] ƒôŕ à bàļé, ţĥéñ þûţ îţ ôñ ţĥé šçàļé. ~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -953,75 +953,75 @@ msgstr "[BÛŔÎÉÐ ÞÀŔŢ  ·  ŠÎĜÑÀĻ %d%% ~~~~~~]"
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "[Ļûmî ŕàţţļéš bàçķ ûþ îñţô ţĥé ýàŕð. Ţĥàţ ŵàš ôðð. ~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:232
+#: player/patch.gd:246
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "[Ļûmî çàñ'ţ šŵîm. Ĥôvéŕ Ĵéţš àţ ţĥé ŵôŕķbéñçĥ ļéţ ĥîm ƒļôàţ ôvéŕ ļàķéš. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:357
+#: player/patch.gd:371
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "[Ĝéţ ţĥé šééð ţîñ ƒîŕšţ: ƒôļļôŵ ţĥé béàm ţô ţĥé ĝŕééñĥôûšé. ~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:358
+#: player/patch.gd:372
 msgid "No seeds yet. Keep cleaning."
 msgstr "[Ñô šééðš ýéţ. Ķééþ çļéàñîñĝ. ~~~~~~~]"
 
-#: player/patch.gd:401 player/patch.gd:429
+#: player/patch.gd:415 player/patch.gd:443
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "[Ôûţ ôƒ šééðš. Bļôômîñĝ þļàñţš ðŕôþ môŕé. ~~~~~~~~~~~]"
 
-#: player/patch.gd:408
+#: player/patch.gd:422
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "[Þļàñţ ƒîŕšţ: þŕéšš  {tool_plant}  ƒôŕ ţĥé šééð ~~~~~~~~~~~~~]"
 
-#: player/patch.gd:412
+#: player/patch.gd:426
 msgid "Watering can is empty. Refill at the base."
 msgstr "[Ŵàţéŕîñĝ çàñ îš émþţý. Ŕéƒîļļ àţ ţĥé bàšé. ~~~~~~~~~~~~]"
 
-#: player/patch.gd:431
+#: player/patch.gd:445
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "[Çļéàñ ţĥîš ĥéx ƒîŕšţ. Šééðš ñééð çļéàñ ĝŕôûñð. ~~~~~~~~~~~~~]"
 
-#: player/patch.gd:433
+#: player/patch.gd:447
 msgid "Something is growing here already. Try a free spot."
 msgstr "[Šôméţĥîñĝ îš ĝŕôŵîñĝ ĥéŕé àļŕéàðý. Ţŕý à ƒŕéé šþôţ. ~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:434
+#: player/patch.gd:448
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "[Šééðš ñééð šôîļ, ñôţ ŕôàð ôŕ ţĥé þàð. Ţŕý ţĥé ĝŕééñĥôûšé béðš. ~~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:435
+#: player/patch.gd:449
 msgid "Seeds need soil, not road or the pad."
 msgstr "[Šééðš ñééð šôîļ, ñôţ ŕôàð ôŕ ţĥé þàð. ~~~~~~~~~~]"
 
-#: player/patch.gd:596
+#: player/patch.gd:610
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "[Ýôûŕ çĥéšţ îš émþţý. Šçôôþ šômé ţŕàšĥ ƒîŕšţ. ~~~~~~~~~~~~]"
 
-#: player/patch.gd:636
+#: player/patch.gd:650
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:642
+#: player/patch.gd:656
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:646
+#: player/patch.gd:660
 msgid "PURE  %s"
 msgstr "[ÞÛŔÉ  %s ~]"
 
-#: player/patch.gd:648
+#: player/patch.gd:662
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:651
+#: player/patch.gd:665
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:702
+#: player/patch.gd:716
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:733
+#: player/patch.gd:747
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -2106,7 +2106,7 @@ msgstr "[Ĝôàļ çômþļéţé  ·  %s ~~~~]"
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "[Bàļéŕ îñ! Fîļļ ýôûŕ çĥéšţ, ţĥéñ þŕéšš [%s] ƒôŕ à bàļé. ~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1072 story/objectives.gd:1308 tools/walk_opening.gd:774
+#: story/objectives.gd:1072 story/objectives.gd:1308 tools/walk_opening.gd:937
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Þŕéšš [%s] ţô màķé à bàļé. ~~~~~~~~~~~~~]"
 
@@ -2134,7 +2134,7 @@ msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Fôļļôŵ ţĥé béàm ţô ţĥ�
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Ĥéàð ĥômé: ţĥé bîñ îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1343 tools/walk_travel.gd:357
+#: story/objectives.gd:1343 tools/walk_travel.gd:360
 msgid "Carry your bale to this base's scale by its bin."
 msgstr "[Çàŕŕý ýôûŕ bàļé ţô ţĥîš bàšé'š šçàļé bý îţš bîñ. ~~~~~~~~~~~~~~]"
 
@@ -3479,7 +3479,7 @@ msgstr "[Ŵàţçĥ ţĥé ôþéñîñĝ àĝàîñ ~~~~~]"
 msgid "Close"
 msgstr "[Çļôšé ~]"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:91
+#: tools/walk_opening.gd:756 ui/main_menu.gd:368 ui/pause_menu.gd:91
 msgid "Quit"
 msgstr "[Qûîţ ~]"
 

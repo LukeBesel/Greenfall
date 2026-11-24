@@ -240,6 +240,34 @@ func walk(d: Vector3, start: int) -> int:
 	return cur
 
 
+## [v9a] cell_at decided in 64-bit. The dot products of walk() are 32-bit: two neighbouring centres
+## seen from a point by their shared edge differ by less than a float can hold, so within a few
+## centimetres of an edge the answer flipped from one 5 mm step to the next (a speckled band).
+## Lumi's shore rule stood him in that band by the bin and froze him there (tools/walk_opening.gd
+## "shore"). Here the edge is one line: the cell is a fixed function of the point as stored.
+func cell_at_exact(p: Vector3) -> int:
+	var cur: int = cell_at(p)
+	var px: float = p.x
+	var py: float = p.y
+	var pz: float = p.z
+	while true:
+		var c: Vector3 = centers[cur]
+		var best: float = c.x * px + c.y * py + c.z * pz
+		var nxt: int = cur
+		var b: int = cur * MAX_N
+		for k: int in nbr_count[cur]:
+			var j: int = nbr[b + k]
+			c = centers[j]
+			var dd: float = c.x * px + c.y * py + c.z * pz
+			if dd > best:
+				best = dd
+				nxt = j
+		if nxt == cur:
+			return cur
+		cur = nxt
+	return cur
+
+
 func cell_at_from(p: Vector3, hint: int) -> int:
 	if hint < 0 or hint >= centers.size():
 		return cell_at(p)
