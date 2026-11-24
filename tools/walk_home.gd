@@ -99,6 +99,8 @@ static func _on_cubes(id: String, v: BigNum) -> void:
 		from.append("%s:%d %s" % [src, int(f.get("line", 0)), str(f.get("function", ""))])
 	if _since_set.size() < 80:
 		_since_set.append("%+.2f %s" % [d, " < ".join(from.slice(0, 3))])
+	if DevHooks.has("walk-home-paylog"):  # dev: every payment as it comes
+		print("[walk-home] pay %+.2f (now %.2f) step %s from %s" % [d, now, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
 	if d >= 300.0:
 		print("[walk-home] note: the game paid +%.2f cubes at once (step %s) from %s" % [d, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
 
