@@ -41,13 +41,17 @@ func _ready() -> void:
 		add_child(marker)
 	_announce.call_deferred()
 	if DevHooks.has("chest-full"):  # [v2guide] dev: start with a full chest (shots of the dump step)
-		(func() -> void:
-			var pt: Patch = world.get("patch") as Patch if world else null
-			if pt:
-				pt.compartment.fill = pt.capacity()).call_deferred()
+		_dev_fill_chest.call_deferred()
 	Settings.input_device_changed.connect(func(_p: bool) -> void:  # [deck] prompts follow the device
 		if not done():
 			EventBus.tutorial_changed.emit(current_text()))
+
+
+## Deferred from _ready (--chest-full) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_fill_chest() -> void:
+	var pt: Patch = world.get("patch") as Patch if world else null
+	if pt:
+		pt.compartment.fill = pt.capacity()
 
 
 ## [deck] "{action}" -> the binding's name on the device in use ("LMB" / "RT" / "R2").

@@ -7,6 +7,12 @@ extends RefCounted
 
 ## Builds some keepsake state in the live district `s`.
 static func setup(s: Node) -> void:
+	# [v10snd] The first CD stays put while it is out; its hex can flip clean on load by the 95% rule
+	# (SphereField.check_clean), which gives it (by design, never lost). tools/walk_radio.gd checks
+	# it over reloads; here it is taken first so this snapshot does not depend on that.
+	if CdFinds.FIRST_KEY + Tunes.first_cd_id() in CdFinds.pending():
+		CdFinds.pending().erase(CdFinds.FIRST_KEY + Tunes.first_cd_id())
+		Tunes.find_first_cd()
 	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0.0)), 22.0)
 	Radio.note_planet("ochre", 3)
 	Radio.check_unlocks()

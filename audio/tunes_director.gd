@@ -8,8 +8,9 @@ extends Node
 ##   cinematic (set_paused), faded out at the landing (intro_land).
 ## - "play": the background shuffle. Owned songs that fit the planet and the moment, one at a time,
 ##   with quiet gaps (only the ambience bed) between them. Story moods (cinematic, homecoming) hand
-##   the music back to the synth score. The CD player (set_radio) overrides it: one song on repeat,
-##   or the whole collection shuffled back to back with crossfades.
+##   the music back to the synth score. The radio (set_radio) overrides it: one song on repeat,
+##   or the whole collection shuffled back to back with crossfades. [v10snd] Before the first CD
+##   is found (Tunes.first_cd_found) no song plays; finding it plays its song at once (play_now).
 ## While a song plays or the shuffle owns the silence, the synth score is hushed
 ## (Audio.tunes_hush), so the two never play over each other. When no song file fits, nothing is
 ## hushed and the synth score plays as before (the fallback).
@@ -26,7 +27,7 @@ const SONG_DB: float = -7.0  # fallback for cfg "song_db": the songs are mastere
 const THEMED: Array[String] = ["explore", "base", "night"]
 
 var context: String = "none"
-var radio: String = ""  # "" (background), "shuffle" or a song id
+var radio: String = ""  # "" (background), "shuffle", "off" (stopped) or a song id
 var paused: bool = false
 ## Pre-Glim: the CD player's songs come from the CD player, softer far from it.
 var radio_source: Node3D
@@ -150,13 +151,10 @@ static func _empty() -> Dictionary:
 func set_context(c: String) -> void:
 	if c == context:
 		return
-	var was: String = context
 	context = c
 	print("[tunes] context %s" % c)
 	if c == "play":
-		_start_gap(true)
-		if was == "intro":  # [v1menu] the pod has landed: a few quiet minutes before any song
-			_start_gap_cfg("landing_gap_s", [150, 240])
+		_start_gap(true)  # [v10snd] after the landing no song at all until the first CD (Tunes.pick_next)
 	elif c != "intro":
 		_fade_all(1.5)
 
@@ -172,6 +170,8 @@ func set_radio(mode: String) -> void:
 	if mode == "":
 		_fade_all(2.0)
 		_start_gap(true)
+	elif mode == Tunes.OFF:  # [v10snd] Stop
+		_fade_all(1.5)
 	elif mode != Tunes.SHUFFLE:
 		_start(mode, 1.5, true)
 	else:
@@ -201,6 +201,16 @@ func play_moment(m: String) -> bool:
 			return true
 		pool.erase(id)
 	return false
+
+
+## [v10snd] The first CD: its song plays now, once, whatever the shuffle was doing; then the
+## usual quiet and the random songs. False when the file will not load.
+func play_now(id: String) -> bool:
+	if scratch != "" or not _start(id, 1.5, false):
+		return false
+	moment = "first_cd"
+	_moment_id = id
+	return true
 
 
 ## The pod lands: the score fades out.
@@ -316,6 +326,8 @@ func _drive(dt: float) -> void:
 
 
 func _drive_radio(s: Dictionary, playing: bool, xf: float) -> void:
+	if radio == Tunes.OFF:
+		return
 	if radio == Tunes.SHUFFLE:
 		if not playing or float(s["t"]) >= float(s["len"]) - xf:
 			var id: String = Tunes.pick_any(recent, rng)
@@ -409,7 +421,7 @@ func _wants_hush() -> bool:
 				return false
 			if radio != "":
 				return not Tunes.found().is_empty()
-			return _pool_has_any()
+			return not Tunes.first_cd_found() or _pool_has_any()  # [v10snd] quiet before the first CD
 	return false
 
 
@@ -418,7 +430,7 @@ func _pool_has_any() -> bool:
 	if _pool_t <= 0.0 or manual:
 		_pool_t = 2.0
 		_pool_ok = false
-		for id: String in Tunes.found():
+		for id: String in Tunes.shuffle_pool():
 			if Tunes.fits(id, _planet(), Audio.get_music_mood(), Audio.get_restoration()):
 				_pool_ok = true
 				break
