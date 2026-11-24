@@ -455,6 +455,10 @@ func _apply_sphere() -> void:
 		amb = amb.lerp(Color(night_tint.r, night_tint.g, night_tint.b), night_tint.a * night * 0.5)
 	env.ambient_light_color = amb
 	env.tonemap_exposure = lerpf(1.55, 1.25, day) * (1.0 + 0.15 * lift) * (1.0 - 0.2 * nd)
+	# [v11film] The opening film's grade (with its dusty sky): a little darker and harder, so the
+	# white landing pad and the pale town hold their shape. It eases off with film_dust.
+	var film: float = clampf(film_dust, 0.0, 1.0)
+	env.tonemap_exposure *= lerpf(1.0, 0.8, film)
 	# Fog: dusty and warm in Act 1, clear blue as the air is scrubbed, deep blue at night.
 	env.fog_enabled = not space
 	# Volumetric fog is for the flat district's short distances: the quality pass turns it on at
@@ -465,7 +469,7 @@ func _apply_sphere() -> void:
 	env.fog_sky_affect = 0.0
 	env.adjustment_enabled = true
 	env.adjustment_saturation = lerpf(1.12, 1.24, day)
-	env.adjustment_contrast = lerpf(1.06, 1.1, day)
+	env.adjustment_contrast = lerpf(1.06, 1.1, day) + 0.08 * film
 	# [v5look] Warm golden haze (flat Verdance's fog), orange toward dawn and dusk. The sky shader
 	# paints its horizon band in this same colour, so far land fades into the sky, not against it.
 	var fog_day: Color = Color(0.62, 0.75, 0.94).lerp(Color(0.97, 0.86, 0.71), haze * 0.85)

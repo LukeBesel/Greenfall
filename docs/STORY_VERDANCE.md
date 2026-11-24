@@ -25,10 +25,14 @@ Makers" and "the Gardeners" (2026-11-11). Ids, flags and save keys still say `ma
 
 It never came. One by one the cleanup robots ran out of power and paused. Three hundred years went by. The stations fell silent and the trash stayed.
 
-**Lumi** (LM-1) is the Cradle's small seed-keeper robot. He sings to the seedlings. **WREN** is the
-Cradle's mind: she flies the ship and has looked after Lumi all that time. One night a meteor storm
-tears the seed vault open. Lumi climbs into a pod to save a tray of seedlings, and the pod falls all
-the way down to Verdance. **Glim**, a little lantern bot, holds on to the outside the whole way.
+**Lumi** (LM-1) is the Cradle's small seed-keeper robot. He lives in the garden dome on the ark's
+back and keeps the last plants alive: every night he looks down for green, finds none, and hums to
+a tray of seedlings. **WREN** is the Cradle's mind: she is the ship, and she has looked after Lumi
+all that time. One night a meteor storm kills the Cradle's engines and breaks the dome's glass.
+WREN tells Lumi to take the tray to a pod, and then lets the pod go herself: she can't keep him
+safe up there and, without engines, can't follow. The pod falls all the way down to Verdance.
+**Glim**, a little lantern bot, holds on to the outside the whole way. The tray stays in the pod's
+cabin (it can be seen through the hatch) until the Homecoming carries it back to the vault.
 
 Lumi wakes next to one of the old cleanup stations, with his battery at 4%. His **Bloom Core** runs
 on green light, the light living plants give off, and nothing green is left.
@@ -78,8 +82,8 @@ They are how the player learns what happened: found when the hex that holds them
 
 | # | What the player does | In-world reason | Where the game says it | Problem / status |
 |---|---|---|---|---|
-| 0 | Watches the intro | The Settlers left on the Cradle; Lumi fell | story/intro.gd captions | ok |
-| 1 | Hears WREN's crash message | The pod fell by an old cleanup station; its bin makes cubes; a tower lets her talk | objectives.json `brief` | **fixed**: it said "pick up trash, find parts" with no word on what the place is or what cubes are |
+| 0 | Watches the opening film | The people sleep on the Cradle until Verdance is green again; Lumi keeps the last plants; a storm breaks the ship and WREN lets his pod go to save him | story/intro.gd (`Intro.lines()`, WREN's eight lines) | **rewritten** (v11film, owner 20 Nov): one voice, no narrator, every line shown by a picture |
+| 1 | Hears WREN's crash message | She can hardly reach him; fix the old workbench, pick up trash, find parts, build a signal tower so they can talk again | objectives.json `brief` | **rewritten** (v11film): it starts with the game's first job (the bench) and ends on why (to talk again); what the bin and cubes are is said by the first card |
 | 2 | Fixes the workbench | It is the Settlers' bench, dead for 300 years; everything is built on it | checklist (story/tutorial.gd) | **fixed**: the step now says whose bench it is |
 | 3 | Picks up trash, empties the chest in the bin | The bin's recycler turns trash into cubes | checklist + card `dump3` | **fixed**: nobody said why a bin pays cubes |
 | 4 | Buys a bigger chest, a wider scoop | Carry more, grab more: fewer walks to the bin | cards `compartment`, `scoop_size` | ok. **fixed**: the reason was hidden while saving up (the card showed only "Need N more cubes") |

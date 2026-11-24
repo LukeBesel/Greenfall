@@ -41,6 +41,26 @@ What the failing walks were, by evidence (logs under screenshots/, spot tests in
 - Other code still uses the 32-bit `hex_at` (robots, junk, the card's hex): the speckle at edges is still
   there for them. Not known to break anything; worth a look if a robot dithers on a shoreline.
 
+## 20 Nov: the opening film rewritten and re-shot (v11film, owner items 110-113)
+
+- The film is new end to end: 21 shots, one voice (WREN, ten lines), about 117 s
+  (`data/intro_shots.json`, `story/intro.gd`; how to change it: docs/ADJUSTING.md "The opening film").
+- New ark (`story/cradle_ship.gd`, built in code; `art/models/ship/ark.glb` is no longer loaded) and
+  new pod (`story/escape_pod.gd`, a drop capsule). The same models serve the yard, the finale, the
+  telescope and the Homecoming (its rocket now docks at `CradleShip.dock_world()`).
+- The seed vault set is the inside of the ark's garden dome (`story/space_stage.gd`).
+- The tray Lumi saved stands in the crashed pod's cabin (`story/crash_site.gd`).
+- "Watch the opening again": pause menu for the first 30 minutes near the pod, Codex for good. A
+  rewatch plays with the game stopped and changes nothing (`tools/check_rewatch.sh`, in check_exit).
+- 24 Nov, second look at the whole film (v11film): the ark burns and smokes after the hits, the
+  parting is Lumi's last look up at it from the falling pod, a hanging grow lamp, real seedlings, a
+  continuous smoke trail, the crash plume rises after the crash shot, the first CD is out of the film.
+- **Open:** nobody has heard it (sound levels and the three song hits are by measurement only); not
+  seen at 60 fps or on the Mac's renderer; the Homecoming, the Bloom finale and the core-charge
+  memories show the new ark and vault but were not re-rendered; a rewatch at night or with machines
+  built shows the yard as it is then; "the rocket design" was read as the ark and the pod, not the
+  buildable shuttle.
+
 ## Status at the stop, 18 Nov (owner playtest 3, items 89-109)
 
 The owner asked to end all work at a good stopping point.

@@ -6,116 +6,128 @@
   "end_face": "bench",
   "shots": [
     {
-      "id": "verdance", "set": "space", "dur": 6.5, "fade_in": 2.6,
-      "cam": {"from": [10, 20, 150], "to": [4, 16, 132], "look_from": [-6, -17, 0], "look_to": [-2, -15, 0], "fov": [36, 36], "ease": "out", "hand": 0.0},
-      "cues": [[1.6, "title_in"], [5.4, "title_out"]],
-      "p": {"ark_from": [-70, 1, 0], "ark_speed": 2.2}
+      "id": "planet", "set": "space", "dur": 7.4, "fade_in": 2.6, "fade_out": 0.4,
+      "cam": {"from": [-20, 36, 215], "to": [-16, 32, 200], "look_from": [-26, 10, 0], "look_to": [-22, 9, 0], "fov": [30, 30], "ease": "out", "hand": 0.0},
+      "cues": [[2.3, "title_in"], [5.9, "title_out"]],
+      "p": {"ark_from": [-78, 0, 0], "ark_speed": 2.4, "planet_scale": 1.6, "planet_top": [0, -70, -90]}
     },
     {
-      "id": "cradle", "set": "space", "dur": 8.1, "fade_out": 0.4,
-      "cam": {"anchor": "ark", "look_anchor": "ark", "from": [44, 2, 30], "to": [17, 12.5, 19], "look_from": [8, 1, 0], "look_to": [4.5, 6.2, 0], "fov": [40, 30], "ease": "inout", "hand": 0.05},
-      "lines": [[0.5, "title"]],
+      "id": "window", "set": "vault", "dur": 6.5, "fade_in": 0.5,
+      "cam": {"from": [1.5, 1.95, 1.0], "to": [1.05, 1.6, -0.5], "look_from": [-0.2, 1.3, -5.0], "look_to": [-0.1, 1.2, -5.0], "fov": [46, 40], "ease": "inout"},
+      "lines": [[1.0, "first"]],
+      "p": {"droop_at": 3.2, "turn_at": 4.7}
+    },
+    {
+      "id": "ark", "set": "space", "dur": 7.6,
+      "cam": {"anchor": "ark", "look_anchor": "ark", "from": [40, 8, 30], "to": [24, 7, 22], "look_from": [0, 2, 0], "look_to": [-3, 3, 0], "fov": [36, 32], "ease": "inout", "hand": 0.05},
+      "lines": [[0.6, "wait"]],
       "sfx": [[0.2, "whoosh", 0.32, -14]],
-      "p": {"ark_from": [-36, 0, 0], "ark_speed": 3.2}
+      "p": {"ark_from": [-20, 0, 0], "ark_speed": 2.6}
     },
     {
-      "id": "vault_wide", "set": "vault", "dur": 6.5, "fade_in": 0.5,
-      "cam": {"from": [2.9, 3.1, 2.5], "to": [2.45, 2.0, 1.95], "look_from": [-0.2, 0.8, -0.5], "look_to": [-0.15, 0.9, -0.55], "fov": [54, 48], "ease": "inout"},
-      "lines": [[0.4, "vault"]]
+      "id": "tend", "set": "vault", "dur": 8.2,
+      "cam": {"from": [1.0, 1.3, 0.85], "to": [0.72, 1.14, 0.55], "look_from": [-0.12, 0.98, -0.35], "look_to": [-0.1, 0.98, -0.4], "fov": [36, 32], "ease": "inout"},
+      "lines": [[0.5, "keep"]]
     },
     {
-      "id": "vault_hum", "set": "vault", "dur": 9.4, "fade_out": 0.35,
-      "cam": {"from": [1.3, 1.22, 0.42], "to": [0.98, 1.08, 0.12], "look_from": [-0.18, 0.9, -0.72], "look_to": [-0.16, 0.95, -0.8], "fov": [38, 33], "ease": "inout"},
-      "lines": [[0.4, "hum"]],
-      "p": {"look_up_at": 4.4, "look_down_at": 6.4}
+      "id": "omen", "set": "vault", "dur": 5.5,
+      "cam": {"from": [-1.5, 0.85, 1.7], "to": [-1.35, 0.9, 1.5], "look_from": [0.5, 2.2, -3.0], "look_to": [0.9, 2.5, -3.0], "fov": [52, 50], "ease": "inout", "hand": 0.1},
+      "lines": [[1.3, "glass"]],
+      "cues": [[0.5, "first_streak"], [3.0, "more_streaks"]]
     },
     {
-      "id": "storm", "set": "space", "dur": 7.1, "fade_in": 0.35,
-      "cam": {"from": [24, -8, 46], "to": [15, -11, 36], "look_from": [-5, 0, 0], "look_to": [-1, -2, 0], "fov": [46, 42], "ease": "inout", "hand": 0.25},
-      "lines": [[0.3, "storm"]],
-      "sfx": [[2.0, "whoosh", 0.6, -6]],
-      "cues": [[0.9, "lone_meteor"], [2.2, "barrage"], [-0.75, "hit_meteor"]],
-      "p": {"ark_from": [-14, 0, 0], "ark_speed": 1.6, "barrage": 13, "barrage_gap": 0.3}
+      "id": "storm", "set": "space", "dur": 5.8,
+      "cam": {"from": [26, -10, 46], "to": [16, -13, 36], "look_from": [-5, 0, 0], "look_to": [-1, -2, 0], "fov": [46, 42], "ease": "inout", "hand": 0.25},
+      "sfx": [[0.4, "whoosh", 0.6, -6]],
+      "cues": [[0.15, "barrage"], [2.9, "engine_meteor"], [3.6, "engine_hit"], [-0.6, "hit_meteor"]],
+      "p": {"ark_from": [-14, 0, 0], "ark_speed": 1.6, "barrage": 14, "barrage_gap": 0.3, "fx_size": 1.6}
     },
     {
-      "id": "hit", "set": "space", "dur": 3.4,
-      "cam": {"anchor": "ark", "look_anchor": "ark", "from": [13, -11, 14], "to": [10.5, -10.2, 11.5], "look_from": [3.1, -6.6, 0], "look_to": [3.1, -6.8, 0], "fov": [42, 40], "ease": "out", "hand": 0.3},
-      "cues": [[0.72, "impact_ark"]],
+      "id": "hit", "set": "space", "dur": 2.9,
+      "cam": {"anchor": "ark", "look_anchor": "ark", "from": [10, 13, 17], "to": [8.5, 11.5, 14.5], "look_from": [4.5, 6.2, 0], "look_to": [4.5, 6.0, 0], "fov": [42, 40], "ease": "out", "hand": 0.3},
+      "cues": [[0.5, "dome_hit"]],
       "p": {"ark_speed": 1.6}
     },
     {
-      "id": "alarm", "set": "vault", "dur": 7.0,
-      "cam": {"look_anchor": "lumi", "from": [2.3, 1.55, 2.7], "to": [2.5, 1.4, 2.2], "look_from": [0, 0.75, 0], "look_to": [0, 0.8, 0], "fov": [46, 44], "ease": "inout", "hand": 0.5, "look_lag": 0.3},
-      "lines": [[0.5, "breach"]],
-      "sfx": [[0.1, "servo", 1.0, -6]],
-      "cues": [[0.05, "vault_shake"], [2.2, "grab_tray"]],
-      "p": {"go_at": 3.4, "go_dur": 3.5}
+      "id": "breach", "set": "vault", "dur": 5.6,
+      "cam": {"look_anchor": "lumi", "from": [-2.0, 1.5, 3.1], "to": [-1.6, 1.35, 2.6], "look_from": [0, 0.8, 0], "look_to": [0, 0.8, 0], "fov": [50, 46], "ease": "inout", "hand": 0.6, "look_lag": 0.3},
+      "lines": [[0.2, "breach"]],
+      "sfx": [[0.1, "servo", 1.0, -6], [0.2, "roar", 1.3, -9]],
+      "cues": [[0.05, "vault_shake"], [1.8, "grab_tray"]],
+      "p": {"go_at": 2.5, "go_dur": 2.9}
     },
     {
-      "id": "to_pod", "set": "vault", "dur": 3.7,
-      "cam": {"from": [1.6, 1.3, 1.1], "to": [1.3, 1.2, 1.5], "look_from": [0.0, 1.05, 3.2], "look_to": [0.0, 1.0, 3.3], "fov": [46, 42], "ease": "inout", "hand": 0.4},
-      "cues": [[1.3, "seal_pod"]]
+      "id": "seal", "set": "vault", "dur": 5.5,
+      "cam": {"look_anchor": "pod", "from": [1.1, 1.25, 1.7], "to": [0.75, 1.2, 2.1], "look_from": [0, 1.05, -0.25], "look_to": [0, 1.0, -0.2], "fov": [42, 38], "ease": "inout", "hand": 0.4, "look_lag": 0.5},
+      "lines": [[0.2, "send"]],
+      "cues": [[1.7, "seal_pod"], [3.3, "drop_pod"]]
     },
     {
-      "id": "eject", "set": "space", "dur": 7.6, "fade_out": 0.7,
-      "cam": {"look_anchor": "pod", "from": [-5, -22, 11], "to": [-7, -23, 12], "look_from": [0, 0.8, 0], "look_to": [0, 0.5, 0], "fov": [50, 56], "ease": "inout", "hand": 0.35, "look_lag": 0.22},
-      "lines": [[1.1, "hold_on"]],
-      "cues": [[0.38, "blow_pod"]],
-      "p": {"ark_speed": 4.0, "planet_scale": 3.0, "planet_top": [0, -170, -120]}
+      "id": "release", "set": "space", "dur": 5.8,
+      "cam": {"look_anchor": "pod", "from": [-5, -20, 11], "to": [-7, -21, 12], "look_from": [0, 0.8, 0], "look_to": [0, 0.5, 0], "fov": [50, 54], "ease": "inout", "hand": 0.3, "look_lag": 0.22},
+      "lines": [[0.9, "engines"]],
+      "sfx": [[2.4, "groan", 0.6, -9]],
+      "cues": [[0.2, "let_go"]],
+      "p": {"ark_speed": 1.6, "planet_scale": 3.0, "planet_top": [0, -170, -120]}
     },
     {
-      "id": "drift", "set": "space", "dur": 6.4, "fade_in": 0.9,
-      "cam": {"anchor": "pod", "look_anchor": "pod", "from": [-16.5, 19, 21.3], "to": [-11.5, 13.5, 15], "look_from": [0, -2, 0], "look_to": [0, -1, 0], "fov": [34, 34], "ease": "inout", "roll": [-3, 3]},
-      "lines": [[0.6, "fall"]],
-      "p": {"planet_scale": 3.0, "planet_top": [0, -170, -60], "pod_from": [-30, 170, 100], "pod_vel": [3.0, -4.0, -2.4], "ark_off": [58, -48, -76], "ark_scale": 0.3}
+      "id": "apart", "set": "space", "dur": 5.0, "fade_out": 0.6,
+      "cam": {"anchor": "pod", "look_anchor": "ark", "from": [-2.8, -2.4, 5.4], "to": [-4.4, -2.4, 5.4], "look_from": [4.8, 0.2, -7.5], "look_to": [35.0, 15.8, -35.2], "fov": [48, 44], "ease": "inout", "hand": 0.25},
+      "lines": [[0.5, "find"]],
+      "sfx": [[0.6, "groan", 0.5, -12]],
+      "p": {"planet_scale": 3.0, "planet_top": [0, -420, -60], "ark_speed": 1.2, "lead": 3.5, "fall_back": [3.0, 0.5], "fall_down": [1.0, 0.45], "fall_side": 0.8, "pod_yaw": 2.6, "fx_size": 1.6, "smoke_drift": 0.8, "smoke_life": 1.8, "fill": 3.2}
     },
     {
-      "id": "reentry", "set": "space", "dur": 6.4, "fade_out": 0.7, "fade_col": [1.0, 0.9, 0.78],
+      "id": "reentry", "set": "space", "dur": 4.5, "fade_out": 0.7, "fade_col": [1.0, 0.9, 0.78],
       "cam": {"anchor": "pod", "look_anchor": "pod", "from": [-5.2, 3.2, 7.6], "to": [-4.6, 4.4, 6.4], "look_from": [1.2, -1.6, -0.9], "look_to": [1.6, -2.2, -1.2], "fov": [48, 56], "ease": "in", "hand": 0.3},
-      "sfx": [[0.3, "whoosh", 0.4, -8], [3.4, "whoosh", 0.3, -2]],
-      "p": {"pod_from": [-16, 90, 38], "pod_vel": [6.0, -7.5, -4.5], "fire_at": 0.5, "fire_grow": 3.2, "planet_scale": 3.0, "planet_top": [0, -170, -60]}
+      "sfx": [[0.3, "whoosh", 0.4, -8], [0.6, "roar", 0.8, -8], [2.6, "roar", 0.7, -4], [3.2, "whoosh", 0.3, -2]],
+      "p": {"pod_from": [-16, 90, 38], "pod_vel": [6.0, -7.5, -4.5], "fire_at": 0.5, "fire_grow": 2.6, "planet_scale": 3.0, "planet_top": [0, -170, -60]}
     },
     {
-      "id": "sky", "set": "world", "dur": 4.5, "fade_in": 0.8, "fade_col": [1.0, 0.9, 0.78],
+      "id": "sky", "set": "world", "dur": 4.0, "fade_in": 0.8, "fade_col": [1.0, 0.9, 0.78],
       "cam": {"from": [-174, 123, 104], "to": [-168, 119, 101], "look_from": [20, -3, -12], "look_to": [2, 0, -1], "fov": [50, 46], "ease": "inout", "hand": 0.3},
-      "sfx": [[0.2, "whoosh", 0.5, -2]],
+      "sfx": [[0.2, "whoosh", 0.5, -2], [0.3, "roar", 0.7, -5], [2.4, "roar", 0.65, -4]],
       "p": {"k_from": 1.5, "k_to": 0.55, "fall_ease": "linear", "fire_scale": 1.5, "fire_scale_to": 3.6, "pass_k": 1.38}
     },
     {
-      "id": "impact", "set": "world", "dur": 4.6,
-      "cam": {"look_anchor": "pod", "from": [16, 1.4, 3], "to": [14.4, 1.3, 2.7], "look_from": [0, 0.6, 0], "look_to": [0, 1.3, 0], "fov": [52, 46], "ease": "out_cubic", "hand": 0.15, "look_lag": 0.07},
-      "sfx": [[0.0, "whoosh", 0.45, 0]],
-      "p": {"k_from": 0.8, "hit_at": 1.0, "fire_scale": 2.4}
+      "id": "impact", "set": "world", "dur": 4.8,
+      "cam": {"from": [16, 1.4, 3], "to": [14.6, 1.3, 2.7], "look_from": [0, 4.6, 0], "look_to": [0, 3.4, 0], "fov": [46, 44], "ease": "inout", "hand": 0.12},
+      "sfx": [[0.0, "roar", 0.6, -10], [1.2, "whoosh", 0.45, 0], [1.3, "roar", 0.7, -3]],
+      "p": {"k_from": 0.6, "hit_at": 2.2, "fire_scale": 2.4}
     },
     {
-      "id": "settle", "set": "world", "dur": 4.2,
+      "id": "dust", "set": "world", "dur": 4.2,
       "cam": {"frame": "pod", "from": [-3.4, 1.5, -7.2], "to": [-2.6, 1.35, -5.6], "look_from": [0, 1.25, 0], "look_to": [0, 1.3, 0], "fov": [42, 40], "ease": "inout"},
-      "cues": [[2.1, "glim_flare"]]
+      "cues": [[2.2, "glim_flare"]]
     },
     {
-      "id": "hatch", "set": "world", "dur": 6.8,
+      "id": "hatch", "set": "world", "dur": 5.6,
       "cam": {"frame": "pod", "from": [1.25, 1.0, -5.3], "to": [0.95, 0.8, -4.3], "look_from": [0, 1.05, -0.4], "look_to": [0, 0.8, -0.9], "fov": [40, 38], "ease": "inout"},
       "sfx": [[0.8, "steam", 0.7, -2], [1.6, "hydraulic", 0.8, -4]],
-      "cues": [[1.0, "open_hatch"]],
-      "p": {"out_at": 3.5, "out_dur": 3.0}
+      "cues": [[0.6, "open_hatch"], [2.4, "eyes_open"]],
+      "p": {"show_at": 2.1, "out_at": 3.0, "out_dur": 2.4}
     },
     {
-      "id": "wake", "set": "world", "dur": 5.2,
-      "cam": {"frame": "pod", "from": [0.46, 0.84, -4.4], "to": [0.38, 0.8, -4.1], "look_from": [0, 0.76, -2.3], "look_to": [0, 0.74, -2.3], "fov": [40, 38], "ease": "out"},
-      "cues": [[0.9, "eyes_open"], [2.2, "battery"], [3.1, "look_left"], [4.1, "look_right"]]
+      "id": "look", "set": "world", "dur": 5.6,
+      "cam": {"mode": "orbit", "center": "lumi", "angle": [28, 172], "radius": [2.6, 7.2], "height": [0.95, 4.0], "look_up": [0.75, 1.0], "ahead": [0.0, 3.0], "fov": [42, 52], "ease": "inout"},
+      "cues": [[0.4, "battery"], [0.8, "look_left"], [1.8, "look_right"], [3.1, "look_far"]]
     },
     {
-      "id": "station", "set": "world", "dur": 8.6,
-      "cam": {"frame": "pod", "from": [3.6, 2.1, -0.9], "to": [3.3, 1.95, -1.6], "look_from": [-1.1, 0.3, -5.2], "look_to": [-1.4, 0.3, -5.9], "fov": [44, 40], "ease": "inout"},
-      "lines": [[0.3, "brief_0"]],
-      "cues": [[0.6, "look_station"]],
-      "p": {"go_at": 3.8, "go_dur": 3.4}
+      "id": "voice", "set": "world", "dur": 6.3,
+      "cam": {"frame": "pod", "look_anchor": "lumi", "from": [1.35, 0.5, -4.5], "to": [1.15, 0.45, -4.1], "look_from": [0, 0.95, 0], "look_to": [0, 1.05, 0], "fov": [36, 33], "ease": "inout"},
+      "lines": [[0.4, "brief_0"]],
+      "cues": [[0.3, "hear"]]
     },
     {
-      "id": "alone", "set": "world", "dur": 9.4,
-      "cam": {"mode": "orbit", "center": "lumi", "angle": [38, 180], "radius": [2.7, 7.6], "height": [0.95, 4.2], "look_up": [0.75, 1.0], "ahead": [0.0, 3.0], "fov": [42, 52], "ease": "inout"},
+      "id": "bench", "set": "world", "dur": 8.0,
+      "cam": {"frame": "pod", "from": [0.5, 1.15, -11.4], "to": [0.2, 1.05, -10.8], "look_from": [-1.3, 0.8, -5.0], "look_to": [-1.1, 0.8, -5.2], "fov": [44, 40], "ease": "inout", "hand": 0.08},
       "lines": [[0.3, "brief_1"]],
-      "cues": [[0.2, "look_ahead"], [-1.1, "relay_drop"]]
+      "cues": [[0.6, "look_station"], [-1.7, "relay_drop"]],
+      "p": {"go_at": 2.6, "go_dur": 3.4}
+    },
+    {
+      "id": "alone", "set": "world", "dur": 2.6,
+      "cam": {"mode": "orbit", "center": "lumi", "angle": [176, 182], "radius": [9.0, 10.5], "height": [5.4, 6.6], "look_up": [0.8, 0.8], "ahead": [4.0, 5.0], "fov": [50, 52], "ease": "inout"}
     },
     {
       "id": "handoff", "set": "world", "dur": 3.4,

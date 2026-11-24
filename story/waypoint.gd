@@ -85,6 +85,7 @@ var _trail_alpha: float = 1.0  # [v10guide] fades out when the target is close a
 
 func _ready() -> void:
 	top_level = true
+	add_to_group("guide_3d")  # [v11film] a rewatch of the opening film hides the guide marks
 	if _shader == null:
 		_shader = Shader.new()
 		_shader.code = SHADER_CODE

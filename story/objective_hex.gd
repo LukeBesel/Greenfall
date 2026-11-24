@@ -76,6 +76,7 @@ static var _shader_mix: Shader  # [v10guide] the objective's laser line
 
 func _ready() -> void:
 	top_level = true
+	add_to_group("guide_3d")  # [v11film] a rewatch of the opening film hides the guide marks
 	if _shader == null:
 		_shader = Shader.new()
 		_shader.code = SHADER_CODE
