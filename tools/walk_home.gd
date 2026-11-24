@@ -97,7 +97,7 @@ static func _on_cubes(id: String, v: BigNum) -> void:
 		if src == "GameState.gd" or from.size() >= 6:
 			continue
 		from.append("%s:%d %s" % [src, int(f.get("line", 0)), str(f.get("function", ""))])
-	if _since_set.size() < 40:
+	if _since_set.size() < 80:
 		_since_set.append("%+.2f %s" % [d, " < ".join(from.slice(0, 3))])
 	if d >= 300.0:
 		print("[walk-home] note: the game paid +%.2f cubes at once (step %s) from %s" % [d, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
@@ -1281,6 +1281,9 @@ static func _part_shuttle() -> void:
 	await _shot("shuttle_built")
 	var moved: bool = await _wait_step_not("shuttle", 4.0)
 	_check(moved and _step_id() == "hub_fly_2", "shuttle done: only now the card says to fly (%s)" % _step_id())
+	# [v9a] CI and two of three runs here: 1.3K-2.7K cubes in the seconds after the build, none of it
+	# one payment of 300 or more. Each change since the walk set the price, with its payer.
+	print("[walk-home] note: shuttle built: cubes %.2f; every change since the price was set: %s" % [GameState.get_currency("cubes").to_float(), str(_since_set)])
 	await _reload("shuttle just built", func() -> Dictionary: return {"built": Hub.rocket_built()})
 	os_ = OrbitSites.of(w)
 	await tree.create_timer(1.0).timeout
