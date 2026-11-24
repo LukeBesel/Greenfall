@@ -1252,6 +1252,7 @@ static func _part_shuttle() -> void:
 	await _click(_price_tag(ld, "shuttle"))
 	_check(not Hub.rocket_built(), "shuttle: a click while short builds nothing")
 	_set_money(float(cost.get("cubes", 0.0)), float(cost.get("parts", 0.0)))
+	var stats_b: Dictionary = GameState.stats.duplicate()
 	await tree.create_timer(0.4).timeout
 	await _shot("shuttle_bench")
 	for k: int in 3:
@@ -1283,7 +1284,11 @@ static func _part_shuttle() -> void:
 	_check(moved and _step_id() == "hub_fly_2", "shuttle done: only now the card says to fly (%s)" % _step_id())
 	# [v9a] CI and two of three runs here: 1.3K-2.7K cubes in the seconds after the build, none of it
 	# one payment of 300 or more. Each change since the walk set the price, with its payer.
-	print("[walk-home] note: shuttle built: cubes %.2f; every change since the price was set: %s" % [GameState.get_currency("cubes").to_float(), str(_since_set)])
+	var moved_b: Dictionary = {}
+	for k: Variant in GameState.stats:
+		if (GameState.stats[k] is float or GameState.stats[k] is int) and float(GameState.stats[k]) != float(stats_b.get(k, 0.0)):
+			moved_b[k] = float(GameState.stats[k]) - float(stats_b.get(k, 0.0))
+	print("[walk-home] note: shuttle built: cubes %.2f; every change since the price was set: %s; stats moved: %s" % [GameState.get_currency("cubes").to_float(), str(_since_set), str(moved_b)])
 	await _reload("shuttle just built", func() -> Dictionary: return {"built": Hub.rocket_built()})
 	os_ = OrbitSites.of(w)
 	await tree.create_timer(1.0).timeout
