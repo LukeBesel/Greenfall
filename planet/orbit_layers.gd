@@ -197,7 +197,7 @@ func open_survey() -> void:
 	if so.sites and so.sites.picker and so.sites.picker.is_open:  # [v2map] the rocket's list is up
 		return
 	so.set_input(false)
-	GameState.flags["map_seen"] = true  # [v10pace] the card's "Look at the map" step (item 110; v10ui's map sets it too)
+	GameState.flags["map_seen"] = true  # [v10pace] the card's "Look at the map" step (item 109; v10ui's map sets it too)
 	survey.open_view()
 
 
