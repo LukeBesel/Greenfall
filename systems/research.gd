@@ -620,7 +620,10 @@ func _process(delta: float) -> void:
 	update()
 	for sid: String in check_story(world):  # [v4bots] the Haul Bug / Skimmer plans arrive
 		_announce_story(sid)
-	var rewards: Dictionary = {"plants_bloomed": "plant_bloomed", "shards_found": "shard_read", "robot_bales": "robot_bale"}
+	# This node runs while the game is paused (for the workbench), but field notes for work done in
+	# play (a robot's bale, a bloom, a shard) are paid in play: a bale made just before a pause pays
+	# once the game goes on, never while it stands still (owner item 110).
+	var rewards: Dictionary = {} if get_tree().paused else {"plants_bloomed": "plant_bloomed", "shards_found": "shard_read", "robot_bales": "robot_bale"}
 	for k: String in rewards:
 		var v: float = float(GameState.stats.get(k, 0.0))
 		var d: float = v - float(_seen.get(k, v))

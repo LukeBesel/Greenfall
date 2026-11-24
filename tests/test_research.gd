@@ -202,6 +202,23 @@ func test_live_node_awards_data_from_events() -> void:
 	assert_almost_eq(_data(), Research.reward("hex_cleaned") + Research.reward("hex_restored") + Research.reward("shard_read"), 0.001)
 
 
+## Owner item 110: pausing pays nothing. The node runs while paused (the workbench pauses the
+## game), so it once paid a robot's bale made just before a pause during the pause; the notes now
+## wait until the game goes on.
+func test_notes_wait_while_paused() -> void:
+	GameState.flags["hint_data"] = true
+	var n := Research.new()
+	add_child_autofree(n)
+	GameState.inc_stat("robot_bales")
+	get_tree().paused = true
+	n._process(1.0)
+	var while_paused: float = _data()
+	get_tree().paused = false
+	assert_almost_eq(while_paused, 0.0, 0.001, "nothing is paid while the game is paused")
+	n._process(1.0)
+	assert_almost_eq(_data(), Research.reward("robot_bale"), 0.001, "the bale's notes are paid once the game goes on")
+
+
 func test_state_survives_save_round_trip() -> void:
 	_give(1000)
 	Research.start("scoop_beam", 1000.0)

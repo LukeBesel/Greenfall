@@ -18,8 +18,10 @@ extends Node
 ##
 ##   --work-watch[=S]     a "[work]" line every S game seconds (default 30): where Lumi stands, the
 ##                        cubes, the clean hexes, and what each base's robots and keepers did; with
-##                        --work-pause=T the game is paused for 5 real seconds at game second T and
-##                        the numbers before and after must be the same ("[work] pause PASS").
+##                        --work-pause=T[,T2,..] the game is paused for 5 real seconds at game second T and
+##                        the numbers before and after must be the same ("[work] pause PASS");
+##                        --work-pause-bales=N pauses N times the moment a robot's bale is made (pay
+##                        for it that lands while paused is a FAIL; what paid is named).
 ## Lines: "[clock] ...", "[work] ...".
 
 const SNAP: String = "clock_snap.json"
@@ -33,7 +35,9 @@ var diffs: Array[String] = []
 var _loaded: Dictionary = {}
 var _watch_t: float = 0.0
 var _watch_next: float = 0.0
-var _pause_done: bool = false
+var _pauses_done: int = 0
+var _bale_pauses: int = 0
+var _bales_seen: float = -1.0
 
 
 static func wanted() -> bool:
@@ -312,9 +316,19 @@ func _process(delta: float) -> void:
 		var every: float = DevHooks.get_f("work-watch", 30.0)
 		_watch_next = _watch_t + (every if every > 1.0 else 30.0)  # a bare flag reads as 1
 		_work_line("")
-	if DevHooks.has("work-pause") and not _pause_done and _watch_t >= DevHooks.get_f("work-pause", 60.0):
-		_pause_done = true
-		_pause_test()
+	if DevHooks.has("work-pause-bales") and _bale_pauses < int(DevHooks.get_f("work-pause-bales", 3.0)):
+		var bales: float = float(GameState.stats.get("robot_bales", 0.0))
+		if _bales_seen >= 0.0 and bales > _bales_seen:
+			_bale_pauses += 1
+			_bales_seen = bales
+			_pause_test()
+			return
+		_bales_seen = bales
+	if DevHooks.has("work-pause"):
+		var at: PackedStringArray = DevHooks.get_s("work-pause", "60").split(",", false)
+		if _pauses_done < at.size() and _watch_t >= float(at[_pauses_done]):
+			_pauses_done += 1
+			_pause_test()
 
 
 ## Pausing the game pauses the robots: 5 real seconds paused, the numbers must not move.
@@ -323,10 +337,22 @@ func _pause_test() -> void:
 	var a: Dictionary = _work()
 	var at: Dictionary = ClockCheck.state(so)
 	_work_line("pause: before")
+	# Whatever changes a currency while paused is named with where the call came from.
+	var moved: Array[String] = []
+	var on_change := func(id: String, amount: BigNum) -> void:
+		if tree.paused:
+			var from: Array[String] = []
+			for f: Dictionary in get_stack().slice(1, 7):
+				from.append("%s:%d %s" % [str(f.get("source", "")).get_file(), int(f.get("line", 0)), str(f.get("function", ""))])
+			moved.append("%s now %s, from %s" % [id, amount.format(), " < ".join(from)])
+	EventBus.currency_changed.connect(on_change)
 	tree.paused = true
 	var until: int = Time.get_ticks_msec() + 5000
 	while Time.get_ticks_msec() < until:
 		await tree.process_frame
+	EventBus.currency_changed.disconnect(on_change)
+	for m: String in moved:
+		print("[work] pause: changed while paused: %s" % m)
 	var b: Dictionary = _work()
 	var bt: Dictionary = ClockCheck.state(so)
 	tree.paused = false
