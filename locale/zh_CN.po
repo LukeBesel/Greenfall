@@ -534,15 +534,15 @@ msgstr "新发现：%s。已收入图鉴。"
 msgid "Snap! A %s for your Collection."
 msgstr "咔嚓！一张%s的照片，收进你的收藏。"
 
-#: planet/cd_finds.gd:353
+#: planet/cd_finds.gd:354
 msgid "A scratched CD turned up in the rubble."
 msgstr "瓦砾里冒出了一张刮花的CD。"
 
-#: planet/cd_finds.gd:353
+#: planet/cd_finds.gd:354
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr "清理过的瓦砾里有东西在闪光。一张旧CD！"
 
-#: planet/cd_finds.gd:410
+#: planet/cd_finds.gd:417
 msgid "Your CD case is full."
 msgstr "你的CD盒满了。"
 

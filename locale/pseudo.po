@@ -531,15 +531,15 @@ msgstr "[Ñéŵ šîĝĥţîñĝ: %s. Îţ'š îñ ţĥé Çôðéx ñôŵ. ~~~~
 msgid "Snap! A %s for your Collection."
 msgstr "[Šñàþ! À %s ƒôŕ ýôûŕ Çôļļéçţîôñ. ~~~~~~~~]"
 
-#: planet/cd_finds.gd:353
+#: planet/cd_finds.gd:354
 msgid "A scratched CD turned up in the rubble."
 msgstr "[À šçŕàţçĥéð ÇÐ ţûŕñéð ûþ îñ ţĥé ŕûbbļé. ~~~~~~~~~~~]"
 
-#: planet/cd_finds.gd:353
+#: planet/cd_finds.gd:354
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr "[Šôméţĥîñĝ šĥîñý ţûŕñéð ûþ îñ ţĥé çļéàŕéð ŕûbbļé. Àñ ôļð ÇÐ! ~~~~~~~~~~~~~~~~~~]"
 
-#: planet/cd_finds.gd:410
+#: planet/cd_finds.gd:417
 msgid "Your CD case is full."
 msgstr "[Ýôûŕ ÇÐ çàšé îš ƒûļļ. ~~~~]"
 

@@ -534,15 +534,15 @@ msgstr "Nuevo avistamiento: %s. Ya está en el Códice."
 msgid "Snap! A %s for your Collection."
 msgstr "¡Clic! Una foto (%s) para tu Colección."
 
-#: planet/cd_finds.gd:353
+#: planet/cd_finds.gd:354
 msgid "A scratched CD turned up in the rubble."
 msgstr "Ha aparecido un CD rayado entre los escombros."
 
-#: planet/cd_finds.gd:353
+#: planet/cd_finds.gd:354
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr "Algo brilla entre los escombros despejados. ¡Un CD antiguo!"
 
-#: planet/cd_finds.gd:410
+#: planet/cd_finds.gd:417
 msgid "Your CD case is full."
 msgstr "Tu estuche de CD está lleno."
 
