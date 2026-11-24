@@ -318,7 +318,7 @@ it; nothing about timing or cameras is in code. Shots play in the order they are
 | When a line is said | `lines`: `[[second, key]]`; the keys are `Intro.lines()` in `story/intro.gd` (the last two come from `data/objectives.json` `brief`, which is also what WREN says if the film was skipped) |
 | A sound | `sfx`: `[[second, sound, pitch, dB]]`; only the built-in sounds exist (`autoload/Audio.gd`: thud, crunch, whoosh, roar, siren, groan, steam, hydraulic, clunk, servo, beep, blip, buzz, clink ...); an unknown name plays a blip |
 | When something happens in a shot | `cues`: `[[second, name]]` runs `_cue_<name>` in `story/intro.gd`; a negative second counts back from the shot's end |
-| Numbers a shot's code reads (speeds, start points, when the hatch opens) | the shot's `p` block |
+| Numbers a shot's code reads (speeds, start points, when the hatch opens) | the shot's `p` block (in any space shot `fill` scales the planet's warm bounce light from below: 1 is normal, `apart` looks up at the ark's belly and uses 3.2) |
 | Where Lumi stops outside the door, where the game starts, and what Lumi faces there | top level `door_spot`, `end_spot` (pod frame) and `end_face` (a yard anchor; `bench` = the old workbench, the first job) |
 | The letterbox | top level `letterbox_px` |
 
@@ -335,7 +335,7 @@ The story the shots tell, in order (the lines are WREN's; there is no narrator):
 | `planet` | dead Verdance, the ark small above it, the title | none |
 | `window`, `ark`, `tend` | Lumi at the garden dome's glass looking down; the ark and its lit decks; Lumi humming to the tray | "Still no green down there, Lumi." / "Nothing can grow in all that trash. So the people sleep up here, and we wait." / "Three hundred years. And you have kept the last plants alive." |
 | `omen`, `storm`, `hit` | a streak past the glass; meteors; the engines die; the dome breaks | "Lumi. Come away from the glass." |
-| `breach`, `seal`, `release`, `apart` | air and leaves pour out; Lumi takes the tray to the pod; the pod sinks out of the room, drops from the keel and falls away | "The glass is breaking! Take the tray. Get to the pod!" / "I can't keep you safe here. I have to let you go." / "My engines are gone. I can't come after you." / "Lumi— I will find you— I will find—" |
+| `breach`, `seal`, `release`, `apart` | air and leaves pour out; Lumi takes the tray to the pod; the pod sinks out of the room and drops from the keel; from beside the falling pod, the ark (burning, smoking, bleeding air) sails on and shrinks away | "The glass is breaking! Take the tray. Get to the pod!" / "I can't keep you safe here. I have to let you go." / "My engines are gone. I can't come after you." / "Lumi— I will find you— I will find—" |
 | `reentry`, `sky`, `impact`, `dust` | the fall and the crash, then quiet | none |
 | `hatch`, `look` | eyes in the dark cabin, out of the door, 4% battery, a world of trash | none |
 | `voice`, `bench`, `alone`, `handoff` | WREN gets through once and is cut off; Lumi turns to the old workbench; the camera settles behind it | the two `brief` lines |
@@ -355,7 +355,9 @@ What is in the pictures:
 
 - The ark: `story/cradle_ship.gd`, built in code (hull profile `PROFILE`, the dome, the ring, the
   engines). `alarm`, `thrust`, `power` (how many windows are lit) and `breach` (the hole in the
-  dome) are what the storm changes. Its plates and windows are `art/shaders/ark_hull.gdshader`, the
+  dome) are what the storm changes; from the engine hit on, every shot of the ark calls
+  `Intro._ark_wounds` (fire, grey smoke and sparks out of the engine block, the dome venting air
+  and leaves). Its plates and windows are `art/shaders/ark_hull.gdshader`, the
   dome's glass and its damage `art/shaders/ark_dome.gdshader`. Look at it alone:
   `... godot --path . --rendering-driver opengl3 res://scenes/ship_preview.tscn -- --ship-view=ark --out=screenshots/v11/ship/ark`.
 - The seed vault (the inside of that dome): `story/space_stage.gd` `_build_vault` (plants, lamps,

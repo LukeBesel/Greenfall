@@ -1131,6 +1131,7 @@ func _space_base() -> void:
 	st.motes_on = true
 	st.motes_vel = Vector3.ZERO
 	st.env.ambient_light_color = Color(0.32, 0.36, 0.45)
+	st.fill.light_energy = 0.55 * _p("fill", 1.0)  # the planet's warm bounce from below
 	set_fire(_stage_fire(), 0.0, 0.0)
 	_planet(_p("planet_scale", 1.0), _pv("planet_top", Vector3(0, -60, -120)))
 
@@ -1343,7 +1344,7 @@ func _run_storm(lt: float, _u: float, delta: float) -> void:
 		_storm_meteor(n)
 	# The engines after their hit: fire, black smoke and sparks pour out of the block.
 	if lt > float(_acc.get("engines", INF)):
-		_ark_wounds(lt, delta, 0.0)
+		_ark_wounds(lt, delta, 0.0, _p("fx_size", 1.0))
 
 
 ## The ark after the storm, in every shot that shows it: its engine block burns and pours out black
@@ -1355,7 +1356,10 @@ func _ark_wounds(lt: float, delta: float, vent: float, size_k: float = 1.0) -> v
 	var back: Vector3 = (st.ark.global_basis * Vector3(0, 0, 1)).normalized()
 	var j := Vector3(sin(lt * 9.1), cos(lt * 7.3), sin(lt * 5.7 + 1.0))
 	if _tick("smoke", 0.08, delta):
-		st.puff(e + back * 1.5 + j * 1.6 * size_k, back * 3.2 + j * 0.9, Color(0.16, 0.15, 0.15, 0.62), 3.4 * size_k, 3.2)
+		# Grey-brown, not black: black smoke vanishes against black space.
+		# (A shot can keep it close to the ship: `smoke_drift`, `smoke_life`; the camera of `apart`
+		# falls back through where a long trail would be.)
+		st.puff(e + back * 1.5 + j * 1.6 * size_k, back * _p("smoke_drift", 3.2) + j * 0.9, Color(0.5, 0.45, 0.4, 0.5), 3.4 * size_k, _p("smoke_life", 3.2))
 	if _tick("fire", 0.06, delta):
 		st.puff(e + back * 0.6 + j * 0.9 * size_k, back * 2.2 + j * 1.2, Color(1.0, 0.48, 0.16, 0.55), 1.5 * size_k, 0.8)
 	if _tick("spark", 0.55, delta):
@@ -1432,7 +1436,7 @@ func _run_hit(lt: float, _u: float, delta: float) -> void:
 		# The hole opens fast, then the garden's air pours out of it: white breath, torn leaves.
 		st.ark.breach = clampf((lt - hit_at) / 0.22, 0.0, 1.0)
 		_vent_dome(lt, delta, 1.0)
-	_ark_wounds(lt, delta, 0.0)
+	_ark_wounds(lt, delta, 0.0, _p("fx_size", 1.0))
 
 
 ## Air and leaves streaming out of the broken dome (the space set).
