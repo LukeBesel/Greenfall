@@ -19,21 +19,22 @@ void fragment() {
 	float y = height_override >= 0.0 ? height_override : UV.y;
 	float h = clamp(1.0 - y / heat_top, 0.0, 1.0);
 	// Vertical streaks: hot air dragged up the hull during re-entry.
-	float s = 0.55 + 0.45 * sin(UV.x * 37.0 + sin(UV.x * 11.0) * 2.5);
-	s *= 0.75 + 0.25 * hash(floor(UV.x * 18.0));
-	float hs = clamp(h * (0.65 + 0.6 * s), 0.0, 1.0);
+	// [v11film] Soft and wide: the hard narrow streaks read as smeared stripes on the capsule.
+	float s = 0.8 + 0.2 * sin(UV.x * 9.0 + sin(UV.x * 4.0) * 1.5);
+	s *= 0.92 + 0.08 * hash(floor(UV.x * 6.0));
+	float hs = clamp(h * (0.72 + 0.4 * s), 0.0, 1.0);
 	vec3 straw = vec3(0.86, 0.74, 0.5);
 	vec3 bronze = vec3(0.6, 0.4, 0.26);
 	vec3 violet = vec3(0.3, 0.27, 0.42);
 	vec3 soot = vec3(0.09, 0.08, 0.075);
 	vec3 tint = mix(straw, bronze, smoothstep(0.25, 0.55, hs));
-	tint = mix(tint, violet, smoothstep(0.55, 0.8, hs));
+	tint = mix(tint, violet, 0.5 * smoothstep(0.7, 0.92, hs));
 	vec3 col = paint_color.rgb;
 	// A faint pearlescent shift with the view angle.
 	float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 3.0);
 	col = mix(col, col * vec3(0.96, 0.99, 1.05), pearl * fres);
-	col = mix(col, tint * mix(vec3(1.0), paint_color.rgb, 0.25), heat * smoothstep(0.08, 0.5, hs));
-	col = mix(col, soot, heat * smoothstep(0.78, 1.0, hs));
+	col = mix(col, tint * mix(vec3(1.0), paint_color.rgb, 0.25), heat * 0.8 * smoothstep(0.22, 0.8, hs));
+	col = mix(col, soot, heat * smoothstep(0.86, 1.0, hs));
 	ALBEDO = col;
 	float burnt = heat * hs;
 	ROUGHNESS = clamp(roughness + burnt * 0.35, 0.0, 1.0);

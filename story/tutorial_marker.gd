@@ -30,6 +30,7 @@ var _finishing: bool = false
 
 func _ready() -> void:
 	top_level = true
+	add_to_group("guide_3d")  # [v11film] a rewatch of the opening film hides the guide marks
 	_chev_mat = _material(true)
 	_chev = MeshInstance3D.new()
 	_chev.mesh = _chevron_mesh()

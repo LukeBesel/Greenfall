@@ -302,7 +302,7 @@ new planet needs only its block (keyed by its id in `data/homeward.json`). After
 `python3 tools/extract_strings.py` and fill the six languages (docs/LOCALIZATION.md). Check with
 `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_story_arc.gd -gexit`.
 
-## The opening film (v9intro)
+## The opening film (v9intro, rewritten and re-shot by v11film)
 
 The film a new game opens with is a shot table: `data/intro_shots.json`. `story/intro.gd` plays
 it; nothing about timing or cameras is in code. Shots play in the order they are listed.
@@ -315,10 +315,10 @@ it; nothing about timing or cameras is in code. Shots play in the order they are
 | The lens | `cam.fov` `[start, end]` in degrees (a push-in is a smaller end value) |
 | Hand-held sway, a tilted horizon, a lagging aim | `cam.hand` (degrees), `cam.roll` `[start, end]`, `cam.look_lag` (seconds the aim trails a moving subject) |
 | A cut, a dip to black, a fade to white | `fade_in` / `fade_out` seconds and `fade_col` `[r, g, b]`; none = a hard cut |
-| When a story line is said | `lines`: `[[second, key]]`; the keys are `Intro.lines()` (the brief's two lines come from `data/objectives.json` `brief`) |
-| A sound | `sfx`: `[[second, sound, pitch, dB]]` |
+| When a line is said | `lines`: `[[second, key]]`; the keys are `Intro.lines()` in `story/intro.gd` (the last two come from `data/objectives.json` `brief`, which is also what WREN says if the film was skipped) |
+| A sound | `sfx`: `[[second, sound, pitch, dB]]`; only the built-in sounds exist (`autoload/Audio.gd`: thud, crunch, whoosh, roar, siren, groan, steam, hydraulic, clunk, servo, beep, blip, buzz, clink ...); an unknown name plays a blip |
 | When something happens in a shot | `cues`: `[[second, name]]` runs `_cue_<name>` in `story/intro.gd`; a negative second counts back from the shot's end |
-| Numbers a shot's code reads (speeds, start points, when the hatch opens) | the shot's `p` block |
+| Numbers a shot's code reads (speeds, start points, when the hatch opens) | the shot's `p` block (in any space shot `fill` scales the planet's warm bounce light from below: 1 is normal, `apart` looks up at the ark's belly and uses 3.2) |
 | Where Lumi stops outside the door, where the game starts, and what Lumi faces there | top level `door_spot`, `end_spot` (pod frame) and `end_face` (a yard anchor; `bench` = the old workbench, the first job) |
 | The letterbox | top level `letterbox_px` |
 
@@ -328,29 +328,69 @@ and `"mode": "handoff"` ends exactly on the game's own camera (keep it last: it 
 hand-over to play seamless). After editing, run `python3 tools/intro_table_fmt.py` to keep the
 file's layout.
 
+The story the shots tell, in order (the lines are WREN's; there is no narrator):
+
+| Shots | What is seen | Line |
+|---|---|---|
+| `planet` | dead Verdance, the ark small above it, the title | none |
+| `window`, `ark`, `tend` | Lumi at the garden dome's glass looking down; the ark and its lit decks; Lumi humming to the tray | "Still no green down there, Lumi." / "Nothing can grow in all that trash. So the people sleep up here, and we wait." / "Three hundred years. And you have kept the last plants alive." |
+| `omen`, `storm`, `hit` | a streak past the glass; meteors; the engines die; the dome breaks | "Lumi. Come away from the glass." |
+| `breach`, `seal`, `release`, `apart` | air and leaves pour out; Lumi takes the tray to the pod; the pod sinks out of the room and drops from the keel; from beside the falling pod, the ark (burning, smoking, bleeding air) sails on and shrinks away | "The glass is breaking! Take the tray. Get to the pod!" / "I can't keep you safe here. I have to let you go." / "My engines are gone. I can't come after you." / "Lumi— I will find you— I will find—" |
+| `reentry`, `sky`, `impact`, `dust` | the fall and the crash, then quiet | none |
+| `hatch`, `look` | eyes in the dark cabin, out of the door, 4% battery, a world of trash | none |
+| `voice`, `bench`, `alone`, `handoff` | WREN gets through once and is cut off; Lumi turns to the old workbench; the camera settles behind it | the two `brief` lines |
+
+The song (`audio/songs/fall_of_lm1.mp3`) has its loudest hits at 2.5, 41.5 and 76.5 s (measured:
+level jumps in 0.1 s steps). The title comes in on the first, the dome breaks on the second and
+the pod hits the ground on the third (English timings; a language with longer lines drifts by a
+second or two). If you change a `dur` before one of those, take the same time off a later shot.
+
 A new shot needs a row in the table and, in `story/intro.gd`, `_in_<id>()` (sets the shot up from
 nothing) and, if things move, `_run_<id>(lt, u, delta)`. Rules the tests hold
-(`tests/test_intro_film.gd`): every line of `Intro.lines()` is said once and in order; no shot goes
-back off-world after the first `world` shot (the game's own pod is placed at the crash); the last
-shot is the hand-off.
+(`tests/test_intro_film.gd`, `tests/test_v11film.gd`): every line of `Intro.lines()` is said once
+and in order, and all of them are WREN's; no shot goes back off-world after the first `world` shot
+(the game's own pod is placed at the crash); the last shot is the hand-off.
+
+What is in the pictures:
+
+- The ark: `story/cradle_ship.gd`, built in code (hull profile `PROFILE`, the dome, the ring, the
+  engines). `alarm`, `thrust`, `power` (how many windows are lit) and `breach` (the hole in the
+  dome) are what the storm changes; from the engine hit on, every shot of the ark calls
+  `Intro._ark_wounds` (fire, grey smoke and sparks out of the engine block, the dome venting air
+  and leaves). Its plates and windows are `art/shaders/ark_hull.gdshader`, the
+  dome's glass and its damage `art/shaders/ark_dome.gdshader`. Look at it alone:
+  `... godot --path . --rendering-driver opengl3 res://scenes/ship_preview.tscn -- --ship-view=ark --out=screenshots/v11/ship/ark`.
+- The seed vault (the inside of that dome): `story/space_stage.gd` `_build_vault` (plants, lamps,
+  the planter table, the pod bay; `vault_breach`, `vault_wind`, `vault_power`).
+- The pod: `story/escape_pod.gd` (`PROFILE` is its outline; legs in `_build_fins`). The same model
+  hangs under the ark, falls in the film and stands in the yard. Look at it alone:
+  `... res://tools/yard_lineup.tscn -- --out=screenshots/v11/pod/a --shots=pod,pod_q0,pod_in0`.
+
+Watching it again: the pause menu shows "Watch the opening again" for the first
+`Intro.REWATCH_S` seconds of play (30 minutes) while Lumi is within `Intro.REWATCH_NEAR_M` metres
+of the pod (120 m: the film is shot round the pod); the Codex has the same button for good. While
+it plays the game is stopped (the tree is paused), a stand-in plays Lumi and the film uses a pod of
+its own, so the save and the world cannot change (`tools/check_rewatch.sh`).
 
 See it (nobody can watch it in real time in the cloud box, so it is rendered as frames):
 
-- Off-world shots, no planet needed (about 8 minutes for all of them):
-  `xvfb-run -a -s "-screen 0 960x540x24" godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 res://tools/intro_preview.tscn -- --intro --quality=1 --intro-frames=screenshots/v9/intro/x --intro-every=2`
-- The whole film, or from one shot on, in the real game (one render at a time):
-  `... godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 -- --fresh --orbit --intro --intro-shot=sky --quality=1 --intro-frames=screenshots/v9/intro/x --intro-every=2`
+- Off-world shots, no planet needed (about 6 minutes for all of them):
+  `xvfb-run -a -s "-screen 0 960x540x24" godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 res://tools/intro_preview.tscn -- --intro --quality=1 --intro-frames=screenshots/v11/intro/x --intro-every=5`
+- The whole film, or from one shot on, in the real game (one render at a time, about 12 minutes):
+  `... godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 -- --fresh --orbit --intro --intro-shot=sky --quality=1 --intro-frames=screenshots/v11/intro/x --intro-every=5`
   (`--intro-at=SECONDS` starts anywhere; `--intro-to-t=SECONDS` stops the capture; `--fixed-fps`
   makes every frame the same slice of film time however slow the renderer is.)
-- Contact sheets: `python3 tools/intro_sheet.py screenshots/v9/intro/x screenshots/v9/intro/sheet --cols 6 --rows 5`
+- A rewatch in the real game, rendered: `... -- --fresh --orbit --no-intro --rewatch-at=20 --quality=1 --intro-frames=screenshots/v11/intro/r --intro-every=5`
+- Contact sheets: `python3 tools/intro_sheet.py screenshots/v11/intro/x screenshots/v11/intro/sheet --cols 5 --rows 5 --w 384`
 - The shot times for the current language: any run with `--intro` prints `[intro] shot <id> <start> - <end> s`.
 - Skipping must leave the same world as watching: `tools/check_intro.sh` (five headless runs:
   watched, skipped at the start, mid-fall, just before the crash, at the hatch; `--quick` runs
   two and is part of `tools/check_exit.sh`).
 
-The film's effects (meteors, blasts, puffs, the re-entry fire, the drifting specks) live in
-`story/space_stage.gd` and three small shaders (`art/shaders/cine_glow`, `cine_puff`,
+The film's effects (meteors, blasts, puffs, torn leaves, the re-entry fire, the drifting specks)
+live in `story/space_stage.gd` and three small shaders (`art/shaders/cine_glow`, `cine_puff`,
 `cine_trail`); they are additive or alpha-blended, unshaded, with no screen-space tricks, so they
 look the same on Forward+ and Compatibility. The planet seen from space is
 `art/shaders/space_planet.gdshader` (its trash mottle, haze and sea) with its air in
-`art/shaders/space_atmosphere.gdshader`.
+`art/shaders/space_atmosphere.gdshader`. On the planet the film darkens the picture a little and
+dusts the sky (`SkyDirector.film_dust`), easing back to the game's own look over the hand-off.

@@ -138,6 +138,11 @@ func hex_at(world: Vector3) -> int:
 	return int(axial_to_id.get(a, -1))
 
 
+## The same with a sharp edge on the globe (SphereField overrides it).
+func hex_at_exact(world: Vector3) -> int:
+	return hex_at(world)
+
+
 func removed_fraction(id: int) -> float:
 	if hex_total[id] <= 0.0:
 		return 1.0

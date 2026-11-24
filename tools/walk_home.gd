@@ -57,6 +57,8 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		tree.quit(1)
 		return
 	EventBus.toast.connect(func(t: String, _k: String) -> void: _toasts.append(t))
+	_cubes_seen = GameState.get_currency("cubes").to_float()
+	EventBus.currency_changed.connect(_on_cubes)
 	_base_state()
 	for k: int in 1200:  # [v9a] WREN's brief reveals the card (subtitle clock: slow on a slow runner)
 		if ob.revealed:
@@ -72,6 +74,51 @@ static func run_dev(p_so: SliceOrbit) -> void:
 	tree.quit(0 if _fails.is_empty() else 1)
 
 
+static var _cubes_seen: float = 0.0
+
+
+## [v9a] Every lump of cubes the game pays at once (300 or more), with the script lines that paid
+## it: CI saw 1.2K-1.5K appear in a few seconds (shuttle, saving up; after a reload).
+static func _on_cubes(id: String, v: BigNum) -> void:
+	if id != "cubes":
+		return
+	var now: float = v.to_float()
+	var d: float = now - _cubes_seen
+	_cubes_seen = now
+	if absf(d) < 0.5:
+		_since_set_sum[0 if d < 0.0 else 1] += d
+		return
+	var st: Array = get_stack()
+	if st.size() >= 2 and str(st[1].get("function", "")) == "_set_money":
+		_since_set.clear()
+		_since_set_sum = [0.0, 0.0]
+		return  # the walk's own money
+	_since_set_sum[0 if d < 0.0 else 1] += d
+	var from: Array[String] = []
+	for f: Dictionary in st.slice(1):
+		var src: String = str(f.get("source", "")).get_file()
+		if src == "GameState.gd" or from.size() >= 6:
+			continue
+		from.append("%s:%d %s" % [src, int(f.get("line", 0)), str(f.get("function", ""))])
+	if _since_set.size() < 80:
+		_since_set.append("%+.2f %s" % [d, " < ".join(from.slice(0, 3))])
+	if DevHooks.has("walk-home-paylog"):  # dev: every payment as it comes
+		print("[walk-home] pay %+.2f (now %.2f) step %s from %s" % [d, now, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
+	if d >= 300.0:
+		print("[walk-home] note: the game paid +%.2f cubes at once (step %s) from %s" % [d, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
+
+
+## [v9a] Every change of cubes since the walk last set them (what a money check failed on), and
+## their sums: [spent, earned].
+static var _since_set: Array[String] = []
+static var _since_set_sum: Array[float] = [0.0, 0.0]
+
+
+## [v9a] A Lumi level pays a reward scaled to the cubes earned so far (systems/lumi_level.gd).
+static func _on_level(lv: int, reward: String) -> void:
+	print("[walk-home] note: Lumi reached level %d (%s), step %s" % [lv, reward, _step_id() if ob != null and is_instance_valid(ob) else "-"])
+
+
 static func _bind(p_so: SliceOrbit) -> void:
 	so = p_so
 	w = so.w
@@ -85,6 +132,10 @@ static func _wait_world() -> bool:
 		await tree.create_timer(0.5).timeout
 	ob = w.get("objectives") as Objectives
 	p = w.get("patch") as Patch
+	var ll: LumiLevel = w.get("lumi_level") as LumiLevel if is_instance_valid(w) else null
+	if ll and not ll.leveled.is_connected(_on_level):
+		ll.leveled.connect(_on_level)
+	_cubes_seen = GameState.get_currency("cubes").to_float()  # a load sets them without a signal
 	return ob != null and p != null and not bool(w.get("building"))
 
 
@@ -113,7 +164,9 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var hub0: int = GameState.current_hub
 	var tower0: bool = w.get_node_or_null("SignalTower") != null
 	var a: Dictionary = _snap()
+	print("[walk-home] trace %s: save: step %s card %s count %s cubes %.1f" % [tag, str(a["step"]), str(a["card"]), str(a["pr"]), float(a["_cubes"])])
 	var ea: Dictionary = extra.call() if extra.is_valid() else {}
+	var saved_ms: int = Time.get_ticks_msec()  # how long the quit and Continue took, for the notes only
 	var fl0: Fleet = w.get("fleet") as Fleet
 	var bots: bool = fl0 != null and fl0.robot_total() > 0
 	_reloads += 1
@@ -160,6 +213,10 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	_check(menu != null, "%s: back at the title with Continue (%s)" % [tag, "kill" if kill else "Quit"])
 	if menu == null:
 		return await _fatal(tag)
+	# [v9a] What the save on disk holds, to tell money the load made up from money earned in play.
+	var sv: Dictionary = SaveManager.read_dict(SaveManager.slot_path())
+	var cubes_file: float = BigNum.from_serialized((sv.get("currencies", {}) as Dictionary).get("cubes", [0.0, 0])).to_float()
+	var hexes_file: float = float((sv.get("stats", {}) as Dictionary).get("hexes_cleaned", 0.0))
 	await tree.create_timer(1.5).timeout
 	await _click(menu.get("_continue") as Button)
 	DevHooks.args.erase("menu")
@@ -174,6 +231,15 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	if not await _wait_world():
 		_check(false, "%s: the loaded world has its card and Lumi" % tag)
 		return await _fatal(tag)
+	# [v9a] dev: prove the check both ways. --walk-home-fault=TAG: money the load made up (fails);
+	# --walk-home-earn=TAG: the price earned in play right after the load (a note, passes).
+	var cost_now: float = float(ob._step_price().get("cubes", 0.0))
+	if tag in DevHooks.get_s("walk-home-fault", "").split(","):
+		GameState.add_currency("cubes", BigNum.from_float(cost_now))
+	var cubes_loaded: float = GameState.get_currency("cubes").to_float()  # [v9a] as the world comes up
+	var hexes_loaded: float = float(GameState.stats.get("hexes_cleaned", 0.0))
+	if tag in DevHooks.get_s("walk-home-earn", "").split(","):
+		GameState.add_currency("cubes", BigNum.from_float(cost_now))
 	await tree.create_timer(3.0).timeout  # the card fades in
 	# [main] The new card shows a step's reason first and its hint a few seconds later (ui/objective_card.gd):
 	# give the loaded card that long to show the same lines before comparing.
@@ -182,6 +248,7 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 			break
 		await tree.create_timer(0.3).timeout
 	var b: Dictionary = _snap()
+	print("[walk-home] trace %s: load: step %s card %s count %s cubes %.1f on load, %.1f compared" % [tag, str(b["step"]), str(b["card"]), str(b["pr"]), cubes_loaded, float(b["_cubes"])])
 	if GameState.current_hub != hub0 or (w.get_node_or_null("SignalTower") != null) != tower0:
 		print("[walk-home] note: %s: current hub %d -> %d, tower node %s -> %s" % [tag, hub0, GameState.current_hub, str(tower0), str(w.get_node_or_null("SignalTower") != null)])
 	var eb: Dictionary = extra.call() if extra.is_valid() else {}
@@ -200,8 +267,21 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	# and Continue took (it used to pay for the closed time after two minutes, which a slow runner hit).
 	var pa: Array = a["pr"]
 	var pb: Array = b["pr"]
-	if absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
-		diff.append("count %s -> %s" % [str(pa), str(pb)])
+	# [v9a] A price line ("0 / 900") turns into the step's own count ("1 / 2") once the money is
+	# there. Robots keep cleaning while the walk saves, quits and loads (a hex they finish pays ~120
+	# cubes plus a research grant per note, 500-900 in all), and on a slow runner that round trip is
+	# long enough for one (CI: "0 / 900" -> "1 / 2" at tower2). Right if the save on disk holds the
+	# money the world had at the write and the load gave it back (or a hex was finished while it
+	# loaded); money that appears in the load itself is a save fault, so that still fails.
+	var pc: float = float((b["_price"] as Dictionary).get("cubes", 0.0))
+	var kept_money: bool = absf(cubes_loaded - cubes_file) <= 1.0 or hexes_loaded > hexes_file
+	var earned: bool = pc > 0.0 and float(b["_cubes"]) >= pc and float(a["_cubes"]) < pc and kept_money
+	var away: float = (Time.get_ticks_msec() - saved_ms) / 1000.0
+	if earned:
+		print("[walk-home] note: %s: the price %s was earned in play (cubes %.0f at the snapshot, %.0f in the save, %.0f on load, %.0f now; hexes cleaned %.0f saved, %.0f now): the card shows the step's count %s" % [tag,
+			str(pa[1]), float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), hexes_file, float(GameState.stats.get("hexes_cleaned", 0.0)), str(pb[1])])
+	elif absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
+		diff.append("count %s -> %s (cubes %.0f at the snapshot, %.0f in the save, %.0f on load, %.0f compared, %.0f s away)" % [str(pa), str(pb), float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), away])
 	# The outline is picked afresh on load (the most-cleared hex near Lumi): another hex is fine if
 	# the old one kept its progress and the new one is at least as far along.
 	var kept: float = (so.globe.field as HexField).removed_fraction(int(a["hex"])) if int(a["hex"]) >= 0 else 0.0
@@ -227,9 +307,9 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 				diff.append("%s %s -> %s" % [k, str(va), str(vb)])
 		elif str(va) != str(vb):
 			diff.append("%s %s -> %s" % [k, str(va), str(vb)])
-	if not diff.is_empty():  # [v9a] what moved underneath (CI flake hunt)
-		print("[walk-home] debug %s: cubes %.1f -> %.1f, parts %.1f -> %.1f, Lumi moved %.1f m, hub %d -> %d, price %s -> %s, old hex kept %.2f" % [tag,
-			float(a["_cubes"]), float(b["_cubes"]), float(a["_parts"]), float(b["_parts"]), (a["_pos"] as Vector3).distance_to(b["_pos"]), int(a["_hub"]), int(b["_hub"]), str(a["_price"]), str(b["_price"]), kept])
+	if not diff.is_empty():  # [v9a] what moved underneath
+		print("[walk-home] debug %s: cubes %.1f -> %.1f in the save -> %.1f on load -> %.1f when compared, %.0f s away, robots %s; parts %.1f -> %.1f, Lumi moved %.1f m, hub %d -> %d, price %s -> %s, old hex kept %.2f" % [tag,
+			float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), away, str(bots), float(a["_parts"]), float(b["_parts"]), (a["_pos"] as Vector3).distance_to(b["_pos"]), int(a["_hub"]), int(b["_hub"]), str(a["_price"]), str(b["_price"]), kept])
 	_check(diff.is_empty(), "%s: saved and loaded (%s): the same card, count, marker and bench row%s" % [tag, "kill" if kill else "Quit", "" if diff.is_empty() else ": " + "; ".join(diff)])
 	return true
 
@@ -813,20 +893,41 @@ static func _part_heavy() -> void:
 	var took: int = await _scoop_until("heavy hex", func() -> int: return stuck, func() -> bool: return Pace.hex_stuck(so.globe.field, stuck), 300.0)
 	_check(Pace.hex_stuck(f, stuck), "heavy: everything liftable taken from hex %d (%d scoops, %.0f%%)" % [stuck, took, f.removed_fraction(stuck) * 100.0])
 	var hc: Vector3 = f.hex_center(stuck)
-	_stand(hc, hc + _north(hc) * 3.0)
+	# [v9a] Walk up to what is left in the hex and scoop at it, as a player does. Facing north from
+	# the centre, the beam's origin could lie past a small hex's edge and the card said "Too heavy"
+	# for the piece instead of "This hex needs Lift N" (home walk, 1 run in 5).
+	var left: int = -1
+	var ld2: float = INF
+	for pid: int in f.hex_pieces[stuck]:
+		if f.piece_alive[pid] == 1 and f.piece_pos[pid].distance_squared_to(hc) < ld2:
+			ld2 = f.piece_pos[pid].distance_squared_to(hc)
+			left = pid
+	var aim: Vector3 = f.piece_pos[left] if left >= 0 else hc + _north(hc) * 3.0
+	var back: Vector3 = hc - aim
+	back = back - aim.normalized() * back.dot(aim.normalized())
+	var reach_m: float = 1.2 + (pow(maxf(f.piece_vol[left], 0.01), 1.0 / 3.0) * 0.5 if left >= 0 else 0.0)  # clear of its bulk
+	_stand(aim + (back.normalized() if back.length() > 0.3 else -_north(hc)) * reach_m, aim)
+	# [v9a] Pieces still flying into the chest from the last scoops land after an early take_all and
+	# fill it again ("Your chest is full" instead of the hex line): let them land, then empty it.
+	for k: int in 40:
+		if p.compartment.pending <= 0.0:
+			break
+		await tree.create_timer(0.1).timeout
 	await _frames(4)
 	p.compartment.take_all()
 	_toasts.clear()
 	await _hold("scoop", 1.2)
 	await tree.create_timer(0.4).timeout
-	var c2: Array[String] = _card()
 	var need_h: int = Pace.hex_need(f, stuck)
-	for k: int in 16:  # [v10pace] a "chest is full" hint from the scooping just before is held a few seconds
-		if (c2[1] + c2[2]).contains("This hex needs Lift"):
+	# [v9a] The card holds a hint at least ObjectiveCard.HINT_HOLD_S (3.5 s): the chest-full line
+	# from the last scoops can stand that long before the hex line takes its place (FAIL: "Your
+	# chest is full" read 1.6 s after the scoop). The heavy line itself lasts HEAVY_MS (6 s).
+	for k: int in int(ObjectiveCard.HINT_HOLD_S / 0.25) + 4:
+		if (_card()[1] + _card()[2]).contains("This hex needs Lift %d" % need_h):
 			break
 		await tree.create_timer(0.25).timeout
-		c2 = _card()
-	_check(Pace.heavy_hex and (c2[1] + c2[2]).contains("This hex needs Lift %d" % need_h), "heavy: the stuck hex says it needs Lift %d (%s)" % [need_h, str(c2)])
+	var c2: Array[String] = _card()
+	_check(Pace.heavy_hex and (c2[1] + c2[2]).contains("This hex needs Lift %d" % need_h), "heavy: the stuck hex says it needs Lift %d (%s; hex %d, Lumi on %d, the piece %d m from its centre, chest %.1f / %.1f)" % [need_h, str(c2), stuck, f.hex_at(p.global_position), int(sqrt(ld2)) if ld2 < INF else -1, p.compartment.fill, p.capacity()])
 	_check(Vfx.heavy_node != null and Vfx.heavy_node.visible, "heavy: the stuck hex's nearest piece is marked")
 	await _shot("heavy_hex")
 
@@ -1093,6 +1194,30 @@ static func _part_shuttle() -> void:
 	_set_money(200.0, 10.0)
 	var stats0: Dictionary = GameState.stats.duplicate()  # [v10snd] what paid, if the count is off
 	_toasts.clear()
+	# [v9a] Every cube payment in these seconds, with the script line that made it (CI: the card
+	# read 1.42K two seconds after the walk set 200).
+	var pays: Array[String] = []
+	var last: Array[float] = [200.0]
+	var paid: Array[float] = [0.0]  # what the game paid since the 200 were set
+	var on_pay: Callable = func(id: String, v: BigNum) -> void:
+		if id != "cubes":
+			return
+		var dv: float = v.to_float() - last[0]
+		paid[0] += dv
+		if absf(dv) < 0.5:
+			last[0] = v.to_float()
+			return
+		var from: Array[String] = []
+		for f: Dictionary in get_stack():
+			var src: String = str(f.get("source", "")).get_file()
+			if src in ["GameState.gd", "walk_home.gd"] and from.is_empty():
+				continue
+			from.append("%s:%d" % [src, int(f.get("line", 0))])
+			if from.size() >= 4:
+				break
+		pays.append("%+.2f at frame %d from %s" % [v.to_float() - last[0], Engine.get_physics_frames(), " < ".join(from)])
+		last[0] = v.to_float()
+	EventBus.currency_changed.connect(on_pay)
 	if not await _goto("shuttle"):
 		return
 	await tree.create_timer(1.0).timeout
@@ -1102,14 +1227,21 @@ static func _part_shuttle() -> void:
 	_check(spot != null and is_instance_valid(spot) and spot.visible and spot.global_position.distance_to(os_.sm.pad_xf(0).origin) < 1.0, "shuttle: its spot on the launch pad is marked")
 	_check(ob.step_price() == cost, "shuttle: the card shows its price (%s)" % str(ob.step_price()))
 	var pr: Array = ob.progress()
-	var saved: float = str(pr[1]).get_slice(" /", 0).replace(",", "").to_float()
-	_check(saved >= 200.0 and saved < 400.0 and str(pr[1]).ends_with("/ " + Settings.fmt(BigNum.from_float(float(cost.get("cubes", 0.0))))), "shuttle: the card counts the cubes saved toward it (%s; robots may sell a bale meanwhile)" % str(pr))
-	if not (saved >= 200.0 and saved < 400.0):
+	# [v9a] The 200 the walk set plus what the game paid since, as the card writes it. CI read
+	# "1.42K / 2K" here (1,421.75 cubes): the game pays while the card is read (a start-area hex a
+	# robot finishes pays 221.75 at once with its field notes, 25 more for its first level; a Lumi
+	# level pays 30 s of income up to 0.4% of all cubes earned). The old check wanted 200-400 and
+	# read "1.42K" as 1.42.
+	var price_c: float = float(cost.get("cubes", 0.0))
+	var want: String = "%s / %s" % [Currencies.have_text(200.0 + paid[0]), Settings.fmt(BigNum.from_float(price_c))]
+	_check(str(pr[1]) == want and 200.0 + paid[0] < price_c, "shuttle: the card counts the cubes saved toward it (%s; 200 set, %+.2f paid by the game since)" % [str(pr), paid[0]])
+	if true:  # [v9a] always: what pays in these seconds, on a passing run too
 		var diff: Dictionary = {}
 		for k: Variant in GameState.stats:
-			if GameState.stats[k] is float and float(GameState.stats[k]) != float(stats0.get(k, 0.0)):
+			if (GameState.stats[k] is float or GameState.stats[k] is int) and float(GameState.stats[k]) != float(stats0.get(k, 0.0)):
 				diff[k] = float(GameState.stats[k]) - float(stats0.get(k, 0.0))
-		print("[walk-home] note: shuttle: cubes now %.0f; stats that moved since the 200 were set: %s; toasts: %s" % [GameState.get_currency("cubes").to_float(), str(diff), str(_toasts)])
+		print("[walk-home] note: shuttle: cubes now %.0f; stats that moved since the 200 were set: %s; toasts: %s; payments: %s" % [GameState.get_currency("cubes").to_float(), str(diff), str(_toasts), str(pays)])
+	EventBus.currency_changed.disconnect(on_pay)
 	await _shot("shuttle_start")
 	await _reload("shuttle, saving up", func() -> Dictionary: return {"plans": GameState.flags.get("shuttle_plans", false), "built": Hub.rocket_built()})
 	os_ = OrbitSites.of(w)
@@ -1120,6 +1252,7 @@ static func _part_shuttle() -> void:
 	await _click(_price_tag(ld, "shuttle"))
 	_check(not Hub.rocket_built(), "shuttle: a click while short builds nothing")
 	_set_money(float(cost.get("cubes", 0.0)), float(cost.get("parts", 0.0)))
+	var stats_b: Dictionary = GameState.stats.duplicate()
 	await tree.create_timer(0.4).timeout
 	await _shot("shuttle_bench")
 	for k: int in 3:
@@ -1128,7 +1261,11 @@ static func _part_shuttle() -> void:
 			break
 		await tree.create_timer(0.5).timeout
 	_check(Hub.rocket_built(), "shuttle: clicking its price tag builds it")
-	_check(GameState.get_currency("cubes").to_float() < 1.0 + float(cost.get("cubes", 0.0)) * 0.05, "shuttle: the price is paid (%.0f cubes left; the robots sell bales meanwhile)" % GameState.get_currency("cubes").to_float())
+	# [v9a] The game took the price, and what is left is what it paid since (robots, field notes, a
+	# hex: a run read 1,322 left right after the click, earned in that second).
+	var left_c: float = GameState.get_currency("cubes").to_float()
+	_check(absf(-_since_set_sum[0] - float(cost.get("cubes", 0.0))) < 1.0 and absf(left_c - _since_set_sum[1]) < 1.0,
+		"shuttle: the price is paid (%.2f taken, %.2f left, %.2f earned since; every change since the walk set the price: %s)" % [-_since_set_sum[0], left_c, _since_set_sum[1], str(_since_set)])
 	await tree.create_timer(1.5).timeout
 	_check(not _up().is_open, "shuttle: the workbench closes by itself so the build is seen")
 	_check(ShuttleBuild.building, "shuttle: it is being put together on the pad")
@@ -1149,6 +1286,13 @@ static func _part_shuttle() -> void:
 	await _shot("shuttle_built")
 	var moved: bool = await _wait_step_not("shuttle", 4.0)
 	_check(moved and _step_id() == "hub_fly_2", "shuttle done: only now the card says to fly (%s)" % _step_id())
+	# [v9a] CI and two of three runs here: 1.3K-2.7K cubes in the seconds after the build, none of it
+	# one payment of 300 or more. Each change since the walk set the price, with its payer.
+	var moved_b: Dictionary = {}
+	for k: Variant in GameState.stats:
+		if (GameState.stats[k] is float or GameState.stats[k] is int) and float(GameState.stats[k]) != float(stats_b.get(k, 0.0)):
+			moved_b[k] = float(GameState.stats[k]) - float(stats_b.get(k, 0.0))
+	print("[walk-home] note: shuttle built: cubes %.2f; every change since the price was set: %s; stats moved: %s" % [GameState.get_currency("cubes").to_float(), str(_since_set), str(moved_b)])
 	await _reload("shuttle just built", func() -> Dictionary: return {"built": Hub.rocket_built()})
 	os_ = OrbitSites.of(w)
 	await tree.create_timer(1.0).timeout

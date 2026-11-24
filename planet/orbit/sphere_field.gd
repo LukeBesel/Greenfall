@@ -158,6 +158,12 @@ func hex_at(world: Vector3) -> int:
 	return grid.cell_at(world)
 
 
+## [v9a] The hex under a point with a sharp edge (SphereGrid.cell_at_exact): for rules that must
+## give the same answer a step later (Lumi's shore).
+func hex_at_exact(world: Vector3) -> int:
+	return grid.cell_at_exact(world)
+
+
 func is_water(id: int) -> bool:
 	return id >= 0 and hex_water[id] == 1
 

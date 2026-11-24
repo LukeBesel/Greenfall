@@ -146,7 +146,10 @@ static func heavy_hint(patch: Node3D, field: HexField, origin: Vector3, forward:
 	var pid: int = field.find_scoop_target(origin, forward, reach, width)
 	if pid >= 0 and can_lift(field, pid):
 		return
-	var h: int = field.hex_at(origin)
+	# [v9a] The hex of the piece in the beam, not of the beam's origin: standing on a stuck hex's
+	# edge, the beam reached into it from the next hex and the card said "Too heavy" where the
+	# piece's own hex can't finish (home walk: "This hex needs Lift 2" expected).
+	var h: int = field.piece_hex[pid] if pid >= 0 and pid < field.piece_hex.size() else field.hex_at(origin)
 	var stuck: bool = hex_stuck(field, h)
 	if pid < 0 and stuck:
 		pid = _nearest_alive(field, h, origin)
