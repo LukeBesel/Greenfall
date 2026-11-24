@@ -214,6 +214,8 @@ func _make(i: int) -> void:
 			func() -> bool: return is_instance_valid(e) and e.is_inside_tree() and not sites.hop.flying and (id == "locker" or not FarYard.is_built(i, id)))
 		_stand(i, id, holder)
 	print("[faryard] base %d (%s): bin ready; built %s" % [i, HubPlan.hub_name(planet, i), str(ORDER.filter(func(id: String) -> bool: return FarYard.is_built(i, id)))])
+	if DevHooks.has("faryard-look"):
+		_dev_look.call_deferred(i)
 	if DevHooks.has("faryard-probe"):  # dev: where the landmark stands from the pad, and what TargetReach says there
 		var lm: Dictionary = sites.purpose.landmark(i)
 		if not lm.is_empty():
@@ -303,3 +305,51 @@ func build(i: int, id: String, free: bool = false) -> bool:
 	print("[faryard] base %d: built %s" % [i, id])
 	built.emit(i, id)
 	return true
+
+
+## Dev: --faryard-look=PREFIX (a rendered run with --orbit-hop=N --hop-skip): at the first far
+## base Lumi lands on, frames of what the player sees: Lumi by the rocket as after landing
+## (PREFIX_rocket.png: the prompt, the base's name and WREN on one spot was play-tester item 22),
+## the pad with its bin bay and marked spots (PREFIX_pad.png), then this base's Workbench, Locker
+## and Bot Bay built (free) and each seen from in front of its spot (PREFIX_<id>.png); then quits.
+## --faryard-look-wait=S: seconds after the yard is made before the first frame (the title fades).
+func _dev_look(i: int) -> void:
+	var pre: String = DevHooks.get_s("faryard-look", "screenshots/v10/faryard")
+	var p: Patch = so.w.get("patch") as Patch
+	var cam: Node = p.sphere_cam if p else null
+	var root: Node3D = _roots[i] as Node3D
+	var pad: Transform3D = sm.pad_xf(i)
+	await DevHooks.wait_wall_for(DevHooks.get_f("faryard-look-wait", 8.0))
+	var looks: Array = [["rocket", pad * Vector3(4.5, 0, 3.0), pad.origin],
+		["pad", root.global_transform * Vector3(4.0, 0, 9.5), root.global_transform * Vector3(-6.0, 0, 1.0)]]
+	for lk: Array in looks:
+		_dev_stand(p, cam, lk[1], lk[2])
+		await DevHooks.wait_wall_for(3.0)
+		await RenderingServer.frame_post_draw
+		DevHooks.save_viewport("%s_%s.png" % [pre, lk[0]])
+		print("[faryard] look %s: prompt '%s'" % [lk[0], str(p.prompt) if p else "-"])
+	for id: String in ORDER:
+		build(i, id, true)
+	await DevHooks.wait_wall_for(2.0)
+	for id: String in ORDER:
+		var e: Node3D = _e["%d:%s" % [i, id]]
+		var h: Node3D = e.get_parent() as Node3D
+		var out: Vector3 = e.global_position - h.global_position
+		_dev_stand(p, cam, e.global_position + out.normalized() * 1.2, h.global_position)
+		await DevHooks.wait_wall_for(3.0)
+		await RenderingServer.frame_post_draw
+		DevHooks.save_viewport("%s_%s.png" % [pre, id])
+		print("[faryard] look %s: prompt '%s'" % [id, str(p.prompt) if p else "-"])
+	get_tree().quit()
+
+
+func _dev_stand(p: Patch, cam: Node, at: Vector3, look: Vector3) -> void:
+	if p == null:
+		return
+	var g: Vector3 = so.globe.terrain.ground(at.normalized())
+	var up: Vector3 = g.normalized()
+	var fwd: Vector3 = look - g
+	fwd = (fwd - up * fwd.dot(up)).normalized()
+	p.place_on_sphere(g, fwd)
+	if cam and cam.has_method("reset_frame"):
+		cam.call("reset_frame", fwd)
