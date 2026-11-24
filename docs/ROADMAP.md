@@ -46,8 +46,10 @@ What the failing walks were, by evidence (logs under screenshots/, spot tests in
   pays it is not known.
 - **Game fault, fixed (0188201): the fauna perch scan raised a SCRIPT ERROR** on a mesh the headless
   renderer held no arrays for (FaunaSpace.top_point; 7 times in one home walk). Skipped, named once.
-- walk_travel "E by the cleared outpost ... repairs it" failed once in 6 (prompt named the repair, the
-  outpost stayed at level 0): the check now says what E met (block, Lumi's own prompt, input hold, toasts).
+- **Game fault, fixed (36c1ee1): the prompt offered E while the bale press ran** and E did nothing then
+  (walk_travel "E by the cleared outpost ... repairs it", 2 runs in 8: the auto-compactor pressed the full
+  chest by the kiosk, cubing 1.53 s). The prompt is empty during the press (test_no_e_prompt_while_pressing_a_bale);
+  the walk waits out a press and empties the chest before the repair, and reads Lumi's own prompt.
 - From the code, not played: the Shack's side panel (planet/sites/yard_site.gd "side") has no collider (the
   StaticBody holds the back wall and the two front posts), so Lumi could walk through it. Not a stuck.
 - Other code still uses the 32-bit `hex_at` (robots, junk, the card's hex): the speckle at edges is still
