@@ -254,6 +254,16 @@ func test_cannot_hop_a_fence_or_onto_the_workbench() -> void:
 	assert_lt(top, float(_cfg()["height_m"]) + 0.05, "no boost from clipping its top edge (rose %.2f m)" % top)
 
 
+func test_a_top_at_090_m_is_out_of_reach() -> void:
+	# Street furniture has tops at 0.85 to 0.90 m. The audit (planet/sites/jump_reach.gd) counts
+	# 0.90 m as out of a hop's reach; this holds the motor to that.
+	_box(Vector3(6, 0.9, 3), Vector3(0, 0.45, -4.0))
+	await _ticks(20)
+	var r: Array = await _hop_north(8)
+	assert_lt(float(r[0]), 2.2, "he does not get onto it (z -%.2f; its edge is at -2.5)" % float(r[0]))
+	assert_almost_eq(_alt(), 0.0, 0.05, "he ends on the ground")
+
+
 func test_junk_heap_is_a_wall_in_the_air() -> void:
 	# A low heap (0.5 m at its top) dead ahead: on the ground he cannot walk in; hopping he cannot
 	# get onto or over it either.

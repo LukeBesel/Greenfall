@@ -32,7 +32,8 @@ Every push to this branch builds the game automatically on GitHub.
 |---|---|---|
 | Move | WASD | Left stick |
 | Look | Mouse | Right stick |
-| Scoop junk (tractor beam) | Hold Left mouse / Space | Right trigger |
+| Scoop junk (tractor beam) | Hold Left mouse / X | Right trigger |
+| Jump (hold for the full hop, tap for a small one) | Space | A (when there is nothing to use) |
 | Press a bale | Right mouse / C | X |
 | Pick up / interact | E | A |
 | Drop | Q | B |

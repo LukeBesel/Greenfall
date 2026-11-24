@@ -11,7 +11,8 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   - Feel and sound on a real MacBook and controller were not judged (numbers and rendered frames only).
   - On a controller A is "use" first, so there is no hop while carrying a bale; a free button would need another action moved.
   - `--city-walk` used to run while the world was still loading on a busy machine and passed an empty town. Now that it waits, it reports one junk piece 1.5 m from walked ground at start-town (10.8, -51.0); not looked into (the hex audit passes).
-  - The start town has 8 small pockets among street furniture (seven of one 0.5 m cell, one of 2 m2) that the audit's generous hop can reach with no hop back; the rescue lift is their way out. Sealing such pockets when a town is built would remove them at the source.
+  - Every Verdance town has a few small pockets among street furniture (1 to 8 per hub, nearly all one 0.5 m cell, the largest 2 m2 in the start town) that the audit's generous hop can reach with no hop back; the rescue lift is their way out. Sealing such pockets when a town is built would remove them at the source. Hub 4 has a 7 m2 one behind furniture with a 0.90 m top, which the 0.6 m hop cannot get onto (0.83 m reach); raising the hop would open it.
+  - The older "shut-in spots inside outpost ruins" that `--target-reach` notes (16 across the hubs) can now be hopped into; the same rescue lift covers them.
   - The first-minutes key strip does not show the jump (it is in the full list and in Controls).
   - Other planets' towns were not audited (only Verdance's hubs).
 

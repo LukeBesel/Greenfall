@@ -26,6 +26,10 @@ const BODY_R: float = 0.45
 const BODY_H: float = 0.9
 const BODY_LIFT: float = 0.25   # his body rides this far off what he stands on
 const MAX_LV: int = 4
+## How much more than the hop's own reach (height + BODY_LIFT; measured 0.83 m for the 0.6 m hop)
+## the generous flood allows. Tops at 0.85 m count as reachable, tops at 0.90 m do not
+## (tests/test_jump.gd holds him off a 0.90 m top).
+const REACH_MARGIN: float = 0.03
 ## Shut-in ground a hop may reach, up to this size, is a pocket for the rescue lift, not a failure.
 const POCKET_MAX_M2: float = 6.0
 enum { WALK, STRICT, GENEROUS }
@@ -282,7 +286,7 @@ func moves(node: int, mode: int) -> PackedInt32Array:
 	if mode != WALK:
 		# The same step up both ways: a wall he can hop is no trap, whichever side he is on. What
 		# differs between the way in and the way home is the leaps (see _leaps).
-		up_lim = maxf(max_step, hop_h + BODY_LIFT + 0.08)
+		up_lim = maxf(max_step, hop_h + BODY_LIFT + REACH_MARGIN)
 	var edge: bool = false  # a neighbour he cannot simply step into: a leap may start here
 	for nb: int in _nbs(c):
 		if not _in_disc(nb):
@@ -319,7 +323,7 @@ func moves(node: int, mode: int) -> PackedInt32Array:
 func _leaps(c: int, a: float, mode: int, out: PackedInt32Array, but: int = 0) -> void:
 	var margin: float = 0.07 if mode == GENEROUS else -0.12
 	var fly: float = a + hop_h + margin
-	var land_up: float = (hop_h + BODY_LIFT + 0.08) if mode == GENEROUS else 0.0
+	var land_up: float = (hop_h + BODY_LIFT + REACH_MARGIN) if mode == GENEROUS else 0.0
 	var rng: int = leap_strict
 	if mode == GENEROUS:  # from the ground a leap only crosses what is in the way; from a height it can cross gaps
 		rng = leap_gen if a >= BODY_LIFT else 6
