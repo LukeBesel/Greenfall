@@ -18,7 +18,7 @@ run() {
 		fail=1
 	elif [ "$code" -ne 0 ]; then
 		echo "[check_exit] FAIL $name: exit code $code (134 = crash at quit; see $log)"
-		grep -m60 -E "FAIL|SCRIPT ERROR|pause-watch\]|walk-opening\] stuck" "$log"  # [main] show the failing checks in CI logs ([v9a] and what held Lumi)
+		grep -m60 -E "FAIL|SCRIPT ERROR|pause-watch\]|walk-opening\] stuck|walk-home\] debug" "$log"  # [main] show the failing checks in CI logs ([v9a] and what held Lumi)
 		fail=1
 	elif grep -q "SCRIPT ERROR" "$log"; then
 		echo "[check_exit] FAIL $name: SCRIPT ERROR in $log"
@@ -59,9 +59,23 @@ else
 	echo "[check_exit] FAIL intro: see screenshots/check_exit_intro.log"
 	fail=1
 fi
+# [v11film] Watching the film again (pause menu, Codex) changes nothing: the save and the world
+# are compared before and after seven rewatches, skipped at different moments.
+if tools/check_rewatch.sh >screenshots/check_exit_rewatch.log 2>&1; then
+	echo "[check_exit] PASS rewatch (the world is the same after watching the film again)"
+else
+	echo "[check_exit] FAIL rewatch: see screenshots/check_exit_rewatch.log"
+	tail -n 20 screenshots/check_exit_rewatch.log
+	fail=1
+fi
 # [v9a] Goal audit: New Game to the first robot with real keys, mouse aim and bench clicks
 # (tools/walk_opening.gd): intro skip, checklist, bin, bench buys, bales, tower, Glim, hex, Bot Bay.
 run walk_opening -- --fresh --orbit --intro --walk-opening --save-dir=check_exit_open_$$
+# [v9a] Two spots where the opening walk stopped, played alone with real keys: pressed against the
+# lake's edge by the bin in every key direction Lumi moves or the way is all lake (he froze there),
+# and with a bale pressed over a buried part E picks the bale up, as the prompt says (it dug);
+# and from behind the Shack's back wall (a CI run paced there) the walker gets to the Bot Bay.
+run walk_opening_spots -- --fresh --orbit --no-intro --detector-on --walk-opening --walk-opening-spot="-7.4,-6.7;-7.0,-3.0;-10.5,7.7@pt:6.0:7.6" --walk-opening-spot-goals=shore,digbale --save-dir=check_exit_spots_$$
 # [v9c] The travel steps (rocket, stations 2 and 6, the drive, the end card) played with real
 # input (tools/walk_travel.gd), and a save in the middle of station 2's chain loaded back.
 run walk_travel -- --fresh --orbit --no-intro --walk-travel --quit-after=4000 --save-dir=check_exit_travel_$$

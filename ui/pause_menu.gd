@@ -16,6 +16,7 @@ var _first: Button
 var _settings_btn: Button
 var _settings: SettingsPanel
 var _center_keys: Control  # [onboard] key hints strip
+var _buttons: Array[Button] = []
 
 
 func _ready() -> void:
@@ -54,6 +55,16 @@ func _ready() -> void:
 		codex_requested.emit())
 	Settings.bind_text(codex_btn, func() -> String: return tr("Codex  [%s]") % Settings.glyph("open_codex"))  # [deck]
 	buttons.append(codex_btn)
+	# [v11film] Owner: "add rewatch option to cut scene for a little bit after it happens". Shown
+	# for the first half hour of play while Lumi is near the pod (Intro.rewatch_offered); after
+	# that the film stays in the Codex. The game is stopped while it plays: nothing changes.
+	var film_btn: Button = _button(vb, tr("Watch the opening again"), func() -> void:
+		close_menu()
+		var it: Variant = get_parent().get("intro") if get_parent() else null
+		if it is Intro:
+			get_tree().create_timer(0.25).timeout.connect((it as Intro).replay))
+	film_btn.name = "FilmBtn"
+	buttons.append(film_btn)
 	var photo_btn: Button = _button(vb, tr("Photo mode  [%s]") % Settings.glyph("photo_mode"), func() -> void:  # [photo]
 		close_menu()
 		photo_requested.emit())
@@ -78,10 +89,8 @@ func _ready() -> void:
 	# [ui2] No Save button: the game autosaves every minute and on quit. Quit saves and goes to
 	# the title screen (Quit to desktop lives on the title screen).
 	buttons.append(_button(vb, tr("Quit"), _quit_to_title))
-	for i: int in buttons.size():
-		var b: Button = buttons[i]
-		b.focus_neighbor_top = b.get_path_to(buttons[wrapi(i - 1, 0, buttons.size())])
-		b.focus_neighbor_bottom = b.get_path_to(buttons[wrapi(i + 1, 0, buttons.size())])
+	_buttons = buttons
+	_link_focus()
 	# [onboard] The controls at a glance, under the menu (in game: hold Tab away from the workbench).
 	var keys_mc := MarginContainer.new()
 	keys_mc.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)  # [ui4] full width: the strip wraps instead of running off a small screen
@@ -101,6 +110,19 @@ func _ready() -> void:
 		_settings_btn.grab_focus())
 	_root.add_child(_settings)
 	_root.visible = false
+
+
+## Up and down move between the buttons that are shown (some come and go: Photo mode, Keepsakes,
+## the opening film), wrapping at the ends, so a controller never lands on a hidden one.
+func _link_focus() -> void:
+	var shown: Array[Button] = []
+	for b: Button in _buttons:
+		if is_instance_valid(b) and b.visible:
+			shown.append(b)
+	for i: int in shown.size():
+		var b: Button = shown[i]
+		b.focus_neighbor_top = b.get_path_to(shown[wrapi(i - 1, 0, shown.size())])
+		b.focus_neighbor_bottom = b.get_path_to(shown[wrapi(i + 1, 0, shown.size())])
 
 
 func _button(parent: Control, text: String, cb: Callable) -> Button:
@@ -153,7 +175,11 @@ func open_menu() -> void:
 	var kb: Button = _menu.find_child("KeepsakesBtn", true, false) as Button  # [v6screens]
 	if kb:
 		kb.visible = not ExtrasPanel.open_tabs().is_empty()
+	var fb: Button = _menu.find_child("FilmBtn", true, false) as Button  # [v11film]
+	if fb:
+		fb.visible = Intro.rewatch_offered(get_parent())
 	LateMenu.refresh(self)  # [late] show Garden Mode / Ark Bridge once they are open
+	_link_focus()
 	_fit_keys()
 	_first.call_deferred("grab_focus")
 

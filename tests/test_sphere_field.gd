@@ -56,3 +56,27 @@ func test_reduce_to_follows_robot_work() -> void:
 	assert_almost_eq(_field.removed_fraction(c), 0.5, 0.05)
 	_field.reduce_to(c, 0.0)
 	assert_eq(_field.hex_clean[c], 1, "a fully worked hex flips clean")
+
+
+# [v9a] The opening walk froze by the bin's lake side: hex_at speckled within centimetres of a
+# hex edge (32-bit dot products), and the shore rule stood Lumi in that band.
+func test_hex_at_exact_has_one_edge() -> void:
+	var a: Vector3 = _grid.centers[_cell] * _grid.radius_m
+	var b: Vector3 = _grid.centers[_grid.nbr[_cell * SphereGrid.MAX_N]] * _grid.radius_m
+	var mid: Vector3 = (a + b) * 0.5
+	var along: Vector3 = (b - a).normalized()
+	var flips: int = 0
+	var flips32: int = 0
+	var last: int = _field.hex_at_exact(mid - along * 0.5)
+	var last32: int = _field.hex_at(mid - along * 0.5)
+	assert_eq(last, _cell, "half a metre this side of the edge: this hex")
+	for i: int in range(1, 1001):  # 1 mm steps across the edge
+		var p: Vector3 = mid + along * (float(i) * 0.001 - 0.5)
+		var h: int = _field.hex_at_exact(p)
+		flips += 1 if h != last else 0
+		last = h
+		var h32: int = _field.hex_at(p)
+		flips32 += 1 if h32 != last32 else 0
+		last32 = h32
+	assert_eq(flips, 1, "walking across an edge in 1 mm steps the hex changes once (the 32-bit lookup: %d times)" % flips32)
+	assert_ne(last, _cell, "and half a metre on it is the neighbour")

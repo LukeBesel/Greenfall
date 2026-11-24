@@ -2,13 +2,84 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
-## 20 Nov, v10ui: map mouse control (item 110), title without New Game (item 111)
+## 20 Nov, v10ui: map mouse control (owner item 114), title without New Game (item 115)
 
 - **Map (M):** the globe is turned by dragging (the ground follows the cursor, a short coast, pole limits), zoomed by wheel / two-finger scroll / pinch, and "Find Lumi" (button, V, double-click) goes back to the opening view. The cause was the map's root Control swallowing the mouse. Proof: `--walk-map` (in tools/check_exit.sh), rendered frames looked at.
 - **Title:** no New Game button. The title lists the played profiles (CONTINUE for the last one, a button each for the others), PLAY on a first launch, NEW PROFILE while a slot is free; Start over and Delete are per profile on the Profiles page, each behind a question. Proof: `--menu --title-walk` (in tools/check_exit.sh), rendered frames looked at.
 - **HUD base name (critic 7):** the 72516d7 change never reached the HUD (the HUD asks the slice, the method was on the round-world object); wired through and checked on the pad by `--walk-map`.
-- **Follow-up (24 Nov):** Lumi no longer dozes off while holding the map (a snore's "z" floated over the globe in a rendered run; `--walk-map` checks it). The title no longer logs "Couldn't open directory" for never-played profiles. `--walk-home` counts the cubes the robots earn meanwhile (`cubes_earned_total`, saved with the game) in its save/load compare and in the shuttle's "count" and "price is paid" checks: a bale pressed in a salvage surge pays over 1K and landed inside those windows (check_exit on 6b4b78c and on 9f2c7c5). Found, not fixed: a world event running when the game is saved is not saved, and its countdown stays at 0, so a new random event (toast, WREN line) starts the moment the game loads (systems/events.gd `_finish` is what resets `next_in`).
+- **Follow-up (24 Nov):** Lumi no longer dozes off while holding the map (a snore's "z" floated over the globe in a rendered run; `--walk-map` checks it). The title no longer logs "Couldn't open directory" for never-played profiles. `--walk-home` failed twice here on the money the game pays while the walk reads the card (a bale pressed in a salvage surge pays over 1K): the shuttle's count and "price is paid" checks are v9a's (merged from main); on top, a reload whose count only went up passes when the load gave back the saved money and the cubes now, less `cubes_earned_total` paid since the snapshot, are the cubes at the snapshot. Found, not fixed: a world event running when the game is saved is not saved, and its countdown stays at 0, so a new random event (toast, WREN line) starts the moment the game loads (systems/events.gd: only `_finish` resets `next_in`); 6 of 18 loads in one home walk started a Salvage Surge.
 - **Open:** real MacBook trackpad feel (drag speed, coast, scroll speed) and a real controller on the new title list are not verified here. v10snd's `walk_radio` and v11film's rewatch option must use the title's `_continue` / `_play` buttons (there is no `_new_game` any more).
+
+## Walks reliable, 20-24 Nov (v9a, task 195)
+
+What the failing walks were, by evidence (logs under screenshots/, spot tests in tools/walk_opening.gd):
+
+- **Game fault, fixed (719cef2): Lumi froze on the lake's edge by the bin.** The hex under a point was
+  decided with 32-bit dot products, so within a few centimetres of a hex edge land and water speckled from one
+  5 mm step to the next. The shore rule slid Lumi into that band and its "ended in water: put back, no speed"
+  rule then held him still whatever key was held. Lumi's water tests now use `hex_at_exact` (64-bit, one sharp
+  edge) and the shore clamp wants land all the way to its probe, so a corner of the lake nearer than 1.2 m
+  turns him too. Check: `--walk-opening-spot=x,z --walk-opening-spot-goals=shore` (64 key pairs against the
+  shore; 3 dead spots before, 0 after), in tools/check_exit.sh as walk_opening_spots.
+- **Game fault, fixed (719cef2): E dug a buried part while the prompt said "pick up"** (a bale pressed over a
+  part: the opening walk's "bale: E picks it up", then "carrying it, the beam goes to the scale" and
+  "stepping on the scale sells it" fail after it). E now follows the prompt's order (player/patch.gd
+  `_handle_interact`). Check: spot goal `digbale` (failed at yard (-7.0, -3.0) and (-14.7, 5.1) before: E dug,
+  +5 parts; passes after), in walk_opening_spots.
+- **Walker faults, fixed:** the opening walk pacing by the Shack's back wall on the way to the Bot Bay (main
+  ded0ea2's CI run) and by the workbench came from the walker before it planned a way round (1393892): the
+  wall is visible and its collider matches it, Lumi moved at 3.85 m/s along it. walk_opening_spots now also
+  walks from that spot (yard -10.5, 7.7) to the Bot Bay (`x,z@goal+goal` gives a spot its own goals).
+  walk_travel "no Parts" read the sentence behind the card instead of the card (the chest line wins the hint
+  when the chest is full; the price stays in the chips), and the travel walk skipped the restart checklist
+  without telling the card, so at station 2 the card still read "Fix the Settlers' old bench".
+- **Walker faults, fixed (walk_home, main's runs on 5807cd9 and v10snd):** the game pays while the walk reads
+  the card. Measured: a start-area hex a robot finishes pays 221.75 cubes at once (bonus 122 + field notes),
+  25 more for its first level, and a Lumi level pays 30 s of income up to 0.4% of all cubes earned (400 at
+  300K earned). "shuttle: the card counts the cubes saved toward it" wanted 200-400 two seconds after the walk
+  set 200 (and read "1.42K" as 1.42): it now wants exactly the 200 plus the game's payments since. "shuttle
+  just built: saved and loaded (kill)" saw "0 / 600" become a full bar: a robot finished the outlined hex
+  while the walk quit and came back (cubes 0 -> 1466.8), the price was covered, so the card shows the step's
+  own count, as in play. That is af48bf9's case (money earned in play while the walk reloads; money that
+  appears in the load itself still fails), which main did not have yet. "shuttle: the price is paid" (1322
+  left right after the click) now checks the change log: the price taken, and what is left equals what the
+  game paid since. Every payment of 300+ and every Lumi level is printed as a `[walk-home] note`, and the
+  change log after the shuttle is built; `--walk-home-paylog` prints every payment with its payer. Also
+  measured: base level 2 and the shuttle stand on no start-area junk, so a load has nothing new to tidy.
+- **OPEN: 1.2K-1.5K cubes in the seconds after the shuttle is built** (2 of 10 home walks here, main's run,
+  v10snd's): 1,346.75 per robot hex that finished next to the yard then (one run 1, one run 2: the toasts
+  say so), of which bonus + notes + level are 246.75; none of it one payment of 300 or more. Not reproduced
+  since the change log went in (0 of 6). If a
+  player sees it, it is in play (no reload needed), so the walks no longer count it as a save fault; what
+  pays it is not known.
+- **Game fault, fixed (0188201): the fauna perch scan raised a SCRIPT ERROR** on a mesh the headless
+  renderer held no arrays for (FaunaSpace.top_point; 7 times in one home walk). Skipped, named once.
+- walk_travel "E by the cleared outpost ... repairs it" failed once in 6 (prompt named the repair, the
+  outpost stayed at level 0): the check now says what E met (block, Lumi's own prompt, input hold, toasts).
+- From the code, not played: the Shack's side panel (planet/sites/yard_site.gd "side") has no collider (the
+  StaticBody holds the back wall and the two front posts), so Lumi could walk through it. Not a stuck.
+- Other code still uses the 32-bit `hex_at` (robots, junk, the card's hex): the speckle at edges is still
+  there for them. Not known to break anything; worth a look if a robot dithers on a shoreline.
+
+## 20 Nov: the opening film rewritten and re-shot (v11film, owner items 110-113)
+
+- The film is new end to end: 21 shots, one voice (WREN, ten lines), about 117 s
+  (`data/intro_shots.json`, `story/intro.gd`; how to change it: docs/ADJUSTING.md "The opening film").
+- New ark (`story/cradle_ship.gd`, built in code; `art/models/ship/ark.glb` is no longer loaded) and
+  new pod (`story/escape_pod.gd`, a drop capsule). The same models serve the yard, the finale, the
+  telescope and the Homecoming (its rocket now docks at `CradleShip.dock_world()`).
+- The seed vault set is the inside of the ark's garden dome (`story/space_stage.gd`).
+- The tray Lumi saved stands in the crashed pod's cabin (`story/crash_site.gd`).
+- "Watch the opening again": pause menu for the first 30 minutes near the pod, Codex for good. A
+  rewatch plays with the game stopped and changes nothing (`tools/check_rewatch.sh`, in check_exit).
+- 24 Nov, second look at the whole film (v11film): the ark burns and smokes after the hits, the
+  parting is Lumi's last look up at it from the falling pod, a hanging grow lamp, real seedlings, a
+  continuous smoke trail, the crash plume rises after the crash shot, the first CD is out of the film.
+- **Open:** nobody has heard it (sound levels and the three song hits are by measurement only); not
+  seen at 60 fps or on the Mac's renderer; the Homecoming, the Bloom finale and the core-charge
+  memories show the new ark and vault but were not re-rendered; a rewatch at night or with machines
+  built shows the yard as it is then; "the rocket design" was read as the ark and the pod, not the
+  buildable shuttle.
 
 ## Status at the stop, 18 Nov (owner playtest 3, items 89-109)
 

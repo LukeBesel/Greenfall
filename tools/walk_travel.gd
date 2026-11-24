@@ -58,6 +58,9 @@ static func run_dev(so: SliceOrbit) -> void:
 	var tut: Tutorial = w.get("tutorial") as Tutorial
 	if tut:
 		tut.step = Tutorial.STEPS.size()
+		# [v9a] and tell the card, as the checklist's last step does: the card kept the first step
+		# ("Fix the Settlers' old bench") as its line at station 2 and hid the outpost's price.
+		tut.call("_announce")
 	if DevHooks.has("walk-travel-state"):  # print the loaded save's player state (an autoplay stop) and quit
 		var ups: Dictionary = {}
 		for k: String in GameState.upgrades:
@@ -908,7 +911,23 @@ static func _outpost_no_parts(so: SliceOrbit, site: int) -> void:
 	await _tap(tree, "interact")
 	await _wait(tree, 1.0)
 	_check(ops.level_of(k) == 0 and _said("not enough"), "no Parts: E at the outpost refused with a line (%s)" % _quote("not enough"))
-	_check(ob.situation.contains(str(int(ops.repair_cost(k).get("parts", 0)))), "no Parts: the card says how many the outpost needs ('%s')" % ob.situation)
+	# [v9a] The card as the player reads it (its hint line and cost chips). This read ob.situation,
+	# the one sentence behind the hint, which is the chest line whenever the chest is full ("Your
+	# chest is full" on a run that arrived with a full chest); the price then stands in the chips.
+	var need_parts: String = str(int(ops.repair_cost(k).get("parts", 0)))
+	var p0: Patch = w.get("patch") as Patch
+	_check(_card_hint(w).contains(need_parts), "no Parts: the card says how many the outpost needs ('%s', chest %.1f / %.1f)" % [_card_hint(w), p0.compartment.fill, p0.capacity()])
+	print("%s   no Parts: what is on screen: %s" % [TAG, _card_state(w, so)])
+	var fill0: float = p0.compartment.fill
+	p0.compartment.fill = p0.capacity()  # the same with a full chest: the chest line takes the hint, the chips keep the price
+	for i: int in int((ObjectiveCard.HINT_HOLD_S + 4.0) * Engine.physics_ticks_per_second):  # game time: the hint's own hold
+		if _card_hint(w).contains("chest is full"):
+			break
+		await tree.physics_frame
+	_check(ob.situation.contains("chest is full") and _card_hint(w).contains("chest is full") and _card_hint(w).contains("/ " + need_parts),
+		"no Parts, chest full: the card says the chest is full and still shows the outpost's price ('%s')" % _card_hint(w))
+	p0.compartment.fill = fill0
+	await _wait(tree, 0.6)
 	print("%s   no Parts: station card '%s', objective card hint '%s', prompt '%s'" % [TAG, hp.card_text, ob.situation, so.interact_prompt(w.get("patch"))])
 	var have0: int = int(hp.current_step(site).get("have", 0))
 	var clean0: int = hp.cleaned_here(site)
@@ -920,6 +939,27 @@ static func _outpost_no_parts(so: SliceOrbit, site: int) -> void:
 	await _outpost_repair(so, site)
 	await _wait(tree, 1.2)
 	_check(str(hp.current_step(site).get("do", "")) == "wake", "the outpost counts: the chain moves to the wake")
+
+
+## Dev: every card on screen at a far base, with what hides or shows each.
+static func _card_state(w: Node, so: SliceOrbit) -> String:
+	var hud: Node = w.get("hud")
+	var gp: GoalsPanel = hud.get("goals") as GoalsPanel if hud else null
+	var oc: ObjectiveCard = gp.objective if gp else null
+	var hp: HubPurpose = so.sites.purpose
+	var sc: Control = hp.get("_card") as Control
+	return "objective card visible %s (in tree %s) busy %s substep '%s' reads %s chips %s; base card visible %s '%s'; objectives step '%s' situation '%s' price %s" % [
+		str(oc.visible) if oc else "-", str(oc.is_visible_in_tree()) if oc else "-", str(oc.get("_busy")) if oc else "-", str(oc.substep) if oc else "-", str(oc.read()) if oc else "-",
+		str((oc.get("_chips") as Control).visible) if oc else "-", str(sc.is_visible_in_tree()) if sc else "-", hp.card_text,
+		str((w.get("objectives") as Objectives).current().get("id", "")), (w.get("objectives") as Objectives).situation, str((w.get("objectives") as Objectives).step_price())]
+
+
+## The objective card's hint line and cost chips, as the player reads them.
+static func _card_hint(w: Node) -> String:
+	var hud: Node = w.get("hud")
+	var gp: GoalsPanel = hud.get("goals") as GoalsPanel if hud else null
+	var oc: ObjectiveCard = gp.objective if gp else null
+	return oc.read()[2] if oc else ""
 
 
 ## Lumi by the nearest ruined outpost's kiosk, its hex cleared (the crews' cell clean): its index.
@@ -960,9 +1000,15 @@ static func _outpost_repair(so: SliceOrbit, site: int) -> void:
 	var rc: Dictionary = ops.repair_cost(k)
 	_set_money(maxf(GameState.get_currency("cubes").to_float(), float(rc.get("cubes", 0)) + 10.0), maxf(GameState.get_currency("parts").to_float(), float(rc.get("parts", 0)) + 2.0))
 	print("%s   by the outpost: '%s'" % [TAG, so.interact_prompt(w.get("patch"))])
+	# [v9a] What E meets (a travel run: the prompt named the repair and E left it at level 0).
+	var pt: Patch = w.get("patch") as Patch
+	var before: String = "block '%s', Lumi's prompt '%s', cine_hold %s, cubing %.2f, can dig %s, carrying %d, levels %s" % [ops.repair_block(k), str(pt.prompt), str(pt.cine_hold),
+		float(pt.get("_cubing")), str((pt.get("detector") as PartDetector).can_dig()), pt.carried.size(), str(ops.levels())]
+	_toasts.clear()
 	await _tap(w.get_tree(), "interact")
 	await _wait(w.get_tree(), 4.0)
-	_check(ops.level_of(k) >= 1, "E by the cleared outpost at %s with the price repairs it" % HubPlan.hub_name(so.sites.sm.planet_id, site))
+	_check(ops.level_of(k) >= 1, "E by the cleared outpost at %s with the price repairs it%s" % [HubPlan.hub_name(so.sites.sm.planet_id, site),
+		"" if ops.level_of(k) >= 1 else " (outpost %d; before E: %s; after: levels %s, block '%s', carrying %d, toasts %s)" % [k, before, str(ops.levels()), ops.repair_block(k), pt.carried.size(), str(_toasts)]])
 
 
 ## The rocket's next tier at the home bench: E opens it on the rocket's row, a click upgrades.
