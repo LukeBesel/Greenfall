@@ -4,8 +4,12 @@ extends RefCounted
 ## the crash-site landmark beside the start. A piece of the Seedglider family (wt/ship): pearl and
 ## tangerine satin paint, graphite trim, thin cyan seams, small orange running lamps, faceted
 ## twelve-sided shell with sharp chines.
-## Shape: a sleek teardrop standing on a flared thruster skirt, a raked glass canopy over the door,
-## three swept fins that double as landing legs, panel seams, vents, RCS nubs and a mast beacon.
+## [v11film] Owner: "the rocket design is bad" (it was a white bullet with a cone tip, an aerial and
+## three flat rocket fins: a toy rocket). Now a drop capsule that reads as built for one job, coming
+## down through air: a wide dark heat shield with a tangerine rim, a squat gumdrop body, a flat
+## shoulder with a docking collar and a parachute cap (no spike), a short row of windows over the
+## door, four thruster blocks round the shoulder, and three stout landing legs with shock struts
+## and round pads. The cabin, the door, the repair stages and every node name are as before.
 ## The door is the exact missing patch of the shell (no overlapping faces), hinged on its bottom
 ## edge; a big porthole in it carries Lumi's C-eye glyph.
 ## Condition (set_condition): 0 crash-damaged (heat-tinted and sooty, cracked glass, a torn panel
@@ -24,10 +28,10 @@ const DOOR_J1: int = 8
 const DOOR_Y0: float = 0.42
 const DOOR_Y1: float = 1.6
 const CANOPY_Y0: float = 1.66
-const CANOPY_Y1: float = 2.08
+const CANOPY_Y1: float = 1.94
 const WALL: float = 0.07
 const DOOR_GAP: float = 0.012
-const HEIGHT: float = 2.62
+const HEIGHT: float = 2.26
 # The Seedglider palette (automation/ship_model.gd on wt/ship).
 const PEARL := Color(0.93, 0.93, 0.91)
 const PANEL := Color(0.82, 0.83, 0.84)
@@ -41,16 +45,17 @@ const SOOT := Color(0.36, 0.32, 0.28)
 const CABIN_LIGHT: Array[float] = [0.3, 0.75, 1.0, 1.0]
 const PAINT_SHADER := preload("res://art/shaders/pod_paint.gdshader")
 
-## (radius, y) of the shell, bottom to top: a teardrop, widest low, a long taper to the tip.
+## (radius, y) of the shell, bottom to top: the heat shield (a wide shallow dish), a step in to
+## the body, the gumdrop taper, the flat shoulder and the parachute cap.
 const PROFILE: Array[Vector2] = [
-	Vector2(0.0, 0.1), Vector2(0.4, 0.12), Vector2(0.6, 0.2), Vector2(0.71, 0.3), Vector2(0.76, DOOR_Y0),
-	Vector2(0.79, 0.6), Vector2(0.8, 0.8), Vector2(0.785, 1.0), Vector2(0.75, 1.2), Vector2(0.7, 1.4),
-	Vector2(0.63, DOOR_Y1), Vector2(0.56, 1.78), Vector2(0.47, 1.96), Vector2(0.37, 2.12), Vector2(0.26, 2.28),
-	Vector2(0.16, 2.42), Vector2(0.08, 2.54), Vector2(0.0, HEIGHT),
+	Vector2(0.0, 0.05), Vector2(0.45, 0.06), Vector2(0.75, 0.11), Vector2(0.92, 0.19), Vector2(0.98, 0.27),
+	Vector2(0.98, 0.33), Vector2(0.9, 0.36), Vector2(0.87, DOOR_Y0), Vector2(0.86, 0.6), Vector2(0.84, 0.8),
+	Vector2(0.8, 1.0), Vector2(0.755, 1.2), Vector2(0.7, 1.4), Vector2(0.635, DOOR_Y1), Vector2(0.58, 1.76),
+	Vector2(0.52, 1.92), Vector2(0.47, 2.04), Vector2(0.36, 2.08), Vector2(0.36, 2.2), Vector2(0.3, 2.24),
+	Vector2(0.0, HEIGHT),
 ]
-## Thin band edges (rows of their own so the bands stay thin): cyan seams, dark panel seams, the
-## tangerine chevron band.
-const BREAKS: Array[float] = [0.32, 0.335, 0.9, 0.908, 1.35, 1.358, 2.14, 2.2, 2.3, 2.312]
+## Thin band edges (rows of their own so the bands stay thin): dark panel seams and a cyan seam.
+const BREAKS: Array[float] = [0.9, 0.908, 1.35, 1.358, 1.97, 1.985]
 
 static var _rows_cache: Array[Vector2] = []
 static var _soft: GradientTexture2D
@@ -112,17 +117,24 @@ static func _in_door(j: int, y0: float, y1: float) -> bool:
 	return j >= DOOR_J0 and j < DOOR_J1 and y0 >= DOOR_Y0 - 0.001 and y1 <= DOOR_Y1 + 0.001
 
 
-## Shell surface per row: 0 pearl, 1 tangerine chevron band, 2 graphite (base, panel seams), 3 cyan.
+## Shell surface per row: 0 pearl, 1 tangerine (the shield's rim, the parachute cap), 2 graphite
+## (the heat shield, panel seams, the collar seat), 3 cyan.
 static func _band(y0: float, y1: float) -> int:
 	var m: float = (y0 + y1) * 0.5
-	if m < 0.2:
+	if m < 0.3:
 		return 2
-	if (m > 0.32 and m < 0.335) or (m > 2.3 and m < 2.312):
+	if m < DOOR_Y0:
+		return 1
+	if m > 1.97 and m < 1.985:
 		return 3
 	if (m > 0.9 and m < 0.908) or (m > 1.35 and m < 1.358):
 		return 2
-	if m > 2.14 and m < 2.2:
+	if m > 2.04 and m < 2.08:
+		return 2
+	if m > 2.08 and m < 2.2:
 		return 1
+	if m > 2.2:
+		return 2
 	return 0
 
 
@@ -285,11 +297,11 @@ static func _door_mesh(hinge: Vector3, mats: Array[Material]) -> ArrayMesh:
 	return mesh
 
 
-## The thruster skirt: a flared ring (outer and inner faces).
+## The retro pack under the heat shield: a short flared ring (outer and inner faces).
 static func _skirt_mesh() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var prof: Array[Vector2] = [Vector2(0.69, 0.36), Vector2(0.74, 0.24), Vector2(0.82, 0.08), Vector2(0.86, 0.02)]
+	var prof: Array[Vector2] = [Vector2(0.44, 0.1), Vector2(0.47, 0.06), Vector2(0.52, 0.03), Vector2(0.56, 0.015)]
 	var n: int = SEGS * 2
 	for side: float in [0.0, -0.035]:
 		for i: int in prof.size() - 1:
@@ -306,26 +318,6 @@ static func _skirt_mesh() -> ArrayMesh:
 					_quad(st, p01, p11, p10, p00, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
 				else:
 					_quad(st, p00, p10, p11, p01, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
-	st.generate_normals()
-	return st.commit()
-
-
-## A swept fin (YZ plane, +Z outward): root along the hull, tip swept down to the ground as a leg.
-static func _fin_mesh() -> ArrayMesh:
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var t: float = 0.03
-	var o: Array[Vector2] = [Vector2(0.12, 0.62), Vector2(1.08, 0.7), Vector2(0.44, 1.26), Vector2(-0.02, 1.2)]
-	var l: Array[Vector3] = []
-	var r: Array[Vector3] = []
-	for q: Vector2 in o:
-		l.append(Vector3(-t, q.x, q.y))
-		r.append(Vector3(t, q.x, q.y))
-	_quad(st, l[0], l[1], l[2], l[3], Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
-	_quad(st, r[3], r[2], r[1], r[0], Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
-	for k: int in 4:
-		var k2: int = (k + 1) % 4
-		_quad(st, r[k], r[k2], l[k2], l[k], Vector2.ZERO, Vector2.ZERO, Vector2.ZERO, Vector2.ZERO)
 	st.generate_normals()
 	return st.commit()
 
@@ -616,7 +608,7 @@ static func _build_cabin(pod: Node3D) -> void:
 		lk.box(Vector3(0.2, 0.05, 0.024), Vector3.ZERO, frame, Vector3.ZERO, 0.01)
 		lk.glow_box(Vector3(0.16, 0.022, 0.012), Vector3(0, 0, 0.014), lamp)
 		lk.pop()
-	lk.pipe(Vector3(0, 2.4, 0), Vector3(0, 2.0, 0), 0.014, frame, false)
+	lk.pipe(Vector3(0, 2.05, 0), Vector3(0, 2.0, 0), 0.014, frame, false)
 	lk.cyl(0.12, 0.04, Vector3(0, 1.98, 0.0), frame, Vector3.ZERO, 0.012, 16)
 	lk.glow_cyl(0.085, 0.02, Vector3(0, 1.955, 0.0), lamp, Vector3.ZERO, 16)
 	var lamps: MeshInstance3D = lk.mi(0.1, "CabinLamps")
@@ -649,8 +641,8 @@ static func _build_canopy(pod: Node3D, dark: StandardMaterial3D) -> void:
 			_bar(pod, _pt(_ang(j), y, _door_r(y) + 0.034), _pt(_ang(j + 1), y, _door_r(y) + 0.034), 0.018, dark)
 
 
-## The thruster skirt: a flared graphite ring with a tangerine lip, four bells underneath and the
-## hover glow pool (restored pods only).
+## Under the heat shield: the retro pack (a short graphite ring with four bells), a tangerine lip
+## round the shield's widest edge and the hover glow pool (restored pods only).
 static func _build_skirt(pod: Node3D, dark: StandardMaterial3D, accent: ShaderMaterial) -> void:
 	var skirt := MeshInstance3D.new()
 	skirt.name = "Skirt"
@@ -660,15 +652,15 @@ static func _build_skirt(pod: Node3D, dark: StandardMaterial3D, accent: ShaderMa
 	skirt.material_override = sm
 	pod.add_child(skirt)
 	var lip := MeshInstance3D.new()
-	lip.mesh = ProcMesh.torus(0.84, 0.88, SEGS * 2, 4)
+	lip.mesh = ProcMesh.torus(0.955, 1.0, SEGS * 2, 6)
 	lip.material_override = accent
-	lip.position.y = 0.03
-	lip.scale = Vector3(1, 0.5, 1)
+	lip.position.y = 0.3
+	lip.scale = Vector3(1, 0.8, 1)
 	pod.add_child(lip)
 	var glow: StandardMaterial3D = Mats.lamp(Color(0.55, 0.9, 1.0), 0.0)
 	pod.set_meta("thrust", glow)
 	for k: int in 4:
-		var p: Vector3 = _pt(PI * 0.25 + PI * 0.5 * k, 0.1, 0.42)
+		var p: Vector3 = _pt(PI * 0.25 + PI * 0.5 * k, 0.07, 0.27)
 		var cm := CylinderMesh.new()
 		cm.top_radius = 0.06
 		cm.bottom_radius = 0.1
@@ -689,7 +681,7 @@ static func _build_skirt(pod: Node3D, dark: StandardMaterial3D, accent: ShaderMa
 	var hover := MeshInstance3D.new()
 	hover.name = "HoverGlow"
 	var pm := PlaneMesh.new()
-	pm.size = Vector2(2.4, 2.4)
+	pm.size = Vector2(2.9, 2.9)
 	hover.mesh = pm
 	var hm := StandardMaterial3D.new()
 	hm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -711,44 +703,49 @@ static func _build_skirt(pod: Node3D, dark: StandardMaterial3D, accent: ShaderMa
 	pod.add_child(hl)
 
 
-## Three swept graphite fins (back and both rear flanks): tangerine tips, a cyan leading-edge line
-## and an orange running lamp.
-static func _build_fins(pod: Node3D, accent: ShaderMaterial) -> void:
-	var fin_mesh: ArrayMesh = _fin_mesh()
-	var fin_mat: StandardMaterial3D = _trim()
-	fin_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+## Three landing legs (back and both rear flanks; nodes "Fin0..2", as the fins they replace): a
+## tangerine mount on the hull, a stout upper arm, a steel shock strut, a short shin and a round
+## rubber-soled pad, with a cyan line down the arm and an orange running lamp at the knee.
+const LEG_ANGLES: Array[float] = [PI, PI - 1.95, PI + 1.95]
+
+
+static func _build_fins(pod: Node3D, _accent: ShaderMaterial) -> void:
 	var edge_m: StandardMaterial3D = Mats.lamp(CYAN, 0.0)
 	pod.set_meta("fin_edge", edge_m)
 	var lamps: Array[StandardMaterial3D] = []
-	for k: int in 3:
-		var a: float = [PI, PI - 1.95, PI + 1.95][k]
+	var k := YardArt.Kit.new()
+	var graphite := Color(0.17, 0.18, 0.2)
+	var light := Color(0.66, 0.68, 0.71)  # painted, not the kit's bare steel (it weathers to a rusty rope)
+	for i: int in 3:
 		var fin := Node3D.new()
-		fin.name = "Fin%d" % k
-		fin.rotation = Vector3(0, PI - a, 0)
+		fin.name = "Fin%d" % i
+		fin.rotation = Vector3(0, PI - LEG_ANGLES[i], 0)
 		pod.add_child(fin)
-		var mi := MeshInstance3D.new()
-		mi.mesh = fin_mesh
-		mi.material_override = fin_mat
-		fin.add_child(mi)
-		var tip := MeshInstance3D.new()
-		tip.mesh = ProcMesh.box(Vector3(0.07, 0.42, 0.1))
-		tip.material_override = accent
-		tip.position = Vector3(0, 0.2, 1.23)
-		fin.add_child(tip)
-		_bar(fin, Vector3(0, 1.08, 0.7), Vector3(0, 0.46, 1.25), 0.008, edge_m)
+		# The leg in the fin's frame: the YZ plane, +Z out from the hull.
+		k.push(fin.transform)
+		var hip := Vector3(0, 0.66, 0.88)
+		var knee := Vector3(0, 0.36, 1.24)
+		var foot := Vector3(0, 0.07, 1.3)
+		k.box(Vector3(0.3, 0.26, 0.14), Vector3(0, 0.66, 0.84), YardArt.ORANGE, Vector3(-8, 0, 0), 0.03)
+		k.hazard(Vector3(0.3, 0.05, 0.145), Vector3(0, 0.5, 0.86), Vector3(-8, 0, 0))
+		k.pipe(hip, knee, 0.055, graphite, false)
+		k.pipe(Vector3(0, 0.42, 0.9), knee + Vector3(0, -0.02, -0.04), 0.03, light, false)
+		k.box(Vector3(0.16, 0.14, 0.16), knee, YardArt.ORANGE, Vector3(-30, 0, 0), 0.035)
+		k.pipe(knee, foot, 0.045, light, false)
+		k.cyl(0.2, 0.05, Vector3(0, 0.06, 1.3), graphite, Vector3.ZERO, 0.015, 16)
+		k.cyl(0.17, 0.035, Vector3(0, 0.018, 1.3), YardArt.RUBBER, Vector3.ZERO, 0.01, 16)
+		k.pop()
+		_bar(fin, Vector3(0.058, 0.62, 0.93), Vector3(0.058, 0.4, 1.2), 0.008, edge_m)
 		var lm: StandardMaterial3D = Mats.lamp(LAMP, 2.5)
 		lamps.append(lm)
 		var bulb := MeshInstance3D.new()
 		bulb.name = "Lamp"
-		bulb.mesh = ProcMesh.sphere(0.03, 10, 5)
+		bulb.mesh = ProcMesh.sphere(0.035, 10, 5)
 		bulb.material_override = lm
-		bulb.position = Vector3(0, 0.46, 1.27)
+		bulb.position = Vector3(0, 0.36, 1.34)
 		fin.add_child(bulb)
-		var foot := MeshInstance3D.new()
-		foot.mesh = ProcMesh.cyl(0.07, 0.09, 0.05, 10)
-		foot.material_override = fin_mat
-		foot.position = Vector3(0, 0.0, 1.2)
-		fin.add_child(foot)
+	var legs: MeshInstance3D = k.mi(0.12, "Legs")
+	pod.add_child(legs)
 	pod.set_meta("fin_lamps", lamps)
 
 
@@ -788,11 +785,12 @@ static func _seam_strips(pod: Node3D, js: Array, y0: float, y1: float, w: float,
 	pod.add_child(mi)
 
 
-## Panel seams, raised plates, vent grilles, RCS nubs, grab rails and the mast with the beacon.
+## Panel seams, raised plates, vent grilles, thruster blocks, grab rails, the docking collar and the
+## beacon lamp on the parachute cap.
 static func _build_greebles(pod: Node3D, dark: StandardMaterial3D, seam: StandardMaterial3D, panel_m: ShaderMaterial) -> void:
 	# [v7pod] The chine seams follow the curved shell (they were straight bars from end to end, which
 	# cut right through the cabin and showed as dark lines down its inner wall).
-	_seam_strips(pod, [0, 2, 10], 0.36, 2.1, 0.006, 0.006, dark)
+	_seam_strips(pod, [0, 2, 10], 0.44, 2.02, 0.006, 0.006, dark)
 	_seam_strips(pod, [4, 9], 0.5, 1.55, 0.005, 0.008, seam)
 	var steel: StandardMaterial3D = Mats.metal("steel")
 	for j: int in [2, 10]:
@@ -804,25 +802,37 @@ static func _build_greebles(pod: Node3D, dark: StandardMaterial3D, seam: Standar
 		_box(f, Vector3(0.26, 0.16, 0.02), dark, Vector3(0, 0, 0.01))
 		for s: int in 4:
 			_box(f, Vector3(0.22, 0.012, 0.006), steel, Vector3(0, -0.055 + s * 0.037, 0.022))
-	for j: int in [0, 3, 9]:
-		var f: Node3D = _on_facet(pod, j, 1.95)
-		var nub := MeshInstance3D.new()
-		nub.mesh = ProcMesh.cyl(0.035, 0.045, 0.08, 8)
-		nub.material_override = dark
-		nub.rotation.x = PI * 0.5
-		nub.position = Vector3(0, 0, 0.04)
-		f.add_child(nub)
+	# Four thruster blocks round the shoulder (not over the door): a graphite housing, two nozzles
+	# firing sideways and one outward.
+	var k := YardArt.Kit.new()
+	var graphite := Color(0.17, 0.18, 0.2)
+	for j: int in [0, 3, 9, 11]:
+		var n: Vector3 = facet_normal(j, 1.8)
+		k.push(Transform3D(Basis.looking_at(-n, Vector3.UP), facet_point(j, 1.8, 0.0)))
+		k.box(Vector3(0.2, 0.15, 0.1), Vector3(0, 0, 0.035), graphite, Vector3.ZERO, 0.03)
+		for sx: float in [-1.0, 1.0]:
+			k.cyl(0.03, 0.05, Vector3(sx * 0.115, 0.0, 0.045), YardArt.STEEL, Vector3(0, 0, 90), 0.008, 10, "paint", 0.022)
+		k.cyl(0.03, 0.04, Vector3(0, 0.0, 0.1), YardArt.STEEL, Vector3(90, 0, 0), 0.008, 10, "paint", 0.022)
+		k.pop()
+	# The docking collar on the shoulder and the parachute cap's bolts.
+	k.cyl(0.445, 0.07, Vector3(0, 2.065, 0), graphite, Vector3.ZERO, 0.02, SEGS * 2)
+	for i: int in 6:
+		var a: float = TAU * i / 6.0 + 0.26
+		k.bolt(Vector3(sin(a) * 0.4, 2.1, cos(a) * 0.4), Vector3.UP, YardArt.STEEL, 0.02)
+		k.box(Vector3(0.05, 0.07, 0.03), Vector3(sin(a) * 0.365, 2.14, cos(a) * 0.365), YardArt.STEEL, Vector3(0, rad_to_deg(a), 0), 0.008)
+	k.cyl(0.07, 0.03, Vector3(0, HEIGHT + 0.005, 0), graphite, Vector3.ZERO, 0.008, 12)
+	var ext: MeshInstance3D = k.mi(0.12, "Fittings")
+	pod.add_child(ext)
 	for j: int in [4, 8]:
 		var f: Node3D = _on_facet(pod, j, 1.0)
 		_bar(f, Vector3(0, -0.2, 0.05), Vector3(0, 0.2, 0.05), 0.012, steel)
 		_box(f, Vector3(0.03, 0.03, 0.05), dark, Vector3(0, -0.2, 0.025))
 		_box(f, Vector3(0.03, 0.03, 0.05), dark, Vector3(0, 0.2, 0.025))
-	_bar(pod, Vector3(0, HEIGHT - 0.04, 0), Vector3(0, HEIGHT + 0.22, 0), 0.012, dark)
 	var beacon := MeshInstance3D.new()
 	beacon.name = "Beacon"
-	beacon.mesh = ProcMesh.sphere(0.04, 12, 6)
+	beacon.mesh = ProcMesh.sphere(0.05, 12, 6)
 	beacon.material_override = Mats.lamp(LAMP, 3.0)
-	beacon.position = Vector3(0, HEIGHT + 0.24, 0)
+	beacon.position = Vector3(0, HEIGHT + 0.035, 0)
 	pod.add_child(beacon)
 
 
@@ -999,13 +1009,13 @@ static func _build_damage_kit(pod: Node3D, panel_m: ShaderMaterial, accent: Shad
 	planter.name = "Planter"
 	pod.add_child(planter)
 	var tray := MeshInstance3D.new()
-	tray.mesh = ProcMesh.torus(0.9, 1.12, 36, 6)
+	tray.mesh = ProcMesh.torus(1.02, 1.24, 36, 6)
 	tray.material_override = accent
 	tray.scale = Vector3(1, 0.35, 1)
 	tray.position.y = 0.06
 	planter.add_child(tray)
 	var soil := MeshInstance3D.new()
-	soil.mesh = ProcMesh.torus(0.93, 1.09, 36, 6)
+	soil.mesh = ProcMesh.torus(1.05, 1.21, 36, 6)
 	var soil_m := StandardMaterial3D.new()
 	soil_m.albedo_color = Color(0.17, 0.11, 0.07)
 	soil_m.roughness = 1.0
@@ -1025,7 +1035,7 @@ static func _build_damage_kit(pod: Node3D, panel_m: ShaderMaterial, accent: Shad
 		sprout.mesh = ProcMesh.sphere(rng.randf_range(0.05, 0.09), 8, 5)
 		sprout.material_override = leaf
 		sprout.scale = Vector3(1.0, rng.randf_range(1.2, 2.0), 1.0)
-		sprout.position = _pt(a, 0.18, 1.01)
+		sprout.position = _pt(a, 0.18, 1.13)
 		planter.add_child(sprout)
 	var beam := MeshInstance3D.new()
 	beam.name = "BeaconBeam"

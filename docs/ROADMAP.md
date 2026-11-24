@@ -2,12 +2,12 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
-## Jump (v11jump, 20 Nov, owner item 110)
+## Jump (v11jump, 20 Nov, owner item 114)
 
 - **Built:** Lumi hops on Space / A (rebindable "Jump"; scoop's second key moved from Space to X). 0.6 m held, smaller on a tap, 0.41 s in the air; onto things up to about 0.85 m. Numbers in `data/patch.json` "jump", how-to in docs/ADJUSTING.md "Lumi's hop".
 - **Rules in code:** junk heaps stop him at any height; from a height he does not pass over what a hop from the ground below could not clear (no leaps over walls, no bale stairs); a rescue lift to open ground when a hop leaves him shut in and he keeps trying for 6 s.
 - **Checks:** `tests/test_jump.gd` (20), `--walk-jump` (in tools/check_exit.sh), `--city-walk` and `--target-reach` list what a hop opens (planet/sites/jump_reach.gd); `--orbit-hop=K --hop-skip --spot-probe=hubK:x,z` looks at a spot they print. A frame burst of a held, a tapped and a running hop (`--walk-jump-shots`) was looked at after merging main (24 Nov).
-- **24 Nov (hand-over):** the audit's leaps from the ground let his underside pass 0.94 m up and its height cache answered for heights up to 6 cm off; both fixed (a leap clears only what a step up reaches, `tests/test_jump.gd` holds the motor off a thin 0.90 m rail). Main's `test_no_song_starts_over_a_spoken_line` failed now and then after the radio's shuffle_all (picks of songs with no file); the test now marks only real files present. The audio dump manifest the branch had committed by accident is untracked again.
+- **24 Nov (hand-over):** the audit's leaps from the ground let his underside pass 0.94 m up and its height cache answered for heights up to 6 cm off; both fixed (a leap clears only what a step up reaches, `tests/test_jump.gd` holds the motor off a thin 0.90 m rail). The audio dump manifest the branch had committed by accident is untracked again.
 - **Open:**
   - Feel and sound on a real MacBook and controller were not judged (numbers and rendered frames only).
   - On a controller A is "use" first, so there is no hop while carrying a bale; a free button would need another action moved.
@@ -19,6 +19,26 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   - The draft controller pass of the opening (`--walk-opening --walk-opening-pad`, never run to the end before) ran once on this branch: every A press by a prompt used it (the bench, bale pick-ups; the walk does not count hops). It fails on glyph text (the key strip and the bench prompt show keyboard keys) and on a hex left at 94% with no A press in that part. Not compared with main.
   - The first-minutes key strip does not show the jump (it is in the full list and in Controls).
   - Other planets' towns were not audited (only Verdance's hubs).
+
+## 20 Nov: the opening film rewritten and re-shot (v11film, owner items 110-113)
+
+- The film is new end to end: 21 shots, one voice (WREN, ten lines), about 117 s
+  (`data/intro_shots.json`, `story/intro.gd`; how to change it: docs/ADJUSTING.md "The opening film").
+- New ark (`story/cradle_ship.gd`, built in code; `art/models/ship/ark.glb` is no longer loaded) and
+  new pod (`story/escape_pod.gd`, a drop capsule). The same models serve the yard, the finale, the
+  telescope and the Homecoming (its rocket now docks at `CradleShip.dock_world()`).
+- The seed vault set is the inside of the ark's garden dome (`story/space_stage.gd`).
+- The tray Lumi saved stands in the crashed pod's cabin (`story/crash_site.gd`).
+- "Watch the opening again": pause menu for the first 30 minutes near the pod, Codex for good. A
+  rewatch plays with the game stopped and changes nothing (`tools/check_rewatch.sh`, in check_exit).
+- 24 Nov, second look at the whole film (v11film): the ark burns and smokes after the hits, the
+  parting is Lumi's last look up at it from the falling pod, a hanging grow lamp, real seedlings, a
+  continuous smoke trail, the crash plume rises after the crash shot, the first CD is out of the film.
+- **Open:** nobody has heard it (sound levels and the three song hits are by measurement only); not
+  seen at 60 fps or on the Mac's renderer; the Homecoming, the Bloom finale and the core-charge
+  memories show the new ark and vault but were not re-rendered; a rewatch at night or with machines
+  built shows the yard as it is then; "the rocket design" was read as the ark and the pod, not the
+  buildable shuttle.
 
 ## Status at the stop, 18 Nov (owner playtest 3, items 89-109)
 

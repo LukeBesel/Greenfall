@@ -5,8 +5,8 @@ extends Node
 ## Mk VII Homeward rocket has lifted off (automation/rocket.gd hands over at HOME). Letterboxed:
 ##   1. space: the rocket climbs out of a green Verdance; the four restored worlds glow far off;
 ##   2. the Cradle, holding orbit, wakes (green running lights) and takes the rocket into its bay;
-##   3. the seed vault: Lumi sets the seedling tray back on its pedestal, three hundred years after
-##      climbing into a pod to save it; the drawers light up; below decks, the Settlers wake;
+##   3. the seed vault: Lumi sets the seedling tray back on its planter table (the tray it climbed
+##      into a pod to save in the opening film); the drawers light up; below decks, the Settlers wake;
 ##   4. back on the ground: the ark finale (story/bloom_finale.gd) brings the Cradle down to
 ##      Verdance, "welcome home", then the end credits. The game carries on afterwards.
 ## Dev: --homecoming[=S] plays it S seconds after the district loads.
@@ -31,7 +31,7 @@ const SPACE_LINES_AWAKE: Array[Array] = [
 ]
 const VAULT_LINES: Array[Array] = [
 	["The vault. Your vault. It looks exactly like you left it.", 4.5],
-	["You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home.", 6.0],
+	["You climbed into a pod to save that tray. Now you have brought it home.", 6.0],  # [v11film] it said "three hundred years later": the fall is in the game's own time (the opening film)
 	["Hear that? Below decks. Doors. Voices. They're waking up, {name}.", 5.0],
 	["The first thing they'll see is a world that's green again. You did that. Small. Stubborn. Perfect.", 6.0],
 ]
@@ -135,7 +135,7 @@ func _space() -> void:
 	ark.thrust = 0.25
 	var rocket: RocketModel = SystemProps.add_rocket(st, Vector3(10, -46, 16))
 	rocket.scale = Vector3.ONE * 0.55
-	var dock := Vector3(0, 4.2, 0)
+	var dock: Vector3 = ark.dock_world()  # [v11film] the new ark's port under its forward belly (it was a point inside the old hull)
 	st.shot(Vector3(24, -30, 40), Vector3(10, -40, 16), Vector3(30, -6, 46), Vector3(2, 0, 4), 16.0, 46.0, 42.0)
 	_c.fade_to(0.0, 1.2)
 	_c.caption(tr("Homecoming"))

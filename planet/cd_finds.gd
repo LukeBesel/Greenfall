@@ -336,6 +336,7 @@ func _show(id: String, hid: int, fresh: bool) -> void:
 		return
 	var scratched: bool = id.begins_with("s:")
 	var node: Node3D = build_first_cd() if id.begins_with(FIRST_KEY) else build_cd(scratched)
+	node.add_to_group("film_hide")  # [v11film] not in the opening film (Intro hides the group)
 	add_child(node)
 	var pos: Vector3 = spot(hid, scratched)
 	if id.begins_with(FIRST_KEY):  # [v10snd] hovering over the junk so it is seen
@@ -355,8 +356,14 @@ func _show(id: String, hid: int, fresh: bool) -> void:
 
 func _process(delta: float) -> void:
 	_spin += delta
+	# [v11film] Hidden while the opening film plays: the first CD's ray of gold light stood over
+	# the yard in the crash shots, like part of the crash. (A rewatch stops this node: Intro hides
+	# the "film_hide" group itself then.)
+	var it: Variant = world.get("intro") if world else null
+	var film: bool = it is Intro and (it as Intro).busy()
 	for id: String in _discs:
 		var n: Node3D = _discs[id]
+		n.visible = not film
 		var glint: OmniLight3D = n.get_node_or_null("Glint") as OmniLight3D
 		if id.begins_with(FIRST_KEY):
 			_face_first(n)

@@ -57,10 +57,31 @@ func setup(yaw: float) -> void:
 	set_stage(stage_for_upgrades())
 	PropBatch.merge(self)  # [orbE] perf: the furrow's clods and shards (static) as one mesh per material
 	_build_plume()  # [v2feel] after the merge: the plume's shader works in its own frame
+	_build_tray()  # [v11film]
 	PodBatch.merge(pod)  # [orbE] perf: the pod's static shell and each repair-stage group, merged per material
 	_build_service()  # [v6yard]
 	if not EventBus.upgrade_bought.is_connected(_on_upgrade):
 		EventBus.upgrade_bought.connect(_on_upgrade)
+
+
+## [v11film] The tray of seedlings Lumi carried down in the opening film. It stays where it is
+## safe, on the cradle in the pod's cabin (a small green glow through the open hatch), until the
+## Homecoming carries it back up to the vault.
+func _build_tray() -> void:
+	if pod.get_node_or_null("SeedTray"):
+		return
+	var t: Node3D = SpaceStage.build_tray()
+	t.position = Vector3(0, 0.845, 0.3)
+	t.rotation.y = 0.2
+	t.scale = Vector3.ONE * 0.8
+	pod.add_child(t)
+	var glow := OmniLight3D.new()
+	glow.name = "TrayGlow"
+	glow.light_color = Color(0.55, 1.0, 0.6)
+	glow.light_energy = 0.5
+	glow.omni_range = 1.3
+	glow.position = Vector3(0, 1.1, 0.2)
+	pod.add_child(glow)
 
 
 ## 0 damaged, 1 patched, 2 repaired: from the total upgrade levels bought.
