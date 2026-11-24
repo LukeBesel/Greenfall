@@ -57,6 +57,8 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		tree.quit(1)
 		return
 	EventBus.toast.connect(func(t: String, _k: String) -> void: _toasts.append(t))
+	_cubes_seen = GameState.get_currency("cubes").to_float()
+	EventBus.currency_changed.connect(_on_cubes)
 	_base_state()
 	for k: int in 1200:  # [v9a] WREN's brief reveals the card (subtitle clock: slow on a slow runner)
 		if ob.revealed:
@@ -70,6 +72,32 @@ static func run_dev(p_so: SliceOrbit) -> void:
 	print("[walk-home] %d reloads" % _reloads)
 	print("[walk-home] %s" % ("PASS" if _fails.is_empty() else "FAIL: " + "; ".join(_fails)))
 	tree.quit(0 if _fails.is_empty() else 1)
+
+
+static var _cubes_seen: float = 0.0
+
+
+## [v9a] Every lump of cubes the game pays at once (300 or more), with the script lines that paid
+## it: CI saw 1.2K-1.5K appear in a few seconds (shuttle, saving up; after a reload).
+static func _on_cubes(id: String, v: BigNum) -> void:
+	if id != "cubes":
+		return
+	var now: float = v.to_float()
+	var d: float = now - _cubes_seen
+	_cubes_seen = now
+	if d < 300.0:
+		return
+	var from: Array[String] = []
+	for f: Dictionary in get_stack():
+		var src: String = str(f.get("source", "")).get_file()
+		var fn: String = str(f.get("function", ""))
+		if src == "walk_home.gd" and fn != "_on_cubes":
+			return  # the walk's own money (_set_money and the dev hooks)
+		if src in ["walk_home.gd", "GameState.gd"]:
+			continue
+		if from.size() < 5:
+			from.append("%s:%d %s" % [src, int(f.get("line", 0)), fn])
+	print("[walk-home] note: the game paid +%.2f cubes at once (step %s) from %s" % [d, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
 
 
 static func _bind(p_so: SliceOrbit) -> void:
@@ -1166,7 +1194,7 @@ static func _part_shuttle() -> void:
 			from.append("%s:%d" % [src, int(f.get("line", 0))])
 			if from.size() >= 4:
 				break
-		pays.append("%+.0f at frame %d from %s" % [v.to_float() - last[0], Engine.get_physics_frames(), " < ".join(from)])
+		pays.append("%+.2f at frame %d from %s" % [v.to_float() - last[0], Engine.get_physics_frames(), " < ".join(from)])
 		last[0] = v.to_float()
 	EventBus.currency_changed.connect(on_pay)
 	if not await _goto("shuttle"):
