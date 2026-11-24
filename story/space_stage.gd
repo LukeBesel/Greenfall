@@ -238,6 +238,7 @@ var _vault_leaves: CPUParticles3D
 var _vault_mist: CPUParticles3D
 var _vault_drawers: Array[StandardMaterial3D] = []
 var _grow_light: OmniLight3D
+var _grow_pendant: Node3D
 
 
 func _build_vault() -> void:
@@ -354,20 +355,24 @@ func _build_vault() -> void:
 	arm.albedo_color = Color(0.75, 0.76, 0.77)
 	arm.roughness = 0.4
 	arm.metallic = 0.5
-	for seg: Array in [[Vector3(0.44, 0.78, -0.2), Vector3(0.5, 1.75, -0.24)], [Vector3(0.5, 1.75, -0.24), Vector3(0.08, 1.92, -0.04)]]:
-		var a: Vector3 = seg[0]
-		var b: Vector3 = seg[1]
-		var bar := _mesh(root, ProcMesh.cyl(0.018, 0.018, a.distance_to(b), 6), arm, (a + b) * 0.5)
-		bar.basis = Basis(Quaternion(Vector3.UP, (b - a).normalized()))
-	var shade := _mesh(root, ProcMesh.cyl(0.07, 0.2, 0.12, 16), white, Vector3(0.04, 1.87, -0.02))
-	shade.name = "GrowLamp"
+	# The grow lamp hangs on a cable from the dome's crown (it stood on a pole that crossed Lumi's
+	# face in the close shots at the table); in the storm the wind swings it toward the hole.
+	_grow_pendant = Node3D.new()
+	_grow_pendant.name = "GrowLamp"
+	_grow_pendant.position = Vector3(0.04, 5.3, -0.02)
+	root.add_child(_grow_pendant)
+	var cable := StandardMaterial3D.new()
+	cable.albedo_color = Color(0.1, 0.11, 0.12)
+	cable.roughness = 0.6
+	_mesh(_grow_pendant, ProcMesh.cyl(0.006, 0.006, 3.36, 5), cable, Vector3(0, -1.68, 0))
+	_mesh(_grow_pendant, ProcMesh.cyl(0.07, 0.2, 0.12, 16), white, Vector3(0, -3.43, 0))
 	var bulb_m: StandardMaterial3D = Mats.lamp(Color(0.75, 1.0, 0.7), 1.3)
 	_vault_lamp_mats.append(bulb_m)
-	_mesh(root, ProcMesh.cyl(0.16, 0.16, 0.02, 16), bulb_m, Vector3(0.04, 1.8, -0.02))
+	_mesh(_grow_pendant, ProcMesh.cyl(0.16, 0.16, 0.02, 16), bulb_m, Vector3(0, -3.5, 0))
 	if AssetLib.has_model("watering_can_metal_01"):
 		var can := MeshInstance3D.new()
 		can.mesh = AssetLib.model_mesh_lite("watering_can_metal_01", 2500)
-		can.position = Vector3(-0.85, 0.0, 0.5)
+		can.position = Vector3(-2.15, 0.0, 1.35)  # by the bed, clear of the close shots at the table
 		can.rotation.y = 2.2
 		can.scale = Vector3.ONE * (0.4 / maxf(0.1, AssetLib.model_aabb("watering_can_metal_01").size.y))
 		root.add_child(can)
@@ -482,7 +487,9 @@ func _build_beds(root: Node3D, soil: StandardMaterial3D, white: StandardMaterial
 			var m: Array = meshes[rng.randi() % meshes.size()]
 			var aabb: AABB = m[2]
 			var want: float = rng.randf_range(0.5, 1.0) * float(m[1]) * (0.75 + 0.5 * (r - 2.5) / 2.0)
-			var sc: float = want / maxf(0.2, aabb.size.y)
+			# Sized by its height, but never wider than a bed plant should be (a flat grass patch
+			# scaled by its height alone grew four metres across, into the close shots at the table).
+			var sc: float = minf(want / maxf(0.2, aabb.size.y), 1.3 / maxf(0.2, maxf(aabb.size.x, aabb.size.z)))
 			var plant := MeshInstance3D.new()
 			plant.mesh = m[0]
 			plant.position = Vector3(side * cos(a) * r, 0.1, sin(a) * r)
@@ -610,10 +617,39 @@ func _update_vault(_delta: float) -> void:
 	for m: StandardMaterial3D in _vault_drawers:
 		m.emission_energy_multiplier = 0.7 * fl
 	_grow_light.light_energy = 1.9 * lerpf(0.5, 1.0, pw)
+	var swing: float = 0.02 * sin(_t * 0.8) + w * (0.32 + 0.1 * sin(_t * 6.0))
+	_grow_pendant.basis = Basis(axis, swing)  # its foot goes the way the air goes
 
 
 ## A small white tray of seedlings: dark soil and a dozen young plants, each a thin stem with two
 ## round seed leaves; a few are a little further on and have a second pair.
+## One seed leaf, 1 long along +X from its stalk: an oval a little wider past the middle, its edges
+## curled up and its tip drooping (scaled down to a few centimetres by the tray).
+static func seed_leaf_mesh() -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var n: int = 9
+	var rows: Array = []
+	for i: int in n + 1:
+		var u: float = float(i) / n
+		var hw: float = 0.34 * sin(PI * pow(u, 0.8))
+		var y: float = 0.06 * sin(PI * u) - 0.16 * u * u
+		rows.append([Vector3(u, y + 0.35 * hw * hw, -hw), Vector3(u, y, 0.0), Vector3(u, y + 0.35 * hw * hw, hw)])
+	for i: int in n:
+		var a: Array = rows[i]
+		var b: Array = rows[i + 1]
+		for side: int in 2:
+			var p0: Vector3 = a[side]
+			var p1: Vector3 = a[side + 1]
+			var q0: Vector3 = b[side]
+			var q1: Vector3 = b[side + 1]
+			for v: Vector3 in [p0, q0, q1, p0, q1, p1]:
+				st.set_uv(Vector2(v.x, v.z + 0.5))
+				st.add_vertex(v)
+	st.generate_normals()
+	return st.commit()
+
+
 static func build_tray() -> Node3D:
 	var t := Node3D.new()
 	t.name = "SeedTray"
@@ -623,10 +659,18 @@ static func build_tray() -> Node3D:
 	var soil := StandardMaterial3D.new()
 	soil.albedo_color = Color(0.17, 0.11, 0.07)
 	soil.roughness = 1.0
-	var leaf := Mats.lamp(Color(0.45, 1.0, 0.4), 0.75)
-	leaf.albedo_color = Color(0.3, 0.75, 0.25)
-	leaf.roughness = 0.6
+	# Leaves: a living green that glows a little (brighter when Lumi hums to them); stems pale.
+	var leaf := Mats.lamp(Color(0.32, 0.8, 0.3), 0.75)
+	leaf.albedo_color = Color(0.3, 0.62, 0.2)
+	leaf.roughness = 0.55
+	leaf.cull_mode = BaseMaterial3D.CULL_DISABLED
 	t.set_meta("leaf", leaf)
+	var stem_m := StandardMaterial3D.new()
+	stem_m.albedo_color = Color(0.66, 0.78, 0.48)
+	stem_m.roughness = 0.6
+	stem_m.emission_enabled = true
+	stem_m.emission = Color(0.3, 0.55, 0.25)
+	stem_m.emission_energy_multiplier = 0.25
 	var body := MeshInstance3D.new()
 	body.mesh = ProcMesh.rounded_box(Vector3(0.62, 0.1, 0.42), 0.03, 2)
 	body.material_override = white
@@ -639,8 +683,8 @@ static func build_tray() -> Node3D:
 	t.add_child(dirt)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 5
-	var stem_mesh: CylinderMesh = ProcMesh.cyl(0.005, 0.008, 1.0, 5)
-	var leaf_mesh: SphereMesh = ProcMesh.sphere(0.5, 8, 4)
+	var stem_mesh: CylinderMesh = ProcMesh.cyl(0.0045, 0.0065, 1.0, 6)
+	var leaf_mesh: ArrayMesh = seed_leaf_mesh()
 	for i: int in 4:
 		for j: int in 3:
 			var p := Vector3(-0.21 + i * 0.14, 0.11, -0.12 + j * 0.12) + Vector3(rng.randf_range(-0.012, 0.012), 0, rng.randf_range(-0.012, 0.012))
@@ -652,21 +696,24 @@ static func build_tray() -> Node3D:
 			t.add_child(plant)
 			var stem := MeshInstance3D.new()
 			stem.mesh = stem_mesh
-			stem.material_override = leaf
+			stem.material_override = stem_m
 			stem.scale = Vector3(1, h, 1)
 			stem.position = Vector3(0, h * 0.5, 0)
 			plant.add_child(stem)
+			# Two round seed leaves at the top, lifted like open hands; the bigger ones have their
+			# first pair of true leaves above them, smaller and turned a quarter round.
 			for pair: int in (2 if big else 1):
-				var y: float = h * (1.0 if pair == 0 else 0.62)
-				for s: float in [-1.0, 1.0]:
+				var y: float = h * (1.0 if pair == 0 else 0.7)
+				var sz: float = rng.randf_range(0.034, 0.042) * (1.2 if big else 1.0) * (1.0 if pair == 0 else 1.15)
+				if big and pair == 0:
+					sz *= 0.62  # the new pair on top is the small one
+				for s: float in [0.0, PI]:
 					var lf := MeshInstance3D.new()
 					lf.mesh = leaf_mesh
 					lf.material_override = leaf
-					var sz: float = (0.05 if pair == 0 else 0.038) * (1.25 if big else 1.0)
-					lf.scale = Vector3(sz, sz * 0.22, sz * 0.62)
-					var turn := Basis(Vector3.UP, PI * 0.5 * pair)
-					lf.basis = turn * Basis(Vector3(0, 0, 1), s * -0.45) * lf.basis
-					lf.position = turn * Vector3(s * sz * 0.5, y, 0)
+					var lift: float = rng.randf_range(0.3, 0.55) if pair == 0 else rng.randf_range(0.1, 0.3)
+					lf.basis = Basis(Vector3.UP, s + PI * 0.5 * pair) * Basis(Vector3(0, 0, 1), lift) * Basis().scaled(Vector3.ONE * sz)
+					lf.position = Vector3(0, y, 0)
 					plant.add_child(lf)
 	return t
 
@@ -964,7 +1011,7 @@ func leaf(pos: Vector3, vel: Vector3) -> void:
 
 
 ## Soft puffs (venting air, smoke, heat) drifting along vel. They swell from small, and fade.
-func puff(pos: Vector3, vel: Vector3, col: Color = Color(0.9, 0.92, 0.95, 0.5), size_: float = 1.0) -> void:
+func puff(pos: Vector3, vel: Vector3, col: Color = Color(0.9, 0.92, 0.95, 0.5), size_: float = 1.0, life_: float = 1.6) -> void:
 	var holder: Node3D = _sets[_set] if _sets.has(_set) else _sets["space"]
 	var p := MeshInstance3D.new()
 	p.mesh = ProcMesh.sphere(0.5 * size_, 12, 8)
@@ -974,7 +1021,7 @@ func puff(pos: Vector3, vel: Vector3, col: Color = Color(0.9, 0.92, 0.95, 0.5), 
 	holder.add_child(p)
 	p.global_position = pos
 	p.scale = Vector3.ONE * 0.45
-	_fx.append({"node": p, "vel": vel, "spin": Vector3.ZERO, "life": 1.6, "life0": 1.6, "grow": 1.5 * size_, "fade": m, "col": col})
+	_fx.append({"node": p, "vel": vel, "spin": Vector3.ZERO, "life": life_, "life0": life_, "grow": 1.5 * size_ * 1.6 / life_, "fade": m, "col": col})
 
 
 ## Musical notes drifting up from Lumi while it hums.

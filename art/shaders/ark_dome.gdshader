@@ -45,12 +45,14 @@ void fragment() {
 	}
 	// The glass is nearly clear, so the damage has to be drawn: a bright broken edge round the
 	// hole, long white cracks running out of it, and frosted glass between them.
-	float crack_zone = breach * (1.0 - smoothstep(edge, edge + hole_size * 1.9, ang));
+	// (Seen straight on, a hole in clear glass is invisible: the glass round it frosts white, so
+	// the hole reads as a clear, jagged gap in a white starred pane.)
+	float crack_zone = breach * (1.0 - smoothstep(edge, edge + hole_size * 2.6, ang));
 	float spoke = abs(fract(az * 3.3 + 0.25 * sin(ang * 14.0)) - 0.5);
 	float crack = crack_zone * (1.0 - smoothstep(0.0, 0.05 + fwidth(az) * 2.5, spoke));
-	float lip = breach * (1.0 - smoothstep(0.0, 0.03 + fwidth(ang) * 1.5, abs(ang - edge)));
+	float lip = breach * (1.0 - smoothstep(0.0, 0.045 + fwidth(ang) * 1.5, abs(ang - edge)));
 	crack = max(crack, lip);
-	float frost = crack_zone * 0.42;
+	float frost = crack_zone * (0.45 + 0.25 * smoothstep(edge + hole_size * 0.9, edge, ang));
 	float fres = pow(1.0 - clamp(abs(dot(normalize(NORMAL), normalize(VIEW))), 0.0, 1.0), 3.0);
 	vec3 col = mix(glass.rgb, rib.rgb, r);
 	col = mix(col, vec3(0.95, 0.98, 1.0), max(crack, frost));

@@ -1341,11 +1341,27 @@ func _run_storm(lt: float, _u: float, delta: float) -> void:
 		var n: int = int(_acc.get("n", 0))
 		_acc["n"] = n + 1
 		_storm_meteor(n)
-	# The engines after their hit: sparks and burning gas trail from the block.
-	var hit_at: float = float(_acc.get("engines", INF))
-	if lt > hit_at and _tick("burn", 0.12, delta):
-		var p: Vector3 = _stage.ark.engine_world()
-		_stage.puff(p + Vector3(-0.5, sin(lt * 9.0) * 0.8, cos(lt * 7.0) * 0.8), Vector3(-2.5, 0.6 * sin(lt * 5.0), 0.8 * cos(lt * 3.0)), Color(1.0, 0.55, 0.25, 0.4), 1.1)
+	# The engines after their hit: fire, black smoke and sparks pour out of the block.
+	if lt > float(_acc.get("engines", INF)):
+		_ark_wounds(lt, delta, 0.0)
+
+
+## The ark after the storm, in every shot that shows it: its engine block burns and pours out black
+## smoke (a ragged trail behind it, the way it came), hot bits spit out of it now and then, and,
+## once the dome is broken (`vent` > 0), the garden's air and leaves stream out of the hole.
+func _ark_wounds(lt: float, delta: float, vent: float, size_k: float = 1.0) -> void:
+	var st: SpaceStage = _stage
+	var e: Vector3 = st.ark.engine_world()
+	var back: Vector3 = (st.ark.global_basis * Vector3(0, 0, 1)).normalized()
+	var j := Vector3(sin(lt * 9.1), cos(lt * 7.3), sin(lt * 5.7 + 1.0))
+	if _tick("smoke", 0.08, delta):
+		st.puff(e + back * 1.5 + j * 1.6 * size_k, back * 3.2 + j * 0.9, Color(0.16, 0.15, 0.15, 0.62), 3.4 * size_k, 3.2)
+	if _tick("fire", 0.06, delta):
+		st.puff(e + back * 0.6 + j * 0.9 * size_k, back * 2.2 + j * 1.2, Color(1.0, 0.48, 0.16, 0.55), 1.5 * size_k, 0.8)
+	if _tick("spark", 0.55, delta):
+		st.debris(e + j, 2, 7.0, 0.35, back)
+	if vent > 0.0:
+		_vent_dome(lt, delta, vent, size_k)
 
 
 ## Meteor n of the barrage: they rake across the frame from behind the ark, some of them close.
@@ -1416,16 +1432,17 @@ func _run_hit(lt: float, _u: float, delta: float) -> void:
 		# The hole opens fast, then the garden's air pours out of it: white breath, torn leaves.
 		st.ark.breach = clampf((lt - hit_at) / 0.22, 0.0, 1.0)
 		_vent_dome(lt, delta, 1.0)
+	_ark_wounds(lt, delta, 0.0)
 
 
 ## Air and leaves streaming out of the broken dome (the space set).
-func _vent_dome(lt: float, delta: float, k: float) -> void:
+func _vent_dome(lt: float, delta: float, k: float, size_k: float = 1.0) -> void:
 	var st: SpaceStage = _stage
 	var hole: Vector3 = st.ark.breach_world()
 	var out: Vector3 = (hole - st.ark.dome_world()).normalized()
 	if _tick("vent", 0.06, delta):
 		var j := Vector3(sin(lt * 9.0), cos(lt * 7.0), sin(lt * 5.0 + 1.0)) * 0.5
-		st.puff(hole + j * 0.4, (out + j * 0.35) * 6.5 * k, Color(0.92, 0.96, 1.0, 0.5), 1.3)
+		st.puff(hole + j * 0.4 * size_k, (out + j * 0.35) * 6.5 * k, Color(0.92, 0.96, 1.0, 0.5), 1.3 * size_k)
 	if _tick("leaf", 0.035, delta):
 		st.leaf(hole, (out + Vector3(sin(lt * 31.0), cos(lt * 23.0), sin(lt * 17.0)) * 0.45) * (4.0 + 3.0 * absf(sin(lt * 13.0))) * k)
 
@@ -1626,7 +1643,7 @@ func _run_release(lt: float, _u: float, delta: float) -> void:
 	st.pod.global_position = _pod_p0 + Vector3(-0.5 * tau - 0.1 * tau * tau, -0.5 * tau - 0.55 * tau * tau, 0.5 * tau)
 	var b0: Basis = _acc.get("rot0", Basis())
 	st.pod.global_basis = Basis(Vector3(1, 0, 0.4).normalized(), 0.14 * tau * tau) * b0
-	_vent_dome(lt, delta, 0.8)
+	_ark_wounds(lt, delta, 0.8)
 
 
 # --- Act 3: the long fall --------------------------------------------------------------------
@@ -1644,8 +1661,9 @@ static func fall_basis(dir: Vector3, t: float, wobble: float, spin: float) -> Ba
 	return b * Basis(Vector3(cos(t * 1.3), 0, sin(t * 1.3)).normalized(), wobble)
 
 
-## Seen from the ark: its broken dome in front, and far below it the pod, small, going down into
-## the huge dead planet. (It was two specks side by side on black.)
+## Lumi's last look at home: from beside the falling pod, up at the ark as it goes. It fills the
+## sky at first, burning and bleeding air, and shrinks away while WREN's voice breaks up. (It was
+## a shot from above that lost the ark off the top of the frame and the pod in the dark.)
 func _in_apart() -> void:
 	_space_base()
 	var st: SpaceStage = _stage
@@ -1655,32 +1673,20 @@ func _in_apart() -> void:
 	st.ark.release_pod(2)
 	_pod_p0 = st.ark.pod_world(2)
 	EscapePod.set_open(st.pod, false)
-	# From up here the pod is a speck: its beacon is what the eye follows down.
-	var far: MeshInstance3D = st.pod.get_node_or_null("FarGlow") as MeshInstance3D
-	if far == null:
-		far = MeshInstance3D.new()
-		far.name = "FarGlow"
-		far.mesh = ProcMesh.sphere(1.0, 14, 8)
-		far.material_override = SpaceStage.glow_mat(Color(1.0, 0.55, 0.22), 2.0, 1.6)
-		far.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		far.position = Vector3(0, EscapePod.HEIGHT, 0)
-		st.pod.add_child(far)
-	far.visible = true
 
 
 func _run_apart(lt: float, _u: float, delta: float) -> void:
 	var st: SpaceStage = _stage
 	st.ark.position = Vector3(lt * _p("ark_speed", 1.2), 0, 0)
 	st.ark.rotation = Vector3(0, -PI * 0.5, 0.05 * sin(lt * 0.5))  # no engines to hold it steady
-	# The pod is already well below when the shot opens, and falling faster all the time.
-	var tau: float = lt + _p("lead", 2.2)
-	st.pod.global_position = _pod_p0 + Vector3(-1.6 * tau, -(4.0 * tau + 1.5 * tau * tau), 2.4 * tau)
-	st.pod.global_basis = Basis(Vector3(0.3, 1, 0.2).normalized(), 0.6 + lt * 0.3) * Basis(Vector3.RIGHT, 0.5 + lt * 0.22)
-	var far: Node3D = st.pod.get_node_or_null("FarGlow") as Node3D
-	if far:  # a slow blink, a little bigger as it gets further, so it stays a point of light
-		var blink: float = pow(maxf(0.0, sin(lt * TAU / 0.9)), 6.0)
-		far.scale = Vector3.ONE * (1.2 + (5.0 + 1.1 * tau) * blink)
-	_vent_dome(lt, delta, 0.7)
+	# The pod falls back and down from its bay, faster all the time; the ark sails on.
+	var tau: float = lt + _p("lead", 3.5)
+	var back: Vector2 = _pair((_shots[_si].get("p", {}) as Dictionary).get("fall_back"), 3.0, 0.5)
+	var down: Vector2 = _pair((_shots[_si].get("p", {}) as Dictionary).get("fall_down"), 1.0, 0.45)
+	st.pod.global_position = _pod_p0 + Vector3(-(back.x * tau + back.y * tau * tau), -(down.x * tau + down.y * tau * tau), _p("fall_side", 0.8) * tau)
+	# Turned a little toward the lens, rocking slowly (no engines, no hand on it).
+	st.pod.global_basis = Basis(Vector3.UP, _p("pod_yaw", 2.6) + 0.12 * lt) * Basis(Vector3(1, 0, 0.3).normalized(), 0.22 * sin(lt * 0.6) - 0.15)
+	_ark_wounds(lt, delta, 0.8, _p("fx_size", 2.2))
 
 
 func _in_reentry() -> void:
@@ -1777,7 +1783,19 @@ func _fall_pose(k: float, t: float, fire_scale: float) -> void:
 		_fire.scale = Vector3.ONE * fire_scale
 		set_fire(_fire, 1.0, t)
 	if _trail and is_instance_valid(_trail):
-		_trail.global_position = _pod.global_position
+		# Each frame's smoke is spread along the stretch the pod covered in it, so the trail is one
+		# ragged ribbon at any frame rate (from a point it was a row of separate dark balls).
+		var now: Vector3 = _pod.global_position
+		var was: Vector3 = _trail.get_meta("last", now)
+		var seg: Vector3 = now - was
+		if seg.length() > 0.05 and seg.length() < 80.0:
+			var up_hint: Vector3 = _up() if absf(seg.normalized().dot(_up())) < 0.95 else Vector3.RIGHT
+			_trail.global_transform = Transform3D(Basis.looking_at(seg.normalized(), up_hint), (now + was) * 0.5)
+			_trail.emission_box_extents = Vector3(0.5, 0.5, seg.length() * 0.5 + 0.2)
+		else:
+			_trail.global_transform = Transform3D(Basis(), now)
+			_trail.emission_box_extents = Vector3(0.5, 0.5, 0.5)
+		_trail.set_meta("last", now)
 		_trail.emitting = true
 
 
@@ -1862,7 +1880,8 @@ func _plume_rise(k: float) -> void:
 	var plume: Node3D = _site.get_node_or_null("Plume") as Node3D
 	if plume:
 		var s: float = lerpf(0.03, 1.0, eased("out", k))
-		plume.scale = Vector3(lerpf(0.5, 1.0, s), s, lerpf(0.5, 1.0, s))
+		var w: float = maxf(s, 0.08)  # as wide as it is tall, in its own shape: a column, not a cone of light
+		plume.scale = Vector3(w, s, w)
 		plume.position = Vector3(0, CrashSite.PLUME_H * 0.5 * s + 1.2, 0)
 
 
@@ -2170,7 +2189,9 @@ func _puffs(amount: int, life: float, col: Color, size: float, one_shot: bool) -
 func _ensure_trail() -> void:
 	if _trail and is_instance_valid(_trail):
 		return
-	_trail = _puffs(110, 3.8, Color(0.3, 0.27, 0.25, 0.62), 6.0, false)
+	_trail = _puffs(190, 3.8, Color(0.3, 0.27, 0.25, 0.62), 6.0, false)
+	_trail.emission_shape = CPUParticles3D.EMISSION_SHAPE_BOX
+	_trail.emission_box_extents = Vector3(0.5, 0.5, 0.5)
 	_trail.direction = Vector3.UP
 	_trail.spread = 180.0
 	_trail.initial_velocity_min = 0.3
