@@ -1149,7 +1149,26 @@ static func _part_shuttle() -> void:
 	GameState.flags["map_seen"] = true
 	var cost: Dictionary = YardBuilds.def("shuttle").get("cost", {})
 	_set_money(200.0, 10.0)
+	var stats0: Dictionary = GameState.stats.duplicate()  # [v10snd] what paid, if the count is off
 	_toasts.clear()
+	# [v9a] Every cube payment in these seconds, with the script line that made it (CI: the card
+	# read 1.42K two seconds after the walk set 200).
+	var pays: Array[String] = []
+	var last: Array[float] = [200.0]
+	var on_pay: Callable = func(id: String, v: BigNum) -> void:
+		if id != "cubes" or absf(v.to_float() - last[0]) < 0.5:
+			return
+		var from: Array[String] = []
+		for f: Dictionary in get_stack():
+			var src: String = str(f.get("source", "")).get_file()
+			if src in ["GameState.gd", "walk_home.gd"] and from.is_empty():
+				continue
+			from.append("%s:%d" % [src, int(f.get("line", 0))])
+			if from.size() >= 4:
+				break
+		pays.append("%+.0f at frame %d from %s" % [v.to_float() - last[0], Engine.get_physics_frames(), " < ".join(from)])
+		last[0] = v.to_float()
+	EventBus.currency_changed.connect(on_pay)
 	if not await _goto("shuttle"):
 		return
 	await tree.create_timer(1.0).timeout
@@ -1161,6 +1180,13 @@ static func _part_shuttle() -> void:
 	var pr: Array = ob.progress()
 	var saved: float = str(pr[1]).get_slice(" /", 0).replace(",", "").to_float()
 	_check(saved >= 200.0 and saved < 400.0 and str(pr[1]).ends_with("/ " + Settings.fmt(BigNum.from_float(float(cost.get("cubes", 0.0))))), "shuttle: the card counts the cubes saved toward it (%s; robots may sell a bale meanwhile)" % str(pr))
+	if true:  # [v9a] always: what pays in these seconds, on a passing run too
+		var diff: Dictionary = {}
+		for k: Variant in GameState.stats:
+			if (GameState.stats[k] is float or GameState.stats[k] is int) and float(GameState.stats[k]) != float(stats0.get(k, 0.0)):
+				diff[k] = float(GameState.stats[k]) - float(stats0.get(k, 0.0))
+		print("[walk-home] note: shuttle: cubes now %.0f; stats that moved since the 200 were set: %s; toasts: %s; payments: %s" % [GameState.get_currency("cubes").to_float(), str(diff), str(_toasts), str(pays)])
+	EventBus.currency_changed.disconnect(on_pay)
 	await _shot("shuttle_start")
 	await _reload("shuttle, saving up", func() -> Dictionary: return {"plans": GameState.flags.get("shuttle_plans", false), "built": Hub.rocket_built()})
 	os_ = OrbitSites.of(w)

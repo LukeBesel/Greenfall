@@ -589,10 +589,13 @@ static func _spot_test() -> void:
 	var spots: String = DevHooks.get_s("walk-opening-spot", "")
 	if not spots.contains(","):
 		spots = "-20.1,5.4;-21.3,5.6"  # the two CI wedges
-	for sp: String in spots.split(";"):
+	for sp_goals: String in spots.split(";"):
+		# [v9a] "x,z" plays every --walk-opening-spot-goals goal there; "x,z@g1+g2" only its own goals
+		var sp: String = sp_goals.get_slice("@", 0)
+		var goals: PackedStringArray = sp_goals.get_slice("@", 1).split("+") if "@" in sp_goals else DevHooks.get_s("walk-opening-spot-goals", "bench,bin").split(",")
 		var xz: PackedStringArray = sp.split(",")
 		var at: Vector3 = _so.globe.terrain.ground((xf * Vector3(float(xz[0]), 0.0, float(xz[1]))).normalized())
-		for goal: String in DevHooks.get_s("walk-opening-spot-goals", "bench,bin").split(","):  # [v9a] also "scale"
+		for goal: String in goals:  # [v9a] also "scale"
 			if goal == "shore":  # [v9a] pressed against the lake's edge, every key direction either moves him or is all lake
 				_stand(at, _w.call("bench_pos"))
 				await _secs(0.5)
