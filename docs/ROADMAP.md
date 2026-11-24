@@ -25,9 +25,19 @@ What the failing walks were, by evidence (logs under screenshots/, spot tests in
   walk_travel "no Parts" read the sentence behind the card instead of the card (the chest line wins the hint
   when the chest is full; the price stays in the chips), and the travel walk skipped the restart checklist
   without telling the card, so at station 2 the card still read "Fix the Settlers' old bench".
-- walk_home "shuttle: the card counts the cubes saved toward it" read 1.42K two seconds after the walk set
-  200 cubes (1 run of ~10 recorded). The walk now prints every cube payment in that window with the script
-  lines that made it (`note: shuttle: ... payments:`).
+- **Walker faults, fixed (walk_home, main's runs on 5807cd9 and v10snd):** the game pays while the walk reads
+  the card. Measured: a start-area hex a robot finishes pays 221.75 cubes at once (bonus 122 + field notes),
+  25 more for its first level, and a Lumi level pays 30 s of income up to 0.4% of all cubes earned (400 at
+  300K earned). "shuttle: the card counts the cubes saved toward it" wanted 200-400 two seconds after the walk
+  set 200 (and read "1.42K" as 1.42): it now wants exactly the 200 plus the game's payments since. "shuttle
+  just built: saved and loaded (kill)" saw "0 / 600" become a full bar: a robot finished the outlined hex
+  while the walk quit and came back (cubes 0 -> 1466.8), the price was covered, so the card shows the step's
+  own count, as in play. That is af48bf9's case (money earned in play while the walk reloads; money that
+  appears in the load itself still fails), which main did not have yet. Every payment of 300+ and every Lumi
+  level is printed as a `[walk-home] note`. Also measured: base level 2 and the shuttle stand on no
+  start-area junk, so a load has nothing new to tidy away there.
+- From the code, not played: the Shack's side panel (planet/sites/yard_site.gd "side") has no collider (the
+  StaticBody holds the back wall and the two front posts), so Lumi could walk through it. Not a stuck.
 - Other code still uses the 32-bit `hex_at` (robots, junk, the card's hex): the speckle at edges is still
   there for them. Not known to break anything; worth a look if a robot dithers on a shoreline.
 
