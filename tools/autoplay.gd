@@ -478,9 +478,19 @@ func _bench_at() -> Vector3:
 
 ## [v6pace] At a far base with no bench of its own: the bench waits until the hop home (v6qa saw
 ## the bot stand 4+ min at Garden Row walking at the home bench).
+## [v10base] With its own Workbench (FarYard) the bot shops there when it is near the pad, as a
+## player passing by, and never walks across the town for it: from an outpost 150 m out its
+## straight-line walk met the town's buildings, was trapped 90 s, put back on the pad, walked out
+## again and never cleaned the outpost (station 3's chain stood 21 bot minutes on the outpost).
+const FAR_BENCH_TRIP_M: float = 30.0
+
+
 func _bench_unreachable() -> bool:
 	var os_: OrbitSites = OrbitSites.of(world)
-	return os_ != null and os_.purpose != null and os_.purpose.site > 0 and not (os_.purpose.bench_point() is Vector3)
+	if os_ == null or os_.purpose == null or os_.purpose.site <= 0:
+		return false
+	var bp: Variant = os_.purpose.bench_point()
+	return not (bp is Vector3) or world.patch.global_position.distance_to(bp) > FAR_BENCH_TRIP_M
 
 
 ## [v4bots] Where the can refills (anywhere in the hub hex, Patch._handle_tools): the flat
@@ -1211,6 +1221,10 @@ func _arc(p: Patch) -> bool:
 			if _now() - _hop_t < 3.0:
 				return true
 			_hop_state = 0
+			# [v10base] The station's last cell (an outpost's, cleaned to 90%) is not "clean": kept as the
+			# focus, the bot walked from base 1's yard at a piece 1.7 km away and into the Bot Bay.
+			_focus_hex = -1
+			_target_piece = -1
 			print("[arc] %.1f min  back at the start hub" % (_now() / 60.0))
 			return false
 	# The next hub: once the rocket stands on the pad and the restore is paid for. The card's own

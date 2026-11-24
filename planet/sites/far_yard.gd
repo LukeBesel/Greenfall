@@ -216,7 +216,18 @@ func _make(i: int) -> void:
 	print("[faryard] base %d (%s): bin ready; built %s" % [i, HubPlan.hub_name(planet, i), str(ORDER.filter(func(id: String) -> bool: return FarYard.is_built(i, id)))])
 	if DevHooks.has("faryard-look"):
 		_dev_look.call_deferred(i)
+	if DevHooks.has("faryard-built"):  # dev: this base's machines stand from the start (probes)
+		for id: String in ORDER:
+			build(i, id, true)
 	if DevHooks.has("faryard-probe"):  # dev: where the landmark stands from the pad, and what TargetReach says there
+		var inv: Transform3D = root.global_transform.affine_inverse()
+		var rk: Vector3 = inv * sites.sm.pad_xf(i).origin
+		print("[faryard] base %d: site origin %s, rocket pad at site-local (%.1f, %.1f), Lumi at site-local %s" % [i, str(root.global_position.snapped(Vector3.ONE * 0.1)), rk.x, rk.z,
+			str((inv * (so.w.get("patch") as Node3D).global_position).snapped(Vector3.ONE * 0.1)) if so.w.get("patch") else "-"])
+		if DevHooks.has("faryard-probe-at"):  # a world point (x,y,z) in this site's metres
+			var a: PackedStringArray = DevHooks.get_s("faryard-probe-at", "0,0,0").split(",")
+			if a.size() == 3:
+				print("[faryard] base %d: %s is at site-local %s" % [i, DevHooks.get_s("faryard-probe-at", ""), str((inv * Vector3(float(a[0]), float(a[1]), float(a[2]))).snapped(Vector3.ONE * 0.1))])
 		var lm: Dictionary = sites.purpose.landmark(i)
 		if not lm.is_empty():
 			var tr_: TargetReach = TargetReach.for_world(so.w, true)
