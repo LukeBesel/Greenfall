@@ -87,17 +87,21 @@ static func _on_cubes(id: String, v: BigNum) -> void:
 	_cubes_seen = now
 	if d < 300.0:
 		return
+	var st: Array = get_stack()
+	if st.size() >= 2 and str(st[1].get("function", "")) == "_set_money":
+		return  # the walk's own money
 	var from: Array[String] = []
-	for f: Dictionary in get_stack():
+	for f: Dictionary in st.slice(1):
 		var src: String = str(f.get("source", "")).get_file()
-		var fn: String = str(f.get("function", ""))
-		if src == "walk_home.gd" and fn != "_on_cubes":
-			return  # the walk's own money (_set_money and the dev hooks)
-		if src in ["walk_home.gd", "GameState.gd"]:
+		if src == "GameState.gd" or from.size() >= 6:
 			continue
-		if from.size() < 5:
-			from.append("%s:%d %s" % [src, int(f.get("line", 0)), fn])
+		from.append("%s:%d %s" % [src, int(f.get("line", 0)), str(f.get("function", ""))])
 	print("[walk-home] note: the game paid +%.2f cubes at once (step %s) from %s" % [d, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
+
+
+## [v9a] A Lumi level pays a reward scaled to the cubes earned so far (systems/lumi_level.gd).
+static func _on_level(lv: int, reward: String) -> void:
+	print("[walk-home] note: Lumi reached level %d (%s), step %s" % [lv, reward, _step_id() if ob != null and is_instance_valid(ob) else "-"])
 
 
 static func _bind(p_so: SliceOrbit) -> void:
@@ -113,6 +117,9 @@ static func _wait_world() -> bool:
 		await tree.create_timer(0.5).timeout
 	ob = w.get("objectives") as Objectives
 	p = w.get("patch") as Patch
+	var ll: LumiLevel = w.get("lumi_level") as LumiLevel if is_instance_valid(w) else null
+	if ll and not ll.leveled.is_connected(_on_level):
+		ll.leveled.connect(_on_level)
 	return ob != null and p != null and not bool(w.get("building"))
 
 
@@ -1183,8 +1190,14 @@ static func _part_shuttle() -> void:
 	# read 1.42K two seconds after the walk set 200).
 	var pays: Array[String] = []
 	var last: Array[float] = [200.0]
+	var paid: Array[float] = [0.0]  # what the game paid since the 200 were set
 	var on_pay: Callable = func(id: String, v: BigNum) -> void:
-		if id != "cubes" or absf(v.to_float() - last[0]) < 0.5:
+		if id != "cubes":
+			return
+		var dv: float = v.to_float() - last[0]
+		paid[0] += dv
+		if absf(dv) < 0.5:
+			last[0] = v.to_float()
 			return
 		var from: Array[String] = []
 		for f: Dictionary in get_stack():
@@ -1206,8 +1219,14 @@ static func _part_shuttle() -> void:
 	_check(spot != null and is_instance_valid(spot) and spot.visible and spot.global_position.distance_to(os_.sm.pad_xf(0).origin) < 1.0, "shuttle: its spot on the launch pad is marked")
 	_check(ob.step_price() == cost, "shuttle: the card shows its price (%s)" % str(ob.step_price()))
 	var pr: Array = ob.progress()
-	var saved: float = str(pr[1]).get_slice(" /", 0).replace(",", "").to_float()
-	_check(saved >= 200.0 and saved < 400.0 and str(pr[1]).ends_with("/ " + Settings.fmt(BigNum.from_float(float(cost.get("cubes", 0.0))))), "shuttle: the card counts the cubes saved toward it (%s; robots may sell a bale meanwhile)" % str(pr))
+	# [v9a] The 200 the walk set plus what the game paid since, as the card writes it. CI read
+	# "1.42K / 2K" here (1,421.75 cubes): the game pays while the card is read (a start-area hex a
+	# robot finishes pays 221.75 at once with its field notes, 25 more for its first level; a Lumi
+	# level pays 30 s of income up to 0.4% of all cubes earned). The old check wanted 200-400 and
+	# read "1.42K" as 1.42.
+	var price_c: float = float(cost.get("cubes", 0.0))
+	var want: String = "%s / %s" % [Currencies.have_text(200.0 + paid[0]), Settings.fmt(BigNum.from_float(price_c))]
+	_check(str(pr[1]) == want and 200.0 + paid[0] < price_c, "shuttle: the card counts the cubes saved toward it (%s; 200 set, %+.2f paid by the game since)" % [str(pr), paid[0]])
 	if true:  # [v9a] always: what pays in these seconds, on a passing run too
 		var diff: Dictionary = {}
 		for k: Variant in GameState.stats:
