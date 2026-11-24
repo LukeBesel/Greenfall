@@ -74,6 +74,8 @@ func _setup() -> void:
 		WalkMap.run_dev(so)
 	if DevHooks.has("step-shots"):  # [v9d] dev: a rendered frame as each story step starts (tools/step_shots.gd)
 		StepShots.run_dev(so)
+	if DevHooks.has("walk-radio"):  # [v10snd] dev: the first CD and the radio, real input (tools/walk_radio.gd)
+		WalkRadio.run_dev(so)
 	if DevHooks.has("walk-home"):  # [v9b] dev: the home steps after the first robot, real input (tools/walk_home.gd)
 		WalkHome.run_dev(so)
 	if DevHooks.has("target-reach"):  # [v4world] dev: every collectible and objective target reachable (planet/sites/target_audit.gd)

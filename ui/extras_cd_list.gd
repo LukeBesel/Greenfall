@@ -122,7 +122,7 @@ static func build(_panel: Node, body: Control, on_btn: Callable, rebuild: Callab
 		right.add_child(UITheme.label(_t("The day's music"), 26, Color.WHITE))
 		right.add_child(_wrap(_t("Your CDs come on now and then while you work, with quiet in between. Pick one here, or Shuffle, to play them back to back."), 15, UITheme.MUTED))
 	if Tunes.glim_music():
-		right.add_child(_wrap(_t("Glim has copied your CDs: press N anywhere to pick a song."), 13, UITheme.GREEN))
+		right.add_child(_wrap(_t("Press %s anywhere for the radio.") % Settings.glyph(TunesPicker.ACTION), 13, UITheme.GREEN))  # [v10snd]
 	else:
 		right.add_child(_wrap(_t("The music comes from the CD player, so it's softer far away from it."), 13, UITheme.MUTED))
 	right.add_child(_wrap(_t("New CDs turn up in the rubble as you clean. Each planet hides its own."), 13, UITheme.GREEN))

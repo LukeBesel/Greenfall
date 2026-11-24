@@ -1,6 +1,6 @@
 extends Node3D
 ## Title screen: Aurora hovering over a sunset junk lot, a slow orbiting camera and the front-end
-## menu (Continue / New Game / Settings / Quit).
+## menu (Continue or Play, the other profiles, New profile, Profiles, Settings, Quit).
 ## Any DevHooks flag (e.g. tools/shot.sh's --fresh --shot=...) skips straight to the game so the
 ## existing tooling keeps working; pass --menu to stay here (title screenshots), or
 ## --menu=settings|credits|confirm to open that sub-screen.
@@ -451,21 +451,33 @@ func _build_ui() -> void:
 			_settings.select_tab(int(DevHooks.get_f("tab", 0.0)))
 		"credits": _open_credits.call_deferred()
 		"confirm":  # the start-over confirm of the active profile
-			(func() -> void:
-				_open_profiles()
-				_picker._new(SaveManager.profile_slot, false)).call_deferred()
+			_dev_start_over.call_deferred()
 		"round-new", "round-continue":  # [orbB] dev / export checks: New Game or Continue from the title
-			(func() -> void:
-				if DevHooks.get_s("menu", "") == "round-new" or not SaveManager.has_save():
-					_start_new()
-				else:
-					_go(true)).call_deferred()
+			_dev_start.call_deferred()
 		"profiles":  # [worlds2]
 			_open_profiles.call_deferred()
 		"worlds":  # [worlds2] profile, then its worlds
-			(func() -> void:
-				_open_profiles()
-				_picker._continue(SaveManager.profile_slot)).call_deferred()
+			_dev_open_worlds.call_deferred()
+
+
+## Deferred from _build_ui (--menu=confirm) as a method: the active profile's Start over question.
+func _dev_start_over() -> void:
+	_open_profiles()
+	_picker._new(SaveManager.profile_slot, false)
+
+
+## Deferred from _build_ui (--menu=worlds) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_open_worlds() -> void:
+	_open_profiles()
+	_picker._continue(SaveManager.profile_slot)
+
+
+## Deferred from _build_ui (--menu=round-new / round-continue) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_start() -> void:
+	if DevHooks.get_s("menu", "") == "round-new" or not SaveManager.has_save():
+		_start_new()
+	else:
+		_go(true)
 
 
 func _title_font() -> FontVariation:

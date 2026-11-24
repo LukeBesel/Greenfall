@@ -39,7 +39,12 @@ func _ready() -> void:
 	level = int(GameState.world.get("composter_level", 1))
 	_build()
 	position = POS
-	(func() -> void: PropColliders.fit(PropColliders.body(self, "Props"), self)).call_deferred()  # [world2] solid bins
+	_fit_colliders.call_deferred()  # [world2] solid bins
+
+
+## Deferred from _ready as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _fit_colliders() -> void:
+	PropColliders.fit(PropColliders.body(self, "Props"), self)
 
 
 func active() -> bool:

@@ -75,9 +75,7 @@ func _setup() -> void:
 	if GameState.flags.get("late_new_world", false):
 		_arrive_new_world.call_deferred()
 	_world_look.call_deferred()
-	(func() -> void:  # [worlds2] the world's sky, landmark and weathering; WREN's story for it
-		WorldLookView.attach(world)
-		WorldStory.attach(world)).call_deferred()
+	_attach_world_look.call_deferred()
 	if DevHooks.has("decor-sample") and decor:  # [orbB]
 		_decor_sample.call_deferred()
 	if DevHooks.has("late-save-after"):  # dev: write the save S seconds in (prepared states for shots)
@@ -85,20 +83,31 @@ func _setup() -> void:
 			print("[late] saved: %s" % str(SaveManager.save_game())))
 	var op: String = DevHooks.get_s("open", "")
 	if op == "ark":
-		(func() -> void: bridge.open_bridge()).call_deferred()
+		bridge.open_bridge.call_deferred()
 	elif op == "garden" and placer:  # [orbB]
-		(func() -> void:
-			placer.open()
-			if DevHooks.has("garden-type"):
-				placer.select(DevHooks.get_s("garden-type", "bench"))
-			if DevHooks.has("garden-cell"):
-				var gc: PackedStringArray = DevHooks.get_s("garden-cell", "0,12").split(",")
-				placer.move_to(Vector2i(int(gc[0]), int(gc[1])))
-			_garden_cam()).call_deferred()
+		_dev_open_garden.call_deferred()
 	elif DevHooks.has("garden-cam"):
 		_garden_cam.call_deferred()
 	if DevHooks.has("new-world") and not GameState.flags.get("late_new_world", false) and CradleMode.current_index() == 0:
 		get_tree().create_timer(DevHooks.get_f("new-world", 2.0)).timeout.connect(func() -> void: CradleMode.launch_new_world(get_tree()))
+
+
+## Deferred from _setup (--open=garden) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_open_garden() -> void:
+	placer.open()
+	if DevHooks.has("garden-type"):
+		placer.select(DevHooks.get_s("garden-type", "bench"))
+	if DevHooks.has("garden-cell"):
+		var gc: PackedStringArray = DevHooks.get_s("garden-cell", "0,12").split(",")
+		placer.move_to(Vector2i(int(gc[0]), int(gc[1])))
+	_garden_cam()
+
+
+## Deferred from _setup as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _attach_world_look() -> void:
+	# [worlds2] the world's sky, landmark and weathering; WREN's story for it
+	WorldLookView.attach(world)
+	WorldStory.attach(world)
 
 
 ## Opens the Ark Bridge (pause menu, autoplay). False while it is still locked.
