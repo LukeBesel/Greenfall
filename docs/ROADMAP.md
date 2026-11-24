@@ -37,7 +37,15 @@ The owner asked to end all work at a good stopping point.
   - **Cause found and fixed (v10ci, 20 Nov):** `FirstSeed._resume_planting` deferred a lambda that uses the node (`(func() -> void: ...).call_deferred()`); tests/test_first_seed_hint.gd frees the node in the same frame. For such a lambda the engine keeps only the node's address, so at the next frame it ran on whatever lay there (on the CI runner: a wild pointer, signal 11). All 25 deferred lambdas in node functions are methods now (the engine drops a deferred method when its node is gone), and the two flyer tweens that can outlive their owner (robots/robot.gd, automation/auto_baler.gd) reach it by weak ref. `tests/test_deferred_calls.gd` replays the fault and scans the scripts for the pattern. Rule: never `call_deferred` a lambda from a node's function; a tween on ANOTHER node must not use `self` in its lambdas.
 - **Merged on local main, not pushed** (the combined full run was stopped): v10guide 4148bc4 (critic 3, 5, 13, 20, 21, 23). Its own full run passed on its branch.
 - **WIP on helper branches** (local worktrees under /home/user/gf-wt), not merged:
-  - v10base (101, 102, 104, far half of 97; critic 1 bale rain, 4, 10, 15, 22).
+  - v10base (101, 102, 104, far half of 97; critic 1 bale rain, 4, 10, 15, 22), handed off 24 Nov: every far base
+    has its own bin and scale and marked spots for a Workbench, Locker and Bot Bay (played by `--walk-travel`,
+    rendered with `--faryard-look`); the far pads keep their junk; bales left behind sleep where they lie; E
+    picks up the bale the prompt names. Far-base pace measured by autoplay: station 2 3.7-4.4 bot min (was 8.0),
+    station 3 5.6 (was 9.4) once the bot stopped walking across the town to the far Workbench. Still open:
+    the main card says only "Wake base N of 6" through the cleaning (the step and its count are on the far
+    base's own card, HubPurpose), and the wake's
+    6 toasts and 2 WREN lines come together (critic 15). walk_opening fails now and then on the walker's way
+    round the Shack (main too); v9a's way-round planner (1393892, not merged yet) is the fix.
   - v10snd (90, 91, 92, 108: sliders, quieter stingers and ambience, radio and first CD).
   - v10ui follow-up renders.
   - v9a walk fixes and Pace.heavy_hint.
