@@ -146,6 +146,9 @@ func test_songbird_perches() -> void:
 	var top: Vector3 = FaunaSpace.top_point(cyl)
 	assert_almost_eq(top.y, 2.0, 0.01, "on top of the post")
 	assert_almost_eq(Vector2(top.x, top.z).length(), 0.0, 0.05, "in the middle")
+	# [v9a] A mesh with no vertex arrays (none yet in the renderer): no error, a finite top.
+	var none: Vector3 = FaunaSpace.top_point(ArrayMesh.new())
+	assert_true(is_finite(none.y) and is_finite(none.x), "a mesh with no vertices has a finite top (%s)" % str(none))
 	var s := FaunaSpace.new()
 	s.perches = PackedVector3Array([Vector3(0, 5, 0), Vector3(3, 5, 0), Vector3(30, 5, 0)])
 	var got: Array[Vector3] = s.free_perches(Vector3(1, 0, 0), 10.0, [])

@@ -96,8 +96,15 @@ func test_pad_grows_with_the_ship() -> void:
 func test_ark_keeps_its_api() -> void:
 	var ark := CradleShip.new()
 	add_child_autofree(ark)
-	assert_gt(ark.get_child_count(), 8, "the ark is built from ark.glb parts")
-	assert_eq(ark.find_children("*", "", false, false).filter(func(n: Node) -> bool: return n.name.begins_with("ark_")).size(), 8)
+	# [v11film] The ark is built in code now (story/cradle_ship.gd): the hull, the garden dome and
+	# the turning ring are its named parts.
+	for part: String in ["Hull", "Dome", "Ring", "Dome/Glass", "RunningLights"]:
+		assert_not_null(ark.get_node_or_null(part), "the ark has its %s" % part)
+	assert_gt(((ark.get_node("Hull") as MeshInstance3D).mesh as ArrayMesh).get_faces().size(), 3000, "a smooth hull, not a few flat polygons")
+	assert_almost_eq(CradleShip.radius_at(0.0), 4.8, 0.01)
+	assert_eq(CradleShip.radius_at(-40.0), 0.0)
+	assert_gt(ark.breach_world().y, ark.global_position.y + CradleShip.DOME_AT.y, "the breach is on the dome's glass")
+	assert_gt(ark.engine_world().z, 20.0)
 	var p: Vector3 = ark.pod_world(2)
 	assert_almost_eq(p.y, CradleShip.POD_Y, 0.01)
 	assert_true(ark.pod_xform(2).origin.distance_to(p) < 2.0, "the rack pod hangs where pod_world says")

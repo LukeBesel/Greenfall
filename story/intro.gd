@@ -1,15 +1,22 @@
 class_name Intro
 extends Node
-## The opening film of a new game (about two minutes, letterboxed; Space / A pauses, Esc / B skips).
-## [v9intro] Re-shot from scratch as a short film in three beats a child can follow without words:
-##   1. Peace on the ark: ruined Verdance below, the ark Cradle gliding over it (title), and inside
-##      its seed vault Lumi humming to a tray of seedlings.
-##   2. The storm: meteors, one hits the pod rack, alarms go red; Lumi takes the tray, climbs into
-##      a cargo pod, and the breach throws the pod clear while the ark sails on.
-##   3. The long fall and one small robot waking up: the pod drifting over the planet, re-entry
-##      fire, a streak in the sky over the old cleanup station, the crash, a quiet beat, the hatch,
-##      Lumi's eyes opening, WREN's one last message, and the camera settling behind Lumi as the
-##      game hands over the controls, with no cut.
+## The opening film of a new game (under two minutes, letterboxed; Space / A pauses, Esc / B
+## skips; it can be watched again from the pause menu for a while, and from the Codex after that).
+## [v11film] Rewritten and re-shot (owner: "fully revamp the starting scene... a legit animation
+## of something bad happening... the entire story makes full sense and is emotional"). One chain a
+## child can follow, told by pictures and by WREN, the ship, who is the only voice:
+##   1. Every night: dead brown Verdance below; the ark Cradle, its decks of small lit windows (the
+##      people asleep); in the garden dome on its back Lumi looks down for green, finds none, and
+##      goes back to the tray of seedlings, the last plants there are.
+##   2. The storm: a streak past the glass; meteors rake the ship; one kills the engines, one
+##      breaks the dome. The air and the garden pour out into space. WREN tells Lumi to take the
+##      tray to the pod, and then she lets the pod go herself, because she cannot keep it safe and
+##      cannot follow.
+##   3. The fall, without a word: fire, a streak over the ruined town, the crash, dust.
+##   4. One small robot: the hatch, eyes coming on in the dark, 4% battery, a world of trash.
+##      WREN's voice gets through once: fix the workbench, find parts, build a signal tower so
+##      they can talk again. It breaks off in the middle. Lumi turns to the old workbench, and
+##      the camera settles behind it as the game hands over the controls, with no cut.
 ## The shots are data: data/intro_shots.json holds every shot's length, camera move, ease, fades,
 ## subtitle lines, sounds and cues; this file moves the actors (_in_<id> sets a shot up from
 ## nothing, _run_<id> poses it every frame from the shot's own clock, _cue_<name> fires once).
@@ -52,11 +59,30 @@ var _pod: Node3D
 var _fire: Node3D
 var _site: Node3D
 var _pauser: StoryPause
-## [intro2] Rewatching from the Codex: the world is put back exactly as it was afterwards.
+## Watching the film again (pause menu, Codex). [v11film] A rewatch must never change the save
+## or the world, so it now plays with the game stopped: the tree is paused and the film runs on
+## its own (this node processes always). The real Lumi is not touched (a stand-in plays its
+## part), the film's pod and crash site are the film's own, and everything the film hides (the
+## real pod, the HUD and every other screen layer, guide beams, robots) is shown again after.
 var _replay: bool = false
-var _replay_xf := Transform3D()
 var _replay_pod: Node3D
 var _replay_site: Node3D
+## The stand-in Lumi of a rewatch (a body with a PatchModel), or null.
+var _actor: Node3D
+var _actor_model: PatchModel
+## What a rewatch hid, to show again.
+var _replay_hidden: Array = []
+var _replay_keep: Dictionary = {}
+var _own_subs: Subtitles
+## Emitted when a rewatch is over and the world is as it was.
+signal replay_finished
+## Emitted the moment a rewatch hands the game back (same frame: tools/rewatch_check.gd compares).
+signal replay_restored
+## The pause menu offers the film again for this long (seconds of play); the Codex always does.
+const REWATCH_S: float = 1800.0
+## A rewatch is offered while Lumi is this close to the pod (metres): the film is shot round it,
+## and the ground there has to be loaded.
+const REWATCH_NEAR_M: float = 120.0
 var _skipped: bool = false
 var _hold_tray: bool = false
 var _flicker: float = 0.0
@@ -89,6 +115,7 @@ var _ark_v := Vector3.ZERO
 var _ark_t0: float = 0.0
 var _pod_p0 := Vector3.ZERO
 var _handoff_done: bool = false
+var _warm: int = 0
 var _land_t: float = -100.0
 ## The game's pod, built ahead (hidden) under the fade into the first world shot, so the crash
 ## itself costs nothing: a stall on that frame would land on the film's biggest beat.
@@ -104,7 +131,7 @@ const WREN_GLITCH := 0
 const TABLE_PATH := "res://data/intro_shots.json"
 const FIRE_SHADER := preload("res://art/shaders/cine_fire.gdshader")
 ## Old --intro-from=N phases, as shot ids.
-const PHASE_SHOTS: Array[String] = ["verdance", "storm", "drift", "sky", "impact", "wake"]
+const PHASE_SHOTS: Array[String] = ["planet", "storm", "apart", "sky", "impact", "hatch"]
 
 
 ## Builds the pod prop (also used after the intro as a landmark, and by the cinematic sets).
@@ -259,11 +286,14 @@ func _adopt_pod() -> void:
 func _own_crash_site() -> void:
 	if _site and is_instance_valid(_site):
 		return
+	var host: Node = self if _replay else world  # a rewatch's landing is the film's own
 	if _pod == null or not is_instance_valid(_pod):
 		_pod = build_pod()
-		world.add_child(_pod)
+		host.add_child(_pod)
 	_pod.visible = true
-	_site = CrashSite.attach(world, _pod, _w(POD_POS), POD_YAW)
+	_site = CrashSite.attach(host, _pod, _w(POD_POS), POD_YAW)
+	if _replay:
+		(_site as CrashSite).set_stage(0)  # as it fell, whatever has been mended since
 	if site_xf != Transform3D.IDENTITY:  # [orbE] lie on the globe's pad, not the world's flat plane
 		_site.global_basis = site_xf.basis.orthonormalized()
 	EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
@@ -322,7 +352,14 @@ func _up() -> Vector3:
 	return site_xf.basis.y.normalized()
 
 
+## The body the film moves: Lumi itself, or the stand-in of a rewatch.
+func _lumi() -> Node3D:
+	return _actor if _actor and is_instance_valid(_actor) else world.patch as Node3D
+
+
 func _model() -> PatchModel:
+	if _actor and is_instance_valid(_actor):
+		return _actor_model
 	return world.patch.get("model") as PatchModel
 
 
@@ -352,18 +389,25 @@ func _drop_cover() -> void:
 		c.queue_free()
 
 
-## Every line the intro says, by beat: [text, speaker] ("" = narration, "wren" = WREN), plus an
-## optional "tail": the signal breaks up on the last words (heavy glitch on that span only).
-## Kept in one place so tests can check the subtitle timing rule against all of them.
+## Every line the intro says, in order: [text, speaker] ("wren" = WREN; she is the film's only
+## voice), plus an optional "tail": the signal breaks up on the last words (heavy glitch on that
+## span only). Kept in one place so tests can check the subtitle timing rule against all of them.
+## [v11film] Rewritten (owner: "make sure the entire story makes full sense and is emotional and
+## not cheesy... dialog needs to make sense"). There was a storybook narrator ("Then, one night,
+## the sky came apart"), a joke from WREN, jargon ("Hull breach in the vault bay!") and a pod that
+## was blown off by accident. Now WREN says, in order: what they look down at every night and why
+## the people sleep; what Lumi keeps; the warning; the order; her choice to let the pod go; why
+## she cannot follow; a promise that breaks up. Then her one last message on the ground.
 static func lines() -> Dictionary:
 	var out: Dictionary = {
-		"title": [TranslationServer.translate("Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."), ""],
-		"vault": [TranslationServer.translate("Lumi, the ark's little seed-keeper, sang to the seedlings every night."), ""],
-		"hum": [TranslationServer.translate("Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."), "wren"],
-		"storm": [TranslationServer.translate("Then, one night, the sky came apart."), ""],
-		"breach": [TranslationServer.translate("Hull breach in the vault bay! Lumi, leave the trays, get clear!"), "wren"],
-		"hold_on": [TranslationServer.translate("Lumi— hold on— I can't turn her around— hold on—"), "wren", "tail"],
-		"fall": [TranslationServer.translate("The ark could not turn back. The pod fell for days."), ""],
+		"first": [TranslationServer.translate("Still no green down there, Lumi."), "wren"],
+		"wait": [TranslationServer.translate("Nothing can grow in all that trash. So the people sleep up here, and we wait."), "wren"],
+		"keep": [TranslationServer.translate("Three hundred years. And you have kept the last plants alive."), "wren"],
+		"glass": [TranslationServer.translate("Lumi. Come away from the glass."), "wren"],
+		"breach": [TranslationServer.translate("The glass is breaking! Take the tray. Get to the pod!"), "wren"],
+		"send": [TranslationServer.translate("I can't keep you safe here. I have to let you go."), "wren"],
+		"engines": [TranslationServer.translate("My engines are gone. I can't come after you."), "wren"],
+		"find": [TranslationServer.translate("Lumi— I will find you— I will find—"), "wren", "tail"],
 	}
 	# [intro3] At the crash WREN gets ONE last message through before the relay dies: onboarding's
 	# brief (data/objectives.json "brief"), its last words breaking up in a [glitch] span. She is
@@ -495,45 +539,126 @@ func _pv(key: String, d: Vector3) -> Vector3:
 
 # --- Play ----------------------------------------------------------------------------------
 
-## Rewatch the whole intro from the Codex. A temporary pod plays the landing; afterwards Lumi, the
-## real crash site and the camera are restored; nothing in the save changes.
+## True while the pause menu should offer "Watch the opening again": the film is over, the
+## game is young (REWATCH_S of play) and Lumi is near the pod. The Codex offers it at any time.
+static func rewatch_offered(w: Node) -> bool:
+	if w == null or not bool(GameState.flags.get("intro_done", false)):
+		return false
+	if float(GameState.stats.get("time_played", 0.0)) > REWATCH_S:
+		return false
+	var it: Variant = w.get("intro")
+	return it is Intro and (it as Intro).can_replay()
+
+
+## The game's own crash site (the pod Lumi fell in), or null.
+func _game_site() -> Node3D:
+	if _site and is_instance_valid(_site):
+		return _site
+	var s: Variant = world.get_meta("orbit_pod", null) if world and world.has_meta("orbit_pod") else null
+	return s as Node3D if s is Node3D and is_instance_valid(s) else null
+
+
+## A rewatch can start now: nothing else owns the screen and Lumi is near the pod.
+func can_replay() -> bool:
+	if running or ending or _waiting or world == null or world.get("patch") == null:
+		return false
+	var site: Node3D = _game_site()
+	return site != null and (world.patch as Node3D).global_position.distance_to(site.global_position) <= REWATCH_NEAR_M
+
+
+## Watch the whole film again (pause menu, Codex). The game is stopped while it plays, a stand-in
+## plays Lumi and the film brings its own pod; afterwards everything is shown as it was. Nothing
+## in the save or the world changes (tools/check_rewatch.sh).
 func replay() -> void:
-	if running or ending or _waiting:
+	if not can_replay():
 		return
 	_replay = true
 	_skipped = false
 	_bars.clear()
 	_battery_cells.clear()
-	_replay_xf = world.patch.global_transform
 	if _site == null or not is_instance_valid(_site):
 		_adopt_pod()  # a loaded game: the pod was placed by the world, not by this film
 	_replay_pod = _pod
 	_replay_site = _site
-	if _site and is_instance_valid(_site):
-		_site.visible = false
 	_site = null
 	_pod = null
+	var tree: SceneTree = get_tree()
+	_replay_keep = {
+		"paused": tree.paused,
+		"mode": process_mode,
+		"vfx": Vfx.process_mode,
+		"tunes": Tunes.context(),
+		"subs": Subtitles.current,
+		"cinematic": world.get("music") != null and bool(world.music.get("_cinematic")),
+		# The film's song counts its plays in the save: a rewatch is not a play.
+		"songs": (GameState.flags["songs"] as Dictionary).duplicate(true) if GameState.flags.get("songs") is Dictionary else null,
+	}
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	Vfx.process_mode = Node.PROCESS_MODE_ALWAYS  # the film's sparks and steam
+	Audio.film_plays = true  # the film's own sounds play though the game is stopped
+	tree.paused = true
+	# Out of the picture while the film plays: the real pod and Lumi, every screen layer, the
+	# guide beams and outlines, the robots.
+	_replay_hidden.clear()
+	var gone: Array = [_replay_site, world.patch]
+	gone.append_array(tree.get_nodes_in_group("guide_3d"))
+	gone.append_array(tree.get_nodes_in_group("robot"))
+	gone.append_array(tree.get_nodes_in_group("film_hide"))  # e.g. the first CD and its ray of light
+	for n: Node in tree.root.find_children("*", "CanvasLayer", true, false):
+		if n != self and not is_ancestor_of(n):
+			gone.append(n)
+	for n: Variant in gone:
+		if n is Node and is_instance_valid(n) and (n is Node3D or n is CanvasLayer) and bool((n as Node).get("visible")):
+			_replay_hidden.append(n)
+			(n as Node).set("visible", false)
+	_actor = Node3D.new()
+	_actor.name = "FilmLumi"
+	_actor_model = PatchModel.new()
+	_actor.add_child(_actor_model)
+	add_child(_actor)
+	_own_subs = Subtitles.new()
+	_own_subs.world = world
+	add_child(_own_subs)
 	print("[intro] replay")
 	play()
 
 
+## The end of a rewatch: the film's own things go, and everything it hid is shown again.
 func _end_replay() -> void:
 	if _site and is_instance_valid(_site) and _site != _replay_site:
-		_site.queue_free()  # the temporary landing (its pod with it)
+		_site.remove_from_group("crash_site")
+		_site.queue_free()  # the film's own landing (its pod with it)
 	elif _pod and is_instance_valid(_pod) and _pod != _replay_pod:
 		_pod.queue_free()
 	_pod = _replay_pod
 	_site = _replay_site
-	if _site and is_instance_valid(_site):
-		_site.visible = true
-	world.patch.global_transform = _replay_xf
-	var motor: Variant = world.patch.get("sphere_motor")
-	if motor != null and (motor as Object).has_method("face"):
-		(motor as Object).call("face", world.patch, -_replay_xf.basis.z)
-	if cam_reset_fn.is_valid():
-		cam_reset_fn.call()
+	if _actor and is_instance_valid(_actor):
+		_actor.queue_free()
+	_actor = null
+	_actor_model = null
+	if _own_subs and is_instance_valid(_own_subs):
+		remove_child(_own_subs)
+		_own_subs.queue_free()
+	_own_subs = null
+	Subtitles.current = _replay_keep.get("subs") as Subtitles
+	for n: Variant in _replay_hidden:
+		if is_instance_valid(n):
+			(n as Node).set("visible", true)
+	_replay_hidden.clear()
+	var sd: Variant = world.get("sky_director") if world else null
+	if sd is SkyDirector and (sd as SkyDirector).sphere:
+		(sd as SkyDirector).call("_apply_sphere")  # the game's own sky again, before the world shows
+	Vfx.process_mode = int(_replay_keep.get("vfx", Node.PROCESS_MODE_INHERIT)) as Node.ProcessMode
+	process_mode = int(_replay_keep.get("mode", Node.PROCESS_MODE_INHERIT)) as Node.ProcessMode
+	if _replay_keep.get("songs") is Dictionary:
+		GameState.flags["songs"] = _replay_keep["songs"]
+	elif _replay_keep.has("songs"):
+		GameState.flags.erase("songs")
+	get_tree().paused = bool(_replay_keep.get("paused", false))
+	Audio.film_plays = false
 	_placed = true
 	_replay = false
+	replay_restored.emit()
 
 
 func play() -> void:
@@ -542,6 +667,7 @@ func play() -> void:
 	if ld and ld.busy():
 		_waiting = true
 		_set_player_enabled(false)
+		_prebuild_stage()  # [v11film] behind the loading screen: the film's first frame costs nothing
 		await ld.wait_done()
 		_waiting = false
 	if site_fn.is_valid():  # [orbE]
@@ -557,10 +683,11 @@ func play() -> void:
 		cap.intro = self
 		add_child(cap)
 	var patch: Node3D = world.patch
-	_set_player_enabled(false)
-	_hold_lumi(true)
-	if world.get("hud") != null:
-		world.hud.visible = false
+	if not _replay:  # a rewatch stops the whole game instead, and has hidden what must not show
+		_set_player_enabled(false)
+		_hold_lumi(true)
+		if world.get("hud") != null:
+			world.hud.visible = false
 	if world.get("music") != null:
 		world.music.set_cinematic(true)
 	_tunes_start()  # [tunes] The Fall of LM-1 from the first frame (before the motif, which it replaces)
@@ -574,11 +701,12 @@ func play() -> void:
 	_cam.fov = 55.0
 	_cam.near = 0.08
 	_cam.far = 6000.0
-	world.add_child(_cam)
+	add_child(_cam)  # the film's own (it runs while the game is stopped in a rewatch)
 	if _prev_cam and is_instance_valid(_prev_cam):
 		_cam.global_transform = _prev_cam.global_transform
 	_cam.current = true
 	patch.visible = false
+	_lumi().visible = false
 	var model: PatchModel = _model()
 	if model:
 		model.sleeping = true
@@ -593,7 +721,7 @@ func play() -> void:
 	if DevHooks.has("intro-at"):
 		at = DevHooks.get_f("intro-at", 0.0)
 	elif DevHooks.has("intro-shot"):
-		at = float(_shots[maxi(0, _shot_index(DevHooks.get_s("intro-shot", "verdance")))]["t0"])
+		at = float(_shots[maxi(0, _shot_index(DevHooks.get_s("intro-shot", "planet")))]["t0"])
 	elif DevHooks.has("intro-from"):
 		var ph: int = clampi(int(DevHooks.get_f("intro-from", 0.0)), 0, PHASE_SHOTS.size() - 1)
 		at = float(_shots[maxi(0, _shot_index(PHASE_SHOTS[ph]))]["t0"])
@@ -602,6 +730,7 @@ func play() -> void:
 		for s: Dictionary in _shots:
 			print("[intro] shot %-10s %6.1f - %6.1f s  (%s)" % [s["id"], s["t0"], s["t1"], s["set"]])
 	seek(at)
+	_warm = 3 if _stage != null and at < 1.0 else 0
 	_film = not DevHooks.has("intro-scout")
 
 
@@ -622,6 +751,16 @@ func _process(delta: float) -> void:
 	if td and Tunes.context() == "intro":
 		td.call("set_paused", _pauser != null and _pauser.paused)
 	if not _film:
+		return
+	if _warm > 0 and _stage and is_instance_valid(_stage):
+		# [v11film] Three frames under the black of the fade-in: the vault is drawn once in each
+		# of its states, so its shaders are compiled now and not at the first cut to it.
+		_warm -= 1
+		if _warm > 0:
+			_stage.warm_view(2 - _warm)
+		else:
+			_enter(_si, _lt)
+			_pose(0.0)
 		return
 	_t += delta
 	if DevHooks.has("intro-skip-at") and _t >= DevHooks.get_f("intro-skip-at", 0.0):  # dev: tests skip here
@@ -697,6 +836,8 @@ func _film_dust(s: Dictionary, u: float) -> void:
 	if str(s["id"]) == "handoff":
 		d *= 1.0 - u
 	(sd as SkyDirector).film_dust = d
+	if _replay and (sd as SkyDirector).sphere:
+		(sd as SkyDirector).call("_apply_sphere")  # the game is stopped: its sky does not update itself
 
 
 func _enter(i: int, lt: float) -> void:
@@ -781,7 +922,7 @@ func _anchor(name_: String) -> Vector3:
 			"pod":
 				return _v(_pod.global_position) if _pod and is_instance_valid(_pod) else POD_POS
 			"lumi":
-				return _v(world.patch.global_position)
+				return _v(_lumi().global_position)
 			"glim":
 				var g: Node3D = _glim()
 				return _v(g.global_position) if g else POD_POS + Vector3(0, 1.4, 0)
@@ -800,7 +941,7 @@ func _anchor(name_: String) -> Vector3:
 func _facing_of(name_: String) -> Vector3:
 	var f := Vector3(0, 0, -1)
 	if _in_world() and name_ == "lumi":
-		f = site_xf.basis.orthonormalized().inverse() * (-(world.patch as Node3D).global_basis.z)
+		f = site_xf.basis.orthonormalized().inverse() * (-_lumi().global_basis.z)
 	elif not _in_world() and name_ == "lumi":
 		f = -_stage.lumi.global_basis.z
 	f.y = 0.0
@@ -844,8 +985,13 @@ func _aim_camera(s: Dictionary, u: float, delta: float) -> void:
 	if mode == "handoff":
 		# From wherever the last shot left the camera to the game's own camera, exactly.
 		var to: Transform3D = _prev_cam.global_transform if _prev_cam and is_instance_valid(_prev_cam) else _cam_start
+		if _replay:
+			# The game camera is wherever the player left it: settle behind the film's Lumi instead.
+			var lp: Vector3 = _end_spot()
+			var lf: Vector3 = _end_facing()
+			to = Transform3D(Basis(), _w(lp - lf * 5.6 + Vector3(0, 3.4, 0))).looking_at(_w(lp + lf * 2.0 + Vector3(0, 0.9, 0)), _up())
 		xf = _cam_start.interpolate_with(to, e)
-		fov = lerpf(_fov_start, _prev_cam.fov if _prev_cam and is_instance_valid(_prev_cam) else _fov_start, e)
+		fov = lerpf(_fov_start, _prev_cam.fov if _prev_cam and is_instance_valid(_prev_cam) and not _replay else _fov_start, e)
 		_cam.global_transform = xf
 		_cam.fov = fov
 		return
@@ -928,6 +1074,8 @@ func _aim_camera(s: Dictionary, u: float, delta: float) -> void:
 
 ## The world's subtitle line (or the intro's own if the world has none).
 func _subs() -> Subtitles:
+	if _own_subs and is_instance_valid(_own_subs):
+		return _own_subs  # a rewatch: the game's own line is stopped with the game
 	if Subtitles.current and is_instance_valid(Subtitles.current):
 		return Subtitles.current
 	var s := Subtitles.new()
@@ -946,7 +1094,7 @@ func _say(key: String) -> void:
 	if l.size() > 2 and str(l[2]) == "tail":
 		text = glitch_tail(text)
 	_subs().queue_line(text, str(l[1]))
-	if key == "brief_0":
+	if key == "brief_0" and not _replay:
 		GameState.flags["onboard_brief"] = true  # the objectives don't replay it
 		brief_played = true
 
@@ -956,21 +1104,35 @@ func _say(key: String) -> void:
 # (lt = seconds into the shot, u = 0..1 through it); _cue_<name> fires once at its second.
 # =============================================================================================
 
-# --- Beat 1: peace on the ark ----------------------------------------------------------------
+# --- Act 1: every night, the same look down ---------------------------------------------------
+
+## How far the storm has got with the ark: 0 calm, 1 the engines are hit (dead, dark, half the
+## windows out), 2 the dome is broken too (alarm, air and leaves streaming out).
+func _ark_state(stage: int) -> void:
+	var ark: CradleShip = _stage.ark
+	ark.alarm = 1.0 if stage >= 1 else 0.0
+	ark.thrust = 0.0 if stage >= 1 else 1.0
+	ark.power = [1.0, 0.6, 0.42][clampi(stage, 0, 2)]
+	ark.breach = 1.0 if stage >= 2 else 0.0
+	_stage.set_alarm(1.0 if stage >= 1 else 0.0)
+
 
 func _space_base() -> void:
 	var st: SpaceStage = _stage
-	st.set_alarm(0.0)
+	_ark_state(0)
 	st.ark.visible = true
 	st.ark.scale = Vector3.ONE
 	st.ark.rotation = Vector3(0, -PI * 0.5, 0)  # flies toward +X
-	st.ark.thrust = 1.0
 	for k: int in 6:
 		st.ark.release_pod(k, false)
 	st.pod.visible = false
+	var far: Node3D = st.pod.get_node_or_null("FarGlow") as Node3D
+	if far:
+		far.visible = false
 	st.motes_on = true
 	st.motes_vel = Vector3.ZERO
 	st.env.ambient_light_color = Color(0.32, 0.36, 0.45)
+	st.fill.light_energy = 0.55 * _p("fill", 1.0)  # the planet's warm bounce from below
 	set_fire(_stage_fire(), 0.0, 0.0)
 	_planet(_p("planet_scale", 1.0), _pv("planet_top", Vector3(0, -60, -120)))
 
@@ -986,13 +1148,13 @@ func _ark_glide(lt: float) -> void:
 	_stage.ark.position = _pv("ark_from", Vector3.ZERO) + Vector3(_p("ark_speed", 2.0) * lt, 0, 0)
 
 
-func _in_verdance() -> void:
+func _in_planet() -> void:
 	_space_base()
 	_title.modulate.a = 0.0
 	_title_sub.modulate.a = 0.0
 
 
-func _run_verdance(lt: float, _u: float, _delta: float) -> void:
+func _run_planet(lt: float, _u: float, _delta: float) -> void:
 	_ark_glide(lt)
 
 
@@ -1009,69 +1171,159 @@ func _cue_title_out() -> void:
 	tw.tween_property(_title_sub, "modulate:a", 0.0, 0.8)
 
 
-func _in_cradle() -> void:
-	_space_base()
-	_title.modulate.a = 0.0
-	_title_sub.modulate.a = 0.0
-
-
-func _run_cradle(lt: float, _u: float, _delta: float) -> void:
-	_ark_glide(lt)
-
-
-func _vault_base(alarm: float) -> void:
+## The vault set as the story stands: 0 a quiet night, 1 the glass is broken (alarm, wind, half
+## the lamps out).
+func _vault_base(broken: bool) -> void:
 	var st: SpaceStage = _stage
-	var v: Vector3 = SpaceStage.VAULT_AT
-	st.set_alarm(alarm)
+	st.set_alarm(1.0 if broken else 0.0)
+	st.vault_breach = 1.0 if broken else 0.0
+	st.vault_wind = 1.0 if broken else 0.0
+	st.vault_power = 0.5 if broken else 1.0
+	if not broken:
+		st.vault_clear_fx()
+	if broken:  # the alarm's red is in the air of the room, not only in its sweeping lamp
+		st.env.ambient_light_color = Color(0.55, 0.22, 0.18)
+		st.env.ambient_light_energy = 0.55
 	st.motes_on = false
 	st.lumi.visible = true
 	st.lumi.sleeping = false
 	st.lumi.holding = false
-	st.lumi.position = Vector3(-0.2, 0.15, -1.05)
-	st.lumi.rotation = Vector3(0, PI - 0.15, 0)
-	st.lumi.set_happy(1.0 if alarm <= 0.0 else 0.2)
-	st.lumi.look_toward(v + Vector3(0, 0.9, 0))
+	st.lumi.position = WINDOW_SPOT
+	st.lumi.rotation = Vector3.ZERO
+	st.lumi.set_happy(0.2 if broken else 0.5)
+	st.lumi.look_toward(null)
 	st.tray.visible = true
 	st.tray.position = Vector3(0, 0.84, 0)
 	st.tray.rotation = Vector3.ZERO
+	st.vault_pod.position = Vector3(0, 0, 3.95)
+	st.vault_pod.visible = true
 	_hold_tray = false
+	_tray_glow(0.75)
 	EscapePod.set_open(st.vault_pod, true)
+	# The door's eye mark at the film's exposure (it bloomed into a white disc).
+	(st.vault_pod.get_meta("glyph") as StandardMaterial3D).emission_energy_multiplier = 0.8
 
 
-func _in_vault_wide() -> void:
-	_vault_base(0.0)
+## Where Lumi stands at the glass, and at the planter table (facing the tray).
+const WINDOW_SPOT := Vector3(0.1, 0.15, -3.7)
+const TABLE_SPOT := Vector3(-0.25, 0.15, -1.0)
+const TABLE_YAW: float = PI - 0.24
 
 
-func _run_vault_wide(lt: float, _u: float, delta: float) -> void:
+func _tray_glow(e: float) -> void:
+	var m: Variant = _stage.tray.get_meta("leaf", null)
+	if m is StandardMaterial3D:
+		(m as StandardMaterial3D).emission_energy_multiplier = e
+
+
+func _in_window() -> void:
+	_vault_base(false)
+	var v: Vector3 = SpaceStage.VAULT_AT
+	_stage.lumi.look_toward(v + Vector3(0.6, 0.5, -30.0))
+
+
+func _run_window(lt: float, _u: float, _delta: float) -> void:
+	var lumi: PatchModel = _stage.lumi
+	var v: Vector3 = SpaceStage.VAULT_AT
+	lumi.position.y = 0.15 + sin(lt * 1.1) * 0.012
+	var turn_at: float = _p("turn_at", 4.6)
+	if lt >= _p("droop_at", 3.2) and lt < turn_at:
+		# Nothing green tonight either: the head sinks.
+		lumi.look_toward(v + Vector3(0.2, -1.2, -9.0))
+		lumi.set_happy(0.25)
+	elif lt >= turn_at:
+		# Round to the tray, where there is something to do.
+		var k: float = eased("inout", (lt - turn_at) / 1.3)
+		lumi.rotation.y = lerp_angle(0.0, PI, k)
+		lumi.look_toward(v + Vector3(0, 0.9, 0) if k > 0.5 else null)
+		lumi.set_happy(0.5)
+
+
+func _in_ark() -> void:
+	_space_base()
+
+
+func _run_ark(lt: float, _u: float, _delta: float) -> void:
+	_ark_glide(lt)
+
+
+func _in_tend() -> void:
+	_vault_base(false)
+	var lumi: PatchModel = _stage.lumi
+	lumi.position = TABLE_SPOT
+	lumi.rotation = Vector3(0, TABLE_YAW, 0)
+	lumi.set_happy(1.0)
+	lumi.look_toward(SpaceStage.VAULT_AT + Vector3(0, 0.95, 0))
+
+
+func _run_tend(lt: float, _u: float, delta: float) -> void:
 	_hum(lt, delta)
 
 
-func _in_vault_hum() -> void:
-	_vault_base(0.0)
-
-
-func _run_vault_hum(lt: float, _u: float, delta: float) -> void:
-	_hum(lt + 6.5, delta)
-	var st: SpaceStage = _stage
-	var v: Vector3 = SpaceStage.VAULT_AT
-	# WREN teases from above: Lumi glances up at the voice, then back to the seedlings.
-	if lt >= _p("look_up_at", 4.4) and lt < _p("look_down_at", 6.4):
-		st.lumi.look_toward(v + Vector3(1.6, 3.4, 0.4))
-	else:
-		st.lumi.look_toward(v + Vector3(0, 0.9, 0))
-
-
-## Lumi sways and hums to the seedlings: notes drift up on a steady beat.
+## Lumi sways and hums to the seedlings, and they answer: every note, the leaves glow a little
+## brighter and the whole tray shivers.
 func _hum(t: float, delta: float) -> void:
 	var st: SpaceStage = _stage
 	st.lumi.rotation.z = sin(t * 2.2) * 0.06
 	st.lumi.position.y = 0.15 + sin(t * 1.1) * 0.015
-	if _tick("note", 0.75, delta):
-		st.note(st.lumi.global_position + Vector3(0.05 + 0.15 * sin(t * 3.1), 1.1, 0.2))
-		_snd("chirp", 1.2 + 0.2 * (0.5 + 0.5 * sin(t * 5.3)), -19.0)
+	var since: float = float(_acc.get("since", 9.0)) + delta
+	if _tick("note", 0.8, delta):
+		since = 0.0
+		_snd("beep", 1.0 + 0.4 * (0.5 + 0.5 * sin(t * 5.3)), -15.0)  # Lumi's own voice, three notes over and over
+	_acc["since"] = since
+	var pulse: float = exp(-since * 3.2)
+	_tray_glow(0.7 + 0.7 * pulse)
+	var n: int = 0
+	for c: Node in st.tray.get_children():
+		if c is Node3D and c.get_child_count() > 0 and not (c is MeshInstance3D):
+			n += 1
+			(c as Node3D).scale = Vector3.ONE * (1.0 + 0.09 * pulse * (0.6 + 0.4 * sin(n * 1.7)))
 
 
-# --- Beat 2: the storm and the pod thrown clear -----------------------------------------------
+# --- Act 2: the storm --------------------------------------------------------------------------
+
+func _in_omen() -> void:
+	_vault_base(false)
+	var lumi: PatchModel = _stage.lumi
+	lumi.position = TABLE_SPOT
+	lumi.rotation = Vector3(0, TABLE_YAW, 0)
+	lumi.set_happy(0.6)
+	lumi.look_toward(SpaceStage.VAULT_AT + Vector3(0, 0.95, 0))
+
+
+## The first one goes by outside the glass: its light sweeps the room and Lumi looks up.
+func _cue_first_streak() -> void:
+	var v: Vector3 = SpaceStage.VAULT_AT
+	_stage.meteor(v + Vector3(-70, 62, -60), v + Vector3(95, 8, -44), 1.5, 2.6)
+	_snd("whoosh", 0.38, -7.0)
+	_snd("groan", 0.7, -12.0)
+	_acc["sweep"] = _lt
+	var lumi: PatchModel = _stage.lumi
+	lumi.rotation.z = 0.0
+	lumi.set_happy(0.3)
+	lumi.shudder(0.25)
+
+
+func _cue_more_streaks() -> void:
+	var v: Vector3 = SpaceStage.VAULT_AT
+	for i: int in 3:
+		_stage.meteor(v + Vector3(-80 + i * 22, 70 - i * 6, -75 + i * 9), v + Vector3(70 + i * 20, 14 + i * 5, -50 - i * 6), 1.3 + 0.25 * i, 1.6 + 0.5 * i)
+	_snd("whoosh", 0.5, -10.0)
+
+
+func _run_omen(lt: float, _u: float, _delta: float) -> void:
+	var lumi: PatchModel = _stage.lumi
+	var v: Vector3 = SpaceStage.VAULT_AT
+	var sw: float = lt - float(_acc.get("sweep", INF))
+	if sw >= 0.0:
+		# Its eyes follow the light across the glass, then stay on the sky.
+		var k: float = clampf(sw / 1.4, 0.0, 1.0)
+		lumi.look_toward(v + Vector3(lerpf(-5.0, 6.0, k), 3.6, -6.0))
+		# The streak's light: a hard warm sweep over the room.
+		var flash: float = exp(-pow((sw - 0.55) / 0.3, 2.0))
+		_stage.env.ambient_light_color = Color(0.3, 0.36, 0.42).lerp(Color(1.0, 0.72, 0.45), 0.8 * flash)
+		_stage.env.ambient_light_energy = 0.4 + 1.3 * flash
+
 
 func _in_storm() -> void:
 	_space_base()
@@ -1091,6 +1343,30 @@ func _run_storm(lt: float, _u: float, delta: float) -> void:
 		var n: int = int(_acc.get("n", 0))
 		_acc["n"] = n + 1
 		_storm_meteor(n)
+	# The engines after their hit: fire, black smoke and sparks pour out of the block.
+	if lt > float(_acc.get("engines", INF)):
+		_ark_wounds(lt, delta, 0.0, _p("fx_size", 1.0))
+
+
+## The ark after the storm, in every shot that shows it: its engine block burns and pours out black
+## smoke (a ragged trail behind it, the way it came), hot bits spit out of it now and then, and,
+## once the dome is broken (`vent` > 0), the garden's air and leaves stream out of the hole.
+func _ark_wounds(lt: float, delta: float, vent: float, size_k: float = 1.0) -> void:
+	var st: SpaceStage = _stage
+	var e: Vector3 = st.ark.engine_world()
+	var back: Vector3 = (st.ark.global_basis * Vector3(0, 0, 1)).normalized()
+	var j := Vector3(sin(lt * 9.1), cos(lt * 7.3), sin(lt * 5.7 + 1.0))
+	if _tick("smoke", 0.08, delta):
+		# Grey-brown, not black: black smoke vanishes against black space.
+		# (A shot can keep it close to the ship: `smoke_drift`, `smoke_life`; the camera of `apart`
+		# falls back through where a long trail would be.)
+		st.puff(e + back * 1.5 + j * 1.6 * size_k, back * _p("smoke_drift", 3.2) + j * 0.9, Color(0.5, 0.45, 0.4, 0.5), 3.4 * size_k, _p("smoke_life", 3.2))
+	if _tick("fire", 0.06, delta):
+		st.puff(e + back * 0.6 + j * 0.9 * size_k, back * 2.2 + j * 1.2, Color(1.0, 0.48, 0.16, 0.55), 1.5 * size_k, 0.8)
+	if _tick("spark", 0.55, delta):
+		st.debris(e + j, 2, 7.0, 0.35, back)
+	if vent > 0.0:
+		_vent_dome(lt, delta, vent, size_k)
 
 
 ## Meteor n of the barrage: they rake across the frame from behind the ark, some of them close.
@@ -1098,17 +1374,13 @@ func _storm_meteor(n: int) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 900 + n * 31
 	var ark: Vector3 = _stage.ark.position
-	var near: bool = n % 4 == 2
-	var a := ark + Vector3(rng.randf_range(-95, -35), rng.randf_range(34, 66), rng.randf_range(-46, 8) + (26.0 if near else 0.0))
+	var near: bool = n % 3 == 1
+	var a := ark + Vector3(rng.randf_range(-95, -35), rng.randf_range(34, 66), rng.randf_range(-46, 8) + (30.0 if near else 0.0))
 	var b := a + Vector3(125, -104, rng.randf_range(-6, 26))
-	_stage.meteor(a, b, rng.randf_range(1.5, 2.2), rng.randf_range(0.6, 1.3) * (1.5 if near else 1.0))
+	_stage.meteor(a, b, rng.randf_range(1.3, 1.9), rng.randf_range(0.9, 1.6) * (1.8 if near else 1.0))
 	if near:
 		_snd("whoosh", rng.randf_range(0.7, 0.95), -9.0)
-
-
-func _cue_lone_meteor() -> void:
-	var ark: Vector3 = _stage.ark.position
-	_stage.meteor(ark + Vector3(-120, 52, -70), ark + Vector3(40, -30, -50), 2.4, 0.8)
+		_trauma = maxf(_trauma, 0.35)
 
 
 func _cue_barrage() -> void:
@@ -1116,15 +1388,35 @@ func _cue_barrage() -> void:
 	_acc["meteor"] = 10.0  # the first one at once
 
 
-## The one that will hit: launched now, it lands as the next shot's "impact_ark" cue fires.
+## One finds the engine block: a flash, the blue glow dies, the lights down the hull go red.
+func _cue_engine_meteor() -> void:
+	var hit: Vector3 = _stage.ark.engine_world() + _ark_v * 0.7
+	_stage.meteor(hit + Vector3(-52, 44, 18), hit, 0.7, 1.7)
+
+
+func _cue_engine_hit() -> void:
+	var st: SpaceStage = _stage
+	_acc["engines"] = _lt
+	st.blast(st.ark.engine_world(), 1.7, Color(0.7, 0.85, 1.0))
+	st.debris(st.ark.engine_world(), 18, 9.0, 1.0, Vector3(-1.0, 0.2, 0.3))
+	st.shake = 0.0
+	_ark_state(1)
+	_trauma = 0.9
+	_snd("thud", 0.42, 1.0)
+	_snd("crunch", 0.55, -3.0)
+	_snd("groan", 0.6, -4.0)
+	_snd("siren", 1.0, -10.0)
+
+
+## The one that will hit the dome: launched now, it lands as the next shot's "dome_hit" cue fires.
 func _cue_hit_meteor() -> void:
 	var next: Dictionary = _shots[mini(_si + 1, _shots.size() - 1)]
-	var flight: float = float(_shots[_si]["d"]) - _lt + 0.75
+	var flight: float = float(_shots[_si]["d"]) - _lt + 0.5
 	for c: Variant in next["cues"]:
-		if str(c[1]) == "impact_ark":
+		if str(c[1]) == "dome_hit":
 			flight = float(_shots[_si]["d"]) - _lt + float(c[0])
-	var hit: Vector3 = _stage.ark.pod_world(2) + _ark_v * flight + Vector3(0, -0.5, 0)
-	_stage.meteor(hit + Vector3(-64, 52, 14), hit, flight, 1.4)
+	var hit: Vector3 = _stage.ark.breach_world() + _ark_v * flight
+	_stage.meteor(hit + Vector3(-58, 50, 34), hit, flight, 1.5)
 
 
 func _in_hit() -> void:
@@ -1132,107 +1424,160 @@ func _in_hit() -> void:
 		_space_base()
 		_ark_p0 = Vector3(-14, 0, 0)
 		_ark_v = Vector3(_p("ark_speed", 1.6), 0, 0)
-		_ark_t0 = float(_shots[_si]["t0"]) - 6.6
+		_ark_t0 = float(_shots[_si]["t0"]) - 5.0
+	_ark_state(1)
 	_stage.motes_on = true
 
 
 func _run_hit(lt: float, _u: float, delta: float) -> void:
-	_stage.ark.position = _ark_storm()
+	var st: SpaceStage = _stage
+	st.ark.position = _ark_storm()
 	var hit_at: float = float(_acc.get("hit", INF))
-	if lt > hit_at and _tick("vent", 0.16, delta):
-		var p: Vector3 = _stage.ark.pod_world(2)
-		_stage.puff(p + Vector3(sin(lt * 9.0) * 0.8, -0.4, cos(lt * 7.0) * 0.5), Vector3(sin(lt * 5.0) * 1.5, -2.6, 1.0 + cos(lt * 3.0)), Color(0.92, 0.94, 0.97, 0.42), 0.8)
+	if lt > hit_at:
+		# The hole opens fast, then the garden's air pours out of it: white breath, torn leaves.
+		st.ark.breach = clampf((lt - hit_at) / 0.22, 0.0, 1.0)
+		_vent_dome(lt, delta, 1.0)
+	_ark_wounds(lt, delta, 0.0, _p("fx_size", 1.0))
 
 
-func _cue_impact_ark() -> void:
+## Air and leaves streaming out of the broken dome (the space set).
+func _vent_dome(lt: float, delta: float, k: float, size_k: float = 1.0) -> void:
+	var st: SpaceStage = _stage
+	var hole: Vector3 = st.ark.breach_world()
+	var out: Vector3 = (hole - st.ark.dome_world()).normalized()
+	if _tick("vent", 0.06, delta):
+		var j := Vector3(sin(lt * 9.0), cos(lt * 7.0), sin(lt * 5.0 + 1.0)) * 0.5
+		st.puff(hole + j * 0.4 * size_k, (out + j * 0.35) * 6.5 * k, Color(0.92, 0.96, 1.0, 0.5), 1.3 * size_k)
+	if _tick("leaf", 0.035, delta):
+		st.leaf(hole, (out + Vector3(sin(lt * 31.0), cos(lt * 23.0), sin(lt * 17.0)) * 0.45) * (4.0 + 3.0 * absf(sin(lt * 13.0))) * k)
+
+
+func _cue_dome_hit() -> void:
 	var st: SpaceStage = _stage
 	_acc["hit"] = _lt
-	st.blast(st.ark.pod_world(2) + Vector3(0, -0.5, 0), 1.6)
+	var hole: Vector3 = st.ark.breach_world()
+	st.blast(hole, 1.25)
+	st.debris(hole, 22, 7.0, 0.55, (hole - st.ark.dome_world()).normalized())
 	st.shake = 0.0
-	st.set_alarm(1.0)
+	_ark_state(1)
 	_trauma = 1.0
 	_snd("thud", 0.4, 2.0)
 	_snd("crunch", 0.5, -2.0)
-	_snd("error", 0.45, -5.0)
+	_snd("roar", 1.3, -8.0)  # the air going out
 
 
-func _in_alarm() -> void:
-	_vault_base(1.0)
-	_stage.lumi.look_toward(null)
+func _in_breach() -> void:
+	_vault_base(true)
+	var lumi: PatchModel = _stage.lumi
+	lumi.position = TABLE_SPOT
+	lumi.rotation = Vector3(0, TABLE_YAW, 0)
+	lumi.look_toward(null)
 
 
 func _cue_vault_shake() -> void:
 	var v: Vector3 = SpaceStage.VAULT_AT
 	_trauma = 0.9
 	_stage.lumi.shudder(0.5)
-	for i: int in 2:
-		_stage.debris(v + Vector3(-1.5 + 3.0 * i, 3.6, 2.6), 5, 2.5, 0.4, Vector3(0, -0.6, 0))
+	_stage.debris(SpaceStage.vault_hole() + Vector3(-0.4, -0.3, 0.4), 14, 3.0, 0.3, (v + Vector3(0, 1.0, 0) - SpaceStage.vault_hole()).normalized() * 0.4)
 	_stage.shake = 0.0
+	_snd("crunch", 1.4, -3.0)
+	_snd("clink", 0.6, -6.0)
 
 
 func _cue_grab_tray() -> void:
 	_stage.lumi.holding = true
 	_hold_tray = true
 	_stage.lumi.set_happy(0.45)
-	_snd("chirp", 1.6, -6.0)
+	_snd("beep", 1.5, -8.0)
 
 
-## Lumi's way from the pedestal to the cargo pod: round the pedestal, never through it.
+## Lumi's way from the planter table to the drop pod: round the table, never through it.
 func _vault_path(k: float) -> Vector3:
-	var a := Vector3(-0.2, 0.15, -1.05)
-	var c := Vector3(1.9, 0.15, 0.5)
-	var b := Vector3(0.3, 0.2, 2.55)
+	var a: Vector3 = TABLE_SPOT
+	var c := Vector3(-1.75, 0.15, 0.9)
+	var b := Vector3(-0.2, 0.2, 2.75)
 	return a.lerp(c, k).lerp(c.lerp(b, k), k)
 
 
-func _run_alarm(lt: float, _u: float, _delta: float) -> void:
+func _run_breach(lt: float, _u: float, _delta: float) -> void:
 	var st: SpaceStage = _stage
 	var lumi: PatchModel = st.lumi
 	var v: Vector3 = SpaceStage.VAULT_AT
-	var go: float = _p("go_at", 3.0)
-	var k: float = eased("inout", (lt - go) / _p("go_dur", 3.4))
+	var go: float = _p("go_at", 2.6)
+	var k: float = eased("inout", (lt - go) / _p("go_dur", 3.0))
+	var pull: Vector3 = Vector3(SpaceStage.VAULT_HOLE.x, 0.0, SpaceStage.VAULT_HOLE.z).normalized()
 	lumi.position = _vault_path(k)
-	if lt < 1.1:
-		# The jolt: thrown back, then steadying.
+	# The wind has it the whole time: a drag toward the hole it has to lean against.
+	var drag: float = 0.16 * exp(-lt * 1.4) + 0.035 * sin(lt * 11.0) * (1.0 - k)
+	lumi.position += pull * drag
+	if lt < 1.0:
+		# The blast: thrown toward the hole, catching itself on the table.
 		var j: float = exp(-lt * 3.5) * sin(lt * 16.0)
-		lumi.position += Vector3(0, absf(j) * 0.05, -j * 0.06)
+		lumi.position += Vector3(0, absf(j) * 0.05, 0)
 		lumi.rotation.x = j * 0.16
-		lumi.look_toward(v + Vector3(0, 4.0, 2.0))
+		lumi.look_toward(SpaceStage.vault_hole())
 	elif lt < go:
-		# It looks at the pod, back at the tray: it will not leave them. A lean back before the dash.
-		lumi.look_toward(v + (Vector3(0, 1.2, 3.7) if lt < 1.7 else Vector3(0, 0.9, 0)))
+		# The hole, then the tray: it will not leave them. A lean back before the dash.
+		lumi.look_toward(SpaceStage.vault_hole() if lt < 1.5 else v + Vector3(0, 0.9, 0))
 		lumi.rotation.x = 0.1 * eased("inout", (lt - (go - 0.5)) / 0.5)
 	else:
 		lumi.look_toward(null)
 		var ahead: Vector3 = _vault_path(minf(k + 0.06, 1.0)) - _vault_path(maxf(k - 0.02, 0.0))
 		if ahead.length() > 0.001:
 			lumi.rotation.y = lerp_angle(lumi.rotation.y, atan2(-ahead.x, -ahead.z), 0.25)
-		lumi.rotation.x = lerpf(0.1, -0.2, eased("out", (lt - go) / 0.4)) * (1.0 - eased("inout", (k - 0.8) / 0.2))
-	lumi.rotation.z = 0.0
+		# Head down into the wind.
+		lumi.rotation.x = lerpf(0.1, -0.24, eased("out", (lt - go) / 0.4)) * (1.0 - eased("inout", (k - 0.85) / 0.15))
+	lumi.rotation.z = 0.05 * sin(lt * 9.0) * (1.0 - k * 0.5)
 	if _hold_tray:
 		st.lumi.holding = true
+	_alarm_sound(_delta)
 
 
-func _in_to_pod() -> void:
-	_vault_base(1.0)
+## The alarm while the vault is open to space: the siren's sweep every 1.7 s over the wind.
+func _alarm_sound(delta: float) -> void:
+	if _tick("siren", 1.7, delta):
+		_snd("siren", 1.0, -11.0)
+	if _tick("wind", 2.3, delta):
+		_snd("roar", 1.4, -12.0)
+
+
+## Where Lumi rides in the pod (the vault set), facing the door.
+const POD_SEAT := Vector3(0.0, 0.47, 3.75)
+
+
+func _in_seal() -> void:
+	_vault_base(true)
 	var lumi: PatchModel = _stage.lumi
 	lumi.holding = true
 	_hold_tray = true
-	lumi.set_happy(0.45)
+	lumi.set_happy(0.4)
 	lumi.look_toward(null)
 	lumi.position = _vault_path(1.0)
 	lumi.rotation = Vector3(0, PI, 0)
 
 
-func _run_to_pod(lt: float, _u: float, _delta: float) -> void:
-	var lumi: PatchModel = _stage.lumi
+func _run_seal(lt: float, _u: float, _delta: float) -> void:
+	var st: SpaceStage = _stage
+	var lumi: PatchModel = st.lumi
+	var drop: float = lt - float(_acc.get("drop", INF))
+	if drop >= 0.0:
+		# The bay lets go: the pod sinks out of the room, slowly, then gone.
+		var k: float = eased("in", drop / 2.6)
+		st.vault_pod.position.y = -3.4 * k
+		if k >= 1.0:
+			st.vault_pod.visible = false
 	if not lumi.visible:
+		_alarm_sound(_delta)
 		return
-	var k: float = eased("out", lt / 1.0)
-	lumi.position = _vault_path(1.0).lerp(Vector3(0.0, 0.25, 3.45), k)
-	# In, then round to face the room it is leaving.
-	lumi.rotation.y = lerp_angle(PI, 0.0, eased("inout", (lt - 0.55) / 0.7))
+	var k2: float = eased("out", lt / 1.0)
+	lumi.position = _vault_path(1.0).lerp(POD_SEAT, k2)
+	# In, then round to face the room it is leaving: one long look back.
+	lumi.rotation.y = lerp_angle(PI, 0.0, eased("inout", (lt - 0.5) / 0.7))
 	lumi.rotation.x = 0.0
+	lumi.rotation.z = 0.0
+	if lt > 1.2:
+		lumi.look_toward(SpaceStage.VAULT_AT + Vector3(0, 0.95, 0))
+	_alarm_sound(_delta)
 
 
 func _cue_seal_pod() -> void:
@@ -1248,9 +1593,14 @@ func _cue_seal_pod() -> void:
 	tw.tween_interval(shut * 0.28)
 	tw.tween_callback(func() -> void:
 		_snd("clunk", 0.8, -2.0, "thud")
-		_trauma = maxf(_trauma, 0.35)
-		st.puff(st.vault_pod.global_position + Vector3(0, 1.0, -0.9), Vector3(0, 0.6, -0.8), Color(0.9, 0.93, 0.97, 0.5), 0.5)
-		st.puff(st.vault_pod.global_position + Vector3(0.3, 0.6, -0.9), Vector3(0.4, 0.3, -0.7), Color(0.9, 0.93, 0.97, 0.4), 0.4))
+		_trauma = maxf(_trauma, 0.35))
+
+
+func _cue_drop_pod() -> void:
+	_acc["drop"] = _lt
+	_snd("clunk", 0.6, 0.0, "thud")
+	_snd("steam", 0.8, -6.0)
+	_trauma = maxf(_trauma, 0.3)
 
 
 func _stage_fire() -> Node3D:
@@ -1264,46 +1614,44 @@ func _stage_fire() -> Node3D:
 	return f
 
 
-func _in_eject() -> void:
+func _in_release() -> void:
 	_space_base()
 	var st: SpaceStage = _stage
-	st.set_alarm(1.0)
+	_ark_state(2)
 	st.ark.position = Vector3.ZERO
 	st.pod.visible = true
 	st.pod.scale = Vector3.ONE
-	st.pod.global_transform = st.ark.pod_xform(2)  # exactly where it hangs in the rack
+	st.pod.global_transform = st.ark.pod_xform(2)  # exactly where it hangs under the keel
 	_pod_p0 = st.pod.global_position
 	_acc["rot0"] = st.pod.global_basis
 	st.ark.release_pod(2)
 	EscapePod.set_open(st.pod, false)
 
 
-func _cue_blow_pod() -> void:
+## WREN lets it go: the clamp opens with a small puff of gas. No bang: this is a choice.
+func _cue_let_go() -> void:
 	var st: SpaceStage = _stage
-	_acc["blow"] = _lt
-	st.blast(st.pod.global_position + Vector3(0, 0.6, 0), 0.9, Color(1.0, 0.85, 0.6))
-	st.debris(st.pod.global_position, 16, 6.0, 0.8, Vector3(0, -1, 0))
-	st.shake = 0.0
-	_trauma = 0.8
-	_snd("whoosh", 0.5, 0.0)
-	_snd("thud", 0.6, -4.0)
+	_acc["go"] = _lt
+	for i: int in 4:
+		st.puff(st.pod.global_position + Vector3(0, 1.3, 0), Vector3(cos(i * 1.6) * 1.6, 0.6, sin(i * 1.6) * 1.6), Color(0.9, 0.93, 0.97, 0.4), 0.5)
+	_trauma = maxf(_trauma, 0.25)
+	_snd("clunk", 0.7, -1.0, "thud")
+	_snd("steam", 1.0, -5.0)
 
 
-func _run_eject(lt: float, _u: float, delta: float) -> void:
+func _run_release(lt: float, _u: float, delta: float) -> void:
 	var st: SpaceStage = _stage
-	# The ark does not stop: it pulls away, faster and faster.
-	st.ark.position = Vector3(0.5 * _p("ark_speed", 4.0) * lt * lt * 0.35 + lt * 1.2, 0, 0)
-	var tau: float = maxf(0.0, lt - float(_acc.get("blow", 0.3)))
-	st.pod.global_position = _pod_p0 + Vector3(-1.5 * tau, -2.7 * tau - 0.2 * tau * tau, 1.35 * tau)
+	# The ark cannot stop or steer: it drifts on, dark aft, the dome bleeding air.
+	st.ark.position = Vector3(lt * _p("ark_speed", 1.6), 0, 0)
+	var tau: float = maxf(0.0, lt - float(_acc.get("go", INF)))
+	# Slow at first (it hangs a moment under the keel), then the planet has it.
+	st.pod.global_position = _pod_p0 + Vector3(-0.5 * tau - 0.1 * tau * tau, -0.5 * tau - 0.55 * tau * tau, 0.5 * tau)
 	var b0: Basis = _acc.get("rot0", Basis())
-	st.pod.global_basis = Basis(Vector3(1, 0, 0.4).normalized(), 1.35 * tau + 0.25 * sin(tau * 0.9)) * b0
-	if tau > 0.0 and _tick("puff", 0.2, delta):
-		st.puff(st.pod.global_position + Vector3(0.4 * sin(tau * 7.0), 0.8, 0.3 * cos(tau * 5.0)), Vector3(sin(tau * 3.0), 1.8, 0.3), Color(0.9, 0.93, 0.97, 0.36), 0.6)
-	if tau > 0.0 and _tick("vent", 0.28, delta):
-		st.puff(st.ark.pod_world(2), Vector3(-1.5 + sin(tau * 4.0), -3.0, cos(tau * 3.0)), Color(0.9, 0.93, 0.97, 0.34), 0.9)
+	st.pod.global_basis = Basis(Vector3(1, 0, 0.4).normalized(), 0.14 * tau * tau) * b0
+	_ark_wounds(lt, delta, 0.8)
 
 
-# --- Beat 3: the long fall -------------------------------------------------------------------
+# --- Act 3: the long fall --------------------------------------------------------------------
 
 func _planet_top() -> Vector3:
 	return _stage.planet.global_position + Vector3(0, SpaceStage.PLANET_R * _stage.planet.scale.y, 0)
@@ -1318,25 +1666,32 @@ static func fall_basis(dir: Vector3, t: float, wobble: float, spin: float) -> Ba
 	return b * Basis(Vector3(cos(t * 1.3), 0, sin(t * 1.3)).normalized(), wobble)
 
 
-func _in_drift() -> void:
+## Lumi's last look at home: from beside the falling pod, up at the ark as it goes. It fills the
+## sky at first, burning and bleeding air, and shrinks away while WREN's voice breaks up. (It was
+## a shot from above that lost the ark off the top of the frame and the pod in the dark.)
+func _in_apart() -> void:
 	_space_base()
 	var st: SpaceStage = _stage
+	_ark_state(2)
+	st.ark.position = Vector3.ZERO
 	st.pod.visible = true
 	st.ark.release_pod(2)
-	_pod_p0 = _planet_top() + _pv("pod_from", Vector3(-30, 170, 100))
-	# The ark, far off and small, still sailing on: it could not turn back.
-	st.ark.scale = Vector3.ONE * _p("ark_scale", 0.24)
+	_pod_p0 = st.ark.pod_world(2)
 	EscapePod.set_open(st.pod, false)
 
 
-func _run_drift(lt: float, _u: float, delta: float) -> void:
+func _run_apart(lt: float, _u: float, delta: float) -> void:
 	var st: SpaceStage = _stage
-	st.pod.global_position = _pod_p0 + _pv("pod_vel", Vector3(3, -4, -2.4)) * lt
-	st.pod.global_basis = Basis(Vector3(0.3, 1, 0.2).normalized(), 0.6 + lt * 0.42) * Basis(Vector3.RIGHT, 0.5 + lt * 0.3)
-	st.ark.position = st.pod.global_position + _pv("ark_off", Vector3(26, -32, 60)) + Vector3(lt * 2.5, 0, lt * 1.2)
-	st.ark.rotation = Vector3(0, -PI * 0.5 - 0.5, 0)
-	if _tick("puff", 0.5, delta):
-		st.puff(st.pod.global_position + Vector3(0, 0.9, 0), Vector3(-0.6, 0.9, 0.3), Color(0.9, 0.93, 0.97, 0.22), 0.5)
+	st.ark.position = Vector3(lt * _p("ark_speed", 1.2), 0, 0)
+	st.ark.rotation = Vector3(0, -PI * 0.5, 0.05 * sin(lt * 0.5))  # no engines to hold it steady
+	# The pod falls back and down from its bay, faster all the time; the ark sails on.
+	var tau: float = lt + _p("lead", 3.5)
+	var back: Vector2 = _pair((_shots[_si].get("p", {}) as Dictionary).get("fall_back"), 3.0, 0.5)
+	var down: Vector2 = _pair((_shots[_si].get("p", {}) as Dictionary).get("fall_down"), 1.0, 0.45)
+	st.pod.global_position = _pod_p0 + Vector3(-(back.x * tau + back.y * tau * tau), -(down.x * tau + down.y * tau * tau), _p("fall_side", 0.8) * tau)
+	# Turned a little toward the lens, rocking slowly (no engines, no hand on it).
+	st.pod.global_basis = Basis(Vector3.UP, _p("pod_yaw", 2.6) + 0.12 * lt) * Basis(Vector3(1, 0, 0.3).normalized(), 0.22 * sin(lt * 0.6) - 0.15)
+	_ark_wounds(lt, delta, 0.8, _p("fx_size", 2.2))
 
 
 func _in_reentry() -> void:
@@ -1373,12 +1728,12 @@ func _run_reentry(lt: float, _u: float, delta: float) -> void:
 ##   pod in its crash site, hatch shut), 2 = the hatch is open and Lumi is out, eyes shut,
 ##   3 = Lumi is awake by the door, 4 = Lumi has moved out to the spot where the game starts.
 func _world_state(stage: int) -> void:
-	var patch: Node3D = world.patch
+	var patch: Node3D = _lumi()
 	var model: PatchModel = _model()
 	if stage == 0:
 		if _pod == null or not is_instance_valid(_pod):
 			_pod = build_pod()
-			world.add_child(_pod)
+			add_child(_pod)
 			(_pod.get_node("Scorch") as Node3D).visible = true
 			EscapePod.set_open(_pod, false)
 		if _fire == null or not is_instance_valid(_fire):
@@ -1411,10 +1766,12 @@ func _world_state(stage: int) -> void:
 
 
 func _put_lumi(at: Vector3, facing: Vector3) -> void:
-	var patch: Node3D = world.patch
+	var patch: Node3D = _lumi()
 	patch.global_position = _w(at)
 	if facing.length() > 0.01:
 		patch.look_at(_w(at + facing), _up())
+		if patch == _actor:
+			return
 		# The globe's motor keeps its own heading and turns the body back to it: tell it too.
 		var motor: Variant = patch.get("sphere_motor")
 		if motor != null and (motor as Object).has_method("face"):
@@ -1431,7 +1788,19 @@ func _fall_pose(k: float, t: float, fire_scale: float) -> void:
 		_fire.scale = Vector3.ONE * fire_scale
 		set_fire(_fire, 1.0, t)
 	if _trail and is_instance_valid(_trail):
-		_trail.global_position = _pod.global_position
+		# Each frame's smoke is spread along the stretch the pod covered in it, so the trail is one
+		# ragged ribbon at any frame rate (from a point it was a row of separate dark balls).
+		var now: Vector3 = _pod.global_position
+		var was: Vector3 = _trail.get_meta("last", now)
+		var seg: Vector3 = now - was
+		if seg.length() > 0.05 and seg.length() < 80.0:
+			var up_hint: Vector3 = _up() if absf(seg.normalized().dot(_up())) < 0.95 else Vector3.RIGHT
+			_trail.global_transform = Transform3D(Basis.looking_at(seg.normalized(), up_hint), (now + was) * 0.5)
+			_trail.emission_box_extents = Vector3(0.5, 0.5, seg.length() * 0.5 + 0.2)
+		else:
+			_trail.global_transform = Transform3D(Basis(), now)
+			_trail.emission_box_extents = Vector3(0.5, 0.5, 0.5)
+		_trail.set_meta("last", now)
 		_trail.emitting = true
 
 
@@ -1506,7 +1875,9 @@ func _site_settle(e: float) -> void:
 		xf.basis = Basis(axis, rock) * xf.basis
 		xf.origin += up * (bounce - exp(-e * 7.0) * 0.1)
 	_site.global_transform = xf
-	_plume_rise(clampf(e / 7.0, 0.0, 1.0))
+	# The game's tall pale plume waits out the crash shot (its first metres, pale over the ochre
+	# sky, read as a beam of light standing on the pod), then climbs through the wake-up.
+	_plume_rise(clampf((e - 4.0) / 24.0, 0.0, 1.0))
 
 
 ## The tall smoke column over the crash grows up out of it instead of standing there at once.
@@ -1515,8 +1886,10 @@ func _plume_rise(k: float) -> void:
 		return
 	var plume: Node3D = _site.get_node_or_null("Plume") as Node3D
 	if plume:
+		plume.visible = k > 0.0
 		var s: float = lerpf(0.03, 1.0, eased("out", k))
-		plume.scale = Vector3(lerpf(0.5, 1.0, s), s, lerpf(0.5, 1.0, s))
+		var w: float = maxf(s, 0.08)  # as wide as it is tall, in its own shape: a column, not a cone of light
+		plume.scale = Vector3(w, s, w)
 		plume.position = Vector3(0, CrashSite.PLUME_H * 0.5 * s + 1.2, 0)
 
 
@@ -1547,7 +1920,7 @@ func _land(with_fx: bool) -> void:
 	_trauma = 1.15
 
 
-func _in_settle() -> void:
+func _in_dust() -> void:
 	_world_state(1)
 
 
@@ -1569,28 +1942,21 @@ func _cue_open_hatch() -> void:
 
 
 func _run_hatch(lt: float, _u: float, _delta: float) -> void:
-	var patch: Node3D = world.patch
-	var at: float = _p("out_at", 3.5)
-	if lt < at:
+	var patch: Node3D = _lumi()
+	var at: float = _p("out_at", 3.4)
+	var model: PatchModel = _model()
+	if lt < _p("show_at", 2.2):
 		patch.visible = false
 		return
-	# Lumi drifts out nearly powerless, face first, and sinks a little as it stops.
-	var k: float = eased("inout", (lt - at) / _p("out_dur", 3.0))
+	# In the dark of the cabin first: two eyes come on. Then out, slowly, low on power.
 	patch.visible = true
-	var model: PatchModel = _model()
-	if model:
+	if model and not bool(_acc.get("woke", false)):
 		model.sleeping = true
 		model.core_glow = 0.15
-	var p: Vector3 = _pod_pt(Vector3(0, 0.34, -0.35)).lerp(_door_spot(), k)
+	var k: float = eased("inout", (lt - at) / _p("out_dur", 2.6))
+	var p: Vector3 = _pod_pt(Vector3(0, 0.36, -0.2)).lerp(_door_spot(), k)
 	p.y += sin(k * PI) * 0.05
 	_put_lumi(p, _door())
-
-
-func _in_wake() -> void:
-	_world_state(2)
-	var model: PatchModel = _model()
-	if model:
-		model.look_toward(null)
 
 
 func _cue_eyes_open() -> void:
@@ -1598,6 +1964,7 @@ func _cue_eyes_open() -> void:
 	var model: PatchModel = _model()
 	if model == null:
 		return
+	_acc["woke"] = true
 	var tw := create_tween()
 	for step: Array in [[false, 0.07], [true, 0.16], [false, 0.1], [true, 0.12]]:
 		tw.tween_callback(func() -> void:
@@ -1607,7 +1974,7 @@ func _cue_eyes_open() -> void:
 		tw.tween_interval(float(step[1]))
 	tw.tween_callback(func() -> void:
 		model.sleeping = false
-		model.set_happy(0.5)
+		model.set_happy(0.3)
 		model.core_glow = 0.25
 		_snd("servo", 0.8, -8.0))
 
@@ -1615,24 +1982,68 @@ func _cue_eyes_open() -> void:
 func _cue_battery() -> void:
 	_flicker = 1.0
 	_battery.create_tween().tween_property(_battery, "modulate:a", 1.0, 0.5)
-	_snd("error", 0.5, -8.0)
+	_snd("beep", 0.5, -10.0)
+
+
+func _in_look() -> void:
+	_world_state(3)
+	var model: PatchModel = _model()
+	if model:
+		model.look_toward(null)
+		model.set_happy(0.3)
 
 
 func _cue_look_left() -> void:
 	var model: PatchModel = _model()
 	if model:
 		model.sleeping = false
-		model.look_toward(_w(_pod_pt(Vector3(-3, 1, -4.3))))
+		model.look_toward(_w(_pod_pt(Vector3(-5, 0.6, -4.3))))
 
 
 func _cue_look_right() -> void:
 	var model: PatchModel = _model()
 	if model:
-		model.look_toward(_w(_pod_pt(Vector3(3, 1, -4.3))))
+		model.look_toward(_w(_pod_pt(Vector3(5, 0.6, -4.3))))
 
 
-func _in_station() -> void:
+func _cue_look_far() -> void:
+	var model: PatchModel = _model()
+	if model:
+		model.look_toward(_w(_pod_pt(Vector3(0, 2.5, -40.0))))
+		model.set_happy(0.2)
+
+
+func _in_voice() -> void:
 	_world_state(3)
+	var model: PatchModel = _model()
+	if model:
+		model.look_toward(_w(_pod_pt(Vector3(0, 2.5, -40.0))))
+		model.set_happy(0.2)
+
+
+## A voice out of the static: Lumi's head comes up to the sky it fell from.
+func _cue_hear() -> void:
+	var model: PatchModel = _model()
+	_snd("buzz", 1.5, -14.0)  # static, then her voice
+	if model:
+		model.look_toward(_w(_pod_pt(Vector3(-2.0, 30.0, -8.0))))
+		model.set_happy(0.75)
+		model.flash()
+		model.shudder(0.2)
+
+
+func _run_voice(lt: float, _u: float, _delta: float) -> void:
+	# It rises a little toward the voice, as if that could bring it closer.
+	var k: float = eased("inout", (lt - 0.6) / 2.2)
+	_put_lumi(_door_spot() + Vector3(0, 0.14 * k, 0), _door())
+
+
+func _in_bench() -> void:
+	_world_state(3)
+	var model: PatchModel = _model()
+	if model:
+		model.look_toward(_w(_pod_pt(Vector3(-2.0, 30.0, -8.0))))
+		model.set_happy(0.6)
 
 
 func _cue_look_station() -> void:
@@ -1641,20 +2052,24 @@ func _cue_look_station() -> void:
 		model.look_toward(_w(_yard(str(_table.get("end_face", "bench"))) + Vector3(0, 1, 0)))
 
 
-func _run_station(lt: float, _u: float, _delta: float) -> void:
-	# Its first move on Verdance: out from the door, turning toward the old station WREN speaks of,
-	# to the spot where the game will start.
-	var k: float = eased("inout", (lt - _p("go_at", 3.6)) / _p("go_dur", 3.2))
+func _run_bench(lt: float, _u: float, _delta: float) -> void:
+	# Its first move on Verdance: out from the door, turning toward the old workbench WREN speaks
+	# of, to the spot where the game will start.
+	var k: float = eased("inout", (lt - _p("go_at", 3.0)) / _p("go_dur", 3.2))
 	var a0: float = atan2(-_door().x, -_door().z)
 	var a1: float = atan2(-_end_facing().x, -_end_facing().z)
-	var a: float = lerp_angle(a0, a1, eased("inout", (lt - _p("go_at", 3.6) + 0.4) / _p("go_dur", 3.2)))
+	var a: float = lerp_angle(a0, a1, eased("inout", (lt - _p("go_at", 3.0) + 0.4) / _p("go_dur", 3.2)))
 	var p: Vector3 = _door_spot().lerp(_end_spot(), k)
 	p.y += sin(k * PI) * 0.04
 	_put_lumi(p, Vector3(-sin(a), 0, -cos(a)))
-	if k > 0.9:
-		var model: PatchModel = _model()
-		if model:
-			model.look_toward(null)
+	var model: PatchModel = _model()
+	var gone: float = lt - float(_acc.get("gone", INF))
+	if model and gone >= 0.0:
+		# The voice is cut off: the head sinks, and after a breath comes up again, to the bench.
+		model.look_toward(_w(_end_spot() + _end_facing() * 1.2 + Vector3(0, -0.4, 0)) if gone < 1.3 else null)
+		model.set_happy(0.2 if gone < 1.3 else 0.5)
+	elif model and k > 0.9:
+		model.look_toward(null)
 
 
 func _in_alone() -> void:
@@ -1662,19 +2077,13 @@ func _in_alone() -> void:
 	var model: PatchModel = _model()
 	if model:
 		model.look_toward(null)
+		model.set_happy(0.5)
 
 
-func _cue_look_ahead() -> void:
-	var model: PatchModel = _model()
-	if model:
-		model.look_toward(null)
-		model.set_happy(0.7)
-		model.flash()
-		_snd("chirp", 1.3, -6.0)
-
-
+## The signal dies in the middle of her sentence.
 func _cue_relay_drop() -> void:
-	_snd("glitch", 0.7, -10.0)
+	_acc["gone"] = _lt
+	_snd("buzz", 0.7, -10.0)
 
 
 ## Where Lumi stops outside the door after drifting out.
@@ -1712,9 +2121,11 @@ func _run_handoff(lt: float, _u: float, _delta: float) -> void:
 
 ## Lumi on the game's start spot by the pod, facing the old workbench, the game camera behind it.
 func _stand_lumi() -> void:
-	var patch: Node3D = world.patch
+	var patch: Node3D = _lumi()
 	patch.visible = true
 	_put_lumi(_end_spot(), _end_facing())
+	if patch == _actor:
+		return  # a rewatch never moves the real Lumi or the game camera
 	if site_xf != Transform3D.IDENTITY and patch.has_method("place_on_sphere"):  # [orbE] stand on the globe
 		patch.call("place_on_sphere", patch.global_position, site_xf.basis.orthonormalized() * _end_facing())
 	if world.get("cam") != null and world.cam.has_method("hand_off"):
@@ -1777,7 +2188,7 @@ func _puffs(amount: int, life: float, col: Color, size: float, one_shot: bool) -
 	p.color_ramp = ramp
 	p.gravity = -_up() * 0.6
 	p.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	world.add_child(p)
+	add_child(p)
 	_fx_nodes.append(p)
 	return p
 
@@ -1786,7 +2197,9 @@ func _puffs(amount: int, life: float, col: Color, size: float, one_shot: bool) -
 func _ensure_trail() -> void:
 	if _trail and is_instance_valid(_trail):
 		return
-	_trail = _puffs(110, 3.8, Color(0.3, 0.27, 0.25, 0.62), 6.0, false)
+	_trail = _puffs(190, 3.8, Color(0.3, 0.27, 0.25, 0.62), 6.0, false)
+	_trail.emission_shape = CPUParticles3D.EMISSION_SHAPE_BOX
+	_trail.emission_box_extents = Vector3(0.5, 0.5, 0.5)
 	_trail.direction = Vector3.UP
 	_trail.spread = 180.0
 	_trail.initial_velocity_min = 0.3
@@ -1826,7 +2239,7 @@ func _impact_fx() -> void:
 	var fm: ShaderMaterial = SpaceStage.glow_mat(Color(1.0, 0.82, 0.55), 2.6, 0.95)
 	flash.material_override = fm
 	flash.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	world.add_child(flash)
+	add_child(flash)
 	_fx_nodes.append(flash)
 	flash.global_position = at + up * 1.0
 	flash.scale = Vector3.ONE * 1.5
@@ -1855,14 +2268,29 @@ func _clear_fx() -> void:
 
 # --- Overlay ------------------------------------------------------------------------------
 
-func _open_stage() -> void:
+## The off-world stage, built but not drawn yet (its sets load a few plant models: done behind
+## the loading screen, not in the film's first frame).
+func _prebuild_stage() -> void:
 	if _stage and is_instance_valid(_stage):
 		return
+	var t0: int = Time.get_ticks_usec()
 	_stage_layer = CanvasLayer.new()
 	_stage_layer.layer = 2
+	_stage_layer.visible = false
 	add_child(_stage_layer)
 	_stage = SpaceStage.new()
 	_stage_layer.add_child(_stage)
+	_stage.set_live(false)
+	if DevHooks.has("intro"):
+		print("[intro] stage built in %.1f ms" % ((Time.get_ticks_usec() - t0) / 1000.0))
+
+
+func _open_stage() -> void:
+	if _stage and is_instance_valid(_stage) and _stage_layer.visible:
+		return
+	_prebuild_stage()
+	_stage_layer.visible = true
+	_stage.set_live(true)
 	# The game world isn't on screen while the stage is: skip rendering it.
 	get_viewport().disable_3d = true
 
@@ -1936,7 +2364,7 @@ func _set_bars(k: float) -> void:
 		_bars[1].offset_top = -h
 
 
-## Low-battery readout (top left, under the letterbox): BLOOM CORE, five cells, 4%.
+## Low-battery readout (top left, under the letterbox): five cells, one red, and 4%.
 func _build_battery(root: Control) -> void:
 	var box := VBoxContainer.new()
 	box.position = Vector2(48, 96)
@@ -1944,7 +2372,8 @@ func _build_battery(root: Control) -> void:
 	box.modulate.a = 0.0
 	root.add_child(box)
 	_battery = box
-	box.add_child(UITheme.label("B L O O M   C O R E", 15, Color(1, 1, 1, 0.85)))  # [qafix] QA #27: was 12 px at 60%
+	# [v11film] The picture alone (a low battery reads without words): it carried two lines of
+	# jargon nobody had been taught yet ("BLOOM CORE", "GREEN LIGHT · NONE DETECTED").
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 10)
 	box.add_child(row)
@@ -1964,7 +2393,6 @@ func _build_battery(root: Control) -> void:
 	cells.add_child(nub)
 	_battery_pct = UITheme.label("%d%%" % int(round(CoreCharge.START * 100.0)), 26, Color(1.0, 0.45, 0.3))
 	row.add_child(_battery_pct)
-	box.add_child(UITheme.label(tr("GREEN LIGHT  ·  NONE DETECTED"), 15, Color(1.0, 0.6, 0.4, 0.95)))  # [qafix] QA #27
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -2003,7 +2431,8 @@ func _finish() -> void:
 	if sd is SkyDirector:  # [v10guide] the game's own sky, watched or skipped
 		(sd as SkyDirector).film_dust = 0.0
 	_flicker = 0.0
-	GameState.flags["intro_done"] = true
+	if not _replay:
+		GameState.flags["intro_done"] = true
 	_tunes_land(1.2 if _skipped else 4.0)  # [tunes]
 	if _skipped:
 		_subs().clear()
@@ -2031,21 +2460,41 @@ func _finish() -> void:
 func _apply_end_state() -> void:
 	ending = false
 	var patch: Node3D = world.patch
-	var model: PatchModel = _model()
+	var was_replay: bool = _replay
 	_close_stage()
 	_clear_fx()
-	if _replay:
+	if _cam:
+		_cam.queue_free()
+		_cam = null
+	for b: ColorRect in _bars:
+		b.visible = false
+	_title.visible = false
+	_title_sub.visible = false
+	_skip.visible = false
+	_battery.visible = false
+	if was_replay:
+		# A rewatch: everything back as it was. The real Lumi, pod, camera and HUD were never moved.
+		if _prev_cam and is_instance_valid(_prev_cam):
+			_prev_cam.current = true
+		if world.get("music") != null:
+			world.music.set_cinematic(bool(_replay_keep.get("cinematic", false)))
+		var td: Node = Tunes.director()
+		if td:
+			td.call("set_paused", false)
+		Tunes.set_context(str(_replay_keep.get("tunes", "play")))
 		_end_replay()
-	else:
-		if not _placed:
-			_placed = true
-			place_pod()
-		if _site and is_instance_valid(_site):
-			_site.global_transform = _site_rest
-			_plume_rise(1.0)
-		if _pod and is_instance_valid(_pod):
-			EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
-		_stand_lumi()
+		print("[intro] rewatch over after %.1fs (skipped=%s): the world is as it was" % [_t, _skipped])
+		return
+	var model: PatchModel = _model()
+	if not _placed:
+		_placed = true
+		place_pod()
+	if _site and is_instance_valid(_site):
+		_site.global_transform = _site_rest
+		_plume_rise(1.0)
+	if _pod and is_instance_valid(_pod):
+		EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
+	_stand_lumi()
 	patch.visible = true
 	_hold_lumi(false)
 	if model:
@@ -2056,9 +2505,6 @@ func _apply_end_state() -> void:
 	var modal: bool = world.has_method("any_modal_open") and world.any_modal_open()
 	if _prev_cam and is_instance_valid(_prev_cam) and not modal:
 		_prev_cam.current = true
-	if _cam:
-		_cam.queue_free()
-		_cam = null
 	if world.get("hud") != null and not modal:
 		world.hud.visible = true
 	if world.get("music") != null:
@@ -2067,12 +2513,6 @@ func _apply_end_state() -> void:
 	if td2:
 		td2.call("set_paused", false)
 	Tunes.set_context("play")
-	for b: ColorRect in _bars:
-		b.visible = false
-	_title.visible = false
-	_title_sub.visible = false
-	_skip.visible = false
-	_battery.visible = false
 	if not modal:
 		_set_player_enabled(true)
 	print("[intro] finished after %.1fs (skipped=%s, input restored=%s)" % [_t, _skipped, not modal])
@@ -2086,8 +2526,12 @@ func _done() -> void:
 	_layer = null
 	_bars.clear()
 	_battery_cells.clear()
-	finished.emit()
-	if DevHooks.has("intro-quit"):  # dev: tools/check_intro.sh
+	if _replay_keep.is_empty():
+		finished.emit()
+	else:  # a rewatch: nothing in the game should start because of it
+		_replay_keep.clear()
+		replay_finished.emit()
+	if DevHooks.has("intro-quit") and not DevHooks.has("rewatch-check"):  # dev: tools/check_intro.sh
 		get_tree().quit()
 
 
