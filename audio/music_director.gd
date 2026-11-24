@@ -157,6 +157,11 @@ var _mel_prev: int = 69
 var _mel_dir: int = 1
 var _mel_mute_until: float = 0.0
 var _queue: Array[Dictionary] = []
+## [v10snd] Owner: "the sounds like when i get an upgrade and stuff are just so loud ... add setting
+## to adjust that". Stingers play on their own bus (the Jingles slider), not under Music.
+var sting_bus: String = ""
+var sting_gain: float = 1.0
+var _sched_bus: String = ""
 
 
 func _init(p_samples: Dictionary, p_backend: Object, seed_value: int = 4242) -> void:
@@ -345,6 +350,12 @@ func in_gap() -> bool:
 func sting(name: String) -> void:
 	if forced_track != "" or muted:
 		return  # [camp] a radio song plays alone
+	_sched_bus = sting_bus
+	_sting(name)
+	_sched_bus = ""
+
+
+func _sting(name: String) -> void:
 	var tones: Array[int] = _chord_tones_in(60, 86)
 	if tones.is_empty():
 		tones = [62, 66, 69, 74, 78, 81]
@@ -443,7 +454,8 @@ func update(dt: float) -> void:
 	while i < _queue.size():
 		var e: Dictionary = _queue[i]
 		if _clock >= float(e["at"]):
-			_note(e["s"], int(e["m"]), G_STING * float(e["g"]))
+			var sb: String = str(e.get("bus", ""))
+			_note(e["s"], int(e["m"]), G_STING * float(e["g"]) * (sting_gain if sb != "" else 1.0), sb)
 			_queue.remove_at(i)
 		else:
 			i += 1
@@ -566,14 +578,17 @@ func _pitch(sample: String, midi: float) -> float:
 	return pow(2.0, (midi - float(samples[sample]["ref"])) / 12.0)
 
 
-func _note(sample: String, midi: int, gain: float) -> void:
+func _note(sample: String, midi: int, gain: float, bus: String = "") -> void:
 	if gain < 0.002 or not samples.has(sample):
 		return
-	backend.call("start", sample, _pitch(sample, midi), gain)
+	if bus != "" and backend.has_method("start_on"):  # [v10snd] stingers on the Jingles bus
+		backend.call("start_on", sample, _pitch(sample, midi), gain, bus)
+	else:
+		backend.call("start", sample, _pitch(sample, midi), gain)
 
 
 func _sched(at: float, sample: String, midi: int, g: float) -> void:
-	_queue.append({"at": at, "s": sample, "m": midi, "g": g})
+	_queue.append({"at": at, "s": sample, "m": midi, "g": g, "bus": _sched_bus})
 
 
 func _update_air() -> void:

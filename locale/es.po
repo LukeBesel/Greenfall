@@ -196,67 +196,67 @@ msgstr "Panel táctil"
 msgid "Paddle 1"
 msgstr "Paleta 1"
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:560
 msgid "LMB"
 msgstr "Clic izq."
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:561
 msgid "RMB"
 msgstr "Clic der."
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:562
 msgid "MMB"
 msgstr "Clic central"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:563
 msgid "Wheel up"
 msgstr "Rueda arriba"
 
-#: autoload/Settings.gd:551
+#: autoload/Settings.gd:564
 msgid "Wheel down"
 msgstr "Rueda abajo"
 
-#: autoload/Settings.gd:552
+#: autoload/Settings.gd:565
 msgid "Mouse %d"
 msgstr "Ratón %d"
 
-#: autoload/Settings.gd:554
+#: autoload/Settings.gd:567
 msgid "Button %d"
 msgstr "Botón %d"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:572
 msgid "LS left"
 msgstr "JI izquierda"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:572
 msgid "LS right"
 msgstr "JI derecha"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:573
 msgid "LS up"
 msgstr "JI arriba"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:573
 msgid "LS down"
 msgstr "JI abajo"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:574
 msgid "RS left"
 msgstr "JD izquierda"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:574
 msgid "RS right"
 msgstr "JD derecha"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:575
 msgid "RS up"
 msgstr "JD arriba"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:575
 msgid "RS down"
 msgstr "JD abajo"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:586
 msgid "hold %s"
 msgstr "mantén %s"
 
@@ -506,43 +506,43 @@ msgstr "+%s cubos"
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Ya no se tira basura suelta. Pulsa [%s] para hacer una bala y ponla en la báscula."
 
-#: fauna/fauna.gd:1739
+#: fauna/fauna.gd:1741
 msgid "E   pet %s"
 msgstr "E   acariciar a %s"
 
-#: fauna/fauna.gd:1740
+#: fauna/fauna.gd:1742
 msgid "E   pet the cat"
 msgstr "E   acariciar al gato"
 
-#: fauna/fauna.gd:1798
+#: fauna/fauna.gd:1800
 msgid "E   scatter crumbs for the birds"
 msgstr "E   echar migas a los pájaros"
 
-#: fauna/fauna.gd:1846
+#: fauna/fauna.gd:1848
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "Los pájaros han decidido que eres de fiar. Bolsa de migas añadida a tu Colección."
 
-#: fauna/fauna.gd:1902
+#: fauna/fauna.gd:1904
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "La gata ha decidido que eres suyo. Te presento a %s. Ahora vive en esta base."
 
-#: fauna/fauna.gd:2232 ui/subtitles.gd:448
+#: fauna/fauna.gd:2234 ui/subtitles.gd:448
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Nuevo avistamiento: %s. Ya está en el Códice."
 
-#: fauna/fauna.gd:2303
+#: fauna/fauna.gd:2305
 msgid "Snap! A %s for your Collection."
 msgstr "¡Clic! Una foto (%s) para tu Colección."
 
-#: planet/cd_finds.gd:190
+#: planet/cd_finds.gd:363
 msgid "A scratched CD turned up in the rubble."
 msgstr "Ha aparecido un CD rayado entre los escombros."
 
-#: planet/cd_finds.gd:190
+#: planet/cd_finds.gd:363
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr "Algo brilla entre los escombros despejados. ¡Un CD antiguo!"
 
-#: planet/cd_finds.gd:230
+#: planet/cd_finds.gd:419
 msgid "Your CD case is full."
 msgstr "Tu estuche de CD está lleno."
 
@@ -642,7 +642,7 @@ msgstr "FLOREZCAMOS JUNTOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  AGUA  VIDA"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:243 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "Base %d"
 
@@ -800,31 +800,31 @@ msgstr "Las %d bases están en pie. Construye el propulsor en el cohete."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:124
+#: planet/sites/orbit_sites.gd:126
 msgid "The rocket is in flight."
 msgstr "El cohete está en vuelo."
 
-#: planet/sites/orbit_sites.gd:146
+#: planet/sites/orbit_sites.gd:148
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:184
+#: planet/sites/orbit_sites.gd:186
 msgid "E   Rocket: choose a destination"
 msgstr "E   Cohete: elige un destino"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:222
+#: planet/sites/orbit_sites.gd:224
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "Upgrade the rocket first"
 msgstr "Primero mejora el cohete"
 
-#: planet/sites/orbit_sites.gd:242
+#: planet/sites/orbit_sites.gd:244
 msgid "%s site"
 msgstr "Lugar: %s"
 
@@ -2842,20 +2842,20 @@ msgstr "Perfil %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d h"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Low"
 msgstr "Bajo"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
-#: ui/settings_panel.gd:621
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
+#: ui/settings_panel.gd:635
 msgid "Medium"
 msgstr "Medio"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "High"
 msgstr "Alto"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Ultra"
 msgstr "Ultra"
 
@@ -3085,9 +3085,21 @@ msgstr "Violeta"
 msgid "Moonlight"
 msgstr "Luz de luna"
 
-#: systems/tunes.gd:390
+#: systems/tunes.gd:392
 msgid "New CD: %s by %s, from %s"
 msgstr "Nuevo CD: %s de %s, de %s"
+
+#: systems/tunes.gd:585
+msgid "You found a CD: %s! Press %s to play it any time."
+msgstr "¡Encontraste un CD: %s! Pulsa %s para escucharlo cuando quieras."
+
+#: systems/tunes.gd:587
+msgid "Glim is your radio."
+msgstr "Glim es tu radio."
+
+#: systems/tunes.gd:588
+msgid "Glim will be your radio when you build it."
+msgstr "Glim será tu radio cuando lo construyas."
 
 #: systems/camp/bot_bay.gd:94
 msgid "E   open the Bot Bay"
@@ -3205,15 +3217,19 @@ msgstr "%s les tararea a los brotes. La jubilación le sienta bien."
 msgid "%s points proudly at a new bud."
 msgstr "%s señala orgulloso un capullo nuevo."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:586
+#: systems/extras/radio.gd:186 tools/orbit_roundtrip.gd:586
 msgid "E   CD player: %s"
 msgstr "E   Reproductor de CD: %s"
 
-#: systems/extras/radio.gd:184
+#: systems/extras/radio.gd:186
+msgid "stopped"
+msgstr "parado"
+
+#: systems/extras/radio.gd:186
 msgid "mood music"
 msgstr "música ambiental"
 
-#: systems/extras/radio.gd:234
+#: systems/extras/radio.gd:236
 msgid "New song on the radio: %s"
 msgstr "Nueva canción en la radio: %s"
 
@@ -3422,7 +3438,7 @@ msgstr "Glim sigue escaneando. Inténtalo en un momento."
 msgid "Close"
 msgstr "Cerrar"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:80
 msgid "Quit"
 msgstr "Salir"
 
@@ -3551,7 +3567,7 @@ msgstr "Equipo inicial: solo Lumi. Las herencias añaden más."
 msgid "Starting kit: %s"
 msgstr "Equipo inicial: %s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:602
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:616
 msgid "Full"
 msgstr "Completo"
 
@@ -4272,7 +4288,7 @@ msgstr "%d ENCARGOS LISTOS  ·  cóbralos en el banco de trabajo"
 msgid "CDS  ·  %d / %d"
 msgstr "CD  ·  %d / %d"
 
-#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/tunes_picker.gd:95
+#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107
 msgid "Shuffle"
 msgstr "Aleatorio"
 
@@ -4296,7 +4312,7 @@ msgstr "Se encuentra en %s"
 msgid "Not found yet: CDs turn up in the rubble on %s."
 msgstr "Aún no encontrado: este CD está entre los escombros de %s."
 
-#: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:125
+#: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:141
 msgid "Now playing: %s by %s"
 msgstr "Sonando: %s de %s"
 
@@ -4337,8 +4353,8 @@ msgid "Your CDs come on now and then while you work, with quiet in between. Pick
 msgstr "Tus CD suenan de vez en cuando mientras trabajas, con calma entre ellos. Elige uno aquí, o Aleatorio, para oírlos seguidos."
 
 #: ui/extras_cd_list.gd:125
-msgid "Glim has copied your CDs: press N anywhere to pick a song."
-msgstr "Glim ha copiado tus CD: pulsa N en cualquier lugar para elegir una canción."
+msgid "Press %s anywhere for the radio."
+msgstr "Pulsa %s en cualquier lugar para la radio."
 
 #: ui/extras_cd_list.gd:127
 msgid "The music comes from the CD player, so it's softer far away from it."
@@ -5198,7 +5214,7 @@ msgstr[1] "%d planetas"
 msgid "Profiles"
 msgstr "Perfiles"
 
-#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
+#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:76
 msgid "Settings"
 msgstr "Ajustes"
 
@@ -5322,7 +5338,11 @@ msgstr "Códice  [%s]"
 msgid "Photo mode  [%s]"
 msgstr "Modo foto  [%s]"
 
-#: ui/pause_menu.gd:63 data/achievements.json:achievements[home_relics].name
+#: ui/pause_menu.gd:62
+msgid "Radio  [%s]"
+msgstr "Radio  [%s]"
+
+#: ui/pause_menu.gd:71 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "Recuerdos"
 
@@ -5394,7 +5414,7 @@ msgstr "El modo foto no está disponible durante un vuelo en cohete."
 msgid "Photo mode isn't available during a cinematic."
 msgstr "El modo foto no está disponible durante una cinemática."
 
-#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:411
+#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:425
 msgid "Camera"
 msgstr "Cámara"
 
@@ -5402,7 +5422,7 @@ msgstr "Cámara"
 msgid "Mode"
 msgstr "Modo"
 
-#: ui/photo_mode.gd:361 ui/settings_panel.gd:419
+#: ui/photo_mode.gd:361 ui/settings_panel.gd:433
 msgid "Field of view"
 msgstr "Campo de visión"
 
@@ -5439,7 +5459,7 @@ msgid "Blur"
 msgstr "Desenfoque"
 
 #: ui/photo_mode.gd:369 ui/photo_panel.gd:243 ui/photo_panel.gd:245
-#: ui/photo_panel.gd:283 ui/settings_panel.gd:711
+#: ui/photo_panel.gd:283 ui/settings_panel.gd:725
 msgid "Off"
 msgstr "No"
 
@@ -5552,7 +5572,7 @@ msgid "Exit"
 msgstr "Salir"
 
 #: ui/photo_panel.gd:243 ui/photo_panel.gd:245 ui/photo_panel.gd:283
-#: ui/settings_panel.gd:711
+#: ui/settings_panel.gd:725
 msgid "On"
 msgstr "Sí"
 
@@ -5918,255 +5938,259 @@ msgstr "{ui_cancel}  volver"
 msgid "Changes are saved automatically."
 msgstr "Los cambios se guardan automáticamente."
 
-#: ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Quality preset"
 msgstr "Calidad"
 
-#: ui/settings_panel.gd:261 ui/settings_panel.gd:368
+#: ui/settings_panel.gd:262 ui/settings_panel.gd:382
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
-#: ui/settings_panel.gd:264 ui/settings_panel.gd:412
+#: ui/settings_panel.gd:265 ui/settings_panel.gd:426
 msgid "Mouse sensitivity"
 msgstr "Sensibilidad del ratón"
 
-#: ui/settings_panel.gd:269 ui/settings_panel.gd:589
+#: ui/settings_panel.gd:270 ui/settings_panel.gd:603
 msgid "System default"
 msgstr "Predeterminado del sistema"
 
-#: ui/settings_panel.gd:270 ui/settings_panel.gd:586 ui/settings_panel.gd:590
+#: ui/settings_panel.gd:271 ui/settings_panel.gd:600 ui/settings_panel.gd:604
 msgid "Language"
 msgstr "Idioma"
 
-#: ui/settings_panel.gd:275
+#: ui/settings_panel.gd:276
 msgid "More settings  (sound, graphics, controls, accessibility)"
 msgstr "Más ajustes  (sonido, gráficos, controles, accesibilidad)"
 
-#: ui/settings_panel.gd:283
+#: ui/settings_panel.gd:284
 msgid "Everything else"
 msgstr "Todo lo demás"
 
-#: ui/settings_panel.gd:323
-msgid "Volume"
-msgstr "Volumen"
-
-#: ui/settings_panel.gd:330
-msgid "Ambience"
-msgstr "Ambiente"
-
-#: ui/settings_panel.gd:333
+#: ui/settings_panel.gd:329
 msgid "Sound effects"
 msgstr "Efectos de sonido"
 
-#: ui/settings_panel.gd:337 ui/settings_panel.gd:599 ui/settings_panel.gd:607
+#: ui/settings_panel.gd:333
+msgid "Reward sounds"
+msgstr "Sonidos de premio"
+
+#: ui/settings_panel.gd:337
+msgid "Wind and animals"
+msgstr "Viento y animales"
+
+#: ui/settings_panel.gd:343
+msgid "Volume"
+msgstr "Volumen"
+
+#: ui/settings_panel.gd:351 ui/settings_panel.gd:613 ui/settings_panel.gd:621
 msgid "Interface"
 msgstr "Interfaz"
 
-#: ui/settings_panel.gd:344
+#: ui/settings_panel.gd:358
 msgid "Rendering"
 msgstr "Renderizado"
 
-#: ui/settings_panel.gd:345
+#: ui/settings_panel.gd:359
 msgid "Low drops GI and fog; Ultra adds reflections."
 msgstr "Bajo quita la GI y la niebla; Ultra añade reflejos."
 
-#: ui/settings_panel.gd:346
+#: ui/settings_panel.gd:360
 msgid "This renderer always uses the Low preset."
 msgstr "Este renderizador siempre usa el ajuste Bajo."
 
-#: ui/settings_panel.gd:348
+#: ui/settings_panel.gd:362
 msgid "Detected: %s for %s. "
 msgstr "Detectado: %s para %s."
 
-#: ui/settings_panel.gd:349
+#: ui/settings_panel.gd:363
 msgid "Your choice (hardware: %s). "
 msgstr "Tu elección (hardware: %s)."
 
-#: ui/settings_panel.gd:350
+#: ui/settings_panel.gd:364
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
 msgstr "Bajo quita la GI, la niebla y detalle de sombras; Ultra añade reflejos."
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Renderer"
 msgstr "Renderizador"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Standard (Forward+)"
 msgstr "Estándar (Forward+)"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Light (Mobile)"
 msgstr "Ligero (Mobile)"
 
-#: ui/settings_panel.gd:358
+#: ui/settings_panel.gd:372
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
 msgstr "Ligero va bien con gráficas integradas antiguas. Se aplica al reiniciar el juego (ahora: %s)."
 
-#: ui/settings_panel.gd:364
+#: ui/settings_panel.gd:378
 msgid "Render scale"
 msgstr "Escala de renderizado"
 
-#: ui/settings_panel.gd:366
+#: ui/settings_panel.gd:380
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
 msgstr "Más bajo renderiza el 3D a menor tamaño; la interfaz sigue nítida."
 
-#: ui/settings_panel.gd:367
+#: ui/settings_panel.gd:381
 msgid "Display"
 msgstr "Pantalla"
 
-#: ui/settings_panel.gd:371
+#: ui/settings_panel.gd:385
 msgid "V-Sync"
 msgstr "V-Sync"
 
-#: ui/settings_panel.gd:377 ui/settings_panel.gd:406
+#: ui/settings_panel.gd:391 ui/settings_panel.gd:420
 msgid "Bindings"
 msgstr "Asignaciones"
 
-#: ui/settings_panel.gd:380
+#: ui/settings_panel.gd:394
 msgid "ACTION   (select a binding to rebind it)"
 msgstr "ACCIÓN   (elige una asignación para cambiarla)"
 
-#: ui/settings_panel.gd:383
+#: ui/settings_panel.gd:397
 msgid "KEYBOARD / MOUSE"
 msgstr "TECLADO / RATÓN"
 
-#: ui/settings_panel.gd:383
+#: ui/settings_panel.gd:397
 msgid "CONTROLLER"
 msgstr "MANDO"
 
-#: ui/settings_panel.gd:399
+#: ui/settings_panel.gd:413
 msgid "Reset to defaults"
 msgstr "Restablecer"
 
-#: ui/settings_panel.gd:406
+#: ui/settings_panel.gd:420
 msgid "Restore every key and controller binding."
 msgstr "Restaura todas las teclas y botones del mando."
 
-#: ui/settings_panel.gd:408
+#: ui/settings_panel.gd:422
 msgid "Button prompts"
 msgstr "Iconos de botones"
 
-#: ui/settings_panel.gd:410
+#: ui/settings_panel.gd:424
 msgid "Controller art: Automatic follows the connected pad."
 msgstr "Estilo de mando: Automático sigue al mando conectado."
 
-#: ui/settings_panel.gd:415
+#: ui/settings_panel.gd:429
 msgid "Stick look speed"
 msgstr "Velocidad del stick"
 
-#: ui/settings_panel.gd:418
+#: ui/settings_panel.gd:432
 msgid "Invert look Y"
 msgstr "Invertir eje Y"
 
-#: ui/settings_panel.gd:422
+#: ui/settings_panel.gd:436
 msgid "Mouse smoothing"
 msgstr "Suavizado del ratón"
 
-#: ui/settings_panel.gd:423
+#: ui/settings_panel.gd:437
 msgid "Eases mouse look over a few frames."
 msgstr "Suaviza la cámara con ratón durante unos fotogramas."
 
-#: ui/settings_panel.gd:424
+#: ui/settings_panel.gd:438
 msgid "Scooping"
 msgstr "Recogida"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Scoop button"
 msgstr "Botón de pala"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Hold"
 msgstr "Mantener"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Toggle"
 msgstr "Alternar"
 
-#: ui/settings_panel.gd:466
+#: ui/settings_panel.gd:480
 msgid "press a button…"
 msgstr "pulsa un botón…"
 
-#: ui/settings_panel.gd:466
+#: ui/settings_panel.gd:480
 msgid "press a key…"
 msgstr "pulsa una tecla…"
 
-#: ui/settings_panel.gd:498
+#: ui/settings_panel.gd:512
 msgid "Conflict: %s is used by both %s and %s."
 msgstr "Conflicto: %s lo usan %s y %s."
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:608
 msgid "Comfort"
 msgstr "Comodidad"
 
-#: ui/settings_panel.gd:595
+#: ui/settings_panel.gd:609
 msgid "Camera shake"
 msgstr "Vibración de cámara"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:611
 msgid "Reduced motion"
 msgstr "Movimiento reducido"
 
-#: ui/settings_panel.gd:598
+#: ui/settings_panel.gd:612
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "Cámara más tranquila y menos efectos de rebote."
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "Minimal"
 msgstr "Mínimo"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ui/settings_panel.gd:603
+#: ui/settings_panel.gd:617
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "Mínimo atenúa los extras tras unos segundos. Oculto solo deja indicaciones y mensajes."
 
-#: ui/settings_panel.gd:613
+#: ui/settings_panel.gd:627
 msgid "Interface scale"
 msgstr "Escala de interfaz"
 
-#: ui/settings_panel.gd:615
+#: ui/settings_panel.gd:629
 msgid "Size of menus, HUD and subtitles."
 msgstr "Tamaño de menús, HUD y subtítulos."
 
-#: ui/settings_panel.gd:616
+#: ui/settings_panel.gd:630
 msgid "Colour-blind palette"
 msgstr "Paleta para daltonismo"
 
-#: ui/settings_panel.gd:617
+#: ui/settings_panel.gd:631
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "Colores Okabe-Ito para el progreso de hexágonos, el medidor de tolva y la rareza de piezas."
 
-#: ui/settings_panel.gd:618 ui/settings_panel.gd:619
+#: ui/settings_panel.gd:632 ui/settings_panel.gd:633
 msgid "Subtitles"
 msgstr "Subtítulos"
 
-#: ui/settings_panel.gd:620
+#: ui/settings_panel.gd:634
 msgid "WREN's lines."
 msgstr "Las frases de WREN."
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Subtitle size"
 msgstr "Tamaño de subtítulos"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Small"
 msgstr "Pequeño"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Large"
 msgstr "Grande"
 
-#: ui/settings_panel.gd:623
+#: ui/settings_panel.gd:637
 msgid "Subtitle background"
 msgstr "Fondo de subtítulos"
 
-#: ui/settings_panel.gd:624
+#: ui/settings_panel.gd:638
 msgid "A solid backdrop behind subtitle text."
 msgstr "Un fondo sólido detrás del texto de los subtítulos."
 
@@ -6412,19 +6436,27 @@ msgstr "Registrado con el telescopio: %s. Nueva entrada del Códice."
 msgid "Codex: %s"
 msgstr "Códice: %s"
 
-#: ui/tunes_picker.gd:38
-msgid "GLIM'S CDS"
-msgstr "LOS CD DE GLIM"
+#: ui/tunes_picker.gd:42 ui/tunes_picker.gd:76
+msgid "RADIO"
+msgstr "RADIO"
 
-#: ui/tunes_picker.gd:48
-msgid "N / Esc  close"
-msgstr "N / Esc  cerrar"
+#: ui/tunes_picker.gd:76
+msgid "GLIM'S RADIO"
+msgstr "RADIO DE GLIM"
 
-#: ui/tunes_picker.gd:96
-msgid "Off (the day's music)"
-msgstr "Apagado (música del día)"
+#: ui/tunes_picker.gd:77
+msgid "%s / Esc  close"
+msgstr "%s / Esc  cerrar"
 
-#: ui/tunes_picker.gd:103
+#: ui/tunes_picker.gd:101
+msgid "Random songs"
+msgstr "Canciones al azar"
+
+#: ui/tunes_picker.gd:102
+msgid "Stop the music"
+msgstr "Parar la música"
+
+#: ui/tunes_picker.gd:109
 msgid "Play once: %s (scratched)"
 msgstr "Escuchar una vez: %s (rayado)"
 
@@ -10689,8 +10721,8 @@ msgid "Music"
 msgstr "Música"
 
 #: data/glim.json:tracks[music].desc
-msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
-msgstr "Glim descarga los CD que has encontrado: pon cualquier canción encontrada, donde y cuando quieras."
+msgid "Glim dances along to your songs and shows their notes."
+msgstr "Glim baila con tus canciones y muestra sus notas."
 
 #: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
@@ -16640,6 +16672,24 @@ msgstr "Ese pórtico desguazó la flota minera cuando se acabó el dinero. El ar
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Glim has copied your CDs: press N anywhere to pick a song."
+#~ msgstr "Glim ha copiado tus CD: pulsa N en cualquier lugar para elegir una canción."
+
+#~ msgid "Ambience"
+#~ msgstr "Ambiente"
+
+#~ msgid "GLIM'S CDS"
+#~ msgstr "LOS CD DE GLIM"
+
+#~ msgid "N / Esc  close"
+#~ msgstr "N / Esc  cerrar"
+
+#~ msgid "Off (the day's music)"
+#~ msgstr "Apagado (música del día)"
+
+#~ msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
+#~ msgstr "Glim descarga los CD que has encontrado: pon cualquier canción encontrada, donde y cuando quieras."
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "Mientras no estabas (%s):"

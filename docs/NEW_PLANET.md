@@ -141,7 +141,7 @@ no hub names, no wake chain and no leave gate.
   A planet with no block gets `planets._default`, which is `{"like": "verdance"}`.
 - **Songs** (`data/songs.json`): a song plays on a planet through its `"planets": ["<id>"]`, its
   `group`, a folder `audio/songs/<id>/`, or a `planets.<id>.songs` list. A `planets.<id>` block
-  can also repeat any music rule (`gap_s`, `main_share`, `landing_gap_s`...). With no block the
+  can also repeat any music rule (`gap_s`, `main_share`, `first_gap_s`...). With no block the
   global rules apply and songs marked `"all"` play. See docs/ADJUSTING.md "Music and sound".
   Testworld has no songs block on purpose: that is the fallback.
 - **CDs** to find on the planet: songs with `"unlock": "cd", "found_on": "<id>"`.

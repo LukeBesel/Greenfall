@@ -63,13 +63,13 @@ func tick(delta: float, night: float, sound_at: Callable, lumi: Vector3) -> void
 		if v > 0.01:
 			if not p.playing and not Audio.holds(p):  # [v8pause] a paused bed stays paused
 				p.play(_rng.randf() * 4.0)
-			AudioVol.set_db(p, linear_to_db(v) - 12.0)  # [qafix] crash fix
+			AudioVol.set_db(p, linear_to_db(v) - 20.0)  # [qafix] crash fix; [v10snd] was -12: "way too much wind or waves"
 		elif p.playing:
 			p.stop()
 	_shot_t -= delta
 	if _shot_t > 0.0:
 		return
-	_shot_t = _rng.randf_range(7.0, 18.0)
+	_shot_t = _rng.randf_range(25.0, 60.0)  # [v10snd] was 7-18 s
 	var far: Vector3 = lumi + Vector3(_rng.randf_range(-1, 1), 0, _rng.randf_range(-1, 1)).normalized() * _rng.randf_range(14.0, 26.0)
 	match kind:
 		"port":

@@ -1,15 +1,19 @@
 class_name TunesPicker
 extends CanvasLayer
-## [tunes] Quick-select for your CDs, anywhere (N), once Glim has the Music upgrade
-## (Tunes.glim_music()): Shuffle, Off, or one song on repeat. A small card at the bottom right;
+## [tunes] The radio: your found CDs, anywhere (N, or Pause > Radio), from the first CD on
+## (Tunes.radio_open()). [v10snd] Owner: "player can play sun baked whenever they want". One simple
+## list: a found song (plays on repeat), Random songs (they come by themselves, with quiet in
+## between) or Stop. Shown as Glim's radio once Glim is built. A small card at the bottom right;
 ## the game pauses while it is open, like the other small panels.
 
-const KEY: Key = KEY_N
+const ACTION: String = "open_radio"
 
 var world: Node
 var is_open: bool = false
 var _root: Control
 var _list: VBoxContainer
+var _title: Label
+var _hint: Label
 
 
 func _ready() -> void:
@@ -35,7 +39,8 @@ func _ready() -> void:
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 8)
 	pc.add_child(vb)
-	vb.add_child(UITheme.label(tr("GLIM'S CDS"), 13, ExtrasCdList.CD_COLOR))
+	_title = UITheme.label(tr("RADIO"), 13, ExtrasCdList.CD_COLOR)
+	vb.add_child(_title)
 	var sc := ScrollContainer.new()
 	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -45,17 +50,16 @@ func _ready() -> void:
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_list.add_theme_constant_override("separation", 4)
 	sc.add_child(_list)
-	var hint: Label = UITheme.label(tr("N / Esc  close"), 11, UITheme.MUTED)
-	vb.add_child(hint)
+	_hint = UITheme.label("", 11, UITheme.MUTED)
+	vb.add_child(_hint)
 	_root.visible = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo \
-			and (event as InputEventKey).physical_keycode == KEY:
+	if event.is_action_pressed(ACTION) and not event.is_echo():
 		if is_open:
 			close()
-		elif Tunes.glim_music() and not (world and world.has_method("any_modal_open") and world.any_modal_open()):
+		elif Tunes.radio_open() and not (world and world.has_method("any_modal_open") and world.any_modal_open()):
 			open()
 		else:
 			return
@@ -66,9 +70,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func open() -> void:
-	if is_open or not Tunes.glim_music():
+	if is_open or not Tunes.radio_open():
 		return
 	is_open = true
+	_title.text = tr("GLIM'S RADIO") if Tunes.glim_built() else tr("RADIO")
+	_hint.text = tr("%s / Esc  close") % Settings.glyph(ACTION)
 	_fill()
 	_root.visible = true
 	get_tree().paused = true
@@ -92,15 +98,16 @@ func _fill() -> void:
 		_list.remove_child(c)
 		c.queue_free()
 	var mode: String = Radio.playing()
-	var first: Button = _add(tr("Shuffle"), mode == Tunes.SHUFFLE, Tunes.SHUFFLE)
-	_add(tr("Off (the day's music)"), mode == "", "")
+	var first: Button = _add(tr("Random songs"), mode == "" or mode == Tunes.SHUFFLE, "")
+	_add(tr("Stop the music"), mode == Tunes.OFF, Tunes.OFF)
 	var focus: Button = first
 	for id: String in Tunes.found():
-		var b: Button = _add("%s  ·  %s" % [tr(Tunes.title(id)), tr(Tunes.artist_name(id))], mode == id, id)
+		var b: Button = _add(tr(Tunes.title(id)), mode == id, id)  # [v10snd] the title alone: "title · artist" was cut off
 		if mode == id:
 			focus = b
 	for id: String in Tunes.held():
 		var sb: Button = _add(tr("Play once: %s (scratched)") % tr(Tunes.title(id)), false, "")
+		sb.remove_meta("pick")
 		for c: Dictionary in sb.pressed.get_connections():
 			sb.pressed.disconnect(c["callable"])
 		sb.pressed.connect(func() -> void:
@@ -110,8 +117,17 @@ func _fill() -> void:
 	focus.call_deferred("grab_focus")
 
 
+## The row of a pick ("" Random songs, Tunes.OFF Stop, or a song id); null when it is not listed.
+func row(id: String) -> Button:
+	for c: Node in _list.get_children():
+		if c is Button and c.has_meta("pick") and str(c.get_meta("pick")) == id:
+			return c
+	return null
+
+
 func _add(text: String, on: bool, id: String) -> Button:
 	var b := Button.new()
+	b.set_meta("pick", id)
 	b.text = ("▶  " if on else "") + text
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.clip_text = true
@@ -121,7 +137,7 @@ func _add(text: String, on: bool, id: String) -> Button:
 	b.pressed.connect(func() -> void:
 		Audio.play("click", 1.0, -6.0)
 		Radio.play(id)
-		if id != "" and id != Tunes.SHUFFLE:
+		if id != "" and id != Tunes.SHUFFLE and id != Tunes.OFF:
 			EventBus.toast.emit(tr("Now playing: %s by %s") % [tr(Tunes.title(id)), tr(Tunes.artist_name(id))], "low")
 		close())
 	_list.add_child(b)

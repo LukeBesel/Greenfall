@@ -16,7 +16,7 @@ func before_each() -> void:
 	Audio._duck = 0.0
 	_flags = GameState.flags.duplicate(true)
 	_opened = Tunes._title_opened
-	GameState.flags = {}
+	GameState.flags = {"songs": {"found": [], "first_cd": true}}  # [v10snd] the first CD is found unless a test says not
 	Tunes.file_override = {}
 	for s: Dictionary in Tunes.songs():
 		Tunes.file_override[str(s["id"])] = true
@@ -132,22 +132,79 @@ func test_quiet_minutes_after_the_pod_lands() -> void:
 	d.intro_start()
 	d.tick(0.1)
 	d.intro_land(1.0)
+	# [v10snd] Owner, 2026-11-15: "first song is after CD". No song after the landing, however long,
+	# until the first CD is found (it replaced the fixed 9-12 quiet minutes).
+	GameState.flags = {}
 	d.set_context("play")
-	assert_gte(d.gap_left, 540.0, "[main] about ten quiet minutes after the crash landing (owner)")
+	assert_false(Tunes.first_cd_found(), "a new game has not found the CD")
 	var t: float = 0.0
-	while t < 539.0:
+	while t < 1500.0:
 		d.tick(1.0)
 		t += 1.0
-		assert_eq(d.current(), "", "no song yet at %.0f s" % t)
 		if d.current() != "":
 			break
-	for i: int in 260:  # [main] stop at the first song: in headless runs it can end at once
+	assert_eq(d.current(), "", "no song in 25 minutes without the CD")
+	assert_true(d._wants_hush(), "and the built-in score stays quiet too")
+	assert_eq(Tunes.pick_next("verdance", "explore", 0.0, [], _rng), "", "nothing is picked before the CD")
+	assert_false(Tunes.radio_open(), "no radio before the CD")
+	# Finding it: Sunbaked at once, on the radio list, and a message with the key.
+	Tunes.find_first_cd()
+	if d.current() == "":  # the test's own director (Tunes.director() is the autoload's)
+		d.play_now(Tunes.first_cd_id())
+	assert_eq(Tunes.first_cd_id(), "sunbaked")
+	assert_eq(d.current(), "sunbaked", "the first CD's song plays at once")
+	assert_true(Tunes.first_cd_found() and Tunes.is_found("sunbaked") and Tunes.radio_open())
+	assert_false(Tunes.find_first_cd(), "once")
+	assert_string_contains(Tunes.first_cd_text("sunbaked"), "Sunbaked")
+	assert_string_contains(Tunes.first_cd_text("sunbaked"), Settings.glyph("open_radio"))
+	assert_string_contains(Tunes.first_cd_text("sunbaked"), "Glim")
+	var saved: String = JSON.stringify(GameState.flags)
+	GameState.flags = JSON.parse_string(saved)
+	assert_true(Tunes.first_cd_found(), "survives a save")
+	# After it: every song with a file may come up, found or not ("for now").
+	var seen: Dictionary = {}
+	for i: int in 600:
+		seen[Tunes.pick_next("verdance", "explore", 0.0, [], _rng)] = true
+	assert_true(seen.has("clean_sweep") and seen.has("morning_shift") and seen.has("dune_caravan"), "songs not found yet play at random")
+	assert_false(Tunes.is_found("clean_sweep"), "but the radio lists only found songs")
+	assert_true(Tunes.cds_left("verdance").has("clean_sweep"), "the others are CDs to find")
+	# The radio: Stop holds the silence; a pick plays; back to random.
+	d.set_radio(Tunes.OFF)
+	for i: int in 30:
+		d.gap_left = 0.0
 		d.tick(1.0)
-		if d.current() != "":
-			break
-	assert_ne(d.current(), "", "then the music starts")
-	assert_ne(d.current(), MAIN, "and not the main theme right after the title's")
+	assert_eq(d.current(), "", "Stop: no song comes by itself")
+	d.set_radio("sunbaked")
+	d.tick(0.1)
+	assert_eq(d.current(), "sunbaked", "the found song at will")
+	d.set_radio("")
 	d.set_context("none")
+	var ad: Node = Tunes.director()  # find_first_cd also started it on the game's own director
+	if ad:
+		ad.moment = ""
+		ad._moment_id = ""
+		ad._fade_all(0.05)
+
+
+func test_an_old_save_counts_as_cd_found() -> void:
+	GameState.flags = {}
+	var stats: Dictionary = GameState.stats.duplicate(true)
+	GameState.stats = {"hexes_cleaned": 0.0}
+	Tunes.adopt_old_save()
+	assert_false(Tunes.first_cd_found(), "a new game: the CD is still to find")
+	GameState.flags = {}
+	GameState.stats = {"hexes_cleaned": 3.0}
+	Tunes.adopt_old_save()
+	assert_true(Tunes.first_cd_found(), "a save that has been played heard music already")
+	for id: String in ["sunbaked", "clean_sweep", "morning_shift", "dune_caravan", "strip_mine_shuffle"]:
+		assert_true(Tunes.is_found(id), "%s was owned from the start in that save: kept" % id)
+	GameState.flags = {"songs": {"found": [], "first_cd": false}}
+	Tunes.adopt_old_save()
+	assert_false(Tunes.first_cd_found(), "a save made under the new rule is left alone")
+	GameState.stats = stats
+	var gap: Array = Tunes.cfg().get("gap_s", [])
+	assert_between(float(gap[0]), 120.0, 240.0, "[v10snd] 'a bit more music': the quiet between songs is about halved (was 6-15 min)")
+	assert_between(float(gap[1]), 300.0, 480.0)
 
 
 # --- [v6sound] drop-in songs, per-planet lists, missing files --------------------------------
@@ -183,7 +240,7 @@ func test_a_dropped_file_needs_no_entry() -> void:
 	var a: Dictionary = Tunes.default_entry("my_new_song", "My New Song", "", ids)
 	assert_eq(str(a["title"]), "My New Song", "title from the file name")
 	assert_eq(a["planets"], ["all"], "main folder: plays everywhere")
-	assert_eq(str(a["unlock"]), "start", "owned from the start")
+	assert_eq(str(a["unlock"]), "start", "owned from the start (on the radio at once; a line with unlock cd makes it a CD)")
 	var b: Dictionary = Tunes.default_entry("desert_drive", "desert_drive", "ochre", ids)
 	assert_eq(str(b["title"]), "Desert Drive")
 	assert_eq(b["planets"], ["ochre"], "a planet folder: plays on that planet")
