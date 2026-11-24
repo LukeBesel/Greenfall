@@ -1332,6 +1332,11 @@ static func _open_bench() -> ListDetail:
 			break
 		await tree.create_timer(0.1).timeout
 	_check(_up().is_open, "the interact key at the bench opens the workbench (near=%s)" % str(so.near_bench()))
+	if not _up().is_open:  # what took the key instead
+		var ia: Interactables = w.get("interactables") as Interactables
+		print("[walk-home] note: bench shut: prompt '%s', interactable '%s', carrying %d, can dig %s, input %s, paused %s, Lumi %.1f m from the bench" % [
+			so.interact_prompt(p), ia.prompt(p.global_position) if ia else "-", p.carried.size(), str(p.detector != null and p.detector.can_dig()),
+			str(p.input.enabled) if p.input is PlayerInput else "?", str(tree.paused), p.global_position.distance_to(so.bench_position())])
 	await tree.create_timer(0.6).timeout  # the unfold
 	return _list()
 
