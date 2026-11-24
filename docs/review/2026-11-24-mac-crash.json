@@ -1,0 +1,990 @@
+{
+  "exception": {
+    "codes": "0x0000000000000001, 0x00000000000001a0",
+    "rawCodes": [
+      1,
+      416
+    ],
+    "type": "EXC_BAD_ACCESS",
+    "signal": "SIGSEGV",
+    "subtype": "KERN_INVALID_ADDRESS at 0x00000000000001a0"
+  },
+  "termination": {
+    "flags": 0,
+    "code": 11,
+    "namespace": "SIGNAL",
+    "indicator": "Segmentation fault: 11",
+    "byProc": "exc handler",
+    "byPid": 10199
+  },
+  "faultingThread": 0,
+  "threads": [
+    {
+      "name": null,
+      "queue": "com.apple.main-thread",
+      "triggered": true,
+      "frames": [
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "pthread_mutex_lock",
+          "imageOffset": 5128,
+          "symbolLocation": 12
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::recursive_mutex::lock()",
+          "imageOffset": 29536,
+          "symbolLocation": 16
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 11039492,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 11040304,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 11525608,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 52831860,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 43136000,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 43129476,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 43080644,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 7323088,
+          "symbolLocation": null
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "__CFNOTIFICATIONCENTER_IS_CALLING_OUT_TO_AN_OBSERVER__",
+          "imageOffset": 469436,
+          "symbolLocation": 148
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "___CFXRegistrationPost_block_invoke",
+          "imageOffset": 1044620,
+          "symbolLocation": 92
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "_CFXRegistrationPost",
+          "imageOffset": 1044432,
+          "symbolLocation": 440
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "_CFXNotificationPost",
+          "imageOffset": 267216,
+          "symbolLocation": 740
+        },
+        {
+          "image": "Foundation",
+          "symbol": "-[NSNotificationCenter postNotificationName:object:userInfo:]",
+          "imageOffset": 38052,
+          "symbolLocation": 88
+        },
+        {
+          "image": "AppKit",
+          "symbol": "-[NSWindow _finishClosingWindow]",
+          "imageOffset": 14142004,
+          "symbolLocation": 304
+        },
+        {
+          "image": "AppKit",
+          "symbol": "-[NSWindow _close]",
+          "imageOffset": 2838224,
+          "symbolLocation": 380
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 7429164,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 7601760,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 7740376,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 7253732,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 7279288,
+          "symbolLocation": null
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "__CFNOTIFICATIONCENTER_IS_CALLING_OUT_TO_AN_OBSERVER__",
+          "imageOffset": 469436,
+          "symbolLocation": 148
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "___CFXRegistrationPost_block_invoke",
+          "imageOffset": 1044620,
+          "symbolLocation": 92
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "_CFXRegistrationPost",
+          "imageOffset": 1044432,
+          "symbolLocation": 440
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "_CFXNotificationPost",
+          "imageOffset": 267216,
+          "symbolLocation": 740
+        },
+        {
+          "image": "Foundation",
+          "symbol": "-[NSNotificationCenter postNotificationName:object:userInfo:]",
+          "imageOffset": 38052,
+          "symbolLocation": 88
+        },
+        {
+          "image": "AppKit",
+          "symbol": "-[NSApplication terminate:]",
+          "imageOffset": 2336804,
+          "symbolLocation": 1580
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 7253072,
+          "symbolLocation": null
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "__CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__",
+          "imageOffset": 512788,
+          "symbolLocation": 36
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "__CFRunLoopDoObservers",
+          "imageOffset": 512528,
+          "symbolLocation": 648
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "__CFRunLoopRun",
+          "imageOffset": 510140,
+          "symbolLocation": 924
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "_CFRunLoopRunSpecificWithOptions",
+          "imageOffset": 1372612,
+          "symbolLocation": 532
+        },
+        {
+          "image": "HIToolbox",
+          "symbol": "RunCurrentEventLoopInMode",
+          "imageOffset": 775520,
+          "symbolLocation": 320
+        },
+        {
+          "image": "HIToolbox",
+          "symbol": "ReceiveNextEventCommon",
+          "imageOffset": 788668,
+          "symbolLocation": 488
+        },
+        {
+          "image": "HIToolbox",
+          "symbol": "_BlockUntilNextEventMatchingListInMode",
+          "imageOffset": 2400588,
+          "symbolLocation": 48
+        },
+        {
+          "image": "AppKit",
+          "symbol": "_DPSBlockUntilNextEventMatchingListInMode",
+          "imageOffset": 7230300,
+          "symbolLocation": 228
+        },
+        {
+          "image": "AppKit",
+          "symbol": "_DPSNextEvent",
+          "imageOffset": 233604,
+          "symbolLocation": 576
+        },
+        {
+          "image": "AppKit",
+          "symbol": "-[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:]",
+          "imageOffset": 12380336,
+          "symbolLocation": 688
+        },
+        {
+          "image": "AppKit",
+          "symbol": "-[NSApplication(NSEventRouting) nextEventMatchingMask:untilDate:inMode:dequeue:]",
+          "imageOffset": 12379580,
+          "symbolLocation": 72
+        },
+        {
+          "image": "AppKit",
+          "symbol": "-[NSApplication run]",
+          "imageOffset": 180540,
+          "symbolLocation": 368
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": "main",
+          "imageOffset": 7599316,
+          "symbolLocation": 924
+        },
+        {
+          "image": "dyld",
+          "symbol": "start",
+          "imageOffset": 130560,
+          "symbolLocation": 6992
+        }
+      ]
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": "com.apple.NSEventThread",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "mach_msg2_trap",
+          "imageOffset": 3124,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "mach_msg2_internal",
+          "imageOffset": 79220,
+          "symbolLocation": 76
+        },
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "mach_msg_overwrite",
+          "imageOffset": 39360,
+          "symbolLocation": 480
+        },
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "mach_msg",
+          "imageOffset": 4032,
+          "symbolLocation": 24
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "__CFRunLoopServiceMachPort",
+          "imageOffset": 516312,
+          "symbolLocation": 160
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "__CFRunLoopRun",
+          "imageOffset": 510404,
+          "symbolLocation": 1188
+        },
+        {
+          "image": "CoreFoundation",
+          "symbol": "_CFRunLoopRunSpecificWithOptions",
+          "imageOffset": 1372612,
+          "symbolLocation": 532
+        },
+        {
+          "image": "AppKit",
+          "symbol": "_NSEventThread",
+          "imageOffset": 1420412,
+          "symbolLocation": 184
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 51699496,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 0",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 1",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 2",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 3",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 4",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 5",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 6",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 7",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 8",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": "WorkerThread 9",
+      "queue": null,
+      "triggered": false,
+      "frames": [
+        {
+          "image": "libsystem_kernel.dylib",
+          "symbol": "__psynch_cvwait",
+          "imageOffset": 17676,
+          "symbolLocation": 8
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_cond_wait",
+          "imageOffset": 28968,
+          "symbolLocation": 980
+        },
+        {
+          "image": "libc++.1.dylib",
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "imageOffset": 26712,
+          "symbolLocation": 32
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 66152368,
+          "symbolLocation": null
+        },
+        {
+          "image": "Greenfall Codex Export 20261124",
+          "symbol": null,
+          "imageOffset": 23568640,
+          "symbolLocation": null
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "_pthread_start",
+          "imageOffset": 27736,
+          "symbolLocation": 136
+        },
+        {
+          "image": "libsystem_pthread.dylib",
+          "symbol": "thread_start",
+          "imageOffset": 7196,
+          "symbolLocation": 8
+        }
+      ]
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    },
+    {
+      "name": null,
+      "queue": null,
+      "triggered": false,
+      "frames": []
+    }
+  ],
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "binary_image": {
+    "name": "Greenfall Codex Export 20261124",
+    "arch": "arm64",
+    "uuid": "fd76bc91-ddfc-38c7-93f7-c0133539973c"
+  }
+}

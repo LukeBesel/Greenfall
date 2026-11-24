@@ -1,0 +1,76 @@
+extends GutTest
+## Disposable diagnostics: desired behavior assertions intentionally expose existing defects.
+
+func test_deleted_interrupted_save_stays_deleted() -> void:
+	var keep: String = SaveManager.dev_dir
+	SaveManager.dev_dir = "codex_delete_probe"
+	DirAccess.make_dir_recursive_absolute(SaveManager.save_dir())
+	var p: String = SaveManager.slot_path()
+	SaveManager.write_dict(p + ".tmp", GameState.to_dict())
+	SaveManager.delete_save()
+	var remains: bool = SaveManager.has_save()
+	print("[review] interrupted save remains after Delete: ", remains)
+	DirAccess.remove_absolute(p + ".tmp")
+	SaveManager.dev_dir = keep
+	assert_false(remains, "Delete/New Game must remove the recoverable .tmp too")
+
+func test_jump_has_no_gameplay_binding_conflict() -> void:
+	SphereInput.ensure_actions()
+	var f := InputEventKey.new()
+	f.physical_keycode = KEY_F
+	var ls := InputEventJoypadButton.new()
+	ls.button_index = JOY_BUTTON_LEFT_STICK
+	var key_conflict: bool = InputMap.event_is_action(f, "jump") and InputMap.event_is_action(f, "glim_scan")
+	var pad_conflict: bool = InputMap.event_is_action(ls, "jump") and InputMap.event_is_action(ls, "boost")
+	print("[review] jump conflicts: F scan=", key_conflict, " LS boost=", pad_conflict)
+	assert_false(key_conflict, "F should not jump and scan at once")
+	assert_false(pad_conflict, "LS should not jump and boost at once")
+
+func test_globe_receives_real_viewport_mouse_wheel() -> void:
+	get_tree().root.size = Vector2i(1280, 720)
+	var gv := GlobeView.new()
+	add_child_autofree(gv)
+	gv.set_process(false)
+	gv.is_open = true
+	gv._root.show()
+	gv._rocket_card.hide()
+	await wait_process_frames(3)
+	var before: float = gv._zoom
+	var mb := InputEventMouseButton.new()
+	mb.position = Vector2(900, 500)
+	mb.global_position = mb.position
+	mb.button_index = MOUSE_BUTTON_WHEEL_UP
+	mb.pressed = true
+	get_tree().root.push_input(mb, true)
+	await wait_process_frames(2)
+	print("[review] globe zoom from viewport wheel: ", before, " -> ", gv._zoom)
+	assert_lt(gv._zoom, before, "wheel on the globe must reach its handler")
+	gv.is_open = false
+
+func test_globe_receives_real_viewport_drag() -> void:
+	get_tree().root.size = Vector2i(1280, 720)
+	var gv := GlobeView.new()
+	add_child_autofree(gv)
+	gv.set_process(false)
+	gv.is_open = true
+	gv._root.show()
+	gv._rocket_card.hide()
+	await wait_process_frames(3)
+	var mb := InputEventMouseButton.new()
+	mb.position = Vector2(900, 500)
+	mb.global_position = mb.position
+	mb.button_index = MOUSE_BUTTON_LEFT
+	mb.pressed = true
+	get_tree().root.push_input(mb, true)
+	await wait_process_frames(2)
+	print("[review] globe drag after viewport press: ", gv._drag, " root size ", gv._root.size)
+	assert_true(gv._drag, "left press on the globe must reach its handler")
+	mb.pressed = false
+	get_tree().root.push_input(mb, true)
+	gv.is_open = false
+
+func test_remote_snapshot_reads_globe_robots() -> void:
+	var d: Dictionary = {"saved_unix": 1000.0, "orbit": {"robots": {"robots": [{"type": "scoopie", "tier": 0, "hub": 0, "dir": [0,1,0]}]}}}
+	var snap: Dictionary = RemoteProgress.snapshot_from_save(d)
+	print("[review] remote snapshot fleet from globe save: ", snap.get("robots", []))
+	assert_eq((snap["robots"] as Array).size(), 1, "the globe's fleet must reach remote progress")

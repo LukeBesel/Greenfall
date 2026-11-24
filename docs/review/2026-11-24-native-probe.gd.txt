@@ -1,0 +1,19 @@
+extends GutTest
+
+func test_quality_pass_preserves_fogless_subviewport() -> void:
+	assert_eq(RenderingServer.get_current_rendering_method(), "forward_plus")
+	var keep: int = Settings.quality
+	Settings.quality = Settings.Quality.MEDIUM
+	var sub := SubViewport.new()
+	sub.world_3d = World3D.new()
+	add_child_autofree(sub)
+	var we := WorldEnvironment.new()
+	var env := Environment.new()
+	env.ambient_light_energy = 0.5
+	we.environment = env
+	sub.add_child(we)
+	var before: bool = env.volumetric_fog_enabled
+	Settings.apply_quality_to_tree(self)
+	print("[review-native] SubViewport fog ", before, " -> ", env.volumetric_fog_enabled, "; ambient 0.5 -> ", env.ambient_light_energy)
+	Settings.quality = keep
+	assert_false(env.volumetric_fog_enabled, "a fogless cinematic must remain fogless when quality changes")

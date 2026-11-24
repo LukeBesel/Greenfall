@@ -2,6 +2,14 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## Codex review, 24 Nov (separate branch, not merged)
+
+- Review base: published `claude/kind-wright-rhxixd` at `2870f1a`. Claude's checkout, helper worktrees, unpushed files and jobs were left alone; their cloud-only WIP could not be inspected from this Mac.
+- Independent branch: `codex/greenfall-review-2026-11-24`. Fixes save-check false passes and title controller-audit startup timing; no gameplay patch from earlier Codex `715b868` was carried over.
+- Checks: 1,238 GUT tests, 35 shell scenarios and the full integration suite passed; first/saved title and gameplay controller audits passed. A local universal Mac export succeeded. A separate native quit run crashed once; engine-error/leak output still needs work, so this is not a release sign-off.
+- Findings, exact reproductions, limits, focused commits and Claude resume instructions: [review/2026-11-24.md](review/2026-11-24.md). Priorities include native Mac shutdown, interrupted-save recovery/deletion, conflicting jump controls, globe drag, cinematic quality/fog isolation, remote-world progress and CI/release gates.
+- Installed app and personal saves: all 381 fingerprinted files unchanged. Main and the rolling release were not changed.
+
 ## Walks reliable, 20-24 Nov (v9a, task 195)
 
 What the failing walks were, by evidence (logs under screenshots/, spot tests in tools/walk_opening.gd):
