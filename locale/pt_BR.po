@@ -482,27 +482,27 @@ msgstr "E   Telescópio: observar o sistema"
 msgid "While you were away, your robots earned %s cubes."
 msgstr "Enquanto você esteve fora, seus robôs ganharam %s cubos."
 
-#: core/pace.gd:206
+#: core/pace.gd:209
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
 msgstr "Este hexágono precisa de Força de levantamento %d para terminar. Melhore na bancada."
 
-#: core/pace.gd:207
+#: core/pace.gd:210
 msgid "Too heavy: this needs Lift %d. Upgrade at the workbench."
 msgstr "Pesado demais: precisa de Força de levantamento %d. Melhore na bancada."
 
-#: core/pace.gd:252
+#: core/pace.gd:255
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "Não cabe mais nada. Aperte [%s] para fazer um fardo."
 
-#: core/pace.gd:264
+#: core/pace.gd:267
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "Ainda sem enfardadeira. Leve seu peito até a lixeira."
 
-#: core/pace.gd:320 systems/events.gd:513 ui/goals_panel.gd:284
+#: core/pace.gd:323 systems/events.gd:513 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s cubos"
 
-#: core/pace.gd:338 tools/walk_opening.gd:324
+#: core/pace.gd:341 tools/walk_opening.gd:324
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Nada de lixo solto agora. Aperte [%s] para fazer um fardo e coloque na balança."
 
@@ -920,75 +920,75 @@ msgstr "PEÇA ENTERRADA  ·  SINAL %d%%"
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi volta chacoalhando para o pátio. Que estranho."
 
-#: player/patch.gd:232
+#: player/patch.gd:246
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi não sabe nadar. Com os Jatos flutuantes da bancada ele flutua sobre os lagos."
 
-#: player/patch.gd:357
+#: player/patch.gd:371
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "Pegue a lata de sementes primeiro: siga o feixe até a estufa."
 
-#: player/patch.gd:358
+#: player/patch.gd:372
 msgid "No seeds yet. Keep cleaning."
 msgstr "Ainda sem sementes. Continue limpando."
 
-#: player/patch.gd:401 player/patch.gd:429
+#: player/patch.gd:415 player/patch.gd:443
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Sem sementes. Plantas florindo dão mais."
 
-#: player/patch.gd:408
+#: player/patch.gd:422
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "Plante primeiro: aperte  {tool_plant}  para a semente"
 
-#: player/patch.gd:412
+#: player/patch.gd:426
 msgid "Watering can is empty. Refill at the base."
 msgstr "Regador vazio. Reabasteça na base."
 
-#: player/patch.gd:431
+#: player/patch.gd:445
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "Limpe este hexágono primeiro. Sementes precisam de chão limpo."
 
-#: player/patch.gd:433
+#: player/patch.gd:447
 msgid "Something is growing here already. Try a free spot."
 msgstr "Já tem algo crescendo aqui. Tente um lugar livre."
 
-#: player/patch.gd:434
+#: player/patch.gd:448
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "Sementes precisam de terra, não de rua nem da plataforma. Tente os canteiros da estufa."
 
-#: player/patch.gd:435
+#: player/patch.gd:449
 msgid "Seeds need soil, not road or the pad."
 msgstr "Sementes precisam de terra, não de rua nem da plataforma."
 
-#: player/patch.gd:596
+#: player/patch.gd:610
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "Seu baú está vazio. Recolha um pouco de lixo primeiro."
 
-#: player/patch.gd:636
+#: player/patch.gd:650
 msgid "PERFECT BALE  %s"
 msgstr "FARDO PERFEITO  %s"
 
-#: player/patch.gd:642
+#: player/patch.gd:656
 msgid "OVERSTUFFED  %s"
 msgstr "ABARROTADO  %s"
 
-#: player/patch.gd:646
+#: player/patch.gd:660
 msgid "PURE  %s"
 msgstr "PURO  %s"
 
-#: player/patch.gd:648
+#: player/patch.gd:662
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:651
+#: player/patch.gd:665
 msgid "  (streak +%d%%)"
 msgstr "  (sequência +%d%%)"
 
-#: player/patch.gd:700
+#: player/patch.gd:716
 msgid "Salvaged: %s"
 msgstr "Resgatado: %s"
 
-#: player/patch.gd:731
+#: player/patch.gd:747
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -2073,7 +2073,7 @@ msgstr "Objetivo concluído  ·  %s"
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "Enfardadeira instalada! Encha o baú e aperte [%s] para um fardo."
 
-#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:774
+#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:937
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Seu peito está cheio. Aperte [%s] para fazer um fardo."
 
@@ -3442,7 +3442,7 @@ msgstr "Ver o começo de novo"
 msgid "Close"
 msgstr "Fechar"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:91
+#: tools/walk_opening.gd:756 ui/main_menu.gd:368 ui/pause_menu.gd:91
 msgid "Quit"
 msgstr "Sair"
 
