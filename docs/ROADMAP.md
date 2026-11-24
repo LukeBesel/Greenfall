@@ -13,6 +13,9 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - The tray Lumi saved stands in the crashed pod's cabin (`story/crash_site.gd`).
 - "Watch the opening again": pause menu for the first 30 minutes near the pod, Codex for good. A
   rewatch plays with the game stopped and changes nothing (`tools/check_rewatch.sh`, in check_exit).
+- 24 Nov, second look at the whole film (v11film): the ark burns and smokes after the hits, the
+  parting is Lumi's last look up at it from the falling pod, a hanging grow lamp, real seedlings, a
+  continuous smoke trail, the crash plume rises after the crash shot, the first CD is out of the film.
 - **Open:** nobody has heard it (sound levels and the three song hits are by measurement only); not
   seen at 60 fps or on the Mac's renderer; the Homecoming, the Bloom finale and the core-charge
   memories show the new ark and vault but were not re-rendered; a rewatch at night or with machines

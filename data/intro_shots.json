@@ -71,7 +71,7 @@
       "p": {"ark_speed": 1.6, "planet_scale": 3.0, "planet_top": [0, -170, -120]}
     },
     {
-      "id": "apart", "set": "space", "dur": 5.2, "fade_out": 0.6,
+      "id": "apart", "set": "space", "dur": 5.0, "fade_out": 0.6,
       "cam": {"anchor": "pod", "look_anchor": "ark", "from": [-2.8, -2.4, 5.4], "to": [-4.4, -2.4, 5.4], "look_from": [4.8, 0.2, -7.5], "look_to": [35.0, 15.8, -35.2], "fov": [48, 44], "ease": "inout", "hand": 0.25},
       "lines": [[0.5, "find"]],
       "sfx": [[0.6, "groan", 0.5, -12]],
