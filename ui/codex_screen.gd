@@ -90,7 +90,7 @@ func _ready() -> void:
 	header.add_child(sp)
 	# [intro2] Rewatch the opening cinematic (owner playtest #2).
 	var story := Button.new()
-	story.text = tr("Watch the story")
+	story.text = tr("Watch the opening again")  # [v11film] the same words as the pause menu's entry
 	story.custom_minimum_size = Vector2(120, 44)  # [v6screens] was 170; wraps in long languages
 	story.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	story.focus_mode = Control.FOCUS_NONE
@@ -99,7 +99,10 @@ func _ready() -> void:
 		var w: Node = get_tree().current_scene
 		var intro: Variant = w.get("intro") if w else null
 		if intro is Intro:
-			get_tree().create_timer(0.25).timeout.connect((intro as Intro).replay))
+			if (intro as Intro).can_replay():
+				get_tree().create_timer(0.25).timeout.connect((intro as Intro).replay)
+			else:  # [v11film] the film is shot round the pod: its ground has to be loaded
+				Subtitles.say(tr("Go back to your pod to watch it.")))
 	header.add_child(story)
 	var close := Button.new()
 	Settings.bind_text(close, func() -> String: return tr("Close  [%s]") % Settings.glyph("open_codex" if not Settings.last_input_pad else "ui_cancel"))  # [deck]
@@ -759,12 +762,16 @@ func _achievement_card(a: Dictionary) -> Button:
 	UITheme.juice(b, 1.02)
 	# [v6screens] The card grows with its text (long descriptions wrap to more lines in some
 	# languages) instead of spilling into the card below.
-	var grow := func() -> void:
-		if is_instance_valid(b) and is_instance_valid(hb):  # [main] the deferred call can land after the screen is freed
-			b.custom_minimum_size.y = maxf(84.0, hb.get_combined_minimum_size().y + 12.0)
-	hb.minimum_size_changed.connect(grow)
-	grow.call_deferred()
+	hb.minimum_size_changed.connect(_grow_card.bind(b, hb))
+	_grow_card.bind(b, hb).call_deferred()
 	return b
+
+
+## A method, not a lambda: the engine drops the deferred call when the screen is freed first
+## (tests/test_deferred_calls.gd). The card itself can be gone by then (the tab was rebuilt).
+func _grow_card(card: Variant, row: Variant) -> void:
+	if is_instance_valid(card) and is_instance_valid(row):
+		(card as Control).custom_minimum_size.y = maxf(84.0, (row as Control).get_combined_minimum_size().y + 12.0)
 
 
 # --- Stats tab -----------------------------------------------------------------------

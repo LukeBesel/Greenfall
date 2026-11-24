@@ -799,9 +799,6 @@ func _start_intro_or_place_pod() -> void:
 	intro.world = w
 	w.add_child(intro)
 	w.set("intro", intro)
-	if not intro.should_play():
-		_place_pod()
-		return
 	intro.site_fn = func() -> Transform3D:
 		var at: Vector3 = yard_point("pod")
 		return Intro.site_for_anchor(Transform3D(SphereGrid.frame(at.normalized()), at))
@@ -820,6 +817,11 @@ func _start_intro_or_place_pod() -> void:
 			var pod_site: Node3D = w.get_meta("orbit_pod", null)
 			print("[intro] globe: Lumi %.2f m above the ground, %.1f m from the pod, pod placed=%s" % [
 				globe.surface.altitude(patch.global_position), patch.global_position.distance_to(pod_site.global_position) if pod_site else -1.0, str(pod_site != null)])
+	# [v11film] The film's frame, pod and yard hooks are set on every load, not only for a new
+	# game: watching it again from the pause menu or the Codex needs them too.
+	if not intro.should_play():
+		_place_pod()
+		return
 	var hud: Node = w.get("hud")
 	if hud:
 		hud.visible = false  # no one-frame HUD flash before the deferred intro starts (as the flat slice)
@@ -844,7 +846,7 @@ func _place_pod() -> void:
 
 
 ## [v1yard] The crashed pod's colliders, fitted to EscapePod's model in its own (leaning) frame: the
-## shell as a cylinder (r 0.8 m, the widest facet), one thin slab per landing fin, and nothing for
+## shell as a cylinder (r 0.9 m, the heat shield), one box per landing leg, and nothing for
 ## the open ramp on the ground or the tapering top above Lumi's head. A child of the pod, so it
 ## follows the pod when reseat_yard moves it. Lumi can walk right round it and up to the door.
 static func pod_body(pod: Node3D) -> StaticBody3D:
@@ -859,7 +861,7 @@ static func pod_body(pod: Node3D) -> StaticBody3D:
 	pod.add_child(b)
 	var shell := CollisionShape3D.new()
 	shell.name = "Shell"
-	shell.shape = PropColliders.cyl_shape(0.8, 2.0)
+	shell.shape = PropColliders.cyl_shape(0.9, 2.0)  # [v11film] the capsule's heat shield is wider than the old shell
 	shell.position = Vector3(0, 1.0, 0)
 	b.add_child(shell)
 	for k: int in 3:
@@ -868,8 +870,8 @@ static func pod_body(pod: Node3D) -> StaticBody3D:
 			continue
 		var cs := CollisionShape3D.new()
 		cs.name = "Fin%d" % k
-		cs.shape = PropColliders.box_shape(Vector3(0.14, 1.0, 0.62))
-		cs.transform = fin.transform * Transform3D(Basis(), Vector3(0, 0.5, 0.95))
+		cs.shape = PropColliders.box_shape(Vector3(0.3, 0.8, 0.5))  # [v11film] a landing leg (was a fin slab)
+		cs.transform = fin.transform * Transform3D(Basis(), Vector3(0, 0.4, 1.15))
 		b.add_child(cs)
 	return b
 

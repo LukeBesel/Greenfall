@@ -71,7 +71,8 @@ What a file with no entry gets is `"defaults"` in the same file.
 |---|---|
 | Quiet between songs (seconds, shortest and longest) | `gap_s` |
 | Quiet after loading a save | `first_gap_s` |
-| Quiet minutes after the pod lands | `landing_gap_s` |
+| The first song: the CD in the junk by the start pad (no song before it; found = that song plays and the radio, N, opens) | `first_cd.song`, `first_cd.planet` |
+| After the first CD every song may come up at random (true), or only the found ones (false) | `shuffle_all` |
 | How often the main theme is picked (0 to 1). It still never plays twice in a row | `main_share` |
 | Which song is the main theme (first on the title screen) | `main_theme` |
 | Level of all songs against the rest of the game | `song_db` |
@@ -88,9 +89,10 @@ A new planet: add a block with its id there (and a folder if you like).
 
 | To change | Edit |
 |---|---|
-| Where the five sliders in Settings start for a new player (Master, Music, Ambience, Sound effects, Interface) | `volumes` (0 to 1) |
-| A fixed trim under a slider (Music, Songs, Ambience, SFX, UI) | `bus_trim_db` |
-| Which slider a sound follows (menu clicks: Interface; animal calls: Ambience; the rest: Sound effects) | `bus_of` |
+| Where the six sliders in Settings start for a new player (Master, Music, Sound effects, Reward sounds, Wind and animals, Interface) | `volumes` (0 to 1): `master`, `music`, `sfx`, `jingles`, `ambience`, `ui` |
+| A fixed trim under a slider (Music, Songs, Ambience, SFX, UI, Jingles) | `bus_trim_db` |
+| Which slider a sound follows (menu clicks: Interface; animal calls and wind: Wind and animals; fanfare, chime, ding, coin, sparkle, buy: Reward sounds; the rest: Sound effects) | `bus_of` |
+| How loud the score's stingers are (upgrade, level up, robot built, hex clean; they follow Reward sounds) | `sting_db` |
 | One sound louder or quieter everywhere | `sound_db`: `"chime": -3` |
 | A sound that repeats too fast: the shortest time between two plays, in seconds | `min_gap_s`: `"clink": 0.2` |
 | The same, only where one thing plays it: `tag:sound`. Tags: `scoop` (pieces flying into Lumi), `lumi` (start/stop squeak), `sweep` (litter), `lights` (street lights coming on), `robot` (robots at work) | `min_gap_s`: `"robot:servo": 2.0`, `sound_db`: `"scoop:pop": -3` |
@@ -132,6 +134,12 @@ street lights (`lights:`) got gaps too; they only show up later in a run.
 | Frogs (one shared clock, a little more at night) | `wildlife.gap_s.frog`, `wildlife.frog_night_mult` |
 
 Every sound with more than one take never plays the same take twice running (`Audio.pick_take`). World events that also happen far away (a hex coming clean, a hex levelling up) use `Audio.play_at`: full level within 16 m of the camera, 6 dB softer per doubling past it.
+
+**The 2026-11-15 pass (v10snd)** (owner: "way too much wind or waves", "too much ambient noise like wind and birds", "cats still sound like helicopter", "the sounds when i get an upgrade are just so loud ... add setting", "could use a bit more music"). Nobody heard any of it; all by measurement.
+- The cat. `--cat-probe[=S]` on an orbit run brings the nearest cat to Lumi and pets it every S seconds, logging its states (`[catprobe]`); with `--audio-capture` that records a cat's real mix. Found: every purr put a steady 25-27 Hz beat (depth 0.2-0.36) on the Ambience bus at -36 dB, 9 dB over the wind bed. A purr is breath noise pulsed about 25 times a second, which is what a rotor is. `check_audio.py` had passed it twice because its chop rule only fired on bass-heavy sounds. The purr is gone: a petted cat gives one soft mew (`FaunaSounds.mew`), and the follow-meow comes every 45-110 s (was 15-35). The check now has a rotor rule: a steady 15-45 Hz beat of the loudness (its own rate, not the overtone of a slower rhythm), depth over 0.12 in any 2 s stretch of an animal, a bed, or a recorded bus without music (`--wav .../ambience.wav`, `sfx.wav`). Frogs are exempt by name (a croak is a pulse train), music is exempt (low chord notes beat). The new rule also caught the wing flutter (squared 7-12 Hz wingbeats: an 14-23 Hz overtone; now round beats) and the unused hover spray bed (a 23 Hz beat; now a slow swell).
+- Ambience. Measured on the Ambience bus, standing (`--life-sound --audio-capture`, after the first 20 s): start yard -45.1 dBFS, lake shore south of the yard -45.2, town street -45.6, all of it the dust wind bed, on 100% of the time and louder than anything else while Lumi stands. Now `wind_dust` -34 (was -25), `leaves` -32 (was -23), the bus trimmed 3 dB, the slider starts at 0.5 (was 0.8). After, on the bus before its slider: start yard -54.5 dBFS, lake shore -54.2; with the slider and trim about 16 dB quieter at the speakers. Birds: one call per 50-120 s (was 22-50), at most 2 a minute, one species at most every 100-130 s; frogs 35-100 s; flutters 14-35 s; creaks and the life bed's birdsong at most once in 2.5 minutes. `--repeat` caps tightened to match (bird 2 a minute, all birds 3; animals 3 / 5; ambience 1 / 2).
+- Reward sounds. In-game loudness of every one-shot = its loudest 400 ms + the dB it is played at (from a `--sound-log` autoplay run): the scoop's clink sat at -34 dB, buy at -18..-22, fanfare -23, chime -25, coin -27, ding -29, and the score's stingers peaked at -11 dBFS. They now have their own bus and slider (Jingles, "Reward sounds") and land near -30, a little over the scoop. The baler and bin thumps (crunch, pop, hydraulic, clunk, groan at -22..-24) come down 3-4 dB.
+- Music. `gap_s` 3-7.5 min (was 6-15). No song before the first CD (see "The rules" above).
 
 **The 2026-11-13 pass** (owner: "rattling noise constantly, like my speakers blew out"; "cat sounds like a helicopter"). Measured in the start yard (`--life-sound --audio-capture`, standing still), before -> after: the dust wind bed 42.7 -> 0.1 raw spikes a second, 57% -> 3% of the bed under 80 Hz. The purr: peak -0.4 -> -9 dBFS and played 9 dB softer, under 200 Hz 62% -> 4%, 24 Hz chop depth 1.3-1.5 -> about 0.4, at most once per 6 s. Every wind bed and the leaves 31-57% -> 1-4% under 80 Hz; the score's bass moved up an octave (E2-D#3) and its air bed was high-passed.
 
@@ -294,7 +302,7 @@ new planet needs only its block (keyed by its id in `data/homeward.json`). After
 `python3 tools/extract_strings.py` and fill the six languages (docs/LOCALIZATION.md). Check with
 `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_story_arc.gd -gexit`.
 
-## The opening film (v9intro)
+## The opening film (v9intro, rewritten and re-shot by v11film)
 
 The film a new game opens with is a shot table: `data/intro_shots.json`. `story/intro.gd` plays
 it; nothing about timing or cameras is in code. Shots play in the order they are listed.
@@ -307,10 +315,10 @@ it; nothing about timing or cameras is in code. Shots play in the order they are
 | The lens | `cam.fov` `[start, end]` in degrees (a push-in is a smaller end value) |
 | Hand-held sway, a tilted horizon, a lagging aim | `cam.hand` (degrees), `cam.roll` `[start, end]`, `cam.look_lag` (seconds the aim trails a moving subject) |
 | A cut, a dip to black, a fade to white | `fade_in` / `fade_out` seconds and `fade_col` `[r, g, b]`; none = a hard cut |
-| When a story line is said | `lines`: `[[second, key]]`; the keys are `Intro.lines()` (the brief's two lines come from `data/objectives.json` `brief`) |
-| A sound | `sfx`: `[[second, sound, pitch, dB]]` |
+| When a line is said | `lines`: `[[second, key]]`; the keys are `Intro.lines()` in `story/intro.gd` (the last two come from `data/objectives.json` `brief`, which is also what WREN says if the film was skipped) |
+| A sound | `sfx`: `[[second, sound, pitch, dB]]`; only the built-in sounds exist (`autoload/Audio.gd`: thud, crunch, whoosh, roar, siren, groan, steam, hydraulic, clunk, servo, beep, blip, buzz, clink ...); an unknown name plays a blip |
 | When something happens in a shot | `cues`: `[[second, name]]` runs `_cue_<name>` in `story/intro.gd`; a negative second counts back from the shot's end |
-| Numbers a shot's code reads (speeds, start points, when the hatch opens) | the shot's `p` block |
+| Numbers a shot's code reads (speeds, start points, when the hatch opens) | the shot's `p` block (in any space shot `fill` scales the planet's warm bounce light from below: 1 is normal, `apart` looks up at the ark's belly and uses 3.2) |
 | Where Lumi stops outside the door, where the game starts, and what Lumi faces there | top level `door_spot`, `end_spot` (pod frame) and `end_face` (a yard anchor; `bench` = the old workbench, the first job) |
 | The letterbox | top level `letterbox_px` |
 
@@ -320,29 +328,69 @@ and `"mode": "handoff"` ends exactly on the game's own camera (keep it last: it 
 hand-over to play seamless). After editing, run `python3 tools/intro_table_fmt.py` to keep the
 file's layout.
 
+The story the shots tell, in order (the lines are WREN's; there is no narrator):
+
+| Shots | What is seen | Line |
+|---|---|---|
+| `planet` | dead Verdance, the ark small above it, the title | none |
+| `window`, `ark`, `tend` | Lumi at the garden dome's glass looking down; the ark and its lit decks; Lumi humming to the tray | "Still no green down there, Lumi." / "Nothing can grow in all that trash. So the people sleep up here, and we wait." / "Three hundred years. And you have kept the last plants alive." |
+| `omen`, `storm`, `hit` | a streak past the glass; meteors; the engines die; the dome breaks | "Lumi. Come away from the glass." |
+| `breach`, `seal`, `release`, `apart` | air and leaves pour out; Lumi takes the tray to the pod; the pod sinks out of the room and drops from the keel; from beside the falling pod, the ark (burning, smoking, bleeding air) sails on and shrinks away | "The glass is breaking! Take the tray. Get to the pod!" / "I can't keep you safe here. I have to let you go." / "My engines are gone. I can't come after you." / "Lumi— I will find you— I will find—" |
+| `reentry`, `sky`, `impact`, `dust` | the fall and the crash, then quiet | none |
+| `hatch`, `look` | eyes in the dark cabin, out of the door, 4% battery, a world of trash | none |
+| `voice`, `bench`, `alone`, `handoff` | WREN gets through once and is cut off; Lumi turns to the old workbench; the camera settles behind it | the two `brief` lines |
+
+The song (`audio/songs/fall_of_lm1.mp3`) has its loudest hits at 2.5, 41.5 and 76.5 s (measured:
+level jumps in 0.1 s steps). The title comes in on the first, the dome breaks on the second and
+the pod hits the ground on the third (English timings; a language with longer lines drifts by a
+second or two). If you change a `dur` before one of those, take the same time off a later shot.
+
 A new shot needs a row in the table and, in `story/intro.gd`, `_in_<id>()` (sets the shot up from
 nothing) and, if things move, `_run_<id>(lt, u, delta)`. Rules the tests hold
-(`tests/test_intro_film.gd`): every line of `Intro.lines()` is said once and in order; no shot goes
-back off-world after the first `world` shot (the game's own pod is placed at the crash); the last
-shot is the hand-off.
+(`tests/test_intro_film.gd`, `tests/test_v11film.gd`): every line of `Intro.lines()` is said once
+and in order, and all of them are WREN's; no shot goes back off-world after the first `world` shot
+(the game's own pod is placed at the crash); the last shot is the hand-off.
+
+What is in the pictures:
+
+- The ark: `story/cradle_ship.gd`, built in code (hull profile `PROFILE`, the dome, the ring, the
+  engines). `alarm`, `thrust`, `power` (how many windows are lit) and `breach` (the hole in the
+  dome) are what the storm changes; from the engine hit on, every shot of the ark calls
+  `Intro._ark_wounds` (fire, grey smoke and sparks out of the engine block, the dome venting air
+  and leaves). Its plates and windows are `art/shaders/ark_hull.gdshader`, the
+  dome's glass and its damage `art/shaders/ark_dome.gdshader`. Look at it alone:
+  `... godot --path . --rendering-driver opengl3 res://scenes/ship_preview.tscn -- --ship-view=ark --out=screenshots/v11/ship/ark`.
+- The seed vault (the inside of that dome): `story/space_stage.gd` `_build_vault` (plants, lamps,
+  the planter table, the pod bay; `vault_breach`, `vault_wind`, `vault_power`).
+- The pod: `story/escape_pod.gd` (`PROFILE` is its outline; legs in `_build_fins`). The same model
+  hangs under the ark, falls in the film and stands in the yard. Look at it alone:
+  `... res://tools/yard_lineup.tscn -- --out=screenshots/v11/pod/a --shots=pod,pod_q0,pod_in0`.
+
+Watching it again: the pause menu shows "Watch the opening again" for the first
+`Intro.REWATCH_S` seconds of play (30 minutes) while Lumi is within `Intro.REWATCH_NEAR_M` metres
+of the pod (120 m: the film is shot round the pod); the Codex has the same button for good. While
+it plays the game is stopped (the tree is paused), a stand-in plays Lumi and the film uses a pod of
+its own, so the save and the world cannot change (`tools/check_rewatch.sh`).
 
 See it (nobody can watch it in real time in the cloud box, so it is rendered as frames):
 
-- Off-world shots, no planet needed (about 8 minutes for all of them):
-  `xvfb-run -a -s "-screen 0 960x540x24" godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 res://tools/intro_preview.tscn -- --intro --quality=1 --intro-frames=screenshots/v9/intro/x --intro-every=2`
-- The whole film, or from one shot on, in the real game (one render at a time):
-  `... godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 -- --fresh --orbit --intro --intro-shot=sky --quality=1 --intro-frames=screenshots/v9/intro/x --intro-every=2`
+- Off-world shots, no planet needed (about 6 minutes for all of them):
+  `xvfb-run -a -s "-screen 0 960x540x24" godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 res://tools/intro_preview.tscn -- --intro --quality=1 --intro-frames=screenshots/v11/intro/x --intro-every=5`
+- The whole film, or from one shot on, in the real game (one render at a time, about 12 minutes):
+  `... godot --path . --rendering-driver opengl3 --resolution 960x540 --fixed-fps 10 -- --fresh --orbit --intro --intro-shot=sky --quality=1 --intro-frames=screenshots/v11/intro/x --intro-every=5`
   (`--intro-at=SECONDS` starts anywhere; `--intro-to-t=SECONDS` stops the capture; `--fixed-fps`
   makes every frame the same slice of film time however slow the renderer is.)
-- Contact sheets: `python3 tools/intro_sheet.py screenshots/v9/intro/x screenshots/v9/intro/sheet --cols 6 --rows 5`
+- A rewatch in the real game, rendered: `... -- --fresh --orbit --no-intro --rewatch-at=20 --quality=1 --intro-frames=screenshots/v11/intro/r --intro-every=5`
+- Contact sheets: `python3 tools/intro_sheet.py screenshots/v11/intro/x screenshots/v11/intro/sheet --cols 5 --rows 5 --w 384`
 - The shot times for the current language: any run with `--intro` prints `[intro] shot <id> <start> - <end> s`.
 - Skipping must leave the same world as watching: `tools/check_intro.sh` (five headless runs:
   watched, skipped at the start, mid-fall, just before the crash, at the hatch; `--quick` runs
   two and is part of `tools/check_exit.sh`).
 
-The film's effects (meteors, blasts, puffs, the re-entry fire, the drifting specks) live in
-`story/space_stage.gd` and three small shaders (`art/shaders/cine_glow`, `cine_puff`,
+The film's effects (meteors, blasts, puffs, torn leaves, the re-entry fire, the drifting specks)
+live in `story/space_stage.gd` and three small shaders (`art/shaders/cine_glow`, `cine_puff`,
 `cine_trail`); they are additive or alpha-blended, unshaded, with no screen-space tricks, so they
 look the same on Forward+ and Compatibility. The planet seen from space is
 `art/shaders/space_planet.gdshader` (its trash mottle, haze and sea) with its air in
-`art/shaders/space_atmosphere.gdshader`.
+`art/shaders/space_atmosphere.gdshader`. On the planet the film darkens the picture a little and
+dusts the sky (`SkyDirector.film_dust`), easing back to the game's own look over the hand-off.

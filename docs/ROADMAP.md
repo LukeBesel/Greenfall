@@ -2,6 +2,26 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## 20 Nov: the opening film rewritten and re-shot (v11film, owner items 110-113)
+
+- The film is new end to end: 21 shots, one voice (WREN, ten lines), about 117 s
+  (`data/intro_shots.json`, `story/intro.gd`; how to change it: docs/ADJUSTING.md "The opening film").
+- New ark (`story/cradle_ship.gd`, built in code; `art/models/ship/ark.glb` is no longer loaded) and
+  new pod (`story/escape_pod.gd`, a drop capsule). The same models serve the yard, the finale, the
+  telescope and the Homecoming (its rocket now docks at `CradleShip.dock_world()`).
+- The seed vault set is the inside of the ark's garden dome (`story/space_stage.gd`).
+- The tray Lumi saved stands in the crashed pod's cabin (`story/crash_site.gd`).
+- "Watch the opening again": pause menu for the first 30 minutes near the pod, Codex for good. A
+  rewatch plays with the game stopped and changes nothing (`tools/check_rewatch.sh`, in check_exit).
+- 24 Nov, second look at the whole film (v11film): the ark burns and smokes after the hits, the
+  parting is Lumi's last look up at it from the falling pod, a hanging grow lamp, real seedlings, a
+  continuous smoke trail, the crash plume rises after the crash shot, the first CD is out of the film.
+- **Open:** nobody has heard it (sound levels and the three song hits are by measurement only); not
+  seen at 60 fps or on the Mac's renderer; the Homecoming, the Bloom finale and the core-charge
+  memories show the new ark and vault but were not re-rendered; a rewatch at night or with machines
+  built shows the yard as it is then; "the rocket design" was read as the ark and the pod, not the
+  buildable shuttle.
+
 ## Status at the stop, 18 Nov (owner playtest 3, items 89-109)
 
 The owner asked to end all work at a good stopping point.
@@ -14,6 +34,7 @@ The owner asked to end all work at a good stopping point.
   - v10ui (89, 93, 94, 95, 96, 109; critic 7, 14, 17, 18, 19).
   - The full local suite passed on these.
 - **CI on 8bd0593 failed:** GUT crashed with SIGSEGV right after test_frontiers.gd started (it passes locally). The crash is on the main thread, in a GDScript lambda call (gdscript_lambda_callable.cpp). Most likely a timer, tween, deferred call or signal lambda left by an earlier test (test_fauna*, test_field, test_first_hour, test_first_seed_hint, test_flat_import) fires after its object was freed. Not reproduced yet.
+  - **Cause found and fixed (v10ci, 20 Nov):** `FirstSeed._resume_planting` deferred a lambda that uses the node (`(func() -> void: ...).call_deferred()`); tests/test_first_seed_hint.gd frees the node in the same frame. For such a lambda the engine keeps only the node's address, so at the next frame it ran on whatever lay there (on the CI runner: a wild pointer, signal 11). All 25 deferred lambdas in node functions are methods now (the engine drops a deferred method when its node is gone), and the two flyer tweens that can outlive their owner (robots/robot.gd, automation/auto_baler.gd) reach it by weak ref. `tests/test_deferred_calls.gd` replays the fault and scans the scripts for the pattern. Rule: never `call_deferred` a lambda from a node's function; a tween on ANOTHER node must not use `self` in its lambdas.
 - **Merged on local main, not pushed** (the combined full run was stopped): v10guide 4148bc4 (critic 3, 5, 13, 20, 21, 23). Its own full run passed on its branch.
 - **WIP on helper branches** (local worktrees under /home/user/gf-wt), not merged:
   - v10base (101, 102, 104, far half of 97; critic 1 bale rain, 4, 10, 15, 22).
@@ -45,6 +66,7 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Command view calls (v8bot, item 81):** a painted zone calls the N robots of its job nearest by travel (`SphereCrew.zone_count` / `set_zone_count` / `_assign_zones`, `u["called"]`, saved as `zone_n`); the card's "Robots here: - N +" sets N (default all; click, keys - +, D-pad left / right) and shows how many are on the way / working there. A newly called robot drops a job outside the zone at once. The rest leave the zone to them while they have other work. The Haul Bug nag waits for its plans (`CrewTalk.needs_hauler`); in the Command view the event banner and the play HUD step aside. Dev: `--crew-zone=N --crew-zone-n=K --crew-zone-log`.
 - **Growing and water:** plants are visible (sizes, soil, thirst). The first seed has a beacon. Hover Jets are needed to cross lakes.
 - **Glim:** a story build, the lantern bot who held on to the pod.
+- **Music and sound (v10snd, items 90-92, 108):** no song until the first CD (Sunbaked, by the bin); then the radio (N, Pause > Radio: random songs, stop, any found song), every song at random with 3-7.5 min gaps. Sliders for Reward sounds and Wind and animals; no purr; quieter wind and birds. Checked by `--walk-radio` and `tools/check_audio.py` (rotor rule); nobody has heard it.
 - **Reach:** every collectible and objective target stands on reachable ground (`--target-reach`).
 - **Map:** our own survey style with sprout, Lumi and plume glyphs. Travel is at the rocket (press E), not in the map. Glyphs no longer cover each other on the start hub, the map is the planet progress view (item 109: whole-number % clean, a row per base area, always live and free), and the round game has one system map.
 - **Text:** all 3,992 strings are translated into German, French, Spanish, Brazilian Portuguese, Simplified Chinese and Japanese. A test fails when an early-game string has no translation.

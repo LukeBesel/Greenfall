@@ -112,7 +112,7 @@ msgstr "地球儀マップ"
 msgid "Lens view"
 msgstr "レンズビュー"
 
-#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:52
+#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:53
 msgid "Codex"
 msgstr "図鑑"
 
@@ -196,67 +196,67 @@ msgstr "タッチパッド"
 msgid "Paddle 1"
 msgstr "パドル 1"
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:560
 msgid "LMB"
 msgstr "左クリック"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:561
 msgid "RMB"
 msgstr "右クリック"
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:562
 msgid "MMB"
 msgstr "中クリック"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:563
 msgid "Wheel up"
 msgstr "ホイール上"
 
-#: autoload/Settings.gd:551
+#: autoload/Settings.gd:564
 msgid "Wheel down"
 msgstr "ホイール下"
 
-#: autoload/Settings.gd:552
+#: autoload/Settings.gd:565
 msgid "Mouse %d"
 msgstr "マウス %d"
 
-#: autoload/Settings.gd:554
+#: autoload/Settings.gd:567
 msgid "Button %d"
 msgstr "ボタン %d"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:572
 msgid "LS left"
 msgstr "Lスティック左"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:572
 msgid "LS right"
 msgstr "Lスティック右"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:573
 msgid "LS up"
 msgstr "Lスティック上"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:573
 msgid "LS down"
 msgstr "Lスティック下"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:574
 msgid "RS left"
 msgstr "Rスティック左"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:574
 msgid "RS right"
 msgstr "Rスティック右"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:575
 msgid "RS up"
 msgstr "Rスティック上"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:575
 msgid "RS down"
 msgstr "Rスティック下"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:586
 msgid "hold %s"
 msgstr "%s 長押し"
 
@@ -409,7 +409,7 @@ msgstr "キューブかパーツが足りない"
 msgid "Rocket upgraded: %s."
 msgstr "ロケットをアップグレード：%s。"
 
-#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
+#: automation/stations.gd:122 automation/telescope.gd:103 robots/fabricator/bot_fabricator.gd:92
 #: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "建設完了。"
@@ -455,26 +455,26 @@ msgstr "ベール3個に1個をリサイクラーへ"
 msgid "Every %dth bale to the recycler"
 msgstr "ベール%d個に1個をリサイクラーへ"
 
-#: automation/telescope.gd:102
+#: automation/telescope.gd:107
 msgid "Requires hub level %d or research: %s."
 msgstr "基地レベル %d または研究「%s」が必要。"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
+#: automation/telescope.gd:109 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
 #: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
 #: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "素材が足りません。"
 
-#: automation/telescope.gd:115
+#: automation/telescope.gd:120
 msgid "Telescope built. Walk up to it and press {interact} to look across the system."
 msgstr "望遠鏡が完成した。近づいて {interact} を押すと、星系を見渡せる。"
 
-#: automation/telescope.gd:260 ui/telescope_panel.gd:11
+#: automation/telescope.gd:265 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "天文台"
 
-#: automation/telescope.gd:312
+#: automation/telescope.gd:317
 msgid "E   Telescope: look across the system"
 msgstr "E   望遠鏡：星系を見わたす"
 
@@ -506,43 +506,43 @@ msgstr "+%s キューブ"
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "もうバラのゴミは入れられないよ。[%s] でベールを作って、はかりにのせよう。"
 
-#: fauna/fauna.gd:1739
+#: fauna/fauna.gd:1741
 msgid "E   pet %s"
 msgstr "E   %s をなでる"
 
-#: fauna/fauna.gd:1740
+#: fauna/fauna.gd:1742
 msgid "E   pet the cat"
 msgstr "E   ネコをなでる"
 
-#: fauna/fauna.gd:1798
+#: fauna/fauna.gd:1800
 msgid "E   scatter crumbs for the birds"
 msgstr "E   鳥にパンくずをまく"
 
-#: fauna/fauna.gd:1846
+#: fauna/fauna.gd:1848
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレクションに追加した。"
 
-#: fauna/fauna.gd:1902
+#: fauna/fauna.gd:1904
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
-#: fauna/fauna.gd:2232 ui/subtitles.gd:448
+#: fauna/fauna.gd:2234 ui/subtitles.gd:448
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
-#: fauna/fauna.gd:2303
+#: fauna/fauna.gd:2305
 msgid "Snap! A %s for your Collection."
 msgstr "パシャ！%s の写真をコレクションに追加。"
 
-#: planet/cd_finds.gd:190
+#: planet/cd_finds.gd:354
 msgid "A scratched CD turned up in the rubble."
 msgstr "がれきの中から傷だらけのCDが出てきた。"
 
-#: planet/cd_finds.gd:190
+#: planet/cd_finds.gd:354
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr "片付けたがれきの中で何かが光った。古いCDだ！"
 
-#: planet/cd_finds.gd:230
+#: planet/cd_finds.gd:417
 msgid "Your CD case is full."
 msgstr "CDケースがいっぱいだ。"
 
@@ -642,7 +642,7 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:248 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:254 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -666,19 +666,19 @@ msgstr "ロッカー"
 msgid "Bot Bay"
 msgstr "ボットベイ"
 
-#: planet/sites/far_yard.gd:266 systems/camp/locker_cabinet.gd:45 tools/ui_audit_run.gd:223
+#: planet/sites/far_yard.gd:279 systems/camp/locker_cabinet.gd:45 tools/ui_audit_run.gd:223
 msgid "E   open locker"
 msgstr "E   ロッカーを開く"
 
-#: planet/sites/far_yard.gd:268
+#: planet/sites/far_yard.gd:281
 msgid "E   Build here: %s  (%s)"
 msgstr "E   ここに建てる：%s  (%s)"
 
-#: planet/sites/far_yard.gd:289
+#: planet/sites/far_yard.gd:302
 msgid "Building it needs %s."
 msgstr "建てるには %s が必要です。"
 
-#: planet/sites/far_yard.gd:302
+#: planet/sites/far_yard.gd:315
 msgid "Built: %s. It is this base's own."
 msgstr "完成：%s。この基地のものです。"
 
@@ -835,31 +835,31 @@ msgstr "%d つの基地がそろった。ロケットでドライブを建造し
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:124
+#: planet/sites/orbit_sites.gd:130
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:149
+#: planet/sites/orbit_sites.gd:155
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:187
+#: planet/sites/orbit_sites.gd:193
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:227
+#: planet/sites/orbit_sites.gd:233
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:227
+#: planet/sites/orbit_sites.gd:233
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:229
+#: planet/sites/orbit_sites.gd:235
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:247
+#: planet/sites/orbit_sites.gd:253
 msgid "%s site"
 msgstr "%sの地点"
 
@@ -867,31 +867,31 @@ msgstr "%sの地点"
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "水が……底が見える。Lumi、下で何かが動いてる。"
 
-#: plants/composter.gd:77
+#: plants/composter.gd:82
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   コンポストプレス  ·  何かが育つまで休止中"
 
-#: plants/composter.gd:79
+#: plants/composter.gd:84
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr "E   コンポストプレス  ·  Lv %d（最大）"
 
-#: plants/composter.gd:80
+#: plants/composter.gd:85
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr "E   コンポストプレスを Lv %d に  ·  %s キューブ"
 
-#: plants/composter.gd:85
+#: plants/composter.gd:90
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr "プレスは冷えている。まず何かを育てよう。植物が残したもので動くんだ。"
 
-#: plants/composter.gd:91
+#: plants/composter.gd:96
 msgid "Not enough cubes to upgrade the press."
 msgstr "プレスのアップグレードに必要なキューブが足りない。"
 
-#: plants/composter.gd:100
+#: plants/composter.gd:105
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr "コンポストプレス Lv %d：%.0f 秒サイクル、各 %.1f 粒の種。"
 
-#: plants/composter.gd:154
+#: plants/composter.gd:159
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
@@ -899,7 +899,7 @@ msgstr ""
 "コンポストプレス\n"
 "休止中"
 
-#: plants/composter.gd:156
+#: plants/composter.gd:161
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
@@ -1019,11 +1019,11 @@ msgstr "サージ  %s"
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:700
+#: player/patch.gd:702
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:731
+#: player/patch.gd:733
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1198,11 +1198,11 @@ msgstr[0] "ベール %d 個を運搬中"
 msgid "fetching a bale"
 msgstr "ベールを取りに行く"
 
-#: robots/robot.gd:256 robots/robot.gd:907
+#: robots/robot.gd:256 robots/robot.gd:911
 msgid "waiting for bales"
 msgstr "ベール待ち"
 
-#: robots/robot.gd:259 robots/robot.gd:577
+#: robots/robot.gd:259 robots/robot.gd:581
 msgid "out of seeds"
 msgstr "種切れ"
 
@@ -1246,7 +1246,7 @@ msgstr "ベールを岸へ運搬中"
 msgid "skimming lake hex %d (%d%%)"
 msgstr "湖のヘックス %d をすくっている（%d%%）"
 
-#: robots/robot.gd:270 robots/robot.gd:770
+#: robots/robot.gd:270 robots/robot.gd:774
 msgid "lake is clean"
 msgstr "湖はきれい"
 
@@ -1262,27 +1262,27 @@ msgstr "ゾーン清掃済み、待機中"
 msgid "nothing left to clean"
 msgstr "片づけるものがもうない"
 
-#: robots/robot.gd:427 robots/robot.gd:770
+#: robots/robot.gd:427 robots/robot.gd:774
 msgid "zone clean"
 msgstr "ゾーン清掃済み"
 
-#: robots/robot.gd:575
+#: robots/robot.gd:579
 msgid "seeds locked"
 msgstr "種がロック中"
 
-#: robots/robot.gd:581 robots/robot.gd:585
+#: robots/robot.gd:585 robots/robot.gd:589
 msgid "no empty soil"
 msgstr "空いている土がない"
 
-#: robots/robot.gd:614
+#: robots/robot.gd:618
 msgid "no garden"
 msgstr "菜園がない"
 
-#: robots/robot.gd:628
+#: robots/robot.gd:632
 msgid "everything watered"
 msgstr "ぜんぶ水やり済み"
 
-#: robots/robot.gd:724
+#: robots/robot.gd:728
 msgid "no water source"
 msgstr "水源がない"
 
@@ -1599,11 +1599,11 @@ msgstr "E   作業台を直す"
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1048
+#: scenes/slice_orbit.gd:1050
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1148 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1150 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "作業台が直った！そばで %s を押してアップグレードを買おう。"
 
@@ -1631,7 +1631,7 @@ msgstr "基地は体験版で行けるところまで育った。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "製品版では、Lumi は基地をレベル5まで育て、地区まるごと緑で満たし、明るい未来都市へと成長させ、ロケットで星じゅうの数十の基地へ飛んでいきます。体験版の進行状況は引き継がれます。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:789
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:796
 msgid "Hexes cleaned"
 msgstr "片づけたヘックス"
 
@@ -1639,11 +1639,11 @@ msgstr "片づけたヘックス"
 msgid "Bales made"
 msgstr "作ったベール"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:804
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:811
 msgid "Robots built"
 msgstr "作ったロボット"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:812
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:819
 msgid "Time played"
 msgstr "プレイ時間"
 
@@ -1663,7 +1663,7 @@ msgstr "タイトル画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "プレイを続ける：最初の地区は基地レベル %d のまま遊べます。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:889 ui/main_menu.gd:590
 msgid "%dh %02dm"
 msgstr "%d時間%02d分"
 
@@ -1708,55 +1708,55 @@ msgstr "終わりを待っているものは何もないよ、{name}。誰も点
 msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram ({open_globe})."
 msgstr "Cradle号が帰還した。シードアークが開いた：Verdance で咲く花はすべて次の波に数えられる。進行はホログラム（{open_globe}）で。"
 
-#: story/core_charge.gd:206
+#: story/core_charge.gd:215
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "ブルームコア 100%。Lumi のコアは緑の光でいっぱい。"
 
-#: story/core_charge.gd:232
+#: story/core_charge.gd:241
 msgid "Bloom Core  25%"
 msgstr "ブルームコア  25%"
 
-#: story/core_charge.gd:233
+#: story/core_charge.gd:242
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "よし。リレーがつながった。Lumi、やっとちゃんと聞こえる。昔みたいにはっきりと。"
 
-#: story/core_charge.gd:253
+#: story/core_charge.gd:262
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "ある記憶  ·  Cradle号の庭園デッキ"
 
-#: story/core_charge.gd:264
+#: story/core_charge.gd:273
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "庭園デッキのこと、覚えてる？念のためにって、どの苗床も2回ずつ水をあげてたよね。"
 
-#: story/core_charge.gd:267
+#: story/core_charge.gd:276
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "下で育てる一区画一区画が、こういう苗床がまたひとつ増えるってこと。君は迷子じゃないよ、Lumi。植えなおしてるんだ。"
 
-#: story/core_charge.gd:271
+#: story/core_charge.gd:280
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "ブルームコア 25%：WREN のシグナルがはっきりした。"
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:298
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "ブルームコア 50%：Lumi の輝きが戻った。ここ何年でいちばん明るい。"
 
-#: story/core_charge.gd:291
+#: story/core_charge.gd:300
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "半分充電。光ってるよ、Lumi。ちゃんと光ってる。こんなに明るくなれるの、忘れてた。"
 
-#: story/core_charge.gd:325
+#: story/core_charge.gd:334
 msgid "That night..."
 msgstr "あの夜……"
 
-#: story/core_charge.gd:349
+#: story/core_charge.gd:358
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi、上を見て。あの光。西から東へ、ゆっくりと、またたかずに。"
 
-#: story/core_charge.gd:354
+#: story/core_charge.gd:363
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "あれが Cradle号。君のコアが灯ったとき、アークはそれを聞いた。向きを変えたんだ。君を迎えに戻ってる。"
 
-#: story/core_charge.gd:364
+#: story/core_charge.gd:373
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "ブルームコア 75%：Cradle号が帰ってくる。夜空を横切るのを探してみよう。"
 
@@ -2039,8 +2039,8 @@ msgid "The vault. Your vault. It looks exactly like you left it."
 msgstr "保管庫。あなたの保管庫。出ていったときのまま。"
 
 #: story/homecoming.gd:34
-msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
-msgstr "あのトレイを守るために、あなたは貨物ポッドに乗り込んだ。300年後、ちゃんと持って帰ってきた。"
+msgid "You climbed into a pod to save that tray. Now you have brought it home."
+msgstr "あなたはその苗のトレイを守るためにポッドに乗った。そして今、持ち帰ってくれたね。"
 
 #: story/homecoming.gd:35
 msgid "Hear that? Below decks. Doors. Voices. They're waking up, {name}."
@@ -2055,37 +2055,37 @@ msgstr "彼らが最初に見るのは、また緑になった世界。あなた
 msgid "Homecoming"
 msgstr "帰郷"
 
-#: story/intro.gd:360
-msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
-msgstr "三百年前、最後の種はアーク Cradle号に乗って Verdance を去った。"
+#: story/intro.gd:403
+msgid "Still no green down there, Lumi."
+msgstr "下にはまだ緑がないね、Lumi。"
 
-#: story/intro.gd:361
-msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
-msgstr "アークの小さなシードキーパー Lumi は、毎晩苗たちに歌を歌っていた。"
+#: story/intro.gd:404
+msgid "Nothing can grow in all that trash. So the people sleep up here, and we wait."
+msgstr "あんなにゴミがあっては何も育たない。だからみんなはここで眠って、私たちは待っているの。"
 
-#: story/intro.gd:362
-msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
-msgstr "また鼻歌かい、Lumi？聞こえてないんだよ。……でも、君が歌うと育つのが速いんだよね。"
+#: story/intro.gd:405
+msgid "Three hundred years. And you have kept the last plants alive."
+msgstr "三百年。そのあいだ、あなたが最後の植物を生かしてきた。"
 
-#: story/intro.gd:363
-msgid "Then, one night, the sky came apart."
-msgstr "そして、ある夜、空が裂けた。"
+#: story/intro.gd:406
+msgid "Lumi. Come away from the glass."
+msgstr "Lumi。ガラスから離れて。"
 
-#: story/intro.gd:364
-msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
-msgstr "保管庫ベイで船体破損！Lumi、トレイはいいから、離れて！"
+#: story/intro.gd:407
+msgid "The glass is breaking! Take the tray. Get to the pod!"
+msgstr "ガラスが割れる！トレイを持って。ポッドへ急いで！"
 
-#: story/intro.gd:365
-msgid "Lumi— hold on— I can't turn her around— hold on—"
-msgstr "Lumi——がんばって——向きを変えられない——がんばって——"
+#: story/intro.gd:408
+msgid "I can't keep you safe here. I have to let you go."
+msgstr "ここではあなたを守れない。行かせるしかないの。"
 
-#: story/intro.gd:366
-msgid "The ark could not turn back. The pod fell for days."
-msgstr "アークは引き返せなかった。ポッドは何日も落ち続けた。"
+#: story/intro.gd:409
+msgid "My engines are gone. I can't come after you."
+msgstr "エンジンがやられた。追いかけられない。"
 
-#: story/intro.gd:1967
-msgid "GREEN LIGHT  ·  NONE DETECTED"
-msgstr "緑の光  ·  検知なし"
+#: story/intro.gd:410
+msgid "Lumi— I will find you— I will find—"
+msgstr "Lumi— 必ず見つける— 必ず見つ—"
 
 #: story/objectives.gd:282
 msgid "Reward: %s"
@@ -2131,7 +2131,7 @@ msgstr "むねのタンクがいっぱい。ビームをたどって、この基
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:1343
+#: story/objectives.gd:1343 tools/walk_travel.gd:357
 msgid "Carry your bale to this base's scale by its bin."
 msgstr "ゴミのかたまりを、この基地のゴミ箱の横のはかりへ運ぼう。"
 
@@ -2319,11 +2319,11 @@ msgstr "ガラクタの下のどこか。"
 msgid "Found on the planet it belongs to."
 msgstr "それが属する惑星で見つかった。"
 
-#: systems/codex.gd:200 ui/codex_screen.gd:384
+#: systems/codex.gd:200 ui/codex_screen.gd:387
 msgid "Old Town"
 msgstr "旧市街"
 
-#: systems/codex.gd:204 ui/codex_screen.gd:384
+#: systems/codex.gd:204 ui/codex_screen.gd:387
 msgid "Wilderness bases"
 msgstr "荒野の基地"
 
@@ -2331,7 +2331,7 @@ msgstr "荒野の基地"
 msgid " · often %s"
 msgstr " · よく出る場所：%s"
 
-#: systems/codex.gd:207 ui/codex_screen.gd:384 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:207 ui/codex_screen.gd:387 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "辺境"
 
@@ -2339,11 +2339,11 @@ msgstr "辺境"
 msgid " · %s"
 msgstr " · %s"
 
-#: systems/codex.gd:209 ui/codex_screen.gd:384
+#: systems/codex.gd:209 ui/codex_screen.gd:387
 msgid "Other worlds"
 msgstr "ほかの世界"
 
-#: systems/codex.gd:210 ui/codex_screen.gd:384
+#: systems/codex.gd:210 ui/codex_screen.gd:387
 msgid "Any district"
 msgstr "どの地区でも"
 
@@ -2714,35 +2714,35 @@ msgstr "Verdance の Cradle号の帰還で建造しよう"
 msgid "Rocket drive built: %s."
 msgstr "ロケット推進を建造：%s。"
 
-#: systems/homeward_director.gd:333
+#: systems/homeward_director.gd:337
 msgid "Intercepted: %s"
 msgstr "傍受：%s"
 
-#: systems/homeward_director.gd:348
+#: systems/homeward_director.gd:352
 msgid "%s: %s"
 msgstr "%s：%s"
 
-#: systems/homeward_director.gd:358
+#: systems/homeward_director.gd:362
 msgid "%s is restored. System: %d%%."
 msgstr "%s が再生した。星系：%d%%。"
 
-#: systems/homeward_director.gd:361
+#: systems/homeward_director.gd:365
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "遺物：%s。家宝の選択 +1（アークブリッジ）。"
 
-#: systems/homeward_director.gd:369
+#: systems/homeward_director.gd:373
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "星系のすべての惑星が生き返った。入植者たちは五つの緑の世界で目を覚ます。"
 
-#: systems/homeward_director.gd:565
+#: systems/homeward_director.gd:569
 msgid "E   launch home"
 msgstr "E   ふるさとへ発射"
 
-#: systems/homeward_director.gd:565
+#: systems/homeward_director.gd:569
 msgid "E   plant the last seed"
 msgstr "E   最後の種を植える"
 
-#: systems/homeward_director.gd:576
+#: systems/homeward_director.gd:580
 msgid "The last seed is in the ground. Everything is ready. Press {interact} again here to launch home."
 msgstr "最後の種が土に入った。準備は全部できた。もう一度ここで {interact} を押すと、ふるさとへ発射する。"
 
@@ -2802,11 +2802,11 @@ msgstr "{robot} の{stat} +{amount}%"
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} の{stat} +{amount}"
 
-#: systems/late_director.gd:107
+#: systems/late_director.gd:116
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "アークブリッジは Cradle号が帰ってきたら開く。"
 
-#: systems/late_director.gd:144
+#: systems/late_director.gd:153
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode ({garden_mode}) is open too."
 msgstr "クレイドルモード：アークの種子庫には、ほかの世界のための種がある。ポーズ > アークブリッジで、それと復興で解放した家宝を見たり、新しい世界に種をまいたりできる。ガーデンモード（{garden_mode}）も開いている。"
 
@@ -2874,20 +2874,20 @@ msgstr "プロフィール %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d 時間"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
-#: ui/settings_panel.gd:621
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
+#: ui/settings_panel.gd:635
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Ultra"
 msgstr "最高"
 
@@ -2935,7 +2935,7 @@ msgstr "すでに予約済み"
 msgid "Queue is full"
 msgstr "予約がいっぱい"
 
-#: systems/research.gd:356 ui/codex_screen.gd:886
+#: systems/research.gd:356 ui/codex_screen.gd:893
 msgid "%ds"
 msgstr "%d秒"
 
@@ -3019,15 +3019,15 @@ msgstr "%sの種を解放"
 msgid "Unlocks: %s"
 msgstr "解放：%s"
 
-#: systems/research.gd:616
+#: systems/research.gd:621
 msgid "While you were away, research finished: %s."
 msgstr "留守のあいだに研究が完了：%s。"
 
-#: systems/research.gd:647
+#: systems/research.gd:652
 msgid "New robot plans: %s. %s"
 msgstr "新しいロボットの設計図：%s。%s"
 
-#: systems/research.gd:652
+#: systems/research.gd:657
 msgid "Research complete: %s."
 msgstr "研究完了：%s。"
 
@@ -3117,9 +3117,21 @@ msgstr "バイオレット"
 msgid "Moonlight"
 msgstr "月光"
 
-#: systems/tunes.gd:390
+#: systems/tunes.gd:392
 msgid "New CD: %s by %s, from %s"
 msgstr "新しいCD：%s（%s、%s出身）"
+
+#: systems/tunes.gd:585
+msgid "You found a CD: %s! Press %s to play it any time."
+msgstr "CDを見つけた：%s！%s でいつでも聞けるよ。"
+
+#: systems/tunes.gd:587
+msgid "Glim is your radio."
+msgstr "グリムがきみのラジオだよ。"
+
+#: systems/tunes.gd:588
+msgid "Glim will be your radio when you build it."
+msgstr "グリムを作ると、グリムがラジオになるよ。"
 
 #: systems/camp/bot_bay.gd:94
 msgid "E   open the Bot Bay"
@@ -3233,15 +3245,19 @@ msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
 msgid "%s points proudly at a new bud."
 msgstr "%s は新しいつぼみを得意げに指さす。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:586
+#: systems/extras/radio.gd:186 tools/orbit_roundtrip.gd:586
 msgid "E   CD player: %s"
 msgstr "E   CDプレーヤー：%s"
 
-#: systems/extras/radio.gd:184
+#: systems/extras/radio.gd:186
+msgid "stopped"
+msgstr "停止中"
+
+#: systems/extras/radio.gd:186
 msgid "mood music"
 msgstr "ムード音楽"
 
-#: systems/extras/radio.gd:234
+#: systems/extras/radio.gd:236
 msgid "New song on the radio: %s"
 msgstr "ラジオに新しい曲：%s"
 
@@ -3354,7 +3370,7 @@ msgstr "ベールを約 %d 個プレスした"
 msgid "kept the base tidy"
 msgstr "基地をきれいに保った"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:796
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:803
 msgid "Cubes earned"
 msgstr "稼いだキューブ"
 
@@ -3446,11 +3462,15 @@ msgstr "大きいものだけ残っている"
 msgid "Glim is still scanning. Try again in a moment."
 msgstr "Glim はまだスキャン中。少し待ってからもう一度。"
 
+#: tools/rewatch_check.gd:216 ui/codex_screen.gd:93 ui/pause_menu.gd:61
+msgid "Watch the opening again"
+msgstr "オープニングをもう一度見る"
+
 #: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "閉じる"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:91
 msgid "Quit"
 msgstr "終了"
 
@@ -3579,7 +3599,7 @@ msgstr "スタート装備：Lumi だけ。家宝で増やせる。"
 msgid "Starting kit: %s"
 msgstr "スタート装備：%s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:602
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:616
 msgid "Full"
 msgstr "フル"
 
@@ -3878,7 +3898,7 @@ msgstr "%sのがれきで彼らのCDを見つけよう。"
 msgid "Your CDs (%d / %d): %s"
 msgstr "持っているCD（%d / %d）：%s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:818
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:825
 msgid "Achievements"
 msgstr "実績"
 
@@ -3902,36 +3922,36 @@ msgstr "アーティスト"
 msgid "CODEX"
 msgstr "図鑑"
 
-#: ui/codex_screen.gd:93
-msgid "Watch the story"
-msgstr "ストーリーを見る"
+#: ui/codex_screen.gd:105
+msgid "Go back to your pod to watch it."
+msgstr "ポッドのそばに戻ると見られるよ。"
 
-#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:185
+#: ui/codex_screen.gd:108 ui/upgrades_screen.gd:185
 msgid "Close  [%s]"
 msgstr "閉じる  [%s]"
 
-#: ui/codex_screen.gd:209
+#: ui/codex_screen.gd:212
 msgid "%d / %d curiosities"
 msgstr "珍品 %d / %d"
 
-#: ui/codex_screen.gd:211
+#: ui/codex_screen.gd:214
 msgid "%d / %d collectibles"
 msgstr "コレクション %d / %d"
 
-#: ui/codex_screen.gd:213
+#: ui/codex_screen.gd:216
 msgid "%d / %d achievements"
 msgstr "実績 %d / %d"
 
-#: ui/codex_screen.gd:215
+#: ui/codex_screen.gd:218
 msgid "%d / %d entries"
 msgstr "項目 %d / %d"
 
-#: ui/codex_screen.gd:344 ui/codex_screen.gd:464 ui/codex_screen.gd:630
-#: ui/codex_screen.gd:645
+#: ui/codex_screen.gd:347 ui/codex_screen.gd:467 ui/codex_screen.gd:633
+#: ui/codex_screen.gd:648
 msgid "Not found yet"
 msgstr "まだ見つかっていない"
 
-#: ui/codex_screen.gd:348
+#: ui/codex_screen.gd:351
 msgid ""
 "\n"
 "\n"
@@ -3941,211 +3961,211 @@ msgstr ""
 "\n"
 "これまでに片づけた量：%s"
 
-#: ui/codex_screen.gd:373
+#: ui/codex_screen.gd:376
 msgid "CURIOSITIES"
 msgstr "珍品"
 
-#: ui/codex_screen.gd:374 ui/codex_screen.gd:495
+#: ui/codex_screen.gd:377 ui/codex_screen.gd:498
 msgid "%d / %d found"
 msgstr "%d / %d 発見"
 
-#: ui/codex_screen.gd:468
+#: ui/codex_screen.gd:471
 msgid "Found  ·  %s"
 msgstr "発見  ·  %s"
 
-#: ui/codex_screen.gd:471
+#: ui/codex_screen.gd:474
 msgid "Parts found: %d / %d"
 msgstr "見つけたパーツ：%d / %d"
 
-#: ui/codex_screen.gd:472
+#: ui/codex_screen.gd:475
 msgid "Reward: a small surprise"
 msgstr "報酬：ちょっとしたサプライズ"
 
-#: ui/codex_screen.gd:494
+#: ui/codex_screen.gd:497
 msgid "COLLECTION"
 msgstr "コレクション"
 
-#: ui/codex_screen.gd:578
+#: ui/codex_screen.gd:581
 msgid "LUMI'S COLLECTION"
 msgstr "Lumiのコレクション"
 
-#: ui/codex_screen.gd:579
+#: ui/codex_screen.gd:582
 msgid "%d / %d complete"
 msgstr "%d / %d 完成"
 
-#: ui/codex_screen.gd:617
+#: ui/codex_screen.gd:620
 msgid "TRINKETS AND CURIOS"
 msgstr "小物と珍品"
 
-#: ui/codex_screen.gd:629
+#: ui/codex_screen.gd:632
 msgid "EVERY PLANET"
 msgstr "すべての惑星"
 
-#: ui/codex_screen.gd:632
+#: ui/codex_screen.gd:635
 msgid "In Lumi's collection. It has a plinth in the Museum."
 msgstr "Lumiのコレクションにある。博物館に台座がある。"
 
-#: ui/codex_screen.gd:634
+#: ui/codex_screen.gd:637
 msgid "Hint: %s"
 msgstr "ヒント：%s"
 
-#: ui/codex_screen.gd:636
+#: ui/codex_screen.gd:639
 msgid "The Museum: built"
 msgstr "博物館：完成"
 
-#: ui/codex_screen.gd:636
+#: ui/codex_screen.gd:639
 msgid "The Museum is built at Cradle Returns, near the end of the journey."
 msgstr "博物館は旅の終わり近く、Cradle Returnsに建てられる。"
 
-#: ui/codex_screen.gd:648
+#: ui/codex_screen.gd:651
 msgid "In your collection"
 msgstr "コレクション済み"
 
-#: ui/codex_screen.gd:653
+#: ui/codex_screen.gd:656
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "ヒント：維持・繁栄したヘックスに、恥ずかしがりやの訪問者がやってくる。カメラを持っていこう。"
 
-#: ui/codex_screen.gd:654
+#: ui/codex_screen.gd:657
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode ({photo_mode})."
 msgstr "ヒント：地面が癒えると動物が戻ってくる。フォトモード（{photo_mode}）で撮影しよう。"
 
-#: ui/codex_screen.gd:655
+#: ui/codex_screen.gd:658
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr "ヒント：依頼を %d 件こなそう（作業台の依頼タブ）。"
 
-#: ui/codex_screen.gd:656
+#: ui/codex_screen.gd:659
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr "ヒント：珍品カプセルは、作業台の依頼の報酬トラックにある。"
 
-#: ui/codex_screen.gd:657
+#: ui/codex_screen.gd:660
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "ヒント：コンボメーターがいっぱいになるまで休まずすくい続けよう。"
 
-#: ui/codex_screen.gd:658
+#: ui/codex_screen.gd:661
 msgid "Hint: turns up during %s."
 msgstr "ヒント：%sのあいだに現れる。"
 
-#: ui/codex_screen.gd:739
+#: ui/codex_screen.gd:742
 msgid "Unlocked  ·  %s"
 msgstr "解除  ·  %s"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:793
 msgid "Total"
 msgstr "合計"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:794
 msgid "Junk removed"
 msgstr "取り除いたガラクタ"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:794
 msgid "by type"
 msgstr "種類別"
 
-#: ui/codex_screen.gd:788 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:795 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清掃"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:797
 msgid "Hexes restored"
 msgstr "よみがえったヘックス"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:798
 msgid "Bales pressed"
 msgstr "圧縮したベール"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:799
 msgid "Pure bales"
 msgstr "ピュアベール"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:800
 msgid "Perfect bales"
 msgstr "パーフェクトベール"
 
-#: ui/codex_screen.gd:794
+#: ui/codex_screen.gd:801
 msgid "Lumpy bales"
 msgstr "でこぼこベール"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:802
 msgid "Bales cashed in"
 msgstr "換金したベール"
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:805 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "栽培"
 
-#: ui/codex_screen.gd:799
+#: ui/codex_screen.gd:806
 msgid "Seeds planted"
 msgstr "植えた種"
 
-#: ui/codex_screen.gd:800
+#: ui/codex_screen.gd:807
 msgid "Plants bloomed"
 msgstr "咲いた植物"
 
-#: ui/codex_screen.gd:801
+#: ui/codex_screen.gd:808
 msgid "Air filtered"
 msgstr "ろ過した空気"
 
-#: ui/codex_screen.gd:803 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:810 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "ロボット"
 
-#: ui/codex_screen.gd:805
+#: ui/codex_screen.gd:812
 msgid "Bales by robots"
 msgstr "ロボットのベール"
 
-#: ui/codex_screen.gd:806
+#: ui/codex_screen.gd:813
 msgid "Parts dug up"
 msgstr "掘り出したパーツ"
 
-#: ui/codex_screen.gd:808
+#: ui/codex_screen.gd:815
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:809
+#: ui/codex_screen.gd:816
 msgid "Distance rolled"
 msgstr "走った距離"
 
-#: ui/codex_screen.gd:810
+#: ui/codex_screen.gd:817
 msgid "Memory shards read"
 msgstr "読んだメモリーの破片"
 
-#: ui/codex_screen.gd:811
+#: ui/codex_screen.gd:818
 msgid "Codex entries"
 msgstr "図鑑の項目"
 
-#: ui/codex_screen.gd:814
+#: ui/codex_screen.gd:821
 msgid "Progress"
 msgstr "進行状況"
 
-#: ui/codex_screen.gd:815
+#: ui/codex_screen.gd:822
 msgid "Upgrades bought"
 msgstr "購入したアップグレード"
 
-#: ui/codex_screen.gd:816
+#: ui/codex_screen.gd:823
 msgid "Field notes logged"
 msgstr "記録したフィールドノート"
 
-#: ui/codex_screen.gd:817
+#: ui/codex_screen.gd:824
 msgid "Research done"
 msgstr "完了した研究"
 
-#: ui/codex_screen.gd:819
+#: ui/codex_screen.gd:826
 msgid "Best hub level"
 msgstr "最高基地レベル"
 
-#: ui/codex_screen.gd:870
+#: ui/codex_screen.gd:877
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:871
+#: ui/codex_screen.gd:878
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:875
+#: ui/codex_screen.gd:882
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:885
+#: ui/codex_screen.gd:892
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -4244,7 +4264,7 @@ msgstr "愛とガラクタでできています"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "コード、プロシージャルメッシュ、合成した音楽と効果音、テキストは Greenfall のオリジナルです。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:749
+#: ui/credits_roll.gd:148 ui/main_menu.gd:757
 msgid "Music by Lucas"
 msgstr "音楽：Lucas"
 
@@ -4296,7 +4316,7 @@ msgstr "依頼 %d 件完了  ·  作業台で受け取ろう"
 msgid "CDS  ·  %d / %d"
 msgstr "CD  ·  %d / %d"
 
-#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/tunes_picker.gd:95
+#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107
 msgid "Shuffle"
 msgstr "シャッフル"
 
@@ -4320,7 +4340,7 @@ msgstr "%sで見つかる"
 msgid "Not found yet: CDs turn up in the rubble on %s."
 msgstr "まだ見つけていない：このCDは%sのがれきの中にある。"
 
-#: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:125
+#: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:141
 msgid "Now playing: %s by %s"
 msgstr "再生中：%s（%s）"
 
@@ -4361,8 +4381,8 @@ msgid "Your CDs come on now and then while you work, with quiet in between. Pick
 msgstr "作業中、CDがときどき流れ、合間には静かな時間がある。ここで1枚選ぶか、シャッフルで続けて再生できる。"
 
 #: ui/extras_cd_list.gd:125
-msgid "Glim has copied your CDs: press N anywhere to pick a song."
-msgstr "GlimがCDをコピーした：どこでもNを押して曲を選べる。"
+msgid "Press %s anywhere for the radio."
+msgstr "どこでも %s でラジオを開けるよ。"
 
 #: ui/extras_cd_list.gd:127
 msgid "The music comes from the CD player, so it's softer far away from it."
@@ -4524,7 +4544,7 @@ msgstr "ボットファブリケーター"
 msgid "Mix: how many of each it builds in turn. New robots go to the hub that needs them most."
 msgstr "ミックス：それぞれを何台ずつ順番に作るか。新しいロボットは、いちばん必要な基地へ行く。"
 
-#: ui/fabricator_panel.gd:77 ui/pause_menu.gd:50
+#: ui/fabricator_panel.gd:77 ui/pause_menu.gd:51
 msgid "Resume"
 msgstr "再開"
 
@@ -5221,7 +5241,7 @@ msgstr[0] "%d 個の惑星"
 msgid "Profiles"
 msgstr "プロフィール"
 
-#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
+#: ui/main_menu.gd:366 ui/main_menu.gd:699 ui/pause_menu.gd:87
 msgid "Settings"
 msgstr "設定"
 
@@ -5229,77 +5249,77 @@ msgstr "設定"
 msgid "Made with Godot"
 msgstr "Godot で制作"
 
-#: ui/main_menu.gd:582
+#: ui/main_menu.gd:590
 msgid "%dm"
 msgstr "%d分"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:589 ui/profile_picker.gd:133
+#: ui/main_menu.gd:597 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s キューブ"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:691
+#: ui/main_menu.gd:699
 msgid "Credits"
 msgstr "クレジット"
 
-#: ui/main_menu.gd:720
+#: ui/main_menu.gd:728
 msgid "CREDITS"
 msgstr "クレジット"
 
-#: ui/main_menu.gd:735 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:743 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "戻る"
 
-#: ui/main_menu.gd:748
+#: ui/main_menu.gd:756
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5309,43 +5329,47 @@ msgstr ""
 "コード、プロシージャルメッシュ、合成オーディオ、テキストは Greenfall のオリジナルです。\n"
 "\n"
 
-#: ui/main_menu.gd:752
+#: ui/main_menu.gd:760
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "サードパーティ素材：CC0、Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:770
+#: ui/main_menu.gd:778
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:804
+#: ui/main_menu.gd:812
 msgid "START A NEW GAME?"
 msgstr "新しくゲームを始めますか？"
 
-#: ui/main_menu.gd:805
+#: ui/main_menu.gd:813
 msgid "Your current save will be erased. This can't be undone."
 msgstr "現在のセーブデータは消去されます。元に戻せません。"
 
-#: ui/main_menu.gd:813
+#: ui/main_menu.gd:821
 msgid "Keep my save"
 msgstr "セーブを残す"
 
-#: ui/main_menu.gd:819 ui/profile_picker.gd:213
+#: ui/main_menu.gd:827 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "消去して始める"
 
-#: ui/pause_menu.gd:43
+#: ui/pause_menu.gd:44
 msgid "PAUSED"
 msgstr "ポーズ中"
 
-#: ui/pause_menu.gd:55
+#: ui/pause_menu.gd:56
 msgid "Codex  [%s]"
 msgstr "図鑑  [%s]"
 
-#: ui/pause_menu.gd:57
+#: ui/pause_menu.gd:68
 msgid "Photo mode  [%s]"
 msgstr "フォトモード  [%s]"
 
-#: ui/pause_menu.gd:63 data/achievements.json:achievements[home_relics].name
+#: ui/pause_menu.gd:73
+msgid "Radio  [%s]"
+msgstr "ラジオ  [%s]"
+
+#: ui/pause_menu.gd:82 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "思い出の品"
 
@@ -5417,7 +5441,7 @@ msgstr "ロケット飛行中はフォトモードを使えません。"
 msgid "Photo mode isn't available during a cinematic."
 msgstr "ムービー中はフォトモードを使えません。"
 
-#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:411
+#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:425
 msgid "Camera"
 msgstr "カメラ"
 
@@ -5425,7 +5449,7 @@ msgstr "カメラ"
 msgid "Mode"
 msgstr "モード"
 
-#: ui/photo_mode.gd:361 ui/settings_panel.gd:419
+#: ui/photo_mode.gd:361 ui/settings_panel.gd:433
 msgid "Field of view"
 msgstr "視野角"
 
@@ -5462,7 +5486,7 @@ msgid "Blur"
 msgstr "ぼかし"
 
 #: ui/photo_mode.gd:369 ui/photo_panel.gd:243 ui/photo_panel.gd:245
-#: ui/photo_panel.gd:283 ui/settings_panel.gd:711
+#: ui/photo_panel.gd:283 ui/settings_panel.gd:725
 msgid "Off"
 msgstr "オフ"
 
@@ -5575,7 +5599,7 @@ msgid "Exit"
 msgstr "終了"
 
 #: ui/photo_panel.gd:243 ui/photo_panel.gd:245 ui/photo_panel.gd:283
-#: ui/settings_panel.gd:711
+#: ui/settings_panel.gd:725
 msgid "On"
 msgstr "オン"
 
@@ -5653,11 +5677,11 @@ msgstr "プロフィール名を変更"
 msgid "Save"
 msgstr "保存"
 
-#: ui/research_node_card.gd:175 ui/research_panel.gd:194
+#: ui/research_node_card.gd:175 ui/research_panel.gd:198
 msgid "Researched"
 msgstr "研究済み"
 
-#: ui/research_node_card.gd:178 ui/research_panel.gd:197
+#: ui/research_node_card.gd:178 ui/research_panel.gd:201
 msgid "%s left"
 msgstr "残り %s"
 
@@ -5665,7 +5689,7 @@ msgstr "残り %s"
 msgid "Queued  ·  %s"
 msgstr "予約中  ·  %s"
 
-#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+#: ui/research_node_card.gd:184 ui/research_panel.gd:207
 msgid "%s  ·  %s"
 msgstr "%s  ·  %s"
 
@@ -5681,39 +5705,39 @@ msgstr "研究はキューブと実時間がかかる。プレイ中も留守中
 msgid "RESEARCHING"
 msgstr "研究中"
 
-#: ui/research_panel.gd:163
+#: ui/research_panel.gd:167
 msgid "Nothing yet"
 msgstr "まだなし"
 
-#: ui/research_panel.gd:164
+#: ui/research_panel.gd:168
 msgid "Pick a glowing card below"
 msgstr "下の光っているカードを選ぼう"
 
-#: ui/research_panel.gd:169
+#: ui/research_panel.gd:173
 msgid "%s left  ·  %d%%"
 msgstr "残り %s  ·  %d%%"
 
-#: ui/research_panel.gd:175
+#: ui/research_panel.gd:179
 msgid "Queue: empty  (%d slots)"
 msgstr "予約：なし（%d 枠）"
 
-#: ui/research_panel.gd:198 ui/research_panel.gd:201
+#: ui/research_panel.gd:202 ui/research_panel.gd:205
 msgid "Press again to cancel (refund)"
 msgstr "もう一度押すとキャンセル（返却）"
 
-#: ui/research_panel.gd:200
+#: ui/research_panel.gd:204
 msgid "Queued #%d"
 msgstr "予約 %d 番目"
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:209
 msgid "Press to research"
 msgstr "押して研究"
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:209
 msgid "Press to queue"
 msgstr "押して予約"
 
-#: ui/research_panel.gd:214
+#: ui/research_panel.gd:218
 msgid "%s cancelled. Cubes refunded."
 msgstr "%s を中止。キューブを返却。"
 
@@ -5941,255 +5965,259 @@ msgstr "{ui_cancel}  戻る"
 msgid "Changes are saved automatically."
 msgstr "変更は自動で保存されます。"
 
-#: ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Quality preset"
 msgstr "画質プリセット"
 
-#: ui/settings_panel.gd:261 ui/settings_panel.gd:368
+#: ui/settings_panel.gd:262 ui/settings_panel.gd:382
 msgid "Fullscreen"
 msgstr "フルスクリーン"
 
-#: ui/settings_panel.gd:264 ui/settings_panel.gd:412
+#: ui/settings_panel.gd:265 ui/settings_panel.gd:426
 msgid "Mouse sensitivity"
 msgstr "マウス感度"
 
-#: ui/settings_panel.gd:269 ui/settings_panel.gd:589
+#: ui/settings_panel.gd:270 ui/settings_panel.gd:603
 msgid "System default"
 msgstr "システムの設定"
 
-#: ui/settings_panel.gd:270 ui/settings_panel.gd:586 ui/settings_panel.gd:590
+#: ui/settings_panel.gd:271 ui/settings_panel.gd:600 ui/settings_panel.gd:604
 msgid "Language"
 msgstr "言語"
 
-#: ui/settings_panel.gd:275
+#: ui/settings_panel.gd:276
 msgid "More settings  (sound, graphics, controls, accessibility)"
 msgstr "その他の設定  （サウンド、グラフィック、操作、アクセシビリティ）"
 
-#: ui/settings_panel.gd:283
+#: ui/settings_panel.gd:284
 msgid "Everything else"
 msgstr "その他すべて"
 
-#: ui/settings_panel.gd:323
-msgid "Volume"
-msgstr "音量"
-
-#: ui/settings_panel.gd:330
-msgid "Ambience"
-msgstr "環境音"
-
-#: ui/settings_panel.gd:333
+#: ui/settings_panel.gd:329
 msgid "Sound effects"
 msgstr "効果音"
 
-#: ui/settings_panel.gd:337 ui/settings_panel.gd:599 ui/settings_panel.gd:607
+#: ui/settings_panel.gd:333
+msgid "Reward sounds"
+msgstr "ごほうびの音"
+
+#: ui/settings_panel.gd:337
+msgid "Wind and animals"
+msgstr "風と動物"
+
+#: ui/settings_panel.gd:343
+msgid "Volume"
+msgstr "音量"
+
+#: ui/settings_panel.gd:351 ui/settings_panel.gd:613 ui/settings_panel.gd:621
 msgid "Interface"
 msgstr "インターフェース"
 
-#: ui/settings_panel.gd:344
+#: ui/settings_panel.gd:358
 msgid "Rendering"
 msgstr "レンダリング"
 
-#: ui/settings_panel.gd:345
+#: ui/settings_panel.gd:359
 msgid "Low drops GI and fog; Ultra adds reflections."
 msgstr "低はGIと霧をオフ、最高は反射を追加。"
 
-#: ui/settings_panel.gd:346
+#: ui/settings_panel.gd:360
 msgid "This renderer always uses the Low preset."
 msgstr "このレンダラーは常に「低」プリセットを使います。"
 
-#: ui/settings_panel.gd:348
+#: ui/settings_panel.gd:362
 msgid "Detected: %s for %s. "
 msgstr "検出：%s（%s 向け）。"
 
-#: ui/settings_panel.gd:349
+#: ui/settings_panel.gd:363
 msgid "Your choice (hardware: %s). "
 msgstr "あなたの選択（ハードウェア：%s）。"
 
-#: ui/settings_panel.gd:350
+#: ui/settings_panel.gd:364
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
 msgstr "低はGI、霧、影の細部をオフ、最高は反射を追加。"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Renderer"
 msgstr "レンダラー"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Standard (Forward+)"
 msgstr "標準（Forward+）"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Light (Mobile)"
 msgstr "軽量（Mobile）"
 
-#: ui/settings_panel.gd:358
+#: ui/settings_panel.gd:372
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
 msgstr "軽量は古い内蔵グラフィック向け。ゲームの再起動後に反映されます（現在：%s）。"
 
-#: ui/settings_panel.gd:364
+#: ui/settings_panel.gd:378
 msgid "Render scale"
 msgstr "レンダースケール"
 
-#: ui/settings_panel.gd:366
+#: ui/settings_panel.gd:380
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
 msgstr "下げると3Dを小さく描画します。UIはくっきりしたまま。"
 
-#: ui/settings_panel.gd:367
+#: ui/settings_panel.gd:381
 msgid "Display"
 msgstr "ディスプレイ"
 
-#: ui/settings_panel.gd:371
+#: ui/settings_panel.gd:385
 msgid "V-Sync"
 msgstr "垂直同期"
 
-#: ui/settings_panel.gd:377 ui/settings_panel.gd:406
+#: ui/settings_panel.gd:391 ui/settings_panel.gd:420
 msgid "Bindings"
 msgstr "キー割り当て"
 
-#: ui/settings_panel.gd:380
+#: ui/settings_panel.gd:394
 msgid "ACTION   (select a binding to rebind it)"
 msgstr "アクション   （割り当てを選んで変更）"
 
-#: ui/settings_panel.gd:383
+#: ui/settings_panel.gd:397
 msgid "KEYBOARD / MOUSE"
 msgstr "キーボード / マウス"
 
-#: ui/settings_panel.gd:383
+#: ui/settings_panel.gd:397
 msgid "CONTROLLER"
 msgstr "コントローラー"
 
-#: ui/settings_panel.gd:399
+#: ui/settings_panel.gd:413
 msgid "Reset to defaults"
 msgstr "初期設定に戻す"
 
-#: ui/settings_panel.gd:406
+#: ui/settings_panel.gd:420
 msgid "Restore every key and controller binding."
 msgstr "キーとコントローラーの割り当てをすべて元に戻します。"
 
-#: ui/settings_panel.gd:408
+#: ui/settings_panel.gd:422
 msgid "Button prompts"
 msgstr "ボタン表示"
 
-#: ui/settings_panel.gd:410
+#: ui/settings_panel.gd:424
 msgid "Controller art: Automatic follows the connected pad."
 msgstr "コントローラー表示：「自動」は接続中のパッドに合わせます。"
 
-#: ui/settings_panel.gd:415
+#: ui/settings_panel.gd:429
 msgid "Stick look speed"
 msgstr "スティックの視点速度"
 
-#: ui/settings_panel.gd:418
+#: ui/settings_panel.gd:432
 msgid "Invert look Y"
 msgstr "視点の上下を反転"
 
-#: ui/settings_panel.gd:422
+#: ui/settings_panel.gd:436
 msgid "Mouse smoothing"
 msgstr "マウススムージング"
 
-#: ui/settings_panel.gd:423
+#: ui/settings_panel.gd:437
 msgid "Eases mouse look over a few frames."
 msgstr "マウスの視点移動を数フレームかけてなめらかにします。"
 
-#: ui/settings_panel.gd:424
+#: ui/settings_panel.gd:438
 msgid "Scooping"
 msgstr "すくう操作"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Scoop button"
 msgstr "すくうボタン"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Hold"
 msgstr "長押し"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Toggle"
 msgstr "切り替え"
 
-#: ui/settings_panel.gd:466
+#: ui/settings_panel.gd:480
 msgid "press a button…"
 msgstr "ボタンを押してください…"
 
-#: ui/settings_panel.gd:466
+#: ui/settings_panel.gd:480
 msgid "press a key…"
 msgstr "キーを押してください…"
 
-#: ui/settings_panel.gd:498
+#: ui/settings_panel.gd:512
 msgid "Conflict: %s is used by both %s and %s."
 msgstr "重複：%s が %s と %s の両方に使われています。"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:608
 msgid "Comfort"
 msgstr "快適さ"
 
-#: ui/settings_panel.gd:595
+#: ui/settings_panel.gd:609
 msgid "Camera shake"
 msgstr "カメラの揺れ"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:611
 msgid "Reduced motion"
 msgstr "動きを減らす"
 
-#: ui/settings_panel.gd:598
+#: ui/settings_panel.gd:612
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "カメラを落ち着かせ、弾むエフェクトを減らします。"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "Minimal"
 msgstr "最小"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "Hidden"
 msgstr "非表示"
 
-#: ui/settings_panel.gd:603
+#: ui/settings_panel.gd:617
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "最小は数秒後に補助表示を消します。非表示はプロンプトとメッセージだけを残します。"
 
-#: ui/settings_panel.gd:613
+#: ui/settings_panel.gd:627
 msgid "Interface scale"
 msgstr "UI の大きさ"
 
-#: ui/settings_panel.gd:615
+#: ui/settings_panel.gd:629
 msgid "Size of menus, HUD and subtitles."
 msgstr "メニュー、HUD、字幕の大きさ。"
 
-#: ui/settings_panel.gd:616
+#: ui/settings_panel.gd:630
 msgid "Colour-blind palette"
 msgstr "色覚サポート配色"
 
-#: ui/settings_panel.gd:617
+#: ui/settings_panel.gd:631
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "ヘックスの進行、ホッパーメーター、パーツのレア度に Okabe-Ito 配色を使います。"
 
-#: ui/settings_panel.gd:618 ui/settings_panel.gd:619
+#: ui/settings_panel.gd:632 ui/settings_panel.gd:633
 msgid "Subtitles"
 msgstr "字幕"
 
-#: ui/settings_panel.gd:620
+#: ui/settings_panel.gd:634
 msgid "WREN's lines."
 msgstr "WREN のセリフ。"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Subtitle size"
 msgstr "字幕の大きさ"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Small"
 msgstr "小"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Large"
 msgstr "大"
 
-#: ui/settings_panel.gd:623
+#: ui/settings_panel.gd:637
 msgid "Subtitle background"
 msgstr "字幕の背景"
 
-#: ui/settings_panel.gd:624
+#: ui/settings_panel.gd:638
 msgid "A solid backdrop behind subtitle text."
 msgstr "字幕テキストの後ろに不透明な背景を表示します。"
 
@@ -6435,19 +6463,27 @@ msgstr "望遠鏡で記録：%s。図鑑に新しい項目。"
 msgid "Codex: %s"
 msgstr "図鑑：%s"
 
-#: ui/tunes_picker.gd:38
-msgid "GLIM'S CDS"
-msgstr "GLIMのCD"
+#: ui/tunes_picker.gd:42 ui/tunes_picker.gd:76
+msgid "RADIO"
+msgstr "ラジオ"
 
-#: ui/tunes_picker.gd:48
-msgid "N / Esc  close"
-msgstr "N / Esc  閉じる"
+#: ui/tunes_picker.gd:76
+msgid "GLIM'S RADIO"
+msgstr "グリムのラジオ"
 
-#: ui/tunes_picker.gd:96
-msgid "Off (the day's music)"
-msgstr "オフ（いつもの音楽）"
+#: ui/tunes_picker.gd:77
+msgid "%s / Esc  close"
+msgstr "%s / Esc  閉じる"
 
-#: ui/tunes_picker.gd:103
+#: ui/tunes_picker.gd:101
+msgid "Random songs"
+msgstr "ランダムに流す"
+
+#: ui/tunes_picker.gd:102
+msgid "Stop the music"
+msgstr "音楽を止める"
+
+#: ui/tunes_picker.gd:109
 msgid "Play once: %s (scratched)"
 msgstr "1回だけ再生：%s（傷あり）"
 
@@ -6507,7 +6543,7 @@ msgstr "ボットベイ"
 msgid "WORKBENCH"
 msgstr "作業台"
 
-#: ui/upgrades_screen.gd:292
+#: ui/upgrades_screen.gd:296
 msgid "Not open yet. Keep playing."
 msgstr "まだ開いていません。プレイを続けよう。"
 
@@ -10704,8 +10740,8 @@ msgid "Music"
 msgstr "ミュージック"
 
 #: data/glim.json:tracks[music].desc
-msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
-msgstr "Glim が見つけたCDをダウンロード：見つけた曲をいつでもどこでも再生できる。"
+msgid "Glim dances along to your songs and shows their notes."
+msgstr "グリムが曲に合わせておどって、音符を出すよ。"
 
 #: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
@@ -11934,12 +11970,12 @@ msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradl
 msgstr "植物は緑の光を出す。その光でブルームコアがたまるし、Cradle号に帰り道を教えてくれるんだ。"
 
 #: data/objectives.json:brief.lines
-msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
-msgstr "Lumi、WREN だよ。Cradle号の上にいるの。ポッドは古いおそうじステーションのそばに落ちたみたい。こっちの電波は弱いんだ。"
+msgid "Lumi... it's WREN. Can you hear me? I can hardly reach you down there."
+msgstr "Lumi……WREN よ。聞こえる？そこまでほとんど届かないの。"
 
 #: data/objectives.json:brief.lines
-msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr "そこのゴミ箱はゴミをキューブに変えるの。パーツを見つけて信号塔を建てれば、お話しできる。ずっと[glitch]聞いて——[/glitch]"
+msgid "Fix the old workbench. Pick up trash, find parts, and build a signal tower so we can [glitch]talk ag—[/glitch]"
+msgstr "古い作業台を直して。ゴミを拾って、パーツを見つけて、信号塔を建てて。そうすればまた[glitch]話せ——[/glitch]"
 
 #: data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
@@ -16654,6 +16690,60 @@ msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いて
 
 #~ msgid "Dig the landmark out. Clean hexes here: %d / %d"
 #~ msgstr "目印を掘り出そう。ここのマスをきれいに：%d / %d"
+
+#~ msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
+#~ msgstr "あのトレイを守るために、あなたは貨物ポッドに乗り込んだ。300年後、ちゃんと持って帰ってきた。"
+
+#~ msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
+#~ msgstr "三百年前、最後の種はアーク Cradle号に乗って Verdance を去った。"
+
+#~ msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
+#~ msgstr "アークの小さなシードキーパー Lumi は、毎晩苗たちに歌を歌っていた。"
+
+#~ msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
+#~ msgstr "また鼻歌かい、Lumi？聞こえてないんだよ。……でも、君が歌うと育つのが速いんだよね。"
+
+#~ msgid "Then, one night, the sky came apart."
+#~ msgstr "そして、ある夜、空が裂けた。"
+
+#~ msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
+#~ msgstr "保管庫ベイで船体破損！Lumi、トレイはいいから、離れて！"
+
+#~ msgid "Lumi— hold on— I can't turn her around— hold on—"
+#~ msgstr "Lumi——がんばって——向きを変えられない——がんばって——"
+
+#~ msgid "The ark could not turn back. The pod fell for days."
+#~ msgstr "アークは引き返せなかった。ポッドは何日も落ち続けた。"
+
+#~ msgid "GREEN LIGHT  ·  NONE DETECTED"
+#~ msgstr "緑の光  ·  検知なし"
+
+#~ msgid "Watch the story"
+#~ msgstr "ストーリーを見る"
+
+#~ msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
+#~ msgstr "Lumi、WREN だよ。Cradle号の上にいるの。ポッドは古いおそうじステーションのそばに落ちたみたい。こっちの電波は弱いんだ。"
+
+#~ msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "そこのゴミ箱はゴミをキューブに変えるの。パーツを見つけて信号塔を建てれば、お話しできる。ずっと[glitch]聞いて——[/glitch]"
+
+#~ msgid "Glim has copied your CDs: press N anywhere to pick a song."
+#~ msgstr "GlimがCDをコピーした：どこでもNを押して曲を選べる。"
+
+#~ msgid "Ambience"
+#~ msgstr "環境音"
+
+#~ msgid "GLIM'S CDS"
+#~ msgstr "GLIMのCD"
+
+#~ msgid "N / Esc  close"
+#~ msgstr "N / Esc  閉じる"
+
+#~ msgid "Off (the day's music)"
+#~ msgstr "オフ（いつもの音楽）"
+
+#~ msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
+#~ msgstr "Glim が見つけたCDをダウンロード：見つけた曲をいつでもどこでも再生できる。"
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "留守のあいだに（%s）："

@@ -511,21 +511,25 @@ func _pick(pid: int) -> void:
 	var start_scale: Vector3 = start_xf.basis.get_scale()
 	var hov: bool = visual.hover
 	var tw := flyer.create_tween()
+	# The flyer's tween can outlive a robot freed mid-flight, and a lambda that uses the robot itself
+	# would then run on freed memory (the engine keeps only its address): reach it through a weak ref.
+	var me: WeakRef = weakref(self)
 	tw.tween_method(func(t: float) -> void:
-		if not is_instance_valid(self):
+		var bot: Robot = me.get_ref() as Robot
+		if bot == null:
 			return
-		var end: Vector3 = to_global(visual.hopper_point)
+		var end: Vector3 = bot.to_global(bot.visual.hopper_point)
 		var pos: Vector3
 		if hov:
 			# Tractor beam: rise slowly, spin, then get pulled in.
 			var lift: Vector3 = start + Vector3(0, 0.9 * smoothstep(0.0, 0.5, t), 0)
 			pos = lift.lerp(end, smoothstep(0.45, 1.0, t))
 			flyer.rotation += Vector3(0.05, 0.08, 0.03)
-			_beam_target = pos
+			bot._beam_target = pos
 		else:
 			var top: Vector3 = (start + end) * 0.5 + Vector3(0, 0.6, 0)
 			pos = start.lerp(top, t).lerp(top.lerp(end, t), t)
-			_beam_target = pos  # Mk III shows a slim beam on the arc (hidden on lower tiers)
+			bot._beam_target = pos  # Mk III shows a slim beam on the arc (hidden on lower tiers)
 		flyer.global_position = pos
 		flyer.scale = start_scale * lerpf(1.0, 0.4, t * t)
 		, 0.0, 1.0, dur)

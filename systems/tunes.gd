@@ -5,15 +5,17 @@ extends RefCounted
 ## audio/tunes_director.gd, a child of the Audio autoload, reached through the helpers below.
 ##
 ## - A song whose file is missing is skipped everywhere, so new MP3s can be dropped in by id.
-## - You start with the songs in "start"; every other song is a CD found in the rubble of its
-##   planet (planet/cd_finds.gd). Owned CDs: GameState.flags.songs.found (in the order found).
-## - The background shuffle (pick_next) plays owned songs that fit the planet and the moment;
-##   the CD player (systems/extras/radio.gd) plays a pick on repeat or the whole collection on
-##   shuffle. With Glim's Music upgrade (Glim.has_music(), wt/buddy) any CD plays anywhere.
+## - Songs with unlock "start" are owned at once; every other song is a CD found in the rubble of
+##   its planet (planet/cd_finds.gd). Owned CDs: GameState.flags.songs.found (in the order found).
+## - [v10snd] No song plays in the world before the first CD (first_cd_found). After it the
+##   background shuffle (pick_next) plays the songs that fit the planet and the moment (all of
+##   them while "shuffle_all" is on), and the radio (ui/tunes_picker.gd, N) plays a found song on
+##   repeat or the collection on shuffle, anywhere. The yard's CD player opens the same list.
 
 const PATH: String = "res://data/songs.json"
 const DIR: String = "res://audio/songs/"
 const SHUFFLE: String = "shuffle"
+const OFF: String = "off"  # [v10snd] the radio's Stop: no song until the player picks again
 const NIGHT_MOODS: Array[String] = ["night"]
 const RESTORED_AT: float = 0.55  # fallback for cfg "restored_at"
 ## [v6sound] Drop-in songs: any of these in audio/songs/ or one folder below it (a planet id, or
@@ -521,6 +523,87 @@ static func songs_by(artist_id: String) -> Array[String]:
 	return out
 
 
+# --- The first CD and the radio (v10snd) ---------------------------------------------------
+## Owner, 2026-11-15: "the first song should play when you find a cd in the rubble close by at
+## the start. It should play sun baked and tell you when you find cds you can play at will ...
+## Just allow all songs to play at random for now but first song is after CD and player can play
+## sun baked whenever they want."
+## - No song plays in the world until the first CD is found (data/songs.json "first_cd": the song,
+##   where the disc lies; planet/cd_finds.gd puts it in the junk by the start pad).
+## - Finding it plays that song at once and opens the radio (ui/tunes_picker.gd, key N): any
+##   found song at will, stop, or back to the songs that come by themselves.
+## - From then on songs come up at random with quiet in between: every song with a file while
+##   "shuffle_all" is true ("for now"), else only the found ones.
+## State: GameState.flags.songs.first_cd (true once found). A save from before this rule that
+## has already been played counts as found (adopt_old_save).
+
+static func first_cd_cfg() -> Dictionary:
+	var v: Variant = cfg().get("first_cd")
+	return v if v is Dictionary else {}
+
+
+## The first CD's song ("" when there is none or its file is missing: then nothing is gated).
+static func first_cd_id() -> String:
+	var id: String = str(first_cd_cfg().get("song", ""))
+	return id if id != "" and has_file(id) else ""
+
+
+static func first_cd_found() -> bool:
+	return first_cd_id() == "" or bool(st().get("first_cd", false))
+
+
+## Songs that may come up by themselves: all with a file ("shuffle_all"), else the found ones.
+static func shuffle_pool() -> Array[String]:
+	return available() if bool(cfg().get("shuffle_all", false)) else found()
+
+
+## The radio is open: the first CD is found (and there is a song to pick).
+static func radio_open() -> bool:
+	return DevHooks.has("glim-music") or (first_cd_found() and not found().is_empty())
+
+
+## Lumi picks up the first CD: the song joins the collection and plays at once (once, then the
+## usual quiet and random songs). The caller shows first_cd_text().
+static func find_first_cd() -> bool:
+	var id: String = first_cd_id()
+	if id == "" or bool(st().get("first_cd", false)):
+		return false
+	st()["first_cd"] = true
+	Once.take("toast_first_cd")
+	grant(id, true)
+	print("[tunes] first CD found: %s" % id)
+	var d: Node = director()
+	if d:
+		d.call("play_now", id)
+	Audio.play("sparkle", 1.1, -8.0)
+	return true
+
+
+## The one line shown with the first CD (planet/cd_finds.gd shows it on a card with a CD picture).
+## Owner: "tell you when you find cds you can play at will through glim". Glim is built later.
+static func first_cd_text(id: String) -> String:
+	var t: String = TranslationServer.translate("You found a CD: %s! Press %s to play it any time.") % [TranslationServer.translate(title(id)), Settings.glyph("open_radio")]
+	if glim_built():
+		return t + " " + TranslationServer.translate("Glim is your radio.")
+	return t + " " + TranslationServer.translate("Glim will be your radio when you build it.")
+
+
+## A save made before the first-CD rule: one that has been played (a clean hex, or the songs it
+## already unlocked) has heard music, so it behaves as if the first CD was found, and keeps the
+## songs that used to be owned from the start ("first_cd".old_start). A new game gets the CD.
+static func adopt_old_save() -> void:
+	var d: Dictionary = st()
+	if d.has("first_cd") or first_cd_id() == "":
+		return
+	var played: bool = float(GameState.stats.get("hexes_cleaned", 0.0)) >= 1.0 or not (d["found"] as Array).is_empty()
+	d["first_cd"] = played
+	if played:
+		for id: Variant in [first_cd_id()] + (first_cd_cfg().get("old_start", []) as Array):
+			if not song(str(id)).is_empty() and not is_found(str(id)):
+				(d["found"] as Array).append(str(id))
+		print("[tunes] an earlier save: the first CD counts as found")
+
+
 # --- Shuffle -----------------------------------------------------------------------------
 
 ## Whether an owned song fits the background shuffle right now. [v6sound] By its "planets" and
@@ -549,10 +632,12 @@ static func weight(id: String, planet: String) -> float:
 
 
 ## The next background song ("" when nothing fits). Never the last one twice in a row while
-## another fits; avoids the last few when it can.
+## another fits; avoids the last few when it can. [v10snd] Nothing before the first CD.
 static func pick_next(planet: String, mood: String, restoration: float, recent: Array, rng: RandomNumberGenerator) -> String:
 	var pool: Array[String] = []
-	for id: String in found():
+	if not first_cd_found():
+		return ""
+	for id: String in shuffle_pool():
 		if fits(id, planet, mood, restoration):
 			pool.append(id)
 	return pick_main_rule(pool, recent, rng, func(id: String) -> float: return weight(id, planet),
@@ -619,7 +704,7 @@ static func _weighted(pool: Array[String], recent: Array, rng: RandomNumberGener
 # --- Glim's Music upgrade (wt/buddy; looked up at runtime so either branch runs alone) --
 
 static func glim_music() -> bool:
-	if DevHooks.has("glim-music"):
+	if DevHooks.has("glim-music") or radio_open():  # [v10snd] the radio goes everywhere from the first CD
 		return true
 	if not _glim_checked:
 		_glim_checked = true
@@ -715,6 +800,23 @@ static func play_moment(moment: String) -> bool:
 	return d != null and bool(d.call("play_moment", moment))
 
 
+## [v10snd] Stop: no song at all (the radio's Stop), until a song or "random songs" is picked.
+static func off() -> void:
+	var d: Node = director()
+	if d:
+		d.call("set_radio", OFF)
+
+
+## Glim is built (the radio is shown as Glim's then). Looked up by class name like glim_music().
+static func glim_built() -> bool:
+	if not _glim_checked:
+		_glim_checked = true
+		for c: Dictionary in ProjectSettings.get_global_class_list():
+			if str(c.get("class", "")) == "Glim":
+				_glim = load(str(c["path"])) as GDScript
+	return _glim != null and bool(_glim.call("is_found"))
+
+
 ## Back to the background music.
 static func stop() -> void:
 	var d: Node = director()
@@ -728,9 +830,9 @@ static func radio_mode() -> String:
 	return str(d.get("radio")) if d else ""
 
 
-## Quick-select (needs Glim's Music upgrade): Shuffle / Pick / Off.
+## The radio (from the first CD on): Shuffle / Pick / Off.
 static func open_picker(world: Node) -> void:
-	if world == null or not glim_music():
+	if world == null or not radio_open():
 		return
 	var p: Node = world.get_node_or_null("TunesPicker")
 	if p and p.has_method("open"):

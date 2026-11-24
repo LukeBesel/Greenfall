@@ -140,16 +140,18 @@ static func playing() -> String:
 ## Plays a song ("" = back to the mood music). False if it is still locked.
 ## [tunes] "shuffle" and the owner's songs (systems/tunes.gd ids) go to the CD player's songs.
 static func play(id: String) -> bool:
-	if id == Tunes.SHUFFLE or not Tunes.song(id).is_empty() or (id == "" and Tunes.radio_mode() != ""):  # [tunes]
-		if id != "" and id != Tunes.SHUFFLE and not Tunes.play(id):
+	if id == Tunes.SHUFFLE or id == Tunes.OFF or not Tunes.song(id).is_empty() or (id == "" and Tunes.radio_mode() != ""):  # [tunes]
+		if id != "" and id != Tunes.SHUFFLE and id != Tunes.OFF and not Tunes.play(id):
 			return false
 		if id == Tunes.SHUFFLE:
 			Tunes.shuffle()
+		elif id == Tunes.OFF:  # [v10snd] the radio's Stop
+			Tunes.off()
 		elif id == "":
 			Tunes.stop()
 		Audio.stop_track()
 		st()["song"] = id
-		if id != "":
+		if id != "" and id != Tunes.OFF:
 			GameState.inc_stat("radio_plays")
 		return true
 	if id != "" and not is_unlocked(id):
@@ -181,7 +183,7 @@ func setup(p_world: Node) -> void:
 	_anchor = anchor
 	if world.get("interactables") != null:
 		(world.interactables as Interactables).register(anchor, REACH,
-			func() -> String: return tr("E   CD player: %s") % (tr(title(playing())) if playing() != "" else tr("mood music")),  # [camp] owner: it is a CD player
+			func() -> String: return tr("E   CD player: %s") % (tr("stopped") if playing() == Tunes.OFF else (tr(title(playing())) if playing() != "" else tr("mood music"))),  # [camp] owner: it is a CD player
 			func() -> void: ExtrasPanel.open_for(world, "radio"),
 			func() -> bool: return visible)  # [camp] only once it's built
 	set_built(YardBuilds.built("radio"), false)  # [camp]
@@ -191,7 +193,7 @@ func setup(p_world: Node) -> void:
 	var td: Node = Tunes.director()  # [tunes] the CD player's songs come from here
 	if td:
 		td.set("radio_source", self)
-	if playing() != "" and (is_unlocked(playing()) or playing() == Tunes.SHUFFLE or Tunes.is_found(playing())):
+	if playing() != "" and (is_unlocked(playing()) or playing() == Tunes.SHUFFLE or playing() == Tunes.OFF or Tunes.is_found(playing())):
 		play(playing())  # [tunes] routes CDs too
 
 
