@@ -49,7 +49,7 @@ var leap_strict: int = 2
 
 var _lv: Array = []             # per cell: PackedFloat32Array of standable heights (highest first), or null
 var _surf: Dictionary = {}      # cell -> PackedFloat32Array of every surface height the rays met (highest first), the ground last
-var _free: Dictionary = {}      # cell * 64 + height step -> bool
+var _free: Dictionary = {}      # cell * 512 + height in 1/64 m -> bool
 var _q: PhysicsShapeQueryParameters3D
 var _ray: PhysicsRayQueryParameters3D
 var _owner_at: Dictionary = {}  # node id -> what he stands on there (collider path)
@@ -122,7 +122,9 @@ func _is_ground(o: Object) -> bool:
 
 ## His body fits at height h (above the ground) in cell c.
 func free_at(c: int, h: float) -> bool:
-	var key: int = c * 64 + clampi(int(round(h * 8.0)), 0, 63)
+	# Keyed to 1/64 m: at 1/8 m a query for one height answered for another up to 6 cm off, so a
+	# leap's answer depended on which height was asked first in that cell.
+	var key: int = c * 512 + clampi(roundi(h * 64.0), 0, 511)
 	if _free.has(key):
 		return _free[key]
 	var up: Vector3 = _up(c)
@@ -321,7 +323,10 @@ func moves(node: int, mode: int) -> PackedInt32Array:
 ## Leaps from an edge: through the air at about the hop's top, over what is in the way, down onto
 ## the first thing under him.
 func _leaps(c: int, a: float, mode: int, out: PackedInt32Array, but: int = 0) -> void:
-	var margin: float = 0.07 if mode == GENEROUS else -0.12
+	# GENEROUS: his underside (fly + BODY_LIFT + 0.02, see free_at) passes over tops up to the reach a
+	# step up has (hop_h + BODY_LIFT + REACH_MARGIN above where he leaves): a hop that cannot get onto
+	# a 0.90 m top does not sail over one either (tests/test_jump.gd holds the motor to both).
+	var margin: float = (REACH_MARGIN - 0.02) if mode == GENEROUS else -0.12
 	var fly: float = a + hop_h + margin
 	var land_up: float = (hop_h + BODY_LIFT + REACH_MARGIN) if mode == GENEROUS else 0.0
 	var rng: int = leap_strict

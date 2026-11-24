@@ -264,6 +264,23 @@ func test_a_top_at_090_m_is_out_of_reach() -> void:
 	assert_almost_eq(_alt(), 0.0, 0.05, "he ends on the ground")
 
 
+func test_a_thin_090_m_rail_is_not_hopped_over() -> void:
+	# The audit's leaps (planet/sites/jump_reach.gd _leaps) let his underside pass over tops up to
+	# the reach of a step up, so a 0.90 m top is out of reach there too. A thin rail of 0.90 m,
+	# with no top to stand on: running hops do not carry him over it, with the boost or without.
+	_box(Vector3(6, 0.9, 0.3), Vector3(0, 0.45, -3.0))
+	await _ticks(20)
+	var r: Array = await _hop_north(8)
+	assert_gt(float(r[1]), 0.5, "he did hop (%.2f m up)" % float(r[1]))
+	assert_lt(float(r[0]), 2.9, "not over the rail (z -%.2f; its near side is at -2.85)" % float(r[0]))
+	inp.boost = true
+	var rb: Array = await _hop_north(8)
+	inp.boost = false
+	assert_gt(float(rb[1]), 0.5, "boosted, he did hop (%.2f m up)" % float(rb[1]))
+	assert_lt(float(rb[0]), 2.9, "boosted, not over the rail either (z -%.2f)" % float(rb[0]))
+	assert_gt(lumi.global_position.z, -2.9, "he ends on his side")
+
+
 func test_junk_heap_is_a_wall_in_the_air() -> void:
 	# A low heap (0.5 m at its top) dead ahead: on the ground he cannot walk in; hopping he cannot
 	# get onto or over it either.
