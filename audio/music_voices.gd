@@ -9,9 +9,12 @@ var _players: Array[AudioStreamPlayer] = []
 var _gen: PackedInt32Array = PackedInt32Array()
 var _busy_until: PackedFloat64Array = PackedFloat64Array()  # INF while a loop holds it
 var _started: PackedFloat64Array = PackedFloat64Array()
+var _bus: String = "Music"
+var _next_bus: String = ""
 
 
 func setup(samples: Dictionary, bus: String, count: int = 48) -> void:
+	_bus = bus
 	add_samples(samples)
 	for i: int in count:
 		var p := AudioStreamPlayer.new()
@@ -36,6 +39,14 @@ func _now() -> float:
 	return Time.get_ticks_usec() / 1000000.0
 
 
+## [v10snd] A one-shot on another bus (stingers: the Jingles bus). Every start sets the bus.
+func start_on(sample: String, pitch: float, gain: float, bus: String) -> int:
+	_next_bus = bus
+	var id: int = start(sample, pitch, gain)
+	_next_bus = ""
+	return id
+
+
 func start(sample: String, pitch: float, gain: float) -> int:
 	if not _streams.has(sample) or _players.is_empty():
 		return -1
@@ -56,6 +67,7 @@ func start(sample: String, pitch: float, gain: float) -> int:
 	p.stream = _streams[sample]
 	p.pitch_scale = maxf(0.05, pitch)
 	p.volume_db = _db(gain)
+	p.bus = _next_bus if _next_bus != "" and AudioServer.get_bus_index(_next_bus) >= 0 else _bus
 	p.play()
 	_gen[idx] += 1
 	_started[idx] = now

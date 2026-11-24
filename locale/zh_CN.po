@@ -200,67 +200,67 @@ msgstr "触摸板"
 msgid "Paddle 1"
 msgstr "背键 1"
 
-#: autoload/Settings.gd:554
+#: autoload/Settings.gd:567
 msgid "LMB"
 msgstr "左键"
 
-#: autoload/Settings.gd:555
+#: autoload/Settings.gd:568
 msgid "RMB"
 msgstr "右键"
 
-#: autoload/Settings.gd:556
+#: autoload/Settings.gd:569
 msgid "MMB"
 msgstr "中键"
 
-#: autoload/Settings.gd:557
+#: autoload/Settings.gd:570
 msgid "Wheel up"
 msgstr "滚轮上"
 
-#: autoload/Settings.gd:558
+#: autoload/Settings.gd:571
 msgid "Wheel down"
 msgstr "滚轮下"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:572
 msgid "Mouse %d"
 msgstr "鼠标 %d"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:574
 msgid "Button %d"
 msgstr "按键 %d"
 
-#: autoload/Settings.gd:566
+#: autoload/Settings.gd:579
 msgid "LS left"
 msgstr "左摇杆左"
 
-#: autoload/Settings.gd:566
+#: autoload/Settings.gd:579
 msgid "LS right"
 msgstr "左摇杆右"
 
-#: autoload/Settings.gd:567
+#: autoload/Settings.gd:580
 msgid "LS up"
 msgstr "左摇杆上"
 
-#: autoload/Settings.gd:567
+#: autoload/Settings.gd:580
 msgid "LS down"
 msgstr "左摇杆下"
 
-#: autoload/Settings.gd:568
+#: autoload/Settings.gd:581
 msgid "RS left"
 msgstr "右摇杆左"
 
-#: autoload/Settings.gd:568
+#: autoload/Settings.gd:581
 msgid "RS right"
 msgstr "右摇杆右"
 
-#: autoload/Settings.gd:569
+#: autoload/Settings.gd:582
 msgid "RS up"
 msgstr "右摇杆上"
 
-#: autoload/Settings.gd:569
+#: autoload/Settings.gd:582
 msgid "RS down"
 msgstr "右摇杆下"
 
-#: autoload/Settings.gd:580
+#: autoload/Settings.gd:593
 msgid "hold %s"
 msgstr "按住 %s"
 
@@ -413,7 +413,7 @@ msgstr "方块或零件不足"
 msgid "Rocket upgraded: %s."
 msgstr "火箭已升级：%s。"
 
-#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
+#: automation/stations.gd:122 automation/telescope.gd:103 robots/fabricator/bot_fabricator.gd:92
 #: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "已建造。"
@@ -459,26 +459,26 @@ msgstr "每 3 个捆包送 1 个去回收炉"
 msgid "Every %dth bale to the recycler"
 msgstr "每 %d 个捆包送 1 个去回收炉"
 
-#: automation/telescope.gd:102
+#: automation/telescope.gd:107
 msgid "Requires hub level %d or research: %s."
 msgstr "需要基地等级 %d 或研究：%s。"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
+#: automation/telescope.gd:109 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
 #: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
 #: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "材料不足。"
 
-#: automation/telescope.gd:115
+#: automation/telescope.gd:120
 msgid "Telescope built. Walk up to it and press {interact} to look across the system."
 msgstr "望远镜已建成。走过去按 {interact}，眺望整个星系。"
 
-#: automation/telescope.gd:260 ui/telescope_panel.gd:11
+#: automation/telescope.gd:265 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "天文台"
 
-#: automation/telescope.gd:312
+#: automation/telescope.gd:317
 msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
@@ -510,43 +510,43 @@ msgstr "+%s 方块"
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "现在不收散装垃圾了。按 [%s] 压一个垃圾块，再把它放到秤上。"
 
-#: fauna/fauna.gd:1739
+#: fauna/fauna.gd:1741
 msgid "E   pet %s"
 msgstr "E   摸摸%s"
 
-#: fauna/fauna.gd:1740
+#: fauna/fauna.gd:1742
 msgid "E   pet the cat"
 msgstr "E   摸摸猫咪"
 
-#: fauna/fauna.gd:1798
+#: fauna/fauna.gd:1800
 msgid "E   scatter crumbs for the birds"
 msgstr "E   给鸟儿撒面包屑"
 
-#: fauna/fauna.gd:1846
+#: fauna/fauna.gd:1848
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鸟儿们觉得你还不错。面包屑袋已加入你的收藏。"
 
-#: fauna/fauna.gd:1902
+#: fauna/fauna.gd:1904
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
-#: fauna/fauna.gd:2232 ui/subtitles.gd:448
+#: fauna/fauna.gd:2234 ui/subtitles.gd:448
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新发现：%s。已收入图鉴。"
 
-#: fauna/fauna.gd:2303
+#: fauna/fauna.gd:2305
 msgid "Snap! A %s for your Collection."
 msgstr "咔嚓！一张%s的照片，收进你的收藏。"
 
-#: planet/cd_finds.gd:190
+#: planet/cd_finds.gd:353
 msgid "A scratched CD turned up in the rubble."
 msgstr "瓦砾里冒出了一张刮花的CD。"
 
-#: planet/cd_finds.gd:190
+#: planet/cd_finds.gd:353
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr "清理过的瓦砾里有东西在闪光。一张旧CD！"
 
-#: planet/cd_finds.gd:230
+#: planet/cd_finds.gd:410
 msgid "Your CD case is full."
 msgstr "你的CD盒满了。"
 
@@ -646,7 +646,7 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:247 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -803,31 +803,31 @@ msgstr "%d 个基地都立起来了。到火箭那里造推进器吧。"
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:126
+#: planet/sites/orbit_sites.gd:128
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:148
+#: planet/sites/orbit_sites.gd:150
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:186
+#: planet/sites/orbit_sites.gd:188
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:226
+#: planet/sites/orbit_sites.gd:228
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:244
+#: planet/sites/orbit_sites.gd:246
 msgid "%s site"
 msgstr "%s地点"
 
@@ -835,31 +835,31 @@ msgstr "%s地点"
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "这水……我能看见底了。Lumi，下面有东西在动。"
 
-#: plants/composter.gd:77
+#: plants/composter.gd:82
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   堆肥压制机  ·  休眠中，等有东西长出来"
 
-#: plants/composter.gd:79
+#: plants/composter.gd:84
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr "E   堆肥压制机  ·  %d 级（满级）"
 
-#: plants/composter.gd:80
+#: plants/composter.gd:85
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr "E   将堆肥压制机升到 %d 级  ·  %s 方块"
 
-#: plants/composter.gd:85
+#: plants/composter.gd:90
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr "压制机是冷的。先种出点东西吧：它靠植物留下的东西运转。"
 
-#: plants/composter.gd:91
+#: plants/composter.gd:96
 msgid "Not enough cubes to upgrade the press."
 msgstr "方块不够，无法升级压制机。"
 
-#: plants/composter.gd:100
+#: plants/composter.gd:105
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr "堆肥压制机 %d 级：每周期 %.0f 秒，每次 %.1f 颗种子。"
 
-#: plants/composter.gd:154
+#: plants/composter.gd:159
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
@@ -867,7 +867,7 @@ msgstr ""
 "堆肥压制机\n"
 "休眠中"
 
-#: plants/composter.gd:156
+#: plants/composter.gd:161
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
@@ -919,79 +919,79 @@ msgstr "埋藏零件  %s  ·  %.1f 米"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋藏零件  ·  信号 %d%%"
 
-#: player/patch.gd:246
+#: player/patch.gd:323
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi 哐啷哐啷地回到了院子里。真奇怪。"
 
-#: player/patch.gd:300
+#: player/patch.gd:377
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi 不会游泳。在工作台装上悬浮喷口，他就能飘过湖面。"
 
-#: player/patch.gd:432
+#: player/patch.gd:510
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "先去拿种子罐：跟着光束走到温室。"
 
-#: player/patch.gd:433
+#: player/patch.gd:511
 msgid "No seeds yet. Keep cleaning."
 msgstr "还没有种子。继续清理吧。"
 
-#: player/patch.gd:476 player/patch.gd:504
+#: player/patch.gd:554 player/patch.gd:582
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:483
+#: player/patch.gd:561
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "先种下：按  {tool_plant}  拿出种子"
 
-#: player/patch.gd:487
+#: player/patch.gd:565
 msgid "Watering can is empty. Refill at the base."
 msgstr "水壶空了。回基地补水。"
 
-#: player/patch.gd:506
+#: player/patch.gd:584
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "先把这个六边形清理干净。种子需要干净的土地。"
 
-#: player/patch.gd:508
+#: player/patch.gd:586
 msgid "Something is growing here already. Try a free spot."
 msgstr "这里已经长着东西了。换个空位试试。"
 
-#: player/patch.gd:509
+#: player/patch.gd:587
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "种子要种在泥土里，不能种在路上或平台上。试试温室的苗床。"
 
-#: player/patch.gd:510
+#: player/patch.gd:588
 msgid "Seeds need soil, not road or the pad."
 msgstr "种子要种在泥土里，不能种在路上或平台上。"
 
-#: player/patch.gd:671
+#: player/patch.gd:749
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "你的箱子是空的。先去捡些垃圾。"
 
-#: player/patch.gd:711
+#: player/patch.gd:789
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:717
+#: player/patch.gd:795
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:721
+#: player/patch.gd:799
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:723
+#: player/patch.gd:801
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:726
+#: player/patch.gd:804
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:775
+#: player/patch.gd:853
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:806
+#: player/patch.gd:884
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1166,11 +1166,11 @@ msgstr[0] "正在运送 %d 个捆包"
 msgid "fetching a bale"
 msgstr "正在取捆包"
 
-#: robots/robot.gd:256 robots/robot.gd:907
+#: robots/robot.gd:256 robots/robot.gd:911
 msgid "waiting for bales"
 msgstr "等待捆包"
 
-#: robots/robot.gd:259 robots/robot.gd:577
+#: robots/robot.gd:259 robots/robot.gd:581
 msgid "out of seeds"
 msgstr "种子用完了"
 
@@ -1214,7 +1214,7 @@ msgstr "正把捆包运到岸边"
 msgid "skimming lake hex %d (%d%%)"
 msgstr "清理湖面六角格 %d（%d%%）"
 
-#: robots/robot.gd:270 robots/robot.gd:770
+#: robots/robot.gd:270 robots/robot.gd:774
 msgid "lake is clean"
 msgstr "湖面已干净"
 
@@ -1230,27 +1230,27 @@ msgstr "区域已清理，待命"
 msgid "nothing left to clean"
 msgstr "没有可清理的了"
 
-#: robots/robot.gd:427 robots/robot.gd:770
+#: robots/robot.gd:427 robots/robot.gd:774
 msgid "zone clean"
 msgstr "区域已清理"
 
-#: robots/robot.gd:575
+#: robots/robot.gd:579
 msgid "seeds locked"
 msgstr "种子未解锁"
 
-#: robots/robot.gd:581 robots/robot.gd:585
+#: robots/robot.gd:585 robots/robot.gd:589
 msgid "no empty soil"
 msgstr "没有空地"
 
-#: robots/robot.gd:614
+#: robots/robot.gd:618
 msgid "no garden"
 msgstr "没有菜园"
 
-#: robots/robot.gd:628
+#: robots/robot.gd:632
 msgid "everything watered"
 msgstr "全都浇过了"
 
-#: robots/robot.gd:724
+#: robots/robot.gd:728
 msgid "no water source"
 msgstr "没有水源"
 
@@ -1599,7 +1599,7 @@ msgstr "你的基地已经成长到试玩版的极限。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "在完整版中，Lumi 会把基地建到 5 级，种满整片街区直到繁茂，让它们成长为明亮的未来城市，还会乘火箭飞往星球上的数十座基地。你的试玩进度会被保留。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:789
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:793
 msgid "Hexes cleaned"
 msgstr "已清理六角格"
 
@@ -1607,11 +1607,11 @@ msgstr "已清理六角格"
 msgid "Bales made"
 msgstr "已制作捆包"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:804
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:808
 msgid "Robots built"
 msgstr "已建造机器人"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:812
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:816
 msgid "Time played"
 msgstr "游戏时长"
 
@@ -1631,7 +1631,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:886 ui/main_menu.gd:590
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1676,55 +1676,55 @@ msgstr "没有什么在等着结束，{name}。没有人在计分。我们到家
 msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram ({open_globe})."
 msgstr "Cradle号到家了。种子方舟已开启：Verdance 上的每一朵花都计入下一波。进度显示在全息图上（{open_globe}）。"
 
-#: story/core_charge.gd:206
+#: story/core_charge.gd:215
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "绽放核心 100%。Lumi 的核心充满了绿光。"
 
-#: story/core_charge.gd:232
+#: story/core_charge.gd:241
 msgid "Bloom Core  25%"
 msgstr "绽放核心  25%"
 
-#: story/core_charge.gd:233
+#: story/core_charge.gd:242
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "好了。中继刚刚锁定。Lumi，我终于能好好听见你了。清楚得像从前一样。"
 
-#: story/core_charge.gd:253
+#: story/core_charge.gd:262
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "一段回忆  ·  Cradle号的花园甲板"
 
-#: story/core_charge.gd:264
+#: story/core_charge.gd:273
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "还记得花园甲板吗？你每块苗床都浇两遍，就为了保险。"
 
-#: story/core_charge.gd:267
+#: story/core_charge.gd:276
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "你在下面种出的每一小片，都是又一块这样的苗床。你没有迷路，Lumi。你在重新播种。"
 
-#: story/core_charge.gd:271
+#: story/core_charge.gd:280
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "绽放核心 25%：WREN 的信号清晰了。"
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:298
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "绽放核心 50%：Lumi 的光芒回来了，比这些年来都要亮。"
 
-#: story/core_charge.gd:291
+#: story/core_charge.gd:300
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "充了一半。你在发光，Lumi。是真正地发光。我都忘了你能这么亮。"
 
-#: story/core_charge.gd:325
+#: story/core_charge.gd:334
 msgid "That night..."
 msgstr "那天夜里……"
 
-#: story/core_charge.gd:349
+#: story/core_charge.gd:358
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi，抬头看。那道光。从西到东，平稳，不闪烁。"
 
-#: story/core_charge.gd:354
+#: story/core_charge.gd:363
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "那是 Cradle号。你的核心亮起时，方舟听见了。它调头了。我们回来接你了。"
 
-#: story/core_charge.gd:364
+#: story/core_charge.gd:373
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "绽放核心 75%：Cradle号正在回家的路上。夜里留意它划过天空。"
 
@@ -2674,35 +2674,35 @@ msgstr "在 Verdance 的 Cradle号归来建造"
 msgid "Rocket drive built: %s."
 msgstr "火箭推进器已建成：%s。"
 
-#: systems/homeward_director.gd:333
+#: systems/homeward_director.gd:337
 msgid "Intercepted: %s"
 msgstr "截获：%s"
 
-#: systems/homeward_director.gd:348
+#: systems/homeward_director.gd:352
 msgid "%s: %s"
 msgstr "%s：%s"
 
-#: systems/homeward_director.gd:358
+#: systems/homeward_director.gd:362
 msgid "%s is restored. System: %d%%."
 msgstr "%s 已恢复。星系：%d%%。"
 
-#: systems/homeward_director.gd:361
+#: systems/homeward_director.gd:365
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "遗物：%s。传家宝选择 +1（方舟舰桥）。"
 
-#: systems/homeward_director.gd:369
+#: systems/homeward_director.gd:373
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "星系里的每个星球都活过来了。定居者醒来时会看到五个绿色的世界。"
 
-#: systems/homeward_director.gd:565
+#: systems/homeward_director.gd:569
 msgid "E   launch home"
 msgstr "E   发射回家"
 
-#: systems/homeward_director.gd:565
+#: systems/homeward_director.gd:569
 msgid "E   plant the last seed"
 msgstr "E   种下最后一颗种子"
 
-#: systems/homeward_director.gd:576
+#: systems/homeward_director.gd:580
 msgid "The last seed is in the ground. Everything is ready. Press {interact} again here to launch home."
 msgstr "最后一颗种子已经入土。一切就绪。在这里再按一次 {interact} 就能发射回家。"
 
@@ -2762,11 +2762,11 @@ msgstr "{robot} {stat} +{amount}%"
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} {stat} +{amount}"
 
-#: systems/late_director.gd:107
+#: systems/late_director.gd:116
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "Cradle号回家之后，方舟舰桥才会开放。"
 
-#: systems/late_director.gd:144
+#: systems/late_director.gd:153
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode ({garden_mode}) is open too."
 msgstr "摇篮模式：方舟的种子库里存着给其他世界的种子。暂停 > 方舟舰桥可以查看它们和你的复原度解锁的传家宝，或者播种一个新世界。花园模式（{garden_mode}）也已开放。"
 
@@ -2834,20 +2834,20 @@ msgstr "存档 %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d 小时"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
-#: ui/settings_panel.gd:621
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
+#: ui/settings_panel.gd:635
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Ultra"
 msgstr "超高"
 
@@ -2895,7 +2895,7 @@ msgstr "已在队列中"
 msgid "Queue is full"
 msgstr "队列已满"
 
-#: systems/research.gd:356 ui/codex_screen.gd:886
+#: systems/research.gd:356 ui/codex_screen.gd:890
 msgid "%ds"
 msgstr "%d秒"
 
@@ -2979,15 +2979,15 @@ msgstr "解锁%s种子"
 msgid "Unlocks: %s"
 msgstr "解锁：%s"
 
-#: systems/research.gd:616
+#: systems/research.gd:621
 msgid "While you were away, research finished: %s."
 msgstr "你离开期间，研究完成了：%s。"
 
-#: systems/research.gd:647
+#: systems/research.gd:652
 msgid "New robot plans: %s. %s"
 msgstr "新的机器人图纸：%s。%s"
 
-#: systems/research.gd:652
+#: systems/research.gd:657
 msgid "Research complete: %s."
 msgstr "研究完成：%s。"
 
@@ -3077,9 +3077,21 @@ msgstr "紫罗兰"
 msgid "Moonlight"
 msgstr "月光"
 
-#: systems/tunes.gd:390
+#: systems/tunes.gd:392
 msgid "New CD: %s by %s, from %s"
 msgstr "新CD：%s，演奏：%s，来自%s"
+
+#: systems/tunes.gd:585
+msgid "You found a CD: %s! Press %s to play it any time."
+msgstr "你找到了一张CD：%s！按 %s 随时播放。"
+
+#: systems/tunes.gd:587
+msgid "Glim is your radio."
+msgstr "Glim就是你的收音机。"
+
+#: systems/tunes.gd:588
+msgid "Glim will be your radio when you build it."
+msgstr "造好Glim后，它就是你的收音机。"
 
 #: systems/camp/bot_bay.gd:94
 msgid "E   open the Bot Bay"
@@ -3197,15 +3209,19 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:586
+#: systems/extras/radio.gd:186 tools/orbit_roundtrip.gd:586
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 
-#: systems/extras/radio.gd:184
+#: systems/extras/radio.gd:186
+msgid "stopped"
+msgstr "已停止"
+
+#: systems/extras/radio.gd:186
 msgid "mood music"
 msgstr "氛围音乐"
 
-#: systems/extras/radio.gd:234
+#: systems/extras/radio.gd:236
 msgid "New song on the radio: %s"
 msgstr "收音机新歌：%s"
 
@@ -3318,7 +3334,7 @@ msgstr "压了大约 %d 个捆包"
 msgid "kept the base tidy"
 msgstr "把基地收拾得整整齐齐"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:796
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:800
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
@@ -3414,7 +3430,7 @@ msgstr "Glim 还在扫描。稍后再试。"
 msgid "Close"
 msgstr "关闭"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:72
+#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:80
 msgid "Quit"
 msgstr "退出"
 
@@ -3543,7 +3559,7 @@ msgstr "初始配置：只有 Lumi。传家宝会添加更多。"
 msgid "Starting kit: %s"
 msgstr "初始配置：%s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:602
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:616
 msgid "Full"
 msgstr "完整"
 
@@ -3842,7 +3858,7 @@ msgstr "在%s的瓦砾中找到他们的一张CD。"
 msgid "Your CDs (%d / %d): %s"
 msgstr "你的CD（%d / %d）：%s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:818
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:822
 msgid "Achievements"
 msgstr "成就"
 
@@ -3993,123 +4009,123 @@ msgstr "提示：在%s期间出现。"
 msgid "Unlocked  ·  %s"
 msgstr "已解锁  ·  %s"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:790
 msgid "Total"
 msgstr "总计"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:791
 msgid "Junk removed"
 msgstr "清除的废料"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:791
 msgid "by type"
 msgstr "按种类"
 
-#: ui/codex_screen.gd:788 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:792 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清理"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:794
 msgid "Hexes restored"
 msgstr "恢复的六角格"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:795
 msgid "Bales pressed"
 msgstr "压制的捆包"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:796
 msgid "Pure bales"
 msgstr "纯净捆包"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:797
 msgid "Perfect bales"
 msgstr "完美捆包"
 
-#: ui/codex_screen.gd:794
+#: ui/codex_screen.gd:798
 msgid "Lumpy bales"
 msgstr "不平整捆包"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:799
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:802 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
-#: ui/codex_screen.gd:799
+#: ui/codex_screen.gd:803
 msgid "Seeds planted"
 msgstr "播下的种子"
 
-#: ui/codex_screen.gd:800
+#: ui/codex_screen.gd:804
 msgid "Plants bloomed"
 msgstr "开花的植物"
 
-#: ui/codex_screen.gd:801
+#: ui/codex_screen.gd:805
 msgid "Air filtered"
 msgstr "过滤的空气"
 
-#: ui/codex_screen.gd:803 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:807 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "机器人"
 
-#: ui/codex_screen.gd:805
+#: ui/codex_screen.gd:809
 msgid "Bales by robots"
 msgstr "机器人打的捆包"
 
-#: ui/codex_screen.gd:806
+#: ui/codex_screen.gd:810
 msgid "Parts dug up"
 msgstr "挖出的零件"
 
-#: ui/codex_screen.gd:808
+#: ui/codex_screen.gd:812
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:809
+#: ui/codex_screen.gd:813
 msgid "Distance rolled"
 msgstr "行驶距离"
 
-#: ui/codex_screen.gd:810
+#: ui/codex_screen.gd:814
 msgid "Memory shards read"
 msgstr "读过的记忆碎片"
 
-#: ui/codex_screen.gd:811
+#: ui/codex_screen.gd:815
 msgid "Codex entries"
 msgstr "图鉴条目"
 
-#: ui/codex_screen.gd:814
+#: ui/codex_screen.gd:818
 msgid "Progress"
 msgstr "进度"
 
-#: ui/codex_screen.gd:815
+#: ui/codex_screen.gd:819
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:816
+#: ui/codex_screen.gd:820
 msgid "Field notes logged"
 msgstr "已记录的野外笔记"
 
-#: ui/codex_screen.gd:817
+#: ui/codex_screen.gd:821
 msgid "Research done"
 msgstr "完成的研究"
 
-#: ui/codex_screen.gd:819
+#: ui/codex_screen.gd:823
 msgid "Best hub level"
 msgstr "最高基地等级"
 
-#: ui/codex_screen.gd:870
+#: ui/codex_screen.gd:874
 msgid "%s kg"
 msgstr "%s 千克"
 
-#: ui/codex_screen.gd:871
+#: ui/codex_screen.gd:875
 msgid "%.1f kg"
 msgstr "%.1f 千克"
 
-#: ui/codex_screen.gd:875
+#: ui/codex_screen.gd:879
 msgid "%.2f km"
 msgstr "%.2f 公里"
 
-#: ui/codex_screen.gd:885
+#: ui/codex_screen.gd:889
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -4208,7 +4224,7 @@ msgstr "用爱与废料制作"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "代码、程序化网格、合成音乐和音效以及文字均为 Greenfall 原创。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:749
+#: ui/credits_roll.gd:148 ui/main_menu.gd:757
 msgid "Music by Lucas"
 msgstr "音乐：Lucas"
 
@@ -4260,7 +4276,7 @@ msgstr "%d 个委托已就绪  ·  到工作台领取"
 msgid "CDS  ·  %d / %d"
 msgstr "CD  ·  %d / %d"
 
-#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/tunes_picker.gd:95
+#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107
 msgid "Shuffle"
 msgstr "随机播放"
 
@@ -4284,7 +4300,7 @@ msgstr "可在%s找到"
 msgid "Not found yet: CDs turn up in the rubble on %s."
 msgstr "尚未找到：这张CD藏在%s的瓦砾里。"
 
-#: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:125
+#: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:141
 msgid "Now playing: %s by %s"
 msgstr "正在播放：%s，演奏：%s"
 
@@ -4325,8 +4341,8 @@ msgid "Your CDs come on now and then while you work, with quiet in between. Pick
 msgstr "你工作时，CD会时不时地播放，中间有安静的间隙。在这里选一张或选择随机播放，就能连续播放。"
 
 #: ui/extras_cd_list.gd:125
-msgid "Glim has copied your CDs: press N anywhere to pick a song."
-msgstr "Glim已经复制了你的CD：在任何地方按N即可选歌。"
+msgid "Press %s anywhere for the radio."
+msgstr "在任何地方按 %s 打开收音机。"
 
 #: ui/extras_cd_list.gd:127
 msgid "The music comes from the CD player, so it's softer far away from it."
@@ -5189,7 +5205,7 @@ msgstr[0] "%d 颗星球"
 msgid "Profiles"
 msgstr "存档"
 
-#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
+#: ui/main_menu.gd:366 ui/main_menu.gd:699 ui/pause_menu.gd:76
 msgid "Settings"
 msgstr "设置"
 
@@ -5197,77 +5213,77 @@ msgstr "设置"
 msgid "Made with Godot"
 msgstr "使用 Godot 制作"
 
-#: ui/main_menu.gd:582
+#: ui/main_menu.gd:590
 msgid "%dm"
 msgstr "%d分钟"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:589 ui/profile_picker.gd:133
+#: ui/main_menu.gd:597 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s 方块"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:691
+#: ui/main_menu.gd:699
 msgid "Credits"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:720
+#: ui/main_menu.gd:728
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:735 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:743 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "返回"
 
-#: ui/main_menu.gd:748
+#: ui/main_menu.gd:756
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5277,27 +5293,27 @@ msgstr ""
 "代码、程序化网格、合成音频和文字均为 Greenfall 原创。\n"
 "\n"
 
-#: ui/main_menu.gd:752
+#: ui/main_menu.gd:760
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "第三方资源：CC0，Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:770
+#: ui/main_menu.gd:778
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:804
+#: ui/main_menu.gd:812
 msgid "START A NEW GAME?"
 msgstr "开始新游戏？"
 
-#: ui/main_menu.gd:805
+#: ui/main_menu.gd:813
 msgid "Your current save will be erased. This can't be undone."
 msgstr "你当前的存档将被删除。此操作无法撤销。"
 
-#: ui/main_menu.gd:813
+#: ui/main_menu.gd:821
 msgid "Keep my save"
 msgstr "保留存档"
 
-#: ui/main_menu.gd:819 ui/profile_picker.gd:213
+#: ui/main_menu.gd:827 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "删除并开始"
 
@@ -5313,7 +5329,11 @@ msgstr "图鉴  [%s]"
 msgid "Photo mode  [%s]"
 msgstr "拍照模式  [%s]"
 
-#: ui/pause_menu.gd:63 data/achievements.json:achievements[home_relics].name
+#: ui/pause_menu.gd:62
+msgid "Radio  [%s]"
+msgstr "收音机  [%s]"
+
+#: ui/pause_menu.gd:71 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "纪念品"
 
@@ -5385,7 +5405,7 @@ msgstr "火箭飞行期间无法使用拍照模式。"
 msgid "Photo mode isn't available during a cinematic."
 msgstr "过场动画期间无法使用拍照模式。"
 
-#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:411
+#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:425
 msgid "Camera"
 msgstr "相机"
 
@@ -5393,7 +5413,7 @@ msgstr "相机"
 msgid "Mode"
 msgstr "模式"
 
-#: ui/photo_mode.gd:361 ui/settings_panel.gd:419
+#: ui/photo_mode.gd:361 ui/settings_panel.gd:433
 msgid "Field of view"
 msgstr "视野"
 
@@ -5430,7 +5450,7 @@ msgid "Blur"
 msgstr "模糊"
 
 #: ui/photo_mode.gd:369 ui/photo_panel.gd:243 ui/photo_panel.gd:245
-#: ui/photo_panel.gd:283 ui/settings_panel.gd:711
+#: ui/photo_panel.gd:283 ui/settings_panel.gd:725
 msgid "Off"
 msgstr "关"
 
@@ -5543,7 +5563,7 @@ msgid "Exit"
 msgstr "退出"
 
 #: ui/photo_panel.gd:243 ui/photo_panel.gd:245 ui/photo_panel.gd:283
-#: ui/settings_panel.gd:711
+#: ui/settings_panel.gd:725
 msgid "On"
 msgstr "开"
 
@@ -5621,11 +5641,11 @@ msgstr "重命名存档"
 msgid "Save"
 msgstr "保存"
 
-#: ui/research_node_card.gd:175 ui/research_panel.gd:194
+#: ui/research_node_card.gd:175 ui/research_panel.gd:198
 msgid "Researched"
 msgstr "已研究"
 
-#: ui/research_node_card.gd:178 ui/research_panel.gd:197
+#: ui/research_node_card.gd:178 ui/research_panel.gd:201
 msgid "%s left"
 msgstr "剩余 %s"
 
@@ -5633,7 +5653,7 @@ msgstr "剩余 %s"
 msgid "Queued  ·  %s"
 msgstr "排队中  ·  %s"
 
-#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+#: ui/research_node_card.gd:184 ui/research_panel.gd:207
 msgid "%s  ·  %s"
 msgstr "%s  ·  %s"
 
@@ -5649,39 +5669,39 @@ msgstr "研究需要方块和真实时间。无论你在玩还是离开，它都
 msgid "RESEARCHING"
 msgstr "研究中"
 
-#: ui/research_panel.gd:163
+#: ui/research_panel.gd:167
 msgid "Nothing yet"
 msgstr "暂无"
 
-#: ui/research_panel.gd:164
+#: ui/research_panel.gd:168
 msgid "Pick a glowing card below"
 msgstr "从下方选一张发光的卡片"
 
-#: ui/research_panel.gd:169
+#: ui/research_panel.gd:173
 msgid "%s left  ·  %d%%"
 msgstr "剩余 %s  ·  %d%%"
 
-#: ui/research_panel.gd:175
+#: ui/research_panel.gd:179
 msgid "Queue: empty  (%d slots)"
 msgstr "队列：空（%d 个位置）"
 
-#: ui/research_panel.gd:198 ui/research_panel.gd:201
+#: ui/research_panel.gd:202 ui/research_panel.gd:205
 msgid "Press again to cancel (refund)"
 msgstr "再按一次取消（返还）"
 
-#: ui/research_panel.gd:200
+#: ui/research_panel.gd:204
 msgid "Queued #%d"
 msgstr "排队第 %d 位"
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:209
 msgid "Press to research"
 msgstr "按下开始研究"
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:209
 msgid "Press to queue"
 msgstr "按下加入队列"
 
-#: ui/research_panel.gd:214
+#: ui/research_panel.gd:218
 msgid "%s cancelled. Cubes refunded."
 msgstr "%s 已取消。方块已退还。"
 
@@ -5909,255 +5929,259 @@ msgstr "{ui_cancel}  返回"
 msgid "Changes are saved automatically."
 msgstr "更改会自动保存。"
 
-#: ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Quality preset"
 msgstr "画质预设"
 
-#: ui/settings_panel.gd:261 ui/settings_panel.gd:368
+#: ui/settings_panel.gd:262 ui/settings_panel.gd:382
 msgid "Fullscreen"
 msgstr "全屏"
 
-#: ui/settings_panel.gd:264 ui/settings_panel.gd:412
+#: ui/settings_panel.gd:265 ui/settings_panel.gd:426
 msgid "Mouse sensitivity"
 msgstr "鼠标灵敏度"
 
-#: ui/settings_panel.gd:269 ui/settings_panel.gd:589
+#: ui/settings_panel.gd:270 ui/settings_panel.gd:603
 msgid "System default"
 msgstr "跟随系统"
 
-#: ui/settings_panel.gd:270 ui/settings_panel.gd:586 ui/settings_panel.gd:590
+#: ui/settings_panel.gd:271 ui/settings_panel.gd:600 ui/settings_panel.gd:604
 msgid "Language"
 msgstr "语言"
 
-#: ui/settings_panel.gd:275
+#: ui/settings_panel.gd:276
 msgid "More settings  (sound, graphics, controls, accessibility)"
 msgstr "更多设置  （声音、画面、操作、辅助功能）"
 
-#: ui/settings_panel.gd:283
+#: ui/settings_panel.gd:284
 msgid "Everything else"
 msgstr "其他全部"
 
-#: ui/settings_panel.gd:323
-msgid "Volume"
-msgstr "音量"
-
-#: ui/settings_panel.gd:330
-msgid "Ambience"
-msgstr "环境音"
-
-#: ui/settings_panel.gd:333
+#: ui/settings_panel.gd:329
 msgid "Sound effects"
 msgstr "音效"
 
-#: ui/settings_panel.gd:337 ui/settings_panel.gd:599 ui/settings_panel.gd:607
+#: ui/settings_panel.gd:333
+msgid "Reward sounds"
+msgstr "奖励音效"
+
+#: ui/settings_panel.gd:337
+msgid "Wind and animals"
+msgstr "风声和动物"
+
+#: ui/settings_panel.gd:343
+msgid "Volume"
+msgstr "音量"
+
+#: ui/settings_panel.gd:351 ui/settings_panel.gd:613 ui/settings_panel.gd:621
 msgid "Interface"
 msgstr "界面"
 
-#: ui/settings_panel.gd:344
+#: ui/settings_panel.gd:358
 msgid "Rendering"
 msgstr "渲染"
 
-#: ui/settings_panel.gd:345
+#: ui/settings_panel.gd:359
 msgid "Low drops GI and fog; Ultra adds reflections."
 msgstr "低：关闭全局光照和雾；超高：增加反射。"
 
-#: ui/settings_panel.gd:346
+#: ui/settings_panel.gd:360
 msgid "This renderer always uses the Low preset."
 msgstr "此渲染器始终使用“低”预设。"
 
-#: ui/settings_panel.gd:348
+#: ui/settings_panel.gd:362
 msgid "Detected: %s for %s. "
 msgstr "检测到：%s，适用于 %s。"
 
-#: ui/settings_panel.gd:349
+#: ui/settings_panel.gd:363
 msgid "Your choice (hardware: %s). "
 msgstr "你的选择（硬件：%s）。"
 
-#: ui/settings_panel.gd:350
+#: ui/settings_panel.gd:364
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
 msgstr "低：关闭全局光照、雾和阴影细节；超高：增加反射。"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Renderer"
 msgstr "渲染器"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Standard (Forward+)"
 msgstr "标准（Forward+）"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Light (Mobile)"
 msgstr "轻量（Mobile）"
 
-#: ui/settings_panel.gd:358
+#: ui/settings_panel.gd:372
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
 msgstr "轻量适合较旧的集成显卡。重启游戏后生效（当前：%s）。"
 
-#: ui/settings_panel.gd:364
+#: ui/settings_panel.gd:378
 msgid "Render scale"
 msgstr "渲染缩放"
 
-#: ui/settings_panel.gd:366
+#: ui/settings_panel.gd:380
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
 msgstr "调低会以较小尺寸渲染 3D；界面保持清晰。"
 
-#: ui/settings_panel.gd:367
+#: ui/settings_panel.gd:381
 msgid "Display"
 msgstr "显示"
 
-#: ui/settings_panel.gd:371
+#: ui/settings_panel.gd:385
 msgid "V-Sync"
 msgstr "垂直同步"
 
-#: ui/settings_panel.gd:377 ui/settings_panel.gd:406
+#: ui/settings_panel.gd:391 ui/settings_panel.gd:420
 msgid "Bindings"
 msgstr "按键绑定"
 
-#: ui/settings_panel.gd:380
+#: ui/settings_panel.gd:394
 msgid "ACTION   (select a binding to rebind it)"
 msgstr "操作   （选择一个绑定来重新设置）"
 
-#: ui/settings_panel.gd:383
+#: ui/settings_panel.gd:397
 msgid "KEYBOARD / MOUSE"
 msgstr "键盘 / 鼠标"
 
-#: ui/settings_panel.gd:383
+#: ui/settings_panel.gd:397
 msgid "CONTROLLER"
 msgstr "手柄"
 
-#: ui/settings_panel.gd:399
+#: ui/settings_panel.gd:413
 msgid "Reset to defaults"
 msgstr "恢复默认"
 
-#: ui/settings_panel.gd:406
+#: ui/settings_panel.gd:420
 msgid "Restore every key and controller binding."
 msgstr "恢复所有键盘和手柄绑定。"
 
-#: ui/settings_panel.gd:408
+#: ui/settings_panel.gd:422
 msgid "Button prompts"
 msgstr "按键图标"
 
-#: ui/settings_panel.gd:410
+#: ui/settings_panel.gd:424
 msgid "Controller art: Automatic follows the connected pad."
 msgstr "手柄图标：“自动”会跟随已连接的手柄。"
 
-#: ui/settings_panel.gd:415
+#: ui/settings_panel.gd:429
 msgid "Stick look speed"
 msgstr "摇杆视角速度"
 
-#: ui/settings_panel.gd:418
+#: ui/settings_panel.gd:432
 msgid "Invert look Y"
 msgstr "反转 Y 轴视角"
 
-#: ui/settings_panel.gd:422
+#: ui/settings_panel.gd:436
 msgid "Mouse smoothing"
 msgstr "鼠标平滑"
 
-#: ui/settings_panel.gd:423
+#: ui/settings_panel.gd:437
 msgid "Eases mouse look over a few frames."
 msgstr "在几帧内平滑鼠标视角。"
 
-#: ui/settings_panel.gd:424
+#: ui/settings_panel.gd:438
 msgid "Scooping"
 msgstr "铲取"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Scoop button"
 msgstr "铲取按键"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Hold"
 msgstr "按住"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Toggle"
 msgstr "切换"
 
-#: ui/settings_panel.gd:466
+#: ui/settings_panel.gd:480
 msgid "press a button…"
 msgstr "请按一个按钮…"
 
-#: ui/settings_panel.gd:466
+#: ui/settings_panel.gd:480
 msgid "press a key…"
 msgstr "请按一个键…"
 
-#: ui/settings_panel.gd:498
+#: ui/settings_panel.gd:512
 msgid "Conflict: %s is used by both %s and %s."
 msgstr "冲突：%s 同时被 %s 和 %s 使用。"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:608
 msgid "Comfort"
 msgstr "舒适度"
 
-#: ui/settings_panel.gd:595
+#: ui/settings_panel.gd:609
 msgid "Camera shake"
 msgstr "镜头晃动"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:611
 msgid "Reduced motion"
 msgstr "减少动态效果"
 
-#: ui/settings_panel.gd:598
+#: ui/settings_panel.gd:612
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "更平稳的镜头，更少的弹跳效果。"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "Minimal"
 msgstr "精简"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "Hidden"
 msgstr "隐藏"
 
-#: ui/settings_panel.gd:603
+#: ui/settings_panel.gd:617
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "精简：几秒后淡出额外信息。隐藏：只保留提示和消息。"
 
-#: ui/settings_panel.gd:613
+#: ui/settings_panel.gd:627
 msgid "Interface scale"
 msgstr "界面缩放"
 
-#: ui/settings_panel.gd:615
+#: ui/settings_panel.gd:629
 msgid "Size of menus, HUD and subtitles."
 msgstr "菜单、HUD 和字幕的大小。"
 
-#: ui/settings_panel.gd:616
+#: ui/settings_panel.gd:630
 msgid "Colour-blind palette"
 msgstr "色盲配色"
 
-#: ui/settings_panel.gd:617
+#: ui/settings_panel.gd:631
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "对六角格进度、料斗计量条和零件稀有度使用 Okabe-Ito 配色。"
 
-#: ui/settings_panel.gd:618 ui/settings_panel.gd:619
+#: ui/settings_panel.gd:632 ui/settings_panel.gd:633
 msgid "Subtitles"
 msgstr "字幕"
 
-#: ui/settings_panel.gd:620
+#: ui/settings_panel.gd:634
 msgid "WREN's lines."
 msgstr "WREN 的台词。"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Subtitle size"
 msgstr "字幕大小"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Small"
 msgstr "小"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Large"
 msgstr "大"
 
-#: ui/settings_panel.gd:623
+#: ui/settings_panel.gd:637
 msgid "Subtitle background"
 msgstr "字幕背景"
 
-#: ui/settings_panel.gd:624
+#: ui/settings_panel.gd:638
 msgid "A solid backdrop behind subtitle text."
 msgstr "在字幕文字后加一层实色背景。"
 
@@ -6403,19 +6427,27 @@ msgstr "通过望远镜记录：%s。图鉴新条目。"
 msgid "Codex: %s"
 msgstr "图鉴：%s"
 
-#: ui/tunes_picker.gd:38
-msgid "GLIM'S CDS"
-msgstr "GLIM的CD"
+#: ui/tunes_picker.gd:42 ui/tunes_picker.gd:76
+msgid "RADIO"
+msgstr "收音机"
 
-#: ui/tunes_picker.gd:48
-msgid "N / Esc  close"
-msgstr "N / Esc  关闭"
+#: ui/tunes_picker.gd:76
+msgid "GLIM'S RADIO"
+msgstr "GLIM的收音机"
 
-#: ui/tunes_picker.gd:96
-msgid "Off (the day's music)"
-msgstr "关闭（日常音乐）"
+#: ui/tunes_picker.gd:77
+msgid "%s / Esc  close"
+msgstr "%s / Esc  关闭"
 
-#: ui/tunes_picker.gd:103
+#: ui/tunes_picker.gd:101
+msgid "Random songs"
+msgstr "随机歌曲"
+
+#: ui/tunes_picker.gd:102
+msgid "Stop the music"
+msgstr "停止音乐"
+
+#: ui/tunes_picker.gd:109
 msgid "Play once: %s (scratched)"
 msgstr "播放一次：%s（刮花）"
 
@@ -6475,7 +6507,7 @@ msgstr "机器人舱"
 msgid "WORKBENCH"
 msgstr "工作台"
 
-#: ui/upgrades_screen.gd:292
+#: ui/upgrades_screen.gd:296
 msgid "Not open yet. Keep playing."
 msgstr "尚未开放。继续游戏吧。"
 
@@ -10680,8 +10712,8 @@ msgid "Music"
 msgstr "音乐"
 
 #: data/glim.json:tracks[music].desc
-msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
-msgstr "Glim 会下载你找到的 CD：随时随地播放任何找到的歌曲。"
+msgid "Glim dances along to your songs and shows their notes."
+msgstr "Glim会跟着你的歌跳舞，还会冒出音符。"
 
 #: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
@@ -16631,6 +16663,24 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Glim has copied your CDs: press N anywhere to pick a song."
+#~ msgstr "Glim已经复制了你的CD：在任何地方按N即可选歌。"
+
+#~ msgid "Ambience"
+#~ msgstr "环境音"
+
+#~ msgid "GLIM'S CDS"
+#~ msgstr "GLIM的CD"
+
+#~ msgid "N / Esc  close"
+#~ msgstr "N / Esc  关闭"
+
+#~ msgid "Off (the day's music)"
+#~ msgstr "关闭（日常音乐）"
+
+#~ msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
+#~ msgstr "Glim 会下载你找到的 CD：随时随地播放任何找到的歌曲。"
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "你离开期间（%s）："

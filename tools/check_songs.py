@@ -181,8 +181,8 @@ def main():
         else:
             print("  %-13s %s" % (m + ":", ", ".join(got) if got else "(no song marked: the built-in score plays)"))
     print()
-    print("Rules: gaps %s s, after a load %s s, after landing %s s, main theme share %s, song level %s dB" % (
-        cfg.get("gap_s"), cfg.get("first_gap_s"), cfg.get("landing_gap_s"), cfg.get("main_share"), cfg.get("song_db", -7.0)))
+    print("Rules: gaps %s s, after a load %s s, first song: after the first CD (%s), main theme share %s, song level %s dB" % (
+        cfg.get("gap_s"), cfg.get("first_gap_s"), (cfg.get("first_cd") or {}).get("song", "none"), cfg.get("main_share"), cfg.get("song_db", -7.0)))
     if problems:
         print()
         print("Mistakes to fix (%d):" % len(problems))

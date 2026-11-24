@@ -36,7 +36,7 @@ func _ready() -> void:
 	_card_root.visible = false
 	add_child(_card_root)
 	if GameState.flags.get("weekly_intro", false):
-		(func() -> void: show_intro()).call_deferred()
+		show_intro.call_deferred()
 	_refresh()
 
 

@@ -175,7 +175,7 @@ static func spray(rng: RandomNumberGenerator) -> PackedFloat32Array:
 		lp += (n - lp) * 0.5
 		var hp: float = lp - prev
 		prev = lp
-		var flutter: float = 0.7 + 0.3 * sin(TAU * 23.0 * t) + 0.15 * sin(TAU * 7.5 * t)
+		var flutter: float = 0.82 + 0.12 * sin(TAU * 1.5 * t) + 0.06 * sin(TAU * 4.0 * t)  # [v10snd] was a 23 Hz beat (a rotor)
 		# [v8snd] droplets as soft 3 ms splashes, not raw single-sample spikes (220 a second)
 		if rng.randf() < 0.0012:
 			drop_env = rng.randf_range(0.5, 1.0)

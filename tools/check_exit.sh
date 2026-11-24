@@ -90,6 +90,10 @@ else
 	echo "[check_exit] FAIL old_ledger_save: see screenshots/check_exit_old_ledger.log"
 	fail=1
 fi
+# [v10snd] Owner (Nov 15): the first song plays when the CD by the start pad is found, and the radio
+# (N) plays a found song at will: a new game with real keys and clicks, two reloads (tools/walk_radio.gd).
+run walk_radio -- --fresh --orbit --no-intro --walk-radio --save-dir=check_exit_radio_$$
+run walk_radio_clean -- --fresh --orbit --no-intro --walk-radio --walk-radio-clean --save-dir=check_exit_radioc_$$
 # [v9s] Owner (Nov 13): "super annoying to hear the same bird chirp so many times over and over".
 # Two and a half minutes standing on green ground by the start (birds, frogs, the life bed), every
 # sound logged; tools/check_audio.py --repeat fails on a sound that repeats more than its category
