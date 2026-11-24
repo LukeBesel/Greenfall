@@ -13,6 +13,8 @@ extends Node
 ## makes it a one-process UI tour for checking layouts at a given resolution (e.g. 1280x800).
 ## [vqa] Headless: add --audit-size=1280x800 (and --ui-scale=1.0/1.1) for real screen bounds; text
 ## sticking out of its panel is reported as "overflow".
+## To cover the Bots section of the Locker, include --robots=scoopie:1 in a disposable run;
+## a brand-new game with no robot types unlocked correctly has no Bots section yet.
 
 var _fails: int = 0
 var _checked: int = 0
@@ -55,8 +57,18 @@ func _run() -> void:
 		var wh: PackedStringArray = DevHooks.get_s("audit-size", "1280x720").split("x")
 		get_tree().root.size = Vector2i(int(wh[0]), int(wh[1]))
 	await _frames(20)
-	# [ui3] The loader / title hands over to the game a few frames later: wait for it (60 s cap).
-	if not DevHooks.has("menu"):
+	# The title's stage builds asynchronously too: a fixed frame count can inspect the boot
+	# scene before the menu UI exists. Wait for the settings panel, built at the end of its UI.
+	if DevHooks.has("menu"):
+		var t0: int = Time.get_ticks_msec()
+		while Time.get_ticks_msec() - t0 < 120000:
+			var m: Node = get_tree().current_scene
+			if m and m.has_method("_open_settings") and m.get("_ui") != null and m.get("_settings") != null:
+				break
+			await _frames(5)
+		await _frames(20)
+	else:
+		# [ui3] The loader / title hands over to the game a few frames later (120 s cap).
 		var t0: int = Time.get_ticks_msec()
 		while not (get_tree().current_scene and get_tree().current_scene.has_method("open_upgrades") and get_tree().current_scene.get("upgrades") != null) and Time.get_ticks_msec() - t0 < 120000:
 			await _frames(5)
