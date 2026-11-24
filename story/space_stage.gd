@@ -660,13 +660,13 @@ static func build_tray() -> Node3D:
 	soil.albedo_color = Color(0.17, 0.11, 0.07)
 	soil.roughness = 1.0
 	# Leaves: a living green that glows a little (brighter when Lumi hums to them); stems pale.
-	var leaf := Mats.lamp(Color(0.32, 0.8, 0.3), 0.75)
-	leaf.albedo_color = Color(0.3, 0.62, 0.2)
+	var leaf := Mats.lamp(Color(0.2, 0.58, 0.18), 0.75)
+	leaf.albedo_color = Color(0.26, 0.56, 0.16)
 	leaf.roughness = 0.55
 	leaf.cull_mode = BaseMaterial3D.CULL_DISABLED
 	t.set_meta("leaf", leaf)
 	var stem_m := StandardMaterial3D.new()
-	stem_m.albedo_color = Color(0.66, 0.78, 0.48)
+	stem_m.albedo_color = Color(0.52, 0.7, 0.36)
 	stem_m.roughness = 0.6
 	stem_m.emission_enabled = true
 	stem_m.emission = Color(0.3, 0.55, 0.25)
@@ -683,7 +683,7 @@ static func build_tray() -> Node3D:
 	t.add_child(dirt)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 5
-	var stem_mesh: CylinderMesh = ProcMesh.cyl(0.0045, 0.0065, 1.0, 6)
+	var stem_mesh: CylinderMesh = ProcMesh.cyl(0.0024, 0.0034, 1.0, 6)
 	var leaf_mesh: ArrayMesh = seed_leaf_mesh()
 	for i: int in 4:
 		for j: int in 3:
@@ -704,7 +704,7 @@ static func build_tray() -> Node3D:
 			# first pair of true leaves above them, smaller and turned a quarter round.
 			for pair: int in (2 if big else 1):
 				var y: float = h * (1.0 if pair == 0 else 0.7)
-				var sz: float = rng.randf_range(0.034, 0.042) * (1.2 if big else 1.0) * (1.0 if pair == 0 else 1.15)
+				var sz: float = rng.randf_range(0.046, 0.056) * (1.15 if big else 1.0) * (1.0 if pair == 0 else 1.15)
 				if big and pair == 0:
 					sz *= 0.62  # the new pair on top is the small one
 				for s: float in [0.0, PI]:
