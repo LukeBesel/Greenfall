@@ -85,10 +85,11 @@ static func _on_cubes(id: String, v: BigNum) -> void:
 	var now: float = v.to_float()
 	var d: float = now - _cubes_seen
 	_cubes_seen = now
-	if d < 300.0:
+	if absf(d) < 0.5:
 		return
 	var st: Array = get_stack()
 	if st.size() >= 2 and str(st[1].get("function", "")) == "_set_money":
+		_since_set.clear()
 		return  # the walk's own money
 	var from: Array[String] = []
 	for f: Dictionary in st.slice(1):
@@ -96,7 +97,14 @@ static func _on_cubes(id: String, v: BigNum) -> void:
 		if src == "GameState.gd" or from.size() >= 6:
 			continue
 		from.append("%s:%d %s" % [src, int(f.get("line", 0)), str(f.get("function", ""))])
-	print("[walk-home] note: the game paid +%.2f cubes at once (step %s) from %s" % [d, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
+	if _since_set.size() < 40:
+		_since_set.append("%+.2f %s" % [d, " < ".join(from.slice(0, 3))])
+	if d >= 300.0:
+		print("[walk-home] note: the game paid +%.2f cubes at once (step %s) from %s" % [d, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
+
+
+## [v9a] Every change of cubes since the walk last set them (what a money check failed on).
+static var _since_set: Array[String] = []
 
 
 ## [v9a] A Lumi level pays a reward scaled to the cubes earned so far (systems/lumi_level.gd).
@@ -1252,7 +1260,7 @@ static func _part_shuttle() -> void:
 			break
 		await tree.create_timer(0.5).timeout
 	_check(Hub.rocket_built(), "shuttle: clicking its price tag builds it")
-	_check(GameState.get_currency("cubes").to_float() < 1.0 + float(cost.get("cubes", 0.0)) * 0.05, "shuttle: the price is paid (%.0f cubes left; the robots sell bales meanwhile)" % GameState.get_currency("cubes").to_float())
+	_check(GameState.get_currency("cubes").to_float() < 1.0 + float(cost.get("cubes", 0.0)) * 0.05, "shuttle: the price is paid (%.0f cubes left; the robots sell bales meanwhile; cubes since the walk set the price: %s)" % [GameState.get_currency("cubes").to_float(), str(_since_set)])
 	await tree.create_timer(1.5).timeout
 	_check(not _up().is_open, "shuttle: the workbench closes by itself so the build is seen")
 	_check(ShuttleBuild.building, "shuttle: it is being put together on the pad")
