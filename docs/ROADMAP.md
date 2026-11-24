@@ -33,9 +33,21 @@ What the failing walks were, by evidence (logs under screenshots/, spot tests in
   just built: saved and loaded (kill)" saw "0 / 600" become a full bar: a robot finished the outlined hex
   while the walk quit and came back (cubes 0 -> 1466.8), the price was covered, so the card shows the step's
   own count, as in play. That is af48bf9's case (money earned in play while the walk reloads; money that
-  appears in the load itself still fails), which main did not have yet. Every payment of 300+ and every Lumi
-  level is printed as a `[walk-home] note`. Also measured: base level 2 and the shuttle stand on no
-  start-area junk, so a load has nothing new to tidy away there.
+  appears in the load itself still fails), which main did not have yet. "shuttle: the price is paid" (1322
+  left right after the click) now checks the change log: the price taken, and what is left equals what the
+  game paid since. Every payment of 300+ and every Lumi level is printed as a `[walk-home] note`, and the
+  change log after the shuttle is built; `--walk-home-paylog` prints every payment with its payer. Also
+  measured: base level 2 and the shuttle stand on no start-area junk, so a load has nothing new to tidy.
+- **OPEN: 1.2K-1.5K cubes in the seconds after the shuttle is built** (2 of 10 home walks here, main's run,
+  v10snd's): 1,346.75 per robot hex that finished next to the yard then (one run 1, one run 2: the toasts
+  say so), of which bonus + notes + level are 246.75; none of it one payment of 300 or more. Not reproduced
+  since the change log went in (0 of 6). If a
+  player sees it, it is in play (no reload needed), so the walks no longer count it as a save fault; what
+  pays it is not known.
+- **Game fault, fixed (0188201): the fauna perch scan raised a SCRIPT ERROR** on a mesh the headless
+  renderer held no arrays for (FaunaSpace.top_point; 7 times in one home walk). Skipped, named once.
+- walk_travel "E by the cleared outpost ... repairs it" failed once in 6 (prompt named the repair, the
+  outpost stayed at level 0): the check now says what E met (block, Lumi's own prompt, input hold, toasts).
 - From the code, not played: the Shack's side panel (planet/sites/yard_site.gd "side") has no collider (the
   StaticBody holds the back wall and the two front posts), so Lumi could walk through it. Not a stuck.
 - Other code still uses the 32-bit `hex_at` (robots, junk, the card's hex): the speckle at edges is still
