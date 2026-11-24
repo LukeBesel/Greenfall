@@ -86,11 +86,14 @@ static func _on_cubes(id: String, v: BigNum) -> void:
 	var d: float = now - _cubes_seen
 	_cubes_seen = now
 	if absf(d) < 0.5:
+		_since_set_sum[0 if d < 0.0 else 1] += d
 		return
 	var st: Array = get_stack()
 	if st.size() >= 2 and str(st[1].get("function", "")) == "_set_money":
 		_since_set.clear()
+		_since_set_sum = [0.0, 0.0]
 		return  # the walk's own money
+	_since_set_sum[0 if d < 0.0 else 1] += d
 	var from: Array[String] = []
 	for f: Dictionary in st.slice(1):
 		var src: String = str(f.get("source", "")).get_file()
@@ -105,8 +108,10 @@ static func _on_cubes(id: String, v: BigNum) -> void:
 		print("[walk-home] note: the game paid +%.2f cubes at once (step %s) from %s" % [d, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
 
 
-## [v9a] Every change of cubes since the walk last set them (what a money check failed on).
+## [v9a] Every change of cubes since the walk last set them (what a money check failed on), and
+## their sums: [spent, earned].
 static var _since_set: Array[String] = []
+static var _since_set_sum: Array[float] = [0.0, 0.0]
 
 
 ## [v9a] A Lumi level pays a reward scaled to the cubes earned so far (systems/lumi_level.gd).
@@ -130,6 +135,7 @@ static func _wait_world() -> bool:
 	var ll: LumiLevel = w.get("lumi_level") as LumiLevel if is_instance_valid(w) else null
 	if ll and not ll.leveled.is_connected(_on_level):
 		ll.leveled.connect(_on_level)
+	_cubes_seen = GameState.get_currency("cubes").to_float()  # a load sets them without a signal
 	return ob != null and p != null and not bool(w.get("building"))
 
 
@@ -1263,7 +1269,11 @@ static func _part_shuttle() -> void:
 			break
 		await tree.create_timer(0.5).timeout
 	_check(Hub.rocket_built(), "shuttle: clicking its price tag builds it")
-	_check(GameState.get_currency("cubes").to_float() < 1.0 + float(cost.get("cubes", 0.0)) * 0.05, "shuttle: the price is paid (%.0f cubes left; the robots sell bales meanwhile; cubes since the walk set the price: %s)" % [GameState.get_currency("cubes").to_float(), str(_since_set)])
+	# [v9a] The game took the price, and what is left is what it paid since (robots, field notes, a
+	# hex: a run read 1,322 left right after the click, earned in that second).
+	var left_c: float = GameState.get_currency("cubes").to_float()
+	_check(absf(-_since_set_sum[0] - float(cost.get("cubes", 0.0))) < 1.0 and absf(left_c - _since_set_sum[1]) < 1.0,
+		"shuttle: the price is paid (%.2f taken, %.2f left, %.2f earned since; every change since the walk set the price: %s)" % [-_since_set_sum[0], left_c, _since_set_sum[1], str(_since_set)])
 	await tree.create_timer(1.5).timeout
 	_check(not _up().is_open, "shuttle: the workbench closes by itself so the build is seen")
 	_check(ShuttleBuild.building, "shuttle: it is being put together on the pad")
