@@ -603,6 +603,7 @@ func replay() -> void:
 	var gone: Array = [_replay_site, world.patch]
 	gone.append_array(tree.get_nodes_in_group("guide_3d"))
 	gone.append_array(tree.get_nodes_in_group("robot"))
+	gone.append_array(tree.get_nodes_in_group("film_hide"))  # e.g. the first CD and its ray of light
 	for n: Node in tree.root.find_children("*", "CanvasLayer", true, false):
 		if n != self and not is_ancestor_of(n):
 			gone.append(n)
@@ -1874,7 +1875,9 @@ func _site_settle(e: float) -> void:
 		xf.basis = Basis(axis, rock) * xf.basis
 		xf.origin += up * (bounce - exp(-e * 7.0) * 0.1)
 	_site.global_transform = xf
-	_plume_rise(clampf(e / 7.0, 0.0, 1.0))
+	# The game's tall pale plume waits out the crash shot (its first metres, pale over the ochre
+	# sky, read as a beam of light standing on the pod), then climbs through the wake-up.
+	_plume_rise(clampf((e - 4.0) / 24.0, 0.0, 1.0))
 
 
 ## The tall smoke column over the crash grows up out of it instead of standing there at once.
@@ -1883,6 +1886,7 @@ func _plume_rise(k: float) -> void:
 		return
 	var plume: Node3D = _site.get_node_or_null("Plume") as Node3D
 	if plume:
+		plume.visible = k > 0.0
 		var s: float = lerpf(0.03, 1.0, eased("out", k))
 		var w: float = maxf(s, 0.08)  # as wide as it is tall, in its own shape: a column, not a cone of light
 		plume.scale = Vector3(w, s, w)
