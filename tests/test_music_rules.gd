@@ -368,6 +368,12 @@ func test_no_song_starts_over_a_spoken_line() -> void:
 	var d: Node = _director()
 	d.context = "play"
 	d.gap_left = 0.0
+	# [main] Only the songs whose file is really in the build count here: with every listed song
+	# claimed present, the director's random pick often lands on one with no file, skips it and
+	# looks again 5 s later, so whether a song came within the 12 s below was down to luck.
+	for s: Dictionary in Tunes.songs():
+		Tunes.file_override[str(s["id"])] = Tunes.path(str(s["id"])) != ""
+	d.rng.seed = 1108
 	Audio.duck(6.0)
 	Audio._duck = 1.0
 	for i: int in 4:

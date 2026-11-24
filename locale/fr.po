@@ -409,7 +409,7 @@ msgstr "Pas assez de cubes ou de pièces"
 msgid "Rocket upgraded: %s."
 msgstr "Fusée améliorée : %s."
 
-#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
+#: automation/stations.gd:122 automation/telescope.gd:103 robots/fabricator/bot_fabricator.gd:92
 #: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "Construit."
@@ -455,26 +455,26 @@ msgstr "1 balle sur 3 au recycleur"
 msgid "Every %dth bale to the recycler"
 msgstr "1 balle sur %d au recycleur"
 
-#: automation/telescope.gd:102
+#: automation/telescope.gd:107
 msgid "Requires hub level %d or research: %s."
 msgstr "Nécessite la base niveau %d ou la recherche : %s."
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
+#: automation/telescope.gd:109 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
 #: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
 #: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "Matériaux insuffisants."
 
-#: automation/telescope.gd:115
+#: automation/telescope.gd:120
 msgid "Telescope built. Walk up to it and press {interact} to look across the system."
 msgstr "Télescope construit. Approche-toi et appuie sur {interact} pour observer le système."
 
-#: automation/telescope.gd:260 ui/telescope_panel.gd:11
+#: automation/telescope.gd:265 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "OBSERVATOIRE"
 
-#: automation/telescope.gd:312
+#: automation/telescope.gd:317
 msgid "E   Telescope: look across the system"
 msgstr "E   Télescope : observer le système"
 
@@ -534,15 +534,15 @@ msgstr "Nouvelle observation : %s. Elle est maintenant dans le Codex."
 msgid "Snap! A %s for your Collection."
 msgstr "Clic ! Une photo (%s) pour ta Collection."
 
-#: planet/cd_finds.gd:363
+#: planet/cd_finds.gd:353
 msgid "A scratched CD turned up in the rubble."
 msgstr "Un CD rayé est apparu dans les gravats."
 
-#: planet/cd_finds.gd:363
+#: planet/cd_finds.gd:353
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr "Quelque chose brille dans les gravats déblayés. Un vieux CD !"
 
-#: planet/cd_finds.gd:419
+#: planet/cd_finds.gd:410
 msgid "Your CD case is full."
 msgstr "Ta boîte à CD est pleine."
 
@@ -832,31 +832,31 @@ msgstr "Site : %s"
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "L'eau... je vois le fond. Lumi, quelque chose bouge là-dessous."
 
-#: plants/composter.gd:77
+#: plants/composter.gd:82
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   presse à compost  ·  en sommeil jusqu'à ce que quelque chose pousse"
 
-#: plants/composter.gd:79
+#: plants/composter.gd:84
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr "E   presse à compost  ·  Niv %d (max)"
 
-#: plants/composter.gd:80
+#: plants/composter.gd:85
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr "E   presse à compost au Niv %d  ·  %s cubes"
 
-#: plants/composter.gd:85
+#: plants/composter.gd:90
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr "La presse est froide. Fais d'abord pousser quelque chose : elle tourne avec ce que laissent les plantes."
 
-#: plants/composter.gd:91
+#: plants/composter.gd:96
 msgid "Not enough cubes to upgrade the press."
 msgstr "Pas assez de cubes pour améliorer la presse."
 
-#: plants/composter.gd:100
+#: plants/composter.gd:105
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr "Presse à compost Niv %d : cycles de %.0f s, %.1f graines chacun."
 
-#: plants/composter.gd:154
+#: plants/composter.gd:159
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
@@ -864,7 +864,7 @@ msgstr ""
 "PRESSE À COMPOST\n"
 "en sommeil"
 
-#: plants/composter.gd:156
+#: plants/composter.gd:161
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
@@ -1164,11 +1164,11 @@ msgstr[1] "transporte %d balles"
 msgid "fetching a bale"
 msgstr "va chercher une balle"
 
-#: robots/robot.gd:256 robots/robot.gd:907
+#: robots/robot.gd:256 robots/robot.gd:911
 msgid "waiting for bales"
 msgstr "attend des balles"
 
-#: robots/robot.gd:259 robots/robot.gd:577
+#: robots/robot.gd:259 robots/robot.gd:581
 msgid "out of seeds"
 msgstr "plus de graines"
 
@@ -1212,7 +1212,7 @@ msgstr "porte une balle au rivage"
 msgid "skimming lake hex %d (%d%%)"
 msgstr "écume l'hexagone du lac %d (%d%%)"
 
-#: robots/robot.gd:270 robots/robot.gd:770
+#: robots/robot.gd:270 robots/robot.gd:774
 msgid "lake is clean"
 msgstr "le lac est propre"
 
@@ -1228,27 +1228,27 @@ msgstr "zone propre, en attente"
 msgid "nothing left to clean"
 msgstr "plus rien à nettoyer"
 
-#: robots/robot.gd:427 robots/robot.gd:770
+#: robots/robot.gd:427 robots/robot.gd:774
 msgid "zone clean"
 msgstr "zone propre"
 
-#: robots/robot.gd:575
+#: robots/robot.gd:579
 msgid "seeds locked"
 msgstr "graines verrouillées"
 
-#: robots/robot.gd:581 robots/robot.gd:585
+#: robots/robot.gd:585 robots/robot.gd:589
 msgid "no empty soil"
 msgstr "pas de terre libre"
 
-#: robots/robot.gd:614
+#: robots/robot.gd:618
 msgid "no garden"
 msgstr "pas de jardin"
 
-#: robots/robot.gd:628
+#: robots/robot.gd:632
 msgid "everything watered"
 msgstr "tout est arrosé"
 
-#: robots/robot.gd:724
+#: robots/robot.gd:728
 msgid "no water source"
 msgstr "pas de source d'eau"
 
@@ -1601,7 +1601,7 @@ msgstr "Ta base a grandi aussi loin que la démo le permet."
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "Dans le jeu complet, Lumi monte sa base jusqu'au niveau 5, plante des quartiers entiers jusqu'à ce qu'ils prospèrent, les fait grandir en une ville futuriste lumineuse et vole en fusée vers des dizaines de bases sur la planète. Ta progression de la démo est conservée."
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:789
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:793
 msgid "Hexes cleaned"
 msgstr "Hexagones nettoyés"
 
@@ -1609,11 +1609,11 @@ msgstr "Hexagones nettoyés"
 msgid "Bales made"
 msgstr "Balles pressées"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:804
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:808
 msgid "Robots built"
 msgstr "Robots construits"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:812
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:816
 msgid "Time played"
 msgstr "Temps de jeu"
 
@@ -1633,7 +1633,7 @@ msgstr "Écran titre"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuer : le premier quartier reste ouvert, base au niveau %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:886 ui/main_menu.gd:590
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -1678,55 +1678,55 @@ msgstr "Rien n'attend de finir, {name}. Personne ne compte les points. On est à
 msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram ({open_globe})."
 msgstr "Le Cradle est rentré. L'Arche à graines est ouverte : chaque fleur de Verdance compte pour la prochaine vague. Progression sur l'hologramme ({open_globe})."
 
-#: story/core_charge.gd:206
+#: story/core_charge.gd:215
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "Cœur floral 100%. Le cœur de Lumi déborde de lumière verte."
 
-#: story/core_charge.gd:232
+#: story/core_charge.gd:241
 msgid "Bloom Core  25%"
 msgstr "Cœur floral  25%"
 
-#: story/core_charge.gd:233
+#: story/core_charge.gd:242
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "Voilà. Le relais vient de s'accrocher. Lumi, je t'entends enfin correctement. Clair comme au bon vieux temps."
 
-#: story/core_charge.gd:253
+#: story/core_charge.gd:262
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "Un souvenir  ·  le pont jardin du Cradle"
 
-#: story/core_charge.gd:264
+#: story/core_charge.gd:273
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "Tu te souviens du pont jardin ? Tu arrosais chaque bac deux fois, juste pour être sûr."
 
-#: story/core_charge.gd:267
+#: story/core_charge.gd:276
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "Chaque coin que tu fais pousser là-bas, c'est un bac de plus comme ceux-ci. Tu n'es pas perdu, Lumi. Tu replantes."
 
-#: story/core_charge.gd:271
+#: story/core_charge.gd:280
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "Cœur floral 25% : le signal de WREN est clair maintenant."
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:298
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "Cœur floral 50% : la lueur de Lumi est de retour, plus vive que depuis des années."
 
-#: story/core_charge.gd:291
+#: story/core_charge.gd:300
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "À moitié chargé. Tu brilles, Lumi. Vraiment. J'avais oublié que tu pouvais être aussi lumineux."
 
-#: story/core_charge.gd:325
+#: story/core_charge.gd:334
 msgid "That night..."
 msgstr "Cette nuit-là..."
 
-#: story/core_charge.gd:349
+#: story/core_charge.gd:358
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi, lève les yeux. Cette lumière. D'ouest en est, régulière, elle ne scintille pas."
 
-#: story/core_charge.gd:354
+#: story/core_charge.gd:363
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "C'est le Cradle. Quand ton cœur s'est allumé, l'arche l'a entendu. Il a fait demi-tour. On revient te chercher."
 
-#: story/core_charge.gd:364
+#: story/core_charge.gd:373
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "Cœur floral 75% : le Cradle rentre à la maison. Cherche-le dans le ciel la nuit."
 
@@ -2676,35 +2676,35 @@ msgstr "Construis-la au Retour du Cradle, sur Verdance"
 msgid "Rocket drive built: %s."
 msgstr "Propulsion construite : %s."
 
-#: systems/homeward_director.gd:333
+#: systems/homeward_director.gd:337
 msgid "Intercepted: %s"
 msgstr "Intercepté : %s"
 
-#: systems/homeward_director.gd:348
+#: systems/homeward_director.gd:352
 msgid "%s: %s"
 msgstr "%s : %s"
 
-#: systems/homeward_director.gd:358
+#: systems/homeward_director.gd:362
 msgid "%s is restored. System: %d%%."
 msgstr "%s est restaurée. Système : %d%%."
 
-#: systems/homeward_director.gd:361
+#: systems/homeward_director.gd:365
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Relique : %s. Choix d'héritage +1 (Pont de l'Arche)."
 
-#: systems/homeward_director.gd:369
+#: systems/homeward_director.gd:373
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "Chaque planète du système est vivante. Les Colons se réveilleront face à cinq mondes verts."
 
-#: systems/homeward_director.gd:565
+#: systems/homeward_director.gd:569
 msgid "E   launch home"
 msgstr "E   décoller vers la maison"
 
-#: systems/homeward_director.gd:565
+#: systems/homeward_director.gd:569
 msgid "E   plant the last seed"
 msgstr "E   planter la dernière graine"
 
-#: systems/homeward_director.gd:576
+#: systems/homeward_director.gd:580
 msgid "The last seed is in the ground. Everything is ready. Press {interact} again here to launch home."
 msgstr "La dernière graine est en terre. Tout est prêt. Appuie encore sur {interact} ici pour décoller vers la maison."
 
@@ -2770,11 +2770,11 @@ msgstr "+{amount} % de {stat} pour {robot}"
 msgid "+{amount} {robot} {stat}"
 msgstr "+{amount} de {stat} pour {robot}"
 
-#: systems/late_director.gd:107
+#: systems/late_director.gd:116
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "Le Pont de l'Arche s'ouvre une fois le Cradle rentré au port."
 
-#: systems/late_director.gd:144
+#: systems/late_director.gd:153
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode ({garden_mode}) is open too."
 msgstr "Mode Berceau : la réserve de graines de l'arche garde des graines pour d'autres mondes. Pause > Pont de l'Arche pour les voir avec les héritages que ta restauration a débloqués, ou ensemencer un nouveau monde. Le mode Jardin ({garden_mode}) est ouvert aussi."
 
@@ -2903,7 +2903,7 @@ msgstr "Déjà en file"
 msgid "Queue is full"
 msgstr "File pleine"
 
-#: systems/research.gd:356 ui/codex_screen.gd:886
+#: systems/research.gd:356 ui/codex_screen.gd:890
 msgid "%ds"
 msgstr "%d s"
 
@@ -2987,15 +2987,15 @@ msgstr "Débloque les graines : %s"
 msgid "Unlocks: %s"
 msgstr "Débloque : %s"
 
-#: systems/research.gd:616
+#: systems/research.gd:621
 msgid "While you were away, research finished: %s."
 msgstr "Pendant ton absence, une recherche s'est terminée : %s."
 
-#: systems/research.gd:647
+#: systems/research.gd:652
 msgid "New robot plans: %s. %s"
 msgstr "Nouveaux plans de robot : %s. %s"
 
-#: systems/research.gd:652
+#: systems/research.gd:657
 msgid "Research complete: %s."
 msgstr "Recherche terminée : %s."
 
@@ -3342,7 +3342,7 @@ msgstr "a compacté environ %d balles"
 msgid "kept the base tidy"
 msgstr "a gardé la base en ordre"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:796
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:800
 msgid "Cubes earned"
 msgstr "Cubes gagnés"
 
@@ -3868,7 +3868,7 @@ msgstr "Trouve un de leurs CD dans les gravats de %s."
 msgid "Your CDs (%d / %d): %s"
 msgstr "Tes CD (%d / %d) : %s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:818
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:822
 msgid "Achievements"
 msgstr "Succès"
 
@@ -4019,123 +4019,123 @@ msgstr "Astuce : apparaît pendant : %s."
 msgid "Unlocked  ·  %s"
 msgstr "Débloqué  ·  %s"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:790
 msgid "Total"
 msgstr "Total"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:791
 msgid "Junk removed"
 msgstr "Ferraille enlevée"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:791
 msgid "by type"
 msgstr "par type"
 
-#: ui/codex_screen.gd:788 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:792 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "Nettoyage"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:794
 msgid "Hexes restored"
 msgstr "Hexagones restaurés"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:795
 msgid "Bales pressed"
 msgstr "Balles pressées"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:796
 msgid "Pure bales"
 msgstr "Balles pures"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:797
 msgid "Perfect bales"
 msgstr "Balles parfaites"
 
-#: ui/codex_screen.gd:794
+#: ui/codex_screen.gd:798
 msgid "Lumpy bales"
 msgstr "Balles grumeleuses"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:799
 msgid "Bales cashed in"
 msgstr "Balles encaissées"
 
-#: ui/codex_screen.gd:798 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:802 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Croissance"
 
-#: ui/codex_screen.gd:799
+#: ui/codex_screen.gd:803
 msgid "Seeds planted"
 msgstr "Graines plantées"
 
-#: ui/codex_screen.gd:800
+#: ui/codex_screen.gd:804
 msgid "Plants bloomed"
 msgstr "Plantes fleuries"
 
-#: ui/codex_screen.gd:801
+#: ui/codex_screen.gd:805
 msgid "Air filtered"
 msgstr "Air filtré"
 
-#: ui/codex_screen.gd:803 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:807 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "Robots"
 
-#: ui/codex_screen.gd:805
+#: ui/codex_screen.gd:809
 msgid "Bales by robots"
 msgstr "Balles par les robots"
 
-#: ui/codex_screen.gd:806
+#: ui/codex_screen.gd:810
 msgid "Parts dug up"
 msgstr "Pièces déterrées"
 
-#: ui/codex_screen.gd:808
+#: ui/codex_screen.gd:812
 msgid "Exploring"
 msgstr "Exploration"
 
-#: ui/codex_screen.gd:809
+#: ui/codex_screen.gd:813
 msgid "Distance rolled"
 msgstr "Distance parcourue"
 
-#: ui/codex_screen.gd:810
+#: ui/codex_screen.gd:814
 msgid "Memory shards read"
 msgstr "Éclats de mémoire lus"
 
-#: ui/codex_screen.gd:811
+#: ui/codex_screen.gd:815
 msgid "Codex entries"
 msgstr "Entrées du Codex"
 
-#: ui/codex_screen.gd:814
+#: ui/codex_screen.gd:818
 msgid "Progress"
 msgstr "Progression"
 
-#: ui/codex_screen.gd:815
+#: ui/codex_screen.gd:819
 msgid "Upgrades bought"
 msgstr "Améliorations achetées"
 
-#: ui/codex_screen.gd:816
+#: ui/codex_screen.gd:820
 msgid "Field notes logged"
 msgstr "Notes de terrain consignées"
 
-#: ui/codex_screen.gd:817
+#: ui/codex_screen.gd:821
 msgid "Research done"
 msgstr "Recherches faites"
 
-#: ui/codex_screen.gd:819
+#: ui/codex_screen.gd:823
 msgid "Best hub level"
 msgstr "Meilleur niveau de base"
 
-#: ui/codex_screen.gd:870
+#: ui/codex_screen.gd:874
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:871
+#: ui/codex_screen.gd:875
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:875
+#: ui/codex_screen.gd:879
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:885
+#: ui/codex_screen.gd:889
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
 
@@ -4236,7 +4236,7 @@ msgstr "FAIT AVEC AMOUR ET FERRAILLE"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "Le code, les maillages procéduraux, la musique et les sons synthétisés et les textes sont des créations originales de Greenfall."
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:749
+#: ui/credits_roll.gd:148 ui/main_menu.gd:757
 msgid "Music by Lucas"
 msgstr "Musique de Lucas"
 
@@ -5214,7 +5214,7 @@ msgstr[1] "%d planètes"
 msgid "Profiles"
 msgstr "Profils"
 
-#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:76
+#: ui/main_menu.gd:366 ui/main_menu.gd:699 ui/pause_menu.gd:76
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -5222,77 +5222,77 @@ msgstr "Paramètres"
 msgid "Made with Godot"
 msgstr "Fait avec Godot"
 
-#: ui/main_menu.gd:582
+#: ui/main_menu.gd:590
 msgid "%dm"
 msgstr "%d min"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:589 ui/profile_picker.gd:133
+#: ui/main_menu.gd:597 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s cubes"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jan"
 msgstr "janv."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Feb"
 msgstr "févr."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Mar"
 msgstr "mars"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Apr"
 msgstr "avr."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "May"
 msgstr "mai"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jun"
 msgstr "juin"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jul"
 msgstr "juil."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Aug"
 msgstr "août"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Sep"
 msgstr "sept."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Oct"
 msgstr "oct."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Dec"
 msgstr "déc."
 
-#: ui/main_menu.gd:691
+#: ui/main_menu.gd:699
 msgid "Credits"
 msgstr "Crédits"
 
-#: ui/main_menu.gd:720
+#: ui/main_menu.gd:728
 msgid "CREDITS"
 msgstr "CRÉDITS"
 
-#: ui/main_menu.gd:735 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:743 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Retour"
 
-#: ui/main_menu.gd:748
+#: ui/main_menu.gd:756
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5302,27 +5302,27 @@ msgstr ""
 "Le code, les maillages procéduraux, l'audio synthétisé et les textes sont des créations originales de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:752
+#: ui/main_menu.gd:760
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Ressources tierces : CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:770
+#: ui/main_menu.gd:778
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]par %s[/color]"
 
-#: ui/main_menu.gd:804
+#: ui/main_menu.gd:812
 msgid "START A NEW GAME?"
 msgstr "COMMENCER UNE NOUVELLE PARTIE ?"
 
-#: ui/main_menu.gd:805
+#: ui/main_menu.gd:813
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Ta sauvegarde actuelle sera effacée. C'est irréversible."
 
-#: ui/main_menu.gd:813
+#: ui/main_menu.gd:821
 msgid "Keep my save"
 msgstr "Garder ma sauvegarde"
 
-#: ui/main_menu.gd:819 ui/profile_picker.gd:213
+#: ui/main_menu.gd:827 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "Effacer et commencer"
 
@@ -5650,11 +5650,11 @@ msgstr "RENOMMER LE PROFIL"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: ui/research_node_card.gd:175 ui/research_panel.gd:194
+#: ui/research_node_card.gd:175 ui/research_panel.gd:198
 msgid "Researched"
 msgstr "Recherché"
 
-#: ui/research_node_card.gd:178 ui/research_panel.gd:197
+#: ui/research_node_card.gd:178 ui/research_panel.gd:201
 msgid "%s left"
 msgstr "%s restant"
 
@@ -5662,7 +5662,7 @@ msgstr "%s restant"
 msgid "Queued  ·  %s"
 msgstr "En file  ·  %s"
 
-#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+#: ui/research_node_card.gd:184 ui/research_panel.gd:207
 msgid "%s  ·  %s"
 msgstr "%s  ·  %s"
 
@@ -5678,39 +5678,39 @@ msgstr "La recherche coûte des cubes et prend du temps réel. Elle continue pen
 msgid "RESEARCHING"
 msgstr "RECHERCHE EN COURS"
 
-#: ui/research_panel.gd:163
+#: ui/research_panel.gd:167
 msgid "Nothing yet"
 msgstr "Rien pour l'instant"
 
-#: ui/research_panel.gd:164
+#: ui/research_panel.gd:168
 msgid "Pick a glowing card below"
 msgstr "Choisis une carte lumineuse ci-dessous"
 
-#: ui/research_panel.gd:169
+#: ui/research_panel.gd:173
 msgid "%s left  ·  %d%%"
 msgstr "%s restant  ·  %d%%"
 
-#: ui/research_panel.gd:175
+#: ui/research_panel.gd:179
 msgid "Queue: empty  (%d slots)"
 msgstr "File : vide  (%d places)"
 
-#: ui/research_panel.gd:198 ui/research_panel.gd:201
+#: ui/research_panel.gd:202 ui/research_panel.gd:205
 msgid "Press again to cancel (refund)"
 msgstr "Appuie à nouveau pour annuler (remboursé)"
 
-#: ui/research_panel.gd:200
+#: ui/research_panel.gd:204
 msgid "Queued #%d"
 msgstr "En file n°%d"
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:209
 msgid "Press to research"
 msgstr "Appuie pour rechercher"
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:209
 msgid "Press to queue"
 msgstr "Appuie pour mettre en file"
 
-#: ui/research_panel.gd:214
+#: ui/research_panel.gd:218
 msgid "%s cancelled. Cubes refunded."
 msgstr "%s annulée. Cubes remboursés."
 
@@ -6516,7 +6516,7 @@ msgstr "BAIE À ROBOTS"
 msgid "WORKBENCH"
 msgstr "ÉTABLI"
 
-#: ui/upgrades_screen.gd:292
+#: ui/upgrades_screen.gd:296
 msgid "Not open yet. Keep playing."
 msgstr "Pas encore ouvert. Continue à jouer."
 
