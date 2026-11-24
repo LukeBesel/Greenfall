@@ -35,7 +35,6 @@ var day: OrbitDay
 var crews: OrbitCrews
 var cam: SphereCam
 var dev: OrbitDev
-var from_memory: bool = false  # [orbC] reloaded by rocket travel: no offline payout
 var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
@@ -53,7 +52,6 @@ func build(p_world: Node3D) -> void:
 	if GameState.reload_in_memory:
 		GameState.reload_in_memory = false
 		loaded = true
-		from_memory = true  # [orbC]
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
@@ -1281,7 +1279,7 @@ func restore_world() -> void:
 	patch.restore_cargo(ld.get("cargo", {}))
 	if sites:  # [orbD]
 		sites.load_state(od.get("site_state", {}))
-	crews.restore_crew(self, od, not from_memory)  # [orbC] crew + offline jump
+	crews.restore_crew(od)
 
 
 static func _v_arr(v: Vector3) -> Array:

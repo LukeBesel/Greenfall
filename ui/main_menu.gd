@@ -358,9 +358,6 @@ func _build_ui() -> void:
 	var n_worlds: int = CradleMode.worlds().size()
 	_profiles_btn = _menu_button(tr("Profiles"), _open_profiles, ["%s  ·  %s" % [pname, tr_n("%d planet", "%d planets", n_worlds) % n_worlds], pname])
 	buttons.append(_profiles_btn)
-	if not _save.is_empty():
-		_new_game = _menu_button(tr("New Game"), _on_new_game)
-		buttons.append(_new_game)
 	if Demo.is_demo():  # [steam]
 		buttons.append(_menu_button(tr("Wishlist on Steam"), SteamService.open_store_page))
 	buttons.append(_menu_button(tr("Settings"), _open_settings))
@@ -693,7 +690,7 @@ func _on_sub_closed(which: int) -> void:
 	_confirm.visible = false
 	_main.process_mode = Node.PROCESS_MODE_INHERIT
 	_main.visible = true
-	var target: Button = _new_game if which != 4 else _profiles_btn  # [worlds2]
+	var target: Button = _profiles_btn if which == 4 else (_continue if _continue != null else _new_game)
 	for c: Node in _menu_box.get_children():
 		var b: Button = c as Button
 		if b and ((which == 1 and b.text == tr("Credits").to_upper()) or (which == 2 and b.text == tr("Settings").to_upper())):

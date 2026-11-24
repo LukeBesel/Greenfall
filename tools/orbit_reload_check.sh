@@ -1,10 +1,28 @@
 #!/usr/bin/env bash
 # [orbB] Globe save -> load across two processes: Lumi's position (direction + height) and the
-# currencies must come back from disk. Prints the two [reload] lines; exit 1 on FAIL.
-cd "$(dirname "$0")/.."
+# currencies must come back from disk. Prints the [reload] lines and fails if either run fails.
+cd "$(dirname "$0")/.." || exit 1
 DIR="orbit_reload_$$"
-godot --headless --path . -- --fresh --orbit --save-dir="$DIR" --orbit-reload=write 2>&1 | grep -E "^\[reload\]|SCRIPT ERROR"
-godot --headless --path . -- --orbit --save-dir="$DIR" --orbit-reload=read 2>&1 | grep -E "^\[reload\]|SCRIPT ERROR" | tee /tmp/orbit_reload_$$.log
-grep -q "PASS" /tmp/orbit_reload_$$.log; code=$?
-rm -f /tmp/orbit_reload_$$.log
-exit $code
+log=$(mktemp "${TMPDIR:-/tmp}/orbit_reload.XXXXXX") || exit 1
+trap 'rm -f "$log"' EXIT
+
+run_reload() {
+	local phase="$1"; shift
+	local code=0
+	timeout -k 30 "${CHECK_EXIT_TIMEOUT:-1800}" godot --headless --path . -- \
+		"$@" --orbit --save-dir="$DIR" --orbit-reload="$phase" >"$log" 2>&1 || code=$?
+	grep -aE "^\[reload\]|SCRIPT ERROR" "$log"
+	if [ "$code" -ne 0 ] || grep -aqE "SCRIPT ERROR|^\[reload\] FAIL" "$log"; then
+		echo "[orbit_reload] FAIL $phase (Godot exit $code)"
+		tail -n 15 "$log"
+		return 1
+	fi
+}
+
+run_reload write --fresh || exit 1
+run_reload read || exit 1
+if ! grep -aqE '^\[reload\] PASS([[:space:]:]|$)' "$log"; then
+	echo "[orbit_reload] FAIL read (missing PASS marker)"
+	tail -n 15 "$log"
+	exit 1
+fi

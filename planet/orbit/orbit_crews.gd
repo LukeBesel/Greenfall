@@ -146,16 +146,9 @@ func cleaned_by_bots() -> int:
 # --- [orbC] The phase C crew (robots/sphere/): near SphereBots, far records, jobs by cell id ---
 ## SphereCrew does the work; this node plugs it into the slice (scenes/slice_orbit.gd calls
 ## build_crew, save_crew, restore_crew and on_view): saving in GameState.orbit["robots"]
-## (directions, never x/z) and the offline jump on load, per hub region by cell id with the flat
-## game's maths (SphereOffline over Offline.compute). The stand-in bots and far crews above stay
-## for --orbit-bots only.
+## (directions, never x/z). The stand-in bots and far crews above stay for --orbit-bots only.
 
 var crew: SphereCrew
-
-const AWAY_MIN_S: float = 120.0  # the flat slice's threshold for an offline payout
-## [v10guide] Critic 3: the away line shows only after a real break (a quick quit and Continue pays
-## quietly; nobody wants a report after a minute).
-const AWAY_REPORT_S: float = 600.0
 
 # --- [v6crew] Looking at a robot; what a hub's crew did while Lumi was away ---------------------
 ## Lumi stands this close to a robot: its line shows as the prompt (what it does, or why it can't).
@@ -287,26 +280,13 @@ func save_crew() -> Dictionary:
 	return crew.to_dict() if crew != null else {}
 
 
-## Restores the crew from GameState.orbit and, when the game was reopened from disk after a while
-## away, runs the offline jump for its robots (grouped by hub) and pays it.
-func restore_crew(so: Node, od: Dictionary, from_disk: bool) -> Dictionary:
+## Restore the saved crew. Time away from the game never advances the fleet.
+func restore_crew(od: Dictionary) -> void:
 	if crew == null:
-		return {}
+		return
 	var rd: Dictionary = od.get("robots", {})
 	if not rd.is_empty():
 		crew.from_dict(rd)
-	if not from_disk:
-		return {}
-	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix
-	if GameState.saved_unix <= 0.0 or away <= AWAY_MIN_S or crew.robots().is_empty():
-		return {}
-	var res: Dictionary = offline(away)
-	_away_quiet = 60.0  # [v6crew] the offline note covers it: no second "while you were away"
-	Offline.apply(res)
-	var line: String = Offline.summary_text(res)
-	if away >= AWAY_REPORT_S and line != "":
-		EventBus.toast.emit(line, "info")
-	return res
 
 
 ## The offline jump for every hub that has robots. Pieces it removes are hidden in the junk view.

@@ -130,6 +130,7 @@ func _ready() -> void:
 	_root = Control.new()
 	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.theme = UITheme.get_theme()
+	_root.gui_input.connect(_on_globe_pointer)
 	add_child(_root)
 	var dim := ColorRect.new()
 	dim.color = Color(0.02, 0.025, 0.035, 0.9)
@@ -477,6 +478,7 @@ func close_view() -> void:
 	if not is_open or _flight_locked:
 		return
 	is_open = false
+	_drag = false
 	_root.visible = false
 	_set_handheld(false)
 	EventBus.ui_modal_changed.emit(false)
@@ -839,22 +841,52 @@ func _process(delta: float) -> void:
 		_refresh_text()
 
 
+## The full-screen Control receives pointer events before _unhandled_input.
+func _on_globe_pointer(event: InputEvent) -> void:
+	if not is_open or _flight_locked or _fly_t >= 0.0 or not event is InputEventMouse:
+		return
+	var pointer := event as InputEventMouse
+	var point: Vector2 = _root.get_global_transform() * pointer.position
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		if mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed:
+			_drag = false
+			return
+	if _left_card.get_global_rect().has_point(point) or (
+		_rocket_card.visible and _rocket_card.get_global_rect().has_point(point)
+	):
+		return
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		match mb.button_index:
+			MOUSE_BUTTON_LEFT:
+				_drag = mb.pressed
+			MOUSE_BUTTON_WHEEL_UP:
+				if mb.pressed:
+					_zoom = maxf(1.4, _zoom * 0.9)
+			MOUSE_BUTTON_WHEEL_DOWN:
+				if mb.pressed:
+					_zoom = minf(6.0, _zoom * 1.1)
+	elif event is InputEventMouseMotion and _drag:
+		var mm := event as InputEventMouseMotion
+		_drag = (mm.button_mask & MOUSE_BUTTON_MASK_LEFT) != 0
+		if _drag:
+			_yaw += mm.relative.x * 0.006
+			_pitch = clampf(_pitch + mm.relative.y * 0.006, -1.4, 1.4)
+
+
+func _input(event: InputEvent) -> void:
+	# A release over a panel may be consumed by that panel.
+	if _drag and event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		if mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed:
+			_drag = false
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_open:
 		return
-	if event is InputEventMouseButton:
-		var mb: InputEventMouseButton = event
-		if mb.button_index == MOUSE_BUTTON_LEFT:
-			_drag = mb.pressed
-		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
-			_zoom = maxf(1.4, _zoom * 0.9)
-		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
-			_zoom = minf(6.0, _zoom * 1.1)
-	elif event is InputEventMouseMotion and _drag:
-		var mm: InputEventMouseMotion = event
-		_yaw += mm.relative.x * 0.006
-		_pitch = clampf(_pitch + mm.relative.y * 0.006, -1.4, 1.4)
-	elif event.is_action_pressed("open_globe") or event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("open_globe") or event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
 		if _flight_locked or _fly_t >= 0.0:
 			get_viewport().set_input_as_handled()
 			return
