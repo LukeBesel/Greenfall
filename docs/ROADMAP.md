@@ -2,6 +2,35 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## Walks reliable, 20-24 Nov (v9a, task 195)
+
+What the failing walks were, by evidence (logs under screenshots/, spot tests in tools/walk_opening.gd):
+
+- **Game fault, fixed (719cef2): Lumi froze on the lake's edge by the bin.** The hex under a point was
+  decided with 32-bit dot products, so within a few centimetres of a hex edge land and water speckled from one
+  5 mm step to the next. The shore rule slid Lumi into that band and its "ended in water: put back, no speed"
+  rule then held him still whatever key was held. Lumi's water tests now use `hex_at_exact` (64-bit, one sharp
+  edge) and the shore clamp wants land all the way to its probe, so a corner of the lake nearer than 1.2 m
+  turns him too. Check: `--walk-opening-spot=x,z --walk-opening-spot-goals=shore` (64 key pairs against the
+  shore; 3 dead spots before, 0 after), in tools/check_exit.sh as walk_opening_spots.
+- **Game fault, fixed (719cef2): E dug a buried part while the prompt said "pick up"** (a bale pressed over a
+  part: the opening walk's "bale: E picks it up", then "carrying it, the beam goes to the scale" and
+  "stepping on the scale sells it" fail after it). E now follows the prompt's order (player/patch.gd
+  `_handle_interact`). Check: spot goal `digbale` (failed at yard (-7.0, -3.0) and (-14.7, 5.1) before: E dug,
+  +5 parts; passes after), in walk_opening_spots.
+- **Walker faults, fixed:** the opening walk pacing by the Shack's back wall on the way to the Bot Bay (main
+  ded0ea2's CI run) and by the workbench came from the walker before it planned a way round (1393892): the
+  wall is visible and its collider matches it, Lumi moved at 3.85 m/s along it. walk_opening_spots now also
+  walks from that spot (yard -10.5, 7.7) to the Bot Bay (`x,z@goal+goal` gives a spot its own goals).
+  walk_travel "no Parts" read the sentence behind the card instead of the card (the chest line wins the hint
+  when the chest is full; the price stays in the chips), and the travel walk skipped the restart checklist
+  without telling the card, so at station 2 the card still read "Fix the Settlers' old bench".
+- walk_home "shuttle: the card counts the cubes saved toward it" read 1.42K two seconds after the walk set
+  200 cubes (1 run of ~10 recorded). The walk now prints every cube payment in that window with the script
+  lines that made it (`note: shuttle: ... payments:`).
+- Other code still uses the 32-bit `hex_at` (robots, junk, the card's hex): the speckle at edges is still
+  there for them. Not known to break anything; worth a look if a robot dithers on a shoreline.
+
 ## Status at the stop, 18 Nov (owner playtest 3, items 89-109)
 
 The owner asked to end all work at a good stopping point.
