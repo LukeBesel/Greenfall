@@ -6,13 +6,13 @@
 cd "$(dirname "$0")/.." || exit 1
 mkdir -p screenshots
 DIR="old_arc_$$"  # (no "ledger" in the name: the run's log is searched for the word)
-LOG=screenshots/check_old_ledger_save.log
+LOG="screenshots/check_old_ledger_save_$$"
 
 # Keep each phase's status and complete log. A PASS printed before a crash is not a pass,
 # and the fixture writer's PASS cannot stand in for the final verifier's PASS.
 run_phase() {
 	local phase="$1" marker="$2"; shift 2
-	local log="$LOG.$phase" code=0
+	local log="$LOG.$phase.log" code=0
 	timeout -k 30 "${CHECK_EXIT_TIMEOUT:-1800}" godot --headless --path . "$@" >"$log" 2>&1 || code=$?
 	grep -a '^\[old-ledger\]' "$log"
 	if [ "$code" -ne 0 ] || grep -aqE 'SCRIPT ERROR|^\[old-ledger\].*FAIL' "$log" || { [ -n "$marker" ] && ! grep -aqE "$marker" "$log"; }; then
@@ -25,9 +25,9 @@ run_phase() {
 run_phase fresh '' -- --fresh --orbit --no-intro --autoplay --time-scale=8 --quit-after=60 --save-dir="$DIR" || exit 1
 run_phase fixture '^\[old-ledger\] PASS$' -s tools/ledger_old_save.gd -- --save-dir="$DIR" || exit 1
 run_phase load '' -- --orbit --no-intro --autoplay --time-scale=8 --clarity-log --quit-after=90 --save-dir="$DIR" || exit 1
-if grep -aqi ledger "$LOG.load"; then
+if grep -aqi ledger "$LOG.load.log"; then
 	echo '[old-ledger] FAIL the run still says Ledger:'
-	grep -am5 -i ledger "$LOG.load"
+	grep -am5 -i ledger "$LOG.load.log"
 	exit 1
 fi
 run_phase verify '^\[old-ledger\] PASS$' -s tools/ledger_old_save.gd -- --save-dir="$DIR" --verify || exit 1
