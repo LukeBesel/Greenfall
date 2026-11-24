@@ -38,12 +38,14 @@ What the failing walks were, by evidence (logs under screenshots/, spot tests in
   game paid since. Every payment of 300+ and every Lumi level is printed as a `[walk-home] note`, and the
   change log after the shuttle is built; `--walk-home-paylog` prints every payment with its payer. Also
   measured: base level 2 and the shuttle stand on no start-area junk, so a load has nothing new to tidy.
-- **OPEN: 1.2K-1.5K cubes in the seconds after the shuttle is built** (2 of 10 home walks here, main's run,
-  v10snd's): 1,346.75 per robot hex that finished next to the yard then (one run 1, one run 2: the toasts
-  say so), of which bonus + notes + level are 246.75; none of it one payment of 300 or more. Not reproduced
-  since the change log went in (0 of 6). If a
-  player sees it, it is in play (no reload needed), so the walks no longer count it as a save fault; what
-  pays it is not known.
+- **Game fault, fixed (3e6cb19): every world load added one more EventBus listener** (the 1.2K-1.5K cube
+  jumps the home walks saw: v10snd's shuttle card, main's "shuttle just built (kill)", two runs here).
+  Research, Goals, Achievements and MusicHooks connected EventBus signals to lambdas that use no member of
+  the node; such a lambda is bound to the script, so it outlived the node on the autoload. After 12 world
+  loads a robot's hex paid its field notes 12 times (+121.75 bonus, then +100 x 12; the change log showed
+  it), each scoop counted 12 times toward junk_scooped, each restored hex toward hexes_restored, and the
+  music stings played 12 times. They are methods now. tests/test_bus_listeners.gd fails on the old code
+  (5 of 5) and passes. Other EventBus lambdas use a member of their node and die with it.
 - **Game fault, fixed (0188201): the fauna perch scan raised a SCRIPT ERROR** on a mesh the headless
   renderer held no arrays for (FaunaSpace.top_point; 7 times in one home walk). Skipped, named once.
 - **Game fault, fixed (36c1ee1): the prompt offered E while the bale press ran** and E did nothing then
