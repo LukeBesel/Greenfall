@@ -1000,9 +1000,15 @@ static func _outpost_repair(so: SliceOrbit, site: int) -> void:
 	var rc: Dictionary = ops.repair_cost(k)
 	_set_money(maxf(GameState.get_currency("cubes").to_float(), float(rc.get("cubes", 0)) + 10.0), maxf(GameState.get_currency("parts").to_float(), float(rc.get("parts", 0)) + 2.0))
 	print("%s   by the outpost: '%s'" % [TAG, so.interact_prompt(w.get("patch"))])
+	# [v9a] What E meets (a travel run: the prompt named the repair and E left it at level 0).
+	var pt: Patch = w.get("patch") as Patch
+	var before: String = "block '%s', Lumi's prompt '%s', cine_hold %s, cubing %.2f, can dig %s, carrying %d, levels %s" % [ops.repair_block(k), str(pt.prompt), str(pt.cine_hold),
+		float(pt.get("_cubing")), str((pt.get("detector") as PartDetector).can_dig()), pt.carried.size(), str(ops.levels())]
+	_toasts.clear()
 	await _tap(w.get_tree(), "interact")
 	await _wait(w.get_tree(), 4.0)
-	_check(ops.level_of(k) >= 1, "E by the cleared outpost at %s with the price repairs it" % HubPlan.hub_name(so.sites.sm.planet_id, site))
+	_check(ops.level_of(k) >= 1, "E by the cleared outpost at %s with the price repairs it%s" % [HubPlan.hub_name(so.sites.sm.planet_id, site),
+		"" if ops.level_of(k) >= 1 else " (outpost %d; before E: %s; after: levels %s, block '%s', carrying %d, toasts %s)" % [k, before, str(ops.levels()), ops.repair_block(k), pt.carried.size(), str(_toasts)]])
 
 
 ## The rocket's next tier at the home bench: E opens it on the rocket's row, a click upgrades.
