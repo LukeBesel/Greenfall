@@ -2231,19 +2231,19 @@ msgstr "Cradle号"
 msgid "WE'LL BE BACK"
 msgstr "我们会回来的"
 
-#: systems/achievements.gd:167
+#: systems/achievements.gd:171
 msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
 msgstr "已解锁 %d 个成就。在图鉴（{open_codex}）里查看。"
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:446
+#: systems/achievements.gd:178 ui/notify_stack.gd:38 ui/subtitles.gd:446
 msgid "Achievement: %s. %s"
 msgstr "成就：%s。%s"
 
-#: systems/achievements.gd:179
+#: systems/achievements.gd:183
 msgid "Codex: %d new entries."
 msgstr "图鉴：%d 条新条目。"
 
-#: systems/achievements.gd:182
+#: systems/achievements.gd:186
 msgid "Codex entry: %s"
 msgstr "图鉴条目：%s"
 
@@ -2975,15 +2975,15 @@ msgstr "解锁%s种子"
 msgid "Unlocks: %s"
 msgstr "解锁：%s"
 
-#: systems/research.gd:621
+#: systems/research.gd:624
 msgid "While you were away, research finished: %s."
 msgstr "你离开期间，研究完成了：%s。"
 
-#: systems/research.gd:652
+#: systems/research.gd:663
 msgid "New robot plans: %s. %s"
 msgstr "新的机器人图纸：%s。%s"
 
-#: systems/research.gd:657
+#: systems/research.gd:668
 msgid "Research complete: %s."
 msgstr "研究完成：%s。"
 
