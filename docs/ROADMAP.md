@@ -33,7 +33,9 @@ What the failing walks were, by evidence (logs under screenshots/, spot tests in
   just built: saved and loaded (kill)" saw "0 / 600" become a full bar: a robot finished the outlined hex
   while the walk quit and came back (cubes 0 -> 1466.8), the price was covered, so the card shows the step's
   own count, as in play. That is af48bf9's case (money earned in play while the walk reloads; money that
-  appears in the load itself still fails), which main did not have yet. "shuttle: the price is paid" (1322
+  appears in the load itself still fails), which main did not have yet; 508fa70 does the same while saving up
+  (save and load agree, the count reads what he has now, the payers since the load are printed;
+  `--walk-home-fault=tower2` still fails, `--walk-home-earn=tower2` passes). "shuttle: the price is paid" (1322
   left right after the click) now checks the change log: the price taken, and what is left equals what the
   game paid since. Every payment of 300+ and every Lumi level is printed as a `[walk-home] note`, and the
   change log after the shuttle is built; `--walk-home-paylog` prints every payment with its payer. Also
