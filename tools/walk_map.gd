@@ -11,7 +11,7 @@ extends RefCounted
 ##      camera behind the map does not move;
 ##   4. a drag that starts on the card does not turn the globe;
 ##   5. the Find Lumi button, its key and a double-click all turn back to the opening view;
-##   6. the move keys turn it too (keyboard only);
+##   6. the move keys turn it too (keyboard only); standing at the map, Lumi does not doze off;
 ##   7. the map key closes it: the game's camera, the HUD and walking are back; opening it again
 ##      looks at Lumi again, without the first-time hint.
 ## --walk-map[=S] (after S s, default 8): prints [walk-map] lines, exit 1 on a failure.
@@ -223,6 +223,13 @@ static func run_dev(p_so: SliceOrbit) -> void:
 	_check(p.global_position.distance_to(pos0) < 0.05, "Lumi did not walk meanwhile")
 	await tree.create_timer(2.5).timeout
 	_check(not bool(gv.view_state()["hint"]), "the first-time line is gone once the globe has been turned")
+	# Long at the map without walking (a rendered run showed a snore's "z" floating over the globe):
+	# standing still counts as idle, holding the map does not.
+	p.set("_idle_time", 50.0)
+	for k: int in 3:
+		await tree.physics_frame
+	await _pframes(2)
+	_check(not p.model.sleeping and float(p.get("_idle_time")) < 1.0, "Lumi does not doze off with the map in his hands (idle %.1f s)" % float(p.get("_idle_time")))
 
 	# 7. Close; play is back.
 	await _tap("open_globe")

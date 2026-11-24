@@ -96,7 +96,8 @@ static func _snap() -> Dictionary:
 	return {"step": _step_id(), "card": _card(), "pr": ob.progress(), "hex": ob.target_hex,
 		"frac": ob.hex_fraction() if ob.target_hex >= 0 else -1.0, "row": ob.bench_row(), "way": ob.waypoint_target(),
 		"_cubes": GameState.get_currency("cubes").to_float(), "_parts": GameState.get_currency("parts").to_float(),
-		"_pos": p.global_position if p else Vector3.ZERO, "_hub": GameState.current_hub, "_price": ob._step_price()}
+		"_pos": p.global_position if p else Vector3.ZERO, "_hub": GameState.current_hub, "_price": ob._step_price(),
+		"_earned": BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()}
 
 
 ## Saves and loads the game the way a player does, then checks the step came back the same.
@@ -206,8 +207,21 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 		print("[walk-home] note: %s: back after %.0f s with robots out: offline pay %.0f cubes (count and outline may move on)" % [tag, away, float(b["_cubes"]) - float(a["_cubes"])])
 	var pa: Array = a["pr"]
 	var pb: Array = b["pr"]
+	# [v10ui] The robots go on selling bales while the game saves, loads and the card fades in (a
+	# bale pressed in a salvage surge pays over 1K: check_exit "1.42K / 2K" -> price covered, cubes
+	# 1422 -> 2769). cubes_earned_total is saved too: the cubes now less what was earned since must be
+	# the cubes before, and then a count that went up, or a price those sales covered, is the same step.
+	var earned: float = float(b["_earned"]) - float(a["_earned"])
+	var kept_cubes: bool = absf(float(b["_cubes"]) - earned - float(a["_cubes"])) <= maxf(float(a["_cubes"]) * 0.02, 5.0)
+	var sold: bool = not paid and earned > 1.0 and kept_cubes
+	var price_c: float = float((a["_price"] as Dictionary).get("cubes", 0.0)) if a["_price"] is Dictionary else 0.0
+	if sold:
+		print("[walk-home] note: %s: the robots sold %.0f cubes meanwhile; cubes %.0f -> %.0f (%.0f before those sales)%s" % [tag, earned,
+			float(a["_cubes"]), float(b["_cubes"]), float(b["_cubes"]) - earned, ", the price is covered now" if price_c > 0.0 and float(b["_cubes"]) >= price_c else ""])
 	if paid and float(pb[0]) >= float(pa[0]) - 0.01:
 		pass  # more money or more cleaned: the pay
+	elif sold and (float(pb[0]) >= float(pa[0]) - 0.01 or (price_c > 0.0 and float(b["_cubes"]) >= price_c and float(a["_cubes"]) < price_c)):
+		pass  # the robots' sales: counted above
 	elif absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
 		diff.append("count %s -> %s" % [str(pa), str(pb)])
 	# The outline is picked afresh on load (the most-cleared hex near Lumi): another hex is fine if
@@ -238,8 +252,8 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 		elif str(va) != str(vb):
 			diff.append("%s %s -> %s" % [k, str(va), str(vb)])
 	if not diff.is_empty():  # [v9a] what moved underneath (CI flake hunt)
-		print("[walk-home] debug %s: cubes %.1f -> %.1f, parts %.1f -> %.1f, Lumi moved %.1f m, hub %d -> %d, price %s -> %s, old hex kept %.2f" % [tag,
-			float(a["_cubes"]), float(b["_cubes"]), float(a["_parts"]), float(b["_parts"]), (a["_pos"] as Vector3).distance_to(b["_pos"]), int(a["_hub"]), int(b["_hub"]), str(a["_price"]), str(b["_price"]), kept])
+		print("[walk-home] debug %s: cubes %.1f -> %.1f (earned %.1f meanwhile), parts %.1f -> %.1f, Lumi moved %.1f m, hub %d -> %d, price %s -> %s, old hex kept %.2f" % [tag,
+			float(a["_cubes"]), float(b["_cubes"]), earned, float(a["_parts"]), float(b["_parts"]), (a["_pos"] as Vector3).distance_to(b["_pos"]), int(a["_hub"]), int(b["_hub"]), str(a["_price"]), str(b["_price"]), kept])
 	_check(diff.is_empty(), "%s: saved and loaded (%s): the same card, count, marker and bench row%s" % [tag, "kill" if kill else "Quit", "" if diff.is_empty() else ": " + "; ".join(diff)])
 	return true
 

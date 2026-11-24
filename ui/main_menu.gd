@@ -678,7 +678,10 @@ func _on_continue() -> void:
 static func _played(n: int) -> bool:
 	if ProfileSlots.dev_summaries.has(n):
 		return not bool(ProfileSlots.dev_summaries[n]["empty"])
-	for nm: String in DirAccess.get_files_at(SaveManager.profile_dir(n)):
+	var dir: String = SaveManager.profile_dir(n)
+	if not DirAccess.dir_exists_absolute(dir):  # never played: no folder yet (listing it logs an error)
+		return false
+	for nm: String in DirAccess.get_files_at(dir):
 		if nm.begins_with("slot_") and nm.ends_with(".save"):
 			return true
 	return false
