@@ -101,10 +101,14 @@ func setup(p_world: Node, p_key: String = HOME) -> void:
 	if DevHooks.has("open-botbay") and key == HOME:  # dev (shots): --open-botbay[=S] builds it and opens its screen S s in
 		mark_built(HOME)
 		Research.grant("salvage_logic")  # as BenchTiers.buy: the Scoopie can be built
-		(func() -> void:
-			await DevHooks.wait_wall(DevHooks.get_f("open-botbay", 100.0))
-			if is_inside_tree():
-				open()).call_deferred()
+		_dev_open.call_deferred()
+
+
+## Deferred from setup (--open-botbay) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_open() -> void:
+	await DevHooks.wait_wall(DevHooks.get_f("open-botbay", 100.0))
+	if is_inside_tree():
+		open()
 
 
 ## Puts the bay (and its E spot) at a world transform: the site's anchor.

@@ -1091,6 +1091,7 @@ static func _part_shuttle() -> void:
 	GameState.flags["map_seen"] = true
 	var cost: Dictionary = YardBuilds.def("shuttle").get("cost", {})
 	_set_money(200.0, 10.0)
+	var stats0: Dictionary = GameState.stats.duplicate()  # [v10snd] what paid, if the count is off
 	_toasts.clear()
 	if not await _goto("shuttle"):
 		return
@@ -1103,6 +1104,12 @@ static func _part_shuttle() -> void:
 	var pr: Array = ob.progress()
 	var saved: float = str(pr[1]).get_slice(" /", 0).replace(",", "").to_float()
 	_check(saved >= 200.0 and saved < 400.0 and str(pr[1]).ends_with("/ " + Settings.fmt(BigNum.from_float(float(cost.get("cubes", 0.0))))), "shuttle: the card counts the cubes saved toward it (%s; robots may sell a bale meanwhile)" % str(pr))
+	if not (saved >= 200.0 and saved < 400.0):
+		var diff: Dictionary = {}
+		for k: Variant in GameState.stats:
+			if GameState.stats[k] is float and float(GameState.stats[k]) != float(stats0.get(k, 0.0)):
+				diff[k] = float(GameState.stats[k]) - float(stats0.get(k, 0.0))
+		print("[walk-home] note: shuttle: cubes now %.0f; stats that moved since the 200 were set: %s; toasts: %s" % [GameState.get_currency("cubes").to_float(), str(diff), str(_toasts)])
 	await _shot("shuttle_start")
 	await _reload("shuttle, saving up", func() -> Dictionary: return {"plans": GameState.flags.get("shuttle_plans", false), "built": Hub.rocket_built()})
 	os_ = OrbitSites.of(w)

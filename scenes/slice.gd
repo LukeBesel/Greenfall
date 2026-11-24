@@ -224,7 +224,12 @@ func _setup_research_codex() -> void:
 			ei += 1
 		Achievements.check_all()
 	if DevHooks.get_s("open", "") == "codex":
-		(func() -> void: _open_codex(DevHooks.get_s("codex-tab", ""))).call_deferred()
+		_dev_open_codex.call_deferred()
+
+
+## Deferred from _setup_research_codex (--open=codex) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_open_codex() -> void:
+	_open_codex(DevHooks.get_s("codex-tab", ""))
 
 
 

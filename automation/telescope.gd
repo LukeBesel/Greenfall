@@ -50,7 +50,12 @@ func _ready() -> void:
 	if DevHooks.has("scope-debug"):
 		print("[scope] ready built=%s open=%s" % [str(built()), DevHooks.get_s("open", "")])
 	if DevHooks.get_s("open", "") == "scope":
-		(func() -> void: open_view(int(DevHooks.get_f("scope-pick", -1.0)))).call_deferred()
+		_dev_open_view.call_deferred()
+
+
+## Deferred from _ready (--open=scope) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_open_view() -> void:
+	open_view(int(DevHooks.get_f("scope-pick", -1.0)))
 
 
 func _on_sim_tick(dt: float) -> void:

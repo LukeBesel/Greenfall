@@ -88,11 +88,15 @@ func _setup() -> void:
 	elif Homeward.current_planet() > 0 and not Homeward.beat_done("%s_arrive" % _pid()):
 		get_tree().create_timer(8.0, false).timeout.connect(func() -> void: _arrival_beat(Homeward.current_planet()))
 	if DevHooks.get_s("open", "") == "system":
-		(func() -> void:
-			map.open_map()
-			if DevHooks.has("system-zoom"):  # dev: --system-zoom=K glides in to planet K
-				get_tree().create_timer(DevHooks.get_f("system-zoom-at", 2.0), true, false, true).timeout.connect(func() -> void:
-					map._select(int(DevHooks.get_f("system-zoom", 1.0)), true))).call_deferred()
+		_dev_open_map.call_deferred()
+
+
+## Deferred from _setup (--open=system) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_open_map() -> void:
+	map.open_map()
+	if DevHooks.has("system-zoom"):  # dev: --system-zoom=K glides in to planet K
+		get_tree().create_timer(DevHooks.get_f("system-zoom-at", 2.0), true, false, true).timeout.connect(func() -> void:
+			map._select(int(DevHooks.get_f("system-zoom", 1.0)), true))
 
 
 func _pid(k: int = -1) -> String:

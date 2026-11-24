@@ -95,11 +95,15 @@ func _ready() -> void:
 	EventBus.research_completed.connect(_on_completed)
 	_set_focus(Research.ids()[0] if _first_available() == "" else _first_available())
 	refresh()
-	(func() -> void:
-		var sc: ScrollContainer = _find_scroll()
-		if sc:
-			sc.follow_focus = true
-		focus_first()).call_deferred()
+	_focus_when_ready.call_deferred()
+
+
+## Deferred from _ready as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _focus_when_ready() -> void:
+	var sc: ScrollContainer = _find_scroll()
+	if sc:
+		sc.follow_focus = true
+	focus_first()
 
 
 func _find_scroll() -> ScrollContainer:
@@ -128,7 +132,7 @@ func focus_first() -> void:
 		# Keep the header (data, active research) in view when the focused card is near the top.
 		var sc: ScrollContainer = _find_scroll()
 		if sc and int(Research.def(c.node_id).get("tier", 0)) <= 2:
-			(func() -> void: sc.scroll_vertical = 0).call_deferred()
+			sc.set_deferred("scroll_vertical", 0)
 
 
 func _glass() -> PanelContainer:

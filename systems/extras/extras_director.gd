@@ -89,7 +89,12 @@ func _setup() -> void:
 	if DevHooks.has("extras-cam"):
 		_cam.call_deferred()
 	if DevHooks.has("extras-nohud") and world.get("hud") != null:
-		(func() -> void: world.hud.visible = false).call_deferred()
+		_dev_hide_hud.call_deferred()
+
+
+## Deferred from _setup (--extras-nohud) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_hide_hud() -> void:
+	world.hud.visible = false
 
 
 ## [v5load] On the globe the loader's build waits for this setup (BuildBudget.idle), so it may hand

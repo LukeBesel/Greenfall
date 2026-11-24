@@ -46,7 +46,7 @@ func _ready() -> void:
 
 
 ## [tunes] The owner's songs in play: the background shuffle (unless the intro is about to take
-## over), the CDs in the rubble and the quick-select (N, with Glim's Music upgrade).
+## over), the CDs in the rubble and the radio (N, from the first CD on).
 ## Dev: --cds=id,id grants CDs, --scratched=id,id puts scratched CDs in the case, --cd-drop makes
 ## the next cleaned hex turn up a CD.
 func _tunes_setup() -> void:
@@ -58,6 +58,7 @@ func _tunes_setup() -> void:
 		Radio.play(DevHooks.get_s("cd-play", "shuffle"))
 	if DevHooks.has("cd-drop"):
 		Tunes.st()["pity"] = 999
+	Tunes.adopt_old_save()  # [v10snd] a save from before the first-CD rule has heard music already
 	if Tunes.context() != "intro":
 		Tunes.set_context("play")
 	if world == null:

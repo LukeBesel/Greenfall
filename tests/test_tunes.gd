@@ -15,7 +15,7 @@ func before_each() -> void:
 	Audio._duck = 0.0
 	_flags = GameState.flags.duplicate(true)
 	_stats = GameState.stats.duplicate(true)
-	GameState.flags = {}
+	GameState.flags = {"songs": {"found": [], "first_cd": true}}  # [v10snd] the first CD is found (tests/test_music_rules.gd plays the time before it)
 	GameState.stats = {}
 	Tunes.file_override = {}
 	_rng.seed = 77
@@ -31,7 +31,10 @@ func after_each() -> void:
 
 ## [main] The shipped data lends Ochre's three songs to Verdance until Verdance has more of its own
 ## (owner playtest). These tests check the CD rules as designed, so they put the songs back as Ochre
-## CDs; test_verdance_borrows_ochre_songs_for_now checks the loan itself.
+## CDs; test_verdance_borrows_ochre_songs_for_now checks the loan itself. [v10snd] The shipped data
+## also plays every song at random "for now" (shuffle_all) and makes Clean Sweep and Morning Shift
+## CDs to find; the designed rules (only owned songs in the shuffle, three start songs) are the
+## shuffle_all = false mode, so these tests switch it off and give the two songs back.
 const LOANED: Array[String] = ["sunbaked", "strip_mine_shuffle", "dune_caravan"]
 
 
@@ -41,6 +44,9 @@ func _undo_verdance_loan() -> void:
 	for s: Dictionary in c.get("songs", []):
 		if str(s.get("id", "")) in LOANED:
 			s["unlock"] = "cd"
+		if str(s.get("id", "")) in ["clean_sweep", "morning_shift"]:
+			s["unlock"] = "start"
+	c["shuffle_all"] = false
 	var v: Dictionary = (c.get("planets", {}) as Dictionary).get("verdance", {})
 	v["songs"] = []
 	v.erase("main_share")
@@ -49,11 +55,12 @@ func _undo_verdance_loan() -> void:
 func test_verdance_borrows_ochre_songs_for_now() -> void:
 	Tunes.reload()
 	_all_files()
+	assert_true(bool(Tunes.cfg().get("shuffle_all", false)), "[v10snd] shipped: every song may come up at random after the first CD")
 	var seen: Dictionary = {}
 	for i: int in 3000:
 		seen[Tunes.pick_next("verdance", "explore", 0.0, [], _rng)] = true
 	for id: String in ["clean_sweep", "morning_shift", "greenfall_main"] + LOANED:
-		assert_true(seen.has(id), "%s plays on Verdance from the start" % id)
+		assert_true(seen.has(id), "%s plays on Verdance once the first CD is found" % id)
 
 
 func _all_files() -> void:
