@@ -323,14 +323,18 @@ func _refocus_heirloom(id: String) -> void:
 		if str(h["id"]) == id:
 			break
 		i += 1
-	(func() -> void:
-		if _heir_box and i < _heir_box.get_child_count():
-			for b: Node in _heir_box.get_child(i).find_children("*", "Button", true, false):
-				if not (b as Button).disabled:
-					(b as Button).grab_focus()
-					return
-			if _first:
-				_first.grab_focus()).call_deferred()
+	_focus_heirloom_row.bind(i).call_deferred()
+
+
+## Deferred from _refocus_heirloom as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _focus_heirloom_row(i: int) -> void:
+	if _heir_box and i < _heir_box.get_child_count():
+		for b: Node in _heir_box.get_child(i).find_children("*", "Button", true, false):
+			if not (b as Button).disabled:
+				(b as Button).grab_focus()
+				return
+		if _first:
+			_first.grab_focus()
 
 
 static func _hours(s: float) -> String:

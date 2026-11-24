@@ -1,7 +1,7 @@
 class_name FaunaSounds
 extends RefCounted
 ## [wild] Synthesized animal sounds, registered on the Audio autoload by name the first time a
-## district with animals loads (Audio.override), like the rest of the game's SFX: purr, meow,
+## district with animals loads (Audio.override), like the rest of the game's SFX: mew, meow,
 ## coo, chirp, song (a few robin phrases), quack, gull, frog, seal, flutter (a flock taking
 ## off) and a seamless cricket bed (crickets_loop(), played by Fauna on its own player).
 
@@ -27,7 +27,7 @@ static func ensure() -> void:
 		WorkerThreadPool.wait_for_task_completion(task)
 	else:
 		_synth_all(bufs)
-	for name: String in ["purr", "meow", "coo", "chirp", "song", "quack", "gull", "frog", "seal", "flutter"]:
+	for name: String in ["mew", "meow", "coo", "chirp", "song", "quack", "gull", "frog", "seal", "flutter"]:
 		Audio.override(name, bufs[name])
 	await BuildBudget.check("sounds")
 
@@ -36,7 +36,9 @@ static func ensure() -> void:
 static func _synth_all(out: Dictionary) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 9091
-	out["purr"] = [purr(rng, 0.0), purr(rng, 0.15), purr(rng, -0.1)]
+	for i: int in 3 * int(2.4 * RATE):  # [v10snd] the purr's draws: every later take stays as it was checked
+		rng.randf()
+	out["mew"] = [mew(0.0), mew(0.1), mew(-0.07), mew(0.18)]
 	out["meow"] = [meow(0.0), meow(0.12), meow(-0.08)]
 	# [v9s] Owner: "the same bird chirp so many times over and over". More takes per call, each
 	# its own phrase (length, notes, shape), not one call at a few pitches. Audio.play never plays
@@ -95,40 +97,23 @@ static func _buf(seconds: float) -> PackedFloat32Array:
 	return b
 
 
-## A cat's purr: soft breathy noise in the 180 Hz - 1.1 kHz band, gently pulsing at ~25 Hz, in
-## and out breaths with a short pause between them.
-## [v8snd] Was low-passed noise (most of it under 200 Hz) chopped fully on and off 24 times a
-## second at full scale: on laptop speakers that read as a helicopter / blown speaker
-## (tools/check_audio.py: sub-80 Hz 32%, 80-200 Hz 30%, tremolo depth 1.3-1.5, peak -0.4 dBFS).
-## Now: sub-80 Hz ~0%, gentle pulse, peak -9 dBFS.
-static func purr(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
-	var b := _buf(2.4)
-	var lp: float = 0.0
-	var lp2: float = 0.0
-	var prev: float = 0.0
-	var hp: float = 0.0
-	var hp2: float = 0.0
-	var prev2: float = 0.0
-	var rate: float = 25.0 * (1.0 + v * 0.3)
+## [v10snd] A cat being petted: a small soft "mew", a clear rising-then-falling voiced note with no
+## pulsing at all. The purr is gone. Owner, third report: "cats still sound like helicopter". A
+## purr is breath noise pulsed about 25 times a second, and noise pulsed 8-45 times a second is
+## what a rotor is, however soft or band-limited: recorded in the real mix (--cat-probe
+## --audio-capture) every purr put a 25-27 Hz beat of depth 0.2-0.36 on the Ambience bus, 14 dB over
+## the bed. tools/check_audio.py passed it because it only failed a chop on a bass-heavy sound.
+static func mew(v: float) -> PackedFloat32Array:
+	var b := _buf(0.36)
+	var ph: float = 0.0
 	for i: int in b.size():
 		var t: float = float(i) / RATE
-		var n: float = rng.randf_range(-1.0, 1.0)
-		lp += (n - lp) * 0.27  # two poles at ~1.1 kHz
-		lp2 += (lp - lp2) * 0.27
-		hp = 0.95 * (hp + lp2 - prev)  # two poles at ~180 Hz
-		prev = lp2
-		hp2 = 0.95 * (hp2 + hp - prev2)
-		prev2 = hp
-		var pulse: float = 0.7 + 0.3 * sin(TAU * rate * t)
-		var ph: float = fmod(t, 1.2) / 1.2
-		var breath: float = pow(sin(PI * clampf(ph / 0.85, 0.0, 1.0)), 0.8) * (1.0 if ph < 0.45 else 0.75)
-		b[i] = hp2 * pulse * breath * smoothstep(0.0, 0.2, t) * (1.0 - smoothstep(2.1, 2.4, t))
-	var m: float = 0.0
-	for i: int in b.size():
-		m = maxf(m, absf(b[i]))
-	if m > 0.0:
-		for i: int in b.size():
-			b[i] *= 0.35 / m
+		var x: float = t / 0.36
+		var f: float = (640.0 + 190.0 * sin(PI * minf(x * 1.5, 1.0)) - 120.0 * x) * (1.0 + v)
+		ph += TAU * f / RATE
+		var open_: float = 0.5 + 0.5 * sin(PI * x)
+		var s: float = sin(ph) * 0.62 + sin(ph * 2.0) * 0.26 * open_ + sin(ph * 3.0) * 0.1 * open_
+		b[i] = s * pow(sin(PI * pow(x, 0.8)), 1.5) * 0.11
 	return b
 
 
@@ -331,7 +316,8 @@ static func flutter(rng: RandomNumberGenerator, rate: float) -> PackedFloat32Arr
 		lp += (n - lp) * 0.12
 		hp = 0.96 * (hp + lp - prev)  # [v9s] ~140 Hz high-pass: no rumble whatever the noise draws
 		prev = lp
-		var beat: float = pow(0.5 + 0.5 * sin(TAU * 9.0 * rate * t * (1.0 - 0.3 * t)), 2.0)
+		# [v10snd] round wingbeats (no squared pulse: its overtone was a steady 14-23 Hz beat)
+		var beat: float = 0.12 + 0.88 * (0.5 + 0.5 * sin(TAU * 9.0 * rate * t * (1.0 - 0.3 * t)))
 		b[i] = hp * 1.3 * beat * 0.3 * (1.0 - smoothstep(0.25, 0.9, t)) * smoothstep(0.0, 0.05, t)
 	return b
 

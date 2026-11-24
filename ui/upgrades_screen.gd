@@ -237,16 +237,20 @@ func _ready() -> void:
 	_relayout()
 	_root.visible = false
 	if DevHooks.has("open-bench") and solo == "":  # [v7look] dev: opens the workbench S wall seconds in (shots; --tab, --bench-all)
-		(func() -> void:
-			await DevHooks.wait_wall(DevHooks.get_f("open-bench", 100.0))
-			if is_inside_tree() and not is_open:
-				open_screen()).call_deferred()
+		_dev_open_bench.call_deferred()
 	if DevHooks.has("bench-report") and solo == "":  # [v1guide] dev: print the tabs and rows every N game seconds
 		var t := Timer.new()
 		t.wait_time = maxf(1.0, DevHooks.get_f("bench-report", 20.0))
 		t.autostart = true
 		t.timeout.connect(print_report)
 		add_child(t)
+
+
+## Deferred from _ready (--open-bench) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_open_bench() -> void:
+	await DevHooks.wait_wall(DevHooks.get_f("open-bench", 100.0))
+	if is_inside_tree() and not is_open:
+		open_screen()
 
 
 ## [v1guide] Dev (--bench-report[=S]): the open tabs and every row of the list tabs, in order.

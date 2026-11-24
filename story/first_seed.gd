@@ -578,7 +578,12 @@ func _resume_planting() -> void:
 		GameState.add_currency("seeds", BigNum.from_float(1.0))
 	_hint_water = true
 	_waiting_sprout = true
-	(func() -> void:
-		if world and world.get("patch") is Patch:
-			(world.patch as Patch).set_tool(Patch.Tool.PLANT)
-		_show_card(plant_card_text())).call_deferred()
+	_resume_card.call_deferred()
+
+
+## The seed tool and the planting card, a frame after _resume_planting. A method, not a lambda: the engine
+## drops a deferred method when this node is freed first; a lambda ran on freed memory (tests/test_deferred_calls.gd).
+func _resume_card() -> void:
+	if world and world.get("patch") is Patch:
+		(world.patch as Patch).set_tool(Patch.Tool.PLANT)
+	_show_card(plant_card_text())

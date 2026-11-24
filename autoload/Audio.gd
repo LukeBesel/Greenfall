@@ -86,6 +86,8 @@ func _ready() -> void:
 	add_child(_music_voices)
 	_music_voices.call("setup", music_samples, "Music", 56)  # [sound] 56: room for the restoration bloom
 	_music = MusicDirector.new(music_samples, _music_voices)
+	_music.set("sting_bus", "Jingles")  # [v10snd]
+	_music.set("sting_gain", db_to_linear(float(SoundCfg.cfg().get("sting_db", 0.0))))  # data/sound.json sting_db
 	_music_last_us = Time.get_ticks_usec()
 	_ambience = AmbienceBeds.new()
 	_ambience.name = "Ambience"
@@ -118,7 +120,8 @@ func _exit_tree() -> void:
 
 func _setup_buses() -> void:
 	# [v6sound] One bus per slider: Music (and Songs, audio/tunes_director.gd), Ambience, SFX, UI.
-	for bus_name: String in ["Music", "SFX", "Ambience", "UI"]:
+	# [v10snd] Jingles: the reward sounds (fanfare, chime, upgrade and level-up stingers), their own slider.
+	for bus_name: String in ["Music", "SFX", "Ambience", "UI", "Jingles"]:
 		if AudioServer.get_bus_index(bus_name) == -1:
 			AudioServer.add_bus()
 			var idx: int = AudioServer.bus_count - 1
@@ -143,6 +146,12 @@ func _setup_buses() -> void:
 		rev.room_size = 0.25
 		rev.wet = 0.08
 		AudioServer.add_bus_effect(sfx, rev)
+	var jin: int = AudioServer.get_bus_index("Jingles")
+	if AudioServer.get_bus_effect_count(jin) == 0:  # the same small room as the SFX
+		var jrev := AudioEffectReverb.new()
+		jrev.room_size = 0.25
+		jrev.wet = 0.08
+		AudioServer.add_bus_effect(jin, jrev)
 	# Music: gentle tone filter (mood-driven), a roomy reverb, and a safety limiter.
 	var mus: int = AudioServer.get_bus_index("Music")
 	if AudioServer.get_bus_effect_count(mus) == 0:
@@ -172,6 +181,7 @@ func apply_volumes() -> void:
 	_set_bus_level(0, Settings.master_volume, 0.0)
 	_set_bus_level(AudioServer.get_bus_index("SFX"), Settings.sfx_volume, SoundCfg.bus_trim_db("SFX"))
 	_set_bus_level(AudioServer.get_bus_index("UI"), Settings.ui_volume, SoundCfg.bus_trim_db("UI"))
+	_set_bus_level(AudioServer.get_bus_index("Jingles"), Settings.jingle_volume, SoundCfg.bus_trim_db("Jingles"))
 	_set_bus_level(AudioServer.get_bus_index("Music"), Settings.music_volume * (1.0 - _hush),
 		SoundCfg.bus_trim_db("Music") + SoundCfg.duck("music_db", DUCK_MUSIC_DB) * _duck)  # [eggs2] hush
 	_set_bus_level(AudioServer.get_bus_index("Ambience"), Settings.ambience_volume,
@@ -572,14 +582,14 @@ func get_music_intensity() -> float:
 
 
 ## Short musical stinger built from the current chord: "upgrade", "hex_clean", "first_sprout",
-## "robot_built", "level_up". Routed to the Music bus.
+## "robot_built", "level_up". Routed to the Jingles bus ([v10snd]; was Music).
 func music_sting(sting_name: String) -> void:
 	if _tunes_hush and Tunes.now_playing() != "":  # [tunes] no synth stingers over a song
 		return
 	if _music:
 		_music.call("sting", sting_name)
 		if sound_log:
-			sound_log.call("played", "sting:" + sting_name, "Music", 0.0, 2.0)
+			sound_log.call("played", "sting:" + sting_name, "Jingles", 0.0, 2.0)
 
 
 func _process(delta: float) -> void:

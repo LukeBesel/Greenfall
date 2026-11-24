@@ -196,67 +196,67 @@ msgstr "Touchpad"
 msgid "Paddle 1"
 msgstr "Paddle 1"
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:560
 msgid "LMB"
 msgstr "Botão esq."
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:561
 msgid "RMB"
 msgstr "Botão dir."
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:562
 msgid "MMB"
 msgstr "Botão do meio"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:563
 msgid "Wheel up"
 msgstr "Roda p/ cima"
 
-#: autoload/Settings.gd:551
+#: autoload/Settings.gd:564
 msgid "Wheel down"
 msgstr "Roda p/ baixo"
 
-#: autoload/Settings.gd:552
+#: autoload/Settings.gd:565
 msgid "Mouse %d"
 msgstr "Mouse %d"
 
-#: autoload/Settings.gd:554
+#: autoload/Settings.gd:567
 msgid "Button %d"
 msgstr "Botão %d"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:572
 msgid "LS left"
 msgstr "AE esquerda"
 
-#: autoload/Settings.gd:559
+#: autoload/Settings.gd:572
 msgid "LS right"
 msgstr "AE direita"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:573
 msgid "LS up"
 msgstr "AE cima"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:573
 msgid "LS down"
 msgstr "AE baixo"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:574
 msgid "RS left"
 msgstr "AD esquerda"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:574
 msgid "RS right"
 msgstr "AD direita"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:575
 msgid "RS up"
 msgstr "AD cima"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:575
 msgid "RS down"
 msgstr "AD baixo"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:586
 msgid "hold %s"
 msgstr "segure %s"
 
@@ -409,7 +409,7 @@ msgstr "Cubos ou peças insuficientes"
 msgid "Rocket upgraded: %s."
 msgstr "Foguete melhorado: %s."
 
-#: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
+#: automation/stations.gd:122 automation/telescope.gd:103 robots/fabricator/bot_fabricator.gd:92
 #: systems/camp/yard_builds.gd:88 ui/stations_panel.gd:97
 msgid "Built."
 msgstr "Construído."
@@ -455,26 +455,26 @@ msgstr "1 a cada 3 fardos para o reciclador"
 msgid "Every %dth bale to the recycler"
 msgstr "1 a cada %d fardos para o reciclador"
 
-#: automation/telescope.gd:102
+#: automation/telescope.gd:107
 msgid "Requires hub level %d or research: %s."
 msgstr "Requer base nível %d ou a pesquisa: %s."
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
+#: automation/telescope.gd:109 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
 #: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
 #: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "Materiais insuficientes."
 
-#: automation/telescope.gd:115
+#: automation/telescope.gd:120
 msgid "Telescope built. Walk up to it and press {interact} to look across the system."
 msgstr "Telescópio construído. Chegue perto e aperte {interact} para olhar o sistema."
 
-#: automation/telescope.gd:260 ui/telescope_panel.gd:11
+#: automation/telescope.gd:265 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "OBSERVATÓRIO"
 
-#: automation/telescope.gd:312
+#: automation/telescope.gd:317
 msgid "E   Telescope: look across the system"
 msgstr "E   Telescópio: observar o sistema"
 
@@ -506,43 +506,43 @@ msgstr "+%s cubos"
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Nada de lixo solto agora. Aperte [%s] para fazer um fardo e coloque na balança."
 
-#: fauna/fauna.gd:1739
+#: fauna/fauna.gd:1741
 msgid "E   pet %s"
 msgstr "E   fazer carinho em %s"
 
-#: fauna/fauna.gd:1740
+#: fauna/fauna.gd:1742
 msgid "E   pet the cat"
 msgstr "E   fazer carinho no gato"
 
-#: fauna/fauna.gd:1798
+#: fauna/fauna.gd:1800
 msgid "E   scatter crumbs for the birds"
 msgstr "E   jogar migalhas para os pássaros"
 
-#: fauna/fauna.gd:1846
+#: fauna/fauna.gd:1848
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "Os pássaros decidiram que você é gente boa. Saco de migalhas adicionado à sua Coleção."
 
-#: fauna/fauna.gd:1902
+#: fauna/fauna.gd:1904
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "A gata decidiu que você é dela. Conheça %s. Agora ela mora nesta base."
 
-#: fauna/fauna.gd:2232 ui/subtitles.gd:448
+#: fauna/fauna.gd:2234 ui/subtitles.gd:448
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Novo avistamento: %s. Já está no Códice."
 
-#: fauna/fauna.gd:2303
+#: fauna/fauna.gd:2305
 msgid "Snap! A %s for your Collection."
 msgstr "Clique! Uma foto (%s) para a sua Coleção."
 
-#: planet/cd_finds.gd:190
+#: planet/cd_finds.gd:353
 msgid "A scratched CD turned up in the rubble."
 msgstr "Um CD arranhado apareceu no entulho."
 
-#: planet/cd_finds.gd:190
+#: planet/cd_finds.gd:353
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr "Algo brilha no entulho limpo. Um CD antigo!"
 
-#: planet/cd_finds.gd:230
+#: planet/cd_finds.gd:410
 msgid "Your CD case is full."
 msgstr "Seu estojo de CDs está cheio."
 
@@ -642,7 +642,7 @@ msgstr "JUNTOS FLORESCEMOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  ÁGUA  VIDA"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:245 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:249 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "Base %d"
 
@@ -800,31 +800,31 @@ msgstr "As %d bases estão de pé. Construa o propulsor no foguete."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:126
+#: planet/sites/orbit_sites.gd:130
 msgid "The rocket is in flight."
 msgstr "O foguete está voando."
 
-#: planet/sites/orbit_sites.gd:148
+#: planet/sites/orbit_sites.gd:152
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:186
+#: planet/sites/orbit_sites.gd:190
 msgid "E   Rocket: choose a destination"
 msgstr "E   Foguete: escolha um destino"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:228
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:228
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:226
+#: planet/sites/orbit_sites.gd:230
 msgid "Upgrade the rocket first"
 msgstr "Primeiro melhore o foguete"
 
-#: planet/sites/orbit_sites.gd:244
+#: planet/sites/orbit_sites.gd:248
 msgid "%s site"
 msgstr "Local: %s"
 
@@ -832,31 +832,31 @@ msgstr "Local: %s"
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "A água... dá para ver o fundo. Lumi, tem algo se mexendo lá embaixo."
 
-#: plants/composter.gd:77
+#: plants/composter.gd:82
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   prensa de composto  ·  parada até algo crescer"
 
-#: plants/composter.gd:79
+#: plants/composter.gd:84
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr "E   prensa de composto  ·  Nv %d (máx.)"
 
-#: plants/composter.gd:80
+#: plants/composter.gd:85
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr "E   melhorar prensa para Nv %d  ·  %s cubos"
 
-#: plants/composter.gd:85
+#: plants/composter.gd:90
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr "A prensa está fria. Faça algo crescer primeiro: ela funciona com o que as plantas deixam."
 
-#: plants/composter.gd:91
+#: plants/composter.gd:96
 msgid "Not enough cubes to upgrade the press."
 msgstr "Cubos insuficientes para melhorar a prensa."
 
-#: plants/composter.gd:100
+#: plants/composter.gd:105
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr "Prensa de composto Nv %d: ciclos de %.0f s, %.1f sementes cada."
 
-#: plants/composter.gd:154
+#: plants/composter.gd:159
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
@@ -864,7 +864,7 @@ msgstr ""
 "PRENSA DE COMPOSTO\n"
 "parada"
 
-#: plants/composter.gd:156
+#: plants/composter.gd:161
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
@@ -1164,11 +1164,11 @@ msgstr[1] "levando %d fardos"
 msgid "fetching a bale"
 msgstr "buscando um fardo"
 
-#: robots/robot.gd:256 robots/robot.gd:907
+#: robots/robot.gd:256 robots/robot.gd:911
 msgid "waiting for bales"
 msgstr "esperando fardos"
 
-#: robots/robot.gd:259 robots/robot.gd:577
+#: robots/robot.gd:259 robots/robot.gd:581
 msgid "out of seeds"
 msgstr "sem sementes"
 
@@ -1212,7 +1212,7 @@ msgstr "levando um fardo à margem"
 msgid "skimming lake hex %d (%d%%)"
 msgstr "limpando hexágono do lago %d (%d%%)"
 
-#: robots/robot.gd:270 robots/robot.gd:770
+#: robots/robot.gd:270 robots/robot.gd:774
 msgid "lake is clean"
 msgstr "o lago está limpo"
 
@@ -1228,27 +1228,27 @@ msgstr "zona limpa, esperando"
 msgid "nothing left to clean"
 msgstr "nada mais para limpar"
 
-#: robots/robot.gd:427 robots/robot.gd:770
+#: robots/robot.gd:427 robots/robot.gd:774
 msgid "zone clean"
 msgstr "zona limpa"
 
-#: robots/robot.gd:575
+#: robots/robot.gd:579
 msgid "seeds locked"
 msgstr "sementes bloqueadas"
 
-#: robots/robot.gd:581 robots/robot.gd:585
+#: robots/robot.gd:585 robots/robot.gd:589
 msgid "no empty soil"
 msgstr "sem terra livre"
 
-#: robots/robot.gd:614
+#: robots/robot.gd:618
 msgid "no garden"
 msgstr "sem horta"
 
-#: robots/robot.gd:628
+#: robots/robot.gd:632
 msgid "everything watered"
 msgstr "tudo regado"
 
-#: robots/robot.gd:724
+#: robots/robot.gd:728
 msgid "no water source"
 msgstr "sem fonte de água"
 
@@ -1569,11 +1569,11 @@ msgstr "E   Consertar a bancada"
 msgid "E   Open the workbench"
 msgstr "E   Abrir a bancada"
 
-#: scenes/slice_orbit.gd:1047
+#: scenes/slice_orbit.gd:1049
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice_orbit.gd:1147 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1149 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Bancada consertada! Aperte %s nela para comprar melhorias."
 
@@ -1601,7 +1601,7 @@ msgstr "Sua base cresceu até onde a demo vai."
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "No jogo completo, Lumi leva a base até o nível 5, planta distritos inteiros até prosperarem, transforma-os numa cidade futurista brilhante e voa de foguete para dezenas de bases pelo planeta. Seu progresso da demo é mantido."
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:792
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:796
 msgid "Hexes cleaned"
 msgstr "Hexágonos limpos"
 
@@ -1609,11 +1609,11 @@ msgstr "Hexágonos limpos"
 msgid "Bales made"
 msgstr "Fardos feitos"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:807
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:811
 msgid "Robots built"
 msgstr "Robôs construídos"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:815
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:819
 msgid "Time played"
 msgstr "Tempo de jogo"
 
@@ -1633,7 +1633,7 @@ msgstr "Tela de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuar jogando: o primeiro distrito continua aberto, com a base no nível %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:885 ui/main_menu.gd:582
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:889 ui/main_menu.gd:590
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -1678,55 +1678,55 @@ msgstr "Nada está esperando para acabar, {name}. Ninguém está contando pontos
 msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram ({open_globe})."
 msgstr "A Cradle está em casa. A Arca de Sementes está aberta: cada flor em Verdance conta para a próxima onda. O progresso aparece no holograma ({open_globe})."
 
-#: story/core_charge.gd:206
+#: story/core_charge.gd:215
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "Núcleo Floral 100%. O núcleo de Lumi está cheio de luz verde."
 
-#: story/core_charge.gd:232
+#: story/core_charge.gd:241
 msgid "Bloom Core  25%"
 msgstr "Núcleo Floral  25%"
 
-#: story/core_charge.gd:233
+#: story/core_charge.gd:242
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "Pronto. O relé acabou de travar. Lumi, agora eu te ouço direito. Claro como nos velhos tempos."
 
-#: story/core_charge.gd:253
+#: story/core_charge.gd:262
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "Uma lembrança  ·  o deck jardim da Cradle"
 
-#: story/core_charge.gd:264
+#: story/core_charge.gd:273
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "Lembra do deck jardim? Você regava cada canteiro duas vezes, só para garantir."
 
-#: story/core_charge.gd:267
+#: story/core_charge.gd:276
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "Cada cantinho que você faz crescer aí embaixo é mais um canteiro como estes. Você não está perdido, Lumi. Você está replantando."
 
-#: story/core_charge.gd:271
+#: story/core_charge.gd:280
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "Núcleo Floral 25%: o sinal da WREN está claro agora."
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:298
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "Núcleo Floral 50%: o brilho de Lumi voltou, mais forte do que em anos."
 
-#: story/core_charge.gd:291
+#: story/core_charge.gd:300
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "Meia carga. Você está brilhando, Lumi. Brilhando de verdade. Eu tinha esquecido como você podia ser brilhante."
 
-#: story/core_charge.gd:325
+#: story/core_charge.gd:334
 msgid "That night..."
 msgstr "Naquela noite..."
 
-#: story/core_charge.gd:349
+#: story/core_charge.gd:358
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi, olha para cima. Aquela luz. De oeste para leste, firme, sem piscar."
 
-#: story/core_charge.gd:354
+#: story/core_charge.gd:363
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "É a Cradle. Quando seu núcleo acendeu, a arca ouviu. Ela deu meia-volta. Estamos voltando para te buscar."
 
-#: story/core_charge.gd:364
+#: story/core_charge.gd:373
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "Núcleo Floral 75%: a Cradle está voltando para casa. Procure por ela cruzando o céu à noite."
 
@@ -2025,35 +2025,35 @@ msgstr "A primeira coisa que eles vão ver é um mundo verde de novo. Foi você.
 msgid "Homecoming"
 msgstr "Volta para casa"
 
-#: story/intro.gd:402
+#: story/intro.gd:403
 msgid "Still no green down there, Lumi."
 msgstr "Ainda nada de verde lá embaixo, Lumi."
 
-#: story/intro.gd:403
+#: story/intro.gd:404
 msgid "Nothing can grow in all that trash. So the people sleep up here, and we wait."
 msgstr "Nada cresce no meio de tanto lixo. Por isso as pessoas dormem aqui em cima, e nós esperamos."
 
-#: story/intro.gd:404
+#: story/intro.gd:405
 msgid "Three hundred years. And you have kept the last plants alive."
 msgstr "Trezentos anos. E você manteve vivas as últimas plantas."
 
-#: story/intro.gd:405
+#: story/intro.gd:406
 msgid "Lumi. Come away from the glass."
 msgstr "Lumi. Saia de perto do vidro."
 
-#: story/intro.gd:406
+#: story/intro.gd:407
 msgid "The glass is breaking! Take the tray. Get to the pod!"
 msgstr "O vidro está quebrando! Pegue a bandeja. Vá para a cápsula!"
 
-#: story/intro.gd:407
+#: story/intro.gd:408
 msgid "I can't keep you safe here. I have to let you go."
 msgstr "Não consigo proteger você aqui. Preciso deixar você ir."
 
-#: story/intro.gd:408
+#: story/intro.gd:409
 msgid "My engines are gone. I can't come after you."
 msgstr "Meus motores pararam. Não posso ir atrás de você."
 
-#: story/intro.gd:409
+#: story/intro.gd:410
 msgid "Lumi— I will find you— I will find—"
 msgstr "Lumi— eu vou achar você— eu vou ach—"
 
@@ -2676,35 +2676,35 @@ msgstr "Construa no Retorno da Cradle, em Verdance"
 msgid "Rocket drive built: %s."
 msgstr "Propulsor construído: %s."
 
-#: systems/homeward_director.gd:333
+#: systems/homeward_director.gd:337
 msgid "Intercepted: %s"
 msgstr "Interceptado: %s"
 
-#: systems/homeward_director.gd:348
+#: systems/homeward_director.gd:352
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: systems/homeward_director.gd:358
+#: systems/homeward_director.gd:362
 msgid "%s is restored. System: %d%%."
 msgstr "%s está restaurado. Sistema: %d%%."
 
-#: systems/homeward_director.gd:361
+#: systems/homeward_director.gd:365
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Artefato: %s. Escolha de relíquia +1 (Ponte da Arca)."
 
-#: systems/homeward_director.gd:369
+#: systems/homeward_director.gd:373
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "Todos os planetas do sistema estão vivos. Os Colonos vão acordar diante de cinco mundos verdes."
 
-#: systems/homeward_director.gd:565
+#: systems/homeward_director.gd:569
 msgid "E   launch home"
 msgstr "E   decolar para casa"
 
-#: systems/homeward_director.gd:565
+#: systems/homeward_director.gd:569
 msgid "E   plant the last seed"
 msgstr "E   plantar a última semente"
 
-#: systems/homeward_director.gd:576
+#: systems/homeward_director.gd:580
 msgid "The last seed is in the ground. Everything is ready. Press {interact} again here to launch home."
 msgstr "A última semente está na terra. Está tudo pronto. Aperte {interact} aqui de novo para decolar para casa."
 
@@ -2770,11 +2770,11 @@ msgstr "+{amount}% de {stat} do {robot}"
 msgid "+{amount} {robot} {stat}"
 msgstr "+{amount} de {stat} do {robot}"
 
-#: systems/late_director.gd:107
+#: systems/late_director.gd:116
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "A Ponte da Arca se abre quando a Cradle voltar para casa."
 
-#: systems/late_director.gd:144
+#: systems/late_director.gd:153
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode ({garden_mode}) is open too."
 msgstr "Modo Berço: o cofre de sementes da arca guarda sementes para outros mundos. Pausa > Ponte da Arca para vê-los e as relíquias que sua restauração liberou, ou semear um mundo novo. O Modo Jardim ({garden_mode}) também está aberto."
 
@@ -2842,20 +2842,20 @@ msgstr "Perfil %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d h"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Low"
 msgstr "Baixo"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
-#: ui/settings_panel.gd:621
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
+#: ui/settings_panel.gd:635
 msgid "Medium"
 msgstr "Médio"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "High"
 msgstr "Alto"
 
-#: systems/quality_detect.gd:139 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: systems/quality_detect.gd:139 ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Ultra"
 msgstr "Ultra"
 
@@ -2903,7 +2903,7 @@ msgstr "Já na fila"
 msgid "Queue is full"
 msgstr "A fila está cheia"
 
-#: systems/research.gd:356 ui/codex_screen.gd:889
+#: systems/research.gd:356 ui/codex_screen.gd:893
 msgid "%ds"
 msgstr "%d s"
 
@@ -2987,15 +2987,15 @@ msgstr "Desbloqueia sementes: %s"
 msgid "Unlocks: %s"
 msgstr "Desbloqueia: %s"
 
-#: systems/research.gd:616
+#: systems/research.gd:621
 msgid "While you were away, research finished: %s."
 msgstr "Enquanto você esteve fora, uma pesquisa terminou: %s."
 
-#: systems/research.gd:647
+#: systems/research.gd:652
 msgid "New robot plans: %s. %s"
 msgstr "Novos planos de robô: %s. %s"
 
-#: systems/research.gd:652
+#: systems/research.gd:657
 msgid "Research complete: %s."
 msgstr "Pesquisa concluída: %s."
 
@@ -3085,9 +3085,21 @@ msgstr "Violeta"
 msgid "Moonlight"
 msgstr "Luar"
 
-#: systems/tunes.gd:390
+#: systems/tunes.gd:392
 msgid "New CD: %s by %s, from %s"
 msgstr "Novo CD: %s de %s, de %s"
+
+#: systems/tunes.gd:585
+msgid "You found a CD: %s! Press %s to play it any time."
+msgstr "Você achou um CD: %s! Aperte %s para ouvir quando quiser."
+
+#: systems/tunes.gd:587
+msgid "Glim is your radio."
+msgstr "Glim é o seu rádio."
+
+#: systems/tunes.gd:588
+msgid "Glim will be your radio when you build it."
+msgstr "Glim será o seu rádio quando você o construir."
 
 #: systems/camp/bot_bay.gd:94
 msgid "E   open the Bot Bay"
@@ -3205,15 +3217,19 @@ msgstr "%s cantarola para as mudas. A aposentadoria combina com ele."
 msgid "%s points proudly at a new bud."
 msgstr "%s aponta orgulhoso para um botão novo."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:586
+#: systems/extras/radio.gd:186 tools/orbit_roundtrip.gd:586
 msgid "E   CD player: %s"
 msgstr "E   Toca-CD: %s"
 
-#: systems/extras/radio.gd:184
+#: systems/extras/radio.gd:186
+msgid "stopped"
+msgstr "parado"
+
+#: systems/extras/radio.gd:186
 msgid "mood music"
 msgstr "música ambiente"
 
-#: systems/extras/radio.gd:234
+#: systems/extras/radio.gd:236
 msgid "New song on the radio: %s"
 msgstr "Nova música no rádio: %s"
 
@@ -3326,7 +3342,7 @@ msgstr "enfardou cerca de %d fardos"
 msgid "kept the base tidy"
 msgstr "manteve a base arrumada"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:799
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:803
 msgid "Cubes earned"
 msgstr "Cubos ganhos"
 
@@ -3418,7 +3434,7 @@ msgstr "Só sobraram peças grandes"
 msgid "Glim is still scanning. Try again in a moment."
 msgstr "Glim ainda está escaneando. Tente de novo em instantes."
 
-#: tools/rewatch_check.gd:196 ui/codex_screen.gd:93 ui/pause_menu.gd:61
+#: tools/rewatch_check.gd:216 ui/codex_screen.gd:93 ui/pause_menu.gd:61
 msgid "Watch the opening again"
 msgstr "Ver o começo de novo"
 
@@ -3426,7 +3442,7 @@ msgstr "Ver o começo de novo"
 msgid "Close"
 msgstr "Fechar"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:83
+#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:91
 msgid "Quit"
 msgstr "Sair"
 
@@ -3555,7 +3571,7 @@ msgstr "Kit inicial: só Lumi. As relíquias acrescentam mais."
 msgid "Starting kit: %s"
 msgstr "Kit inicial: %s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:602
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:616
 msgid "Full"
 msgstr "Completo"
 
@@ -3856,7 +3872,7 @@ msgstr "Encontre um dos CDs deles no entulho de %s."
 msgid "Your CDs (%d / %d): %s"
 msgstr "Seus CDs (%d / %d): %s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:821
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:825
 msgid "Achievements"
 msgstr "Conquistas"
 
@@ -4007,123 +4023,123 @@ msgstr "Dica: aparece durante: %s."
 msgid "Unlocked  ·  %s"
 msgstr "Desbloqueado  ·  %s"
 
-#: ui/codex_screen.gd:789
+#: ui/codex_screen.gd:793
 msgid "Total"
 msgstr "Total"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:794
 msgid "Junk removed"
 msgstr "Sucata removida"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:794
 msgid "by type"
 msgstr "por tipo"
 
-#: ui/codex_screen.gd:791 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:795 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "Limpeza"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:797
 msgid "Hexes restored"
 msgstr "Hexágonos restaurados"
 
-#: ui/codex_screen.gd:794
+#: ui/codex_screen.gd:798
 msgid "Bales pressed"
 msgstr "Fardos prensados"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:799
 msgid "Pure bales"
 msgstr "Fardos puros"
 
-#: ui/codex_screen.gd:796
+#: ui/codex_screen.gd:800
 msgid "Perfect bales"
 msgstr "Fardos perfeitos"
 
-#: ui/codex_screen.gd:797
+#: ui/codex_screen.gd:801
 msgid "Lumpy bales"
 msgstr "Fardos irregulares"
 
-#: ui/codex_screen.gd:798
+#: ui/codex_screen.gd:802
 msgid "Bales cashed in"
 msgstr "Fardos trocados"
 
-#: ui/codex_screen.gd:801 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:805 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
-#: ui/codex_screen.gd:802
+#: ui/codex_screen.gd:806
 msgid "Seeds planted"
 msgstr "Sementes plantadas"
 
-#: ui/codex_screen.gd:803
+#: ui/codex_screen.gd:807
 msgid "Plants bloomed"
 msgstr "Plantas floridas"
 
-#: ui/codex_screen.gd:804
+#: ui/codex_screen.gd:808
 msgid "Air filtered"
 msgstr "Ar filtrado"
 
-#: ui/codex_screen.gd:806 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:810 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "Robôs"
 
-#: ui/codex_screen.gd:808
+#: ui/codex_screen.gd:812
 msgid "Bales by robots"
 msgstr "Fardos por robôs"
 
-#: ui/codex_screen.gd:809
+#: ui/codex_screen.gd:813
 msgid "Parts dug up"
 msgstr "Peças desenterradas"
 
-#: ui/codex_screen.gd:811
+#: ui/codex_screen.gd:815
 msgid "Exploring"
 msgstr "Exploração"
 
-#: ui/codex_screen.gd:812
+#: ui/codex_screen.gd:816
 msgid "Distance rolled"
 msgstr "Distância percorrida"
 
-#: ui/codex_screen.gd:813
+#: ui/codex_screen.gd:817
 msgid "Memory shards read"
 msgstr "Fragmentos de memória lidos"
 
-#: ui/codex_screen.gd:814
+#: ui/codex_screen.gd:818
 msgid "Codex entries"
 msgstr "Entradas do Códice"
 
-#: ui/codex_screen.gd:817
+#: ui/codex_screen.gd:821
 msgid "Progress"
 msgstr "Progresso"
 
-#: ui/codex_screen.gd:818
+#: ui/codex_screen.gd:822
 msgid "Upgrades bought"
 msgstr "Melhorias compradas"
 
-#: ui/codex_screen.gd:819
+#: ui/codex_screen.gd:823
 msgid "Field notes logged"
 msgstr "Notas de campo registradas"
 
-#: ui/codex_screen.gd:820
+#: ui/codex_screen.gd:824
 msgid "Research done"
 msgstr "Pesquisas feitas"
 
-#: ui/codex_screen.gd:822
+#: ui/codex_screen.gd:826
 msgid "Best hub level"
 msgstr "Melhor nível de base"
 
-#: ui/codex_screen.gd:873
+#: ui/codex_screen.gd:877
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:874
+#: ui/codex_screen.gd:878
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:878
+#: ui/codex_screen.gd:882
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:888
+#: ui/codex_screen.gd:892
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
 
@@ -4224,7 +4240,7 @@ msgstr "FEITO COM AMOR E SUCATA"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "Código, malhas procedurais, música e sons sintetizados e os textos são originais de Greenfall."
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:749
+#: ui/credits_roll.gd:148 ui/main_menu.gd:757
 msgid "Music by Lucas"
 msgstr "Música de Lucas"
 
@@ -4276,7 +4292,7 @@ msgstr "%d PEDIDOS PRONTOS  ·  receba na bancada"
 msgid "CDS  ·  %d / %d"
 msgstr "CDS  ·  %d / %d"
 
-#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/tunes_picker.gd:95
+#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107
 msgid "Shuffle"
 msgstr "Aleatório"
 
@@ -4300,7 +4316,7 @@ msgstr "Encontrado em %s"
 msgid "Not found yet: CDs turn up in the rubble on %s."
 msgstr "Ainda não encontrado: este CD está no entulho de %s."
 
-#: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:125
+#: ui/extras_cd_list.gd:86 ui/tunes_picker.gd:141
 msgid "Now playing: %s by %s"
 msgstr "Tocando agora: %s de %s"
 
@@ -4341,8 +4357,8 @@ msgid "Your CDs come on now and then while you work, with quiet in between. Pick
 msgstr "Seus CDs tocam de vez em quando enquanto você trabalha, com silêncio entre eles. Escolha um aqui, ou Aleatório, para ouvi-los em sequência."
 
 #: ui/extras_cd_list.gd:125
-msgid "Glim has copied your CDs: press N anywhere to pick a song."
-msgstr "Glim copiou seus CDs: aperte N em qualquer lugar para escolher uma música."
+msgid "Press %s anywhere for the radio."
+msgstr "Aperte %s em qualquer lugar para o rádio."
 
 #: ui/extras_cd_list.gd:127
 msgid "The music comes from the CD player, so it's softer far away from it."
@@ -5202,7 +5218,7 @@ msgstr[1] "%d planetas"
 msgid "Profiles"
 msgstr "Perfis"
 
-#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:79
+#: ui/main_menu.gd:366 ui/main_menu.gd:699 ui/pause_menu.gd:87
 msgid "Settings"
 msgstr "Configurações"
 
@@ -5210,77 +5226,77 @@ msgstr "Configurações"
 msgid "Made with Godot"
 msgstr "Feito com Godot"
 
-#: ui/main_menu.gd:582
+#: ui/main_menu.gd:590
 msgid "%dm"
 msgstr "%d min"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:589 ui/profile_picker.gd:133
+#: ui/main_menu.gd:597 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s cubos"
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jan"
 msgstr "jan."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Feb"
 msgstr "fev."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Mar"
 msgstr "mar."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Apr"
 msgstr "abr."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "May"
 msgstr "mai."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jun"
 msgstr "jun."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Jul"
 msgstr "jul."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Aug"
 msgstr "ago."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Sep"
 msgstr "set."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Oct"
 msgstr "out."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:593
+#: ui/main_menu.gd:601
 msgid "Dec"
 msgstr "dez."
 
-#: ui/main_menu.gd:691
+#: ui/main_menu.gd:699
 msgid "Credits"
 msgstr "Créditos"
 
-#: ui/main_menu.gd:720
+#: ui/main_menu.gd:728
 msgid "CREDITS"
 msgstr "CRÉDITOS"
 
-#: ui/main_menu.gd:735 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:743 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Voltar"
 
-#: ui/main_menu.gd:748
+#: ui/main_menu.gd:756
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5290,27 +5306,27 @@ msgstr ""
 "Código, malhas procedurais, áudio sintetizado e textos são originais de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:752
+#: ui/main_menu.gd:760
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Recursos de terceiros: CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:770
+#: ui/main_menu.gd:778
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]por %s[/color]"
 
-#: ui/main_menu.gd:804
+#: ui/main_menu.gd:812
 msgid "START A NEW GAME?"
 msgstr "COMEÇAR UM NOVO JOGO?"
 
-#: ui/main_menu.gd:805
+#: ui/main_menu.gd:813
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Seu jogo salvo atual será apagado. Isso não pode ser desfeito."
 
-#: ui/main_menu.gd:813
+#: ui/main_menu.gd:821
 msgid "Keep my save"
 msgstr "Manter meu jogo salvo"
 
-#: ui/main_menu.gd:819 ui/profile_picker.gd:213
+#: ui/main_menu.gd:827 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "Apagar e começar"
 
@@ -5326,7 +5342,11 @@ msgstr "Códice  [%s]"
 msgid "Photo mode  [%s]"
 msgstr "Modo foto  [%s]"
 
-#: ui/pause_menu.gd:74 data/achievements.json:achievements[home_relics].name
+#: ui/pause_menu.gd:73
+msgid "Radio  [%s]"
+msgstr "Rádio  [%s]"
+
+#: ui/pause_menu.gd:82 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "Lembranças"
 
@@ -5398,7 +5418,7 @@ msgstr "O modo foto não está disponível durante um voo de foguete."
 msgid "Photo mode isn't available during a cinematic."
 msgstr "O modo foto não está disponível durante uma cena."
 
-#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:411
+#: ui/photo_mode.gd:359 ui/photo_mode.gd:412 ui/settings_panel.gd:425
 msgid "Camera"
 msgstr "Câmera"
 
@@ -5406,7 +5426,7 @@ msgstr "Câmera"
 msgid "Mode"
 msgstr "Modo"
 
-#: ui/photo_mode.gd:361 ui/settings_panel.gd:419
+#: ui/photo_mode.gd:361 ui/settings_panel.gd:433
 msgid "Field of view"
 msgstr "Campo de visão"
 
@@ -5443,7 +5463,7 @@ msgid "Blur"
 msgstr "Desfoque"
 
 #: ui/photo_mode.gd:369 ui/photo_panel.gd:243 ui/photo_panel.gd:245
-#: ui/photo_panel.gd:283 ui/settings_panel.gd:711
+#: ui/photo_panel.gd:283 ui/settings_panel.gd:725
 msgid "Off"
 msgstr "Desligado"
 
@@ -5556,7 +5576,7 @@ msgid "Exit"
 msgstr "Sair"
 
 #: ui/photo_panel.gd:243 ui/photo_panel.gd:245 ui/photo_panel.gd:283
-#: ui/settings_panel.gd:711
+#: ui/settings_panel.gd:725
 msgid "On"
 msgstr "Ligado"
 
@@ -5634,11 +5654,11 @@ msgstr "RENOMEAR PERFIL"
 msgid "Save"
 msgstr "Salvar"
 
-#: ui/research_node_card.gd:175 ui/research_panel.gd:194
+#: ui/research_node_card.gd:175 ui/research_panel.gd:198
 msgid "Researched"
 msgstr "Pesquisado"
 
-#: ui/research_node_card.gd:178 ui/research_panel.gd:197
+#: ui/research_node_card.gd:178 ui/research_panel.gd:201
 msgid "%s left"
 msgstr "Faltam %s"
 
@@ -5646,7 +5666,7 @@ msgstr "Faltam %s"
 msgid "Queued  ·  %s"
 msgstr "Na fila  ·  %s"
 
-#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+#: ui/research_node_card.gd:184 ui/research_panel.gd:207
 msgid "%s  ·  %s"
 msgstr "%s  ·  %s"
 
@@ -5662,39 +5682,39 @@ msgstr "Pesquisa custa cubos e leva tempo real. Ela continua enquanto você joga
 msgid "RESEARCHING"
 msgstr "PESQUISANDO"
 
-#: ui/research_panel.gd:163
+#: ui/research_panel.gd:167
 msgid "Nothing yet"
 msgstr "Nada ainda"
 
-#: ui/research_panel.gd:164
+#: ui/research_panel.gd:168
 msgid "Pick a glowing card below"
 msgstr "Escolha um cartão brilhante abaixo"
 
-#: ui/research_panel.gd:169
+#: ui/research_panel.gd:173
 msgid "%s left  ·  %d%%"
 msgstr "Faltam %s  ·  %d%%"
 
-#: ui/research_panel.gd:175
+#: ui/research_panel.gd:179
 msgid "Queue: empty  (%d slots)"
 msgstr "Fila: vazia  (%d vagas)"
 
-#: ui/research_panel.gd:198 ui/research_panel.gd:201
+#: ui/research_panel.gd:202 ui/research_panel.gd:205
 msgid "Press again to cancel (refund)"
 msgstr "Aperte de novo para cancelar (reembolso)"
 
-#: ui/research_panel.gd:200
+#: ui/research_panel.gd:204
 msgid "Queued #%d"
 msgstr "Na fila nº %d"
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:209
 msgid "Press to research"
 msgstr "Aperte para pesquisar"
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:209
 msgid "Press to queue"
 msgstr "Aperte para pôr na fila"
 
-#: ui/research_panel.gd:214
+#: ui/research_panel.gd:218
 msgid "%s cancelled. Cubes refunded."
 msgstr "%s cancelada. Cubos devolvidos."
 
@@ -5922,255 +5942,259 @@ msgstr "{ui_cancel}  voltar"
 msgid "Changes are saved automatically."
 msgstr "As alterações são salvas automaticamente."
 
-#: ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: ui/settings_panel.gd:261 ui/settings_panel.gd:365
 msgid "Quality preset"
 msgstr "Predefinição de qualidade"
 
-#: ui/settings_panel.gd:261 ui/settings_panel.gd:368
+#: ui/settings_panel.gd:262 ui/settings_panel.gd:382
 msgid "Fullscreen"
 msgstr "Tela cheia"
 
-#: ui/settings_panel.gd:264 ui/settings_panel.gd:412
+#: ui/settings_panel.gd:265 ui/settings_panel.gd:426
 msgid "Mouse sensitivity"
 msgstr "Sensibilidade do mouse"
 
-#: ui/settings_panel.gd:269 ui/settings_panel.gd:589
+#: ui/settings_panel.gd:270 ui/settings_panel.gd:603
 msgid "System default"
 msgstr "Padrão do sistema"
 
-#: ui/settings_panel.gd:270 ui/settings_panel.gd:586 ui/settings_panel.gd:590
+#: ui/settings_panel.gd:271 ui/settings_panel.gd:600 ui/settings_panel.gd:604
 msgid "Language"
 msgstr "Idioma"
 
-#: ui/settings_panel.gd:275
+#: ui/settings_panel.gd:276
 msgid "More settings  (sound, graphics, controls, accessibility)"
 msgstr "Mais configurações  (som, gráficos, controles, acessibilidade)"
 
-#: ui/settings_panel.gd:283
+#: ui/settings_panel.gd:284
 msgid "Everything else"
 msgstr "Todo o resto"
 
-#: ui/settings_panel.gd:323
-msgid "Volume"
-msgstr "Volume"
-
-#: ui/settings_panel.gd:330
-msgid "Ambience"
-msgstr "Ambiente"
-
-#: ui/settings_panel.gd:333
+#: ui/settings_panel.gd:329
 msgid "Sound effects"
 msgstr "Efeitos sonoros"
 
-#: ui/settings_panel.gd:337 ui/settings_panel.gd:599 ui/settings_panel.gd:607
+#: ui/settings_panel.gd:333
+msgid "Reward sounds"
+msgstr "Sons de recompensa"
+
+#: ui/settings_panel.gd:337
+msgid "Wind and animals"
+msgstr "Vento e animais"
+
+#: ui/settings_panel.gd:343
+msgid "Volume"
+msgstr "Volume"
+
+#: ui/settings_panel.gd:351 ui/settings_panel.gd:613 ui/settings_panel.gd:621
 msgid "Interface"
 msgstr "Interface"
 
-#: ui/settings_panel.gd:344
+#: ui/settings_panel.gd:358
 msgid "Rendering"
 msgstr "Renderização"
 
-#: ui/settings_panel.gd:345
+#: ui/settings_panel.gd:359
 msgid "Low drops GI and fog; Ultra adds reflections."
 msgstr "Baixo remove GI e neblina; Ultra adiciona reflexos."
 
-#: ui/settings_panel.gd:346
+#: ui/settings_panel.gd:360
 msgid "This renderer always uses the Low preset."
 msgstr "Este renderizador sempre usa a predefinição Baixo."
 
-#: ui/settings_panel.gd:348
+#: ui/settings_panel.gd:362
 msgid "Detected: %s for %s. "
 msgstr "Detectado: %s para %s."
 
-#: ui/settings_panel.gd:349
+#: ui/settings_panel.gd:363
 msgid "Your choice (hardware: %s). "
 msgstr "Sua escolha (hardware: %s)."
 
-#: ui/settings_panel.gd:350
+#: ui/settings_panel.gd:364
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
 msgstr "Baixo remove GI, neblina e detalhes de sombra; Ultra adiciona reflexos."
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Renderer"
 msgstr "Renderizador"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Standard (Forward+)"
 msgstr "Padrão (Forward+)"
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:370
 msgid "Light (Mobile)"
 msgstr "Leve (Mobile)"
 
-#: ui/settings_panel.gd:358
+#: ui/settings_panel.gd:372
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
 msgstr "Leve combina com gráficos integrados antigos. Vale depois de reiniciar o jogo (agora: %s)."
 
-#: ui/settings_panel.gd:364
+#: ui/settings_panel.gd:378
 msgid "Render scale"
 msgstr "Escala de renderização"
 
-#: ui/settings_panel.gd:366
+#: ui/settings_panel.gd:380
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
 msgstr "Menor renderiza o 3D num tamanho menor; a interface continua nítida."
 
-#: ui/settings_panel.gd:367
+#: ui/settings_panel.gd:381
 msgid "Display"
 msgstr "Tela"
 
-#: ui/settings_panel.gd:371
+#: ui/settings_panel.gd:385
 msgid "V-Sync"
 msgstr "V-Sync"
 
-#: ui/settings_panel.gd:377 ui/settings_panel.gd:406
+#: ui/settings_panel.gd:391 ui/settings_panel.gd:420
 msgid "Bindings"
 msgstr "Atalhos"
 
-#: ui/settings_panel.gd:380
+#: ui/settings_panel.gd:394
 msgid "ACTION   (select a binding to rebind it)"
 msgstr "AÇÃO   (selecione um atalho para trocar)"
 
-#: ui/settings_panel.gd:383
+#: ui/settings_panel.gd:397
 msgid "KEYBOARD / MOUSE"
 msgstr "TECLADO / MOUSE"
 
-#: ui/settings_panel.gd:383
+#: ui/settings_panel.gd:397
 msgid "CONTROLLER"
 msgstr "CONTROLE"
 
-#: ui/settings_panel.gd:399
+#: ui/settings_panel.gd:413
 msgid "Reset to defaults"
 msgstr "Restaurar padrões"
 
-#: ui/settings_panel.gd:406
+#: ui/settings_panel.gd:420
 msgid "Restore every key and controller binding."
 msgstr "Restaura todas as teclas e botões do controle."
 
-#: ui/settings_panel.gd:408
+#: ui/settings_panel.gd:422
 msgid "Button prompts"
 msgstr "Ícones de botões"
 
-#: ui/settings_panel.gd:410
+#: ui/settings_panel.gd:424
 msgid "Controller art: Automatic follows the connected pad."
 msgstr "Arte do controle: Automático segue o controle conectado."
 
-#: ui/settings_panel.gd:415
+#: ui/settings_panel.gd:429
 msgid "Stick look speed"
 msgstr "Velocidade do analógico"
 
-#: ui/settings_panel.gd:418
+#: ui/settings_panel.gd:432
 msgid "Invert look Y"
 msgstr "Inverter eixo Y"
 
-#: ui/settings_panel.gd:422
+#: ui/settings_panel.gd:436
 msgid "Mouse smoothing"
 msgstr "Suavização do mouse"
 
-#: ui/settings_panel.gd:423
+#: ui/settings_panel.gd:437
 msgid "Eases mouse look over a few frames."
 msgstr "Suaviza o olhar com o mouse por alguns quadros."
 
-#: ui/settings_panel.gd:424
+#: ui/settings_panel.gd:438
 msgid "Scooping"
 msgstr "Recolhimento"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Scoop button"
 msgstr "Botão da pá"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Hold"
 msgstr "Segurar"
 
-#: ui/settings_panel.gd:425
+#: ui/settings_panel.gd:439
 msgid "Toggle"
 msgstr "Alternar"
 
-#: ui/settings_panel.gd:466
+#: ui/settings_panel.gd:480
 msgid "press a button…"
 msgstr "aperte um botão…"
 
-#: ui/settings_panel.gd:466
+#: ui/settings_panel.gd:480
 msgid "press a key…"
 msgstr "aperte uma tecla…"
 
-#: ui/settings_panel.gd:498
+#: ui/settings_panel.gd:512
 msgid "Conflict: %s is used by both %s and %s."
 msgstr "Conflito: %s é usado por %s e por %s."
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:608
 msgid "Comfort"
 msgstr "Conforto"
 
-#: ui/settings_panel.gd:595
+#: ui/settings_panel.gd:609
 msgid "Camera shake"
 msgstr "Tremor da câmera"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:611
 msgid "Reduced motion"
 msgstr "Movimento reduzido"
 
-#: ui/settings_panel.gd:598
+#: ui/settings_panel.gd:612
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "Câmera mais calma e menos efeitos saltitantes."
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "Minimal"
 msgstr "Mínimo"
 
-#: ui/settings_panel.gd:602
+#: ui/settings_panel.gd:616
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ui/settings_panel.gd:603
+#: ui/settings_panel.gd:617
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "Mínimo esmaece os extras depois de alguns segundos. Oculto mantém só avisos e mensagens."
 
-#: ui/settings_panel.gd:613
+#: ui/settings_panel.gd:627
 msgid "Interface scale"
 msgstr "Escala da interface"
 
-#: ui/settings_panel.gd:615
+#: ui/settings_panel.gd:629
 msgid "Size of menus, HUD and subtitles."
 msgstr "Tamanho de menus, HUD e legendas."
 
-#: ui/settings_panel.gd:616
+#: ui/settings_panel.gd:630
 msgid "Colour-blind palette"
 msgstr "Paleta para daltonismo"
 
-#: ui/settings_panel.gd:617
+#: ui/settings_panel.gd:631
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "Cores Okabe-Ito para progresso dos hexágonos, medidor da caçamba e raridade das peças."
 
-#: ui/settings_panel.gd:618 ui/settings_panel.gd:619
+#: ui/settings_panel.gd:632 ui/settings_panel.gd:633
 msgid "Subtitles"
 msgstr "Legendas"
 
-#: ui/settings_panel.gd:620
+#: ui/settings_panel.gd:634
 msgid "WREN's lines."
 msgstr "As falas da WREN."
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Subtitle size"
 msgstr "Tamanho das legendas"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Small"
 msgstr "Pequeno"
 
-#: ui/settings_panel.gd:621
+#: ui/settings_panel.gd:635
 msgid "Large"
 msgstr "Grande"
 
-#: ui/settings_panel.gd:623
+#: ui/settings_panel.gd:637
 msgid "Subtitle background"
 msgstr "Fundo das legendas"
 
-#: ui/settings_panel.gd:624
+#: ui/settings_panel.gd:638
 msgid "A solid backdrop behind subtitle text."
 msgstr "Um fundo sólido atrás do texto das legendas."
 
@@ -6416,19 +6440,27 @@ msgstr "Registrado pelo telescópio: %s. Nova entrada no Códice."
 msgid "Codex: %s"
 msgstr "Códice: %s"
 
-#: ui/tunes_picker.gd:38
-msgid "GLIM'S CDS"
-msgstr "CDS DO GLIM"
+#: ui/tunes_picker.gd:42 ui/tunes_picker.gd:76
+msgid "RADIO"
+msgstr "RÁDIO"
 
-#: ui/tunes_picker.gd:48
-msgid "N / Esc  close"
-msgstr "N / Esc  fechar"
+#: ui/tunes_picker.gd:76
+msgid "GLIM'S RADIO"
+msgstr "RÁDIO DO GLIM"
 
-#: ui/tunes_picker.gd:96
-msgid "Off (the day's music)"
-msgstr "Desligado (música do dia)"
+#: ui/tunes_picker.gd:77
+msgid "%s / Esc  close"
+msgstr "%s / Esc  fechar"
 
-#: ui/tunes_picker.gd:103
+#: ui/tunes_picker.gd:101
+msgid "Random songs"
+msgstr "Músicas aleatórias"
+
+#: ui/tunes_picker.gd:102
+msgid "Stop the music"
+msgstr "Parar a música"
+
+#: ui/tunes_picker.gd:109
 msgid "Play once: %s (scratched)"
 msgstr "Tocar uma vez: %s (arranhado)"
 
@@ -6488,7 +6520,7 @@ msgstr "BAIA DE ROBÔS"
 msgid "WORKBENCH"
 msgstr "BANCADA"
 
-#: ui/upgrades_screen.gd:292
+#: ui/upgrades_screen.gd:296
 msgid "Not open yet. Keep playing."
 msgstr "Ainda não abriu. Continue jogando."
 
@@ -10693,8 +10725,8 @@ msgid "Music"
 msgstr "Música"
 
 #: data/glim.json:tracks[music].desc
-msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
-msgstr "Glim baixa os CDs que você achou: toque qualquer música encontrada, em qualquer lugar, a qualquer hora."
+msgid "Glim dances along to your songs and shows their notes."
+msgstr "Glim dança com as suas músicas e mostra as notas."
 
 #: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
@@ -16680,6 +16712,24 @@ msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. 
 
 #~ msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
 #~ msgstr "A lixeira dela transforma lixo em cubos. Ache peças, construa uma torre de sinal e a gente vai poder conversar. Vou ficar [glitch]ouvin—[/glitch]"
+
+#~ msgid "Glim has copied your CDs: press N anywhere to pick a song."
+#~ msgstr "Glim copiou seus CDs: aperte N em qualquer lugar para escolher uma música."
+
+#~ msgid "Ambience"
+#~ msgstr "Ambiente"
+
+#~ msgid "GLIM'S CDS"
+#~ msgstr "CDS DO GLIM"
+
+#~ msgid "N / Esc  close"
+#~ msgstr "N / Esc  fechar"
+
+#~ msgid "Off (the day's music)"
+#~ msgstr "Desligado (música do dia)"
+
+#~ msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
+#~ msgstr "Glim baixa os CDs que você achou: toque qualquer música encontrada, em qualquer lugar, a qualquer hora."
 
 #~ msgid "While you were away (%s):"
 #~ msgstr "Enquanto você esteve fora (%s):"

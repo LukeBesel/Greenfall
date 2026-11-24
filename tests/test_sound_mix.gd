@@ -7,7 +7,7 @@ var _vol: Array = []
 
 
 func before_each() -> void:
-	_vol = [Settings.master_volume, Settings.music_volume, Settings.ambience_volume, Settings.sfx_volume, Settings.ui_volume]
+	_vol = [Settings.master_volume, Settings.music_volume, Settings.ambience_volume, Settings.sfx_volume, Settings.ui_volume, Settings.jingle_volume]
 
 
 func after_each() -> void:
@@ -16,6 +16,7 @@ func after_each() -> void:
 	Settings.ambience_volume = _vol[2]
 	Settings.sfx_volume = _vol[3]
 	Settings.ui_volume = _vol[4]
+	Settings.jingle_volume = _vol[5]
 	Audio.apply_volumes()
 	SoundCfg._cfg = {}
 	Audio.set_planet_theme("verdance")
@@ -26,7 +27,7 @@ func test_every_group_has_a_bus_and_a_slider() -> void:
 		var idx: int = AudioServer.get_bus_index(bus)
 		assert_gt(idx, 0, "%s bus exists" % bus)
 		assert_eq(str(AudioServer.get_bus_send(idx)), "Master", "%s goes straight to Master (its own slider)" % bus)
-	var sliders: Dictionary = {"Music": "music_volume", "Ambience": "ambience_volume", "SFX": "sfx_volume", "UI": "ui_volume"}
+	var sliders: Dictionary = {"Music": "music_volume", "Ambience": "ambience_volume", "SFX": "sfx_volume", "UI": "ui_volume", "Jingles": "jingle_volume"}
 	for bus: String in sliders:
 		var idx: int = AudioServer.get_bus_index(bus)
 		Settings.set(str(sliders[bus]), 0.0)
@@ -45,10 +46,18 @@ func test_every_group_has_a_bus_and_a_slider() -> void:
 
 
 func test_slider_defaults_come_from_data() -> void:
-	for k: String in ["master", "music", "ambience", "sfx", "ui"]:
+	for k: String in ["master", "music", "ambience", "sfx", "ui", "jingles"]:
 		assert_true((SoundCfg.cfg()["volumes"] as Dictionary).has(k), "volumes.%s" % k)
 		assert_between(SoundCfg.volume_default(k, -1.0), 0.0, 1.0)
 	assert_lt(SoundCfg.volume_default("music", 1.0), SoundCfg.volume_default("sfx", 0.0), "music starts under the effects")
+	# [v10snd] owner: "too much ambient noise like wind and birds", "sounds when i get an upgrade are just so loud"
+	assert_lte(SoundCfg.volume_default("ambience", 1.0), 0.5, "wind and animals start low")
+	assert_lt(SoundCfg.volume_default("jingles", 1.0), SoundCfg.volume_default("sfx", 0.0), "reward sounds start under the effects slider")
+	for snd: String in ["fanfare", "chime", "buy", "ding", "coin", "sparkle"]:
+		assert_eq(SoundCfg.bus_of(snd), "Jingles", "%s follows the Reward sounds slider" % snd)
+	for snd: String in ["fanfare", "chime", "buy"]:
+		assert_lte(SoundCfg.sound_db(snd), -5.0, "%s is trimmed down" % snd)
+	assert_eq(str(Audio._music.get("sting_bus")), "Jingles", "the score's stingers follow it too")
 
 
 func _player_of(sound: String) -> AudioStreamPlayer:
@@ -88,7 +97,7 @@ func test_a_tag_trims_gaps_and_mutes_a_sound_in_one_place() -> void:
 	assert_eq(Audio._next_player, k, "a trim at OFF_DB mutes it")
 	Audio.play("pop")
 	assert_ne(Audio._next_player, k, "the same sound untagged is not held back by the tag's gap")
-	assert_almost_eq(_player_of("pop").volume_db, 0.0, 0.01, "nor trimmed")
+	assert_almost_eq(_player_of("pop").volume_db, SoundCfg.sound_db("pop"), 0.01, "nor trimmed (only its own shipped trim)")
 	trims.erase("test:pop")
 	trims.erase("hush:pop")
 	gaps.erase("test:pop")

@@ -5,7 +5,7 @@ extends RefCounted
 ## score theme and ambience bed. See docs/ADJUSTING.md, "Music and sound".
 
 const PATH: String = "res://data/sound.json"
-const BUSES: Array[String] = ["Music", "Songs", "Ambience", "SFX", "UI"]
+const BUSES: Array[String] = ["Music", "Songs", "Ambience", "SFX", "UI", "Jingles"]
 const OFF_DB: float = -80.0  # a sound_db trim this low mutes the sound
 
 static var _cfg: Dictionary = {}

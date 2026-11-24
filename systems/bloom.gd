@@ -186,7 +186,7 @@ func _ready() -> void:
 	if DevHooks.has("credits"):  # [beat] --credits[=S]: roll the end credits S seconds in
 		get_tree().create_timer(DevHooks.get_f("credits", 3.0)).timeout.connect(func() -> void: CreditsRoll.play(world))
 	if DevHooks.has("bloom-finale"):
-		(func() -> void: play_finale(true)).call_deferred()
+		play_finale.bind(true).call_deferred()
 
 
 func persist_save() -> void:

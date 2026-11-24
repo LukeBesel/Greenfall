@@ -130,18 +130,27 @@ func _ready() -> void:
 	if not GameState.flags.has("core_charge"):
 		GameState.flags["core_charge"] = START
 	shown = stored()
-	(func() -> void:
-		var model: PatchModel = _model()
-		if model:
-			model.core_glow = glow_for_flags()).call_deferred()
+	_glow_model.call_deferred()
 	if GameState.flags.get("bloom_finale_seen", false) and world:
-		(func() -> void: BloomFinale.park_ark(world, Vector3(0, 0, 3))).call_deferred()
+		_park_ark.call_deferred()
 	if DevHooks.has("core-beat"):
 		var b: int = int(DevHooks.get_f("core-beat", 25.0))
 		_busy = true  # hold the regular queue so the requested beat plays first
 		get_tree().create_timer(DevHooks.get_f("core-beat-delay", 3.0)).timeout.connect(func() -> void:
 			_busy = false
 			_play(b))
+
+
+## Deferred from _ready as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _park_ark() -> void:
+	BloomFinale.park_ark(world, Vector3(0, 0, 3))
+
+
+## Deferred from _ready as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _glow_model() -> void:
+	var model: PatchModel = _model()
+	if model:
+		model.core_glow = glow_for_flags()
 
 
 func _model() -> PatchModel:

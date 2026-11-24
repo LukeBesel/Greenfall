@@ -613,7 +613,12 @@ func _ready() -> void:
 		var names: Array[String] = []
 		for id: String in finished:
 			names.append(tr(str(def(id).get("name", id))))
-		(func() -> void: EventBus.toast.emit(tr("While you were away, research finished: %s.") % ", ".join(names), "story")).call_deferred()
+		_toast_finished.bind(names).call_deferred()
+
+
+## Deferred from _ready as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _toast_finished(names: Array[String]) -> void:
+	EventBus.toast.emit(tr("While you were away, research finished: %s.") % ", ".join(names), "story")
 
 
 func _process(delta: float) -> void:

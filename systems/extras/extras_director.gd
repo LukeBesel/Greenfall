@@ -85,7 +85,7 @@ func _setup() -> void:
 		if bots.is_empty():
 			bots = [{"type": "scoopie", "tier": 1}, {"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}, {"type": "drip", "tier": 0}]
 		WelcomeBack.offer(Offline.simulate({"robots": bots}, h * 3600.0, 400.0, 1), h * 3600.0, bots)
-	(func() -> void: WelcomeBack.resolve(world)).call_deferred()
+	_resolve_welcome_back.call_deferred()
 	if DevHooks.has("weekly") and not WeeklyChallenge.active:
 		get_tree().create_timer(0.5).timeout.connect(func() -> void: WeeklyChallenge.start(get_tree()))
 	if DevHooks.has("album-snap"):
@@ -97,7 +97,17 @@ func _setup() -> void:
 	if DevHooks.has("extras-cam"):
 		_cam.call_deferred()
 	if DevHooks.has("extras-nohud") and world.get("hud") != null:
-		(func() -> void: world.hud.visible = false).call_deferred()
+		_dev_hide_hud.call_deferred()
+
+
+## Deferred from _setup (--extras-nohud) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _dev_hide_hud() -> void:
+	world.hud.visible = false
+
+
+## Deferred from _setup as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
+func _resolve_welcome_back() -> void:
+	WelcomeBack.resolve(world)
 
 
 ## [v5load] On the globe the loader's build waits for this setup (BuildBudget.idle), so it may hand

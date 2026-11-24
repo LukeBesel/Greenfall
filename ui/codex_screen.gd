@@ -762,12 +762,16 @@ func _achievement_card(a: Dictionary) -> Button:
 	UITheme.juice(b, 1.02)
 	# [v6screens] The card grows with its text (long descriptions wrap to more lines in some
 	# languages) instead of spilling into the card below.
-	var grow := func() -> void:
-		if is_instance_valid(b) and is_instance_valid(hb):  # [main] the deferred call can land after the screen is freed
-			b.custom_minimum_size.y = maxf(84.0, hb.get_combined_minimum_size().y + 12.0)
-	hb.minimum_size_changed.connect(grow)
-	grow.call_deferred()
+	hb.minimum_size_changed.connect(_grow_card.bind(b, hb))
+	_grow_card.bind(b, hb).call_deferred()
 	return b
+
+
+## A method, not a lambda: the engine drops the deferred call when the screen is freed first
+## (tests/test_deferred_calls.gd). The card itself can be gone by then (the tab was rebuilt).
+func _grow_card(card: Variant, row: Variant) -> void:
+	if is_instance_valid(card) and is_instance_valid(row):
+		(card as Control).custom_minimum_size.y = maxf(84.0, (row as Control).get_combined_minimum_size().y + 12.0)
 
 
 # --- Stats tab -----------------------------------------------------------------------
