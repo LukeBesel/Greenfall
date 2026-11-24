@@ -97,7 +97,12 @@ static func _snap() -> Dictionary:
 		"frac": ob.hex_fraction() if ob.target_hex >= 0 else -1.0, "row": ob.bench_row(), "way": ob.waypoint_target(),
 		"_cubes": GameState.get_currency("cubes").to_float(), "_parts": GameState.get_currency("parts").to_float(),
 		"_pos": p.global_position if p else Vector3.ZERO, "_hub": GameState.current_hub, "_price": ob._step_price(),
-		"_earned": BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()}
+		"_earned": _earned()}
+
+
+## Cubes earned so far (saved with the game): what the robots' sales added since an earlier reading.
+static func _earned() -> float:
+	return BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()
 
 
 ## Saves and loads the game the way a player does, then checks the step came back the same.
@@ -217,7 +222,7 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var price_c: float = float((a["_price"] as Dictionary).get("cubes", 0.0)) if a["_price"] is Dictionary else 0.0
 	if sold:
 		print("[walk-home] note: %s: the robots sold %.0f cubes meanwhile; cubes %.0f -> %.0f (%.0f before those sales)%s" % [tag, earned,
-			float(a["_cubes"]), float(b["_cubes"]), float(b["_cubes"]) - earned, ", the price is covered now" if price_c > 0.0 and float(b["_cubes"]) >= price_c else ""])
+			float(a["_cubes"]), float(b["_cubes"]), float(b["_cubes"]) - earned, ", which covered the price" if price_c > 0.0 and float(b["_cubes"]) >= price_c and float(a["_cubes"]) < price_c else ""])
 	if paid and float(pb[0]) >= float(pa[0]) - 0.01:
 		pass  # more money or more cleaned: the pay
 	elif sold and (float(pb[0]) >= float(pa[0]) - 0.01 or (price_c > 0.0 and float(b["_cubes"]) >= price_c and float(a["_cubes"]) < price_c)):
@@ -1116,6 +1121,7 @@ static func _part_shuttle() -> void:
 	var cost: Dictionary = YardBuilds.def("shuttle").get("cost", {})
 	_set_money(200.0, 10.0)
 	var stats0: Dictionary = GameState.stats.duplicate()  # [v10snd] what paid, if the count is off
+	var earned0: float = _earned()  # [v10ui] the robots go on selling bales: count what they add
 	_toasts.clear()
 	if not await _goto("shuttle"):
 		return
@@ -1126,9 +1132,16 @@ static func _part_shuttle() -> void:
 	_check(spot != null and is_instance_valid(spot) and spot.visible and spot.global_position.distance_to(os_.sm.pad_xf(0).origin) < 1.0, "shuttle: its spot on the launch pad is marked")
 	_check(ob.step_price() == cost, "shuttle: the card shows its price (%s)" % str(ob.step_price()))
 	var pr: Array = ob.progress()
-	var saved: float = str(pr[1]).get_slice(" /", 0).replace(",", "").to_float()
-	_check(saved >= 200.0 and saved < 400.0 and str(pr[1]).ends_with("/ " + Settings.fmt(BigNum.from_float(float(cost.get("cubes", 0.0))))), "shuttle: the card counts the cubes saved toward it (%s; robots may sell a bale meanwhile)" % str(pr))
-	if not (saved >= 200.0 and saved < 400.0):
+	# [v10ui] The card counts the cubes there are now: the 200 set plus what the robots sold since
+	# (one bale pressed in a salvage surge pays over 1K, check_exit 24 Nov). Past the price the card
+	# shows the step without a count.
+	var price_c: float = float(cost.get("cubes", 0.0))
+	var cubes_now: float = GameState.get_currency("cubes").to_float()
+	var sold: float = _earned() - earned0
+	var want: String = ("%s / %s" % [Currencies.have_text(cubes_now), Settings.fmt(BigNum.from_float(price_c))]) if cubes_now < price_c else ""
+	var saved: float = cubes_now - sold
+	_check(absf(saved - 200.0) < 2.0 and str(pr[1]) == want, "shuttle: the card counts the cubes saved toward it (%s; 200 set, the robots sold %.0f meanwhile)" % [str(pr), sold])
+	if not (absf(saved - 200.0) < 2.0):
 		var diff: Dictionary = {}
 		for k: Variant in GameState.stats:
 			if GameState.stats[k] is float and float(GameState.stats[k]) != float(stats0.get(k, 0.0)):
@@ -1146,13 +1159,19 @@ static func _part_shuttle() -> void:
 	_set_money(float(cost.get("cubes", 0.0)), float(cost.get("parts", 0.0)))
 	await tree.create_timer(0.4).timeout
 	await _shot("shuttle_bench")
+	var c_click: float = GameState.get_currency("cubes").to_float()
+	var e_click: float = _earned()
 	for k: int in 3:
 		await _click(_price_tag(ld, "shuttle"))
 		if Hub.rocket_built():
 			break
 		await tree.create_timer(0.5).timeout
 	_check(Hub.rocket_built(), "shuttle: clicking its price tag builds it")
-	_check(GameState.get_currency("cubes").to_float() < 1.0 + float(cost.get("cubes", 0.0)) * 0.05, "shuttle: the price is paid (%.0f cubes left; the robots sell bales meanwhile)" % GameState.get_currency("cubes").to_float())
+	# [v10ui] Exactly the price went: the cubes left are what there was, less the price, plus what the
+	# robots sold meanwhile (a surge bale sold right then left 1322: check_exit 24 Nov).
+	var sold_b: float = _earned() - e_click
+	var left: float = GameState.get_currency("cubes").to_float()
+	_check(absf(left - (c_click - float(cost.get("cubes", 0.0)) + sold_b)) < 2.0, "shuttle: the price is paid (%.0f cubes left of %.0f; the robots sold %.0f meanwhile)" % [left, c_click, sold_b])
 	await tree.create_timer(1.5).timeout
 	_check(not _up().is_open, "shuttle: the workbench closes by itself so the build is seen")
 	_check(ShuttleBuild.building, "shuttle: it is being put together on the pad")
