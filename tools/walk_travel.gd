@@ -72,7 +72,11 @@ static func run_dev(so: SliceOrbit) -> void:
 			str((w.get("fleet") as Fleet).robot_total()) if w.get("fleet") is Fleet else "?"])
 		tree.quit(0)
 		return
-	if DevHooks.has("walk-travel-resume"):
+	if DevHooks.has("walk-travel-planet"):  # [v14travel] off Verdance and back (tools/walk_bases.gd)
+		await WalkBases.planet_trip(so)
+	elif DevHooks.has("walk-travel-all"):  # [v14travel] every base, both ways, a reload at each (tools/walk_bases.gd)
+		await WalkBases.run(so)
+	elif DevHooks.has("walk-travel-resume"):
 		await _resume(so)
 	elif DevHooks.has("walk-travel-end"):
 		await _after_end(so)

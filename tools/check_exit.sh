@@ -85,6 +85,10 @@ run walk_travel_back -- --fresh --orbit --no-intro --walk-travel --walk-travel-b
 run walk_travel_end -- --orbit --no-intro --walk-travel --walk-travel-end --quit-after=600 --save-dir=check_exit_travel_$$
 run walk_travel_save -- --fresh --orbit --no-intro --walk-travel --walk-travel-save --quit-after=2000 --save-dir=check_exit_travelr_$$
 run walk_travel_resume -- --orbit --no-intro --walk-travel --walk-travel-resume --quit-after=1500 --save-dir=check_exit_travelr_$$
+# [v14travel] Every base on Verdance: home -> 2 -> 3 (base to base) -> 2 -> home, Mk II, home -> 4 with a
+# quit and Continue in the flight, 4 -> 5 by the controller, 5 -> home, Mk III, home -> 6 -> an extra base
+# -> home; each chain to the wake by E, a quit and Continue at every base (tools/walk_bases.gd).
+run walk_travel_all -- --fresh --orbit --no-intro --walk-travel --walk-travel-all --quit-after=3000 --save-dir=check_exit_travela_$$
 # [v9c] Every far station has its count of hexes finishable with the starting Lift (0)
 # within 100 m of its pad (exit 1 lists the short ones).
 run hex_audit_hubs -- --fresh --orbit --no-intro --hex-audit --hex-audit-hubs --hex-audit-lift=0 --hex-audit-quit

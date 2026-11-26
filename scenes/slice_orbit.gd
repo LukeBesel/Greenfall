@@ -1241,12 +1241,23 @@ func persist_save() -> void:
 		"hexes_paid": GameState.orbit.get("hexes_paid", {}),
 		"hex_levels": (w.get("hex_levels") as HexLevels).persist(),
 		"day_t": day.elapsed(),
-		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
+		"lumi": {"at": g.to_dirh(_lumi_save_pos(patch)), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
 		"robots": crews.save_crew(),  # [orbC]
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
 	GameState.orbit.merge(keep)
+
+
+## [v14travel] Where a save puts Lumi. In a rocket flight he rides the ship (hidden, 45 m up, and
+## behind the veil already over the far town) while the rocket's pad is still the one he left, so a
+## quit in flight loaded him in the air between two bases, a long walk from any pad. A save in flight
+## puts him back by the rocket on the pad he flew from, where it waits after the load.
+func _lumi_save_pos(patch: Patch) -> Vector3:
+	if sites and sites.sm and sites.hop and (sites.hop.flying or bool(w.get("launching"))):
+		var at: Vector3 = sites.sm.pad_xf(sites.rocket_site()) * Vector3(4.5, 0, 3.0)
+		return globe.terrain.ground(at.normalized())
+	return patch.global_position
 
 
 ## [v5play] Kept across saves: where the rocket stands, that Lumi owns it, the hubs he has flown to.

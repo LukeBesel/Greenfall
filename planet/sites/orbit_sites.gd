@@ -575,6 +575,8 @@ func _dev_hop() -> void:
 		var d: float = patch.global_position.distance_to(sm.pad_xf(int(h)).origin)
 		print("[hop] to hub %s: %s in %d ms, %.1f m from its pad, site built %s" % [h, "ok" if ok else "FAIL", Time.get_ticks_msec() - t0, d, sm.prefab(int(h)) != null])
 		await get_tree().create_timer(1.0 + (DevHooks.get_f("hub-dev-chain", 3.0) + 2.0 if DevHooks.has("hub-dev-chain") else 0.0)).timeout  # [v6hubs] room for the dev chain
+		if DevHooks.has("hop-shots"):  # [v14travel] the arrival frames and the rocket's list first (wall clock: renders crawl)
+			await DevHooks.wait_wall_for(45.0)
 
 
 ## Dev: --site-reach. Narrow-gap audit (planet/sites/site_reach.gd) of every hub site on this

@@ -779,6 +779,8 @@ func show_title(i: int, first: bool = false) -> void:
 	sub.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
 	vb.add_child(sub)
 	title_reason = tr(HubPlan.reason(planet, i)) if HubPlan.reason(planet, i) != "" else ""
+	if HubPlan.woken(i) and not HubPlan.is_home(planet, i):  # [v14travel] back at a woken base: how it is doing, not the old errand (its piece is long given)
+		title_reason = status_text(i)
 	if title_reason != "":
 		var why: Label = UITheme.label(title_reason, 15, CREAM)
 		why.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -812,13 +814,14 @@ func show_title(i: int, first: bool = false) -> void:
 		for wait: float in [1.6, 9.0]:
 			get_tree().create_timer(wait, true, false, true).timeout.connect(func() -> void:
 				await RenderingServer.frame_post_draw
-				DevHooks.save_viewport("%s_land_%d.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), int(wait)])
+				DevHooks.save_viewport("%s_land%d_%d.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), i, int(wait)])  # [v14travel] per base: --orbit-hop=a,b,c takes every arrival in one load
 				if wait > 5.0:  # then the rocket's list, and its picture
 					sites.open_rocket()
 					await DevHooks.wait_wall_for(6.0)  # [v7look] wall clock: the list was still fading in at 1 s
 					await RenderingServer.frame_post_draw
-					DevHooks.save_viewport("%s_picker.png" % DevHooks.get_s("hop-shots", "screenshots/hop"))
-					print("[hubs] dev: shots done"))
+					DevHooks.save_viewport("%s_picker%d.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), i])
+					sites.picker.close()
+					print("[hubs] dev: shots done at site %d" % i))
 
 
 ## [v7look] Where the arrival title's top edge sits (a share of the screen height), and the widest

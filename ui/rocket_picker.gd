@@ -221,6 +221,10 @@ func _button(text: String) -> Button:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_open:
 		return
-	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause") or event.is_action_pressed("interact"):
+	# [v14travel] On a controller A is both "interact" (E: the key that opened the list) and
+	# "ui_accept" (press the focused Fly): it closed the list before the button saw it, so a
+	# controller could not fly at all. A presses the button; B or Start closes.
+	var accept: bool = event.is_action("ui_accept")
+	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause") or (event.is_action_pressed("interact") and not accept):
 		close()
 		get_viewport().set_input_as_handled()
