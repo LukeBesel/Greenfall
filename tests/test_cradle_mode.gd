@@ -120,7 +120,7 @@ func test_start_kit_from_heirloom_levels() -> void:
 	var kit: Dictionary = CradleMode.start_kit({"head_start": 2, "old_crew": 2, "archivist": 1, "seed_vault": 1, "data_cache": 3})
 	assert_almost_eq(float(kit["cubes"]), 3000.0, 0.01)
 	assert_almost_eq(float(kit["data"]), 180.0, 0.01)
-	assert_almost_eq(float(kit["seeds"]), 40.0, 0.01)
+	assert_almost_eq(float(kit["seeds"]), 0.0, 0.01, "v13goals: the Seed Vault speeds the greening up instead of packing seeds")
 	assert_false(bool(kit["seeds_unlocked"]), "the seed tin is still found on each world")
 	assert_eq((kit["robots"] as Array).size(), 2)
 	assert_eq(int(kit["research_tier"]), 1)

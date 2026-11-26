@@ -50,7 +50,7 @@ func _run(crew: SphereCrew, seconds: float, dt: float = 0.1) -> void:
 func test_every_type_moves_like_its_profile() -> void:
 	var w: Dictionary = _world()
 	var crew: SphereCrew = w["crew"]
-	for t: String in ["scoopie", "haulbug", "seedling", "drip", "skimmer", "multibot"]:
+	for t: String in ["scoopie", "haulbug", "skimmer", "multibot"]:  # [v13goals] no Seedling or Drip
 		var u: Dictionary = crew.spawn(t, 0, _g5.cells_around(100, 1)[1])
 		var b: SphereBot = u["bot"]
 		assert_not_null(b, "%s spawns near Lumi as a real SphereBot" % t)
@@ -142,23 +142,6 @@ func test_order_sends_a_robot_to_a_cell() -> void:
 	assert_eq(int(u["job"]), target)
 	_run(crew, 25.0)
 	assert_eq(str(u["mode"]), "work")
-
-
-func test_seedling_plants_and_drip_waters() -> void:
-	var w: Dictionary = _world(false)
-	var crew: SphereCrew = w["crew"]
-	var cells: SphereCells = w["cells"]
-	crew.spend_seeds = false
-	crew.spawn("seedling", 0, 100)
-	crew.spawn("drip", 0, _g5.cells_around(100, 1)[2])
-	_run(crew, 60.0, 0.2)
-	var planted: int = 0
-	var growing: int = 0
-	for c: int in _g5.cells_around(100, 3):
-		planted += 1 if cells.state[c] >= 2 else 0
-		growing += 1 if cells.state[c] == 3 else 0
-	assert_gt(planted, 0)
-	assert_gt(growing, 0)
 
 
 # --- Far crews ------------------------------------------------------------------------------
@@ -497,23 +480,6 @@ func test_robot_cleaned_count_matches_a_reload() -> void:
 	assert_gt(field.cleaned_count - start, 4, "the crews cleaned hexes")
 	assert_eq(field.cleaned_count, reloaded.cleaned_count, "live count = count after a reload")
 	assert_eq(int(cleaned_signals[0]), field.cleaned_count - start, "every clean went through cell_cleaned (the player's on_hex_clean flow)")
-
-
-func test_drips_refill_their_tank_and_water_again() -> void:
-	# [orbC] Water net on the globe: watering spends the tank, an empty Drip refills (here at the
-	# Depot's barrel) and goes back to work.
-	var w: Dictionary = _world(false)
-	var crew: SphereCrew = w["crew"]
-	var cells: SphereCells = w["cells"]
-	crew.depot_points[100] = _g5.centers[_g5.cells_around(100, 1)[4]]
-	for c: int in _g5.cells_around(100, 3):
-		cells.set_state(c, 2)  # planted, waiting for water
-	var u: Dictionary = crew.spawn("drip", 0, _g5.cells_around(100, 1)[2])
-	u["water"] = 0.0
-	_run(crew, 240.0, 0.2)
-	assert_gte(float(u["log"]["refills"]), 1.0, "it went to refill")
-	assert_gt(float(u["log"]["watered"]), 3.0, "and watered after")
-	assert_eq(crew.stuck_count(), 0)
 
 
 ## [v10pace] Robot bales reach the bin: three Scoopies and one Haul Bug, near Lumi and far from

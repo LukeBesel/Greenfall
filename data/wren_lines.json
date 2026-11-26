@@ -240,13 +240,13 @@
   ],
   "frontier_dust_flats": [
     ["...hot... so much sand... Lumi?"],
-    ["The Dust Flats. That glitter on the horizon is a solar farm, or what is left of it. Mind the wind, Lumi. It moves things.", "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."],
-    ["The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."]
+    ["The Dust Flats. That glitter on the horizon is a solar farm, or what is left of it. Mind the wind, Lumi. It moves things.", "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry. Green will come slowly out here."],
+    ["The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Clean it, and the windbreaks grow back."]
   ],
   "frontier_frozen_port": [
     ["...cold... ice on the lens..."],
     ["The Frozen Port. Everything is locked in ice, junk included. Your beam can melt it, slowly. Heaters do it properly.", "A harbour frozen in mid-shift. The cranes still have containers hanging off them. Bring heaters, Lumi."],
-    ["The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."]
+    ["The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn roots."]
   ],
   "frontier_sunken_city": [
     ["...water... everywhere... rooftops?"],
@@ -256,16 +256,16 @@
   "frontier_cradle_returns": [
     ["...Cradle... signal... strong..."],
     ["This is where the Cradle left from. The launch city. The ground crews kept the towers shining. Only the landing field is buried.", "Cradle Returns. If we clean and green that pad, the ark can land. I mean really land. Here."],
-    ["Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."]
+    ["Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad and let it grow green. Then we call them home."]
   ],
   "sandstorm_warn": [
     ["...wind... coming..."],
-    ["Sandstorm on the horizon. Anything clean and bare out there is going to get buried again.", "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."],
+    ["Sandstorm on the horizon. Anything clean and bare out there is going to get buried again.", "Wind's rising. Green hexes hold, and lush ones shelter their neighbours. The rest, well."],
     ["Storm front from the flats. Get the robots home or keep sweeping, your choice. The hedges will hold."]
   ],
   "sandstorm_over": [
     ["...quiet... again..."],
-    ["Storm's past. It dropped junk on {n} hexes. The sheltered ones came through clean.", "There. The wind gave some of it back. Plant a windbreak and it won't next time."],
+    ["Storm's past. It dropped junk on {n} hexes. The sheltered ones came through clean.", "There. The wind gave some of it back. Once it greens, it won't next time."],
     ["Storm over. Every Sustained hex out there is a wall now. Good walls."]
   ],
   "thaw_first": [
@@ -285,7 +285,7 @@
   ],
   "cradle_pad": [
     ["...pad... lights..."],
-    ["The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained.", "Pad's clear. The ark won't land on bare concrete, though. It wants green under it."],
+    ["The landing pad is clean. Now it needs to be alive: give it time to grow lush.", "Pad's clear. The ark won't land on bare concrete, though. It wants green under it."],
     ["The pad lights are on. The Cradle can see them from orbit. It's watching, Lumi."]
   ],
   "cradle_complete": [
@@ -310,8 +310,8 @@
   ],
   "low_core": [
     ["...you're dim... find green... any green..."],
-    ["Your core's low. Plant something, Lumi. Anything. Green light is green light."],
-    ["Running a little dim. A few blooms will fix that."]
+    ["Your core's low. Clean some ground, Lumi. Anything that greens. Green light is green light."],
+    ["Running a little dim. A few clean hexes will fix that."]
   ],
   "egg_sand_piano": [["...music... out here?..."], ["A piano. In the desert. I have so many questions and none of them will be answered."], ["It's out of tune in a way that sounds deliberate now. Like the dunes learned a song."]],
   "egg_snow_bot": [["...someone dressed it... for the cold..."], ["They built snowmen around the old loaders for luck. I think it worked, a bit. It's still standing."], ["Every winter, a new scarf. Someone kept that up for a very long time."]],
@@ -326,7 +326,7 @@
   "egg_older_pod": [["...another pod... older..."], ["SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."], ["'Start by the water.' Good advice, from someone who knew."]],
   "egg_heirloom_tin": [["...soil... from home..."], ["A bit of the first garden, already spilled on new ground. That's how it starts."], ["Verdance soil on another world. The Settlers would have liked that."]],
   "cradle_mode": [["...the vault... other worlds..."], ["The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."], ["Heirlooms, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."]],
-  "new_world": [["...new ground... new junk..."], ["New world, new sky. Same job. You're better at it than you were the first time."], ["Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."]],
+  "new_world": [["...new ground... new junk..."], ["New world, new sky. Same job. You're better at it than you were the first time."], ["Look at that. Ruined, dusty, nothing's grown here in centuries. You know what to do."]],
   "garden_place": [["...pretty..."], ["You're decorating. I approve. The cats are going to approve more."], ["A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."]],
   "home_arrive": [["...new sky... two suns..."], ["New planet, same two suns. The miners have been here too. You can smell the rust."], ["Another world left for dead. It doesn't know about you yet. It's about to."]],
   "home_half": [["...signal... old one..."], ["Picked up something old on the band. An old message. Want to read it?"], ["Half-way here. Every time this place gets greener, its ghosts start talking. I've got another one for you."]],

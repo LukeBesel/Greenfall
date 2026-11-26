@@ -4,7 +4,7 @@
   "_enabled_doc": "[v6screens] false hides the Seed of the Week everywhere a player could start it (Keepsakes tab, its two Garden Mode decorations, its two achievements in the Codex). It does not work on the round world yet: the week's seed is ignored and a resumed run has no robots. Set true to bring it back. See docs/ADJUSTING.md.",
   "slot": 9,
   "goal_hexes": 30,
-  "kit": {"cubes": 1500, "seeds": 20, "robots": ["scoopie", "scoopie", "haulbug"]},
+  "kit": {"cubes": 1500, "robots": ["scoopie", "scoopie", "haulbug"]},
   "score": {"per_hex": 100, "per_bloom": 25, "per_100_cubes": 2, "time_bonus_s": 3600, "time_bonus_max": 1500},
   "twists": [
     {"id": "scoopies_only", "name": "Scoopies Only", "desc": "Only Scoopies answer the call this week. Lumi does the hauling.", "only": ["scoopie"]},

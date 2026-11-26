@@ -138,13 +138,10 @@ func test_every_state_has_a_short_line_and_a_reason() -> void:
 	var crew: SphereCrew = w["crew"]
 	var sc: Dictionary = crew.spawn("scoopie", 0, 100)
 	var hb: Dictionary = crew.spawn("haulbug", 0, 100)
-	var dr: Dictionary = crew.spawn("drip", 0, 100)
 	_run(crew, 3.0)
 	assert_eq(CrewTalk.line(crew, sc), tr("No dirty ground left around this base."))
 	assert_eq(CrewTalk.line(crew, hb), tr("No bales to carry right now."))
-	assert_eq(CrewTalk.line(crew, dr), tr("Nothing to water yet. Plant something first."))
 	assert_eq(CrewTalk.state(crew, sc), CrewTalk.IDLE)
-	assert_eq(CrewTalk.state(crew, dr), CrewTalk.HELP, "the Drip needs the player: its light is amber")
 	assert_true(CrewTalk.look_text(crew, sc).contains(str(sc["name"])))
 	for why: String in ["zone clean", "zone done", "no bales", "nothing to plant", "out of seeds", "nothing to water", "no water", "no lake junk", "no path"]:
 		assert_true(CrewTalk.IDLE_LINE.has(why), "idle reason '%s' has a line" % why)
@@ -297,18 +294,14 @@ func test_command_view_offers_only_jobs_you_have_robots_for() -> void:
 	crew.spawn("scoopie", 0, 100)
 	crew.spawn("haulbug", 0, 100)
 	assert_eq(cmd.roles(), ["clean"] as Array[String], "Haul Bugs follow the bales: nothing to paint")
-	crew.spawn("drip", 0, 100)
-	assert_eq(cmd.roles(), ["clean", "water"] as Array[String])
-	cmd.next_role()
-	assert_eq(cmd.role, "water")
-	cmd.next_role()
+	cmd.next_role()  # [v13goals] no waterers: one job to paint
 	assert_eq(cmd.role, "clean")
 	var lines: Array = CommandOverlay.card_lines(cmd)
 	var all: String = ""
 	for l: Dictionary in lines:
 		all += str(l["text"]) + "|"
-	assert_true(all.contains("3"), "the card counts the hub's robots: %s" % all)
-	assert_true(all.contains(tr("Cleaners")) and all.contains(tr("Haulers")) and all.contains(tr("Waterers")), "with a legend row per job: %s" % all)
+	assert_true(all.contains("2"), "the card counts the hub's robots: %s" % all)
+	assert_true(all.contains(tr("Cleaners")) and all.contains(tr("Haulers")), "with a legend row per job: %s" % all)
 	var hints: Array = CommandOverlay.hint_lines(cmd)
 	assert_eq(str(hints[0]), tr("Paint the ground you want cleaned first."))
 	cmd.using_pad = true
@@ -347,12 +340,12 @@ func test_every_robot_type_works_from_build_to_cash_across_a_save() -> void:
 		(w["cells"] as SphereCells).set_junk(c, 0.0)
 		(w["cells"] as SphereCells).set_state(c, 1)
 	(w["cells"] as SphereCells).set_state(hub_ring[9], 2)
-	for t: String in ["scoopie", "haulbug", "skimmer", "seedling", "drip", "multibot"]:
+	for t: String in ["scoopie", "haulbug", "skimmer", "multibot"]:  # [v13goals] no Seedling or Drip
 		crew.greet(crew.spawn(t, 0, 100))
 	crew.run_far(300.0, 0.5)
 	var d: Dictionary = JSON.parse_string(JSON.stringify(crew.to_dict()))
 	crew.from_dict(d)
-	assert_eq(crew.robots().size(), 6, "all six come back from the save")
+	assert_eq(crew.robots().size(), 4, "all four come back from the save")
 	crew.run_far(900.0, 0.5)
 	var by: Dictionary = {}
 	for u: Dictionary in crew.robots():
@@ -361,8 +354,6 @@ func test_every_robot_type_works_from_build_to_cash_across_a_save() -> void:
 	assert_gt(float(by["scoopie"]["log"]["junk"]), 100.0, "the Scoopie scooped")
 	assert_gt(float(by["multibot"]["log"]["junk"]), 100.0, "the Multibot cleaned")
 	assert_gt(float(by["skimmer"]["log"]["junk"]), 5.0, "the Skimmer skimmed the lake")
-	assert_gt(float(by["seedling"]["log"]["planted"]), 0.0, "the Seedling planted")
-	assert_gt(float(by["drip"]["log"]["watered"]), 0.0, "the Drip watered")
 	assert_gt(float(by["haulbug"]["log"]["hauled"]), 5.0, "the Haul Bug carried the bales")
 	assert_gt(crew.cashed, 0.0, "and they were cashed")
 	for u: Dictionary in crew.robots():

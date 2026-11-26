@@ -803,7 +803,7 @@ func _build_stats() -> Control:
 		[UITheme.GOLD, tr("Cubes earned"), Settings.fmt(BigNum.from_serialized(st.get("cubes_earned_total", [0.0, 0])))],
 	])
 	_stat_card(grid, tr("Growing"), "", [
-		[UITheme.GREEN, tr("Seeds planted"), _int(st.get("plants_planted", 0))],
+		[UITheme.GREEN, tr("Plants grown") if AutoGrow.on() else tr("Seeds planted"), _int(st.get("plants_sprouted" if AutoGrow.on() else "plants_planted", 0))],  # [v13goals]
 		[Color(1.0, 0.85, 0.4), tr("Plants bloomed"), _int(st.get("plants_bloomed", 0))],
 		[Color(0.6, 0.8, 1.0), tr("Air filtered"), _int(st.get("air_filtered", 0))],
 	])

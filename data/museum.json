@@ -1,6 +1,6 @@
 {
   "_doc": "[eggs2] Lumi's collection and the Museum (systems/museum.gd). Every collectible in the game is an exhibit here: the Codex Collection page lists them with counts and silhouettes, and the Museum (a late build at Verdance's Cradle Returns, once the Cradle has answered) shows each on a plinth; empty plinths show a ghost of what is missing. Filling every plinth is the 100% goal (flags.museum_complete, achievement museum_complete). kind: egg (flags.egg_<ref>), egg_parts (collected parts of a collect: true egg, total = its parts), eggs (curiosities found; total = every egg except where 'new_world'), shards (memory shards found), trinkets (Collection), relic (Homeward relic id), flag (any GameState flag, for other planets' finds). shape: the Codex silhouette (gnome, cat, capsule, tv, duck, star, cube, shard, box, gem, telescope, dot). prop: an EggProps kind built on the plinth (optional). planet: where it is found (display only). hint: shown while missing (egg kinds fall back to the egg's own hint). cost is in the three currencies.",
-  "cost": {"cubes": 1500000, "parts": 600, "seeds": 400},
+  "cost": {"cubes": 1500000, "parts": 600},
   "pos": [-15.0, 4.0],
   "yaw_deg": 90.0,
   "exhibits": [

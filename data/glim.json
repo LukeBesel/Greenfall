@@ -21,7 +21,7 @@
       "tiers": [
         {"cost": {"cubes": 60}},
         {"cost": {"cubes": 260, "parts": 8}},
-        {"cost": {"cubes": 900, "parts": 30, "seeds": 1}}
+        {"cost": {"cubes": 900, "parts": 30}}
       ]
     },
     {
@@ -33,7 +33,7 @@
       "tiers": [
         {"cost": {"cubes": 90}},
         {"cost": {"cubes": 380, "parts": 12}},
-        {"cost": {"cubes": 1400, "parts": 45, "seeds": 1}}
+        {"cost": {"cubes": 1400, "parts": 45}}
       ]
     },
     {
@@ -46,7 +46,7 @@
       "tiers": [
         {"cost": {"cubes": 300, "parts": 6}},
         {"cost": {"cubes": 800, "parts": 25}},
-        {"cost": {"cubes": 2200, "parts": 70, "seeds": 2}}
+        {"cost": {"cubes": 2200, "parts": 70}}
       ]
     },
     {
@@ -57,8 +57,8 @@
       "requires": {"light": 2, "scan": 2},
       "values": [{"radius": 0.0, "max_vol": 0.0}, {"radius": 3.5, "max_vol": 0.4}, {"radius": 5.0, "max_vol": 0.6}],
       "tiers": [
-        {"cost": {"cubes": 1800, "parts": 60, "seeds": 1}},
-        {"cost": {"cubes": 4200, "parts": 140, "seeds": 3}}
+        {"cost": {"cubes": 1800, "parts": 60}},
+        {"cost": {"cubes": 4200, "parts": 140}}
       ]
     },
     {
@@ -69,7 +69,7 @@
       "requires": {"light": 1},
       "values": [{"on": 0.0}, {"on": 1.0}],
       "tiers": [
-        {"cost": {"cubes": 1500, "parts": 50, "seeds": 2}}
+        {"cost": {"cubes": 1500, "parts": 50}}
       ]
     }
   ],

@@ -240,12 +240,12 @@ func test_build_block_reason_shows_research_lock() -> void:
 	GameState.world["hub_level"] = 1
 	GameState.currencies["cubes"] = BigNum.from_float(1.0e9)
 	GameState.currencies["parts"] = BigNum.from_float(1.0e6)  # [ui2] builds cost Parts
-	var why: String = f.build_block_reason("drip")
+	var why: String = f.build_block_reason("multibot")  # [v13goals] the Drip is gone
 	assert_string_starts_with(why, "Locked")
-	assert_false(f.can_build("drip"))
-	Research.grant(Research.robot_requirement("drip"))
-	assert_eq(f.build_block_reason("drip"), "")
-	assert_true(f.can_build("drip"))
+	assert_false(f.can_build("multibot"))
+	Research.grant(Research.robot_requirement("multibot"))
+	assert_eq(f.build_block_reason("multibot"), "")
+	assert_true(f.can_build("multibot"))
 
 
 # --- #7 Control Core choice: [ui2] gone (builds and Mk tiers cost Parts, tests/test_ui2.gd) ---
@@ -254,6 +254,7 @@ func test_build_block_reason_shows_research_lock() -> void:
 # --- #19 Multibot crew caps -----------------------------------------------------------------
 
 func test_multibots_respect_crew_caps() -> void:
+	AutoGrow.force = 0  # [v13goals] the planting jobs, kept to turn back (the game: tests/test_planting_gone.gd)
 	var f := _fleet(null)
 	GameState.world["hub_level"] = 1
 	var cap: int = f.crew_cap()
@@ -264,11 +265,12 @@ func test_multibots_respect_crew_caps() -> void:
 		r.job = "clean"
 		f.add_child(r)
 	var r2 := Robot.new()
-	r2.type_id = "seedling"
-	r2.robot_name = "Seed"
+	r2.type_id = "multibot"
+	r2.robot_name = "Extra"
+	r2.job = "clean"
 	f.add_child(r2)
-	assert_eq(f.crew_size("clean"), cap)
-	for i: int in cap:
+	assert_eq(f.crew_size("clean"), cap + 1)
+	for i: int in cap + 1:
 		f.move_job("clean", "plant")
 	assert_eq(f.crew_size("plant"), cap, "plant crew stops at the cap")
 	assert_eq(f.crew_size("clean"), 1)
@@ -278,8 +280,10 @@ func test_multibots_respect_crew_caps() -> void:
 	assert_eq(f.crew_size("clean") + f.crew_size("plant") + f.crew_size("water"), cap + 1)
 	# Building: a multibot may join any crew with room, and starts there.
 	Research.grant(Research.robot_requirement("multibot"))
-	assert_eq(f.join_crew("multibot"), "clean")
-	assert_ne(f.build_block_reason("multibot").substr(0, 10), "Crew full ")
+	assert_ne(f.join_crew("multibot"), "")
+	AutoGrow.force = 1  # the game now: a Multibot cleans or hauls
+	assert_true(f.join_crew("multibot") in ["clean", "haul"])
+	AutoGrow.force = -1
 
 
 # --- #20 Saved bale info --------------------------------------------------------------------
@@ -301,21 +305,6 @@ func test_bale_roundtrip_keeps_dominant_and_volume() -> void:
 
 
 # --- #36 Idle rescan back-off ------------------------------------------------------------------
-
-func test_idle_drip_backs_off_before_rescanning() -> void:
-	var w := _make()
-	var f := _fleet(w)
-	var d := _bot(f, "drip", "D")
-	d.water = d.stat("tank")
-	d._think(0.016)
-	assert_true(d._idling, "nothing planted: idle")
-	assert_gt(d._rescan_t, 0.0, "back-off armed")
-	var t: float = d._rescan_t
-	d._think(0.016)
-	assert_eq(d._rescan_t, t, "no rescan while backing off (timer only ticks in physics)")
-	d.reset_targets()
-	assert_eq(d._rescan_t, 0.0, "zone / order changes rescan at once")
-
 
 func test_idle_hauler_backs_off() -> void:
 	var w := _make()

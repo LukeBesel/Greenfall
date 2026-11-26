@@ -176,7 +176,7 @@ func test_summary_rows_and_cap() -> void:
 	assert_has(kinds, "robots")
 	assert_has(kinds, "cubes")
 	assert_has(kinds, "plants")
-	assert_has(kinds, "seeds")
+	assert_does_not_have(kinds, "seeds", "v13goals: blooms give no seeds")
 	assert_true(bool(s["capped"]))
 	assert_almost_eq(float(s["away"]), Offline.CAP_S, 0.01)
 	assert_string_contains(WelcomeBack.fleet_text(bots), "×2")

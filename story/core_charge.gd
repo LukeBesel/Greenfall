@@ -273,7 +273,7 @@ func _beat_memory() -> void:
 			c.wren(tr("Remember the garden deck? You watered every bed twice, just to be sure."), 2)
 		if t > 5.8 and said == 1:
 			said = 2
-			c.wren(tr("Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."), 2)
+			c.wren(tr("Every patch you clean down there turns into a bed like these. You're not lost, Lumi. You're bringing it back."), 2)
 		await get_tree().process_frame
 	lumi.beam_at(null)
 	await c.end()

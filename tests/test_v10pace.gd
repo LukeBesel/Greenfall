@@ -43,7 +43,7 @@ func _ids() -> Array[String]:
 # --- Item 106: whole seeds and parts ------------------------------------------------------------------
 
 func test_seeds_and_parts_are_always_whole() -> void:
-	for id: String in ["seeds", "parts"]:
+	for id: String in ["parts"]:  # [v13goals] seeds are no currency any more
 		var total: float = 0.0
 		for k: int in 37:
 			var amt: float = [0.5, 0.3, 0.12, 1.5, 0.725][k % 5]
@@ -75,10 +75,9 @@ func test_an_old_save_with_half_a_seed_loads_whole() -> void:
 	d["currencies"] = {"seeds": BigNum.from_float(2.5).serialize(), "parts": BigNum.from_float(30.3).serialize(), "cubes": BigNum.from_float(10.5).serialize()}
 	d["flags"] = {}
 	GameState.from_dict(d)
-	assert_eq(GameState.get_currency("seeds").to_float(), 2.0)
 	assert_eq(GameState.get_currency("parts").to_float(), 30.0)
-	GameState.add_currency("seeds", BigNum.from_float(0.5))
-	assert_eq(GameState.get_currency("seeds").to_float(), 3.0, "the carried half joins the next half")
+	GameState.add_currency("parts", BigNum.from_float(0.7))
+	assert_eq(GameState.get_currency("parts").to_float(), 31.0, "the carried part joins the next one")
 	_flags = GameState.flags  # from_dict replaced the dictionaries: restore what the suite had
 	_stats = GameState.stats
 	_orbit = GameState.orbit
@@ -191,7 +190,7 @@ func test_bot_bay_screen_is_robots_only() -> void:
 
 func test_base_one_comes_before_the_first_flight() -> void:
 	var ids: Array[String] = _ids()
-	var order: Array[String] = ["bench2", "robot", "seed", "robot2", "haul", "hex10", "map", "base2", "shuttle", "hub_fly_2"]  # base 2 before the shuttle: something new while saving up (critic 12)
+	var order: Array[String] = ["bench2", "robot", "hex3", "robot2", "haul", "hex10", "base2", "shuttle", "hub_fly_2"]  # [v13goals] no seed or map step  # base 2 before the shuttle: something new while saving up (critic 12)
 	for i: int in range(1, order.size()):
 		assert_gt(ids.find(order[i]), ids.find(order[i - 1]), "%s comes after %s" % [order[i], order[i - 1]])
 		assert_gt(ids.find(order[i - 1]), -1, order[i - 1])
@@ -231,9 +230,9 @@ func test_old_saves_keep_their_place_in_the_new_order() -> void:
 	var now: Array[String] = _ids()
 	var before: Array[String] = Objectives.ORDER_V3
 	for id: String in before:
-		assert_true(id in now, "%s is still a step" % id)
+		assert_true(id in now or id in ["scoop_size", "hex2", "seed"], "%s is still a step (v13goals cut three)" % id)
 	# On a step both orders share, with nothing after it moved in front: the same step.
-	for id: String in ["dump3", "baler", "bench2", "robot", "hex3", "seed"]:
+	for id: String in ["dump3", "baler", "bench2", "robot", "hex3"]:
 		assert_eq(now[Objectives.remap_step(before.find(id), before, now)], id)
 	# The rocket stood but the first flight was not made: back to what base 1 still owes.
 	assert_eq(now[Objectives.remap_step(before.find("hub_fly_2"), before, now)], "haul")
@@ -247,7 +246,8 @@ func test_old_saves_keep_their_place_in_the_new_order() -> void:
 	for i: int in before.size():
 		var at: int = Objectives.remap_step(i, before, now)
 		for j: int in range(i, before.size()):
-			assert_lte(at, now.find(before[j]), "old step %s: %s is still ahead" % [before[i], before[j]])
+			if before[j] in now:
+				assert_lte(at, now.find(before[j]), "old step %s: %s is still ahead" % [before[i], before[j]])
 
 
 func test_haul_plans_come_before_the_first_flight() -> void:

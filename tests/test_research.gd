@@ -158,10 +158,9 @@ func test_robot_types_gated() -> void:
 	assert_false(Research.robot_unlocked("skimmer"), "[v4bots] and the water bot later still (item 44)")
 	Research.unlock_story("haul_rig")
 	assert_true(Research.robot_unlocked("haulbug"))
-	assert_false(Research.robot_unlocked("seedling"))
 	assert_false(Research.robot_unlocked("multibot"))
-	Research.grant("seedling_blueprint")
-	assert_true(Research.robot_unlocked("seedling"))
+	Research.grant("multibot_blueprint")
+	assert_true(Research.robot_unlocked("multibot"))
 
 
 func test_plant_species_gated() -> void:

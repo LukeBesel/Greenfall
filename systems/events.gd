@@ -385,6 +385,9 @@ func _clear_props() -> void:
 			m.queue_free()
 	if hud:
 		hud.set_rain(false)
+	var gd: Variant = world.get("garden") if world else null
+	if gd is Garden:
+		(gd as Garden).rain_mult = 1.0  # [v13goals]
 
 
 func _keep(n: Node) -> Node:
@@ -770,6 +773,8 @@ func _start_rain(_d: Dictionary, _force: bool) -> bool:
 	return true
 
 
+## [v13goals] How much faster clean ground greens while it rains.
+const RAIN_GROW: float = 2.0
 func _update_rain(_delta: float) -> void:
 	var rain: Node3D = active.get("rain")
 	if is_instance_valid(rain):
@@ -778,7 +783,12 @@ func _update_rain(_delta: float) -> void:
 		if is_instance_valid(pd):
 			var m: StandardMaterial3D = (pd as MeshInstance3D).material_override
 			m.emission_energy_multiplier = 0.22 + 0.14 * sin(_anim_t * 2.3 + (pd as Node3D).position.x)
-	if _tick_t > 1.0:
+	if AutoGrow.on():  # [v13goals] nothing gets thirsty: the rain makes the green come up faster
+		var ga: Garden = world.get("garden") as Garden
+		if ga:
+			ga.rain_mult = RAIN_GROW
+		active["progress"] = tr("The green comes up faster in the rain")
+	elif _tick_t > 1.0:
 		_tick_t = 0.0
 		var g: Garden = world.get("garden") as Garden
 		if g:
@@ -786,7 +796,8 @@ func _update_rain(_delta: float) -> void:
 				if g.slot_species[s] >= 0 and g.slot_water[s] < 30.0:
 					g.water(s, 30.0 - g.slot_water[s])
 					active["watered"] = int(active["watered"]) + 1
-	active["progress"] = tr("Every plant is drinking")
+	if not AutoGrow.on():
+		active["progress"] = tr("Every plant is drinking")
 	if float(active["left"]) <= 0.0:
 		# Puddles linger and dry slowly after the rain.
 		for pd: Variant in active.get("puddles", []):

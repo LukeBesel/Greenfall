@@ -82,8 +82,7 @@ static func run_dev(so: SliceOrbit) -> void:
 	await _key_strip()
 	await _checklist()
 	await _dump3()
-	await _compartment()
-	await _scoop_size()
+	await _compartment()  # [v13goals] "Buy Scoop Size" is no step of its own any more
 	await _baler()
 	await _power()
 	await _tower()
@@ -267,24 +266,6 @@ static func _compartment() -> void:
 	await _done("compartment")
 
 
-static func _scoop_size() -> void:
-	if not await _on_step("scoop_size"):
-		return
-	await _earn(Economy.upgrade_cost("multi_lock").to_float(), false)
-	await _reload("scoop_size, price in hand")
-	await _open_bench()
-	var ld: ListDetail = _ld()
-	_check(ld != null and _sel(ld) == "multi_lock", "scoop_size: the bench opens on Scoop Size")
-	if _pad:
-		await _click_tag("multi_lock")
-	else:
-		await _click(ld.get("_d_btn") as Control)  # this time the big button in the detail panel
-	_check(GameState.level_of("multi_lock") >= 1, "scoop_size: the detail panel's Install button buys it" if not _pad else "scoop_size: A on its row buys it")
-	await _close_bench()
-	await _reload("scoop_size, just bought")
-	await _done("scoop_size")
-
-
 static func _baler() -> void:
 	if not await _on_step("baler"):
 		return
@@ -461,7 +442,7 @@ static func _robot() -> void:
 	_check(os_ != null and not os_.rocket_spot.visible and not os_.rocket_unlocked(), "robot: no rocket stands on the pad yet")
 	await _reload("robot, just built")
 	await _done("robot")
-	_check(str(_ob.current().get("id", "")) == "hex2", "robot: the next step comes (%s)" % str(_ob.current().get("id", "")))
+	_check(str(_ob.current().get("id", "")) == "hex3", "robot: the next step comes (%s)" % str(_ob.current().get("id", "")))
 
 
 # --- Save, quit and Continue ------------------------------------------------------------------

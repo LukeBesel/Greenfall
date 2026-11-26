@@ -27,17 +27,17 @@ func _f(id: String) -> float:
 	return GameState.get_currency(id).to_float()
 
 
-func test_exactly_three_currencies() -> void:
-	assert_eq(Currencies.ids(), ["cubes", "parts", "seeds"] as Array[String])
+func test_exactly_three_currencies() -> void:  # [v13goals] two now: seeds went with planting
+	assert_eq(Currencies.ids(), ["cubes", "parts"] as Array[String])
 	var ids: Array = []
 	for c: Dictionary in Currencies.cfg()["currencies"]:
 		ids.append(str(c["id"]))
 		assert_ne(str(c.get("icon", "")), "", "%s has an icon" % c["id"])
-	assert_eq(ids, ["cubes", "parts", "seeds"])
+	assert_eq(ids, ["cubes", "parts"])
 	for k: String in (Currencies.cfg()["legacy"] as Dictionary):
 		assert_true(Currencies.canonical(k) in Currencies.IDS, "%s maps onto one of the three" % k)
 	GameState.new_game()
-	assert_eq(GameState.currencies.keys().size(), 3, "a new game starts with the three")
+	assert_eq(GameState.currencies.keys().size(), 2, "a new game starts with the two")
 
 
 func test_legacy_alias_adds_and_reads_at_rate() -> void:
@@ -49,7 +49,7 @@ func test_legacy_alias_adds_and_reads_at_rate() -> void:
 	GameState.add_currency("data", BigNum.from_float(3))
 	assert_almost_eq(_f("cubes"), 30.0, 0.001, "Data pays cubes")
 	GameState.add_currency("compost", BigNum.from_float(8))
-	assert_almost_eq(_f("seeds"), 2.0, 0.001, "compost becomes seeds")
+	assert_almost_eq(_f("cubes"), 30.0, 0.001, "compost (and seeds) are worth nothing now")
 	assert_false(GameState.currencies.has("bolts"), "no legacy key is ever stored")
 	assert_false(GameState.currencies.has("data"))
 
@@ -98,20 +98,18 @@ func test_migrate_v1_save_to_three_currencies() -> void:
 	var m: Dictionary = SaveManager.migrate(old)
 	assert_eq(int(m["version"]), GameState.SAVE_VERSION)
 	var cur: Dictionary = m["currencies"]
-	assert_eq(cur.keys().size(), 3, "only cubes, parts and seeds are left")
+	assert_eq(cur.keys().size(), 2, "only cubes and parts are left")
 	var cubes: float = BigNum.from_serialized(cur["cubes"]).to_float()
 	var parts: float = BigNum.from_serialized(cur["parts"]).to_float()
-	var seeds: float = BigNum.from_serialized(cur["seeds"]).to_float()
-	assert_almost_eq(cubes, 1000.0 + 45.0 * 10.0 + 2.0 * 150.0, 0.01, "Data x10, trinkets x150")
+	assert_almost_eq(cubes, 1000.0 + 45.0 * 10.0 + 2.0 * 150.0 + 7.0 * 25.0, 0.01, "Data x10, trinkets x150, and (v6) seeds x25")
 	assert_almost_eq(parts, 10.0 * 5.0 + 30.0 + 20.0 + 5.0 + 6.0 * 5.0 + 3.0 * 25.0, 0.01, "bolts x5, stock x1, tokens x5, fragments x25")
-	assert_almost_eq(seeds, 7.0, 0.01, "compost is not turned into seeds")
-	assert_almost_eq(float(m["flags"]["press_hopper"]), 12.0, 0.01, "compost goes into the press hopper")
+	assert_false((m["flags"] as Dictionary).has("press_hopper"), "compost went into the press hopper (v2), which v6 drops with the press")
 	assert_eq(int(m["flags"]["builder"]["fragments"]), 0)
 	assert_eq(str(m["flags"]["contracts"]["slots"][0]["state"]), "wait", "the retired events contract is cleared")
 	assert_eq(int(m["flags"]["contracts"]["done_total"]), 3, "finished contracts count toward the Requests track")
 	GameState.from_dict(m)
 	assert_almost_eq(_f("parts"), parts, 0.01)
-	assert_almost_eq(Composter.hopper(), 12.0, 0.01)
+	assert_almost_eq(Composter.hopper(), 0.0, 0.01)
 
 
 func test_migrate_is_idempotent_for_v2() -> void:

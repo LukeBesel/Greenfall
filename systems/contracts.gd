@@ -286,10 +286,8 @@ func _ready() -> void:
 
 ## --contracts-sample: a board mid-game (one in progress, one ready to claim, one fresh offer).
 func _sample() -> void:
-	GameState.flags["seeds_unlocked"] = true
-	GameState.flags["first_sprout"] = true
 	var st: Dictionary = state()
-	st["slots"] = [make_offer(template("metal_bales"), 1), make_offer(template("sustain"), 1), make_offer(template("plant"), 1)]
+	st["slots"] = [make_offer(template("metal_bales"), 1), make_offer(template("clean_hexes"), 1), make_offer(template("scoop"), 1)]  # [v13goals] no planting requests
 	accept_slot(st["slots"][0], live_value(st["slots"][0]))
 	GameState.stats["ev_metal_bales"] = float(GameState.stats.get("ev_metal_bales", 0.0)) + 6.0
 	st["slots"][0]["left"] = 431.0

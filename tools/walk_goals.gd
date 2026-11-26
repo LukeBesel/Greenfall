@@ -10,7 +10,7 @@ extends RefCounted
 ##        earned "Earn 1,000 cubes"            the bin pays                      -> cubes_earned_total
 ##        upgrade "Chest Size level 3"         E at the bench, click Buy on the card -> level, upgrades_bought
 ##        stat   "Pet a stray cat"             E by a cat (when one is about)    -> cats_petted
-##      (flag "Find the seed tin" and the first planting: tools/seed_walk.gd; robots, base levels,
+##      (robots, base levels,
 ##      stations and the rocket: the story walks.)
 ## --walk-goals[=S] (after S s, default 8): prints [walk-goals] lines, exit 1 on a failure.
 ## tools/check_exit.sh runs it with the tests.

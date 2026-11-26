@@ -1,13 +1,13 @@
 class_name CurrencyCluster
 extends VBoxContainer
 ## Top-left currency readout: the main currency (Cubes) with a thin cube icon, a smooth count-up
-## and its income rate in small muted text. [money] The only other currencies, Parts and Seeds
-## (core/currencies.gd), appear only when they change, as a small chip that fades in and out.
+## and its income rate in small muted text. [money] The only other currency, Parts
+## (core/currencies.gd), appears only when it changes, as a small chip that fades in and out.
 ## No panel: text with a soft shadow, hairline icons.
 
 const CHIP_LIFE: float = 3.5
 ## [money] Chips only for these (cubes are the big readout).
-const CHIP_IDS: Array[String] = ["parts", "seeds"]
+const CHIP_IDS: Array[String] = ["parts"]  # [v13goals] no seeds
 
 var _count: Label
 var _rate: Label
@@ -108,7 +108,6 @@ func _process(delta: float) -> void:
 		if _demo_t <= 0.0:
 			_demo_t = 2.5
 			GameState.add_currency("parts", BigNum.from_float(24))
-			GameState.add_currency("seeds", BigNum.from_float(2))
 		for c: Dictionary in _chip_map.values():  # software rendering runs at ~1 fps: keep them up
 			c["left"] = CHIP_LIFE + 1.0e6  # (the first frame after loading can be a minute long)
 	var cubes: BigNum = GameState.get_currency("cubes")

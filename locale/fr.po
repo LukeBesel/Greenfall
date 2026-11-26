@@ -44,7 +44,7 @@ msgstr "Nécessite %s Niv %d"
 msgid "Needs research: %s"
 msgstr "Nécessite la recherche : %s"
 
-#: autoload/Economy.gd:195 systems/research.gd:206
+#: autoload/Economy.gd:195 systems/research.gd:208
 msgid "Needs base level %d"
 msgstr "Nécessite base niveau %d"
 
@@ -460,8 +460,8 @@ msgid "Requires hub level %d or research: %s."
 msgstr "Nécessite la base niveau %d ou la recherche : %s."
 
 #: automation/telescope.gd:109 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
-#: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
+#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:150
+#: systems/camp/hub_builds.gd:160 systems/camp/hub_builds.gd:188 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "Matériaux insuffisants."
@@ -478,7 +478,7 @@ msgstr "OBSERVATOIRE"
 msgid "E   Telescope: look across the system"
 msgstr "E   Télescope : observer le système"
 
-#: core/offline.gd:146
+#: core/offline.gd:147
 msgid "While you were away, your robots earned %s cubes."
 msgstr "Pendant ton absence, tes robots ont gagné %s cubes."
 
@@ -498,11 +498,11 @@ msgstr "Plus rien ne rentre. Appuie sur [%s] pour faire un ballot."
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "Pas encore de presse à balles. Apporte ton coffre à la poubelle."
 
-#: core/pace.gd:323 systems/events.gd:513 ui/goals_panel.gd:284
+#: core/pace.gd:323 systems/events.gd:516 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s cubes"
 
-#: core/pace.gd:341 tools/walk_opening.gd:324
+#: core/pace.gd:341 tools/walk_opening.gd:305
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Plus de déchets en vrac. Appuie sur [%s] pour une balle, puis pose-la sur la balance."
 
@@ -642,7 +642,7 @@ msgstr "ENSEMBLE, FLEURISSONS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUMIÈRE  EAU  VIE"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:249 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:247 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "Base %d"
 
@@ -800,31 +800,31 @@ msgstr "Les %d bases sont debout. Construis le propulseur à la fusée."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:130
+#: planet/sites/orbit_sites.gd:128
 msgid "The rocket is in flight."
 msgstr "La fusée est en vol."
 
-#: planet/sites/orbit_sites.gd:152
+#: planet/sites/orbit_sites.gd:150
 msgid "Bases restored: %d of %d"
 msgstr "Bases restaurées : %d sur %d"
 
-#: planet/sites/orbit_sites.gd:190
+#: planet/sites/orbit_sites.gd:188
 msgid "E   Rocket: choose a destination"
 msgstr "E   Fusée : choisir une destination"
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:226
 msgid "HOME"
 msgstr "MAISON"
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:226
 msgid "NEXT STOP"
 msgstr "PROCHAIN ARRÊT"
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:228
 msgid "Upgrade the rocket first"
 msgstr "Améliore d'abord la fusée"
 
-#: planet/sites/orbit_sites.gd:248
+#: planet/sites/orbit_sites.gd:246
 msgid "%s site"
 msgstr "Site : %s"
 
@@ -872,7 +872,7 @@ msgstr ""
 "PRESSE À COMPOST  Niv %d\n"
 "trémie %d%%  →  graines"
 
-#: plants/garden.gd:373
+#: plants/garden.gd:456
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Un hexagone est entièrement restauré. Quelque chose de tout petit y vit déjà."
 
@@ -880,23 +880,23 @@ msgstr "Un hexagone est entièrement restauré. Quelque chose de tout petit y vi
 msgid "HEX  LV %d  %s"
 msgstr "HEX  NIV %d  %s"
 
-#: plants/hex_levels.gd:114
-msgid "      SUSTAIN  %d%%"
-msgstr "      DURABLE  %d%%"
-
-#: plants/hex_levels.gd:116
-msgid "      THIRSTY"
-msgstr "      ASSOIFFÉ"
-
-#: plants/hex_levels.gd:118
+#: plants/hex_levels.gd:114 plants/hex_levels.gd:122
 msgid "      next: %s"
 msgstr "      suivant : %s"
 
-#: plants/hex_levels.gd:275
+#: plants/hex_levels.gd:118
+msgid "      SUSTAIN  %d%%"
+msgstr "      DURABLE  %d%%"
+
+#: plants/hex_levels.gd:120
+msgid "      THIRSTY"
+msgstr "      ASSOIFFÉ"
+
+#: plants/hex_levels.gd:301
 msgid "HEX LV %d  %s"
 msgstr "HEX NIV %d  %s"
 
-#: plants/hex_levels.gd:279
+#: plants/hex_levels.gd:306
 msgid "Hex Lv %d  %s.   %s"
 msgstr "Hex Niv %d  %s.   %s"
 
@@ -924,71 +924,71 @@ msgstr "Lumi remonte dans la cour en cliquetant. C'était bizarre."
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi ne sait pas nager. Avec les Jets de vol de l'établi, il flotte au-dessus des lacs."
 
-#: player/patch.gd:371
+#: player/patch.gd:373
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "Prends d'abord la boîte de graines : suis le rayon jusqu'à la serre."
 
-#: player/patch.gd:372
+#: player/patch.gd:374
 msgid "No seeds yet. Keep cleaning."
 msgstr "Pas encore de graines. Continue de nettoyer."
 
-#: player/patch.gd:415 player/patch.gd:443
+#: player/patch.gd:417 player/patch.gd:445
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Plus de graines. Les plantes en fleur en donnent d'autres."
 
-#: player/patch.gd:422
+#: player/patch.gd:424
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "Plante d'abord : appuie sur  {tool_plant}  pour la graine"
 
-#: player/patch.gd:426
+#: player/patch.gd:428
 msgid "Watering can is empty. Refill at the base."
 msgstr "Arrosoir vide. Remplis-le à la base."
 
-#: player/patch.gd:445
+#: player/patch.gd:447
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "Nettoie d'abord cet hexagone. Les graines ont besoin d'un sol propre."
 
-#: player/patch.gd:447
+#: player/patch.gd:449
 msgid "Something is growing here already. Try a free spot."
 msgstr "Quelque chose pousse déjà ici. Essaie une place libre."
 
-#: player/patch.gd:448
+#: player/patch.gd:450
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "Les graines ont besoin de terre, pas de route ni de plateforme. Essaie les bacs de la serre."
 
-#: player/patch.gd:449
+#: player/patch.gd:451
 msgid "Seeds need soil, not road or the pad."
 msgstr "Les graines ont besoin de terre, pas de route ni de plateforme."
 
-#: player/patch.gd:610
+#: player/patch.gd:612
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "Ton coffre est vide. Ramasse d'abord des déchets."
 
-#: player/patch.gd:650
+#: player/patch.gd:652
 msgid "PERFECT BALE  %s"
 msgstr "BALLE PARFAITE  %s"
 
-#: player/patch.gd:656
+#: player/patch.gd:658
 msgid "OVERSTUFFED  %s"
 msgstr "TROP PLEINE  %s"
 
-#: player/patch.gd:660
+#: player/patch.gd:662
 msgid "PURE  %s"
 msgstr "PURE  %s"
 
-#: player/patch.gd:662
+#: player/patch.gd:664
 msgid "SURGE  %s"
 msgstr "BOOST  %s"
 
-#: player/patch.gd:665
+#: player/patch.gd:667
 msgid "  (streak +%d%%)"
 msgstr "  (série +%d%%)"
 
-#: player/patch.gd:716
+#: player/patch.gd:718
 msgid "Salvaged: %s"
 msgstr "Récupéré : %s"
 
-#: player/patch.gd:747
+#: player/patch.gd:749
 msgid "Recovered: %s"
 msgstr "Retrouvé : %s"
 
@@ -1108,33 +1108,33 @@ msgstr "Regard en haut"
 msgid "Ride the hover-sled"
 msgstr "Monter sur le traîneau volant"
 
-#: robots/fleet.gd:147
+#: robots/fleet.gd:149
 msgid "Locked · research %s"
 msgstr "Verrouillé · recherche %s"
 
-#: robots/fleet.gd:149
+#: robots/fleet.gd:151
 msgid "Crew full (%d/%d): upgrade the base"
 msgstr "Équipe complète (%d/%d) : améliore la base"
 
-#: robots/fleet.gd:151 robots/fleet.gd:227
+#: robots/fleet.gd:153 robots/fleet.gd:229
 msgid "Not enough parts"
 msgstr "Pas assez de pièces"
 
-#: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
-#: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: robots/fleet.gd:155 robots/fleet.gd:231 robots/water_net.gd:149
+#: systems/research.gd:212 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 #: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr "Pas assez de cubes"
 
-#: robots/fleet.gd:191
+#: robots/fleet.gd:193
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s assemblé. Il regarde autour de lui, puis se met au travail.%s"
 
-#: robots/fleet.gd:191
+#: robots/fleet.gd:193
 msgid " Seems %s."
 msgstr " Il a l'air %s."
 
-#: robots/fleet.gd:248
+#: robots/fleet.gd:250
 msgid "%s fleet upgraded to %s."
 msgstr "Flotte %s améliorée en %s."
 
@@ -1188,7 +1188,7 @@ msgstr "se remplit à : %s (%d%%)"
 msgid "base barrel"
 msgstr "tonneau de la base"
 
-#: robots/robot.gd:263 systems/research.gd:416
+#: robots/robot.gd:263 systems/research.gd:418
 msgid "tank"
 msgstr "réservoir"
 
@@ -1553,27 +1553,27 @@ msgstr "Va jusqu'à la fusée sur l'aire de lancement et appuie sur [%s] pour ch
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les remplissent plus vite."
 
-#: scenes/slice_orbit.gd:425
+#: scenes/slice_orbit.gd:426
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXAGONE PROPRE !  +%s"
 
-#: scenes/slice_orbit.gd:441
+#: scenes/slice_orbit.gd:442
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:511 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   Réparer l'établi"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
+#: scenes/slice_orbit.gd:511 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   Ouvrir l'établi"
 
-#: scenes/slice_orbit.gd:1049
+#: scenes/slice_orbit.gd:1055
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
-#: scenes/slice_orbit.gd:1149 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1155 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Établi réparé ! Appuie sur %s devant lui pour acheter des améliorations."
 
@@ -1699,8 +1699,8 @@ msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "Tu te souviens du pont jardin ? Tu arrosais chaque bac deux fois, juste pour être sûr."
 
 #: story/core_charge.gd:276
-msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
-msgstr "Chaque coin que tu fais pousser là-bas, c'est un bac de plus comme ceux-ci. Tu n'es pas perdu, Lumi. Tu replantes."
+msgid "Every patch you clean down there turns into a bed like these. You're not lost, Lumi. You're bringing it back."
+msgstr "Chaque coin que tu nettoies là-bas devient un parterre comme ceux-ci. Tu n'es pas perdu, Lumi. Tu le fais revivre."
 
 #: story/core_charge.gd:280
 msgid "Bloom Core 25%: WREN's signal is clear now."
@@ -2057,63 +2057,63 @@ msgstr "Mes moteurs sont morts. Je ne peux pas te suivre."
 msgid "Lumi— I will find you— I will find—"
 msgstr "Lumi— je te retrouverai— je te retrou—"
 
-#: story/objectives.gd:282
+#: story/objectives.gd:306
 msgid "Reward: %s"
 msgstr "Récompense : %s"
 
-#: story/objectives.gd:521
+#: story/objectives.gd:545
 msgid "Objective complete  ·  %s"
 msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:548
+#: story/objectives.gd:572
 msgid "Goal complete  ·  %s"
 msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:1040
+#: story/objectives.gd:1064
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "Presse installée ! Remplis ton coffre, puis appuie sur [%s] pour une balle."
 
-#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:937
+#: story/objectives.gd:1086 story/objectives.gd:1315 tools/walk_opening.gd:918
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Ton coffre est plein. Appuie sur [%s] pour faire un ballot."
 
-#: story/objectives.gd:1078
+#: story/objectives.gd:1102
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Ton détecteur a trouvé une pièce de robot enterrée tout près. Suis l'indication PIÈCE ENTERRÉE ; il bipe quand tu es juste au-dessus."
 
-#: story/objectives.gd:1080
+#: story/objectives.gd:1104
 msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr "Une pièce est enterrée près d'ici ! Avance vers elle jusqu'au bip, puis déterre-la."
 
-#: story/objectives.gd:1292
+#: story/objectives.gd:1316
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Ton coffre est plein. Apporte-le à la poubelle."
 
-#: story/objectives.gd:1309 story/objectives.gd:1325
+#: story/objectives.gd:1333 story/objectives.gd:1349
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Trop lourd. Améliore la Force de levage à l'établi."
 
-#: story/objectives.gd:1315
+#: story/objectives.gd:1339
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Ton coffre est plein. Rentre à la maison : la poubelle est sous la grande fumée."
 
-#: story/objectives.gd:1319
+#: story/objectives.gd:1343
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Rapporte ton ballot à la maison : la balance est sous la grande fumée."
 
-#: story/objectives.gd:1319
+#: story/objectives.gd:1343
 msgid "Carry your bale to the scale by the bin."
 msgstr "Porte ton ballot à la balance, près de la poubelle."
 
-#: story/objectives.gd:1335
+#: story/objectives.gd:1359
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "La fusée attend sur l'aire. La maison est en tête de sa liste."
 
-#: story/objectives.gd:1336
+#: story/objectives.gd:1360
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Rentre à la maison : suis le faisceau jusqu'à la grande fumée."
 
-#: story/objectives.gd:1347
+#: story/objectives.gd:1371
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Rien à ramasser ici. Va là où il y a plus de déchets."
 
@@ -2369,51 +2369,51 @@ msgstr "Caisse d'atelier"
 msgid "Curio Capsule"
 msgstr "Capsule à curiosités"
 
-#: systems/contracts.gd:319
+#: systems/contracts.gd:317
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr "Demande terminée : %s. Récupère-la à l'établi."
 
-#: systems/contracts.gd:325
+#: systems/contracts.gd:323
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr "Une demande a expiré. Aucun mal ; une nouvelle arrivera bientôt."
 
-#: systems/contracts.gd:337
+#: systems/contracts.gd:335
 msgid "The Requests board is ready to build: workbench, Upgrades tab, Request Board."
 msgstr "Le tableau des demandes peut être construit : établi, onglet Améliorations, Tableau des demandes."
 
-#: systems/contracts.gd:346
+#: systems/contracts.gd:344
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
 msgstr "Nouveau à l'établi : le tableau des demandes. Petits boulots, vraies récompenses."
 
-#: systems/contracts.gd:349
+#: systems/contracts.gd:347
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
 msgstr "Le relais capte enfin les vieux ordres de travail du Cradle. Ils sont sur le tableau des demandes, à l'établi."
 
-#: systems/contracts.gd:434
+#: systems/contracts.gd:432
 msgid "Request done: %s."
 msgstr "Demande réglée : %s."
 
-#: systems/contracts.gd:476
+#: systems/contracts.gd:474
 msgid "Requests reward: %s. Paint your fleet with it in the Locker."
 msgstr "Récompense de commandes : %s. Peins ta flotte avec dans le Casier."
 
-#: systems/contracts.gd:479
+#: systems/contracts.gd:477
 msgid "Requests reward: %s. Fit it in the Locker."
 msgstr "Récompense de commandes : %s. Installe-la dans le Casier."
 
-#: systems/contracts.gd:483 systems/contracts.gd:492
+#: systems/contracts.gd:481 systems/contracts.gd:490
 msgid "Requests reward: %s."
 msgstr "Récompense de demandes : %s."
 
-#: systems/contracts.gd:500
+#: systems/contracts.gd:498
 msgid "Unknown item"
 msgstr "Objet inconnu"
 
-#: systems/contracts.gd:513
+#: systems/contracts.gd:511
 msgid "Unlocks after %d requests"
 msgstr "Débloqué après %d demandes"
 
-#: systems/contracts.gd:514
+#: systems/contracts.gd:512
 msgid "Locked"
 msgstr "Verrouillé"
 
@@ -2441,7 +2441,7 @@ msgstr "Nécessite %d trouvailles de la Collection (%d pour l'instant)"
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr "Nécessite %d pastilles de peinture de la Graine de la semaine (%d pour l'instant)"
 
-#: systems/decor.gd:124 systems/research.gd:202 systems/robot_builder.gd:348
+#: systems/decor.gd:124 systems/research.gd:204 systems/robot_builder.gd:348
 #: systems/robot_builder.gd:404 ui/stations_panel.gd:101 ui/telescope_panel.gd:44
 msgid "Needs %s"
 msgstr "Nécessite %s"
@@ -2524,95 +2524,99 @@ msgstr "à l'ouest"
 msgid "north-west"
 msgstr "au nord-ouest"
 
-#: systems/events.gd:473
+#: systems/events.gd:476
 msgid "STREAK x%d  +%d%%"
 msgstr "SÉRIE x%d  +%d%%"
 
-#: systems/events.gd:521 systems/lumi_level.gd:218
+#: systems/events.gd:524 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d graines"
 
-#: systems/events.gd:659
+#: systems/events.gd:662
 msgid "%d pieces of junk left around the crate"
 msgstr "Encore %d morceaux de ferraille autour de la caisse"
 
-#: systems/events.gd:684
+#: systems/events.gd:687
 msgid "Supply crate opened: %s"
 msgstr "Caisse de ravitaillement ouverte : %s"
 
-#: systems/events.gd:686
+#: systems/events.gd:689
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "La balise de la caisse a expiré et un drone l'a remontée. Une autre viendra."
 
-#: systems/events.gd:735
+#: systems/events.gd:738
 msgid "%d pieces grabbed at 3x"
 msgstr "%d morceaux attrapés à x3"
 
-#: systems/events.gd:740
+#: systems/events.gd:743
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "Le rush est fini. Tu as attrapé %d morceaux à valeur triple ; ils paient quand tu presses."
 
-#: systems/events.gd:740
+#: systems/events.gd:743
 msgid "The surge faded. Next time!"
 msgstr "Le rush est fini. La prochaine fois !"
 
-#: systems/events.gd:789
+#: systems/events.gd:790
+msgid "The green comes up faster in the rain"
+msgstr "Le vert pousse plus vite sous la pluie"
+
+#: systems/events.gd:800
 msgid "Every plant is drinking"
 msgstr "Toutes les plantes boivent"
 
-#: systems/events.gd:799
+#: systems/events.gd:810
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "La pluie s'éloigne. Le sol l'a absorbée : %s"
 
-#: systems/events.gd:820
+#: systems/events.gd:831
 msgid "E   fix %s's hiccup"
 msgstr "E   soigner le hoquet de %s"
 
-#: systems/events.gd:847
+#: systems/events.gd:858
 msgid "%s is %d m away"
 msgstr "%s est à %d m"
 
-#: systems/events.gd:849
+#: systems/events.gd:860
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s s'est débarrassé de son hoquet tout seul. Il a l'air gêné."
 
-#: systems/events.gd:863
+#: systems/events.gd:874
 msgid "%s is fixed and back to work. %s"
 msgstr "%s est réparé et se remet au travail. %s"
 
-#: systems/events.gd:917
+#: systems/events.gd:928
 msgid "Wildlife Visit: %s"
 msgstr "Visite animale : %s"
 
-#: systems/events.gd:918
+#: systems/events.gd:929
 msgid "E   take a photo of the %s"
 msgstr "E   photographier : %s"
 
-#: systems/events.gd:959
+#: systems/events.gd:970
 msgid "%s, %d m away"
 msgstr "%s, à %d m"
 
-#: systems/events.gd:962
+#: systems/events.gd:973
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "L'animal (%s) s'est éloigné. Il reviendra quelque part dans le vert."
 
-#: systems/events.gd:992
+#: systems/events.gd:1003
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "Clic ! %s rejoint ta collection. %s"
 
-#: systems/events.gd:992
+#: systems/events.gd:1003
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "Clic ! Encore une jolie photo : %s. %s"
 
-#: systems/events.gd:1043
+#: systems/events.gd:1054
 msgid "Signal %d%%"
 msgstr "Signal %d%%"
 
-#: systems/events.gd:1047
+#: systems/events.gd:1058
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "C'était donc ça, le signal : une cachette avec une pièce rare. %s"
 
-#: systems/events.gd:1049
+#: systems/events.gd:1060
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "Le signal s'est éteint. La pièce est toujours là-dessous ; le détecteur la trouvera."
 
@@ -2883,119 +2887,119 @@ msgstr "Un colis de soutien est déjà en route."
 msgid "Needs %s cubes."
 msgstr "Il faut %s cubes."
 
-#: systems/research.gd:184
+#: systems/research.gd:186
 msgid "Unknown research"
 msgstr "Recherche inconnue"
 
-#: systems/research.gd:192
+#: systems/research.gd:194
 msgid "Already researched"
 msgstr "Déjà recherché"
 
-#: systems/research.gd:194
+#: systems/research.gd:196
 msgid "Researching now"
 msgstr "En cours de recherche"
 
-#: systems/research.gd:196
+#: systems/research.gd:198
 msgid "Already queued"
 msgstr "Déjà en file"
 
-#: systems/research.gd:208
+#: systems/research.gd:210
 msgid "Queue is full"
 msgstr "File pleine"
 
-#: systems/research.gd:356 ui/codex_screen.gd:893
+#: systems/research.gd:358 ui/codex_screen.gd:893
 msgid "%ds"
 msgstr "%d s"
 
-#: systems/research.gd:403 systems/research.gd:464
+#: systems/research.gd:405 systems/research.gd:466
 msgid "Research: %s"
 msgstr "Recherche : %s"
 
-#: systems/research.gd:413
+#: systems/research.gd:415
 msgid "scoop reach"
 msgstr "portée de pelle"
 
-#: systems/research.gd:413
+#: systems/research.gd:415
 msgid "scoop width"
 msgstr "largeur de pelle"
 
-#: systems/research.gd:413
+#: systems/research.gd:415
 msgid "compartment size"
 msgstr "taille du compartiment"
 
-#: systems/research.gd:414
+#: systems/research.gd:416
 msgid "bale value"
 msgstr "valeur des balles"
 
-#: systems/research.gd:414
+#: systems/research.gd:416
 msgid "magnet radius"
 msgstr "rayon de l'aimant"
 
-#: systems/research.gd:414
+#: systems/research.gd:416
 msgid "scoop speed"
 msgstr "vitesse de pelle"
 
-#: systems/research.gd:415
+#: systems/research.gd:417
 msgid "field-note cubes"
 msgstr "cubes des notes de terrain"
 
-#: systems/research.gd:415
+#: systems/research.gd:417
 msgid "research speed"
 msgstr "vitesse de recherche"
 
-#: systems/research.gd:415
+#: systems/research.gd:417
 msgid "lake clarity"
 msgstr "clarté du lac"
 
-#: systems/research.gd:416
+#: systems/research.gd:418
 msgid "speed"
 msgstr "vitesse"
 
-#: systems/research.gd:416
+#: systems/research.gd:418
 msgid "work rate"
 msgstr "cadence"
 
-#: systems/research.gd:416
+#: systems/research.gd:418
 msgid "range"
 msgstr "portée"
 
-#: systems/research.gd:417
+#: systems/research.gd:419
 msgid "bale quality"
 msgstr "qualité des balles"
 
-#: systems/research.gd:417
+#: systems/research.gd:419
 msgid "carry"
 msgstr "charge"
 
-#: systems/research.gd:418
+#: systems/research.gd:420
 msgid "plant growth"
 msgstr "croissance des plantes"
 
-#: systems/research.gd:418
+#: systems/research.gd:420
 msgid "seeds per bloom"
 msgstr "graines par fleur"
 
-#: systems/research.gd:439
+#: systems/research.gd:441
 msgid "Unlocks the %s robot"
 msgstr "Débloque le robot %s"
 
-#: systems/research.gd:441
+#: systems/research.gd:443
 msgid "Unlocks %s seeds"
 msgstr "Débloque les graines : %s"
 
-#: systems/research.gd:443
+#: systems/research.gd:445
 msgid "Unlocks: %s"
 msgstr "Débloque : %s"
 
-#: systems/research.gd:624
+#: systems/research.gd:626
 msgid "While you were away, research finished: %s."
 msgstr "Pendant ton absence, une recherche s'est terminée : %s."
 
-#: systems/research.gd:663
+#: systems/research.gd:665
 msgid "New robot plans: %s. %s"
 msgstr "Nouveaux plans de robot : %s. %s"
 
-#: systems/research.gd:668
+#: systems/research.gd:670
 msgid "Research complete: %s."
 msgstr "Recherche terminée : %s."
 
@@ -3117,27 +3121,27 @@ msgstr "E   %s (Niv %d) : passer à %s pour %s"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Poubelle améliorée : %s. Les balles se vendent ici à %d%%."
 
-#: systems/camp/hub_builds.gd:140
+#: systems/camp/hub_builds.gd:143
 msgid "Trash bin, level %d of %d"
 msgstr "Poubelle, niveau %d sur %d"
 
-#: systems/camp/hub_builds.gd:145
+#: systems/camp/hub_builds.gd:148
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WREN ne peut te joindre que par le relais. Chaque niveau la rend plus claire."
 
-#: systems/camp/hub_builds.gd:149
+#: systems/camp/hub_builds.gd:152
 msgid "Tier %d of %d"
 msgstr "Niveau %d sur %d"
 
-#: systems/camp/hub_builds.gd:158
+#: systems/camp/hub_builds.gd:161
 msgid "%d of %d built"
 msgstr "%d sur %d construits"
 
-#: systems/camp/hub_builds.gd:174
+#: systems/camp/hub_builds.gd:177
 msgid "Museum"
 msgstr "Musée"
 
-#: systems/camp/hub_builds.gd:175
+#: systems/camp/hub_builds.gd:178
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "Une salle avec un socle pour chaque trouvaille de Lumi, pour ceux qui viendront après."
 
@@ -3165,7 +3169,7 @@ msgstr "Arrivée"
 msgid "Half clean"
 msgstr "À moitié propre"
 
-#: systems/extras/album.gd:90 data/hex_levels.json:levels[5].name
+#: systems/extras/album.gd:90 data/hex_levels.json:auto_levels[5].name data/hex_levels.json:levels[5].name
 msgid "Thriving"
 msgstr "Florissant"
 
@@ -3355,26 +3359,30 @@ msgid "Plants grew"
 msgstr "Plantes poussées"
 
 #: systems/extras/welcome_back.gd:80
+msgid "Flowers bloomed"
+msgstr "Fleurs écloses"
+
+#: systems/extras/welcome_back.gd:82
 msgid "Bloomed (seeds)"
 msgstr "Écloses (graines)"
 
-#: systems/extras/welcome_back.gd:82
+#: systems/extras/welcome_back.gd:84
 msgid "Scrubbers cleaned the air"
 msgstr "Les purificateurs ont nettoyé l'air"
 
-#: systems/extras/welcome_back.gd:141
+#: systems/extras/welcome_back.gd:143
 msgid "WELCOME BACK"
 msgstr "BON RETOUR"
 
-#: systems/extras/welcome_back.gd:142
+#: systems/extras/welcome_back.gd:144
 msgid "Away %s"
 msgstr "Absent %s"
 
-#: systems/extras/welcome_back.gd:163
+#: systems/extras/welcome_back.gd:165
 msgid "Robots work up to %d h while you're away."
 msgstr "Les robots travaillent jusqu'à %d h pendant ton absence."
 
-#: systems/extras/welcome_back.gd:166
+#: systems/extras/welcome_back.gd:168
 msgid "Back to work"
 msgstr "Au travail"
 
@@ -3442,7 +3450,7 @@ msgstr "Revoir le début"
 msgid "Close"
 msgstr "Fermer"
 
-#: tools/walk_opening.gd:756 ui/main_menu.gd:368 ui/pause_menu.gd:91
+#: tools/walk_opening.gd:737 ui/main_menu.gd:368 ui/pause_menu.gd:91
 msgid "Quit"
 msgstr "Quitter"
 
@@ -3718,7 +3726,8 @@ msgstr "Portée d'arrosage"
 msgid "Refill"
 msgstr "Recharge"
 
-#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:auto_levels[1].name
+#: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "Nettoyer"
 
@@ -4066,6 +4075,10 @@ msgstr "Balles encaissées"
 #: ui/codex_screen.gd:805 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Croissance"
+
+#: ui/codex_screen.gd:806
+msgid "Plants grown"
+msgstr "Plantes poussées"
 
 #: ui/codex_screen.gd:806
 msgid "Seeds planted"
@@ -4612,6 +4625,10 @@ msgstr "Pas encore nettoyé"
 msgid "Cleaned"
 msgstr "Nettoyé"
 
+#: ui/globe_view.gd:212
+msgid "Greening"
+msgstr "Verdit"
+
 #: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "Planté"
@@ -4708,11 +4725,11 @@ msgstr "PELLE"
 msgid "PLANT"
 msgstr "PLANTER"
 
-#: ui/hotbar.gd:281
+#: ui/hotbar.gd:286
 msgid "+%d XP"
 msgstr "+%d XP"
 
-#: ui/hotbar.gd:291
+#: ui/hotbar.gd:296
 msgid "CORE %d%%"
 msgstr "CŒUR %d%%"
 
@@ -6804,30 +6821,6 @@ msgstr "Toute la famille"
 msgid "Build every kind of robot."
 msgstr "Construis chaque sorte de robot."
 
-#: data/achievements.json:achievements[seed].name
-msgid "The First Seed"
-msgstr "La première graine"
-
-#: data/achievements.json:achievements[seed].desc
-msgid "Find the first seed."
-msgstr "Trouve la première graine."
-
-#: data/achievements.json:achievements[plant_1].name data/cradle.json:heirlooms[green_thumb].name
-msgid "Green Thumb"
-msgstr "Main verte"
-
-#: data/achievements.json:achievements[plant_1].desc
-msgid "Plant a seed."
-msgstr "Plante une graine."
-
-#: data/achievements.json:achievements[plant_100].name
-msgid "Gardener"
-msgstr "Jardinier"
-
-#: data/achievements.json:achievements[plant_100].desc
-msgid "Plant 100 seeds."
-msgstr "Plante 100 graines."
-
 #: data/achievements.json:achievements[bloom_50].name
 msgid "In Bloom"
 msgstr "En fleurs"
@@ -7524,11 +7517,11 @@ msgstr "Blink"
 msgid "A little floating camera bot with a big lens for a face. Builds once; then he follows Lumi from base to base and photo mode opens."
 msgstr "Un petit robot caméra flottant avec un gros objectif en guise de visage. Construit une fois, il suit Lumi de base en base et le mode photo s'ouvre."
 
-#: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
+#: data/codex.json:categories[junk].name data/hex_levels.json:auto_levels[0].name data/hex_levels.json:levels[0].name
 msgid "Junk"
 msgstr "Ferraille"
 
-#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
+#: data/codex.json:categories[plants].name
 msgid "Plants"
 msgstr "Plantes"
 
@@ -7605,8 +7598,8 @@ msgid "Meadow Grass"
 msgstr "Herbe des prés"
 
 #: data/codex.json:plants.grass.hint
-msgid "Plant your first seeds."
-msgstr "Plante tes premières graines."
+msgid "Grows by itself on clean ground."
+msgstr "Pousse toute seule sur un sol propre."
 
 #: data/codex.json:plants.grass.desc
 msgid "The first thing to come back, always. Its roots knit the loose dust together so other plants have something to hold on to."
@@ -7617,8 +7610,8 @@ msgid "Tufted Grass"
 msgstr "Herbe en touffes"
 
 #: data/codex.json:plants.grass2.hint
-msgid "Keep planting."
-msgstr "Continue de planter."
+msgid "Keep cleaning: it comes up by itself."
+msgstr "Continue à nettoyer : ça pousse tout seul."
 
 #: data/codex.json:plants.grass2.desc
 msgid "A slightly scruffier cousin. It grows in clumps, and small beetles like to live between them."
@@ -7669,8 +7662,8 @@ msgid "Make a wish."
 msgstr "Fais un vœu."
 
 #: data/codex.json:plants.dandelion.desc
-msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself, if you let it."
-msgstr "Doré aujourd'hui, une touffe de vœux demain. Chaque graine part avec le vent vers un nouveau coin de sol propre. Il se plante tout seul, si tu le laisses faire."
+msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself."
+msgstr "Doré aujourd'hui, nuage de vœux demain. Chaque graine part avec le vent vers un nouveau coin de sol propre. Elle se plante toute seule."
 
 #: data/codex.json:plants.fern.name
 msgid "Fern"
@@ -7741,16 +7734,16 @@ msgid "Needs Evergreen Saplings research."
 msgstr "Nécessite la recherche Jeunes conifères."
 
 #: data/codex.json:plants.pine.desc
-msgid "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."
-msgstr "À hauteur de genou aujourd'hui. Dans cent ans, une forêt qui sent la résine et la pluie. Lumi le plante avec soin, pour ceux qui viendront après."
+msgid "Knee-high today. In a hundred years, a forest that smells of resin and rain. It takes root by itself, for whoever comes after."
+msgstr "À hauteur de genou aujourd'hui. Dans cent ans, une forêt qui sent la résine et la pluie. Elle prend racine toute seule, pour ceux qui viendront après."
 
 #: data/codex.json:plants.iceplant.name
 msgid "Crystalline Iceplant"
 msgstr "Ficoïde cristalline"
 
 #: data/codex.json:plants.iceplant.hint data/codex.json:plants.rooibos.hint data/codex.json:plants.ursinia.hint
-msgid "Plant in the Dust Flats."
-msgstr "À planter dans les Plaines de poussière."
+msgid "Grows by itself in the Dust Flats."
+msgstr "Pousse toute seule dans les Plaines de poussière."
 
 #: data/codex.json:plants.iceplant.desc
 msgid "A desert succulent whose leaves are covered in tiny glassy blisters that store water. It glitters at noon and needs almost nothing to drink."
@@ -7777,8 +7770,8 @@ msgid "Periwinkle"
 msgstr "Pervenche"
 
 #: data/codex.json:plants.periwinkle.hint data/codex.json:plants.frost_moss.hint
-msgid "A cold-hardy seed for the Frozen Port."
-msgstr "Une graine résistante au froid pour le Port gelé."
+msgid "Grows by itself at the Frozen Port (Cold-Hardy Plants)."
+msgstr "Pousse toute seule au Port gelé (Plantes résistantes au froid)."
 
 #: data/codex.json:plants.periwinkle.desc
 msgid "An evergreen groundcover with violet flowers. It keeps its leaves under snow and simply carries on in spring."
@@ -7797,8 +7790,8 @@ msgid "Marsh Reed"
 msgstr "Roseau des marais"
 
 #: data/codex.json:plants.reed.hint
-msgid "Plant on the drained streets of the Sunken City."
-msgstr "À planter dans les rues asséchées de la Cité engloutie."
+msgid "Grows by itself on the drained streets of the Sunken City."
+msgstr "Pousse toute seule dans les rues asséchées de la Ville engloutie."
 
 #: data/codex.json:plants.reed.desc
 msgid "Tall reeds that drink the silt dry and filter the last of the floodwater. Little birds sit on them and complain about the wind."
@@ -7809,8 +7802,8 @@ msgid "Marsh Mint"
 msgstr "Menthe aquatique"
 
 #: data/codex.json:plants.marsh_mint.hint
-msgid "Plant in the Sunken City."
-msgstr "À planter dans la Cité engloutie."
+msgid "Grows by itself in the Sunken City."
+msgstr "Pousse toute seule dans la Ville engloutie."
 
 #: data/codex.json:plants.marsh_mint.desc
 msgid "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."
@@ -7824,29 +7817,13 @@ msgstr "Un petit nettoyeur appliqué, avec un bras-pelle et beaucoup d'enthousia
 msgid "A fork cart that never complains. It carries loose bales to the scale and parks itself neatly afterwards."
 msgstr "Un chariot à fourches qui ne se plaint jamais. Il porte les balles à la balance et se gare bien proprement ensuite."
 
-#: data/codex.json:robots.seedling.hint
-msgid "Research the Seedling Blueprint."
-msgstr "Recherche le plan du Seedling."
-
-#: data/codex.json:robots.seedling.desc
-msgid "A planter bot with a seed hopper on its back. It pats every seed into the soil, twice, just to be sure."
-msgstr "Un bot planteur avec une trémie à graines sur le dos. Il tasse chaque graine dans la terre, deux fois, pour être sûr."
-
-#: data/codex.json:robots.drip.hint
-msgid "Research the Drip Blueprint."
-msgstr "Recherche le plan du Drip."
-
-#: data/codex.json:robots.drip.desc
-msgid "A watering bot with a sloshy tank. It makes a little happy gurgle when a plant drinks."
-msgstr "Un bot arroseur avec un réservoir qui clapote. Il fait un petit gargouillis joyeux quand une plante boit."
-
 #: data/codex.json:robots.multibot.hint
 msgid "Research the Multibot Blueprint."
 msgstr "Recherche le plan du Multibot."
 
 #: data/codex.json:robots.multibot.desc
-msgid "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."
-msgstr "Un assistant qui sait nettoyer, planter ou arroser. Le plus rapide en rien, mais toujours là où on a besoin de lui."
+msgid "A helper that cleans or carries bales. Not the fastest at anything, but always where it is needed."
+msgstr "Un assistant qui nettoie ou porte des ballots. Jamais le plus rapide, mais toujours là où il faut."
 
 #: data/codex.json:robots.skimmer.hint
 msgid "Build a Skimmer."
@@ -8145,8 +8122,8 @@ msgid "Research Dune Charts and fly there."
 msgstr "Recherche les Cartes des dunes et vole jusque-là."
 
 #: data/codex.json:frontiers.dust_flats.desc
-msgid "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Sustained hexes shelter their neighbours. The well is dry: Drips need Water Tanks."
-msgstr "De vieux marais salants où une ferme solaire alimentait la moitié d'un continent. Des tempêtes de sable arrivent toutes les quelques minutes et ensevelissent à nouveau le sol nettoyé ; les hexagones durables abritent leurs voisins. Le puits est à sec : les Drips ont besoin de réservoirs."
+msgid "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Lush hexes shelter their neighbours. The well is dry: green comes slowly here."
+msgstr "De vieilles plaines salées où une ferme solaire alimentait la moitié d'un continent. Des tempêtes de sable arrivent toutes les quelques minutes et ensevelissent à nouveau le sol nettoyé ; les hexagones luxuriants abritent leurs voisins. Le puits est sec : le vert vient lentement ici."
 
 #: data/codex.json:frontiers.frozen_port.name data/frontiers.json:kinds[frozen_port].name data/junk.json:biomes.frozen_port.name
 msgid "Frozen Port"
@@ -8193,8 +8170,8 @@ msgid "Wait for the wind in the Dust Flats."
 msgstr "Attends le vent dans les Plaines de poussière."
 
 #: data/codex.json:frontiers.sandstorm.desc
-msgid "The wind picks up junk from the open flats and drops it on clean ground. Planted hexes are never touched, and Sustained hexes break the wind for every hex next to them."
-msgstr "Le vent ramasse la ferraille des plaines ouvertes et la dépose sur le sol propre. Les hexagones plantés ne sont jamais touchés, et les hexagones durables coupent le vent pour chaque hexagone voisin."
+msgid "The wind picks up junk from the open flats and drops it on clean ground. Green hexes are never touched, and Lush hexes break the wind for every hex next to them."
+msgstr "Le vent ramasse les déchets des plaines et les lâche sur le sol propre. Les hexagones verts ne sont jamais touchés, et les hexagones luxuriants coupent le vent pour chaque hexagone voisin."
 
 #: data/codex.json:frontiers.thaw.name
 msgid "Thawing"
@@ -8241,8 +8218,8 @@ msgid "Find it in Cradle Returns."
 msgstr "À trouver dans Retour du Cradle."
 
 #: data/codex.json:frontiers.ark_pad.desc
-msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
-msgstr "Un anneau d'hexagones devant la base, là où le Cradle se posera. Il doit être propre et durable avant que l'arche lui fasse confiance."
+msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Lush before the ark will trust it."
+msgstr "Un anneau d'hexagones devant la base, où le Cradle se posera. Il doit être propre et luxuriant avant que l'arche lui fasse confiance."
 
 #: data/codex.json:animals.cat.name data/fauna.json:species[cat].name
 msgid "Stray Cat"
@@ -8309,8 +8286,8 @@ msgid "Roe Deer"
 msgstr "Chevreuil"
 
 #: data/codex.json:animals.deer.hint
-msgid "Where: The edges of Sustained ground."
-msgstr "Où : en bordure des sols durables."
+msgid "Where: The edges of Lush ground."
+msgstr "Où : En bordure des sols luxuriants."
 
 #: data/codex.json:animals.deer.desc
 msgid "Shy grazers that keep to the edge of the green, where they can see what's coming. Approach slowly; rush them and they bound away in long, graceful leaps."
@@ -8321,8 +8298,8 @@ msgid "Red Fox"
 msgstr "Renard roux"
 
 #: data/codex.json:animals.fox.hint
-msgid "Where: Sustained and Thriving hexes."
-msgstr "Où : hexagones durables et florissants."
+msgid "Where: Lush and Thriving hexes."
+msgstr "Où : Hexagones luxuriants et florissants."
 
 #: data/codex.json:animals.fox.desc
 msgid "A fox trots along the hedges, nose down, tail out. It watches Lumi with polite interest and keeps its distance."
@@ -8333,12 +8310,12 @@ msgid "Honeybee"
 msgstr "Abeille"
 
 #: data/codex.json:animals.bee.hint
-msgid "Where: Flowers on Sustained hexes."
-msgstr "Où : fleurs des hexagones durables."
+msgid "Where: Flowers on Lush hexes."
+msgstr "Où : Fleurs sur les hexagones luxuriants."
 
 #: data/codex.json:animals.bee.desc
-msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
-msgstr "Les abeilles sont revenues avec les fleurs. Chaque parterre qu'on garde arrosé a son petit bourdonnement à lui."
+msgid "Bees came back with the blooms. Every flower bed in full bloom gets its own little hum."
+msgstr "Les abeilles sont revenues avec les fleurs. Chaque parterre en pleine floraison a son petit bourdonnement."
 
 #: data/codex.json:animals.songbird.name data/fauna.json:species[songbird].name
 msgid "Robin"
@@ -8393,8 +8370,8 @@ msgid "Green Frog"
 msgstr "Grenouille verte"
 
 #: data/codex.json:animals.frog.hint
-msgid "Where: Lake shores once they're planted."
-msgstr "Où : rives de lac, une fois plantées."
+msgid "Where: Lake shores once they're green."
+msgstr "Où : Rives des lacs, une fois vertes."
 
 #: data/codex.json:animals.frog.desc
 msgid "Frogs sit at the water's edge and sing in the evening. Get too close and plop: into the water they go."
@@ -8417,8 +8394,8 @@ msgid "Fennec Fox"
 msgstr "Fennec"
 
 #: data/codex.json:animals.fennec.hint
-msgid "Where: Planted ground in the Dust Flats."
-msgstr "Où : sol planté dans les Plaines de poussière."
+msgid "Where: Green ground in the Dust Flats."
+msgstr "Où : Sol vert dans les Plaines de poussière."
 
 #: data/codex.json:animals.fennec.desc
 msgid "A tiny desert fox with enormous ears. It hears Lumi's hover fans long before it sees him."
@@ -8453,8 +8430,8 @@ msgid "Arctic Fox"
 msgstr "Renard polaire"
 
 #: data/codex.json:animals.arctic_fox.hint
-msgid "Where: Planted ground at the Frozen Port."
-msgstr "Où : sol planté au Port gelé."
+msgid "Where: Green ground at the Frozen Port."
+msgstr "Où : Sol vert au Port gelé."
 
 #: data/codex.json:animals.arctic_fox.desc
 msgid "White as the snow it hunts on. It shows up when the greenhouses do, curious about the warm air."
@@ -8548,6 +8525,10 @@ msgstr "Construis un télescope et regarde au travers."
 msgid "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."
 msgstr "Le premier regard sur le système depuis ton propre observatoire. Deux soleils, une poignée de mondes et, quelque part là-bas, tes équipes toujours au travail."
 
+#: data/cradle.json:heirlooms[green_thumb].name
+msgid "Green Thumb"
+msgstr "Main verte"
+
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
 msgstr "Les plantes poussent 8 % plus vite par niveau, sur chaque monde."
@@ -8589,8 +8570,8 @@ msgid "Seed Vault"
 msgstr "Réserve de graines"
 
 #: data/cradle.json:heirlooms[seed_vault].desc
-msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin)."
-msgstr "8 % de graines en plus par floraison et par niveau ; chaque nouveau monde commence avec 40 graines par niveau dans la capsule (prêtes pour quand Lumi trouvera la boîte à graines de ce monde)."
+msgid "Seeds from the vault ride in every new pod: clean ground greens 8% faster per level."
+msgstr "Des graines de la réserve voyagent dans chaque nouvelle capsule : le sol propre verdit 8% plus vite par niveau."
 
 #: data/cradle.json:heirlooms[head_start].name
 msgid "Head Start"
@@ -8735,18 +8716,6 @@ msgstr "PIÈCES"
 #: data/currencies.json:currencies[parts].desc
 msgid "Robot parts and building stock salvaged from junk, dug up with the detector, or made by the recycler. Pays for robots and their Mk tiers, base levels, stations, Locker styles, rocket stages and outpost repairs."
 msgstr "Pièces de robot et matériaux récupérés dans la ferraille, déterrés au détecteur ou fabriqués par le recycleur. Paient les robots et leurs niveaux Mk, les niveaux de base, les stations, les styles du Casier, les étages de fusée et les réparations d'avant-postes."
-
-#: data/currencies.json:currencies[seeds].name
-msgid "Seeds"
-msgstr "Graines"
-
-#: data/currencies.json:currencies[seeds].short
-msgid "SEEDS"
-msgstr "GRAINES"
-
-#: data/currencies.json:currencies[seeds].desc
-msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
-msgstr "Pour planter. La presse à compost transforme papier, carton et fleurs fanées en graines."
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
@@ -9985,12 +9954,12 @@ msgid "Rain Shower"
 msgstr "Averse"
 
 #: data/events.json:events[rain_shower].toast
-msgid "Rain! Your plants stay watered while it lasts."
-msgstr "Pluie ! Tes plantes restent arrosées tant qu'elle dure."
+msgid "Rain! The clean ground greens faster while it lasts."
+msgstr "De la pluie ! Le sol propre verdit plus vite tant qu'elle dure."
 
 #: data/events.json:events[rain_shower].hud
-msgid "Plants stay watered while it rains"
-msgstr "Les plantes restent arrosées tant qu'il pleut"
+msgid "Clean ground greens faster in the rain"
+msgstr "Le sol propre verdit plus vite sous la pluie"
 
 #: data/events.json:events[robot_hiccup].name
 msgid "Robot Hiccup"
@@ -10091,22 +10060,6 @@ msgstr "Déterre %d pièces enfouies"
 #: data/events.json:contracts.templates[streak].text
 msgid "Reach a tier %d cleaning streak"
 msgstr "Atteins une série de nettoyage de palier %d"
-
-#: data/events.json:contracts.templates[plant].text
-msgid "Plant %d sprouts"
-msgstr "Plante %d pousses"
-
-#: data/events.json:contracts.templates[bloom].text
-msgid "Grow %d plants to bloom"
-msgstr "Fais fleurir %d plantes"
-
-#: data/events.json:contracts.templates[sustain].text
-msgid "Get %d more hexes to Sustained"
-msgstr "Rends %d hexagones de plus durables"
-
-#: data/events.json:contracts.templates[sustain].text_1
-msgid "Get one more hex to Sustained"
-msgstr "Rends un hexagone de plus durable"
 
 #: data/events.json:liveries[livery_neon].name
 msgid "Neon Underglow"
@@ -10545,8 +10498,8 @@ msgid "Tiny Cactus"
 msgstr "Mini-cactus"
 
 #: data/events.json:trinkets[capsule_tiny_cactus].desc
-msgid "Needs no water. Mocks the Drips."
-msgstr "N'a pas besoin d'eau. Se moque des Drips."
+msgid "Needs no water. Quietly smug about it."
+msgstr "N'a pas besoin d'eau. Un peu fier de lui."
 
 #: data/events.json:trinkets[capsule_holo_koi].name
 msgid "Holo Koi"
@@ -10844,14 +10797,6 @@ msgstr "Gagne 3 000 cubes"
 msgid "Clean 5 hexes"
 msgstr "Nettoie 5 hexagones"
 
-#: data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr "Trouve la boîte à graines"
-
-#: data/goals.json:goals[plant_5].text
-msgid "Plant the Settler seed"
-msgstr "Plante la graine des Colons"
-
 #: data/goals.json:goals[hex_7].text
 msgid "Clean 7 hexes"
 msgstr "Nettoie 7 hexagones"
@@ -10884,10 +10829,6 @@ msgstr "Les robots pressent 20 balles"
 msgid "Clean 12 hexes"
 msgstr "Nettoie 12 hexagones"
 
-#: data/goals.json:goals[hexlv_2].text
-msgid "Get a hex to Planted"
-msgstr "Amène un hexagone à Planté"
-
 #: data/goals.json:goals[hex_15].text
 msgid "Clean 15 hexes"
 msgstr "Nettoie 15 hexagones"
@@ -10908,10 +10849,6 @@ msgstr "Monte la base au niveau 3"
 msgid "Base to level 3"
 msgstr "Base au niveau 3"
 
-#: data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "Construis un planteur Seedling"
-
 #: data/goals.json:goals[base_4].text
 msgid "Upgrade the base to level 4"
 msgstr "Monte la base au niveau 4"
@@ -10929,10 +10866,6 @@ msgstr "Vole vers la prochaine base"
 msgid "Wake base 5 of 6"
 msgstr "Réveille la base 5 sur 6"
 
-#: data/goals.json:goals[plant_25].text
-msgid "Plant 25 seeds"
-msgstr "Plante 25 graines"
-
 #: data/goals.json:goals[rocket_tier_3].text
 msgid "Upgrade the rocket to Mk III"
 msgstr "Améliore la fusée en Mk III"
@@ -10940,10 +10873,6 @@ msgstr "Améliore la fusée en Mk III"
 #: data/goals.json:goals[rocket_tier_3].short
 msgid "Rocket to Mk III"
 msgstr "Fusée en Mk III"
-
-#: data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
-msgstr "Construis un robot arroseur Drip"
 
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
@@ -11025,10 +10954,6 @@ msgstr "Construis 4 robots"
 msgid "Earn 10,000 cubes"
 msgstr "Gagne 10 000 cubes"
 
-#: data/goals.json:goals[bloom_5].text
-msgid "Grow 5 flowers to bloom"
-msgstr "Fais fleurir 5 fleurs"
-
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
 msgstr "Lis 2 éclats de mémoire"
@@ -11044,10 +10969,6 @@ msgstr "Les robots pressent 100 balles"
 #: data/goals.json:goals[recycle_5].text
 msgid "Recycle 5 bales"
 msgstr "Recycle 5 balles"
-
-#: data/goals.json:goals[hexlv_3].text
-msgid "Get a hex to Growing"
-msgstr "Amène un hexagone à En croissance"
 
 #: data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer for the lake"
@@ -11101,121 +11022,25 @@ msgstr "Décore un robot"
 msgid "Research Pollinator Survey"
 msgstr "Recherche le Recensement des pollinisateurs"
 
-#: data/goals.json:goals[bloom_25].text
-msgid "Grow 25 flowers to bloom"
-msgstr "Fais fleurir 25 fleurs"
-
-#: data/goals.json:goals[plant_60].text
-msgid "Plant 60 seeds"
-msgstr "Plante 60 graines"
-
-#: data/goals.json:goals[drip_2].text
-msgid "Run 2 Drip robots"
-msgstr "Fais tourner 2 robots Drip"
-
-#: data/goals.json:goals[hexlv_4].text
-msgid "Get a hex to Sustained"
-msgstr "Amène un hexagone à Durable"
-
-#: data/goals.json:goals[drip_4].text
-msgid "Run 4 Drip robots"
-msgstr "Fais tourner 4 robots Drip"
-
-#: data/goals.json:goals[hexlv_4x3].text
-msgid "Get 3 hexes to Sustained"
-msgstr "Amène 3 hexagones à Durable"
-
 #: data/goals.json:goals[spot_deer].text
 msgid "Spot a deer"
 msgstr "Repère un chevreuil"
-
-#: data/goals.json:goals[hexlv_5].text
-msgid "Get a hex to Thriving"
-msgstr "Amène un hexagone à Florissant"
-
-#: data/goals.json:goals[hexlv_4x5].text
-msgid "Get 5 hexes to Sustained"
-msgstr "Amène 5 hexagones à Durable"
-
-#: data/goals.json:goals[plant_100].text
-msgid "Plant 100 seeds"
-msgstr "Plante 100 graines"
 
 #: data/goals.json:goals[robots_15].text
 msgid "Build 15 robots"
 msgstr "Construis 15 robots"
 
-#: data/goals.json:goals[hexlv_5x3].text
-msgid "Get 3 hexes to Thriving"
-msgstr "Amène 3 hexagones à Florissant"
-
-#: data/goals.json:goals[hexlv_4x8].text
-msgid "Get 8 hexes to Sustained"
-msgstr "Amène 8 hexagones à Durable"
-
 #: data/goals.json:goals[earn_75k].text
 msgid "Earn 75,000 cubes"
 msgstr "Gagne 75 000 cubes"
-
-#: data/goals.json:goals[bloom_300].text
-msgid "Grow 300 flowers to bloom"
-msgstr "Fais fleurir 300 fleurs"
-
-#: data/goals.json:goals[stipend_2k].text
-msgid "Garden stipend: 2,000 cubes"
-msgstr "Allocation jardin : 2 000 cubes"
-
-#: data/goals.json:goals[hexlv_5x8].text
-msgid "Get 8 hexes to Thriving"
-msgstr "Amène 8 hexagones à Florissant"
-
-#: data/goals.json:goals[hexlv_4x10].text
-msgid "Get 10 hexes to Sustained"
-msgstr "Amène 10 hexagones à Durable"
 
 #: data/goals.json:goals[earn_100k].text
 msgid "Earn 100,000 cubes"
 msgstr "Gagne 100 000 cubes"
 
-#: data/goals.json:goals[hexlv_4x15].text
-msgid "Get 15 hexes to Sustained"
-msgstr "Amène 15 hexagones à Durable"
-
-#: data/goals.json:goals[hexlv_5x15].text
-msgid "Get 15 hexes to Thriving"
-msgstr "Amène 15 hexagones à Florissant"
-
-#: data/goals.json:goals[hexlv_4x20].text
-msgid "Get 20 hexes to Sustained"
-msgstr "Amène 20 hexagones à Durable"
-
-#: data/goals.json:goals[stipend_5k].text
-msgid "Garden stipend: 5,000 cubes"
-msgstr "Allocation jardin : 5 000 cubes"
-
-#: data/goals.json:goals[bloom_500].text
-msgid "Grow 500 flowers to bloom"
-msgstr "Fais fleurir 500 fleurs"
-
-#: data/goals.json:goals[hexlv_5x20].text
-msgid "Get 20 hexes to Thriving"
-msgstr "Amène 20 hexagones à Florissant"
-
 #: data/goals.json:goals[air_1k].text
 msgid "Filter 1,000 m3 of air"
 msgstr "Filtre 1 000 m3 d'air"
-
-#: data/goals.json:goals[stipend_7k].text
-msgid "Garden stipend: 7,500 cubes"
-msgstr "Allocation jardin : 7 500 cubes"
-
-#: data/goals.json:goals[stipend_10k].text
-msgid "Garden stipend: 10,000 cubes"
-msgstr "Allocation jardin : 10 000 cubes"
-
-#: data/goals.json:goals[hexlv_5x25].text
-msgid "Get 25 hexes to Thriving"
-msgstr "Amène 25 hexagones à Florissant"
 
 #: data/goals.json:goals[extras_retire].text
 msgid "Retire a robot to the nursery"
@@ -11249,10 +11074,6 @@ msgstr "Améliore un type de robot en Mk II"
 msgid "A robot type to Mk II"
 msgstr "Un type de robot en Mk II"
 
-#: data/goals.json:goals[stipend_20k].text
-msgid "Garden stipend: 20,000 cubes"
-msgstr "Allocation jardin : 20 000 cubes"
-
 #: data/goals.json:goals[earn_150k].text
 msgid "Earn 150,000 cubes"
 msgstr "Gagne 150 000 cubes"
@@ -11268,14 +11089,6 @@ msgstr "Nouvelle base au niveau 3"
 #: data/goals.json:goals[hex_50].text
 msgid "Clean 50 hexes"
 msgstr "Nettoie 50 hexagones"
-
-#: data/goals.json:goals[bloom_800].text
-msgid "Grow 800 flowers to bloom"
-msgstr "Fais fleurir 800 fleurs"
-
-#: data/goals.json:goals[restored_40].text
-msgid "Fully restore 40 hexes"
-msgstr "Restaure entièrement 40 hexagones"
 
 #: data/goals.json:goals[base2_4].text
 msgid "New base to level 4"
@@ -11325,14 +11138,6 @@ msgstr "Construis la fusée du Retour"
 msgid "Plant the last seed"
 msgstr "Plante la dernière graine"
 
-#: data/goals.json:goals[ark_1].text
-msgid "Plant a Seed Ark wave"
-msgstr "Plante une vague de l'Arche à graines"
-
-#: data/goals.json:goals[ark_3].text
-msgid "Plant three Seed Ark waves"
-msgstr "Plante trois vagues de l'Arche à graines"
-
 #: data/goals.json:goals[late_bridge].text
 msgid "Open the Ark Bridge"
 msgstr "Ouvre le Pont de l'Arche"
@@ -11352,10 +11157,6 @@ msgstr "Place 10 décorations"
 #: data/goals.json:goals[late_garden_kinds].text
 msgid "Place 5 kinds of decoration"
 msgstr "Place 5 types de décoration"
-
-#: data/goals.json:goals[late_ark_5].text
-msgid "Plant five Seed Ark waves"
-msgstr "Plante cinq vagues de l'Arche à graines"
 
 #: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
@@ -11381,9 +11182,41 @@ msgstr "Ensemence un deuxième nouveau monde"
 msgid "Find 30 curiosities"
 msgstr "Trouve 30 curiosités"
 
-#: data/hex_levels.json:levels[0].hint
+#: data/hex_levels.json:auto_levels[0].hint data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
 msgstr "Enlève chaque morceau de ferraille"
+
+#: data/hex_levels.json:auto_levels[1].hint
+msgid "Grass comes back by itself"
+msgstr "L'herbe revient toute seule"
+
+#: data/hex_levels.json:auto_levels[2].name
+msgid "Grassy"
+msgstr "Herbeux"
+
+#: data/hex_levels.json:auto_levels[2].hint
+msgid "Flowers come up by themselves"
+msgstr "Les fleurs poussent toutes seules"
+
+#: data/hex_levels.json:auto_levels[3].name
+msgid "Blooming"
+msgstr "En fleurs"
+
+#: data/hex_levels.json:auto_levels[3].hint
+msgid "Bushes fill in. Clean ground round it helps"
+msgstr "Les buissons s'étoffent. Un sol propre autour aide"
+
+#: data/hex_levels.json:auto_levels[4].name
+msgid "Lush"
+msgstr "Luxuriant"
+
+#: data/hex_levels.json:auto_levels[4].hint
+msgid "Animals come once it is in full bloom"
+msgstr "Les animaux arrivent quand tout est en pleine floraison"
+
+#: data/hex_levels.json:auto_levels[5].hint data/hex_levels.json:levels[5].hint
+msgid "Wildlife has moved in"
+msgstr "Les animaux s'installent"
 
 #: data/hex_levels.json:levels[1].hint
 msgid "Plant seeds here (tool 2)"
@@ -11404,10 +11237,6 @@ msgstr "Durable"
 #: data/hex_levels.json:levels[4].hint
 msgid "Bring every plant to bloom"
 msgstr "Fais fleurir chaque plante"
-
-#: data/hex_levels.json:levels[5].hint
-msgid "Wildlife has moved in"
-msgstr "Les animaux s'installent"
 
 #: data/homeward.json:planets[verdance].name data/planets.json:verdance.name data/telescope.json:planets_default[verdance].name
 msgid "Verdance"
@@ -11947,12 +11776,8 @@ msgid "I run the Cradle, our big ship. I never stopped listening for you."
 msgstr "Je pilote le Cradle, notre grand vaisseau. Je n'ai jamais cessé de t'écouter."
 
 #: data/objectives.json:wren_brief.lines
-msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
-msgstr "Le Cradle ne peut pas se poser sur un monde mort. Rendons Verdance verte à nouveau."
-
-#: data/objectives.json:wren_brief.lines
-msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
-msgstr "Les plantes font de la lumière verte. Elle remplit ton Cœur floral, et elle montre au Cradle le chemin de la maison."
+msgid "Clean the ground, and Verdance turns green by itself. That green fills your Bloom Core, and it shows the Cradle the way home."
+msgstr "Nettoie le sol, et Verdance verdit toute seule. Ce vert remplit ton Cœur de floraison, et il montre au Cradle le chemin du retour."
 
 #: data/objectives.json:brief.lines
 msgid "Lumi... it's WREN. Can you hear me? I can hardly reach you down there."
@@ -11989,18 +11814,6 @@ msgstr "Établi : Taille du coffre. Moins d'allers-retours à la poubelle."
 #: data/objectives.json:objectives[compartment].lines
 msgid "A bigger chest means fewer trips. The bench can fit one."
 msgstr "Un coffre plus grand, c'est moins d'allers-retours. L'établi peut en installer un."
-
-#: data/objectives.json:objectives[scoop_size].text
-msgid "Buy Scoop Size"
-msgstr "Achète Taille de pelle"
-
-#: data/objectives.json:objectives[scoop_size].desc
-msgid "Workbench: grab more trash at once."
-msgstr "Établi : attrape plus de déchets d'un coup."
-
-#: data/objectives.json:objectives[scoop_size].lines
-msgid "A wider scoop. More trash per grab, less walking."
-msgstr "Une pelle plus large. Plus de déchets à chaque fois, moins de marche."
 
 #: data/objectives.json:objectives[baler].text
 msgid "Save up for the Baler"
@@ -12051,8 +11864,8 @@ msgid "Clean the glowing hex"
 msgstr "Nettoie l'hexagone lumineux"
 
 #: data/objectives.json:objectives[hex].desc
-msgid "Plants only grow on clean ground. Clear the outline."
-msgstr "Les plantes ne poussent que sur un sol propre. Vide le contour."
+msgid "Clean ground turns green by itself. Clear the outline."
+msgstr "Le sol propre verdit tout seul. Dégage la zone marquée."
 
 #: data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
@@ -12082,41 +11895,13 @@ msgstr "Appuie sur {interact} à la baie à robots. Les robots nettoient pour to
 msgid "The Bot Bay hums! Walk up to it and build a helper."
 msgstr "La baie à robots ronronne ! Approche-toi et construis un assistant."
 
-#: data/objectives.json:objectives[hex2].text
-msgid "Clean 2 hexes"
-msgstr "Nettoie 2 hexagones"
-
-#: data/objectives.json:objectives[hex2].desc
-msgid "Your robot cleans on its own. Clean one more hex."
-msgstr "Ton robot nettoie tout seul. Nettoie encore un hexagone."
-
-#: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
-msgstr "Un hexagone propre. Encore un, Lumi."
-
 #: data/objectives.json:objectives[hex3].desc
-msgid "Your robot helps now. Clean ground lets the garden spread."
-msgstr "Ton robot t'aide maintenant. Sur un sol propre, le jardin s'étend."
+msgid "Your robot cleans on its own. Clean ground turns green."
+msgstr "Ton robot nettoie tout seul. Le sol propre verdit."
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Your robot cleans on its own. One more hex, Lumi."
-msgstr "Ton robot nettoie tout seul. Encore un hexagone, Lumi."
-
-#: data/objectives.json:objectives[seed].text
-msgid "Plant the first seed"
-msgstr "Plante la première graine"
-
-#: data/objectives.json:objectives[seed].desc
-msgid "Plants fill your Bloom Core."
-msgstr "Les plantes remplissent ton Cœur floral."
-
-#: data/objectives.json:objectives[seed].hint
-msgid "Keep cleaning. Seeds turn up in clean ground."
-msgstr "Continue de nettoyer. Les graines apparaissent dans un sol propre."
-
-#: data/objectives.json:objectives[seed].lines
-msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
-msgstr "Lumi. Je capte un signal. Vert, faible, à l'est de la base. Une vieille serre. Va voir."
+msgid "Look at your clean hex, Lumi. Grass, coming back all by itself. The old seeds were only sleeping."
+msgstr "Regarde ton hexagone propre, Lumi. De l'herbe, qui revient toute seule. Les vieilles graines ne faisaient que dormir."
 
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
@@ -12143,24 +11928,12 @@ msgid "A Haul Bug carries bales for you. Build one at the Bot Bay."
 msgstr "Un Haul Bug porte les ballots pour toi. Construis-en un à la baie à robots."
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "Your robots help. Clean ground is room to plant."
-msgstr "Tes robots aident. Un sol propre, c'est de la place pour planter."
+msgid "Your robots help. The more is clean, the faster it greens."
+msgstr "Tes robots aident. Plus c'est propre, plus ça verdit vite."
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
 msgstr "En route pour dix hexagones propres. Tes robots apprennent de toi, Lumi."
-
-#: data/objectives.json:objectives[map].text
-msgid "Look at the map"
-msgstr "Regarde la carte"
-
-#: data/objectives.json:objectives[map].desc
-msgid "Press {open_globe}. See how much of Verdance is clean."
-msgstr "Appuie sur {open_globe}. Vois quelle part de Verdance est propre."
-
-#: data/objectives.json:objectives[map].lines
-msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
-msgstr "Ouvre la carte, Lumi. Elle montre quelle part de Verdance est encore ensevelie."
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12179,20 +11952,20 @@ msgid "Build the shuttle"
 msgstr "Construis la navette"
 
 #: data/objectives.json:objectives[shuttle].desc
-msgid "Workbench, Build tab. Garden Row has the seeds we need."
-msgstr "Établi, onglet Construire. L'Allée des Jardins a les graines qu'il nous faut."
+msgid "Workbench, Build tab. Garden Row kept seeds for the Cradle."
+msgstr "Établi, onglet Construire. Garden Row a gardé des graines pour le Cradle."
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green."
-msgstr "Lumi, la boîte de graines est presque vide. Sans graines, Verdance ne peut pas reverdir."
+msgid "Lumi, the storm broke the Cradle's seed vault. Most of the Settlers' seeds are gone."
+msgstr "Lumi, la tempête a brisé la réserve de graines du Cradle. La plupart des graines des Colons ont disparu."
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "I found another old base, far away: Garden Row. It kept a big seed store."
-msgstr "J'ai trouvé une autre vieille base, très loin : l'Allée des Jardins. Elle gardait une grande réserve de graines."
+msgid "Far from here, an old base called Garden Row kept a seed store. Too far to walk."
+msgstr "Loin d'ici, une vieille base appelée Garden Row a gardé une réserve de graines. Trop loin pour y aller à pied."
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
-msgstr "C'est trop loin à pied. Tes robots continuent à nettoyer ici. Construis une navette sur l'aire et vas-y en volant."
+msgid "Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+msgstr "Tes robots continuent de nettoyer ici. Construis une navette sur l'aire et vole là-bas."
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake base 2 of 6"
@@ -12223,8 +11996,8 @@ msgid "First add the Research Desk: workbench, Upgrades tab."
 msgstr "Ajoute d'abord le bureau de recherche : établi, onglet Améliorations."
 
 #: data/objectives.json:objectives[research1].lines
-msgid "Your bench can study now. Research unlocks new machines and seeds."
-msgstr "Ton établi peut étudier maintenant. La recherche débloque de nouvelles machines et graines."
+msgid "Your bench can study now. Research unlocks new machines."
+msgstr "Ton établi peut étudier maintenant. La recherche débloque de nouvelles machines."
 
 #: data/objectives.json:objectives[hex20].desc
 msgid "More clean ground means more room to grow."
@@ -12351,8 +12124,8 @@ msgid "Windpump"
 msgstr "Éolienne de pompage"
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The Settlers' seed store: seeds to take to the next world."
-msgstr "La réserve de graines des Colons : des graines à emporter vers le monde suivant."
+msgid "The Settlers' seed store: seeds for the Cradle's broken vault."
+msgstr "La réserve de graines des Colons : des graines pour la réserve brisée du Cradle."
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
 msgid "Seed Stock"
@@ -12450,7 +12223,7 @@ msgstr "Dépôt de bus"
 msgid "Last Bus"
 msgstr "Dernier bus"
 
-#: data/planets.json:verdance.hubs[bus_depot].desc
+#: data/planets.json:verdance.hubs[bus_depot].desc data/planets.json:verdance.hubs[tank_hill].desc
 msgid "An old station off the route. Wake it for Parts."
 msgstr "Une vieille station à l'écart de la route. Réveille-la pour des Pièces."
 
@@ -12473,10 +12246,6 @@ msgstr "Colline du Réservoir"
 #: data/planets.json:verdance.hubs[tank_hill].landmark.name
 msgid "Hill Tank"
 msgstr "Réservoir de la colline"
-
-#: data/planets.json:verdance.hubs[tank_hill].desc
-msgid "An old station off the route. Wake it for Seeds."
-msgstr "Une vieille station à l'écart de la route. Réveille-la pour des Graines."
 
 #: data/planets.json:verdance.hubs[lake_light].name
 msgid "Lake Light"
@@ -12798,6 +12567,10 @@ msgstr "Plus tard : WREN enverra les plans du Skimmer quand la terre reverdira."
 msgid "Robotics"
 msgstr "Robotique"
 
+#: data/research.json:branches[botany].name
+msgid "Nature"
+msgstr "Nature"
+
 #: data/research.json:branches[logistics].name
 msgid "Hauling"
 msgstr "Transport"
@@ -12859,20 +12632,20 @@ msgid "Lumi rewrites the base's old assembly logic. The base can build a helper 
 msgstr "Lumi réécrit l'ancienne logique d'assemblage de la base. La base peut de nouveau construire une aide : le Scoopie."
 
 #: data/research.json:nodes[seedling_blueprint].name
-msgid "Seedling Blueprint"
-msgstr "Plan du Seedling"
+msgid "Sorting Arms"
+msgstr "Bras de tri"
 
 #: data/research.json:nodes[seedling_blueprint].desc
-msgid "Plans for a small planter bot. Build it at the workbench."
-msgstr "Les plans d'un petit bot planteur. Construis-le à l'établi."
+msgid "A second gripper on every Scoopie. It picks junk up faster."
+msgstr "Une deuxième pince sur chaque Scoopie. Il ramasse les déchets plus vite."
 
 #: data/research.json:nodes[drip_blueprint].name
-msgid "Drip Blueprint"
-msgstr "Plan du Drip"
+msgid "Haul Harness"
+msgstr "Harnais de transport"
 
 #: data/research.json:nodes[drip_blueprint].desc
-msgid "A watering bot with a sloshy tank. Plants will love it."
-msgstr "Un bot arroseur avec un réservoir qui clapote. Les plantes vont l'adorer."
+msgid "Wider forks and a strap. Every Haul Bug carries one more bale."
+msgstr "Des fourches plus larges et une sangle. Chaque Haul Bug porte un ballot de plus."
 
 #: data/research.json:nodes[bale_tuning].name
 msgid "Bale Tuning"
@@ -12887,8 +12660,8 @@ msgid "Multibot Blueprint"
 msgstr "Plan du Multibot"
 
 #: data/research.json:nodes[multibot_blueprint].desc
-msgid "A helper that can clean, plant or water. Jack of all trades."
-msgstr "Un assistant qui sait nettoyer, planter ou arroser. Un touche-à-tout."
+msgid "A helper that cleans or carries bales, wherever the crew is short. Jack of all trades."
+msgstr "Un assistant qui nettoie ou porte des ballots, là où l'équipe manque de bras. Un touche-à-tout."
 
 #: data/research.json:nodes[swarm_sync].name
 msgid "Swarm Sync"
@@ -12911,36 +12684,36 @@ msgid "Hardy Nettles"
 msgstr "Orties robustes"
 
 #: data/research.json:nodes[hardy_weeds].desc
-msgid "Nettles grow anywhere. Stingy, stubborn, and good for the soil."
-msgstr "Les orties poussent partout. Piquantes, têtues, et bonnes pour le sol."
+msgid "Nettles come up by themselves on clean ground. Stingy, stubborn, and good for the soil."
+msgstr "Les orties poussent toutes seules sur le sol propre. Piquantes, têtues, et bonnes pour la terre."
 
 #: data/research.json:nodes[wild_mint].desc
-msgid "A fresh green smell drifts over the cleared hexes."
-msgstr "Une odeur fraîche et verte flotte sur les hexagones nettoyés."
+msgid "Mint comes up on its own over the cleared hexes. A fresh green smell drifts over them."
+msgstr "La menthe pousse toute seule sur les hexagones nettoyés. Une odeur fraîche et verte flotte au-dessus."
 
 #: data/research.json:nodes[pollinator_survey].name
 msgid "Pollinator Survey"
 msgstr "Recensement des pollinisateurs"
 
 #: data/research.json:nodes[pollinator_survey].desc
-msgid "Count the visitors. The bees are back: every plant grows much faster, blooms drop more seeds, and Seedlings learn where flowers want to be."
-msgstr "Compte les visiteurs. Les abeilles sont de retour : chaque plante pousse bien plus vite, les fleurs donnent plus de graines, et les Seedlings apprennent où les fleurs veulent être."
+msgid "Count the visitors. The bees are back: clean ground greens much faster."
+msgstr "Compte les visiteurs. Les abeilles sont de retour : le sol propre verdit bien plus vite."
 
 #: data/research.json:nodes[hedgerows].name
 msgid "Hedgerows"
 msgstr "Haies"
 
 #: data/research.json:nodes[hedgerows].desc
-msgid "Dense little hedges. Birds will need somewhere to sit. Gardens grow a little faster again."
-msgstr "De petites haies denses. Les oiseaux auront besoin d'un perchoir. Les jardins poussent encore un peu plus vite."
+msgid "Little hedges grow in by themselves. Birds will need somewhere to sit. Clean ground greens a little faster again."
+msgstr "De petites haies poussent toutes seules. Les oiseaux auront besoin d'un perchoir. Le sol propre verdit encore un peu plus vite."
 
 #: data/research.json:nodes[evergreens].name
 msgid "Evergreen Saplings"
 msgstr "Jeunes conifères"
 
 #: data/research.json:nodes[evergreens].desc
-msgid "Tiny pines. In a hundred years, a forest. Blooms drop more seeds."
-msgstr "De tout petits pins. Dans cent ans, une forêt. Les fleurs donnent plus de graines."
+msgid "Tiny pines take root by themselves. In a hundred years, a forest."
+msgstr "De minuscules pins prennent racine tout seuls. Dans cent ans, une forêt."
 
 #: data/research.json:nodes[water_testing].name
 msgid "Water Testing"
@@ -12951,20 +12724,20 @@ msgid "Dip strips and a lot of squinting. The lakes are sick, not dead."
 msgstr "Des bandelettes et beaucoup de plissements d'yeux. Les lacs sont malades, pas morts."
 
 #: data/research.json:nodes[big_tanks].name
-msgid "Big Tanks"
-msgstr "Grands réservoirs"
+msgid "Skimmer Floats"
+msgstr "Flotteurs de Skimmer"
 
 #: data/research.json:nodes[big_tanks].desc
-msgid "Drip and Multibot carry more water per trip."
-msgstr "Drip et Multibot transportent plus d'eau par trajet."
+msgid "Bigger floats on every Skimmer. It nets more before it heads for the shore."
+msgstr "De plus gros flotteurs sur chaque Skimmer. Il pêche plus avant de rejoindre la rive."
 
 #: data/research.json:nodes[spray_heads].name
-msgid "Spray Heads"
-msgstr "Têtes d'arrosage"
+msgid "Lake Nets"
+msgstr "Filets de lac"
 
 #: data/research.json:nodes[spray_heads].desc
-msgid "A misting nozzle. Water bots reach further and work faster."
-msgstr "Une buse à brume. Les bots arroseurs portent plus loin et travaillent plus vite."
+msgid "A wider net. Skimmers scoop floating junk faster."
+msgstr "Un filet plus large. Les Skimmers ramassent plus vite les déchets flottants."
 
 #: data/research.json:nodes[silt_filters].name
 msgid "Silt Filters"
@@ -12975,20 +12748,20 @@ msgid "Layered sand and charcoal. Murky water turns glassy."
 msgstr "Des couches de sable et de charbon. L'eau trouble devient limpide."
 
 #: data/research.json:nodes[pump_lines].name
-msgid "Pump Lines"
-msgstr "Conduites de pompage"
+msgid "Shore Pumps"
+msgstr "Pompes de rive"
 
 #: data/research.json:nodes[pump_lines].desc
-msgid "Hoses from the lake to the hub. Water bots refill faster."
-msgstr "Des tuyaux du lac jusqu'à la base. Les bots arroseurs se remplissent plus vite."
+msgid "Pumps push the murk away from the shore. Skimmers move faster."
+msgstr "Des pompes repoussent la vase loin de la rive. Les Skimmers vont plus vite."
 
 #: data/research.json:nodes[irrigation].name
-msgid "Irrigation"
-msgstr "Irrigation"
+msgid "Clear Springs"
+msgstr "Sources claires"
 
 #: data/research.json:nodes[irrigation].desc
-msgid "Buried drip lines. The meadow drinks while you sleep."
-msgstr "Des goutte-à-goutte enterrés. La prairie boit pendant que tu dors."
+msgid "The old springs run clean again. The lakes clear, and the land round them greens faster."
+msgstr "Les vieilles sources coulent à nouveau claires. Les lacs s'éclaircissent, et les terres autour verdissent plus vite."
 
 #: data/research.json:nodes[field_notebook].name
 msgid "Field Notebook"
@@ -13075,24 +12848,24 @@ msgid "Dune Fences"
 msgstr "Clôtures de dunes"
 
 #: data/research.json:nodes[dune_fences].desc
-msgid "Brush fences and hedges that break the wind. Sustained hexes shelter two rings around them, and sandstorms carry less."
-msgstr "Des clôtures de branchages et des haies qui coupent le vent. Les hexagones durables abritent deux anneaux autour d'eux, et les tempêtes transportent moins."
+msgid "Brush fences and hedges that break the wind. Lush hexes shelter two rings around them, and sandstorms carry less."
+msgstr "Des clôtures de branchages et des haies qui coupent le vent. Les hexagones luxuriants abritent deux anneaux autour d'eux, et les tempêtes de sable emportent moins."
 
 #: data/research.json:nodes[cold_hardy_seeds].name
-msgid "Cold-Hardy Seeds"
-msgstr "Graines résistantes au froid"
+msgid "Cold-Hardy Plants"
+msgstr "Plantes résistantes au froid"
 
 #: data/research.json:nodes[cold_hardy_seeds].desc
-msgid "Seeds bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
-msgstr "Des graines issues des rares choses qui ont survécu au froid. Fougères, orties, pins, pervenche et mousse de givre peuvent pousser dehors au Port gelé."
+msgid "Plants bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
+msgstr "Des plantes issues du peu qui a survécu au froid. Fougères, orties, pins, pervenches et mousse de givre peuvent pousser dehors au Port gelé."
 
 #: data/research.json:nodes[dew_condensers].name
-msgid "Dew Condensers"
-msgstr "Condenseurs de rosée"
+msgid "Dew Catchers"
+msgstr "Capteurs de rosée"
 
 #: data/research.json:nodes[dew_condensers].desc
-msgid "Cold fins on every Water Tank pull water out of the night air. Tanks refill much faster where the ground is dry."
-msgstr "Des ailettes froides sur chaque réservoir tirent l'eau de l'air nocturne. Les réservoirs se remplissent bien plus vite là où le sol est sec."
+msgid "Cold fins pull water out of the night air. Dry ground greens faster."
+msgstr "Des ailettes froides tirent l'eau de l'air nocturne. Le sol sec verdit plus vite."
 
 #: data/research.json:nodes[pump_works].name
 msgid "Pump Works"
@@ -13286,7 +13059,7 @@ msgstr "Crochet de remorquage"
 msgid "Winch and hook."
 msgstr "Treuil et crochet."
 
-#: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
+#: data/robot_parts.json:parts[seed_drill].name
 msgid "Seed Drill"
 msgstr "Semoir"
 
@@ -13438,14 +13211,12 @@ msgstr "Scoopie"
 msgid "Small cleaner. Picks junk in its hex and leaves bales behind."
 msgstr "Petit nettoyeur. Ramasse la ferraille de son hexagone et laisse des balles derrière lui."
 
-#: data/robots.json:types[scoopie].upgrades[0].name data/robots.json:types[haulbug].upgrades[0].name data/robots.json:types[seedling].upgrades[0].name
-#: data/robots.json:types[drip].upgrades[0].name data/robots.json:types[multibot].upgrades[0].name
+#: data/robots.json:types[scoopie].upgrades[0].name data/robots.json:types[haulbug].upgrades[0].name data/robots.json:types[multibot].upgrades[0].name
 msgid "Drive Motors"
 msgstr "Moteurs de traction"
 
-#: data/robots.json:types[scoopie].upgrades[0].unit data/robots.json:types[haulbug].upgrades[0].unit data/robots.json:types[seedling].upgrades[0].unit
-#: data/robots.json:types[drip].upgrades[0].unit data/robots.json:types[skimmer].upgrades[0].unit data/robots.json:types[multibot].upgrades[0].unit
-#: data/upgrades.json:upgrades[tread_speed].unit
+#: data/robots.json:types[scoopie].upgrades[0].unit data/robots.json:types[haulbug].upgrades[0].unit data/robots.json:types[skimmer].upgrades[0].unit
+#: data/robots.json:types[multibot].upgrades[0].unit data/upgrades.json:upgrades[tread_speed].unit
 msgid " m/s"
 msgstr " m/s"
 
@@ -13453,8 +13224,7 @@ msgstr " m/s"
 msgid "Arm Servos"
 msgstr "Servos de bras"
 
-#: data/robots.json:types[scoopie].upgrades[1].unit data/robots.json:types[seedling].upgrades[1].unit data/robots.json:types[drip].upgrades[3].unit
-#: data/robots.json:types[skimmer].upgrades[1].unit data/upgrades.json:upgrades[scoop_speed].unit
+#: data/robots.json:types[scoopie].upgrades[1].unit data/robots.json:types[skimmer].upgrades[1].unit data/upgrades.json:upgrades[scoop_speed].unit
 msgid "/s"
 msgstr "/s"
 
@@ -13478,39 +13248,6 @@ msgstr "Chariot à fourches. Porte les balles à la balance."
 #: data/robots.json:types[haulbug].upgrades[1].name
 msgid "Longer Forks"
 msgstr "Fourches allongées"
-
-#: data/robots.json:types[seedling].name
-msgid "Seedling"
-msgstr "Seedling"
-
-#: data/robots.json:types[seedling].desc
-msgid "Plants seeds in clean ground. Uses your seed stock."
-msgstr "Plante des graines dans le sol propre. Utilise ton stock de graines."
-
-#: data/robots.json:types[drip].name
-msgid "Drip"
-msgstr "Drip"
-
-#: data/robots.json:types[drip].desc
-msgid "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake."
-msgstr "Arrose en arc les plantes les plus assoiffées de sa zone. Se remplit au tonneau de la base, à un réservoir ou dans un lac propre."
-
-#: data/robots.json:types[drip].upgrades[1].name
-msgid "Bigger Tank"
-msgstr "Réservoir agrandi"
-
-#: data/robots.json:types[drip].upgrades[2].name
-msgid "Wide Nozzle"
-msgstr "Buse large"
-
-#: data/robots.json:types[drip].upgrades[2].unit data/upgrades.json:upgrades[scoop_width].unit data/upgrades.json:upgrades[magnet_arm].unit
-#: data/upgrades.json:upgrades[detector_range].unit data/upgrades.json:upgrades[laser_reach].unit
-msgid " m"
-msgstr " m"
-
-#: data/robots.json:types[drip].upgrades[3].name
-msgid "Fast Pump"
-msgstr "Pompe rapide"
 
 #: data/robots.json:types[skimmer].name
 msgid "Skimmer"
@@ -13537,8 +13274,8 @@ msgid "Multibot"
 msgstr "Multibot"
 
 #: data/robots.json:types[multibot].desc
-msgid "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist."
-msgstr "Assistant polyvalent. Affecte-le au nettoyage, à la plantation ou à l'arrosage sur le tableau d'affectation. Plus lent qu'un spécialiste."
+msgid "General helper. It cleans or carries bales, wherever its crew is short. Slower than a specialist."
+msgstr "Assistant polyvalent. Il nettoie ou porte des ballots, là où son équipe manque de bras. Plus lent qu'un spécialiste."
 
 #: data/robots.json:tiers[1].name
 msgid "Mk II"
@@ -14461,8 +14198,8 @@ msgid "Other old stations are waiting to be woken up."
 msgstr "D'autres vieilles stations attendent qu'on les réveille."
 
 #: data/story_reasons.json:goal_reasons
-msgid "The seed tin is nearly empty. Garden Row kept the seed store."
-msgstr "La boîte à graines est presque vide. Garden Row gardait la réserve de graines."
+msgid "The Cradle lost most of its seeds in the storm. Garden Row kept a seed store."
+msgstr "Le Cradle a perdu la plupart de ses graines dans la tempête. Garden Row a gardé une réserve."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The rocket's skin is too thin for space. Gantry Works made hulls."
@@ -14533,8 +14270,8 @@ msgid "Big trash holds the most cubes. It takes strong arms."
 msgstr "Les gros déchets contiennent le plus de cubes. Il faut des bras solides."
 
 #: data/story_reasons.json:goal_reasons
-msgid "Plants only grow on clean ground."
-msgstr "Les plantes ne poussent que sur un sol propre."
+msgid "Clean ground turns green by itself."
+msgstr "Le sol propre verdit tout seul."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A perfect bale has no gaps, so nothing is lost."
@@ -14589,36 +14326,20 @@ msgid "More robots, more clean ground. They carry on when you fly on."
 msgstr "Plus de robots, plus de sol propre. Ils continuent quand tu repars."
 
 #: data/story_reasons.json:goal_reasons
-msgid "Nothing grows by itself here any more. You need seeds."
-msgstr "Plus rien ne pousse tout seul ici. Il te faut des graines."
-
-#: data/story_reasons.json:goal_reasons
-msgid "Plants give green light for your Bloom Core."
-msgstr "Les plantes donnent de la lumière verte à ton Cœur floral."
-
-#: data/story_reasons.json:goal_reasons
-msgid "Planted ground starts to give green light."
-msgstr "Le sol planté commence à donner de la lumière verte."
-
-#: data/story_reasons.json:goal_reasons
-msgid "Every bloom gives green light, and a seed back."
-msgstr "Chaque fleur donne de la lumière verte, et rend une graine."
+msgid "Green ground gives green light for your Bloom Core."
+msgstr "Le sol vert donne de la lumière verte à ton Cœur de floraison."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The Recycler turns bales into parts for robots."
 msgstr "Le Recycleur change les ballots en pièces pour les robots."
 
 #: data/story_reasons.json:goal_reasons
-msgid "Watered plants grow, and growing plants give more green light."
-msgstr "Les plantes arrosées poussent, et les plantes qui poussent donnent plus de lumière verte."
+msgid "The more ground round it is clean, the faster it greens."
+msgstr "Plus le sol autour est propre, plus ça verdit vite."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Trash floats on the lakes too. A Skimmer nets it."
 msgstr "Des déchets flottent aussi sur les lacs. Un Skimmer les attrape au filet."
-
-#: data/story_reasons.json:goal_reasons
-msgid "A Seedling plants for you, so green spreads faster."
-msgstr "Un Seedling plante pour toi, alors le vert s'étend plus vite."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A little music makes the base feel like home."
@@ -14629,28 +14350,20 @@ msgid "Your robots work hard. Let them look their best."
 msgstr "Tes robots travaillent dur. Fais-les beaux."
 
 #: data/story_reasons.json:goal_reasons
-msgid "Thirsty plants stop growing. A Drip waters them for you."
-msgstr "Les plantes qui ont soif arrêtent de pousser. Un Drip les arrose pour toi."
-
-#: data/story_reasons.json:goal_reasons
-msgid "One helper that can clean, plant or water."
-msgstr "Un assistant qui sait nettoyer, planter ou arroser."
+msgid "One helper that cleans or carries, wherever the crew is short."
+msgstr "Un assistant qui nettoie ou porte, là où l'équipe manque de bras."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A Mk II robot does the same job faster."
 msgstr "Un robot Mk II fait le même travail plus vite."
 
 #: data/story_reasons.json:goal_reasons
-msgid "Bees carry pollen. With bees, every plant grows faster."
-msgstr "Les abeilles transportent le pollen. Avec elles, toutes les plantes poussent plus vite."
+msgid "Bees carry pollen. With bees, clean ground greens faster."
+msgstr "Les abeilles portent le pollen. Avec elles, le sol propre verdit plus vite."
 
 #: data/story_reasons.json:goal_reasons
-msgid "A tank near the plants saves your Drips a long trip."
-msgstr "Un réservoir près des plantes évite un long trajet à tes Drips."
-
-#: data/story_reasons.json:goal_reasons
-msgid "Ground that stays watered can look after itself."
-msgstr "Un sol qui reste arrosé peut se débrouiller tout seul."
+msgid "Green ground that is left alone looks after itself."
+msgstr "Un sol vert qu'on laisse tranquille prend soin de lui-même."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Animals come back where the ground is green."
@@ -14661,16 +14374,12 @@ msgid "Thriving ground is a home for animals again."
 msgstr "Un sol florissant redevient une maison pour les animaux."
 
 #: data/story_reasons.json:goal_reasons
-msgid "Healthy gardens pay you back, all by themselves."
-msgstr "Les jardins en bonne santé te remercient tout seuls."
-
-#: data/story_reasons.json:goal_reasons
 msgid "Clean air lets the sun through to the plants."
 msgstr "Un air propre laisse passer le soleil jusqu'aux plantes."
 
 #: data/story_reasons.json:goal_reasons
-msgid "Old robots have earned a rest in the garden."
-msgstr "Les vieux robots ont bien mérité de se reposer au jardin."
+msgid "Old robots have earned a rest in the nursery garden."
+msgstr "Les vieux robots ont mérité du repos dans le jardin des anciens."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Fully restored ground stays green without you."
@@ -14695,6 +14404,10 @@ msgstr "L'établi apprend à construire quelque chose de nouveau."
 #: data/story_reasons.json:goal_reasons
 msgid "Robots keep working while you do other things."
 msgstr "Les robots continuent de travailler pendant que tu fais autre chose."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Clean ground turns green by itself, and green ground gives green light."
+msgstr "Le sol propre verdit tout seul, et le sol vert donne de la lumière verte."
 
 #: data/story_reasons.json:exit
 msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
@@ -15065,6 +14778,11 @@ msgstr "Largeur de pelle"
 msgid "Longer arms, wider sweeps."
 msgstr "Bras plus longs, coups plus larges."
 
+#: data/upgrades.json:upgrades[scoop_width].unit data/upgrades.json:upgrades[magnet_arm].unit data/upgrades.json:upgrades[detector_range].unit
+#: data/upgrades.json:upgrades[laser_reach].unit
+msgid " m"
+msgstr " m"
+
 #: data/upgrades.json:upgrades[tread_speed].name
 msgid "Tread Speed"
 msgstr "Vitesse des chenilles"
@@ -15242,8 +14960,8 @@ msgid "Workbench Mk III: Research Desk"
 msgstr "Établi Mk III : Bureau de recherche"
 
 #: data/workbench.json:tiers[2].desc
-msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
-msgstr "Ajoute un bureau de recherche. Étudie ce que tu déterres pour débloquer des machines et des graines."
+msgid "Adds a research desk. Study what you dig up to unlock new machines."
+msgstr "Ajoute un bureau de recherche. Étudie ce que tu déterres pour débloquer de nouvelles machines."
 
 #: data/workbench.json:tiers[3].name
 msgid "Workbench Mk IV: Request Board"
@@ -16090,12 +15808,12 @@ msgid "The Dust Flats. That glitter on the horizon is a solar farm, or what is l
 msgstr "Les Plaines de poussière. Ce scintillement à l'horizon, c'est une ferme solaire, ou ce qu'il en reste. Attention au vent, Lumi. Il déplace les choses."
 
 #: data/wren_lines.json:frontier_dust_flats
-msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."
-msgstr "Du sable jusqu'au bout du monde. Il y avait tout un réseau électrique ici. Le puits est à sec, donc les Drips auront besoin de réservoirs."
+msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry. Green will come slowly out here."
+msgstr "Du sable jusqu'au bout du monde. Il y avait tout un réseau électrique ici. Le puits est sec. Le vert viendra lentement par ici."
 
 #: data/wren_lines.json:frontier_dust_flats
-msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."
-msgstr "Les Plaines de poussière. Je me souviens des photos : des panneaux bleus jusqu'à l'horizon, qui bourdonnaient. On peut refaire ça. Plante d'abord des brise-vent."
+msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Clean it, and the windbreaks grow back."
+msgstr "Les Plaines de poussière. Je me souviens des photos : des panneaux bleus jusqu'à l'horizon, qui bourdonnaient. On peut le refaire. Nettoie, et les brise-vent repoussent."
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "...cold... ice on the lens..."
@@ -16110,8 +15828,8 @@ msgid "A harbour frozen in mid-shift. The cranes still have containers hanging o
 msgstr "Un port gelé en plein service. Les grues ont encore des conteneurs suspendus. Apporte des chauffages, Lumi."
 
 #: data/wren_lines.json:frontier_frozen_port
-msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."
-msgstr "Le Port gelé. Des navires arrivaient ici toutes les heures autrefois. Dégèle-le, et les plantes auront besoin d'une serre, ou de graines très têtues."
+msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn roots."
+msgstr "Le Port gelé. Autrefois, un bateau arrivait ici toutes les heures. Dégèle-le, et les plantes auront besoin d'une serre, ou de racines très têtues."
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "...water... everywhere... rooftops?"
@@ -16142,8 +15860,8 @@ msgid "Cradle Returns. If we clean and green that pad, the ark can land. I mean 
 msgstr "Retour du Cradle. Si on nettoie et qu'on verdit cette plateforme, l'arche pourra se poser. Je veux dire vraiment se poser. Ici."
 
 #: data/wren_lines.json:frontier_cradle_returns
-msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."
-msgstr "Lumi. C'est le terrain de lancement. Je l'ai regardé depuis l'orbite la nuit de notre départ. Nettoie la plateforme, plante-la, garde-la vivante. Ensuite, on les fait revenir."
+msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad and let it grow green. Then we call them home."
+msgstr "Lumi. Voici le terrain de lancement. Je l'ai regardé depuis l'orbite la nuit de notre départ. Nettoie l'aire et laisse-la verdir. Ensuite, on les rappellera."
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "...wind... coming..."
@@ -16154,8 +15872,8 @@ msgid "Sandstorm on the horizon. Anything clean and bare out there is going to g
 msgstr "Tempête de sable à l'horizon. Tout ce qui est propre et nu là-bas va être enseveli de nouveau."
 
 #: data/wren_lines.json:sandstorm_warn
-msgid "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."
-msgstr "Le vent se lève. Les hexagones plantés tiennent, et les durables abritent leurs voisins. Le reste, eh bien."
+msgid "Wind's rising. Green hexes hold, and lush ones shelter their neighbours. The rest, well."
+msgstr "Le vent se lève. Les hexagones verts tiennent, et les luxuriants abritent leurs voisins. Le reste, eh bien."
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Storm front from the flats. Get the robots home or keep sweeping, your choice. The hedges will hold."
@@ -16170,8 +15888,8 @@ msgid "Storm's past. It dropped junk on {n} hexes. The sheltered ones came throu
 msgstr "La tempête est passée. Elle a déversé de la ferraille sur {n} hexagones. Ceux qui étaient abrités sont restés propres."
 
 #: data/wren_lines.json:sandstorm_over
-msgid "There. The wind gave some of it back. Plant a windbreak and it won't next time."
-msgstr "Voilà. Le vent en a rendu une partie. Plante un brise-vent et ça n'arrivera pas la prochaine fois."
+msgid "There. The wind gave some of it back. Once it greens, it won't next time."
+msgstr "Voilà. Le vent en a rapporté une partie. Une fois que ça aura verdi, ça n'arrivera plus."
 
 #: data/wren_lines.json:sandstorm_over
 msgid "Storm over. Every Sustained hex out there is a wall now. Good walls."
@@ -16230,8 +15948,8 @@ msgid "...pad... lights..."
 msgstr "...plateforme... lumières..."
 
 #: data/wren_lines.json:cradle_pad
-msgid "The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained."
-msgstr "La plateforme d'atterrissage est propre. Maintenant, il faut qu'elle soit vivante. Plante-la et garde-la durable."
+msgid "The landing pad is clean. Now it needs to be alive: give it time to grow lush."
+msgstr "L'aire d'atterrissage est propre. Maintenant, elle doit être vivante : laisse-lui le temps de devenir luxuriante."
 
 #: data/wren_lines.json:cradle_pad
 msgid "Pad's clear. The ark won't land on bare concrete, though. It wants green under it."
@@ -16298,12 +16016,12 @@ msgid "...you're dim... find green... any green..."
 msgstr "...tu faiblis... trouve du vert... n'importe quel vert..."
 
 #: data/wren_lines.json:low_core
-msgid "Your core's low. Plant something, Lumi. Anything. Green light is green light."
-msgstr "Ton cœur est faible. Plante quelque chose, Lumi. N'importe quoi. La lumière verte, c'est la lumière verte."
+msgid "Your core's low. Clean some ground, Lumi. Anything that greens. Green light is green light."
+msgstr "Ton cœur est faible. Nettoie un peu de sol, Lumi. Tout ce qui verdit. La lumière verte, c'est la lumière verte."
 
 #: data/wren_lines.json:low_core
-msgid "Running a little dim. A few blooms will fix that."
-msgstr "Un peu faiblard. Quelques fleurs vont arranger ça."
+msgid "Running a little dim. A few clean hexes will fix that."
+msgstr "Un peu faible. Quelques hexagones propres vont arranger ça."
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "...music... out here?..."
@@ -16470,8 +16188,8 @@ msgid "New world, new sky. Same job. You're better at it than you were the first
 msgstr "Nouveau monde, nouveau ciel. Même boulot. Tu t'y prends mieux que la première fois."
 
 #: data/wren_lines.json:new_world
-msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
-msgstr "Regarde-moi ça. En ruine, poussiéreux, personne n'a rien planté depuis des siècles. Tu sais ce qu'il te reste à faire."
+msgid "Look at that. Ruined, dusty, nothing's grown here in centuries. You know what to do."
+msgstr "Regarde ça. En ruine, poussiéreux, rien n'a poussé ici depuis des siècles. Tu sais ce qu'il faut faire."
 
 #: data/wren_lines.json:garden_place
 msgid "...pretty..."
@@ -16676,6 +16394,492 @@ msgstr "Ce portique a mis à la casse la flotte minière quand l'argent a manqu�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pieds. Les comptes sont clos, {name}. Nous les avons équilibrés."
+
+#~ msgid "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Sustained hexes shelter their neighbours. The well is dry: Drips need Water Tanks."
+#~ msgstr "De vieux marais salants où une ferme solaire alimentait la moitié d'un continent. Des tempêtes de sable arrivent toutes les quelques minutes et ensevelissent à nouveau le sol nettoyé ; les hexagones durables abritent leurs voisins. Le puits est à sec : les Drips ont besoin de réservoirs."
+
+#~ msgid "Needs no water. Mocks the Drips."
+#~ msgstr "N'a pas besoin d'eau. Se moque des Drips."
+
+#~ msgid "Your robot cleans on its own. Green spreads where it is clean."
+#~ msgstr "Ton robot nettoie tout seul. Le vert s'étend là où c'est propre."
+
+#~ msgid "The Settlers' seed store: seeds to take to the next world."
+#~ msgstr "La réserve de graines des Colons : des graines à emporter vers le monde suivant."
+
+#~ msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
+#~ msgstr "Chaque coin que tu fais pousser là-bas, c'est un bac de plus comme ceux-ci. Tu n'es pas perdu, Lumi. Tu replantes."
+
+#~ msgid "The First Seed"
+#~ msgstr "La première graine"
+
+#~ msgid "Find the first seed."
+#~ msgstr "Trouve la première graine."
+
+#~ msgid "Plant a seed."
+#~ msgstr "Plante une graine."
+
+#~ msgid "Gardener"
+#~ msgstr "Jardinier"
+
+#~ msgid "Plant 100 seeds."
+#~ msgstr "Plante 100 graines."
+
+#~ msgid "Plant your first seeds."
+#~ msgstr "Plante tes premières graines."
+
+#~ msgid "Keep planting."
+#~ msgstr "Continue de planter."
+
+#~ msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself, if you let it."
+#~ msgstr "Doré aujourd'hui, une touffe de vœux demain. Chaque graine part avec le vent vers un nouveau coin de sol propre. Il se plante tout seul, si tu le laisses faire."
+
+#~ msgid "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."
+#~ msgstr "À hauteur de genou aujourd'hui. Dans cent ans, une forêt qui sent la résine et la pluie. Lumi le plante avec soin, pour ceux qui viendront après."
+
+#~ msgid "Plant in the Dust Flats."
+#~ msgstr "À planter dans les Plaines de poussière."
+
+#~ msgid "A cold-hardy seed for the Frozen Port."
+#~ msgstr "Une graine résistante au froid pour le Port gelé."
+
+#~ msgid "Plant on the drained streets of the Sunken City."
+#~ msgstr "À planter dans les rues asséchées de la Cité engloutie."
+
+#~ msgid "Plant in the Sunken City."
+#~ msgstr "À planter dans la Cité engloutie."
+
+#~ msgid "Research the Seedling Blueprint."
+#~ msgstr "Recherche le plan du Seedling."
+
+#~ msgid "A planter bot with a seed hopper on its back. It pats every seed into the soil, twice, just to be sure."
+#~ msgstr "Un bot planteur avec une trémie à graines sur le dos. Il tasse chaque graine dans la terre, deux fois, pour être sûr."
+
+#~ msgid "Research the Drip Blueprint."
+#~ msgstr "Recherche le plan du Drip."
+
+#~ msgid "A watering bot with a sloshy tank. It makes a little happy gurgle when a plant drinks."
+#~ msgstr "Un bot arroseur avec un réservoir qui clapote. Il fait un petit gargouillis joyeux quand une plante boit."
+
+#~ msgid "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."
+#~ msgstr "Un assistant qui sait nettoyer, planter ou arroser. Le plus rapide en rien, mais toujours là où on a besoin de lui."
+
+#~ msgid "The wind picks up junk from the open flats and drops it on clean ground. Planted hexes are never touched, and Sustained hexes break the wind for every hex next to them."
+#~ msgstr "Le vent ramasse la ferraille des plaines ouvertes et la dépose sur le sol propre. Les hexagones plantés ne sont jamais touchés, et les hexagones durables coupent le vent pour chaque hexagone voisin."
+
+#~ msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
+#~ msgstr "Un anneau d'hexagones devant la base, là où le Cradle se posera. Il doit être propre et durable avant que l'arche lui fasse confiance."
+
+#~ msgid "Where: The edges of Sustained ground."
+#~ msgstr "Où : en bordure des sols durables."
+
+#~ msgid "Where: Sustained and Thriving hexes."
+#~ msgstr "Où : hexagones durables et florissants."
+
+#~ msgid "Where: Flowers on Sustained hexes."
+#~ msgstr "Où : fleurs des hexagones durables."
+
+#~ msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
+#~ msgstr "Les abeilles sont revenues avec les fleurs. Chaque parterre qu'on garde arrosé a son petit bourdonnement à lui."
+
+#~ msgid "Where: Lake shores once they're planted."
+#~ msgstr "Où : rives de lac, une fois plantées."
+
+#~ msgid "Where: Planted ground in the Dust Flats."
+#~ msgstr "Où : sol planté dans les Plaines de poussière."
+
+#~ msgid "Where: Planted ground at the Frozen Port."
+#~ msgstr "Où : sol planté au Port gelé."
+
+#~ msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin)."
+#~ msgstr "8 % de graines en plus par floraison et par niveau ; chaque nouveau monde commence avec 40 graines par niveau dans la capsule (prêtes pour quand Lumi trouvera la boîte à graines de ce monde)."
+
+#~ msgid "Seeds"
+#~ msgstr "Graines"
+
+#~ msgid "SEEDS"
+#~ msgstr "GRAINES"
+
+#~ msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
+#~ msgstr "Pour planter. La presse à compost transforme papier, carton et fleurs fanées en graines."
+
+#~ msgid "Rain! Your plants stay watered while it lasts."
+#~ msgstr "Pluie ! Tes plantes restent arrosées tant qu'elle dure."
+
+#~ msgid "Plants stay watered while it rains"
+#~ msgstr "Les plantes restent arrosées tant qu'il pleut"
+
+#~ msgid "Plant %d sprouts"
+#~ msgstr "Plante %d pousses"
+
+#~ msgid "Grow %d plants to bloom"
+#~ msgstr "Fais fleurir %d plantes"
+
+#~ msgid "Get %d more hexes to Sustained"
+#~ msgstr "Rends %d hexagones de plus durables"
+
+#~ msgid "Get one more hex to Sustained"
+#~ msgstr "Rends un hexagone de plus durable"
+
+#~ msgid "Find the seed tin"
+#~ msgstr "Trouve la boîte à graines"
+
+#~ msgid "Plant the Settler seed"
+#~ msgstr "Plante la graine des Colons"
+
+#~ msgid "Get a hex to Planted"
+#~ msgstr "Amène un hexagone à Planté"
+
+#~ msgid "Build a Seedling planter"
+#~ msgstr "Construis un planteur Seedling"
+
+#~ msgid "Plant 25 seeds"
+#~ msgstr "Plante 25 graines"
+
+#~ msgid "Build a Drip watering robot"
+#~ msgstr "Construis un robot arroseur Drip"
+
+#~ msgid "Grow 5 flowers to bloom"
+#~ msgstr "Fais fleurir 5 fleurs"
+
+#~ msgid "Get a hex to Growing"
+#~ msgstr "Amène un hexagone à En croissance"
+
+#~ msgid "Grow 25 flowers to bloom"
+#~ msgstr "Fais fleurir 25 fleurs"
+
+#~ msgid "Plant 60 seeds"
+#~ msgstr "Plante 60 graines"
+
+#~ msgid "Run 2 Drip robots"
+#~ msgstr "Fais tourner 2 robots Drip"
+
+#~ msgid "Get a hex to Sustained"
+#~ msgstr "Amène un hexagone à Durable"
+
+#~ msgid "Run 4 Drip robots"
+#~ msgstr "Fais tourner 4 robots Drip"
+
+#~ msgid "Get 3 hexes to Sustained"
+#~ msgstr "Amène 3 hexagones à Durable"
+
+#~ msgid "Get a hex to Thriving"
+#~ msgstr "Amène un hexagone à Florissant"
+
+#~ msgid "Get 5 hexes to Sustained"
+#~ msgstr "Amène 5 hexagones à Durable"
+
+#~ msgid "Plant 100 seeds"
+#~ msgstr "Plante 100 graines"
+
+#~ msgid "Get 3 hexes to Thriving"
+#~ msgstr "Amène 3 hexagones à Florissant"
+
+#~ msgid "Get 8 hexes to Sustained"
+#~ msgstr "Amène 8 hexagones à Durable"
+
+#~ msgid "Grow 300 flowers to bloom"
+#~ msgstr "Fais fleurir 300 fleurs"
+
+#~ msgid "Garden stipend: 2,000 cubes"
+#~ msgstr "Allocation jardin : 2 000 cubes"
+
+#~ msgid "Get 8 hexes to Thriving"
+#~ msgstr "Amène 8 hexagones à Florissant"
+
+#~ msgid "Get 10 hexes to Sustained"
+#~ msgstr "Amène 10 hexagones à Durable"
+
+#~ msgid "Get 15 hexes to Sustained"
+#~ msgstr "Amène 15 hexagones à Durable"
+
+#~ msgid "Get 15 hexes to Thriving"
+#~ msgstr "Amène 15 hexagones à Florissant"
+
+#~ msgid "Get 20 hexes to Sustained"
+#~ msgstr "Amène 20 hexagones à Durable"
+
+#~ msgid "Garden stipend: 5,000 cubes"
+#~ msgstr "Allocation jardin : 5 000 cubes"
+
+#~ msgid "Grow 500 flowers to bloom"
+#~ msgstr "Fais fleurir 500 fleurs"
+
+#~ msgid "Get 20 hexes to Thriving"
+#~ msgstr "Amène 20 hexagones à Florissant"
+
+#~ msgid "Garden stipend: 7,500 cubes"
+#~ msgstr "Allocation jardin : 7 500 cubes"
+
+#~ msgid "Garden stipend: 10,000 cubes"
+#~ msgstr "Allocation jardin : 10 000 cubes"
+
+#~ msgid "Get 25 hexes to Thriving"
+#~ msgstr "Amène 25 hexagones à Florissant"
+
+#~ msgid "Garden stipend: 20,000 cubes"
+#~ msgstr "Allocation jardin : 20 000 cubes"
+
+#~ msgid "Grow 800 flowers to bloom"
+#~ msgstr "Fais fleurir 800 fleurs"
+
+#~ msgid "Fully restore 40 hexes"
+#~ msgstr "Restaure entièrement 40 hexagones"
+
+#~ msgid "Plant a Seed Ark wave"
+#~ msgstr "Plante une vague de l'Arche à graines"
+
+#~ msgid "Plant three Seed Ark waves"
+#~ msgstr "Plante trois vagues de l'Arche à graines"
+
+#~ msgid "Plant five Seed Ark waves"
+#~ msgstr "Plante cinq vagues de l'Arche à graines"
+
+#~ msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
+#~ msgstr "Le Cradle ne peut pas se poser sur un monde mort. Rendons Verdance verte à nouveau."
+
+#~ msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
+#~ msgstr "Les plantes font de la lumière verte. Elle remplit ton Cœur floral, et elle montre au Cradle le chemin de la maison."
+
+#~ msgid "Buy Scoop Size"
+#~ msgstr "Achète Taille de pelle"
+
+#~ msgid "Workbench: grab more trash at once."
+#~ msgstr "Établi : attrape plus de déchets d'un coup."
+
+#~ msgid "A wider scoop. More trash per grab, less walking."
+#~ msgstr "Une pelle plus large. Plus de déchets à chaque fois, moins de marche."
+
+#~ msgid "Plants only grow on clean ground. Clear the outline."
+#~ msgstr "Les plantes ne poussent que sur un sol propre. Vide le contour."
+
+#~ msgid "Clean 2 hexes"
+#~ msgstr "Nettoie 2 hexagones"
+
+#~ msgid "Your robot cleans on its own. Clean one more hex."
+#~ msgstr "Ton robot nettoie tout seul. Nettoie encore un hexagone."
+
+#~ msgid "One hex clean. Now one more, Lumi."
+#~ msgstr "Un hexagone propre. Encore un, Lumi."
+
+#~ msgid "Your robot helps now. Clean ground lets the garden spread."
+#~ msgstr "Ton robot t'aide maintenant. Sur un sol propre, le jardin s'étend."
+
+#~ msgid "Your robot cleans on its own. One more hex, Lumi."
+#~ msgstr "Ton robot nettoie tout seul. Encore un hexagone, Lumi."
+
+#~ msgid "Plant the first seed"
+#~ msgstr "Plante la première graine"
+
+#~ msgid "Plants fill your Bloom Core."
+#~ msgstr "Les plantes remplissent ton Cœur floral."
+
+#~ msgid "Keep cleaning. Seeds turn up in clean ground."
+#~ msgstr "Continue de nettoyer. Les graines apparaissent dans un sol propre."
+
+#~ msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
+#~ msgstr "Lumi. Je capte un signal. Vert, faible, à l'est de la base. Une vieille serre. Va voir."
+
+#~ msgid "Your robots help. Clean ground is room to plant."
+#~ msgstr "Tes robots aident. Un sol propre, c'est de la place pour planter."
+
+#~ msgid "Look at the map"
+#~ msgstr "Regarde la carte"
+
+#~ msgid "Press {open_globe}. See how much of Verdance is clean."
+#~ msgstr "Appuie sur {open_globe}. Vois quelle part de Verdance est propre."
+
+#~ msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
+#~ msgstr "Ouvre la carte, Lumi. Elle montre quelle part de Verdance est encore ensevelie."
+
+#~ msgid "Workbench, Build tab. Garden Row has the seeds we need."
+#~ msgstr "Établi, onglet Construire. L'Allée des Jardins a les graines qu'il nous faut."
+
+#~ msgid "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green."
+#~ msgstr "Lumi, la boîte de graines est presque vide. Sans graines, Verdance ne peut pas reverdir."
+
+#~ msgid "I found another old base, far away: Garden Row. It kept a big seed store."
+#~ msgstr "J'ai trouvé une autre vieille base, très loin : l'Allée des Jardins. Elle gardait une grande réserve de graines."
+
+#~ msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+#~ msgstr "C'est trop loin à pied. Tes robots continuent à nettoyer ici. Construis une navette sur l'aire et vas-y en volant."
+
+#~ msgid "Your bench can study now. Research unlocks new machines and seeds."
+#~ msgstr "Ton établi peut étudier maintenant. La recherche débloque de nouvelles machines et graines."
+
+#~ msgid "An old station off the route. Wake it for Seeds."
+#~ msgstr "Une vieille station à l'écart de la route. Réveille-la pour des Graines."
+
+#~ msgid "Seedling Blueprint"
+#~ msgstr "Plan du Seedling"
+
+#~ msgid "Plans for a small planter bot. Build it at the workbench."
+#~ msgstr "Les plans d'un petit bot planteur. Construis-le à l'établi."
+
+#~ msgid "Drip Blueprint"
+#~ msgstr "Plan du Drip"
+
+#~ msgid "A watering bot with a sloshy tank. Plants will love it."
+#~ msgstr "Un bot arroseur avec un réservoir qui clapote. Les plantes vont l'adorer."
+
+#~ msgid "A helper that can clean, plant or water. Jack of all trades."
+#~ msgstr "Un assistant qui sait nettoyer, planter ou arroser. Un touche-à-tout."
+
+#~ msgid "Nettles grow anywhere. Stingy, stubborn, and good for the soil."
+#~ msgstr "Les orties poussent partout. Piquantes, têtues, et bonnes pour le sol."
+
+#~ msgid "A fresh green smell drifts over the cleared hexes."
+#~ msgstr "Une odeur fraîche et verte flotte sur les hexagones nettoyés."
+
+#~ msgid "Count the visitors. The bees are back: every plant grows much faster, blooms drop more seeds, and Seedlings learn where flowers want to be."
+#~ msgstr "Compte les visiteurs. Les abeilles sont de retour : chaque plante pousse bien plus vite, les fleurs donnent plus de graines, et les Seedlings apprennent où les fleurs veulent être."
+
+#~ msgid "Dense little hedges. Birds will need somewhere to sit. Gardens grow a little faster again."
+#~ msgstr "De petites haies denses. Les oiseaux auront besoin d'un perchoir. Les jardins poussent encore un peu plus vite."
+
+#~ msgid "Tiny pines. In a hundred years, a forest. Blooms drop more seeds."
+#~ msgstr "De tout petits pins. Dans cent ans, une forêt. Les fleurs donnent plus de graines."
+
+#~ msgid "Big Tanks"
+#~ msgstr "Grands réservoirs"
+
+#~ msgid "Drip and Multibot carry more water per trip."
+#~ msgstr "Drip et Multibot transportent plus d'eau par trajet."
+
+#~ msgid "Spray Heads"
+#~ msgstr "Têtes d'arrosage"
+
+#~ msgid "A misting nozzle. Water bots reach further and work faster."
+#~ msgstr "Une buse à brume. Les bots arroseurs portent plus loin et travaillent plus vite."
+
+#~ msgid "Pump Lines"
+#~ msgstr "Conduites de pompage"
+
+#~ msgid "Hoses from the lake to the hub. Water bots refill faster."
+#~ msgstr "Des tuyaux du lac jusqu'à la base. Les bots arroseurs se remplissent plus vite."
+
+#~ msgid "Irrigation"
+#~ msgstr "Irrigation"
+
+#~ msgid "Buried drip lines. The meadow drinks while you sleep."
+#~ msgstr "Des goutte-à-goutte enterrés. La prairie boit pendant que tu dors."
+
+#~ msgid "Brush fences and hedges that break the wind. Sustained hexes shelter two rings around them, and sandstorms carry less."
+#~ msgstr "Des clôtures de branchages et des haies qui coupent le vent. Les hexagones durables abritent deux anneaux autour d'eux, et les tempêtes transportent moins."
+
+#~ msgid "Cold-Hardy Seeds"
+#~ msgstr "Graines résistantes au froid"
+
+#~ msgid "Seeds bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
+#~ msgstr "Des graines issues des rares choses qui ont survécu au froid. Fougères, orties, pins, pervenche et mousse de givre peuvent pousser dehors au Port gelé."
+
+#~ msgid "Dew Condensers"
+#~ msgstr "Condenseurs de rosée"
+
+#~ msgid "Cold fins on every Water Tank pull water out of the night air. Tanks refill much faster where the ground is dry."
+#~ msgstr "Des ailettes froides sur chaque réservoir tirent l'eau de l'air nocturne. Les réservoirs se remplissent bien plus vite là où le sol est sec."
+
+#~ msgid "Seedling"
+#~ msgstr "Seedling"
+
+#~ msgid "Plants seeds in clean ground. Uses your seed stock."
+#~ msgstr "Plante des graines dans le sol propre. Utilise ton stock de graines."
+
+#~ msgid "Drip"
+#~ msgstr "Drip"
+
+#~ msgid "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake."
+#~ msgstr "Arrose en arc les plantes les plus assoiffées de sa zone. Se remplit au tonneau de la base, à un réservoir ou dans un lac propre."
+
+#~ msgid "Bigger Tank"
+#~ msgstr "Réservoir agrandi"
+
+#~ msgid "Wide Nozzle"
+#~ msgstr "Buse large"
+
+#~ msgid "Fast Pump"
+#~ msgstr "Pompe rapide"
+
+#~ msgid "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist."
+#~ msgstr "Assistant polyvalent. Affecte-le au nettoyage, à la plantation ou à l'arrosage sur le tableau d'affectation. Plus lent qu'un spécialiste."
+
+#~ msgid "The seed tin is nearly empty. Garden Row kept the seed store."
+#~ msgstr "La boîte à graines est presque vide. Garden Row gardait la réserve de graines."
+
+#~ msgid "Plants only grow on clean ground."
+#~ msgstr "Les plantes ne poussent que sur un sol propre."
+
+#~ msgid "Nothing grows by itself here any more. You need seeds."
+#~ msgstr "Plus rien ne pousse tout seul ici. Il te faut des graines."
+
+#~ msgid "Plants give green light for your Bloom Core."
+#~ msgstr "Les plantes donnent de la lumière verte à ton Cœur floral."
+
+#~ msgid "Planted ground starts to give green light."
+#~ msgstr "Le sol planté commence à donner de la lumière verte."
+
+#~ msgid "Every bloom gives green light, and a seed back."
+#~ msgstr "Chaque fleur donne de la lumière verte, et rend une graine."
+
+#~ msgid "Watered plants grow, and growing plants give more green light."
+#~ msgstr "Les plantes arrosées poussent, et les plantes qui poussent donnent plus de lumière verte."
+
+#~ msgid "A Seedling plants for you, so green spreads faster."
+#~ msgstr "Un Seedling plante pour toi, alors le vert s'étend plus vite."
+
+#~ msgid "Thirsty plants stop growing. A Drip waters them for you."
+#~ msgstr "Les plantes qui ont soif arrêtent de pousser. Un Drip les arrose pour toi."
+
+#~ msgid "One helper that can clean, plant or water."
+#~ msgstr "Un assistant qui sait nettoyer, planter ou arroser."
+
+#~ msgid "Bees carry pollen. With bees, every plant grows faster."
+#~ msgstr "Les abeilles transportent le pollen. Avec elles, toutes les plantes poussent plus vite."
+
+#~ msgid "A tank near the plants saves your Drips a long trip."
+#~ msgstr "Un réservoir près des plantes évite un long trajet à tes Drips."
+
+#~ msgid "Ground that stays watered can look after itself."
+#~ msgstr "Un sol qui reste arrosé peut se débrouiller tout seul."
+
+#~ msgid "Healthy gardens pay you back, all by themselves."
+#~ msgstr "Les jardins en bonne santé te remercient tout seuls."
+
+#~ msgid "Old robots have earned a rest in the garden."
+#~ msgstr "Les vieux robots ont bien mérité de se reposer au jardin."
+
+#~ msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
+#~ msgstr "Ajoute un bureau de recherche. Étudie ce que tu déterres pour débloquer des machines et des graines."
+
+#~ msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."
+#~ msgstr "Du sable jusqu'au bout du monde. Il y avait tout un réseau électrique ici. Le puits est à sec, donc les Drips auront besoin de réservoirs."
+
+#~ msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."
+#~ msgstr "Les Plaines de poussière. Je me souviens des photos : des panneaux bleus jusqu'à l'horizon, qui bourdonnaient. On peut refaire ça. Plante d'abord des brise-vent."
+
+#~ msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."
+#~ msgstr "Le Port gelé. Des navires arrivaient ici toutes les heures autrefois. Dégèle-le, et les plantes auront besoin d'une serre, ou de graines très têtues."
+
+#~ msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."
+#~ msgstr "Lumi. C'est le terrain de lancement. Je l'ai regardé depuis l'orbite la nuit de notre départ. Nettoie la plateforme, plante-la, garde-la vivante. Ensuite, on les fait revenir."
+
+#~ msgid "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."
+#~ msgstr "Le vent se lève. Les hexagones plantés tiennent, et les durables abritent leurs voisins. Le reste, eh bien."
+
+#~ msgid "There. The wind gave some of it back. Plant a windbreak and it won't next time."
+#~ msgstr "Voilà. Le vent en a rendu une partie. Plante un brise-vent et ça n'arrivera pas la prochaine fois."
+
+#~ msgid "The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained."
+#~ msgstr "La plateforme d'atterrissage est propre. Maintenant, il faut qu'elle soit vivante. Plante-la et garde-la durable."
+
+#~ msgid "Your core's low. Plant something, Lumi. Anything. Green light is green light."
+#~ msgstr "Ton cœur est faible. Plante quelque chose, Lumi. N'importe quoi. La lumière verte, c'est la lumière verte."
+
+#~ msgid "Running a little dim. A few blooms will fix that."
+#~ msgstr "Un peu faiblard. Quelques fleurs vont arranger ça."
+
+#~ msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
+#~ msgstr "Regarde-moi ça. En ruine, poussiéreux, personne n'a rien planté depuis des siècles. Tu sais ce qu'il te reste à faire."
 
 #~ msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
 #~ msgstr "Tu es monté dans une capsule de fret pour sauver ce plateau. Trois cents ans plus tard, tu l'as ramené à la maison."

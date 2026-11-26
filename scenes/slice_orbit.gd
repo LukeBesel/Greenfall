@@ -166,7 +166,8 @@ func build(p_world: Node3D) -> void:
 	w.set("garden", garden)
 	garden.setup()
 	BuildBudget.lap("orbit garden")
-	GardenMarks.attach(w)  # [v4grow] #51: soil mounds, sprouts, thirsty drops, cell rings, the can's ring
+	if not AutoGrow.on():  # [v13goals] nothing to plant or water: no soil mounds, drops or rings
+		GardenMarks.attach(w)  # [v4grow] #51: soil mounds, sprouts, thirsty drops, cell rings, the can's ring
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
 	hl.name = "HexLevels"
 	hl.world = w
@@ -687,6 +688,9 @@ func _attach_first_seed() -> void:
 	await get_tree().physics_frame
 	if not is_instance_valid(w) or not w.is_inside_tree():
 		return
+	if AutoGrow.on():  # [v13goals] no seed tin, no greenhouse: clean ground greens by itself
+		StartJunkTidy.attach(self).start(null)
+		return
 	var fs := FirstSeed.new()
 	fs.name = "FirstSeed"
 	fs.world = w
@@ -718,6 +722,8 @@ func _attach_shards() -> void:
 
 
 func _attach_seed_economy() -> void:
+	if AutoGrow.on():  # [v13goals] no seeds: no finds in the junk, no compost press
+		return
 	var finds := SeedFinds.new()
 	finds.name = "SeedFinds"
 	finds.world = w

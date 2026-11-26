@@ -209,7 +209,7 @@ func _ready() -> void:
 	_rows.add_theme_constant_override("separation", 4)
 	b1.add_child(_rows)
 	for k: Array in [["junk", _legend_col(PlanetData.State.JUNK), tr("Not cleaned yet")], ["clean", _legend_col(PlanetData.State.CLEAN), tr("Cleaned")],
-			["planted", _legend_col(PlanetData.State.PLANTED), tr("Planted")], ["growing", _legend_col(PlanetData.State.GROWING), tr("Growing")],
+			["planted", _legend_col(PlanetData.State.PLANTED), tr("Greening") if AutoGrow.on() else tr("Planted")], ["growing", _legend_col(PlanetData.State.GROWING), tr("Growing")],  # [v13goals] it greens by itself
 			["restored", _legend_col(PlanetData.State.RESTORED), tr("Restored")], ["cities", CREAM, tr("Cities")],
 			["hubs", MapGlyphs.LEAF, tr("Hubs")]]:
 		var r: HBoxContainer = UITheme.stat_row(k[1], k[2])

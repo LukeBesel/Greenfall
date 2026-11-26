@@ -243,7 +243,7 @@ func _apply() -> void:
 	for h: Node3D in _extra_lamps:
 		_show(h, lamps)
 		YardArt.set_powered(h, lamps)
-	_show(_composter, YardBuilds.built("composter"))
+	_show(_composter, YardBuilds.built("composter") and not AutoGrow.on())  # [v13goals] an old save's press stays packed away: no seeds to make
 	var radio: bool = YardBuilds.built("radio")
 	_show(_radio, radio)
 	YardArt.set_powered(_radio, radio)

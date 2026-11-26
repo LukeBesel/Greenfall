@@ -62,9 +62,8 @@ func test_xp_table_covers_the_sources() -> void:
 func test_reward_schedule() -> void:
 	var r2: Dictionary = LumiLevel.reward_plan(2, 0.0, 0.0, true)
 	assert_gt(float(r2["cubes"]), 0.0, "every level pays cubes (floor)")
-	var se: int = int(LumiLevel.cfg().get("reward", {}).get("seeds_every", 3))  # [first] scarce early seeds
-	assert_gt(int(LumiLevel.reward_plan(se, 0.0, 0.0, true)["seeds"]), 0, "every seeds_every-th level pays seeds once the garden is open")
-	assert_eq(int(LumiLevel.reward_plan(se, 0.0, 0.0, false)["seeds"]), 0, "no seeds before the garden")
+	for lv: int in range(1, 31):  # [v13goals] no seeds at any level (seeds_every 0)
+		assert_eq(int(LumiLevel.reward_plan(lv, 0.0, 0.0, true)["seeds"]), 0, "level %d pays no seeds" % lv)
 	var r5: Dictionary = LumiLevel.reward_plan(5, 0.0, 0.0, false)
 	assert_eq(int(r5["parts"]), 1)
 	assert_gt(int(r5["bonus_parts"]), 0, "[money] Parts every few levels (was tokens)")
@@ -147,12 +146,12 @@ func test_currency_chip_appears_on_change() -> void:
 	assert_eq(cc.chip_count(), 1, "same currency updates its chip")
 	GameState.add_currency("cubes", BigNum.from_float(100))
 	assert_eq(cc.chip_count(), 1, "cubes have their own big readout, no chip")
-	GameState.add_currency("seeds", BigNum.from_float(3))
-	assert_eq(cc.chip_count(), 2, "[money] seeds get a chip too")
 	Currencies.warn_legacy = false
+	GameState.add_currency("seeds", BigNum.from_float(3))
+	assert_eq(cc.chip_count(), 1, "[v13goals] seeds are no currency: no chip")
 	GameState.add_currency("bolts", BigNum.from_float(1))
 	Currencies.warn_legacy = true
-	assert_eq(cc.chip_count(), 2, "a legacy id lands on the Parts chip, no new chip")
+	assert_eq(cc.chip_count(), 1, "a legacy id lands on the Parts chip, no new chip")
 
 
 func test_goal_tracker_compact_and_expandable() -> void:

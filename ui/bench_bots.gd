@@ -76,7 +76,7 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 					"requires": "", "action": _tr("Upgrade to %s") % _tr(str(nt["name"])),
 					"act": func() -> bool: return fleet.upgrade_tier(rid)})
 	# Multibot jobs: a custom detail (the allocation board) once there are multibots.
-	if fleet.count("multibot") > 0:
+	if fleet.count("multibot") > 0 and not AutoGrow.on():  # [v13goals] a Multibot finds its own job now
 		out.append({"id": "multibot_jobs", "cat": "build", "icon": "star", "name": _tr("Multibot jobs"), "desc": "",
 			"state": "done", "table": [], "action": "", "custom": func(_w: Node) -> Control:
 				var ab := AllocationBoard.new()

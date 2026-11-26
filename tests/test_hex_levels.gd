@@ -22,6 +22,7 @@ var _events: Array = []
 
 
 func before_each() -> void:
+	AutoGrow.force = 0  # [v13goals] the planting rules, kept to turn back (data/plants.json player_planting); tests/test_auto_grow.gd covers the game now
 	_cur = GameState.currencies.duplicate()
 	_stats = GameState.stats.duplicate(true)
 	_world_state = GameState.world.duplicate(true)
@@ -31,6 +32,7 @@ func before_each() -> void:
 
 
 func after_each() -> void:
+	AutoGrow.force = -1
 	EventBus.hex_level_changed.disconnect(_on_level)
 	GameState.currencies = _cur
 	GameState.stats = _stats

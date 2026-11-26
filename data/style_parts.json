@@ -328,7 +328,7 @@
         ],
         "build": "watering_can",
         "unlock": {
-          "achievement": "plant_100"
+          "achievement": "bloom_50"
         }
       },
       {
@@ -662,7 +662,7 @@
       "color": "#e8a99a",
       "unlock": {
         "cost": {
-          "seeds": 25
+          "parts": 40
         }
       }
     }

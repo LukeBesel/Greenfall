@@ -62,8 +62,6 @@ func _setup() -> void:
 		CityWalk.run_dev(so)
 	if DevHooks.has("spot-probe"):  # [v8fix] dev: what encloses a spot (planet/sites/spot_probe.gd)
 		SpotProbe.run_dev.call_deferred(so)
-	if DevHooks.has("seed-walk"):  # [v8seed] dev: the first seed played with real input (tools/seed_walk.gd)
-		SeedWalk.run_dev(so)
 	if DevHooks.has("rewatch-check"):  # [v11film] dev: watching the opening film again changes nothing (tools/rewatch_check.gd)
 		(load("res://tools/rewatch_check.gd") as GDScript).call("run_dev", so)
 	if DevHooks.has("rewatch-at"):  # [v11film] dev: start a rewatch S seconds in (to render it)

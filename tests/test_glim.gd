@@ -174,8 +174,8 @@ func test_music_upgrade_gate() -> void:
 	assert_true(Glim.buy("light"))
 	assert_false(Glim.has_music())
 	var cost: Dictionary = Glim.next_cost("music")
-	for k: String in ["cubes", "parts", "seeds"]:
-		assert_gt(float(cost.get(k, 0.0)), 0.0, "costs all three currencies")
+	for k: String in ["cubes", "parts"]:
+		assert_gt(float(cost.get(k, 0.0)), 0.0, "costs both currencies")
 	assert_true(Glim.buy("music"))
 	assert_true(Glim.has_music())
 	assert_gt(Glim.song_bpm(), 0.0)

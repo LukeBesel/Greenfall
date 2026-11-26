@@ -100,16 +100,16 @@ func test_rocket_lists_home_restored_and_next() -> void:
 
 
 func test_wake_gives_the_hubs_gift_once() -> void:
-	var seeds0: float = GameState.get_currency("seeds").to_float()
+	var cubes0: float = GameState.get_currency("cubes").to_float()
 	var lines: Array[String] = HubPlan.wake("verdance", 9)
 	assert_true(HubPlan.woken(9))
 	assert_true(bool(GameState.flags.get("rocket_piece_seeds", false)))
 	assert_true(bool(GameState.flags.get("hub_woken_9", false)))
-	assert_almost_eq(GameState.get_currency("seeds").to_float() - seeds0, 30.0, 0.01)
-	assert_true(Research.has("wild_mint"), "Garden Row brings the mint seeds")
+	assert_almost_eq(GameState.get_currency("cubes").to_float() - cubes0, 3000.0, 0.01, "[v13goals] its gift is cubes now")
+	assert_true(Research.has("wild_mint"), "Garden Row brings the mint (it grows by itself)")
 	assert_gt(lines.size(), 2)
 	assert_true(HubPlan.wake("verdance", 9).is_empty(), "a second wake gives nothing")
-	assert_almost_eq(GameState.get_currency("seeds").to_float() - seeds0, 30.0, 0.01)
+	assert_almost_eq(GameState.get_currency("cubes").to_float() - cubes0, 3000.0, 0.01)
 
 
 func test_boosts_apply_only_while_woken() -> void:

@@ -91,7 +91,7 @@ func test_seed_ark_locked_until_bloom_then_endless_waves() -> void:
 	assert_eq(int(Bloom.ark_state()["wave"]), 2)
 	assert_eq(Bloom.ark_progress(), 3)
 	assert_almost_eq(float(GameState.stats.get("ark_waves", 0.0)), 2.0, 0.001)
-	assert_gt(GameState.get_currency("seeds").to_float(), 0.0)
+	assert_gt(GameState.get_currency("cubes").to_float(), 0.0, "the waves pay cubes (v13goals: no seeds)")
 	assert_string_contains(Bloom.globe_line(), "wave 3")
 
 

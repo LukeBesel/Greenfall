@@ -124,13 +124,13 @@ func test_wren_briefs_then_narrates_each_step_once() -> void:
 	assert_eq(wren._queue.size(), 0, "nothing during a modal")
 	w.set("modal", false)
 	ob._narrate()
-	assert_eq(wren._queue.size(), 3, "the briefing: who she is, the ark, the way home")
+	assert_eq(wren._queue.size(), 2, "the briefing in two lines (v13goals: a burst at the tower was three): who she is, the green and the way home")
 	var brief: String = " ".join(wren._queue.map(func(l: Dictionary) -> String: return str(l["text"])))
 	assert_true(brief.contains("Cradle") and brief.contains("Verdance") and brief.contains("home"))
 	ob._narrate()
-	assert_eq(wren._queue.size(), 4, "then the current step's line")
+	assert_eq(wren._queue.size(), 3, "then the current step's line")
 	ob._narrate()
-	assert_eq(wren._queue.size(), 4, "one line per step")
+	assert_eq(wren._queue.size(), 3, "one line per step")
 	for d: Dictionary in ob.chain:
 		var ls: Array = Objectives.step_lines(d)  # [v6pace] hub steps: their story reason
 		# [v10pace] a step with say_all (the shuttle: why fly on) may speak up to three short lines

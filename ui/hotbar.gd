@@ -231,7 +231,12 @@ func _apply_dev() -> void:
 # --- Drawing ---------------------------------------------------------------------------------
 
 func _row_w() -> float:
-	return TOOLS.size() * SLOT + (TOOLS.size() - 1) * GAP
+	return _shown() * SLOT + (_shown() - 1) * GAP
+
+
+## [v13goals] Slots drawn: only the scoop while nobody plants by hand (no locked seed or can slots).
+func _shown() -> int:
+	return 1 if AutoGrow.on() else TOOLS.size()
 
 
 func _text(pos: Vector2, s: String, sz: int, col: Color, align: HorizontalAlignment = HORIZONTAL_ALIGNMENT_CENTER, outline: bool = true) -> void:
@@ -307,7 +312,7 @@ func _draw_slots(cx: float, y: float) -> void:
 	var x0: float = cx - rw * 0.5
 	var pad: bool = Settings.last_input_pad
 	var multi: bool = unlocked_count() >= 2
-	for i: int in TOOLS.size():
+	for i: int in _shown():
 		var tdef: Dictionary = TOOLS[i]
 		var on: bool = unlocked(i)
 		var s: float = _sel_anim[i]

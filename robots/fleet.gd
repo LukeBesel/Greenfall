@@ -122,6 +122,8 @@ static func types_for_role(role_id: String) -> Array[String]:
 
 ## Multibot jobs, in the order a new one fills them.
 const MULTI_JOBS: Array[String] = ["clean", "plant", "water"]
+## [v13goals] A Multibot's jobs while clean ground greens by itself.
+const AUTO_JOBS: Array[String] = ["clean", "haul"]
 
 
 ## First crew a new robot of this type can join without breaking the cap ("" = all full).
@@ -129,7 +131,7 @@ const MULTI_JOBS: Array[String] = ["clean", "plant", "water"]
 func join_crew(type_id: String) -> String:
 	var jobs: Array[String] = [crew_of_type(type_id)]
 	if str(Economy.robots.get(type_id, {}).get("role", "")) == "any":
-		jobs = MULTI_JOBS
+		jobs = AUTO_JOBS if AutoGrow.on() else MULTI_JOBS  # [v13goals] nothing to plant or water
 	for j: String in jobs:
 		if crew_size(j) < crew_cap():
 			return j

@@ -43,7 +43,7 @@ func test_bot_bay_brings_only_the_scoopie() -> void:
 		assert_false(str(e.get("unlock_robot", "")) in ["haulbug", "skimmer"], "Salvage Logic unlocks %s" % str(e))
 	assert_eq(Research.robot_requirement("haulbug"), "haul_rig")
 	assert_eq(Research.robot_requirement("skimmer"), "skimmer_rig")
-	assert_eq(Research.robot_requirement("drip"), "drip_blueprint", "Drip stays where it was (base 3)")
+	assert_eq(Research.robot_requirement("multibot"), "multibot_blueprint", "[v13goals] no Drip; the Multibot keeps its blueprint")
 
 
 func test_story_unlocks_are_not_tree_cards() -> void:
@@ -98,7 +98,7 @@ func test_haul_objective_waits_for_its_plans() -> void:
 		if str(o["id"]) == "haul":
 			haul = o
 	assert_eq(ids.find("zone"), -1, "[v8bot] no zone step: the robot cleans on its own")
-	assert_eq(ids.find("hex2"), ids.find("robot") + 1, "the story goes straight on after the first robot")
+	assert_eq(ids.find("hex3"), ids.find("robot") + 1, "the story goes straight on after the first robot")
 	assert_gt(ids.find("haul"), ids.find("robot2"), "the Haul Bug comes after the second robot")
 	assert_lt(ids.find("haul"), ids.find("shuttle"), "[v10pace] and before the first flight: three robots at work and cubes coming in by themselves")
 	assert_eq(str(haul.get("wait_flag", "")), "haul_rig")
@@ -108,7 +108,7 @@ func test_haul_objective_waits_for_its_plans() -> void:
 func test_locked_haul_bug_says_it_comes_later() -> void:
 	Research.grant("salvage_logic")
 	assert_false(Research.robot_lock_text("haulbug").begins_with("Research"), Research.robot_lock_text("haulbug"))
-	assert_true(Research.robot_lock_text("seedling").begins_with("Research"))
+	assert_true(Research.robot_lock_text("multibot").begins_with("Research"))
 
 
 # --- 52: haulers fetch Lumi's bales ------------------------------------------------------------

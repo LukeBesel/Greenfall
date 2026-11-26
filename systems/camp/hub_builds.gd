@@ -107,6 +107,9 @@ static func listed(world: Node, id: String) -> bool:
 	match id:
 		"trash_bin":
 			return true
+		"composter":  # [v13goals] no seeds to press: the compost press is only for the planting game
+			if AutoGrow.on():
+				return false
 		"signal_tower":
 			return world != null and world.get_node_or_null("SignalTower") != null
 		"air_scrubber":

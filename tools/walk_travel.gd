@@ -100,15 +100,13 @@ static func _station_two(so: SliceOrbit) -> void:
 	var os_: OrbitSites = so.sites
 	var hp: HubPurpose = os_.purpose
 	var p: Patch = w.get("patch") as Patch
-	# The state the card reaches hub_fly_2 in: the seed planted, three robots, ten hexes, and the
+	# The state the card reaches hub_fly_2 in: three robots, ten hexes, and the
 	# shuttle built by the player ([v10pace]: no rocket stands before; tools/walk_home.gd plays the build).
 	_check(not os_.rocket_unlocked() and not os_.rocket_spot.visible, "no rocket stands on the pad before the shuttle is built")
 	YardBuilds.mark_built("shuttle")
 	GameState.flags["shuttle_plans"] = true
 	GameState.flags["map_seen"] = true
 	_set_story(ob, "hub_fly_2")
-	GameState.stats["plants_planted"] = maxf(float(GameState.stats.get("plants_planted", 0)), 1.0)
-	GameState.flags["seeds_unlocked"] = true
 	YardBuilds.state()["bench"] = true  # the workbench was fixed in the first minutes
 	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0)), 3.0)
 	var site: int = HubPlan.next_site(hp.planet)
@@ -406,8 +404,6 @@ static func _there_and_back(so: SliceOrbit) -> void:
 	GameState.flags["shuttle_plans"] = true
 	GameState.flags["map_seen"] = true
 	_set_story(ob, "hub_fly_2")
-	GameState.stats["plants_planted"] = maxf(float(GameState.stats.get("plants_planted", 0)), 1.0)
-	GameState.flags["seeds_unlocked"] = true
 	YardBuilds.state()["bench"] = true
 	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0)), 3.0)
 	_apply_state(S2)
@@ -663,7 +659,7 @@ static func _fly_by_click(so: SliceOrbit, to_site: int, first: bool) -> void:
 	if b == null:
 		os_.picker.close()
 		return
-	var stock0: Array = [GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float(), GameState.get_currency("seeds").to_float()]
+	var stock0: Array = [GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float(), 0.0]
 	await _click(tree, b)
 	await _frames(tree, 3)
 	_check(os_.hop.flying, "the click on Fly lifts off")
@@ -684,7 +680,7 @@ static func _fly_by_click(so: SliceOrbit, to_site: int, first: bool) -> void:
 	await _wait(tree, 1.0)
 	_check(not os_.hop.flying and p.visible and (p.input as PlayerInput).enabled and p.process_mode != Node.PROCESS_MODE_DISABLED,
 		"landed at %s: Lumi back in control (flying %s, shown %s, input %s, mode %d)" % [nm, os_.hop.flying, p.visible, (p.input as PlayerInput).enabled, p.process_mode])
-	var stock1: Array = [GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float(), GameState.get_currency("seeds").to_float()]
+	var stock1: Array = [GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float(), 0.0]
 	_check(stock1[0] >= stock0[0] - 0.5 and stock1[1] >= stock0[1] - 0.5 and stock1[2] >= stock0[2] - 0.5, "the trip cost nothing (cubes, Parts, seeds %s -> %s)" % [str(stock0), str(stock1)])
 	_check(p.global_position.distance_to(os_.sm.pad_xf(to_site).origin) < 12.0, "Lumi stands by the pad (%.1f m)" % p.global_position.distance_to(os_.sm.pad_xf(to_site).origin))
 	if to_site > 0 and first:
@@ -834,6 +830,9 @@ static func _clean_real(so: SliceOrbit, site: int, need: int, max_s: float) -> i
 				bales += 1
 			await _frames(tree, 2)
 			_send("scoop", true)
+			continue
+		if p.input is PlayerInput and not (p.input as PlayerInput).enabled:
+			await _frames(tree, 6)  # [v13goals] a story moment holds Lumi (the Bloom Core's 25% memory): no tries counted
 			continue
 		var h: int = ob.target_hex
 		if h < 0:
@@ -1165,7 +1164,7 @@ static func _click(tree: SceneTree, c: Control) -> void:
 	await tree.process_frame
 
 
-# --- Input and helpers (as tools/seed_walk.gd) ---------------------------------------------------
+# --- Input and helpers (as the old first-seed walk) ---------------------------------------------------
 
 ## --walk-travel-shots=PREFIX (a rendered run): saves PREFIX_<name>.png at the step's moments.
 static func _shot(tree: SceneTree, name: String) -> void:

@@ -52,7 +52,7 @@ func test_fresh_base_offers_only_unlocked_things() -> void:
 		assert_does_not_have(once, id, "%s isn't offered before it is unlocked" % id)
 	assert_eq(_ids("tiered"), ["trash_bin"], "the bin's next level is the only upgrade")
 	GameState.flags["first_sprout"] = true
-	assert_has(_ids("one_time"), "composter", "the compost press opens once something grows")
+	assert_does_not_have(_ids("one_time"), "composter", "[v13goals] no seeds to press: the compost press never opens, even for an old save's flag")
 
 
 func test_one_time_builds_drop_off_and_need_the_bench() -> void:

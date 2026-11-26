@@ -1,17 +1,17 @@
 class_name WalkHome
 extends RefCounted
 ## [v9b] Goal audit, "home": the Landing Yard steps after the first robot, played the way a player
-## does (the model is tools/seed_walk.gd): the real keys and mouse button the input map binds, and
+## does (the model was the first-seed walk, gone with planting): the real keys and mouse button the input map binds, and
 ## real mouse clicks on the workbench (a press and release pushed into the window at the button's
 ## place on screen), on the real globe. Each part sets up the state a player is in when the step
 ## starts (dev: the step index, cubes and parts, the tower and bench tiers, a Scoopie; said per part),
 ## then checks the card, the action, the refusals, and that the next step comes.
-##   hex2    the card, the outlined hex, cleaning it with the scoop key -> "Clean 3 hexes"
-##   hex3    a robot's hex counts, and a line says so -> the seed step
-##   garden  after the first seed: thirsty, the water key on the bed, an empty can and the refill,
-##           out of seeds (each refusal says why)
+##   hex2    "Clean 3 hexes" 1 / 3: the card, the outlined hex, cleaning it with the scoop key -> 2 / 3;
+##           the map key shows the planet's progress
+##   hex3    a robot's hex counts, and a line says so -> the second robot
+##   green   [v13goals] nothing to plant: the scoop is the only tool, clean hexes sprout plants and
+##           climb the hex levels by themselves, no plant is ever thirsty
 ##   robot2  [v10pace] the second robot: the beam on the Bot Bay, E opens its own screen, the click
-##   map     [v10pace] "Look at the map": the map key completes it
 ##   shuttle [v10pace] no rocket and no Shuttle build before the step; WREN says why; the marked spot;
 ##           the price; the click; it goes up piece by piece; only then "Fly to the next station"
 ##   base2   short of Parts: the card and the bench say how many; then the price tag click builds it
@@ -66,7 +66,7 @@ static func run_dev(p_so: SliceOrbit) -> void:
 		await tree.create_timer(0.25).timeout
 	await tree.create_timer(1.0).timeout
 	var only: String = DevHooks.get_s("walk-home-only", "")  # dev: --walk-home-only=hex2,base2 (iterating)
-	for part: String in ["hex2", "hex3", "garden", "robot2", "haul", "hex10", "map", "base2", "shuttle", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:  # [v10pace] the order of the card
+	for part: String in ["hex2", "hex3", "green", "robot2", "haul", "hex10", "base2", "shuttle", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:  # [v10pace] the order of the card
 		if (only == "" and part != "probe") or part in only.split(","):
 			await Callable(WalkHome, "_part_" + part).call()
 	print("[walk-home] %d reloads" % _reloads)
@@ -463,26 +463,24 @@ static func _wait_step_not(id: String, secs: float) -> bool:
 
 static func _part_hex2() -> void:
 	GameState.stats["hexes_cleaned"] = 1.0
-	if not await _goto("hex2"):
+	if not await _goto("hex3"):  # [v13goals] "Clean 2 hexes" is gone: the first robot's step is "Clean 3 hexes"
 		return
 	var c: Array[String] = _card()
-	_check(c[0] == "Clean 2 hexes" and c[3] == "1 / 2", "hex2: the card says Clean 2 hexes, 1 / 2 (%s)" % str(c))
+	_check(c[0] == "Clean 3 hexes" and c[3] == "1 / 3", "hex2: the card says Clean 3 hexes, 1 / 3 (%s)" % str(c))
 	_check(ob.target_hex >= 0, "hex2: a hex is outlined on the ground (%d)" % ob.target_hex)
 	await _face_target()
 	await _shot("hex2_start")
 	if _quick():
 		GameState.stats["hexes_cleaned"] = 2.0
-		await _wait_step_not("hex2", 4.0)
 		return
 	var took: int = await _scoop_until("hex2", func() -> int: return ob.target_hex, func() -> bool: return ob.target_hex >= 0 and ob.hex_fraction() >= 0.5)
 	await _reload("hex2 half cleaned")
 	took += await _scoop_until("hex2", func() -> int: return ob.target_hex, func() -> bool: return float(GameState.stats.get("hexes_cleaned", 0.0)) >= 2.0)
 	await tree.create_timer(0.3).timeout
 	_check(float(GameState.stats.get("hexes_cleaned", 0.0)) >= 2.0, "hex2: scooping cleans the outlined hex (%d scoops)" % took)
-	var moved: bool = await _wait_step_not("hex2", 4.0)
-	await tree.create_timer(2.5).timeout  # the card's DONE beat, then the next step slides in
+	await tree.create_timer(1.0).timeout
 	c = _card()
-	_check(moved and _step_id() == "hex3" and c[0] == "Clean 3 hexes", "hex2 done: the card moves on to Clean 3 hexes (%s, %s)" % [_step_id(), str(c)])
+	_check(_step_id() == "hex3" and c[0] == "Clean 3 hexes" and c[3] == "2 / 3", "hex2 done: the card counts it, Clean 3 hexes 2 / 3 (%s, %s)" % [_step_id(), str(c)])
 	# [v10ui] Owner #109: the map (M) is the planet's progress view, pointed at on the first clean hex.
 	_check(_said("how much of the planet is clean"), "map: the first clean hex points at the map key (%s)" % Settings.glyph("open_globe"))
 	var before: Dictionary = await _map_look("after a clean hex")
@@ -617,138 +615,61 @@ static func _part_hex3() -> void:
 	if _step_id() == "hex3":  # one hex was not enough (the robot's counted, 2 / 3 -> 3 / 3 needs one more)
 		GameState.stats["hexes_cleaned"] = 3.0
 	var moved: bool = await _wait_step_not("hex3", 4.0)
-	_check(moved and _step_id() == "seed", "hex3 done: on to the seed (%s)" % _step_id())
+	_check(moved and _step_id() == "robot2", "hex3 done: on to the second robot (%s)" % _step_id())
 
 
-# --- After the first seed: water, empty can, refill, out of seeds ----------------------------------
+# --- [v13goals] Clean ground greens by itself: nothing to plant or water ------------------------------
 
-static func _part_garden() -> void:
+## Owner, 26 Nov: the player only cleans. The scoop is Lumi's only tool (the seed and can keys do
+## nothing and say nothing, the hotbar shows one slot), and the hexes cleaned in this walk sprout
+## plants by themselves and climb the hex levels (time x8, Lumi idle by the bench).
+static func _part_green() -> void:
 	var g: Garden = w.get("garden") as Garden
-	var fs: FirstSeed = w.get("first_seed") as FirstSeed
-	if g == null or fs == null:
-		_check(false, "garden: no garden / greenhouse")
+	var hl: HexLevels = w.get("hex_levels") as HexLevels
+	if g == null or hl == null:
+		_check(false, "green: no garden / hex levels")
 		return
-	# (dev) the seed step as tools/seed_walk.gd plays it: the tin taken, the seed in the first bed.
-	GameState.flags["seed_signal"] = true
-	GameState.flags["seeds_unlocked"] = true
-	GameState.add_currency("seeds", BigNum.from_float(1.0))
-	fs.set("_hint_water", true)  # (dev) as taking the tin does
-	var slot: int = fs.bed_slots[0]
-	if g.slot_species[slot] < 0:
-		g.plant(slot)
-	var moved: bool = await _wait_step_not("seed", 4.0)
-	_check(moved, "seed planted: the card moves on (%s)" % _step_id())
-	_check(g.slot_water[slot] <= 0.0, "garden: the new seed is thirsty (water %.1f)" % g.slot_water[slot])
-	var marks: Node = _find_marks()
-	_check(marks != null, "garden: the plant marks (thirsty drop, soil, rings) are in the world")
-	await tree.create_timer(1.0).timeout
-	var wc: Array[String] = _card()
-	_check(wc[0].contains("watering can") and not (wc[1] + wc[2]).contains("more cubes"), "garden: after planting, the card says one thing: water it, with the keys (%s)" % str(wc))
-	var garden_vals: Callable = func() -> Dictionary:
-		var gg: Garden = w.get("garden") as Garden
-		return {"species": gg.slot_species[slot] if gg else -9, "water": gg.slot_water[slot] if gg else -9.0, "marks": _find_marks() != null, "seeds": GameState.get_currency("seeds").to_float()}
-	await _reload("seed planted, not watered", garden_vals)
-	g = w.get("garden") as Garden
-	fs = w.get("first_seed") as FirstSeed
-	if g == null or fs == null:
-		_check(false, "garden: no garden after the reload")
-		return
-	# The water key on the bed.
-	_stand(fs.to_global(FirstSeed.GREENHOUSE_POS + Vector3(0.0, 0.0, FirstSeed.BED_SPOTS[0].z)), g.slot_pos[slot])
-	await _frames(4)
-	await _shot("seed_bed_thirsty")
-	p.water = p.water_cap()
-	await _tap("tool_water")
-	_check(p.tool == Patch.Tool.WATER, "garden: the water key takes the can")
-	await _hold("scoop", 1.0)
-	_check(g.slot_water[slot] > 0.0, "garden: holding the button on the bed waters the seed (water %.1f)" % g.slot_water[slot])
-	await _shot("seed_watered")
-	# An empty can away from the yard: refused with a line; back in the yard it fills.
-	var f: SphereField = so.globe.field
-	var clean: int = -1
-	for h: int in f.hexes_near(p.global_position, 6):
-		if f.is_clean(h) and f.hex_hub[h] == 0 and not f.is_water(h) and f.hex_center(h).distance_to(so.bench_position()) > Patch.REFILL_YARD_M + 6.0:
-			clean = h
-			break
-	if clean < 0:
-		_check(false, "garden: no clean hex outside the yard")
-		return
-	var c: Vector3 = f.hex_center(clean)
-	_stand(c, c + _north(c) * 3.0)
-	await _frames(4)
-	await _tap("tool_water")
-	p.water = 0.0
+	_check(AutoGrow.on(), "green: clean ground greens by itself (data/plants.json player_planting false)")
+	_check(w.get("first_seed") == null and w.get("composter") == null, "green: no seed tin, greenhouse or compost press in the world")
+	_check(_find_marks() == null, "green: no soil mounds, water drops or can rings")
+	var hb: Variant = (w.get("hud") as Node).get("hotbar") if w.get("hud") != null else null
+	if hb is Hotbar:
+		_check((hb as Hotbar)._shown() == 1, "green: the hotbar shows the scoop alone")
 	_toasts.clear()
-	await _hold("scoop", 0.8)
-	_check(_said("empty") and p.water <= 0.0, "garden: an empty can says so, away from the yard (%s)" % str(_toasts))
+	await _tap("tool_plant")
+	await _tap("tool_water")
+	await tree.create_timer(0.4).timeout
+	_check(p.tool == Patch.Tool.SCOOP and _toasts.is_empty(), "green: the old seed and can keys do nothing and say nothing (tool %d, %s)" % [p.tool, str(_toasts)])
+	_check(not Currencies.is_currency("seeds") and GameState.get_currency("seeds").to_float() == 0.0, "green: there is no seed currency")
+	var sprouted0: float = float(GameState.stats.get("plants_sprouted", 0.0))
+	var lv0: int = hl.count_at_least(2)
 	var yard: Vector3 = so.bench_position()
 	_stand(yard + _north(yard) * 4.0, yard)
-	await tree.create_timer(1.5).timeout
-	_check(p.water > 5.0, "garden: the can fills by itself in the yard (%.1f)" % p.water)
-	# No seeds left: the seed key on clean ground says why.
-	GameState.currencies["seeds"] = BigNum.zero()
-	_stand(c, c + _north(c) * 3.0)
-	await _frames(4)
-	await _tap("tool_plant")
-	_toasts.clear()
-	await _hold("scoop", 1.0)
-	_check(_said("seeds"), "garden: no seeds left, a line says where more come from (%s)" % str(_toasts))
-	await _tap("tool_scoop")
+	Engine.time_scale = 8.0
+	var t0: int = Time.get_ticks_msec()
+	while Time.get_ticks_msec() - t0 < 40000 and (float(GameState.stats.get("plants_sprouted", 0.0)) <= sprouted0 or hl.count_at_least(2) <= lv0):
+		await tree.create_timer(0.5, true, false, true).timeout
+	Engine.time_scale = 1.0
+	var grown: int = g.planted_slots().size()
+	_check(float(GameState.stats.get("plants_sprouted", 0.0)) > sprouted0 and grown > 0, "green: plants come up by themselves on clean ground (%d growing, +%d)" % [grown, int(float(GameState.stats.get("plants_sprouted", 0.0)) - sprouted0)])
+	_check(hl.count_at_least(2) > lv0, "green: a clean hex turns Grassy by itself (%d -> %d at level 2+)" % [lv0, hl.count_at_least(2)])
+	var thirsty: int = 0
+	for sl: int in g.planted_slots():
+		if g.slot_water[sl] <= 0.0:
+			thirsty += 1
+	_check(thirsty == 0, "green: no plant is ever thirsty (%d)" % thirsty)
+	var keep: Dictionary = {"grown": grown, "lv2": hl.count_at_least(2)}
+	await _reload("green, plants up", func() -> Dictionary:
+		var gg: Garden = w.get("garden") as Garden
+		var hh: HexLevels = w.get("hex_levels") as HexLevels
+		return {"grown": gg.planted_slots().size() >= int(keep["grown"]) if gg else false, "lv2": hh.count_at_least(2) >= int(keep["lv2"]) if hh else false})
+	await _shot("green_by_itself")
 
 
 static func _find_marks() -> Node:
 	for n: Node in w.get_tree().root.find_children("*", "GardenMarks", true, false):
 		return n
 	return null
-
-
-## [v9b] A seed planted with the seed key on the steepest clean hex near the yard, then watered:
-## the plant and water rings on a slope (a frame of it in rendered runs).
-static func _plant_on_slope() -> void:
-	var f: SphereField = so.globe.field
-	var g: Garden = w.get("garden") as Garden
-	var cands: Array = []  # [slope deg, hex]
-	var yard: Vector3 = so.bench_position()
-	for h: int in f.hexes_near(yard, 12):
-		if not f.is_clean(h) or f.hex_hub[h] != 0 or f.is_water(h):
-			continue
-		var c: Vector3 = f.hex_center(h)
-		var n: Vector3 = c.normalized()
-		var fr: Basis = SphereGrid.frame(n)
-		var g0: Vector3 = so.globe.terrain.ground(n)
-		var dx: Vector3 = so.globe.terrain.ground((c + fr.x * 2.0).normalized()) - g0
-		var dz: Vector3 = so.globe.terrain.ground((c + fr.z * 2.0).normalized()) - g0
-		cands.append([rad_to_deg(acos(clampf(absf(dx.cross(dz).normalized().dot(n)), 0.0, 1.0))), h])
-	cands.sort_custom(func(x: Array, y: Array) -> bool: return float(x[0]) > float(y[0]))
-	GameState.add_currency("seeds", BigNum.from_float(1.0))
-	var steep: float = -1.0
-	var at: Vector3 = Vector3.ZERO
-	for cd: Array in cands.slice(0, 12):  # the steepest clean ground a seed takes (not road or pad)
-		var c: Vector3 = f.hex_center(int(cd[1]))
-		for k: int in 24:  # [v9a] 8 directions x 3 distances: which hexes are clean varies run to run
-			var off: Vector3 = SphereGrid.frame(c.normalized()) * Vector3(cos(k * 0.785), 0.0, sin(k * 0.785)) * [2.5, 1.5, 3.5][k / 8]
-			_stand(c + off, c + off + _north(c) * 3.0)
-			await _pframes(3)
-			if g.free_slot_near(p.global_position, p.forward()) >= 0:
-				steep = float(cd[0])
-				at = c + off
-				break
-		if steep >= 0.0:
-			break
-	if steep < 0.0:
-		_check(false, "garden: no clean hex near the yard that takes a seed (%d clean hexes)" % cands.size())
-		return
-	var n0: float = float(GameState.stats.get("plants_planted", 0.0))
-	await _tap("tool_plant")
-	_toasts.clear()
-	await _hold("scoop", 1.0)
-	var planted: bool = float(GameState.stats.get("plants_planted", 0.0)) > n0
-	_check(planted, "garden: the seed key plants on a %.0f deg slope (%s)" % [steep, str(_toasts)])
-	p.water = p.water_cap()
-	await _tap("tool_water")
-	await _hold("scoop", 1.0)
-	await _shot("slope_plant_%ddeg" % int(steep))
-	await _tap("tool_scoop")
 
 
 # --- hex10 / hex20: Lumi cleans one, the Scoopies another --------------------------------------
@@ -774,8 +695,6 @@ static func _hex_goal(id: String, goal: int) -> void:
 	if _quick():
 		GameState.stats["hexes_cleaned"] = float(goal)
 		await _wait_step_not(id, 4.0)
-		if goal >= 20:
-			await _plant_on_slope()
 		return
 	var n0: float = float(GameState.stats.get("hexes_cleaned", 0.0))
 	_toasts.clear()
@@ -803,8 +722,6 @@ static func _hex_goal(id: String, goal: int) -> void:
 	_check(not br.is_empty() and BaleWatch.breaches(br).is_empty(), "%s: the robots' bales do not pile up on the pad (%s; pad %s, robots pressed %d)" % [id, "; ".join(BaleWatch.breaches(br)) if not br.is_empty() else "no count", str(br.get("pad", "-")), int(float(GameState.stats.get("robot_bales", 0.0)))])
 	var moved: bool = await _wait_step_not(id, 4.0)
 	_check(moved, "%s done: the card moves on (%s)" % [id, _step_id()])
-	if goal >= 20:
-		await _plant_on_slope()  # by now there is clean ground round the yard to choose from
 
 
 # --- Steps met out of order never strand the card --------------------------------------------------
@@ -1170,37 +1087,15 @@ static func _part_robot2() -> void:
 	_check(moved, "robot2 done: the card moves on (%s)" % _step_id())
 
 
-static func _part_map() -> void:
-	GameState.flags.erase("map_seen")
-	if not await _goto("map"):
-		return
-	await tree.create_timer(0.6).timeout
-	var c: Array[String] = _card()
-	_check(c[0] == "Look at the map" and c[1].contains(Settings.glyph("open_globe")), "map: the card says Look at the map with its key (%s)" % str(c))
-	await _reload("map, not looked yet", func() -> Dictionary: return {"seen": GameState.flags.get("map_seen", false)})
-	var sv: Variant = so.layers.survey if so.layers else null
-	await _tap("open_globe")
-	await tree.create_timer(0.8).timeout
-	_check(sv != null and bool((sv as Object).get("is_open")), "map: the map key opens the map")
-	_check(bool(GameState.flags.get("map_seen", false)), "map: opening it is remembered (flags.map_seen)")
-	await _shot("map_open")
-	await _tap("open_globe")
-	await tree.create_timer(0.8).timeout
-	if sv != null and bool((sv as Object).get("is_open")):
-		await _tap("pause")
-		await tree.create_timer(0.8).timeout
-	_check(sv == null or not bool((sv as Object).get("is_open")), "map: the same key closes it")
-	var moved: bool = await _wait_step_not("map", 4.0)
-	_check(moved, "map done: the card moves on (%s)" % _step_id())
-
-
 static func _part_shuttle() -> void:
 	var os_: OrbitSites = OrbitSites.of(w)
 	# The state before: no rocket was ever built or flown, WREN has not asked for one.
-	# [v10pace] Base 2 comes right before the shuttle: step back to the map step so the shuttle
-	# step has not started yet (it is what sets shuttle_plans).
-	GameState.flags.erase("map_seen")
-	await _goto("map")
+	# [v10pace] Base 2 comes right before the shuttle: step back to an unfinished step before it so
+	# the shuttle step has not started yet (it is what sets shuttle_plans). [v13goals] The map step
+	# is gone: "Clean 10 hexes" one short (the count is put back before the shuttle step).
+	var hexes_real: float = float(GameState.stats.get("hexes_cleaned", 0.0))
+	GameState.stats["hexes_cleaned"] = 9.0
+	await _goto("hex10")
 	GameState.flags.erase("shuttle_plans")
 	await tree.create_timer(1.0).timeout
 	_check(not Hub.rocket_built() and not os_.rocket_unlocked() and not os_.rocket_spot.visible, "shuttle: no rocket stands on the pad before it is built")
@@ -1209,7 +1104,7 @@ static func _part_shuttle() -> void:
 	_check(spot != null and not spot.visible, "shuttle: its spot is not marked yet")
 	_check(not ob.chain.slice(0, ob.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find("shuttle")).any(func(d: Dictionary) -> bool: return str(d.get("key", "")) in ["hubs_seen", "hubs_woken"]),
 		"shuttle: no 'Fly to' or 'Wake' step stands before 'Build the shuttle'")
-	GameState.flags["map_seen"] = true
+	GameState.stats["hexes_cleaned"] = maxf(hexes_real, 10.0)
 	var cost: Dictionary = YardBuilds.def("shuttle").get("cost", {})
 	_set_money(200.0, 10.0)
 	var stats0: Dictionary = GameState.stats.duplicate()  # [v10snd] what paid, if the count is off
@@ -1573,7 +1468,7 @@ static func _click(c: Control) -> void:
 	await tree.create_timer(0.3).timeout
 
 
-# --- Small helpers (as tools/seed_walk.gd) -------------------------------------------------------
+# --- Small helpers (as the old first-seed walk) -------------------------------------------------------
 
 static func _said(t: String) -> bool:
 	for s: String in _toasts:

@@ -19,12 +19,12 @@
       "twist": "An ocean the dredgers drained of minerals. Towns on islands, rain every hour, life desperate to come back.",
       "color": [0.18, 0.4, 0.64], "orbit": 2.25},
     {"id": "rime", "open": false, "name": "Rime", "type": "ice_moon", "seed": 70883, "mods": ["long_nights", "thin_soil"], "nav": 6, "needs_tech": [["heat_core", 0.8]],
-      "arrival": {"research_tier": 4, "robots": ["scoopie", "scoopie", "haulbug", "seedling", "seedling", "drip", "drip"], "robot_tier": {"scoopie": 1, "haulbug": 1, "seedling": 1, "drip": 2}, "cubes": 10000, "parts": 1000, "seeds": 80},
+      "arrival": {"research_tier": 4, "robots": ["scoopie", "scoopie", "haulbug", "seedling", "seedling", "drip", "drip"], "robot_tier": {"scoopie": 1, "haulbug": 1, "seedling": 1, "drip": 2}, "cubes": 10000, "parts": 1000},
       "thriving": 160, "bases": 2, "relic": "rime_core",
       "twist": "A moon core-mined until its heat ran out and it froze. Long nights, thin soil, lakes under the ice.",
       "color": [0.84, 0.9, 0.96], "orbit": 2.95},
     {"id": "anvil", "open": false, "name": "Anvil", "type": "rust_world", "seed": 88019, "mods": ["heavy_junk", "long_nights"], "nav": 6, "needs_tech": [],
-      "arrival": {"research_tier": 5, "robots": ["scoopie", "scoopie", "scoopie", "haulbug", "seedling", "seedling", "seedling", "drip", "drip", "multibot"], "robot_tier": {"scoopie": 2, "haulbug": 2, "seedling": 3, "drip": 3}, "cubes": 15000, "parts": 1500, "seeds": 150},
+      "arrival": {"research_tier": 5, "robots": ["scoopie", "scoopie", "scoopie", "haulbug", "seedling", "seedling", "seedling", "drip", "drip", "multibot"], "robot_tier": {"scoopie": 2, "haulbug": 2, "seedling": 3, "drip": 3}, "cubes": 15000, "parts": 1500},
       "thriving": 200, "bases": 3, "relic": "anvil_ingot",
       "twist": "The miners' foundry world and head office. Pole-to-pole rust, the heaviest scrap in the system, and a hollow core.",
       "color": [0.55, 0.34, 0.22], "orbit": 3.7}
@@ -37,7 +37,7 @@
       "So we stay a while. Every town we clean makes Verdance greener for the Settlers."
     ],
     "toast": "To be continued: the trip to Ochre comes in a future update. Keep restoring Verdance!",
-    "hide_goals": ["home_land_1", "home_restore_2", "home_drive_6", "home_restore_4", "home_restore_5", "home_drive_7", "home_last_seed", "home_launch", "ark_1", "ark_3", "late_ark_5", "late_bridge", "late_heirloom_1", "late_heirloom_10", "late_world_1", "late_world_2"],
+    "hide_goals": ["home_land_1", "home_restore_2", "home_drive_6", "home_restore_4", "home_restore_5", "home_drive_7", "home_last_seed", "home_launch", "late_bridge", "late_heirloom_1", "late_heirloom_10", "late_world_1", "late_world_2"],
     "card": {"title": "To be continued", "line": "Your robots keep cleaning while you wait. Stay as long as you like and keep making Verdance green.", "hint": "{interact}  continue"},
     "hide_builds": ["telescope"],
     "hide_achievements": ["home_answered", "home_landed", "home_planets_2", "home_planets_4", "home_planets_5", "home_relics", "home_drive_6", "home_homecoming", "late_bridge", "late_world_1", "late_world_3", "late_heirloom_1", "late_heirloom_20", "late_starseeds_100", "late_older_pod", "ark_1", "ark_10", "late_eggs_40"]

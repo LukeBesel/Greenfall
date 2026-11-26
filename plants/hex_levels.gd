@@ -65,7 +65,7 @@ func track(hid: int) -> void:
 
 
 func level_def(l: int) -> Dictionary:
-	var arr: Array = cfg.get("levels", [])
+	var arr: Array = cfg.get("auto_levels" if AutoGrow.on() and cfg.has("auto_levels") else "levels", [])  # [v13goals]
 	return arr[l] if l >= 0 and l < arr.size() else {}
 
 
@@ -109,6 +109,10 @@ func describe(hid: int) -> String:
 	if l < 0:
 		return ""
 	var s: String = tr("HEX  LV %d  %s") % [l, level_name(l).to_upper()]
+	if AutoGrow.on():  # [v13goals] nothing to water: only what comes next
+		if l < MAX_LEVEL:
+			s += tr("      next: %s") % tr(str(level_def(l).get("hint", "")))
+		return s
 	if l == 3 or (l == 4 and not sustained_now(hid)):
 		if _ring_n.has(hid) and watered_ratio(hid) >= float(cfg.get("sustain_ratio", 0.9)):
 			s += tr("      SUSTAIN  %d%%") % int(sustain_progress(hid) * 100.0)
@@ -199,6 +203,10 @@ func _target_level(hid: int, m: Vector3i) -> int:
 	if g == null or not g.hex_slots.has(hid):
 		return 1
 	var total: int = (g.hex_slots[hid] as PackedInt32Array).size()
+	if AutoGrow.on():  # [v13goals] the soil that can grow; a hex with none (all street) follows its green neighbours
+		total = g.soil_count(hid)
+		if total == 0:
+			return _paved_level(hid)
 	if total == 0 or m.x < maxi(1, ceili(float(cfg.get("planted_min_frac", 0.25)) * total)):
 		return 1
 	var life: float = float(g.hex_life.get(hid, 0.0))
@@ -209,6 +217,18 @@ func _target_level(hid: int, m: Vector3i) -> int:
 	if m.z < m.x or life < float(cfg.get("thriving_life", 0.8)):
 		return 4
 	return 5
+
+
+## [v13goals] A clean hex with no soil at all (a street, a square): one level under its greenest
+## clean neighbour, so the town round a green block comes up with it.
+func _paved_level(hid: int) -> int:
+	var best: int = 1
+	var f: HexField = world.field
+	if f is SphereField:
+		for n: int in (f as SphereField).grid.neighbors(hid):
+			if levels.has(n):
+				best = maxi(best, int(levels[n]) - 1)
+	return clampi(best, 1, MAX_LEVEL)
 
 
 func _push(hid: int, v: int) -> void:
@@ -252,9 +272,15 @@ func _level_up(hid: int, from: int, to: int) -> void:
 			GameState.add_currency(k, BigNum.from_float(float(reward[k])))
 	GameState.inc_stat("hex_level_ups", to - from)
 	_recalc_bonus()
-	if celebrate:
+	if celebrate and (not AutoGrow.on() or _near_lumi(hid)):  # [v13goals] it happens all over the planet by itself: only a moment where Lumi is
 		_celebrate(hid, to, reward)
 	EventBus.hex_level_changed.emit(hid, to)
+
+
+const NEAR_M: float = 30.0
+func _near_lumi(hid: int) -> bool:
+	var pt: Variant = world.get("patch") if world else null
+	return pt is Node3D and (pt as Node3D).is_inside_tree() and (pt as Node3D).global_position.distance_to(world.field.hex_center(hid)) < NEAR_M
 
 
 static func reward_text(reward: Dictionary) -> String:
@@ -276,7 +302,8 @@ func _celebrate(hid: int, to: int, reward: Dictionary) -> void:
 	Audio.play_at("sparkle" if to < 4 else "chime", c, 0.9 + 0.08 * to, -6.0 if to < 4 else -3.0, 0.02, "", 16.0)  # [v9s] softer far off
 	if to == MAX_LEVEL:
 		Audio.play_at("bird", c, 1.1, -10.0, 0.06, "", 16.0)  # [v9s] was jitter 0: the same trill every time
-	EventBus.toast.emit(tr("Hex Lv %d  %s.   %s") % [to, nm, reward_text(reward)], "reward")  # [v4calm] item 49: hex level-ups are reward chatter (the hex's own FX shows it)
+	if not AutoGrow.on() or reward_text(reward) != "":  # [v13goals] a quiet level-up (the hex's own FX shows it)
+		EventBus.toast.emit(tr("Hex Lv %d  %s.   %s") % [to, nm, reward_text(reward)], "reward")  # [v4calm] item 49: hex level-ups are reward chatter (the hex's own FX shows it)
 
 
 func _recalc_bonus() -> void:
@@ -286,7 +313,7 @@ func _recalc_bonus() -> void:
 			var b: Dictionary = level_def(l).get("bonus", {})
 			for k: String in b:
 				_bonus[k] = float(_bonus.get(k, 0.0)) + float(b[k])
-	var caps: Dictionary = cfg.get("bonus_caps", {})
+	var caps: Dictionary = cfg.get("auto_bonus_caps" if AutoGrow.on() and cfg.has("auto_bonus_caps") else "bonus_caps", {})  # [v13goals]
 	for k: String in _bonus:
 		if caps.has(k):
 			_bonus[k] = minf(float(_bonus[k]), float(caps[k]))

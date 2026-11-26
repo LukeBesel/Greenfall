@@ -1,7 +1,7 @@
 class_name Currencies
 extends RefCounted
-## [money] The single source of truth for currencies (data/currencies.json): exactly Cubes, Parts
-## and Seeds. Everything else is a legacy id that maps onto one of them at a fixed rate, so
+## [money] The single source of truth for currencies (data/currencies.json): exactly Cubes and
+## Parts ([v13goals] Seeds went with planting: a legacy id now, worth nothing outside a save). Everything else is a legacy id that maps onto one of them at a fixed rate, so
 ## `GameState.add_currency("bolts", x)` from older code (or another branch mid-merge) still works:
 ## it becomes Parts at the table's rate and warns once per id in debug builds. Saves use the same
 ## table (SaveManager.migrate, version 2).
@@ -9,8 +9,8 @@ extends RefCounted
 const PATH: String = "res://data/currencies.json"
 const CUBES: String = "cubes"
 const PARTS: String = "parts"
-const SEEDS: String = "seeds"
-const IDS: Array[String] = [CUBES, PARTS, SEEDS]
+const SEEDS: String = "seeds"  ## [v13goals] a legacy id (old saves, old data): see data/currencies.json
+const IDS: Array[String] = [CUBES, PARTS]
 
 static var _cfg: Dictionary = {}
 static var _warned: Dictionary = {}

@@ -76,7 +76,8 @@ static func simulate(world_state: Dictionary, seconds: float, junk_left: float =
 	res["robots"] = robots.duplicate(true)
 	var g: Dictionary = {"grew": 0, "bloomed": 0, "seeds": 0.0, "hexes": {}}
 	if garden != null:
-		g = grow_garden(garden, float(res["seconds"]), has_waterer(robots), maxf(Economy.stat("plant_growth"), 0.1), maxf(Economy.stat("seed_yield"), 0.1))
+		var auto: bool = AutoGrow.on()  # [v13goals] plants never get thirsty and drop no seeds now
+		g = grow_garden(garden, float(res["seconds"]), auto or has_waterer(robots), maxf(Economy.stat("plant_growth"), 0.1), 0.0 if auto else maxf(Economy.stat("seed_yield"), 0.1))
 	res["garden"] = g
 	res["garden_grown"] = garden != null
 	return res
@@ -124,7 +125,7 @@ static func has_waterer(robots: Array) -> bool:
 
 static func apply(result: Dictionary) -> void:
 	var gr: Dictionary = result.get("garden", {})  # [extras] simulate()'s garden: seeds and bloom count
-	if float(gr.get("seeds", 0.0)) > 0.0:
+	if float(gr.get("seeds", 0.0)) > 0.0 and not AutoGrow.on():
 		GameState.add_currency("seeds", BigNum.from_float(float(gr["seeds"])))
 	if int(gr.get("bloomed", 0)) > 0:
 		GameState.inc_stat("plants_bloomed", float(gr["bloomed"]))

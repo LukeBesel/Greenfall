@@ -376,7 +376,8 @@ func test_old_save_keeps_its_place_in_the_chain() -> void:  # [onboard2]
 	GameState.flags = {"objective_step": 3, "onboard_brief": true}
 	var o := Objectives.new()
 	add_child_autofree(o)
-	assert_true(o.step >= 3 + Objectives.EARLY_ADDED, "shifted past the new early objectives")
+	# [v13goals] Shifted past the early objectives, then mapped by id onto today's chain (old step 7 was "hex").
+	assert_eq(str((o.chain[o.step] as Dictionary).get("id", "")), Objectives.ORDER_V3[3 + Objectives.EARLY_ADDED], "shifted past the new early objectives")
 	assert_true(GameState.flags.get("objectives_v2", false))
 	GameState.flags = keep
 

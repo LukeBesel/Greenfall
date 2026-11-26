@@ -3,7 +3,7 @@ extends Node
 ## Runs the fixed-rate simulation tick (10 Hz) independent of frame rate.
 
 const SIM_HZ: float = 10.0
-const SAVE_VERSION: int = 5  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts; v5: the Ledger dropped (item 105)
+const SAVE_VERSION: int = 6  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts; v5: the Ledger dropped (item 105); v6: planting dropped (seeds -> cubes, planting robots -> Scoopies)
 const RATE_WINDOW_S: float = 60.0
 
 var currencies: Dictionary = {}  # id -> BigNum
@@ -42,7 +42,7 @@ func _ready() -> void:
 
 
 func new_game() -> void:
-	currencies = {"cubes": BigNum.zero(), "parts": BigNum.zero(), "seeds": BigNum.zero()}  # [money]
+	currencies = {"cubes": BigNum.zero(), "parts": BigNum.zero()}  # [money] [v13goals] no seeds
 	upgrades = {}
 	stats = {
 		"cubes_made": 0, "pure_cubes": 0, "perfect_cubes": 0, "lumpy_cubes": 0,
@@ -138,7 +138,7 @@ func spend(id: String, amount: BigNum) -> bool:
 ## their sources pay fractions (a bloom's seed_yield 0.5 x multipliers, 0.3 Parts per scooped metal
 ## unit, the compost press, scaled prices). The balance is always a whole number; what is left over
 ## is carried out of sight (flags.whole_carry) and joins the next gain, so nothing is lost.
-const WHOLE: Array[String] = ["parts", "seeds"]
+const WHOLE: Array[String] = ["parts"]
 
 
 func _keep_whole(id: String) -> void:

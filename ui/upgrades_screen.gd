@@ -168,8 +168,8 @@ func _ready() -> void:
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(sp)
-	# [money] [ui2] The three currencies, same icons and size: cubes, parts, seeds.
-	for cur: String in ["cubes", "parts", "seeds"]:
+	# [money] [ui2] The currencies, same icons and size: cubes, parts ([v13goals] no seeds).
+	for cur: String in Currencies.IDS:
 		header.add_child(CurrencyIcon.new(cur, 24.0))
 		var l: Label = HoloFrame.mono_label("0", 21, Color.WHITE)
 		l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -534,7 +534,8 @@ func _process(delta: float) -> void:
 		return
 	_currency.text = Currencies.have("cubes")  # [v10ui] one text for a balance everywhere
 	_parts_lbl.text = Currencies.have("parts")
-	_seeds_lbl.text = Currencies.have("seeds")
+	if _seeds_lbl:
+		_seeds_lbl.text = Currencies.have("seeds")
 	_refresh_t -= delta
 	if _refresh_t <= 0.0:
 		_refresh_t = 0.25

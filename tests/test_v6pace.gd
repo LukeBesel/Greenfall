@@ -119,7 +119,7 @@ func test_hub_steps_sit_between_the_base_steps() -> void:
 	var ids: Array = []
 	for o: Dictionary in Economy.read_json("res://data/objectives.json").get("objectives", []):
 		ids.append(str(o["id"]))
-	var order: Array = ["robot", "hex2", "seed", "robot2", "haul", "hex10", "map", "base2", "shuttle", "hub_fly_2", "hub_wake_2", "hub_fly_3", "hub_wake_3", "rocket_tier_2", "base3", "hub_fly_4", "hub_wake_4"]  # [v10pace] three robots, ten hexes and the shuttle before the first flight
+	var order: Array = ["robot", "hex3", "robot2", "haul", "hex10", "base2", "shuttle", "hub_fly_2", "hub_wake_2", "hub_fly_3", "hub_wake_3", "rocket_tier_2", "base3", "hub_fly_4", "hub_wake_4"]  # [v10pace] three robots, ten hexes and the shuttle before the first flight
 	for i: int in range(1, order.size()):
 		assert_gt(ids.find(order[i]), ids.find(order[i - 1]), "%s comes after %s" % [order[i], order[i - 1]])
 		assert_gt(ids.find(order[i - 1]), -1)

@@ -1692,7 +1692,8 @@ func from_dict(d: Dictionary) -> void:
 	for r: Dictionary in d.get("robots", []):
 		var dv: Array = r.get("dir", [0, 1, 0])
 		var dir := Vector3(float(dv[0]), float(dv[1]), float(dv[2])).normalized()
-		var u: Dictionary = spawn(str(r["type"]), int(r.get("tier", 0)), grid.cell_at(dir), int(r.get("hub", hub_cell)), str(r.get("name", "")))
+		var rtype: String = str(r["type"]) if Economy.robots.has(str(r["type"])) else "scoopie"  # [v13goals] a retired type (Seedling, Drip) cleans
+		var u: Dictionary = spawn(rtype, int(r.get("tier", 0)), grid.cell_at(dir), int(r.get("hub", hub_cell)), str(r.get("name", "")))
 		var hv: Array = r.get("heading", [0, 0, 0])
 		var rec: Dictionary = u["rec"]
 		rec["dir"] = dir

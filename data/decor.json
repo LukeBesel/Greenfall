@@ -7,7 +7,7 @@
   "unlock_hub_level": 5,
   "types": [
     {"id": "path", "name": "Stone Path", "desc": "Flat stepping stones. Paths join everything up.", "size": [1, 1], "cost": {"cubes": 300}, "charm": 0.2, "wildlife": []},
-    {"id": "flower_bed", "name": "Flower Bed", "desc": "A low bed of mixed flowers. Bees and butterflies approve.", "size": [2, 1], "cost": {"cubes": 2500, "seeds": 5}, "charm": 1.2, "wildlife": ["bee", "butterfly", "bird"]},
+    {"id": "flower_bed", "name": "Flower Bed", "desc": "A low bed of mixed flowers. Bees and butterflies approve.", "size": [2, 1], "cost": {"cubes": 2500}, "charm": 1.2, "wildlife": ["bee", "butterfly", "bird"]},
     {"id": "planter", "name": "Planter", "desc": "A white hex planter with a small shrub, like the ones the future city grows.", "size": [1, 1], "cost": {"cubes": 3000}, "charm": 1.0, "wildlife": ["bird"]},
     {"id": "bench", "name": "Bench", "desc": "Wood slats on cast feet. Cats like to sleep on it.", "size": [2, 1], "cost": {"cubes": 5000}, "charm": 1.5, "wildlife": ["cat", "bird"]},
     {"id": "lamp", "name": "Garden Lamp", "desc": "A slim lamp with a warm glow after dark.", "size": [1, 1], "cost": {"cubes": 4000}, "charm": 1.0, "wildlife": ["moth"]},

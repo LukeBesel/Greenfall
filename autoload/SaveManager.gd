@@ -356,6 +356,9 @@ static func migrate(d: Dictionary) -> Dictionary:
 	if v < 5:
 		d = drop_ledger(d)  # owner item 105: the Ledger is gone
 		v = 5
+	if v < 6:
+		d = drop_planting(d)  # [v13goals] owner 26 Nov: the player only cleans
+		v = 6
 	d["version"] = v
 	return d
 
@@ -401,6 +404,54 @@ const LEDGER_FLAGS: Array[String] = ["ledger_act", "ledger_resolved", "ledger_re
 const LEDGER_STATS: Array[String] = ["ledger_drops", "ledger_jammed", "ledger_seed_drops"]
 const LEDGER_ONCE: Array[String] = ["toast_ledger_note", "wren_ledger_drop", "toast_ledger_drone"]
 const LEDGER_RENAMED: Dictionary = {"shards:ledger_memo": "shards:pause_memo", "homeward:ledger_system": "homeward:buried_worlds"}
+
+
+## v5 -> v6 [v13goals], owner 26 Nov: "forget about the whole planting thing and only clean up
+## planet". Seeds are no currency any more: what a save held becomes cubes (data/currencies.json
+## legacy save rate, 25 each). The compost press's hopper is dropped. Seedling and Drip robots
+## (every robot record anywhere in the save: crews, far hubs, kits) become Scoopies of the same tier,
+## and a Multibot set to plant or water cleans. The garden's plants stay: they grow by themselves now.
+## Objective steps are remapped by id in Objectives (flag objectives_v5). Running it twice changes
+## nothing more.
+const PLANTING_ROBOTS: Array[String] = ["seedling", "drip"]
+static func drop_planting(d: Dictionary) -> Dictionary:
+	if d.get("currencies") is Dictionary and (d["currencies"] as Dictionary).has("seeds"):
+		var cur: Dictionary = d["currencies"]
+		var res: Dictionary = Currencies.migrate_serialized(cur)
+		var out: Dictionary = res["currencies"]
+		for id: String in Currencies.IDS:
+			if not out.has(id):
+				out[id] = BigNum.zero().serialize()
+		d["currencies"] = out
+	var flags: Dictionary = d.get("flags", {}) if d.get("flags") is Dictionary else {}
+	flags.erase("press_hopper")
+	var cs: Variant = flags.get("contracts")  # Requests to plant, bloom or sustain are gone: their slots wait for a new offer
+	if cs is Dictionary and (cs as Dictionary).get("slots") is Array:
+		var slots: Array = cs["slots"]
+		for i: int in slots.size():
+			if slots[i] is Dictionary and str((slots[i] as Dictionary).get("tpl", "")) in ["plant", "bloom", "sustain"]:
+				slots[i] = {"state": "wait", "wait": 30.0}
+	flags["planting_dropped"] = true
+	d["flags"] = flags
+	_retype_robots(d)
+	return d
+
+
+static func _retype_robots(v: Variant) -> void:
+	if v is Dictionary:
+		var dd: Dictionary = v
+		if dd.has("type") and (dd.has("tier") or dd.has("role") or dd.has("name")):
+			if str(dd["type"]) in PLANTING_ROBOTS:
+				dd["type"] = "scoopie"
+			if str(dd.get("role", "")) in ["plant", "water"]:
+				dd["role"] = "clean"
+		for k: Variant in dd:
+			if dd[k] is Dictionary or dd[k] is Array:
+				_retype_robots(dd[k])
+	elif v is Array:
+		for e: Variant in v:
+			if e is Dictionary or e is Array:
+				_retype_robots(e)
 
 
 static func drop_ledger(d: Dictionary) -> Dictionary:

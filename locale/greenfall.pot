@@ -43,7 +43,7 @@ msgstr ""
 msgid "Needs research: %s"
 msgstr ""
 
-#: autoload/Economy.gd:195 systems/research.gd:206
+#: autoload/Economy.gd:195 systems/research.gd:208
 msgid "Needs base level %d"
 msgstr ""
 
@@ -459,8 +459,8 @@ msgid "Requires hub level %d or research: %s."
 msgstr ""
 
 #: automation/telescope.gd:109 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
-#: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
+#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:150
+#: systems/camp/hub_builds.gd:160 systems/camp/hub_builds.gd:188 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr ""
@@ -477,7 +477,7 @@ msgstr ""
 msgid "E   Telescope: look across the system"
 msgstr ""
 
-#: core/offline.gd:146
+#: core/offline.gd:147
 msgid "While you were away, your robots earned %s cubes."
 msgstr ""
 
@@ -497,11 +497,11 @@ msgstr ""
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr ""
 
-#: core/pace.gd:323 systems/events.gd:513 ui/goals_panel.gd:284
+#: core/pace.gd:323 systems/events.gd:516 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr ""
 
-#: core/pace.gd:341 tools/walk_opening.gd:324
+#: core/pace.gd:341 tools/walk_opening.gd:305
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr ""
 
@@ -641,7 +641,7 @@ msgstr ""
 msgid "LIGHT  WATER  LIFE"
 msgstr ""
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:249 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:247 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr ""
 
@@ -799,31 +799,31 @@ msgstr ""
 msgid "%s  ·  the %s"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:130
+#: planet/sites/orbit_sites.gd:128
 msgid "The rocket is in flight."
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:152
+#: planet/sites/orbit_sites.gd:150
 msgid "Bases restored: %d of %d"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:190
+#: planet/sites/orbit_sites.gd:188
 msgid "E   Rocket: choose a destination"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:226
 msgid "HOME"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:226
 msgid "NEXT STOP"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:228
 msgid "Upgrade the rocket first"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:248
+#: planet/sites/orbit_sites.gd:246
 msgid "%s site"
 msgstr ""
 
@@ -867,7 +867,7 @@ msgid ""
 "hopper %d%%  →  seeds"
 msgstr ""
 
-#: plants/garden.gd:373
+#: plants/garden.gd:456
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr ""
 
@@ -875,23 +875,23 @@ msgstr ""
 msgid "HEX  LV %d  %s"
 msgstr ""
 
-#: plants/hex_levels.gd:114
-msgid "      SUSTAIN  %d%%"
-msgstr ""
-
-#: plants/hex_levels.gd:116
-msgid "      THIRSTY"
-msgstr ""
-
-#: plants/hex_levels.gd:118
+#: plants/hex_levels.gd:114 plants/hex_levels.gd:122
 msgid "      next: %s"
 msgstr ""
 
-#: plants/hex_levels.gd:275
+#: plants/hex_levels.gd:118
+msgid "      SUSTAIN  %d%%"
+msgstr ""
+
+#: plants/hex_levels.gd:120
+msgid "      THIRSTY"
+msgstr ""
+
+#: plants/hex_levels.gd:301
 msgid "HEX LV %d  %s"
 msgstr ""
 
-#: plants/hex_levels.gd:279
+#: plants/hex_levels.gd:306
 msgid "Hex Lv %d  %s.   %s"
 msgstr ""
 
@@ -919,71 +919,71 @@ msgstr ""
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr ""
 
-#: player/patch.gd:371
+#: player/patch.gd:373
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr ""
 
-#: player/patch.gd:372
+#: player/patch.gd:374
 msgid "No seeds yet. Keep cleaning."
 msgstr ""
 
-#: player/patch.gd:415 player/patch.gd:443
+#: player/patch.gd:417 player/patch.gd:445
 msgid "Out of seeds. Blooming plants drop more."
 msgstr ""
 
-#: player/patch.gd:422
+#: player/patch.gd:424
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr ""
 
-#: player/patch.gd:426
+#: player/patch.gd:428
 msgid "Watering can is empty. Refill at the base."
 msgstr ""
 
-#: player/patch.gd:445
+#: player/patch.gd:447
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr ""
 
-#: player/patch.gd:447
+#: player/patch.gd:449
 msgid "Something is growing here already. Try a free spot."
 msgstr ""
 
-#: player/patch.gd:448
+#: player/patch.gd:450
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr ""
 
-#: player/patch.gd:449
+#: player/patch.gd:451
 msgid "Seeds need soil, not road or the pad."
 msgstr ""
 
-#: player/patch.gd:610
+#: player/patch.gd:612
 msgid "Your chest is empty. Scoop some trash first."
 msgstr ""
 
-#: player/patch.gd:650
+#: player/patch.gd:652
 msgid "PERFECT BALE  %s"
 msgstr ""
 
-#: player/patch.gd:656
+#: player/patch.gd:658
 msgid "OVERSTUFFED  %s"
 msgstr ""
 
-#: player/patch.gd:660
+#: player/patch.gd:662
 msgid "PURE  %s"
 msgstr ""
 
-#: player/patch.gd:662
+#: player/patch.gd:664
 msgid "SURGE  %s"
 msgstr ""
 
-#: player/patch.gd:665
+#: player/patch.gd:667
 msgid "  (streak +%d%%)"
 msgstr ""
 
-#: player/patch.gd:716
+#: player/patch.gd:718
 msgid "Salvaged: %s"
 msgstr ""
 
-#: player/patch.gd:747
+#: player/patch.gd:749
 msgid "Recovered: %s"
 msgstr ""
 
@@ -1103,33 +1103,33 @@ msgstr ""
 msgid "Ride the hover-sled"
 msgstr ""
 
-#: robots/fleet.gd:147
+#: robots/fleet.gd:149
 msgid "Locked · research %s"
 msgstr ""
 
-#: robots/fleet.gd:149
+#: robots/fleet.gd:151
 msgid "Crew full (%d/%d): upgrade the base"
 msgstr ""
 
-#: robots/fleet.gd:151 robots/fleet.gd:227
+#: robots/fleet.gd:153 robots/fleet.gd:229
 msgid "Not enough parts"
 msgstr ""
 
-#: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
-#: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: robots/fleet.gd:155 robots/fleet.gd:231 robots/water_net.gd:149
+#: systems/research.gd:212 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 #: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr ""
 
-#: robots/fleet.gd:191
+#: robots/fleet.gd:193
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr ""
 
-#: robots/fleet.gd:191
+#: robots/fleet.gd:193
 msgid " Seems %s."
 msgstr ""
 
-#: robots/fleet.gd:248
+#: robots/fleet.gd:250
 msgid "%s fleet upgraded to %s."
 msgstr ""
 
@@ -1183,7 +1183,7 @@ msgstr ""
 msgid "base barrel"
 msgstr ""
 
-#: robots/robot.gd:263 systems/research.gd:416
+#: robots/robot.gd:263 systems/research.gd:418
 msgid "tank"
 msgstr ""
 
@@ -1548,27 +1548,27 @@ msgstr ""
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice_orbit.gd:425
+#: scenes/slice_orbit.gd:426
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
-#: scenes/slice_orbit.gd:441
+#: scenes/slice_orbit.gd:442
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:511 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
+#: scenes/slice_orbit.gd:511 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1049
+#: scenes/slice_orbit.gd:1055
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr ""
 
-#: scenes/slice_orbit.gd:1149 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1155 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr ""
 
@@ -1694,7 +1694,7 @@ msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr ""
 
 #: story/core_charge.gd:276
-msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
+msgid "Every patch you clean down there turns into a bed like these. You're not lost, Lumi. You're bringing it back."
 msgstr ""
 
 #: story/core_charge.gd:280
@@ -2043,63 +2043,63 @@ msgstr ""
 msgid "Lumi— I will find you— I will find—"
 msgstr ""
 
-#: story/objectives.gd:282
+#: story/objectives.gd:306
 msgid "Reward: %s"
 msgstr ""
 
-#: story/objectives.gd:521
+#: story/objectives.gd:545
 msgid "Objective complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:548
+#: story/objectives.gd:572
 msgid "Goal complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:1040
+#: story/objectives.gd:1064
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr ""
 
-#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:937
+#: story/objectives.gd:1086 story/objectives.gd:1315 tools/walk_opening.gd:918
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
-#: story/objectives.gd:1078
+#: story/objectives.gd:1102
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr ""
 
-#: story/objectives.gd:1080
+#: story/objectives.gd:1104
 msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr ""
 
-#: story/objectives.gd:1292
+#: story/objectives.gd:1316
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:1309 story/objectives.gd:1325
+#: story/objectives.gd:1333 story/objectives.gd:1349
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
-#: story/objectives.gd:1315
+#: story/objectives.gd:1339
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1319
+#: story/objectives.gd:1343
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1319
+#: story/objectives.gd:1343
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:1335
+#: story/objectives.gd:1359
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr ""
 
-#: story/objectives.gd:1336
+#: story/objectives.gd:1360
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1347
+#: story/objectives.gd:1371
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
@@ -2355,51 +2355,51 @@ msgstr ""
 msgid "Curio Capsule"
 msgstr ""
 
-#: systems/contracts.gd:319
+#: systems/contracts.gd:317
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr ""
 
-#: systems/contracts.gd:325
+#: systems/contracts.gd:323
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr ""
 
-#: systems/contracts.gd:337
+#: systems/contracts.gd:335
 msgid "The Requests board is ready to build: workbench, Upgrades tab, Request Board."
 msgstr ""
 
-#: systems/contracts.gd:346
+#: systems/contracts.gd:344
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
 msgstr ""
 
-#: systems/contracts.gd:349
+#: systems/contracts.gd:347
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
 msgstr ""
 
-#: systems/contracts.gd:434
+#: systems/contracts.gd:432
 msgid "Request done: %s."
 msgstr ""
 
-#: systems/contracts.gd:476
+#: systems/contracts.gd:474
 msgid "Requests reward: %s. Paint your fleet with it in the Locker."
 msgstr ""
 
-#: systems/contracts.gd:479
+#: systems/contracts.gd:477
 msgid "Requests reward: %s. Fit it in the Locker."
 msgstr ""
 
-#: systems/contracts.gd:483 systems/contracts.gd:492
+#: systems/contracts.gd:481 systems/contracts.gd:490
 msgid "Requests reward: %s."
 msgstr ""
 
-#: systems/contracts.gd:500
+#: systems/contracts.gd:498
 msgid "Unknown item"
 msgstr ""
 
-#: systems/contracts.gd:513
+#: systems/contracts.gd:511
 msgid "Unlocks after %d requests"
 msgstr ""
 
-#: systems/contracts.gd:514
+#: systems/contracts.gd:512
 msgid "Locked"
 msgstr ""
 
@@ -2427,7 +2427,7 @@ msgstr ""
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr ""
 
-#: systems/decor.gd:124 systems/research.gd:202 systems/robot_builder.gd:348
+#: systems/decor.gd:124 systems/research.gd:204 systems/robot_builder.gd:348
 #: systems/robot_builder.gd:404 ui/stations_panel.gd:101 ui/telescope_panel.gd:44
 msgid "Needs %s"
 msgstr ""
@@ -2510,95 +2510,99 @@ msgstr ""
 msgid "north-west"
 msgstr ""
 
-#: systems/events.gd:473
+#: systems/events.gd:476
 msgid "STREAK x%d  +%d%%"
 msgstr ""
 
-#: systems/events.gd:521 systems/lumi_level.gd:218
+#: systems/events.gd:524 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr ""
 
-#: systems/events.gd:659
+#: systems/events.gd:662
 msgid "%d pieces of junk left around the crate"
 msgstr ""
 
-#: systems/events.gd:684
+#: systems/events.gd:687
 msgid "Supply crate opened: %s"
 msgstr ""
 
-#: systems/events.gd:686
+#: systems/events.gd:689
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr ""
 
-#: systems/events.gd:735
+#: systems/events.gd:738
 msgid "%d pieces grabbed at 3x"
 msgstr ""
 
-#: systems/events.gd:740
+#: systems/events.gd:743
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr ""
 
-#: systems/events.gd:740
+#: systems/events.gd:743
 msgid "The surge faded. Next time!"
 msgstr ""
 
-#: systems/events.gd:789
+#: systems/events.gd:790
+msgid "The green comes up faster in the rain"
+msgstr ""
+
+#: systems/events.gd:800
 msgid "Every plant is drinking"
 msgstr ""
 
-#: systems/events.gd:799
+#: systems/events.gd:810
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr ""
 
-#: systems/events.gd:820
+#: systems/events.gd:831
 msgid "E   fix %s's hiccup"
 msgstr ""
 
-#: systems/events.gd:847
+#: systems/events.gd:858
 msgid "%s is %d m away"
 msgstr ""
 
-#: systems/events.gd:849
+#: systems/events.gd:860
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr ""
 
-#: systems/events.gd:863
+#: systems/events.gd:874
 msgid "%s is fixed and back to work. %s"
 msgstr ""
 
-#: systems/events.gd:917
+#: systems/events.gd:928
 msgid "Wildlife Visit: %s"
 msgstr ""
 
-#: systems/events.gd:918
+#: systems/events.gd:929
 msgid "E   take a photo of the %s"
 msgstr ""
 
-#: systems/events.gd:959
+#: systems/events.gd:970
 msgid "%s, %d m away"
 msgstr ""
 
-#: systems/events.gd:962
+#: systems/events.gd:973
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr ""
 
-#: systems/events.gd:992
+#: systems/events.gd:1003
 msgid "Snap! The %s is in your Collection. %s"
 msgstr ""
 
-#: systems/events.gd:992
+#: systems/events.gd:1003
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr ""
 
-#: systems/events.gd:1043
+#: systems/events.gd:1054
 msgid "Signal %d%%"
 msgstr ""
 
-#: systems/events.gd:1047
+#: systems/events.gd:1058
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr ""
 
-#: systems/events.gd:1049
+#: systems/events.gd:1060
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr ""
 
@@ -2869,119 +2873,119 @@ msgstr ""
 msgid "Needs %s cubes."
 msgstr ""
 
-#: systems/research.gd:184
+#: systems/research.gd:186
 msgid "Unknown research"
 msgstr ""
 
-#: systems/research.gd:192
+#: systems/research.gd:194
 msgid "Already researched"
 msgstr ""
 
-#: systems/research.gd:194
+#: systems/research.gd:196
 msgid "Researching now"
 msgstr ""
 
-#: systems/research.gd:196
+#: systems/research.gd:198
 msgid "Already queued"
 msgstr ""
 
-#: systems/research.gd:208
+#: systems/research.gd:210
 msgid "Queue is full"
 msgstr ""
 
-#: systems/research.gd:356 ui/codex_screen.gd:893
+#: systems/research.gd:358 ui/codex_screen.gd:893
 msgid "%ds"
 msgstr ""
 
-#: systems/research.gd:403 systems/research.gd:464
+#: systems/research.gd:405 systems/research.gd:466
 msgid "Research: %s"
 msgstr ""
 
-#: systems/research.gd:413
+#: systems/research.gd:415
 msgid "scoop reach"
 msgstr ""
 
-#: systems/research.gd:413
+#: systems/research.gd:415
 msgid "scoop width"
 msgstr ""
 
-#: systems/research.gd:413
+#: systems/research.gd:415
 msgid "compartment size"
 msgstr ""
 
-#: systems/research.gd:414
+#: systems/research.gd:416
 msgid "bale value"
 msgstr ""
 
-#: systems/research.gd:414
+#: systems/research.gd:416
 msgid "magnet radius"
 msgstr ""
 
-#: systems/research.gd:414
+#: systems/research.gd:416
 msgid "scoop speed"
 msgstr ""
 
-#: systems/research.gd:415
+#: systems/research.gd:417
 msgid "field-note cubes"
 msgstr ""
 
-#: systems/research.gd:415
+#: systems/research.gd:417
 msgid "research speed"
 msgstr ""
 
-#: systems/research.gd:415
+#: systems/research.gd:417
 msgid "lake clarity"
 msgstr ""
 
-#: systems/research.gd:416
+#: systems/research.gd:418
 msgid "speed"
 msgstr ""
 
-#: systems/research.gd:416
+#: systems/research.gd:418
 msgid "work rate"
 msgstr ""
 
-#: systems/research.gd:416
+#: systems/research.gd:418
 msgid "range"
 msgstr ""
 
-#: systems/research.gd:417
+#: systems/research.gd:419
 msgid "bale quality"
 msgstr ""
 
-#: systems/research.gd:417
+#: systems/research.gd:419
 msgid "carry"
 msgstr ""
 
-#: systems/research.gd:418
+#: systems/research.gd:420
 msgid "plant growth"
 msgstr ""
 
-#: systems/research.gd:418
+#: systems/research.gd:420
 msgid "seeds per bloom"
 msgstr ""
 
-#: systems/research.gd:439
+#: systems/research.gd:441
 msgid "Unlocks the %s robot"
 msgstr ""
 
-#: systems/research.gd:441
+#: systems/research.gd:443
 msgid "Unlocks %s seeds"
 msgstr ""
 
-#: systems/research.gd:443
+#: systems/research.gd:445
 msgid "Unlocks: %s"
 msgstr ""
 
-#: systems/research.gd:624
+#: systems/research.gd:626
 msgid "While you were away, research finished: %s."
 msgstr ""
 
-#: systems/research.gd:663
+#: systems/research.gd:665
 msgid "New robot plans: %s. %s"
 msgstr ""
 
-#: systems/research.gd:668
+#: systems/research.gd:670
 msgid "Research complete: %s."
 msgstr ""
 
@@ -3103,27 +3107,27 @@ msgstr ""
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr ""
 
-#: systems/camp/hub_builds.gd:140
+#: systems/camp/hub_builds.gd:143
 msgid "Trash bin, level %d of %d"
 msgstr ""
 
-#: systems/camp/hub_builds.gd:145
+#: systems/camp/hub_builds.gd:148
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr ""
 
-#: systems/camp/hub_builds.gd:149
+#: systems/camp/hub_builds.gd:152
 msgid "Tier %d of %d"
 msgstr ""
 
-#: systems/camp/hub_builds.gd:158
+#: systems/camp/hub_builds.gd:161
 msgid "%d of %d built"
 msgstr ""
 
-#: systems/camp/hub_builds.gd:174
+#: systems/camp/hub_builds.gd:177
 msgid "Museum"
 msgstr ""
 
-#: systems/camp/hub_builds.gd:175
+#: systems/camp/hub_builds.gd:178
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr ""
 
@@ -3151,7 +3155,7 @@ msgstr ""
 msgid "Half clean"
 msgstr ""
 
-#: systems/extras/album.gd:90 data/hex_levels.json:levels[5].name
+#: systems/extras/album.gd:90 data/hex_levels.json:auto_levels[5].name data/hex_levels.json:levels[5].name
 msgid "Thriving"
 msgstr ""
 
@@ -3341,26 +3345,30 @@ msgid "Plants grew"
 msgstr ""
 
 #: systems/extras/welcome_back.gd:80
-msgid "Bloomed (seeds)"
+msgid "Flowers bloomed"
 msgstr ""
 
 #: systems/extras/welcome_back.gd:82
+msgid "Bloomed (seeds)"
+msgstr ""
+
+#: systems/extras/welcome_back.gd:84
 msgid "Scrubbers cleaned the air"
 msgstr ""
 
-#: systems/extras/welcome_back.gd:141
+#: systems/extras/welcome_back.gd:143
 msgid "WELCOME BACK"
 msgstr ""
 
-#: systems/extras/welcome_back.gd:142
+#: systems/extras/welcome_back.gd:144
 msgid "Away %s"
 msgstr ""
 
-#: systems/extras/welcome_back.gd:163
+#: systems/extras/welcome_back.gd:165
 msgid "Robots work up to %d h while you're away."
 msgstr ""
 
-#: systems/extras/welcome_back.gd:166
+#: systems/extras/welcome_back.gd:168
 msgid "Back to work"
 msgstr ""
 
@@ -3428,7 +3436,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: tools/walk_opening.gd:756 ui/main_menu.gd:368 ui/pause_menu.gd:91
+#: tools/walk_opening.gd:737 ui/main_menu.gd:368 ui/pause_menu.gd:91
 msgid "Quit"
 msgstr ""
 
@@ -3704,7 +3712,8 @@ msgstr ""
 msgid "Refill"
 msgstr ""
 
-#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:auto_levels[1].name
+#: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr ""
 
@@ -4048,6 +4057,10 @@ msgstr ""
 
 #: ui/codex_screen.gd:805 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
+msgstr ""
+
+#: ui/codex_screen.gd:806
+msgid "Plants grown"
 msgstr ""
 
 #: ui/codex_screen.gd:806
@@ -4595,6 +4608,10 @@ msgstr ""
 msgid "Cleaned"
 msgstr ""
 
+#: ui/globe_view.gd:212
+msgid "Greening"
+msgstr ""
+
 #: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr ""
@@ -4691,11 +4708,11 @@ msgstr ""
 msgid "PLANT"
 msgstr ""
 
-#: ui/hotbar.gd:281
+#: ui/hotbar.gd:286
 msgid "+%d XP"
 msgstr ""
 
-#: ui/hotbar.gd:291
+#: ui/hotbar.gd:296
 msgid "CORE %d%%"
 msgstr ""
 
@@ -6760,30 +6777,6 @@ msgstr ""
 msgid "Build every kind of robot."
 msgstr ""
 
-#: data/achievements.json:achievements[seed].name
-msgid "The First Seed"
-msgstr ""
-
-#: data/achievements.json:achievements[seed].desc
-msgid "Find the first seed."
-msgstr ""
-
-#: data/achievements.json:achievements[plant_1].name data/cradle.json:heirlooms[green_thumb].name
-msgid "Green Thumb"
-msgstr ""
-
-#: data/achievements.json:achievements[plant_1].desc
-msgid "Plant a seed."
-msgstr ""
-
-#: data/achievements.json:achievements[plant_100].name
-msgid "Gardener"
-msgstr ""
-
-#: data/achievements.json:achievements[plant_100].desc
-msgid "Plant 100 seeds."
-msgstr ""
-
 #: data/achievements.json:achievements[bloom_50].name
 msgid "In Bloom"
 msgstr ""
@@ -7480,11 +7473,11 @@ msgstr ""
 msgid "A little floating camera bot with a big lens for a face. Builds once; then he follows Lumi from base to base and photo mode opens."
 msgstr ""
 
-#: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
+#: data/codex.json:categories[junk].name data/hex_levels.json:auto_levels[0].name data/hex_levels.json:levels[0].name
 msgid "Junk"
 msgstr ""
 
-#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
+#: data/codex.json:categories[plants].name
 msgid "Plants"
 msgstr ""
 
@@ -7561,7 +7554,7 @@ msgid "Meadow Grass"
 msgstr ""
 
 #: data/codex.json:plants.grass.hint
-msgid "Plant your first seeds."
+msgid "Grows by itself on clean ground."
 msgstr ""
 
 #: data/codex.json:plants.grass.desc
@@ -7573,7 +7566,7 @@ msgid "Tufted Grass"
 msgstr ""
 
 #: data/codex.json:plants.grass2.hint
-msgid "Keep planting."
+msgid "Keep cleaning: it comes up by itself."
 msgstr ""
 
 #: data/codex.json:plants.grass2.desc
@@ -7625,7 +7618,7 @@ msgid "Make a wish."
 msgstr ""
 
 #: data/codex.json:plants.dandelion.desc
-msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself, if you let it."
+msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself."
 msgstr ""
 
 #: data/codex.json:plants.fern.name
@@ -7697,7 +7690,7 @@ msgid "Needs Evergreen Saplings research."
 msgstr ""
 
 #: data/codex.json:plants.pine.desc
-msgid "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."
+msgid "Knee-high today. In a hundred years, a forest that smells of resin and rain. It takes root by itself, for whoever comes after."
 msgstr ""
 
 #: data/codex.json:plants.iceplant.name
@@ -7705,7 +7698,7 @@ msgid "Crystalline Iceplant"
 msgstr ""
 
 #: data/codex.json:plants.iceplant.hint data/codex.json:plants.rooibos.hint data/codex.json:plants.ursinia.hint
-msgid "Plant in the Dust Flats."
+msgid "Grows by itself in the Dust Flats."
 msgstr ""
 
 #: data/codex.json:plants.iceplant.desc
@@ -7733,7 +7726,7 @@ msgid "Periwinkle"
 msgstr ""
 
 #: data/codex.json:plants.periwinkle.hint data/codex.json:plants.frost_moss.hint
-msgid "A cold-hardy seed for the Frozen Port."
+msgid "Grows by itself at the Frozen Port (Cold-Hardy Plants)."
 msgstr ""
 
 #: data/codex.json:plants.periwinkle.desc
@@ -7753,7 +7746,7 @@ msgid "Marsh Reed"
 msgstr ""
 
 #: data/codex.json:plants.reed.hint
-msgid "Plant on the drained streets of the Sunken City."
+msgid "Grows by itself on the drained streets of the Sunken City."
 msgstr ""
 
 #: data/codex.json:plants.reed.desc
@@ -7765,7 +7758,7 @@ msgid "Marsh Mint"
 msgstr ""
 
 #: data/codex.json:plants.marsh_mint.hint
-msgid "Plant in the Sunken City."
+msgid "Grows by itself in the Sunken City."
 msgstr ""
 
 #: data/codex.json:plants.marsh_mint.desc
@@ -7780,28 +7773,12 @@ msgstr ""
 msgid "A fork cart that never complains. It carries loose bales to the scale and parks itself neatly afterwards."
 msgstr ""
 
-#: data/codex.json:robots.seedling.hint
-msgid "Research the Seedling Blueprint."
-msgstr ""
-
-#: data/codex.json:robots.seedling.desc
-msgid "A planter bot with a seed hopper on its back. It pats every seed into the soil, twice, just to be sure."
-msgstr ""
-
-#: data/codex.json:robots.drip.hint
-msgid "Research the Drip Blueprint."
-msgstr ""
-
-#: data/codex.json:robots.drip.desc
-msgid "A watering bot with a sloshy tank. It makes a little happy gurgle when a plant drinks."
-msgstr ""
-
 #: data/codex.json:robots.multibot.hint
 msgid "Research the Multibot Blueprint."
 msgstr ""
 
 #: data/codex.json:robots.multibot.desc
-msgid "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."
+msgid "A helper that cleans or carries bales. Not the fastest at anything, but always where it is needed."
 msgstr ""
 
 #: data/codex.json:robots.skimmer.hint
@@ -8101,7 +8078,7 @@ msgid "Research Dune Charts and fly there."
 msgstr ""
 
 #: data/codex.json:frontiers.dust_flats.desc
-msgid "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Sustained hexes shelter their neighbours. The well is dry: Drips need Water Tanks."
+msgid "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Lush hexes shelter their neighbours. The well is dry: green comes slowly here."
 msgstr ""
 
 #: data/codex.json:frontiers.frozen_port.name data/frontiers.json:kinds[frozen_port].name data/junk.json:biomes.frozen_port.name
@@ -8149,7 +8126,7 @@ msgid "Wait for the wind in the Dust Flats."
 msgstr ""
 
 #: data/codex.json:frontiers.sandstorm.desc
-msgid "The wind picks up junk from the open flats and drops it on clean ground. Planted hexes are never touched, and Sustained hexes break the wind for every hex next to them."
+msgid "The wind picks up junk from the open flats and drops it on clean ground. Green hexes are never touched, and Lush hexes break the wind for every hex next to them."
 msgstr ""
 
 #: data/codex.json:frontiers.thaw.name
@@ -8197,7 +8174,7 @@ msgid "Find it in Cradle Returns."
 msgstr ""
 
 #: data/codex.json:frontiers.ark_pad.desc
-msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
+msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Lush before the ark will trust it."
 msgstr ""
 
 #: data/codex.json:animals.cat.name data/fauna.json:species[cat].name
@@ -8265,7 +8242,7 @@ msgid "Roe Deer"
 msgstr ""
 
 #: data/codex.json:animals.deer.hint
-msgid "Where: The edges of Sustained ground."
+msgid "Where: The edges of Lush ground."
 msgstr ""
 
 #: data/codex.json:animals.deer.desc
@@ -8277,7 +8254,7 @@ msgid "Red Fox"
 msgstr ""
 
 #: data/codex.json:animals.fox.hint
-msgid "Where: Sustained and Thriving hexes."
+msgid "Where: Lush and Thriving hexes."
 msgstr ""
 
 #: data/codex.json:animals.fox.desc
@@ -8289,11 +8266,11 @@ msgid "Honeybee"
 msgstr ""
 
 #: data/codex.json:animals.bee.hint
-msgid "Where: Flowers on Sustained hexes."
+msgid "Where: Flowers on Lush hexes."
 msgstr ""
 
 #: data/codex.json:animals.bee.desc
-msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
+msgid "Bees came back with the blooms. Every flower bed in full bloom gets its own little hum."
 msgstr ""
 
 #: data/codex.json:animals.songbird.name data/fauna.json:species[songbird].name
@@ -8349,7 +8326,7 @@ msgid "Green Frog"
 msgstr ""
 
 #: data/codex.json:animals.frog.hint
-msgid "Where: Lake shores once they're planted."
+msgid "Where: Lake shores once they're green."
 msgstr ""
 
 #: data/codex.json:animals.frog.desc
@@ -8373,7 +8350,7 @@ msgid "Fennec Fox"
 msgstr ""
 
 #: data/codex.json:animals.fennec.hint
-msgid "Where: Planted ground in the Dust Flats."
+msgid "Where: Green ground in the Dust Flats."
 msgstr ""
 
 #: data/codex.json:animals.fennec.desc
@@ -8409,7 +8386,7 @@ msgid "Arctic Fox"
 msgstr ""
 
 #: data/codex.json:animals.arctic_fox.hint
-msgid "Where: Planted ground at the Frozen Port."
+msgid "Where: Green ground at the Frozen Port."
 msgstr ""
 
 #: data/codex.json:animals.arctic_fox.desc
@@ -8504,6 +8481,10 @@ msgstr ""
 msgid "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."
 msgstr ""
 
+#: data/cradle.json:heirlooms[green_thumb].name
+msgid "Green Thumb"
+msgstr ""
+
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
 msgstr ""
@@ -8545,7 +8526,7 @@ msgid "Seed Vault"
 msgstr ""
 
 #: data/cradle.json:heirlooms[seed_vault].desc
-msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin)."
+msgid "Seeds from the vault ride in every new pod: clean ground greens 8% faster per level."
 msgstr ""
 
 #: data/cradle.json:heirlooms[head_start].name
@@ -8690,18 +8671,6 @@ msgstr ""
 
 #: data/currencies.json:currencies[parts].desc
 msgid "Robot parts and building stock salvaged from junk, dug up with the detector, or made by the recycler. Pays for robots and their Mk tiers, base levels, stations, Locker styles, rocket stages and outpost repairs."
-msgstr ""
-
-#: data/currencies.json:currencies[seeds].name
-msgid "Seeds"
-msgstr ""
-
-#: data/currencies.json:currencies[seeds].short
-msgid "SEEDS"
-msgstr ""
-
-#: data/currencies.json:currencies[seeds].desc
-msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
 msgstr ""
 
 #: data/decor.json:types[path].name
@@ -9879,11 +9848,11 @@ msgid "Rain Shower"
 msgstr ""
 
 #: data/events.json:events[rain_shower].toast
-msgid "Rain! Your plants stay watered while it lasts."
+msgid "Rain! The clean ground greens faster while it lasts."
 msgstr ""
 
 #: data/events.json:events[rain_shower].hud
-msgid "Plants stay watered while it rains"
+msgid "Clean ground greens faster in the rain"
 msgstr ""
 
 #: data/events.json:events[robot_hiccup].name
@@ -9984,22 +9953,6 @@ msgstr ""
 
 #: data/events.json:contracts.templates[streak].text
 msgid "Reach a tier %d cleaning streak"
-msgstr ""
-
-#: data/events.json:contracts.templates[plant].text
-msgid "Plant %d sprouts"
-msgstr ""
-
-#: data/events.json:contracts.templates[bloom].text
-msgid "Grow %d plants to bloom"
-msgstr ""
-
-#: data/events.json:contracts.templates[sustain].text
-msgid "Get %d more hexes to Sustained"
-msgstr ""
-
-#: data/events.json:contracts.templates[sustain].text_1
-msgid "Get one more hex to Sustained"
 msgstr ""
 
 #: data/events.json:liveries[livery_neon].name
@@ -10439,7 +10392,7 @@ msgid "Tiny Cactus"
 msgstr ""
 
 #: data/events.json:trinkets[capsule_tiny_cactus].desc
-msgid "Needs no water. Mocks the Drips."
+msgid "Needs no water. Quietly smug about it."
 msgstr ""
 
 #: data/events.json:trinkets[capsule_holo_koi].name
@@ -10738,14 +10691,6 @@ msgstr ""
 msgid "Clean 5 hexes"
 msgstr ""
 
-#: data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr ""
-
-#: data/goals.json:goals[plant_5].text
-msgid "Plant the Settler seed"
-msgstr ""
-
 #: data/goals.json:goals[hex_7].text
 msgid "Clean 7 hexes"
 msgstr ""
@@ -10778,10 +10723,6 @@ msgstr ""
 msgid "Clean 12 hexes"
 msgstr ""
 
-#: data/goals.json:goals[hexlv_2].text
-msgid "Get a hex to Planted"
-msgstr ""
-
 #: data/goals.json:goals[hex_15].text
 msgid "Clean 15 hexes"
 msgstr ""
@@ -10802,10 +10743,6 @@ msgstr ""
 msgid "Base to level 3"
 msgstr ""
 
-#: data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr ""
-
 #: data/goals.json:goals[base_4].text
 msgid "Upgrade the base to level 4"
 msgstr ""
@@ -10823,20 +10760,12 @@ msgstr ""
 msgid "Wake base 5 of 6"
 msgstr ""
 
-#: data/goals.json:goals[plant_25].text
-msgid "Plant 25 seeds"
-msgstr ""
-
 #: data/goals.json:goals[rocket_tier_3].text
 msgid "Upgrade the rocket to Mk III"
 msgstr ""
 
 #: data/goals.json:goals[rocket_tier_3].short
 msgid "Rocket to Mk III"
-msgstr ""
-
-#: data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
 msgstr ""
 
 #: data/goals.json:goals[base_5].text
@@ -10919,10 +10848,6 @@ msgstr ""
 msgid "Earn 10,000 cubes"
 msgstr ""
 
-#: data/goals.json:goals[bloom_5].text
-msgid "Grow 5 flowers to bloom"
-msgstr ""
-
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
 msgstr ""
@@ -10937,10 +10862,6 @@ msgstr ""
 
 #: data/goals.json:goals[recycle_5].text
 msgid "Recycle 5 bales"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_3].text
-msgid "Get a hex to Growing"
 msgstr ""
 
 #: data/goals.json:goals[skimmer_1].text
@@ -10995,120 +10916,24 @@ msgstr ""
 msgid "Research Pollinator Survey"
 msgstr ""
 
-#: data/goals.json:goals[bloom_25].text
-msgid "Grow 25 flowers to bloom"
-msgstr ""
-
-#: data/goals.json:goals[plant_60].text
-msgid "Plant 60 seeds"
-msgstr ""
-
-#: data/goals.json:goals[drip_2].text
-msgid "Run 2 Drip robots"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_4].text
-msgid "Get a hex to Sustained"
-msgstr ""
-
-#: data/goals.json:goals[drip_4].text
-msgid "Run 4 Drip robots"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_4x3].text
-msgid "Get 3 hexes to Sustained"
-msgstr ""
-
 #: data/goals.json:goals[spot_deer].text
 msgid "Spot a deer"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_5].text
-msgid "Get a hex to Thriving"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_4x5].text
-msgid "Get 5 hexes to Sustained"
-msgstr ""
-
-#: data/goals.json:goals[plant_100].text
-msgid "Plant 100 seeds"
 msgstr ""
 
 #: data/goals.json:goals[robots_15].text
 msgid "Build 15 robots"
 msgstr ""
 
-#: data/goals.json:goals[hexlv_5x3].text
-msgid "Get 3 hexes to Thriving"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_4x8].text
-msgid "Get 8 hexes to Sustained"
-msgstr ""
-
 #: data/goals.json:goals[earn_75k].text
 msgid "Earn 75,000 cubes"
-msgstr ""
-
-#: data/goals.json:goals[bloom_300].text
-msgid "Grow 300 flowers to bloom"
-msgstr ""
-
-#: data/goals.json:goals[stipend_2k].text
-msgid "Garden stipend: 2,000 cubes"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_5x8].text
-msgid "Get 8 hexes to Thriving"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_4x10].text
-msgid "Get 10 hexes to Sustained"
 msgstr ""
 
 #: data/goals.json:goals[earn_100k].text
 msgid "Earn 100,000 cubes"
 msgstr ""
 
-#: data/goals.json:goals[hexlv_4x15].text
-msgid "Get 15 hexes to Sustained"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_5x15].text
-msgid "Get 15 hexes to Thriving"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_4x20].text
-msgid "Get 20 hexes to Sustained"
-msgstr ""
-
-#: data/goals.json:goals[stipend_5k].text
-msgid "Garden stipend: 5,000 cubes"
-msgstr ""
-
-#: data/goals.json:goals[bloom_500].text
-msgid "Grow 500 flowers to bloom"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_5x20].text
-msgid "Get 20 hexes to Thriving"
-msgstr ""
-
 #: data/goals.json:goals[air_1k].text
 msgid "Filter 1,000 m3 of air"
-msgstr ""
-
-#: data/goals.json:goals[stipend_7k].text
-msgid "Garden stipend: 7,500 cubes"
-msgstr ""
-
-#: data/goals.json:goals[stipend_10k].text
-msgid "Garden stipend: 10,000 cubes"
-msgstr ""
-
-#: data/goals.json:goals[hexlv_5x25].text
-msgid "Get 25 hexes to Thriving"
 msgstr ""
 
 #: data/goals.json:goals[extras_retire].text
@@ -11143,10 +10968,6 @@ msgstr ""
 msgid "A robot type to Mk II"
 msgstr ""
 
-#: data/goals.json:goals[stipend_20k].text
-msgid "Garden stipend: 20,000 cubes"
-msgstr ""
-
 #: data/goals.json:goals[earn_150k].text
 msgid "Earn 150,000 cubes"
 msgstr ""
@@ -11161,14 +10982,6 @@ msgstr ""
 
 #: data/goals.json:goals[hex_50].text
 msgid "Clean 50 hexes"
-msgstr ""
-
-#: data/goals.json:goals[bloom_800].text
-msgid "Grow 800 flowers to bloom"
-msgstr ""
-
-#: data/goals.json:goals[restored_40].text
-msgid "Fully restore 40 hexes"
 msgstr ""
 
 #: data/goals.json:goals[base2_4].text
@@ -11219,14 +11032,6 @@ msgstr ""
 msgid "Plant the last seed"
 msgstr ""
 
-#: data/goals.json:goals[ark_1].text
-msgid "Plant a Seed Ark wave"
-msgstr ""
-
-#: data/goals.json:goals[ark_3].text
-msgid "Plant three Seed Ark waves"
-msgstr ""
-
 #: data/goals.json:goals[late_bridge].text
 msgid "Open the Ark Bridge"
 msgstr ""
@@ -11245,10 +11050,6 @@ msgstr ""
 
 #: data/goals.json:goals[late_garden_kinds].text
 msgid "Place 5 kinds of decoration"
-msgstr ""
-
-#: data/goals.json:goals[late_ark_5].text
-msgid "Plant five Seed Ark waves"
 msgstr ""
 
 #: data/goals.json:goals[late_world_1].text
@@ -11275,8 +11076,40 @@ msgstr ""
 msgid "Find 30 curiosities"
 msgstr ""
 
-#: data/hex_levels.json:levels[0].hint
+#: data/hex_levels.json:auto_levels[0].hint data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
+msgstr ""
+
+#: data/hex_levels.json:auto_levels[1].hint
+msgid "Grass comes back by itself"
+msgstr ""
+
+#: data/hex_levels.json:auto_levels[2].name
+msgid "Grassy"
+msgstr ""
+
+#: data/hex_levels.json:auto_levels[2].hint
+msgid "Flowers come up by themselves"
+msgstr ""
+
+#: data/hex_levels.json:auto_levels[3].name
+msgid "Blooming"
+msgstr ""
+
+#: data/hex_levels.json:auto_levels[3].hint
+msgid "Bushes fill in. Clean ground round it helps"
+msgstr ""
+
+#: data/hex_levels.json:auto_levels[4].name
+msgid "Lush"
+msgstr ""
+
+#: data/hex_levels.json:auto_levels[4].hint
+msgid "Animals come once it is in full bloom"
+msgstr ""
+
+#: data/hex_levels.json:auto_levels[5].hint data/hex_levels.json:levels[5].hint
+msgid "Wildlife has moved in"
 msgstr ""
 
 #: data/hex_levels.json:levels[1].hint
@@ -11297,10 +11130,6 @@ msgstr ""
 
 #: data/hex_levels.json:levels[4].hint
 msgid "Bring every plant to bloom"
-msgstr ""
-
-#: data/hex_levels.json:levels[5].hint
-msgid "Wildlife has moved in"
 msgstr ""
 
 #: data/homeward.json:planets[verdance].name data/planets.json:verdance.name data/telescope.json:planets_default[verdance].name
@@ -11769,11 +11598,7 @@ msgid "I run the Cradle, our big ship. I never stopped listening for you."
 msgstr ""
 
 #: data/objectives.json:wren_brief.lines
-msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
-msgstr ""
-
-#: data/objectives.json:wren_brief.lines
-msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
+msgid "Clean the ground, and Verdance turns green by itself. That green fills your Bloom Core, and it shows the Cradle the way home."
 msgstr ""
 
 #: data/objectives.json:brief.lines
@@ -11810,18 +11635,6 @@ msgstr ""
 
 #: data/objectives.json:objectives[compartment].lines
 msgid "A bigger chest means fewer trips. The bench can fit one."
-msgstr ""
-
-#: data/objectives.json:objectives[scoop_size].text
-msgid "Buy Scoop Size"
-msgstr ""
-
-#: data/objectives.json:objectives[scoop_size].desc
-msgid "Workbench: grab more trash at once."
-msgstr ""
-
-#: data/objectives.json:objectives[scoop_size].lines
-msgid "A wider scoop. More trash per grab, less walking."
 msgstr ""
 
 #: data/objectives.json:objectives[baler].text
@@ -11873,7 +11686,7 @@ msgid "Clean the glowing hex"
 msgstr ""
 
 #: data/objectives.json:objectives[hex].desc
-msgid "Plants only grow on clean ground. Clear the outline."
+msgid "Clean ground turns green by itself. Clear the outline."
 msgstr ""
 
 #: data/objectives.json:objectives[hex].lines
@@ -11904,40 +11717,12 @@ msgstr ""
 msgid "The Bot Bay hums! Walk up to it and build a helper."
 msgstr ""
 
-#: data/objectives.json:objectives[hex2].text
-msgid "Clean 2 hexes"
-msgstr ""
-
-#: data/objectives.json:objectives[hex2].desc
-msgid "Your robot cleans on its own. Clean one more hex."
-msgstr ""
-
-#: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
-msgstr ""
-
 #: data/objectives.json:objectives[hex3].desc
-msgid "Your robot helps now. Clean ground lets the garden spread."
+msgid "Your robot cleans on its own. Clean ground turns green."
 msgstr ""
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Your robot cleans on its own. One more hex, Lumi."
-msgstr ""
-
-#: data/objectives.json:objectives[seed].text
-msgid "Plant the first seed"
-msgstr ""
-
-#: data/objectives.json:objectives[seed].desc
-msgid "Plants fill your Bloom Core."
-msgstr ""
-
-#: data/objectives.json:objectives[seed].hint
-msgid "Keep cleaning. Seeds turn up in clean ground."
-msgstr ""
-
-#: data/objectives.json:objectives[seed].lines
-msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
+msgid "Look at your clean hex, Lumi. Grass, coming back all by itself. The old seeds were only sleeping."
 msgstr ""
 
 #: data/objectives.json:objectives[robot2].text
@@ -11965,23 +11750,11 @@ msgid "A Haul Bug carries bales for you. Build one at the Bot Bay."
 msgstr ""
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "Your robots help. Clean ground is room to plant."
+msgid "Your robots help. The more is clean, the faster it greens."
 msgstr ""
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
-msgstr ""
-
-#: data/objectives.json:objectives[map].text
-msgid "Look at the map"
-msgstr ""
-
-#: data/objectives.json:objectives[map].desc
-msgid "Press {open_globe}. See how much of Verdance is clean."
-msgstr ""
-
-#: data/objectives.json:objectives[map].lines
-msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
 msgstr ""
 
 #: data/objectives.json:objectives[base2].text
@@ -12001,19 +11774,19 @@ msgid "Build the shuttle"
 msgstr ""
 
 #: data/objectives.json:objectives[shuttle].desc
-msgid "Workbench, Build tab. Garden Row has the seeds we need."
+msgid "Workbench, Build tab. Garden Row kept seeds for the Cradle."
 msgstr ""
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green."
+msgid "Lumi, the storm broke the Cradle's seed vault. Most of the Settlers' seeds are gone."
 msgstr ""
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "I found another old base, far away: Garden Row. It kept a big seed store."
+msgid "Far from here, an old base called Garden Row kept a seed store. Too far to walk."
 msgstr ""
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+msgid "Your robots keep cleaning here. Build a shuttle on the pad and fly there."
 msgstr ""
 
 #: data/objectives.json:objectives[hub_wake_2].text
@@ -12045,7 +11818,7 @@ msgid "First add the Research Desk: workbench, Upgrades tab."
 msgstr ""
 
 #: data/objectives.json:objectives[research1].lines
-msgid "Your bench can study now. Research unlocks new machines and seeds."
+msgid "Your bench can study now. Research unlocks new machines."
 msgstr ""
 
 #: data/objectives.json:objectives[hex20].desc
@@ -12173,7 +11946,7 @@ msgid "Windpump"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The Settlers' seed store: seeds to take to the next world."
+msgid "The Settlers' seed store: seeds for the Cradle's broken vault."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
@@ -12272,7 +12045,7 @@ msgstr ""
 msgid "Last Bus"
 msgstr ""
 
-#: data/planets.json:verdance.hubs[bus_depot].desc
+#: data/planets.json:verdance.hubs[bus_depot].desc data/planets.json:verdance.hubs[tank_hill].desc
 msgid "An old station off the route. Wake it for Parts."
 msgstr ""
 
@@ -12294,10 +12067,6 @@ msgstr ""
 
 #: data/planets.json:verdance.hubs[tank_hill].landmark.name
 msgid "Hill Tank"
-msgstr ""
-
-#: data/planets.json:verdance.hubs[tank_hill].desc
-msgid "An old station off the route. Wake it for Seeds."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[lake_light].name
@@ -12620,6 +12389,10 @@ msgstr ""
 msgid "Robotics"
 msgstr ""
 
+#: data/research.json:branches[botany].name
+msgid "Nature"
+msgstr ""
+
 #: data/research.json:branches[logistics].name
 msgid "Hauling"
 msgstr ""
@@ -12681,19 +12454,19 @@ msgid "Lumi rewrites the base's old assembly logic. The base can build a helper 
 msgstr ""
 
 #: data/research.json:nodes[seedling_blueprint].name
-msgid "Seedling Blueprint"
+msgid "Sorting Arms"
 msgstr ""
 
 #: data/research.json:nodes[seedling_blueprint].desc
-msgid "Plans for a small planter bot. Build it at the workbench."
+msgid "A second gripper on every Scoopie. It picks junk up faster."
 msgstr ""
 
 #: data/research.json:nodes[drip_blueprint].name
-msgid "Drip Blueprint"
+msgid "Haul Harness"
 msgstr ""
 
 #: data/research.json:nodes[drip_blueprint].desc
-msgid "A watering bot with a sloshy tank. Plants will love it."
+msgid "Wider forks and a strap. Every Haul Bug carries one more bale."
 msgstr ""
 
 #: data/research.json:nodes[bale_tuning].name
@@ -12709,7 +12482,7 @@ msgid "Multibot Blueprint"
 msgstr ""
 
 #: data/research.json:nodes[multibot_blueprint].desc
-msgid "A helper that can clean, plant or water. Jack of all trades."
+msgid "A helper that cleans or carries bales, wherever the crew is short. Jack of all trades."
 msgstr ""
 
 #: data/research.json:nodes[swarm_sync].name
@@ -12733,11 +12506,11 @@ msgid "Hardy Nettles"
 msgstr ""
 
 #: data/research.json:nodes[hardy_weeds].desc
-msgid "Nettles grow anywhere. Stingy, stubborn, and good for the soil."
+msgid "Nettles come up by themselves on clean ground. Stingy, stubborn, and good for the soil."
 msgstr ""
 
 #: data/research.json:nodes[wild_mint].desc
-msgid "A fresh green smell drifts over the cleared hexes."
+msgid "Mint comes up on its own over the cleared hexes. A fresh green smell drifts over them."
 msgstr ""
 
 #: data/research.json:nodes[pollinator_survey].name
@@ -12745,7 +12518,7 @@ msgid "Pollinator Survey"
 msgstr ""
 
 #: data/research.json:nodes[pollinator_survey].desc
-msgid "Count the visitors. The bees are back: every plant grows much faster, blooms drop more seeds, and Seedlings learn where flowers want to be."
+msgid "Count the visitors. The bees are back: clean ground greens much faster."
 msgstr ""
 
 #: data/research.json:nodes[hedgerows].name
@@ -12753,7 +12526,7 @@ msgid "Hedgerows"
 msgstr ""
 
 #: data/research.json:nodes[hedgerows].desc
-msgid "Dense little hedges. Birds will need somewhere to sit. Gardens grow a little faster again."
+msgid "Little hedges grow in by themselves. Birds will need somewhere to sit. Clean ground greens a little faster again."
 msgstr ""
 
 #: data/research.json:nodes[evergreens].name
@@ -12761,7 +12534,7 @@ msgid "Evergreen Saplings"
 msgstr ""
 
 #: data/research.json:nodes[evergreens].desc
-msgid "Tiny pines. In a hundred years, a forest. Blooms drop more seeds."
+msgid "Tiny pines take root by themselves. In a hundred years, a forest."
 msgstr ""
 
 #: data/research.json:nodes[water_testing].name
@@ -12773,19 +12546,19 @@ msgid "Dip strips and a lot of squinting. The lakes are sick, not dead."
 msgstr ""
 
 #: data/research.json:nodes[big_tanks].name
-msgid "Big Tanks"
+msgid "Skimmer Floats"
 msgstr ""
 
 #: data/research.json:nodes[big_tanks].desc
-msgid "Drip and Multibot carry more water per trip."
+msgid "Bigger floats on every Skimmer. It nets more before it heads for the shore."
 msgstr ""
 
 #: data/research.json:nodes[spray_heads].name
-msgid "Spray Heads"
+msgid "Lake Nets"
 msgstr ""
 
 #: data/research.json:nodes[spray_heads].desc
-msgid "A misting nozzle. Water bots reach further and work faster."
+msgid "A wider net. Skimmers scoop floating junk faster."
 msgstr ""
 
 #: data/research.json:nodes[silt_filters].name
@@ -12797,19 +12570,19 @@ msgid "Layered sand and charcoal. Murky water turns glassy."
 msgstr ""
 
 #: data/research.json:nodes[pump_lines].name
-msgid "Pump Lines"
+msgid "Shore Pumps"
 msgstr ""
 
 #: data/research.json:nodes[pump_lines].desc
-msgid "Hoses from the lake to the hub. Water bots refill faster."
+msgid "Pumps push the murk away from the shore. Skimmers move faster."
 msgstr ""
 
 #: data/research.json:nodes[irrigation].name
-msgid "Irrigation"
+msgid "Clear Springs"
 msgstr ""
 
 #: data/research.json:nodes[irrigation].desc
-msgid "Buried drip lines. The meadow drinks while you sleep."
+msgid "The old springs run clean again. The lakes clear, and the land round them greens faster."
 msgstr ""
 
 #: data/research.json:nodes[field_notebook].name
@@ -12897,23 +12670,23 @@ msgid "Dune Fences"
 msgstr ""
 
 #: data/research.json:nodes[dune_fences].desc
-msgid "Brush fences and hedges that break the wind. Sustained hexes shelter two rings around them, and sandstorms carry less."
+msgid "Brush fences and hedges that break the wind. Lush hexes shelter two rings around them, and sandstorms carry less."
 msgstr ""
 
 #: data/research.json:nodes[cold_hardy_seeds].name
-msgid "Cold-Hardy Seeds"
+msgid "Cold-Hardy Plants"
 msgstr ""
 
 #: data/research.json:nodes[cold_hardy_seeds].desc
-msgid "Seeds bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
+msgid "Plants bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
 msgstr ""
 
 #: data/research.json:nodes[dew_condensers].name
-msgid "Dew Condensers"
+msgid "Dew Catchers"
 msgstr ""
 
 #: data/research.json:nodes[dew_condensers].desc
-msgid "Cold fins on every Water Tank pull water out of the night air. Tanks refill much faster where the ground is dry."
+msgid "Cold fins pull water out of the night air. Dry ground greens faster."
 msgstr ""
 
 #: data/research.json:nodes[pump_works].name
@@ -13108,7 +12881,7 @@ msgstr ""
 msgid "Winch and hook."
 msgstr ""
 
-#: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
+#: data/robot_parts.json:parts[seed_drill].name
 msgid "Seed Drill"
 msgstr ""
 
@@ -13260,14 +13033,12 @@ msgstr ""
 msgid "Small cleaner. Picks junk in its hex and leaves bales behind."
 msgstr ""
 
-#: data/robots.json:types[scoopie].upgrades[0].name data/robots.json:types[haulbug].upgrades[0].name data/robots.json:types[seedling].upgrades[0].name
-#: data/robots.json:types[drip].upgrades[0].name data/robots.json:types[multibot].upgrades[0].name
+#: data/robots.json:types[scoopie].upgrades[0].name data/robots.json:types[haulbug].upgrades[0].name data/robots.json:types[multibot].upgrades[0].name
 msgid "Drive Motors"
 msgstr ""
 
-#: data/robots.json:types[scoopie].upgrades[0].unit data/robots.json:types[haulbug].upgrades[0].unit data/robots.json:types[seedling].upgrades[0].unit
-#: data/robots.json:types[drip].upgrades[0].unit data/robots.json:types[skimmer].upgrades[0].unit data/robots.json:types[multibot].upgrades[0].unit
-#: data/upgrades.json:upgrades[tread_speed].unit
+#: data/robots.json:types[scoopie].upgrades[0].unit data/robots.json:types[haulbug].upgrades[0].unit data/robots.json:types[skimmer].upgrades[0].unit
+#: data/robots.json:types[multibot].upgrades[0].unit data/upgrades.json:upgrades[tread_speed].unit
 msgid " m/s"
 msgstr ""
 
@@ -13275,8 +13046,7 @@ msgstr ""
 msgid "Arm Servos"
 msgstr ""
 
-#: data/robots.json:types[scoopie].upgrades[1].unit data/robots.json:types[seedling].upgrades[1].unit data/robots.json:types[drip].upgrades[3].unit
-#: data/robots.json:types[skimmer].upgrades[1].unit data/upgrades.json:upgrades[scoop_speed].unit
+#: data/robots.json:types[scoopie].upgrades[1].unit data/robots.json:types[skimmer].upgrades[1].unit data/upgrades.json:upgrades[scoop_speed].unit
 msgid "/s"
 msgstr ""
 
@@ -13299,39 +13069,6 @@ msgstr ""
 
 #: data/robots.json:types[haulbug].upgrades[1].name
 msgid "Longer Forks"
-msgstr ""
-
-#: data/robots.json:types[seedling].name
-msgid "Seedling"
-msgstr ""
-
-#: data/robots.json:types[seedling].desc
-msgid "Plants seeds in clean ground. Uses your seed stock."
-msgstr ""
-
-#: data/robots.json:types[drip].name
-msgid "Drip"
-msgstr ""
-
-#: data/robots.json:types[drip].desc
-msgid "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake."
-msgstr ""
-
-#: data/robots.json:types[drip].upgrades[1].name
-msgid "Bigger Tank"
-msgstr ""
-
-#: data/robots.json:types[drip].upgrades[2].name
-msgid "Wide Nozzle"
-msgstr ""
-
-#: data/robots.json:types[drip].upgrades[2].unit data/upgrades.json:upgrades[scoop_width].unit data/upgrades.json:upgrades[magnet_arm].unit
-#: data/upgrades.json:upgrades[detector_range].unit data/upgrades.json:upgrades[laser_reach].unit
-msgid " m"
-msgstr ""
-
-#: data/robots.json:types[drip].upgrades[3].name
-msgid "Fast Pump"
 msgstr ""
 
 #: data/robots.json:types[skimmer].name
@@ -13359,7 +13096,7 @@ msgid "Multibot"
 msgstr ""
 
 #: data/robots.json:types[multibot].desc
-msgid "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist."
+msgid "General helper. It cleans or carries bales, wherever its crew is short. Slower than a specialist."
 msgstr ""
 
 #: data/robots.json:tiers[1].name
@@ -14219,7 +13956,7 @@ msgid "Other old stations are waiting to be woken up."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "The seed tin is nearly empty. Garden Row kept the seed store."
+msgid "The Cradle lost most of its seeds in the storm. Garden Row kept a seed store."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -14291,7 +14028,7 @@ msgid "Big trash holds the most cubes. It takes strong arms."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Plants only grow on clean ground."
+msgid "Clean ground turns green by itself."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -14347,19 +14084,7 @@ msgid "More robots, more clean ground. They carry on when you fly on."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Nothing grows by itself here any more. You need seeds."
-msgstr ""
-
-#: data/story_reasons.json:goal_reasons
-msgid "Plants give green light for your Bloom Core."
-msgstr ""
-
-#: data/story_reasons.json:goal_reasons
-msgid "Planted ground starts to give green light."
-msgstr ""
-
-#: data/story_reasons.json:goal_reasons
-msgid "Every bloom gives green light, and a seed back."
+msgid "Green ground gives green light for your Bloom Core."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -14367,15 +14092,11 @@ msgid "The Recycler turns bales into parts for robots."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Watered plants grow, and growing plants give more green light."
+msgid "The more ground round it is clean, the faster it greens."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
 msgid "Trash floats on the lakes too. A Skimmer nets it."
-msgstr ""
-
-#: data/story_reasons.json:goal_reasons
-msgid "A Seedling plants for you, so green spreads faster."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -14387,11 +14108,7 @@ msgid "Your robots work hard. Let them look their best."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Thirsty plants stop growing. A Drip waters them for you."
-msgstr ""
-
-#: data/story_reasons.json:goal_reasons
-msgid "One helper that can clean, plant or water."
+msgid "One helper that cleans or carries, wherever the crew is short."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -14399,15 +14116,11 @@ msgid "A Mk II robot does the same job faster."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Bees carry pollen. With bees, every plant grows faster."
+msgid "Bees carry pollen. With bees, clean ground greens faster."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "A tank near the plants saves your Drips a long trip."
-msgstr ""
-
-#: data/story_reasons.json:goal_reasons
-msgid "Ground that stays watered can look after itself."
+msgid "Green ground that is left alone looks after itself."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -14419,15 +14132,11 @@ msgid "Thriving ground is a home for animals again."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Healthy gardens pay you back, all by themselves."
-msgstr ""
-
-#: data/story_reasons.json:goal_reasons
 msgid "Clean air lets the sun through to the plants."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Old robots have earned a rest in the garden."
+msgid "Old robots have earned a rest in the nursery garden."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -14452,6 +14161,10 @@ msgstr ""
 
 #: data/story_reasons.json:goal_reasons
 msgid "Robots keep working while you do other things."
+msgstr ""
+
+#: data/story_reasons.json:goal_reasons
+msgid "Clean ground turns green by itself, and green ground gives green light."
 msgstr ""
 
 #: data/story_reasons.json:exit
@@ -14823,6 +14536,11 @@ msgstr ""
 msgid "Longer arms, wider sweeps."
 msgstr ""
 
+#: data/upgrades.json:upgrades[scoop_width].unit data/upgrades.json:upgrades[magnet_arm].unit data/upgrades.json:upgrades[detector_range].unit
+#: data/upgrades.json:upgrades[laser_reach].unit
+msgid " m"
+msgstr ""
+
 #: data/upgrades.json:upgrades[tread_speed].name
 msgid "Tread Speed"
 msgstr ""
@@ -15000,7 +14718,7 @@ msgid "Workbench Mk III: Research Desk"
 msgstr ""
 
 #: data/workbench.json:tiers[2].desc
-msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
+msgid "Adds a research desk. Study what you dig up to unlock new machines."
 msgstr ""
 
 #: data/workbench.json:tiers[3].name
@@ -15848,11 +15566,11 @@ msgid "The Dust Flats. That glitter on the horizon is a solar farm, or what is l
 msgstr ""
 
 #: data/wren_lines.json:frontier_dust_flats
-msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."
+msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry. Green will come slowly out here."
 msgstr ""
 
 #: data/wren_lines.json:frontier_dust_flats
-msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."
+msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Clean it, and the windbreaks grow back."
 msgstr ""
 
 #: data/wren_lines.json:frontier_frozen_port
@@ -15868,7 +15586,7 @@ msgid "A harbour frozen in mid-shift. The cranes still have containers hanging o
 msgstr ""
 
 #: data/wren_lines.json:frontier_frozen_port
-msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."
+msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn roots."
 msgstr ""
 
 #: data/wren_lines.json:frontier_sunken_city
@@ -15900,7 +15618,7 @@ msgid "Cradle Returns. If we clean and green that pad, the ark can land. I mean 
 msgstr ""
 
 #: data/wren_lines.json:frontier_cradle_returns
-msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."
+msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad and let it grow green. Then we call them home."
 msgstr ""
 
 #: data/wren_lines.json:sandstorm_warn
@@ -15912,7 +15630,7 @@ msgid "Sandstorm on the horizon. Anything clean and bare out there is going to g
 msgstr ""
 
 #: data/wren_lines.json:sandstorm_warn
-msgid "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."
+msgid "Wind's rising. Green hexes hold, and lush ones shelter their neighbours. The rest, well."
 msgstr ""
 
 #: data/wren_lines.json:sandstorm_warn
@@ -15928,7 +15646,7 @@ msgid "Storm's past. It dropped junk on {n} hexes. The sheltered ones came throu
 msgstr ""
 
 #: data/wren_lines.json:sandstorm_over
-msgid "There. The wind gave some of it back. Plant a windbreak and it won't next time."
+msgid "There. The wind gave some of it back. Once it greens, it won't next time."
 msgstr ""
 
 #: data/wren_lines.json:sandstorm_over
@@ -15988,7 +15706,7 @@ msgid "...pad... lights..."
 msgstr ""
 
 #: data/wren_lines.json:cradle_pad
-msgid "The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained."
+msgid "The landing pad is clean. Now it needs to be alive: give it time to grow lush."
 msgstr ""
 
 #: data/wren_lines.json:cradle_pad
@@ -16056,11 +15774,11 @@ msgid "...you're dim... find green... any green..."
 msgstr ""
 
 #: data/wren_lines.json:low_core
-msgid "Your core's low. Plant something, Lumi. Anything. Green light is green light."
+msgid "Your core's low. Clean some ground, Lumi. Anything that greens. Green light is green light."
 msgstr ""
 
 #: data/wren_lines.json:low_core
-msgid "Running a little dim. A few blooms will fix that."
+msgid "Running a little dim. A few clean hexes will fix that."
 msgstr ""
 
 #: data/wren_lines.json:egg_sand_piano
@@ -16228,7 +15946,7 @@ msgid "New world, new sky. Same job. You're better at it than you were the first
 msgstr ""
 
 #: data/wren_lines.json:new_world
-msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
+msgid "Look at that. Ruined, dusty, nothing's grown here in centuries. You know what to do."
 msgstr ""
 
 #: data/wren_lines.json:garden_place

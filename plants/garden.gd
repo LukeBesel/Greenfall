@@ -45,6 +45,13 @@ var meadow: Meadow  # [green] living ground cover driven by hex life (plants/mea
 ## the cell, so a cell always gets the same slots; saved per cell, not by slot index.
 var sparse: bool = false
 var _saved_cells: Dictionary = {}  # cell -> [species bytes, stage bytes, water floats] not made yet
+## [v13goals] Automatic greening (plants/auto_grow.gd): hex id -> its greening speed (neighbourhood).
+var auto_rate: Dictionary = {}
+## [v13goals] A rain shower (systems/events.gd) speeds the greening up while it lasts.
+var rain_mult: float = 1.0
+var _auto_t: float = 0.0
+## Water a self-sown plant holds: it never gets thirsty.
+const AUTO_WATER: float = 1.0e6
 
 
 func setup() -> void:
@@ -181,7 +188,68 @@ func _make_slots_sphere(f: SphereField, hid: int) -> void:
 
 
 func unlocked() -> bool:
+	if AutoGrow.on():  # [v13goals] nobody plants by hand: no seed tool, no watering can
+		return false
 	return GameState.flags.get("seeds_unlocked", false)
+
+
+## [v13goals] One plant comes up by itself on a free soil slot of a clean hex (no seed spent), while
+## fewer than max_fill of its soil slots are grown. False when the hex is full or has no soil.
+func sow_auto(hid: int, max_fill: float) -> bool:
+	ensure_hex(hid)
+	var ids: PackedInt32Array = hex_slots.get(hid, PackedInt32Array())
+	if ids.is_empty():
+		return false
+	var free: Array[int] = []
+	var soil: int = 0
+	var grown: int = 0
+	for sl: int in ids:
+		if slot_species[sl] >= 0:
+			grown += 1
+			soil += 1
+		elif plantable(sl):
+			soil += 1
+			free.append(sl)
+	if free.is_empty() or grown >= ceili(max_fill * soil):
+		return false
+	var slot: int = free[randi() % free.size()]
+	slot_species[slot] = _pick_species(slot)
+	slot_stage[slot] = 0
+	slot_progress[slot] = 0.0
+	slot_water[slot] = AUTO_WATER
+	_update_inst(slot)
+	GameState.inc_stat("plants_sprouted")
+	_recount(hid)
+	return true
+
+
+## [v13goals] Slots of a hex that can carry a plant (grown or free soil, not paving).
+func soil_count(hid: int) -> int:
+	var n: int = 0
+	for sl: int in hex_slots.get(hid, PackedInt32Array()):
+		if slot_species[sl] >= 0 or plantable(sl):
+			n += 1
+	return n
+
+
+func _auto_step(delta: float) -> void:
+	_auto_t += delta
+	var tick: float = float(AutoGrow.cfg().get("tick_s", 2.0))
+	if _auto_t < tick:
+		return
+	var dt: float = _auto_t
+	_auto_t = 0.0
+	var hl: HexLevels = world.get("hex_levels") as HexLevels if world else null
+	if hl == null:
+		return
+	AutoGrow.sow_step(self, hl.levels.keys(), dt)
+
+
+## [v13goals] Within this many metres of Lumi a plant's sprout and bloom show their little moment.
+const NEAR_M: float = 40.0
+func _near_lumi(p: Vector3) -> bool:
+	var pt: Variant = world.get("patch") if world else null
+	return pt is Node3D and (pt as Node3D).is_inside_tree() and (pt as Node3D).global_position.distance_to(p) < NEAR_M
 
 
 ## Nearest empty slot in front of a position on a clean hex.
@@ -304,6 +372,9 @@ func _pick_species(slot: int) -> int:
 
 func _process(delta: float) -> void:
 	_perk_step(delta)  # [v4grow]
+	var auto: bool = AutoGrow.on()  # [v13goals]
+	if auto:
+		_auto_step(delta)
 	_tick += delta
 	if _tick < 0.5:
 		return
@@ -322,23 +393,31 @@ func _process(delta: float) -> void:
 		if slot_species[s] < 0:
 			continue
 		var sp: Dictionary = species[slot_species[s]]
+		if auto and slot_water[s] < AUTO_WATER * 0.5:
+			slot_water[s] = AUTO_WATER  # [v13goals] a plant from an older save: it never gets thirsty now
+			_update_inst(s)
 		if slot_water[s] > 0.0:
-			slot_water[s] = maxf(0.0, slot_water[s] - drain)
-			if slot_water[s] <= 0.0:
-				_update_inst(s)  # droop
+			if not auto:
+				slot_water[s] = maxf(0.0, slot_water[s] - drain)
+				if slot_water[s] <= 0.0:
+					_update_inst(s)  # droop
 			if slot_stage[s] < 4:
-				slot_progress[s] += dt * (grow_mult + float(hex_grow_bonus.get(slot_hex[s], 0.0))) / float(sp.get("grow_s", 40))  # [biomes] greenhouses
+				var hr: float = float(auto_rate.get(slot_hex[s], 1.0)) * rain_mult if auto else 1.0  # [v13goals] the neighbourhood, the rain
+				slot_progress[s] += dt * hr * (grow_mult + float(hex_grow_bonus.get(slot_hex[s], 0.0))) / float(sp.get("grow_s", 40))  # [biomes] greenhouses
 				if slot_progress[s] >= 1.0:
 					slot_progress[s] = 0.0
 					slot_stage[s] += 1
 					_update_inst(s)
 					changed_hexes[slot_hex[s]] = true
-					if slot_stage[s] == 1:
+					var near: bool = not auto or _near_lumi(slot_pos[s])  # [v13goals] no pops from all over the planet
+					if slot_stage[s] == 1 and near:
 						Audio.play("pop", 1.4, -16.0)
 					if slot_stage[s] == 4:
-						GameState.add_currency("seeds", BigNum.from_float(float(sp.get("seed_yield", 0.5)) * seed_mult))
+						if not auto:
+							GameState.add_currency("seeds", BigNum.from_float(float(sp.get("seed_yield", 0.5)) * seed_mult))
 						GameState.inc_stat("plants_bloomed")
-						Vfx.burst("sparkle", slot_pos[s] + OrbitUp.up(slot_pos[s]) * 0.5, Color(1.0, 0.95, 0.6), 0.25)  # [orbB]
+						if near:
+							Vfx.burst("sparkle", slot_pos[s] + OrbitUp.up(slot_pos[s]) * 0.5, Color(1.0, 0.95, 0.6), 0.25)  # [orbB]
 	for h: int in changed_hexes:
 		_recount(h)
 
@@ -354,6 +433,9 @@ func _recount(hid: int) -> void:
 			planted += 1
 			sum += float(slot_stage[s]) + 1.0
 	var life: float = sum / (ids.size() * 5.0)
+	if AutoGrow.on():  # [v13goals] measured over the soil that can grow, so a street hex with a verge greens too
+		var soil: int = soil_count(hid)
+		life = sum / (maxi(soil, 1) * 5.0) if soil > 0 else 0.0
 	hex_life[hid] = life
 	world.view.set_life(hid, life)
 	var planet: PlanetData = world.planet
@@ -370,8 +452,9 @@ func _recount(hid: int) -> void:
 		if so:
 			(so.get("globe") as OrbitPlanet).cells.set_state(cell, planet.state[cell])
 	if before != planet.state[cell] and planet.state[cell] == PlanetData.State.RESTORED:
-		EventBus.toast.emit(tr("A hex is fully restored. Something small is already living in it."), "story")
-		Audio.play("chime", 0.8, -4.0)
+		if not AutoGrow.on():  # [v13goals] it happens by itself all over the planet now: no toast per hex
+			EventBus.toast.emit(tr("A hex is fully restored. Something small is already living in it."), "story")
+			Audio.play("chime", 0.8, -4.0)
 		EventBus.hex_restored.emit(hid)
 
 

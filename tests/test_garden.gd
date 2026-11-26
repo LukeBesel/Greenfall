@@ -18,12 +18,14 @@ var _world_state: Dictionary
 
 
 func before_each() -> void:
+	AutoGrow.force = 0  # [v13goals] the planting rules, kept to turn back (data/plants.json player_planting); tests/test_auto_grow.gd covers the game now
 	_cur = GameState.currencies.duplicate()
 	_world_state = GameState.world.duplicate(true)
 	GameState.world = {}
 
 
 func after_each() -> void:
+	AutoGrow.force = -1
 	GameState.currencies = _cur
 	GameState.world = _world_state
 
@@ -56,10 +58,8 @@ func test_plant_water_grow() -> void:
 	for pid: int in w.field.hex_pieces[hid]:
 		w.field.remove_piece(pid)
 	assert_true(w.field.is_clean(hid))
-	GameState.currencies["seeds"] = BigNum.from_float(5)
 	var slot: int = (g.hex_slots[hid] as PackedInt32Array)[0]
-	assert_true(g.plant(slot))
-	assert_eq(int(GameState.get_currency("seeds").to_float()), 4)
+	assert_true(g.plant(slot))  # [v13goals] no seed currency: a seed costs nothing in the kept planting rules
 	assert_eq(w.planet.state[w.slice_cells[hid]], PlanetData.State.PLANTED)
 	# Without water it doesn't grow.
 	g._tick = 100.0
@@ -75,11 +75,3 @@ func test_plant_water_grow() -> void:
 			break
 	assert_gt(g.slot_stage[slot], 0)
 	assert_gt(float(w.view.lives.get(hid, 0.0)), 0.0)
-
-
-func test_no_seeds_no_planting() -> void:
-	var made: Array = _make()
-	var g: Garden = made[1]
-	GameState.currencies["seeds"] = BigNum.zero()
-	var slot: int = (g.hex_slots[10] as PackedInt32Array)[0]
-	assert_false(g.plant(slot))

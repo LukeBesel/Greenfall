@@ -367,6 +367,8 @@ func at_water_refill() -> bool:
 
 
 func set_tool(t: int) -> void:
+	if t != Tool.SCOOP and AutoGrow.on():
+		return  # [v13goals] the scoop is Lumi's only tool: clean ground greens by itself
 	if t != Tool.SCOOP and (world == null or world.get("garden") == null or not world.garden.unlocked()):
 		EventBus.toast.emit(tr("Get the seed tin first: follow the beam to the greenhouse.") if GameState.flags.get("seed_signal", false)
 			else tr("No seeds yet. Keep cleaning."), "info")  # [v8seed]

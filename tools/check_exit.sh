@@ -49,9 +49,15 @@ run quit_on_hop -- --fresh --orbit --no-intro --orbit-hop=4 --quit-on-hop=4
 # [v8hex] Owner (Nov 13): every start-area hex clears with the starter tools, and no big item
 # stands round base 1 (exit 1 lists the stuck hexes and the big things).
 run hex_audit -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit
-# [v8seed] "Plant the first seed" played with real key and mouse events (tools/seed_walk.gd): the
-# bot's own path hid that a player could not plant (owner, 2026-11-13).
-run seed_walk -- --fresh --orbit --no-intro --seed-walk --save-dir=check_exit_seed_$$
+# [v13goals] Planting is gone (owner, 26 Nov: the player only cleans): a save from the planting game
+# (seeds, a planted and watered garden, Seedling and Drip robots, the seed step) loads and plays on.
+if tools/check_old_planting_save.sh >screenshots/check_exit_old_planting.log 2>&1; then
+	echo "[check_exit] PASS old_planting (a save from the planting game loads and plays on)"
+else
+	echo "[check_exit] FAIL old_planting: see screenshots/check_exit_old_planting.log"
+	tail -n 20 screenshots/check_exit_old_planting.log
+	fail=1
+fi
 # [v9intro] The opening film leaves the same world watched or skipped (just before the crash).
 if tools/check_intro.sh --quick >screenshots/check_exit_intro.log 2>&1; then
 	echo "[check_exit] PASS intro (watched = skipped)"

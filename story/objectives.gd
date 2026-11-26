@@ -57,6 +57,7 @@ func _ready() -> void:
 		GameState.flags["objectives_v2"] = true
 	_drop_zone_step()  # [v8bot]
 	_late_rocket_steps()  # [v10pace]
+	_drop_planting_steps()  # [v13goals]
 	_uncount_grant()  # [v9b]
 	if DevHooks.has("objective"):  # dev: jump to objective N (shots)
 		step = clampi(int(DevHooks.get_f("objective", 0.0)), 0, chain.size())
@@ -103,11 +104,9 @@ func _drop_zone_step() -> void:
 	GameState.flags["objectives_v3"] = true
 	if not GameState.flags.has("objective_step"):
 		return
-	var at: int = -1
-	for i: int in chain.size():
-		if str((chain[i] as Dictionary).get("id", "")) == "hex2":
-			at = i
-			break
+	# [v13goals] The save's step is in the order of its own day (ORDER_V3, which _late_rocket_steps then
+	# maps on): "hex2" is not in today's chain any more.
+	var at: int = ORDER_V3.find("hex2")
 	if at >= 0 and step > at:
 		step -= 1
 		GameState.flags["objective_step"] = step
@@ -137,6 +136,31 @@ func _late_rocket_steps() -> void:
 	if not ids.has("shuttle"):
 		return  # another planet's own chain
 	step = remap_step(step, ORDER_V3, ids)
+	GameState.flags["objective_step"] = step
+	GameState.flags["objectives_v5"] = true  # [v13goals] mapped straight onto today's chain
+
+
+## [v13goals] Owner, 26 Nov: the player only cleans and the goal line is simpler. "Plant the first
+## seed" is gone, and so are "Buy Scoop Size" (the bench's second upgrade card in a row), "Clean 2
+## hexes" (the same action as "Clean 3 hexes" right after it) and "Look at the map" (a step that
+## only explained a key). A save from before keeps its place by step id, as in _late_rocket_steps.
+const ORDER_V4: Array[String] = ["dump3", "compartment", "scoop_size", "baler", "power", "tower", "glim", "hex", "bench2", "robot",
+	"hex2", "hex3", "seed", "robot2", "haul", "hex10", "map", "base2", "shuttle", "hub_fly_2", "hub_wake_2", "hub_fly_3", "hub_wake_3",
+	"tower2", "research1", "hex20", "rocket_tier_2", "base3", "hub_fly_4", "hub_wake_4"]
+
+
+func _drop_planting_steps() -> void:
+	if GameState.flags.has("objectives_v5"):
+		return
+	GameState.flags["objectives_v5"] = true
+	if not GameState.flags.has("objective_step"):
+		return
+	var ids: Array[String] = []
+	for d: Variant in chain:
+		ids.append(str((d as Dictionary).get("id", "")))
+	if not ids.has("shuttle") or ids.has("seed"):
+		return  # another planet's own chain, or the planting chain
+	step = remap_step(step, ORDER_V4, ids)
 	GameState.flags["objective_step"] = step
 
 

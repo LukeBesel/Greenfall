@@ -44,7 +44,7 @@ msgstr "需要%s %d级"
 msgid "Needs research: %s"
 msgstr "需要研究：%s"
 
-#: autoload/Economy.gd:195 systems/research.gd:206
+#: autoload/Economy.gd:195 systems/research.gd:208
 msgid "Needs base level %d"
 msgstr "需要基地等级 %d"
 
@@ -460,8 +460,8 @@ msgid "Requires hub level %d or research: %s."
 msgstr "需要基地等级 %d 或研究：%s。"
 
 #: automation/telescope.gd:109 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:147
-#: systems/camp/hub_builds.gd:157 systems/camp/hub_builds.gd:185 systems/camp/yard_builds.gd:98
+#: systems/camp/camp.gd:443 systems/camp/hub_builds.gd:73 systems/camp/hub_builds.gd:150
+#: systems/camp/hub_builds.gd:160 systems/camp/hub_builds.gd:188 systems/camp/yard_builds.gd:98
 #: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr "材料不足。"
@@ -478,7 +478,7 @@ msgstr "天文台"
 msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
-#: core/offline.gd:146
+#: core/offline.gd:147
 msgid "While you were away, your robots earned %s cubes."
 msgstr "你不在的时候，机器人赚了 %s 个方块。"
 
@@ -498,11 +498,11 @@ msgstr "这里装不下了。按 [%s] 压一个捆包。"
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 
-#: core/pace.gd:323 systems/events.gd:513 ui/goals_panel.gd:284
+#: core/pace.gd:323 systems/events.gd:516 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: core/pace.gd:341 tools/walk_opening.gd:324
+#: core/pace.gd:341 tools/walk_opening.gd:305
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "现在不收散装垃圾了。按 [%s] 压一个垃圾块，再把它放到秤上。"
 
@@ -642,7 +642,7 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:249 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:247 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -799,31 +799,31 @@ msgstr "%d 个基地都立起来了。到火箭那里造推进器吧。"
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:130
+#: planet/sites/orbit_sites.gd:128
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:152
+#: planet/sites/orbit_sites.gd:150
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:190
+#: planet/sites/orbit_sites.gd:188
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:226
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:226
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:228
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:248
+#: planet/sites/orbit_sites.gd:246
 msgid "%s site"
 msgstr "%s地点"
 
@@ -871,7 +871,7 @@ msgstr ""
 "堆肥压机  等级 %d\n"
 "料斗 %d%%  →  种子"
 
-#: plants/garden.gd:373
+#: plants/garden.gd:456
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 
@@ -879,23 +879,23 @@ msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 msgid "HEX  LV %d  %s"
 msgstr "六角格  %d 级  %s"
 
-#: plants/hex_levels.gd:114
-msgid "      SUSTAIN  %d%%"
-msgstr "      稳定  %d%%"
-
-#: plants/hex_levels.gd:116
-msgid "      THIRSTY"
-msgstr "      缺水"
-
-#: plants/hex_levels.gd:118
+#: plants/hex_levels.gd:114 plants/hex_levels.gd:122
 msgid "      next: %s"
 msgstr "      下一级：%s"
 
-#: plants/hex_levels.gd:275
+#: plants/hex_levels.gd:118
+msgid "      SUSTAIN  %d%%"
+msgstr "      稳定  %d%%"
+
+#: plants/hex_levels.gd:120
+msgid "      THIRSTY"
+msgstr "      缺水"
+
+#: plants/hex_levels.gd:301
 msgid "HEX LV %d  %s"
 msgstr "六角格 %d 级  %s"
 
-#: plants/hex_levels.gd:279
+#: plants/hex_levels.gd:306
 msgid "Hex Lv %d  %s.   %s"
 msgstr "六角格 %d 级  %s。   %s"
 
@@ -923,71 +923,71 @@ msgstr "Lumi 哐啷哐啷地回到了院子里。真奇怪。"
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi 不会游泳。在工作台装上悬浮喷口，他就能飘过湖面。"
 
-#: player/patch.gd:371
+#: player/patch.gd:373
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "先去拿种子罐：跟着光束走到温室。"
 
-#: player/patch.gd:372
+#: player/patch.gd:374
 msgid "No seeds yet. Keep cleaning."
 msgstr "还没有种子。继续清理吧。"
 
-#: player/patch.gd:415 player/patch.gd:443
+#: player/patch.gd:417 player/patch.gd:445
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:422
+#: player/patch.gd:424
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "先种下：按  {tool_plant}  拿出种子"
 
-#: player/patch.gd:426
+#: player/patch.gd:428
 msgid "Watering can is empty. Refill at the base."
 msgstr "水壶空了。回基地补水。"
 
-#: player/patch.gd:445
+#: player/patch.gd:447
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "先把这个六边形清理干净。种子需要干净的土地。"
 
-#: player/patch.gd:447
+#: player/patch.gd:449
 msgid "Something is growing here already. Try a free spot."
 msgstr "这里已经长着东西了。换个空位试试。"
 
-#: player/patch.gd:448
+#: player/patch.gd:450
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "种子要种在泥土里，不能种在路上或平台上。试试温室的苗床。"
 
-#: player/patch.gd:449
+#: player/patch.gd:451
 msgid "Seeds need soil, not road or the pad."
 msgstr "种子要种在泥土里，不能种在路上或平台上。"
 
-#: player/patch.gd:610
+#: player/patch.gd:612
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "你的箱子是空的。先去捡些垃圾。"
 
-#: player/patch.gd:650
+#: player/patch.gd:652
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:656
+#: player/patch.gd:658
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:660
+#: player/patch.gd:662
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:662
+#: player/patch.gd:664
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:665
+#: player/patch.gd:667
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:716
+#: player/patch.gd:718
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:747
+#: player/patch.gd:749
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1107,33 +1107,33 @@ msgstr "看上面"
 msgid "Ride the hover-sled"
 msgstr "乘上悬浮雪橇"
 
-#: robots/fleet.gd:147
+#: robots/fleet.gd:149
 msgid "Locked · research %s"
 msgstr "未解锁 · 研究 %s"
 
-#: robots/fleet.gd:149
+#: robots/fleet.gd:151
 msgid "Crew full (%d/%d): upgrade the base"
 msgstr "队伍已满（%d/%d）：请升级基地"
 
-#: robots/fleet.gd:151 robots/fleet.gd:227
+#: robots/fleet.gd:153 robots/fleet.gd:229
 msgid "Not enough parts"
 msgstr "零件不足"
 
-#: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
-#: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: robots/fleet.gd:155 robots/fleet.gd:231 robots/water_net.gd:149
+#: systems/research.gd:212 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 #: ui/globe_view.gd:555
 msgid "Not enough cubes"
 msgstr "方块不足"
 
-#: robots/fleet.gd:191
+#: robots/fleet.gd:193
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。%s"
 
-#: robots/fleet.gd:191
+#: robots/fleet.gd:193
 msgid " Seems %s."
 msgstr " 看起来%s。"
 
-#: robots/fleet.gd:248
+#: robots/fleet.gd:250
 msgid "%s fleet upgraded to %s."
 msgstr "%s机队已升级为 %s。"
 
@@ -1186,7 +1186,7 @@ msgstr "正在补水：%s（%d%%）"
 msgid "base barrel"
 msgstr "基地水桶"
 
-#: robots/robot.gd:263 systems/research.gd:416
+#: robots/robot.gd:263 systems/research.gd:418
 msgid "tank"
 msgstr "水箱"
 
@@ -1547,27 +1547,27 @@ msgstr "走到发射台上的火箭旁，按 [%s] 选择要飞去的地方。"
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice_orbit.gd:425
+#: scenes/slice_orbit.gd:426
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: scenes/slice_orbit.gd:441
+#: scenes/slice_orbit.gd:442
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:511 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
+#: scenes/slice_orbit.gd:511 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1049
+#: scenes/slice_orbit.gd:1055
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1149 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1155 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
@@ -1693,8 +1693,8 @@ msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "还记得花园甲板吗？你每块苗床都浇两遍，就为了保险。"
 
 #: story/core_charge.gd:276
-msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
-msgstr "你在下面种出的每一小片，都是又一块这样的苗床。你没有迷路，Lumi。你在重新播种。"
+msgid "Every patch you clean down there turns into a bed like these. You're not lost, Lumi. You're bringing it back."
+msgstr "你在下面清理的每一块地，都会变成这样的花床。你没有迷路，Lumi。你在让它重新活过来。"
 
 #: story/core_charge.gd:280
 msgid "Bloom Core 25%: WREN's signal is clear now."
@@ -2051,63 +2051,63 @@ msgstr "我的引擎坏了。我没法去追你。"
 msgid "Lumi— I will find you— I will find—"
 msgstr "Lumi—我会找到你—我会找—"
 
-#: story/objectives.gd:282
+#: story/objectives.gd:306
 msgid "Reward: %s"
 msgstr "奖励：%s"
 
-#: story/objectives.gd:521
+#: story/objectives.gd:545
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:548
+#: story/objectives.gd:572
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:1040
+#: story/objectives.gd:1064
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "打包机装好了！装满箱子，然后按 [%s] 打包。"
 
-#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:937
+#: story/objectives.gd:1086 story/objectives.gd:1315 tools/walk_opening.gd:918
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:1078
+#: story/objectives.gd:1102
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:1080
+#: story/objectives.gd:1104
 msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr "附近埋着一个零件！朝它走，听到哔哔声就把它挖出来。"
 
-#: story/objectives.gd:1292
+#: story/objectives.gd:1316
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:1309 story/objectives.gd:1325
+#: story/objectives.gd:1333 story/objectives.gd:1349
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
-#: story/objectives.gd:1315
+#: story/objectives.gd:1339
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:1319
+#: story/objectives.gd:1343
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:1319
+#: story/objectives.gd:1343
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:1335
+#: story/objectives.gd:1359
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
-#: story/objectives.gd:1336
+#: story/objectives.gd:1360
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:1347
+#: story/objectives.gd:1371
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -2363,51 +2363,51 @@ msgstr "组装零件箱"
 msgid "Curio Capsule"
 msgstr "奇物胶囊"
 
-#: systems/contracts.gd:319
+#: systems/contracts.gd:317
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr "委托完成：%s。到工作台领取。"
 
-#: systems/contracts.gd:325
+#: systems/contracts.gd:323
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr "一个委托超时了。没关系，很快会有新的。"
 
-#: systems/contracts.gd:337
+#: systems/contracts.gd:335
 msgid "The Requests board is ready to build: workbench, Upgrades tab, Request Board."
 msgstr "委托板可以建造了：工作台，升级标签页，委托板。"
 
-#: systems/contracts.gd:346
+#: systems/contracts.gd:344
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
 msgstr "工作台新功能：委托板。小活儿，真奖励。"
 
-#: systems/contracts.gd:349
+#: systems/contracts.gd:347
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
 msgstr "中继信号终于强到能收到摇篮号的旧工作单了。它们在工作台的委托板上。"
 
-#: systems/contracts.gd:434
+#: systems/contracts.gd:432
 msgid "Request done: %s."
 msgstr "委托已领取：%s。"
 
-#: systems/contracts.gd:476
+#: systems/contracts.gd:474
 msgid "Requests reward: %s. Paint your fleet with it in the Locker."
 msgstr "委托奖励：%s。在储物柜里给车队涂装。"
 
-#: systems/contracts.gd:479
+#: systems/contracts.gd:477
 msgid "Requests reward: %s. Fit it in the Locker."
 msgstr "委托奖励：%s。去储物柜装上。"
 
-#: systems/contracts.gd:483 systems/contracts.gd:492
+#: systems/contracts.gd:481 systems/contracts.gd:490
 msgid "Requests reward: %s."
 msgstr "委托奖励：%s。"
 
-#: systems/contracts.gd:500
+#: systems/contracts.gd:498
 msgid "Unknown item"
 msgstr "未知物品"
 
-#: systems/contracts.gd:513
+#: systems/contracts.gd:511
 msgid "Unlocks after %d requests"
 msgstr "完成 %d 个委托后解锁"
 
-#: systems/contracts.gd:514
+#: systems/contracts.gd:512
 msgid "Locked"
 msgstr "未解锁"
 
@@ -2435,7 +2435,7 @@ msgstr "需要 %d 件收藏品（目前 %d 件）"
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr "需要 %d 枚“每周种子”色片（目前 %d 枚）"
 
-#: systems/decor.gd:124 systems/research.gd:202 systems/robot_builder.gd:348
+#: systems/decor.gd:124 systems/research.gd:204 systems/robot_builder.gd:348
 #: systems/robot_builder.gd:404 ui/stations_panel.gd:101 ui/telescope_panel.gd:44
 msgid "Needs %s"
 msgstr "需要 %s"
@@ -2518,95 +2518,99 @@ msgstr "西方"
 msgid "north-west"
 msgstr "西北方"
 
-#: systems/events.gd:473
+#: systems/events.gd:476
 msgid "STREAK x%d  +%d%%"
 msgstr "连击 x%d  +%d%%"
 
-#: systems/events.gd:521 systems/lumi_level.gd:218
+#: systems/events.gd:524 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 种子"
 
-#: systems/events.gd:659
+#: systems/events.gd:662
 msgid "%d pieces of junk left around the crate"
 msgstr "箱子周围还剩 %d 块废料"
 
-#: systems/events.gd:684
+#: systems/events.gd:687
 msgid "Supply crate opened: %s"
 msgstr "补给箱已打开：%s"
 
-#: systems/events.gd:686
+#: systems/events.gd:689
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "补给箱的信标超时了，无人机把它拉回了天上。还会再来的。"
 
-#: systems/events.gd:735
+#: systems/events.gd:738
 msgid "%d pieces grabbed at 3x"
 msgstr "以 3 倍价值抓到 %d 块"
 
-#: systems/events.gd:740
+#: systems/events.gd:743
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "热潮退去了。你以三倍价值抓到了 %d 块；打包时就会兑现。"
 
-#: systems/events.gd:740
+#: systems/events.gd:743
 msgid "The surge faded. Next time!"
 msgstr "热潮退去了。下次加油！"
 
-#: systems/events.gd:789
+#: systems/events.gd:790
+msgid "The green comes up faster in the rain"
+msgstr "下雨时绿意长得更快"
+
+#: systems/events.gd:800
 msgid "Every plant is drinking"
 msgstr "所有植物都在喝水"
 
-#: systems/events.gd:799
+#: systems/events.gd:810
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨移走了。大地把雨水都吸收了：%s"
 
-#: systems/events.gd:820
+#: systems/events.gd:831
 msgid "E   fix %s's hiccup"
 msgstr "E   治好 %s 的嗝"
 
-#: systems/events.gd:847
+#: systems/events.gd:858
 msgid "%s is %d m away"
 msgstr "%s 在 %d 米外"
 
-#: systems/events.gd:849
+#: systems/events.gd:860
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s 自己止住了嗝。看起来有点不好意思。"
 
-#: systems/events.gd:863
+#: systems/events.gd:874
 msgid "%s is fixed and back to work. %s"
 msgstr "%s 修好了，回去干活了。%s"
 
-#: systems/events.gd:917
+#: systems/events.gd:928
 msgid "Wildlife Visit: %s"
 msgstr "野生动物来访：%s"
 
-#: systems/events.gd:918
+#: systems/events.gd:929
 msgid "E   take a photo of the %s"
 msgstr "E   给%s拍张照"
 
-#: systems/events.gd:959
+#: systems/events.gd:970
 msgid "%s, %d m away"
 msgstr "%s，%d 米外"
 
-#: systems/events.gd:962
+#: systems/events.gd:973
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s走开了。它会在某个绿色的地方再出现。"
 
-#: systems/events.gd:992
+#: systems/events.gd:1003
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "咔嚓！%s已加入你的收藏。%s"
 
-#: systems/events.gd:992
+#: systems/events.gd:1003
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "咔嚓！又一张漂亮的%s照片。%s"
 
-#: systems/events.gd:1043
+#: systems/events.gd:1054
 msgid "Signal %d%%"
 msgstr "信号 %d%%"
 
-#: systems/events.gd:1047
+#: systems/events.gd:1058
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "原来是这个信号：一个藏着稀有零件的储藏点。%s"
 
-#: systems/events.gd:1049
+#: systems/events.gd:1060
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "信号消失了。零件还在下面；探测器会找到它的。"
 
@@ -2871,119 +2875,119 @@ msgstr "补给包已经在路上了。"
 msgid "Needs %s cubes."
 msgstr "需要 %s 方块。"
 
-#: systems/research.gd:184
+#: systems/research.gd:186
 msgid "Unknown research"
 msgstr "未知研究"
 
-#: systems/research.gd:192
+#: systems/research.gd:194
 msgid "Already researched"
 msgstr "已研究"
 
-#: systems/research.gd:194
+#: systems/research.gd:196
 msgid "Researching now"
 msgstr "正在研究"
 
-#: systems/research.gd:196
+#: systems/research.gd:198
 msgid "Already queued"
 msgstr "已在队列中"
 
-#: systems/research.gd:208
+#: systems/research.gd:210
 msgid "Queue is full"
 msgstr "队列已满"
 
-#: systems/research.gd:356 ui/codex_screen.gd:893
+#: systems/research.gd:358 ui/codex_screen.gd:893
 msgid "%ds"
 msgstr "%d秒"
 
-#: systems/research.gd:403 systems/research.gd:464
+#: systems/research.gd:405 systems/research.gd:466
 msgid "Research: %s"
 msgstr "研究：%s"
 
-#: systems/research.gd:413
+#: systems/research.gd:415
 msgid "scoop reach"
 msgstr "铲子范围"
 
-#: systems/research.gd:413
+#: systems/research.gd:415
 msgid "scoop width"
 msgstr "铲子宽度"
 
-#: systems/research.gd:413
+#: systems/research.gd:415
 msgid "compartment size"
 msgstr "储物舱容量"
 
-#: systems/research.gd:414
+#: systems/research.gd:416
 msgid "bale value"
 msgstr "捆包价值"
 
-#: systems/research.gd:414
+#: systems/research.gd:416
 msgid "magnet radius"
 msgstr "磁铁半径"
 
-#: systems/research.gd:414
+#: systems/research.gd:416
 msgid "scoop speed"
 msgstr "铲子速度"
 
-#: systems/research.gd:415
+#: systems/research.gd:417
 msgid "field-note cubes"
 msgstr "野外笔记方块"
 
-#: systems/research.gd:415
+#: systems/research.gd:417
 msgid "research speed"
 msgstr "研究速度"
 
-#: systems/research.gd:415
+#: systems/research.gd:417
 msgid "lake clarity"
 msgstr "湖水清澈度"
 
-#: systems/research.gd:416
+#: systems/research.gd:418
 msgid "speed"
 msgstr "速度"
 
-#: systems/research.gd:416
+#: systems/research.gd:418
 msgid "work rate"
 msgstr "工作效率"
 
-#: systems/research.gd:416
+#: systems/research.gd:418
 msgid "range"
 msgstr "范围"
 
-#: systems/research.gd:417
+#: systems/research.gd:419
 msgid "bale quality"
 msgstr "捆包品质"
 
-#: systems/research.gd:417
+#: systems/research.gd:419
 msgid "carry"
 msgstr "载重"
 
-#: systems/research.gd:418
+#: systems/research.gd:420
 msgid "plant growth"
 msgstr "植物生长"
 
-#: systems/research.gd:418
+#: systems/research.gd:420
 msgid "seeds per bloom"
 msgstr "每朵花的种子"
 
-#: systems/research.gd:439
+#: systems/research.gd:441
 msgid "Unlocks the %s robot"
 msgstr "解锁 %s 机器人"
 
-#: systems/research.gd:441
+#: systems/research.gd:443
 msgid "Unlocks %s seeds"
 msgstr "解锁%s种子"
 
-#: systems/research.gd:443
+#: systems/research.gd:445
 msgid "Unlocks: %s"
 msgstr "解锁：%s"
 
-#: systems/research.gd:624
+#: systems/research.gd:626
 msgid "While you were away, research finished: %s."
 msgstr "你离开期间，研究完成了：%s。"
 
-#: systems/research.gd:663
+#: systems/research.gd:665
 msgid "New robot plans: %s. %s"
 msgstr "新的机器人图纸：%s。%s"
 
-#: systems/research.gd:668
+#: systems/research.gd:670
 msgid "Research complete: %s."
 msgstr "研究完成：%s。"
 
@@ -3105,27 +3109,27 @@ msgstr "E   %s（%d 级）：升级为 %s，需要 %s"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "垃圾桶已升级：%s。捆包在这里按 %d%% 出售。"
 
-#: systems/camp/hub_builds.gd:140
+#: systems/camp/hub_builds.gd:143
 msgid "Trash bin, level %d of %d"
 msgstr "垃圾桶，%d / %d级"
 
-#: systems/camp/hub_builds.gd:145
+#: systems/camp/hub_builds.gd:148
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WREN 只能通过中继联系你。每升一级她的声音更清晰。"
 
-#: systems/camp/hub_builds.gd:149
+#: systems/camp/hub_builds.gd:152
 msgid "Tier %d of %d"
 msgstr "等级 %d / %d"
 
-#: systems/camp/hub_builds.gd:158
+#: systems/camp/hub_builds.gd:161
 msgid "%d of %d built"
 msgstr "已建 %d / %d"
 
-#: systems/camp/hub_builds.gd:174
+#: systems/camp/hub_builds.gd:177
 msgid "Museum"
 msgstr "博物馆"
 
-#: systems/camp/hub_builds.gd:175
+#: systems/camp/hub_builds.gd:178
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "一座大厅，为卢米找到的每件东西都设了展台，留给后来的人。"
 
@@ -3153,7 +3157,7 @@ msgstr "初次到达"
 msgid "Half clean"
 msgstr "清理过半"
 
-#: systems/extras/album.gd:90 data/hex_levels.json:levels[5].name
+#: systems/extras/album.gd:90 data/hex_levels.json:auto_levels[5].name data/hex_levels.json:levels[5].name
 msgid "Thriving"
 msgstr "繁茂"
 
@@ -3343,26 +3347,30 @@ msgid "Plants grew"
 msgstr "植物生长"
 
 #: systems/extras/welcome_back.gd:80
+msgid "Flowers bloomed"
+msgstr "花开了"
+
+#: systems/extras/welcome_back.gd:82
 msgid "Bloomed (seeds)"
 msgstr "开花（种子）"
 
-#: systems/extras/welcome_back.gd:82
+#: systems/extras/welcome_back.gd:84
 msgid "Scrubbers cleaned the air"
 msgstr "净化器清洁了空气"
 
-#: systems/extras/welcome_back.gd:141
+#: systems/extras/welcome_back.gd:143
 msgid "WELCOME BACK"
 msgstr "欢迎回来"
 
-#: systems/extras/welcome_back.gd:142
+#: systems/extras/welcome_back.gd:144
 msgid "Away %s"
 msgstr "离开了 %s"
 
-#: systems/extras/welcome_back.gd:163
+#: systems/extras/welcome_back.gd:165
 msgid "Robots work up to %d h while you're away."
 msgstr "你不在时，机器人最多工作 %d 小时。"
 
-#: systems/extras/welcome_back.gd:166
+#: systems/extras/welcome_back.gd:168
 msgid "Back to work"
 msgstr "回去干活"
 
@@ -3430,7 +3438,7 @@ msgstr "再看一遍开头"
 msgid "Close"
 msgstr "关闭"
 
-#: tools/walk_opening.gd:756 ui/main_menu.gd:368 ui/pause_menu.gd:91
+#: tools/walk_opening.gd:737 ui/main_menu.gd:368 ui/pause_menu.gd:91
 msgid "Quit"
 msgstr "退出"
 
@@ -3705,7 +3713,8 @@ msgstr "喷洒范围"
 msgid "Refill"
 msgstr "补水"
 
-#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:auto_levels[1].name
+#: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清理"
 
@@ -4052,6 +4061,10 @@ msgstr "兑现的捆包"
 #: ui/codex_screen.gd:805 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
+
+#: ui/codex_screen.gd:806
+msgid "Plants grown"
+msgstr "长出的植物"
 
 #: ui/codex_screen.gd:806
 msgid "Seeds planted"
@@ -4596,6 +4609,10 @@ msgstr "尚未清理"
 msgid "Cleaned"
 msgstr "已清理"
 
+#: ui/globe_view.gd:212
+msgid "Greening"
+msgstr "正在变绿"
+
 #: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "已种植"
@@ -4692,11 +4709,11 @@ msgstr "铲子"
 msgid "PLANT"
 msgstr "种植"
 
-#: ui/hotbar.gd:281
+#: ui/hotbar.gd:286
 msgid "+%d XP"
 msgstr "+%d 经验"
 
-#: ui/hotbar.gd:291
+#: ui/hotbar.gd:296
 msgid "CORE %d%%"
 msgstr "核心 %d%%"
 
@@ -6787,30 +6804,6 @@ msgstr "全家福"
 msgid "Build every kind of robot."
 msgstr "建造每一种机器人。"
 
-#: data/achievements.json:achievements[seed].name
-msgid "The First Seed"
-msgstr "第一颗种子"
-
-#: data/achievements.json:achievements[seed].desc
-msgid "Find the first seed."
-msgstr "找到第一颗种子。"
-
-#: data/achievements.json:achievements[plant_1].name data/cradle.json:heirlooms[green_thumb].name
-msgid "Green Thumb"
-msgstr "绿手指"
-
-#: data/achievements.json:achievements[plant_1].desc
-msgid "Plant a seed."
-msgstr "种下一颗种子。"
-
-#: data/achievements.json:achievements[plant_100].name
-msgid "Gardener"
-msgstr "园丁"
-
-#: data/achievements.json:achievements[plant_100].desc
-msgid "Plant 100 seeds."
-msgstr "种下 100 颗种子。"
-
 #: data/achievements.json:achievements[bloom_50].name
 msgid "In Bloom"
 msgstr "花开了"
@@ -7507,11 +7500,11 @@ msgstr "Blink"
 msgid "A little floating camera bot with a big lens for a face. Builds once; then he follows Lumi from base to base and photo mode opens."
 msgstr "一个漂浮的小相机机器人，脸是一枚大镜头。建造一次后，他会跟着卢米走遍各个基地，拍照模式随之开启。"
 
-#: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
+#: data/codex.json:categories[junk].name data/hex_levels.json:auto_levels[0].name data/hex_levels.json:levels[0].name
 msgid "Junk"
 msgstr "废料"
 
-#: data/codex.json:categories[plants].name data/research.json:branches[botany].name
+#: data/codex.json:categories[plants].name
 msgid "Plants"
 msgstr "植物"
 
@@ -7588,8 +7581,8 @@ msgid "Meadow Grass"
 msgstr "草甸草"
 
 #: data/codex.json:plants.grass.hint
-msgid "Plant your first seeds."
-msgstr "种下你的第一批种子。"
+msgid "Grows by itself on clean ground."
+msgstr "会在干净的土地上自己长出来。"
 
 #: data/codex.json:plants.grass.desc
 msgid "The first thing to come back, always. Its roots knit the loose dust together so other plants have something to hold on to."
@@ -7600,8 +7593,8 @@ msgid "Tufted Grass"
 msgstr "丛生草"
 
 #: data/codex.json:plants.grass2.hint
-msgid "Keep planting."
-msgstr "继续种吧。"
+msgid "Keep cleaning: it comes up by itself."
+msgstr "继续清理：它会自己长出来。"
 
 #: data/codex.json:plants.grass2.desc
 msgid "A slightly scruffier cousin. It grows in clumps, and small beetles like to live between them."
@@ -7652,8 +7645,8 @@ msgid "Make a wish."
 msgstr "许个愿吧。"
 
 #: data/codex.json:plants.dandelion.desc
-msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself, if you let it."
-msgstr "今天金灿灿，明天就是一团愿望。每颗种子都乘着风飞向一片新的干净土地。只要你允许，它会自己种下自己。"
+msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself."
+msgstr "今天是金黄的，明天是一团许愿的绒球。每颗种子乘着风，飞向一块新的干净土地。它会自己种下自己。"
 
 #: data/codex.json:plants.fern.name
 msgid "Fern"
@@ -7724,16 +7717,16 @@ msgid "Needs Evergreen Saplings research."
 msgstr "需要研究“常青树苗”。"
 
 #: data/codex.json:plants.pine.desc
-msgid "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."
-msgstr "今天只有膝盖高。一百年后，会是一片散发着松脂和雨水气息的森林。Lumi 小心地种下它，为了后来的人。"
+msgid "Knee-high today. In a hundred years, a forest that smells of resin and rain. It takes root by itself, for whoever comes after."
+msgstr "今天才到膝盖高。一百年后，会是一片带着树脂和雨水气味的森林。它会自己扎根，留给以后的人。"
 
 #: data/codex.json:plants.iceplant.name
 msgid "Crystalline Iceplant"
 msgstr "晶冰花"
 
 #: data/codex.json:plants.iceplant.hint data/codex.json:plants.rooibos.hint data/codex.json:plants.ursinia.hint
-msgid "Plant in the Dust Flats."
-msgstr "种在尘土平原。"
+msgid "Grows by itself in the Dust Flats."
+msgstr "会在尘土平原自己长出来。"
 
 #: data/codex.json:plants.iceplant.desc
 msgid "A desert succulent whose leaves are covered in tiny glassy blisters that store water. It glitters at noon and needs almost nothing to drink."
@@ -7760,8 +7753,8 @@ msgid "Periwinkle"
 msgstr "长春花"
 
 #: data/codex.json:plants.periwinkle.hint data/codex.json:plants.frost_moss.hint
-msgid "A cold-hardy seed for the Frozen Port."
-msgstr "适合冰封港口的耐寒种子。"
+msgid "Grows by itself at the Frozen Port (Cold-Hardy Plants)."
+msgstr "会在冰封港自己长出来（耐寒植物）。"
 
 #: data/codex.json:plants.periwinkle.desc
 msgid "An evergreen groundcover with violet flowers. It keeps its leaves under snow and simply carries on in spring."
@@ -7780,8 +7773,8 @@ msgid "Marsh Reed"
 msgstr "沼泽芦苇"
 
 #: data/codex.json:plants.reed.hint
-msgid "Plant on the drained streets of the Sunken City."
-msgstr "种在沉没之城排干的街道上。"
+msgid "Grows by itself on the drained streets of the Sunken City."
+msgstr "会在沉没之城排干的街道上自己长出来。"
 
 #: data/codex.json:plants.reed.desc
 msgid "Tall reeds that drink the silt dry and filter the last of the floodwater. Little birds sit on them and complain about the wind."
@@ -7792,8 +7785,8 @@ msgid "Marsh Mint"
 msgstr "水薄荷"
 
 #: data/codex.json:plants.marsh_mint.hint
-msgid "Plant in the Sunken City."
-msgstr "种在沉没之城。"
+msgid "Grows by itself in the Sunken City."
+msgstr "会在沉没之城自己长出来。"
 
 #: data/codex.json:plants.marsh_mint.desc
 msgid "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."
@@ -7807,29 +7800,13 @@ msgstr "一台小小的、认真的清洁机器人，有一只铲臂和满满的
 msgid "A fork cart that never complains. It carries loose bales to the scale and parks itself neatly afterwards."
 msgstr "一台从不抱怨的叉车。它把散落的捆包运到磅秤，然后整整齐齐地停好。"
 
-#: data/codex.json:robots.seedling.hint
-msgid "Research the Seedling Blueprint."
-msgstr "研究 Seedling 蓝图。"
-
-#: data/codex.json:robots.seedling.desc
-msgid "A planter bot with a seed hopper on its back. It pats every seed into the soil, twice, just to be sure."
-msgstr "一台背着种子料斗的种植机器人。它会把每颗种子拍进土里两次，就为了保险。"
-
-#: data/codex.json:robots.drip.hint
-msgid "Research the Drip Blueprint."
-msgstr "研究 Drip 蓝图。"
-
-#: data/codex.json:robots.drip.desc
-msgid "A watering bot with a sloshy tank. It makes a little happy gurgle when a plant drinks."
-msgstr "一台带着晃荡水箱的浇水机器人。植物喝水时它会开心地咕噜一声。"
-
 #: data/codex.json:robots.multibot.hint
 msgid "Research the Multibot Blueprint."
 msgstr "研究 Multibot 蓝图。"
 
 #: data/codex.json:robots.multibot.desc
-msgid "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."
-msgstr "一位能清理、种植或浇水的帮手。哪样都不是最快的，但总在需要它的地方。"
+msgid "A helper that cleans or carries bales. Not the fastest at anything, but always where it is needed."
+msgstr "一个会清理或搬运垃圾块的帮手。哪样都不算最快，但总在需要它的地方。"
 
 #: data/codex.json:robots.skimmer.hint
 msgid "Build a Skimmer."
@@ -8128,8 +8105,8 @@ msgid "Research Dune Charts and fly there."
 msgstr "研究“沙丘海图”后飞往该地。"
 
 #: data/codex.json:frontiers.dust_flats.desc
-msgid "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Sustained hexes shelter their neighbours. The well is dry: Drips need Water Tanks."
-msgstr "古老的盐滩，曾有一座太阳能电站为半个大陆供电。每隔几分钟就会刮起沙暴，再次掩埋清理过的地面；稳定的六角格能庇护邻格。井已经干了：Drip 需要水箱。"
+msgid "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Lush hexes shelter their neighbours. The well is dry: green comes slowly here."
+msgstr "古老的盐碱平原，曾有一座太阳能电站为半个大陆供电。每隔几分钟就有沙暴袭来，再次掩埋清理过的土地；繁茂的地块能护住邻居。井干了：这里的绿意来得很慢。"
 
 #: data/codex.json:frontiers.frozen_port.name data/frontiers.json:kinds[frozen_port].name data/junk.json:biomes.frozen_port.name
 msgid "Frozen Port"
@@ -8176,8 +8153,8 @@ msgid "Wait for the wind in the Dust Flats."
 msgstr "在尘土平原等风来。"
 
 #: data/codex.json:frontiers.sandstorm.desc
-msgid "The wind picks up junk from the open flats and drops it on clean ground. Planted hexes are never touched, and Sustained hexes break the wind for every hex next to them."
-msgstr "风会卷起空旷平原上的废料，丢到干净的地面上。种了植物的六角格永远不会被波及，稳定的六角格还能为相邻的每一格挡风。"
+msgid "The wind picks up junk from the open flats and drops it on clean ground. Green hexes are never touched, and Lush hexes break the wind for every hex next to them."
+msgstr "风会把开阔平原上的垃圾卷起，丢到干净的地上。绿色地块永远不会被碰到，繁茂的地块会为身边每个地块挡风。"
 
 #: data/codex.json:frontiers.thaw.name
 msgid "Thawing"
@@ -8224,8 +8201,8 @@ msgid "Find it in Cradle Returns."
 msgstr "在 Cradle号归来中找到它。"
 
 #: data/codex.json:frontiers.ark_pad.desc
-msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
-msgstr "基地前的一圈六角格，Cradle号将在这里降落。它必须干净且稳定，方舟才会信任它。"
+msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Lush before the ark will trust it."
+msgstr "基地前的一圈地块，摇篮号会在这里降落。它必须干净又繁茂，方舟才会放心。"
 
 #: data/codex.json:animals.cat.name data/fauna.json:species[cat].name
 msgid "Stray Cat"
@@ -8292,8 +8269,8 @@ msgid "Roe Deer"
 msgstr "狍子"
 
 #: data/codex.json:animals.deer.hint
-msgid "Where: The edges of Sustained ground."
-msgstr "出没：稳定地块的边缘。"
+msgid "Where: The edges of Lush ground."
+msgstr "在哪里：繁茂土地的边缘。"
 
 #: data/codex.json:animals.deer.desc
 msgid "Shy grazers that keep to the edge of the green, where they can see what's coming. Approach slowly; rush them and they bound away in long, graceful leaps."
@@ -8304,8 +8281,8 @@ msgid "Red Fox"
 msgstr "赤狐"
 
 #: data/codex.json:animals.fox.hint
-msgid "Where: Sustained and Thriving hexes."
-msgstr "出没：稳定和繁茂的六角格。"
+msgid "Where: Lush and Thriving hexes."
+msgstr "在哪里：繁茂和兴旺的地块。"
 
 #: data/codex.json:animals.fox.desc
 msgid "A fox trots along the hedges, nose down, tail out. It watches Lumi with polite interest and keeps its distance."
@@ -8316,12 +8293,12 @@ msgid "Honeybee"
 msgstr "蜜蜂"
 
 #: data/codex.json:animals.bee.hint
-msgid "Where: Flowers on Sustained hexes."
-msgstr "出没：稳定六角格上的花丛。"
+msgid "Where: Flowers on Lush hexes."
+msgstr "在哪里：繁茂地块上的花丛。"
 
 #: data/codex.json:animals.bee.desc
-msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
-msgstr "蜜蜂随着花朵一起回来了。每一片一直有人浇水的花坛，都有属于自己的小小嗡嗡声。"
+msgid "Bees came back with the blooms. Every flower bed in full bloom gets its own little hum."
+msgstr "蜜蜂随着花开回来了。每一片盛开的花床都有自己的嗡嗡声。"
 
 #: data/codex.json:animals.songbird.name data/fauna.json:species[songbird].name
 msgid "Robin"
@@ -8376,8 +8353,8 @@ msgid "Green Frog"
 msgstr "青蛙"
 
 #: data/codex.json:animals.frog.hint
-msgid "Where: Lake shores once they're planted."
-msgstr "出没：种上植物后的湖岸。"
+msgid "Where: Lake shores once they're green."
+msgstr "在哪里：变绿后的湖岸。"
 
 #: data/codex.json:animals.frog.desc
 msgid "Frogs sit at the water's edge and sing in the evening. Get too close and plop: into the water they go."
@@ -8400,8 +8377,8 @@ msgid "Fennec Fox"
 msgstr "耳廓狐"
 
 #: data/codex.json:animals.fennec.hint
-msgid "Where: Planted ground in the Dust Flats."
-msgstr "出没：尘土平原种了植物的地面。"
+msgid "Where: Green ground in the Dust Flats."
+msgstr "在哪里：尘土平原上的绿地。"
 
 #: data/codex.json:animals.fennec.desc
 msgid "A tiny desert fox with enormous ears. It hears Lumi's hover fans long before it sees him."
@@ -8436,8 +8413,8 @@ msgid "Arctic Fox"
 msgstr "北极狐"
 
 #: data/codex.json:animals.arctic_fox.hint
-msgid "Where: Planted ground at the Frozen Port."
-msgstr "出没：冰封港口种了植物的地面。"
+msgid "Where: Green ground at the Frozen Port."
+msgstr "在哪里：冰封港的绿地。"
 
 #: data/codex.json:animals.arctic_fox.desc
 msgid "White as the snow it hunts on. It shows up when the greenhouses do, curious about the warm air."
@@ -8531,6 +8508,10 @@ msgstr "建造一座望远镜，透过它看一看。"
 msgid "The first look across the system from your own observatory. Two suns, a handful of worlds, and somewhere down there, your crews still at work."
 msgstr "从你自己的天文台第一次眺望星系。两颗太阳，几个世界，而在下面某处，你的队伍仍在工作。"
 
+#: data/cradle.json:heirlooms[green_thumb].name
+msgid "Green Thumb"
+msgstr "绿手指"
+
 #: data/cradle.json:heirlooms[green_thumb].desc
 msgid "Plants grow 8% faster per level, on every world."
 msgstr "每级植物生长加快 8%，在每个世界都有效。"
@@ -8572,8 +8553,8 @@ msgid "Seed Vault"
 msgstr "种子库"
 
 #: data/cradle.json:heirlooms[seed_vault].desc
-msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin)."
-msgstr "每级每次开花多得 8% 种子；每个新世界开局时，着陆舱里每级额外有 40 颗种子（等 Lumi 找到那个世界的种子罐时就能用）。"
+msgid "Seeds from the vault ride in every new pod: clean ground greens 8% faster per level."
+msgstr "种子库的种子会随每个新舱一起出发：每级让干净土地变绿快8%。"
 
 #: data/cradle.json:heirlooms[head_start].name
 msgid "Head Start"
@@ -8718,18 +8699,6 @@ msgstr "零件"
 #: data/currencies.json:currencies[parts].desc
 msgid "Robot parts and building stock salvaged from junk, dug up with the detector, or made by the recycler. Pays for robots and their Mk tiers, base levels, stations, Locker styles, rocket stages and outpost repairs."
 msgstr "从垃圾中回收、用探测器挖出或由回收炉制造的机器人零件和建材。用于支付机器人及其 Mk 等级、基地等级、设施、储物柜外观、火箭级段和前哨维修。"
-
-#: data/currencies.json:currencies[seeds].name
-msgid "Seeds"
-msgstr "种子"
-
-#: data/currencies.json:currencies[seeds].short
-msgid "SEEDS"
-msgstr "种子"
-
-#: data/currencies.json:currencies[seeds].desc
-msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
-msgstr "用来种植。堆肥压机把纸、纸板和凋谢的花变成种子。"
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
@@ -9968,12 +9937,12 @@ msgid "Rain Shower"
 msgstr "阵雨"
 
 #: data/events.json:events[rain_shower].toast
-msgid "Rain! Your plants stay watered while it lasts."
-msgstr "下雨了！雨停之前植物都不会缺水。"
+msgid "Rain! The clean ground greens faster while it lasts."
+msgstr "下雨了！雨下着的时候，干净的土地变绿更快。"
 
 #: data/events.json:events[rain_shower].hud
-msgid "Plants stay watered while it rains"
-msgstr "下雨时植物保持湿润"
+msgid "Clean ground greens faster in the rain"
+msgstr "下雨时干净的土地变绿更快"
 
 #: data/events.json:events[robot_hiccup].name
 msgid "Robot Hiccup"
@@ -10074,22 +10043,6 @@ msgstr "挖出 %d 个埋藏的零件"
 #: data/events.json:contracts.templates[streak].text
 msgid "Reach a tier %d cleaning streak"
 msgstr "达成 %d 级清理连击"
-
-#: data/events.json:contracts.templates[plant].text
-msgid "Plant %d sprouts"
-msgstr "种下 %d 株嫩芽"
-
-#: data/events.json:contracts.templates[bloom].text
-msgid "Grow %d plants to bloom"
-msgstr "让 %d 株植物开花"
-
-#: data/events.json:contracts.templates[sustain].text
-msgid "Get %d more hexes to Sustained"
-msgstr "让另外 %d 个六角格达到稳定"
-
-#: data/events.json:contracts.templates[sustain].text_1
-msgid "Get one more hex to Sustained"
-msgstr "让再一个六角格达到稳定"
 
 #: data/events.json:liveries[livery_neon].name
 msgid "Neon Underglow"
@@ -10528,8 +10481,8 @@ msgid "Tiny Cactus"
 msgstr "迷你仙人掌"
 
 #: data/events.json:trinkets[capsule_tiny_cactus].desc
-msgid "Needs no water. Mocks the Drips."
-msgstr "不需要水。嘲笑 Drip。"
+msgid "Needs no water. Quietly smug about it."
+msgstr "不需要浇水。还有点得意。"
 
 #: data/events.json:trinkets[capsule_holo_koi].name
 msgid "Holo Koi"
@@ -10827,14 +10780,6 @@ msgstr "赚到 3,000 方块"
 msgid "Clean 5 hexes"
 msgstr "清理 5 个六角格"
 
-#: data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr "找到种子罐"
-
-#: data/goals.json:goals[plant_5].text
-msgid "Plant the Settler seed"
-msgstr "种下定居者的种子"
-
 #: data/goals.json:goals[hex_7].text
 msgid "Clean 7 hexes"
 msgstr "清理 7 个六角格"
@@ -10867,10 +10812,6 @@ msgstr "机器人压制 20 个捆包"
 msgid "Clean 12 hexes"
 msgstr "清理 12 个六角格"
 
-#: data/goals.json:goals[hexlv_2].text
-msgid "Get a hex to Planted"
-msgstr "让一个六角格达到“已种植”"
-
 #: data/goals.json:goals[hex_15].text
 msgid "Clean 15 hexes"
 msgstr "清理 15 个六角格"
@@ -10891,10 +10832,6 @@ msgstr "将基地升到 3 级"
 msgid "Base to level 3"
 msgstr "基地升到 3 级"
 
-#: data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "建造一台 Seedling 种植机器人"
-
 #: data/goals.json:goals[base_4].text
 msgid "Upgrade the base to level 4"
 msgstr "将基地升到 4 级"
@@ -10912,10 +10849,6 @@ msgstr "飞往下一座基地"
 msgid "Wake base 5 of 6"
 msgstr "唤醒第 5 座基地(共 6 座)"
 
-#: data/goals.json:goals[plant_25].text
-msgid "Plant 25 seeds"
-msgstr "种下 25 颗种子"
-
 #: data/goals.json:goals[rocket_tier_3].text
 msgid "Upgrade the rocket to Mk III"
 msgstr "把火箭升级到 Mk III"
@@ -10923,10 +10856,6 @@ msgstr "把火箭升级到 Mk III"
 #: data/goals.json:goals[rocket_tier_3].short
 msgid "Rocket to Mk III"
 msgstr "火箭升到 Mk III"
-
-#: data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
-msgstr "建造一台 Drip 浇水机器人"
 
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
@@ -11008,10 +10937,6 @@ msgstr "建造 4 台机器人"
 msgid "Earn 10,000 cubes"
 msgstr "赚到 10,000 方块"
 
-#: data/goals.json:goals[bloom_5].text
-msgid "Grow 5 flowers to bloom"
-msgstr "让 5 朵花开放"
-
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
 msgstr "阅读 2 块记忆碎片"
@@ -11027,10 +10952,6 @@ msgstr "机器人压制 100 个捆包"
 #: data/goals.json:goals[recycle_5].text
 msgid "Recycle 5 bales"
 msgstr "回收 5 个捆包"
-
-#: data/goals.json:goals[hexlv_3].text
-msgid "Get a hex to Growing"
-msgstr "让一个六角格达到“生长中”"
 
 #: data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer for the lake"
@@ -11084,121 +11005,25 @@ msgstr "装扮一个机器人"
 msgid "Research Pollinator Survey"
 msgstr "研究“传粉者调查”"
 
-#: data/goals.json:goals[bloom_25].text
-msgid "Grow 25 flowers to bloom"
-msgstr "让 25 朵花开放"
-
-#: data/goals.json:goals[plant_60].text
-msgid "Plant 60 seeds"
-msgstr "种下 60 颗种子"
-
-#: data/goals.json:goals[drip_2].text
-msgid "Run 2 Drip robots"
-msgstr "让 2 台 Drip 运转"
-
-#: data/goals.json:goals[hexlv_4].text
-msgid "Get a hex to Sustained"
-msgstr "让一个六角格达到稳定"
-
-#: data/goals.json:goals[drip_4].text
-msgid "Run 4 Drip robots"
-msgstr "让 4 台 Drip 运转"
-
-#: data/goals.json:goals[hexlv_4x3].text
-msgid "Get 3 hexes to Sustained"
-msgstr "让 3 个六角格达到稳定"
-
 #: data/goals.json:goals[spot_deer].text
 msgid "Spot a deer"
 msgstr "发现一只鹿"
-
-#: data/goals.json:goals[hexlv_5].text
-msgid "Get a hex to Thriving"
-msgstr "让一个六角格达到繁茂"
-
-#: data/goals.json:goals[hexlv_4x5].text
-msgid "Get 5 hexes to Sustained"
-msgstr "让 5 个六角格达到稳定"
-
-#: data/goals.json:goals[plant_100].text
-msgid "Plant 100 seeds"
-msgstr "种下 100 颗种子"
 
 #: data/goals.json:goals[robots_15].text
 msgid "Build 15 robots"
 msgstr "建造 15 台机器人"
 
-#: data/goals.json:goals[hexlv_5x3].text
-msgid "Get 3 hexes to Thriving"
-msgstr "让 3 个六角格达到繁茂"
-
-#: data/goals.json:goals[hexlv_4x8].text
-msgid "Get 8 hexes to Sustained"
-msgstr "让 8 个六角格达到稳定"
-
 #: data/goals.json:goals[earn_75k].text
 msgid "Earn 75,000 cubes"
 msgstr "赚到 75,000 方块"
-
-#: data/goals.json:goals[bloom_300].text
-msgid "Grow 300 flowers to bloom"
-msgstr "让 300 朵花开放"
-
-#: data/goals.json:goals[stipend_2k].text
-msgid "Garden stipend: 2,000 cubes"
-msgstr "花园补贴：2,000 方块"
-
-#: data/goals.json:goals[hexlv_5x8].text
-msgid "Get 8 hexes to Thriving"
-msgstr "让 8 个六角格达到繁茂"
-
-#: data/goals.json:goals[hexlv_4x10].text
-msgid "Get 10 hexes to Sustained"
-msgstr "让 10 个六角格达到稳定"
 
 #: data/goals.json:goals[earn_100k].text
 msgid "Earn 100,000 cubes"
 msgstr "赚到 100,000 方块"
 
-#: data/goals.json:goals[hexlv_4x15].text
-msgid "Get 15 hexes to Sustained"
-msgstr "让 15 个六角格达到稳定"
-
-#: data/goals.json:goals[hexlv_5x15].text
-msgid "Get 15 hexes to Thriving"
-msgstr "让 15 个六角格达到繁茂"
-
-#: data/goals.json:goals[hexlv_4x20].text
-msgid "Get 20 hexes to Sustained"
-msgstr "让 20 个六角格达到稳定"
-
-#: data/goals.json:goals[stipend_5k].text
-msgid "Garden stipend: 5,000 cubes"
-msgstr "花园补贴：5,000 方块"
-
-#: data/goals.json:goals[bloom_500].text
-msgid "Grow 500 flowers to bloom"
-msgstr "让 500 朵花开放"
-
-#: data/goals.json:goals[hexlv_5x20].text
-msgid "Get 20 hexes to Thriving"
-msgstr "让 20 个六角格达到繁茂"
-
 #: data/goals.json:goals[air_1k].text
 msgid "Filter 1,000 m3 of air"
 msgstr "过滤 1,000 立方米空气"
-
-#: data/goals.json:goals[stipend_7k].text
-msgid "Garden stipend: 7,500 cubes"
-msgstr "花园补贴：7,500 方块"
-
-#: data/goals.json:goals[stipend_10k].text
-msgid "Garden stipend: 10,000 cubes"
-msgstr "花园补贴：10,000 方块"
-
-#: data/goals.json:goals[hexlv_5x25].text
-msgid "Get 25 hexes to Thriving"
-msgstr "让 25 个六角格达到繁茂"
 
 #: data/goals.json:goals[extras_retire].text
 msgid "Retire a robot to the nursery"
@@ -11232,10 +11057,6 @@ msgstr "将一种机器人升级到 Mk II"
 msgid "A robot type to Mk II"
 msgstr "一种机器人升到 Mk II"
 
-#: data/goals.json:goals[stipend_20k].text
-msgid "Garden stipend: 20,000 cubes"
-msgstr "花园补贴：20,000 方块"
-
 #: data/goals.json:goals[earn_150k].text
 msgid "Earn 150,000 cubes"
 msgstr "赚到 150,000 方块"
@@ -11251,14 +11072,6 @@ msgstr "新基地升到 3 级"
 #: data/goals.json:goals[hex_50].text
 msgid "Clean 50 hexes"
 msgstr "清理 50 个六角格"
-
-#: data/goals.json:goals[bloom_800].text
-msgid "Grow 800 flowers to bloom"
-msgstr "让 800 朵花开放"
-
-#: data/goals.json:goals[restored_40].text
-msgid "Fully restore 40 hexes"
-msgstr "完全恢复 40 个六角格"
 
 #: data/goals.json:goals[base2_4].text
 msgid "New base to level 4"
@@ -11308,14 +11121,6 @@ msgstr "建造归乡火箭"
 msgid "Plant the last seed"
 msgstr "种下最后一颗种子"
 
-#: data/goals.json:goals[ark_1].text
-msgid "Plant a Seed Ark wave"
-msgstr "种下一波种子方舟"
-
-#: data/goals.json:goals[ark_3].text
-msgid "Plant three Seed Ark waves"
-msgstr "种下三波种子方舟"
-
 #: data/goals.json:goals[late_bridge].text
 msgid "Open the Ark Bridge"
 msgstr "打开方舟舰桥"
@@ -11335,10 +11140,6 @@ msgstr "放置 10 件装饰"
 #: data/goals.json:goals[late_garden_kinds].text
 msgid "Place 5 kinds of decoration"
 msgstr "放置 5 种装饰"
-
-#: data/goals.json:goals[late_ark_5].text
-msgid "Plant five Seed Ark waves"
-msgstr "完成五次种子方舟波次"
 
 #: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
@@ -11364,9 +11165,41 @@ msgstr "播种第二个新世界"
 msgid "Find 30 curiosities"
 msgstr "找到 30 件奇物"
 
-#: data/hex_levels.json:levels[0].hint
+#: data/hex_levels.json:auto_levels[0].hint data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
 msgstr "清除每一块废料"
+
+#: data/hex_levels.json:auto_levels[1].hint
+msgid "Grass comes back by itself"
+msgstr "草会自己长回来"
+
+#: data/hex_levels.json:auto_levels[2].name
+msgid "Grassy"
+msgstr "长草"
+
+#: data/hex_levels.json:auto_levels[2].hint
+msgid "Flowers come up by themselves"
+msgstr "花会自己开出来"
+
+#: data/hex_levels.json:auto_levels[3].name
+msgid "Blooming"
+msgstr "开花"
+
+#: data/hex_levels.json:auto_levels[3].hint
+msgid "Bushes fill in. Clean ground round it helps"
+msgstr "灌木会长满。周围的地干净会更快"
+
+#: data/hex_levels.json:auto_levels[4].name
+msgid "Lush"
+msgstr "繁茂"
+
+#: data/hex_levels.json:auto_levels[4].hint
+msgid "Animals come once it is in full bloom"
+msgstr "完全盛开后，动物就会来"
+
+#: data/hex_levels.json:auto_levels[5].hint data/hex_levels.json:levels[5].hint
+msgid "Wildlife has moved in"
+msgstr "野生动物已经入住"
 
 #: data/hex_levels.json:levels[1].hint
 msgid "Plant seeds here (tool 2)"
@@ -11387,10 +11220,6 @@ msgstr "稳定"
 #: data/hex_levels.json:levels[4].hint
 msgid "Bring every plant to bloom"
 msgstr "让每株植物都开花"
-
-#: data/hex_levels.json:levels[5].hint
-msgid "Wildlife has moved in"
-msgstr "野生动物已经入住"
 
 #: data/homeward.json:planets[verdance].name data/planets.json:verdance.name data/telescope.json:planets_default[verdance].name
 msgid "Verdance"
@@ -11930,12 +11759,8 @@ msgid "I run the Cradle, our big ship. I never stopped listening for you."
 msgstr "我负责 Cradle号，我们的大飞船。我一直在听你的消息，从没停过。"
 
 #: data/objectives.json:wren_brief.lines
-msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
-msgstr "Cradle号没法降落在死去的世界上。我们一起让 Verdance 重新变绿吧。"
-
-#: data/objectives.json:wren_brief.lines
-msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
-msgstr "植物会发出绿光。绿光能充满你的绽放核心，还能为 Cradle号照亮回家的路。"
+msgid "Clean the ground, and Verdance turns green by itself. That green fills your Bloom Core, and it shows the Cradle the way home."
+msgstr "把地面清理干净，Verdance就会自己变绿。这份绿意会充满你的绽放核心，也会给摇篮号指出回家的路。"
 
 #: data/objectives.json:brief.lines
 msgid "Lumi... it's WREN. Can you hear me? I can hardly reach you down there."
@@ -11972,18 +11797,6 @@ msgstr "工作台：胸舱容量。少跑几趟垃圾桶。"
 #: data/objectives.json:objectives[compartment].lines
 msgid "A bigger chest means fewer trips. The bench can fit one."
 msgstr "胸舱更大，就能少跑几趟。工作台可以装一个。"
-
-#: data/objectives.json:objectives[scoop_size].text
-msgid "Buy Scoop Size"
-msgstr "购买铲斗容量"
-
-#: data/objectives.json:objectives[scoop_size].desc
-msgid "Workbench: grab more trash at once."
-msgstr "工作台：一次抓起更多垃圾。"
-
-#: data/objectives.json:objectives[scoop_size].lines
-msgid "A wider scoop. More trash per grab, less walking."
-msgstr "更宽的铲斗。每次抓得更多，走得更少。"
 
 #: data/objectives.json:objectives[baler].text
 msgid "Save up for the Baler"
@@ -12034,8 +11847,8 @@ msgid "Clean the glowing hex"
 msgstr "清理发光的六角格"
 
 #: data/objectives.json:objectives[hex].desc
-msgid "Plants only grow on clean ground. Clear the outline."
-msgstr "植物只在干净的土地上生长。把轮廓里清理干净。"
+msgid "Clean ground turns green by itself. Clear the outline."
+msgstr "干净的土地会自己变绿。清理框出的地块。"
 
 #: data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
@@ -12065,41 +11878,13 @@ msgstr "在机器人舱按 {interact}。机器人会替你清理。"
 msgid "The Bot Bay hums! Walk up to it and build a helper."
 msgstr "机器人舱嗡嗡响了！走过去造一个帮手吧。"
 
-#: data/objectives.json:objectives[hex2].text
-msgid "Clean 2 hexes"
-msgstr "清理 2 个六角格"
-
-#: data/objectives.json:objectives[hex2].desc
-msgid "Your robot cleans on its own. Clean one more hex."
-msgstr "你的机器人会自己打扫。再清理一个六角格。"
-
-#: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
-msgstr "一个六角格干净了。再来一个，Lumi。"
-
 #: data/objectives.json:objectives[hex3].desc
-msgid "Your robot helps now. Clean ground lets the garden spread."
-msgstr "现在你的机器人也来帮忙了。干净的土地让花园蔓延开来。"
+msgid "Your robot cleans on its own. Clean ground turns green."
+msgstr "你的机器人会自己清理。干净的土地会变绿。"
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Your robot cleans on its own. One more hex, Lumi."
-msgstr "你的机器人会自己打扫。再来一个六角格，Lumi。"
-
-#: data/objectives.json:objectives[seed].text
-msgid "Plant the first seed"
-msgstr "种下第一颗种子"
-
-#: data/objectives.json:objectives[seed].desc
-msgid "Plants fill your Bloom Core."
-msgstr "植物会充满你的绽放核心。"
-
-#: data/objectives.json:objectives[seed].hint
-msgid "Keep cleaning. Seeds turn up in clean ground."
-msgstr "继续清理。干净的土地里会冒出种子。"
-
-#: data/objectives.json:objectives[seed].lines
-msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
-msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
+msgid "Look at your clean hex, Lumi. Grass, coming back all by itself. The old seeds were only sleeping."
+msgstr "看看你清理过的地块，Lumi。草自己长回来了。那些老种子只是在睡觉。"
 
 #: data/objectives.json:objectives[robot2].text
 msgid "Build a second robot"
@@ -12126,24 +11911,12 @@ msgid "A Haul Bug carries bales for you. Build one at the Bot Bay."
 msgstr "Haul Bug 会替你搬压块。去机器人舱造一个。"
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "Your robots help. Clean ground is room to plant."
-msgstr "你的机器人会帮忙。干净的地面才能种东西。"
+msgid "Your robots help. The more is clean, the faster it greens."
+msgstr "你的机器人会帮忙。越干净，变绿越快。"
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
 msgstr "向十个干净的六角格出发。你的机器人在向你学习呢，Lumi。"
-
-#: data/objectives.json:objectives[map].text
-msgid "Look at the map"
-msgstr "看看地图"
-
-#: data/objectives.json:objectives[map].desc
-msgid "Press {open_globe}. See how much of Verdance is clean."
-msgstr "按 {open_globe}。看看 Verdance 有多少已经干净了。"
-
-#: data/objectives.json:objectives[map].lines
-msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
-msgstr "打开地图，Lumi。它会显示 Verdance 还有多少被埋着。"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12162,20 +11935,20 @@ msgid "Build the shuttle"
 msgstr "建造穿梭机"
 
 #: data/objectives.json:objectives[shuttle].desc
-msgid "Workbench, Build tab. Garden Row has the seeds we need."
-msgstr "工作台，建造页签。花园街有我们需要的种子。"
+msgid "Workbench, Build tab. Garden Row kept seeds for the Cradle."
+msgstr "工作台，建造页。花园街为摇篮号留下了种子。"
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green."
-msgstr "Lumi，种子罐快空了。没有种子，Verdance 就绿不起来。"
+msgid "Lumi, the storm broke the Cradle's seed vault. Most of the Settlers' seeds are gone."
+msgstr "Lumi，风暴毁了摇篮号的种子库。拓荒者的种子大多没了。"
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "I found another old base, far away: Garden Row. It kept a big seed store."
-msgstr "我在很远的地方找到了另一座旧基地：花园街。那里存着一大批种子。"
+msgid "Far from here, an old base called Garden Row kept a seed store. Too far to walk."
+msgstr "离这里很远的地方，有个叫花园街的老基地留着一座种子仓。走路太远了。"
 
 #: data/objectives.json:objectives[shuttle].lines
-msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
-msgstr "走路太远了。你的机器人会留在这里继续清理。在发射台上造一架穿梭机，飞过去吧。"
+msgid "Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+msgstr "你的机器人会继续在这里清理。在停机坪上造一架穿梭机，飞过去吧。"
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake base 2 of 6"
@@ -12206,8 +11979,8 @@ msgid "First add the Research Desk: workbench, Upgrades tab."
 msgstr "先装上研究桌：工作台，升级标签页。"
 
 #: data/objectives.json:objectives[research1].lines
-msgid "Your bench can study now. Research unlocks new machines and seeds."
-msgstr "你的工作台现在可以做研究了。研究能解锁新机器和新种子。"
+msgid "Your bench can study now. Research unlocks new machines."
+msgstr "你的工作台现在可以研究了。研究会解锁新机器。"
 
 #: data/objectives.json:objectives[hex20].desc
 msgid "More clean ground means more room to grow."
@@ -12334,8 +12107,8 @@ msgid "Windpump"
 msgstr "风力水泵"
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The Settlers' seed store: seeds to take to the next world."
-msgstr "定居者的种子库：带去下一个世界的种子。"
+msgid "The Settlers' seed store: seeds for the Cradle's broken vault."
+msgstr "拓荒者的种子仓：给摇篮号损坏的种子库的种子。"
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
 msgid "Seed Stock"
@@ -12433,7 +12206,7 @@ msgstr "公交车场"
 msgid "Last Bus"
 msgstr "末班车"
 
-#: data/planets.json:verdance.hubs[bus_depot].desc
+#: data/planets.json:verdance.hubs[bus_depot].desc data/planets.json:verdance.hubs[tank_hill].desc
 msgid "An old station off the route. Wake it for Parts."
 msgstr "航线之外的一座旧清理站。唤醒它可以得到零件。"
 
@@ -12456,10 +12229,6 @@ msgstr "水罐山"
 #: data/planets.json:verdance.hubs[tank_hill].landmark.name
 msgid "Hill Tank"
 msgstr "山顶水罐"
-
-#: data/planets.json:verdance.hubs[tank_hill].desc
-msgid "An old station off the route. Wake it for Seeds."
-msgstr "航线之外的一座旧清理站。唤醒它可以得到种子。"
 
 #: data/planets.json:verdance.hubs[lake_light].name
 msgid "Lake Light"
@@ -12781,6 +12550,10 @@ msgstr "以后才有：等大地开始变绿，WREN 会发来 Skimmer 的图纸�
 msgid "Robotics"
 msgstr "机器人学"
 
+#: data/research.json:branches[botany].name
+msgid "Nature"
+msgstr "自然"
+
 #: data/research.json:branches[logistics].name
 msgid "Hauling"
 msgstr "搬运"
@@ -12842,20 +12615,20 @@ msgid "Lumi rewrites the base's old assembly logic. The base can build a helper 
 msgstr "Lumi 重写了基地陈旧的组装逻辑。基地又能制造帮手了：Scoopie。"
 
 #: data/research.json:nodes[seedling_blueprint].name
-msgid "Seedling Blueprint"
-msgstr "Seedling 蓝图"
+msgid "Sorting Arms"
+msgstr "分拣臂"
 
 #: data/research.json:nodes[seedling_blueprint].desc
-msgid "Plans for a small planter bot. Build it at the workbench."
-msgstr "一台小型种植机器人的设计图。在工作台建造它。"
+msgid "A second gripper on every Scoopie. It picks junk up faster."
+msgstr "给每个Scoopie加一只抓手。捡垃圾更快。"
 
 #: data/research.json:nodes[drip_blueprint].name
-msgid "Drip Blueprint"
-msgstr "Drip 蓝图"
+msgid "Haul Harness"
+msgstr "搬运挂具"
 
 #: data/research.json:nodes[drip_blueprint].desc
-msgid "A watering bot with a sloshy tank. Plants will love it."
-msgstr "一台带着晃荡水箱的浇水机器人。植物会爱上它的。"
+msgid "Wider forks and a strap. Every Haul Bug carries one more bale."
+msgstr "更宽的叉子加一根绑带。每只Haul Bug多运一块垃圾块。"
 
 #: data/research.json:nodes[bale_tuning].name
 msgid "Bale Tuning"
@@ -12870,8 +12643,8 @@ msgid "Multibot Blueprint"
 msgstr "Multibot 蓝图"
 
 #: data/research.json:nodes[multibot_blueprint].desc
-msgid "A helper that can clean, plant or water. Jack of all trades."
-msgstr "一位能清理、种植或浇水的帮手。样样都会。"
+msgid "A helper that cleans or carries bales, wherever the crew is short. Jack of all trades."
+msgstr "哪个队伍缺人，它就去清理或搬运垃圾块。样样都能干。"
 
 #: data/research.json:nodes[swarm_sync].name
 msgid "Swarm Sync"
@@ -12894,36 +12667,36 @@ msgid "Hardy Nettles"
 msgstr "坚韧荨麻"
 
 #: data/research.json:nodes[hardy_weeds].desc
-msgid "Nettles grow anywhere. Stingy, stubborn, and good for the soil."
-msgstr "荨麻哪儿都能长。扎人、倔强，对土壤很好。"
+msgid "Nettles come up by themselves on clean ground. Stingy, stubborn, and good for the soil."
+msgstr "荨麻会在干净的土地上自己长出来。扎人、倔强，对土壤有好处。"
 
 #: data/research.json:nodes[wild_mint].desc
-msgid "A fresh green smell drifts over the cleared hexes."
-msgstr "清理过的六角格上飘来一阵清新的绿意。"
+msgid "Mint comes up on its own over the cleared hexes. A fresh green smell drifts over them."
+msgstr "薄荷会在清理过的地块上自己长出来。一股清新的绿色气息飘在上面。"
 
 #: data/research.json:nodes[pollinator_survey].name
 msgid "Pollinator Survey"
 msgstr "传粉者调查"
 
 #: data/research.json:nodes[pollinator_survey].desc
-msgid "Count the visitors. The bees are back: every plant grows much faster, blooms drop more seeds, and Seedlings learn where flowers want to be."
-msgstr "数数来访者。蜜蜂回来了：每株植物都长得快多了，花朵掉落更多种子，Seedling 也学会了花儿想长在哪里。"
+msgid "Count the visitors. The bees are back: clean ground greens much faster."
+msgstr "数一数访客。蜜蜂回来了：干净的土地变绿快多了。"
 
 #: data/research.json:nodes[hedgerows].name
 msgid "Hedgerows"
 msgstr "树篱"
 
 #: data/research.json:nodes[hedgerows].desc
-msgid "Dense little hedges. Birds will need somewhere to sit. Gardens grow a little faster again."
-msgstr "茂密的小树篱。鸟儿需要地方歇脚。花园又长得快了一点。"
+msgid "Little hedges grow in by themselves. Birds will need somewhere to sit. Clean ground greens a little faster again."
+msgstr "小树篱会自己长出来。鸟儿需要地方落脚。干净的土地又变绿快一点。"
 
 #: data/research.json:nodes[evergreens].name
 msgid "Evergreen Saplings"
 msgstr "常青树苗"
 
 #: data/research.json:nodes[evergreens].desc
-msgid "Tiny pines. In a hundred years, a forest. Blooms drop more seeds."
-msgstr "小小的松树。一百年后，就是一片森林。花朵掉落更多种子。"
+msgid "Tiny pines take root by themselves. In a hundred years, a forest."
+msgstr "小松树会自己扎根。一百年后，就是一片森林。"
 
 #: data/research.json:nodes[water_testing].name
 msgid "Water Testing"
@@ -12934,20 +12707,20 @@ msgid "Dip strips and a lot of squinting. The lakes are sick, not dead."
 msgstr "试纸，外加大量眯眼。湖泊是病了，不是死了。"
 
 #: data/research.json:nodes[big_tanks].name
-msgid "Big Tanks"
-msgstr "大水箱"
+msgid "Skimmer Floats"
+msgstr "撇浮器浮筒"
 
 #: data/research.json:nodes[big_tanks].desc
-msgid "Drip and Multibot carry more water per trip."
-msgstr "Drip 和 Multibot 每趟能带更多水。"
+msgid "Bigger floats on every Skimmer. It nets more before it heads for the shore."
+msgstr "给每个撇浮器装上更大的浮筒。回岸前能捞更多。"
 
 #: data/research.json:nodes[spray_heads].name
-msgid "Spray Heads"
-msgstr "喷头"
+msgid "Lake Nets"
+msgstr "湖网"
 
 #: data/research.json:nodes[spray_heads].desc
-msgid "A misting nozzle. Water bots reach further and work faster."
-msgstr "一个雾化喷嘴。浇水机器人喷得更远、干得更快。"
+msgid "A wider net. Skimmers scoop floating junk faster."
+msgstr "更宽的网。撇浮器捞漂浮垃圾更快。"
 
 #: data/research.json:nodes[silt_filters].name
 msgid "Silt Filters"
@@ -12958,20 +12731,20 @@ msgid "Layered sand and charcoal. Murky water turns glassy."
 msgstr "层层沙子和木炭。浑浊的水变得清澈透亮。"
 
 #: data/research.json:nodes[pump_lines].name
-msgid "Pump Lines"
-msgstr "泵水管线"
+msgid "Shore Pumps"
+msgstr "岸边水泵"
 
 #: data/research.json:nodes[pump_lines].desc
-msgid "Hoses from the lake to the hub. Water bots refill faster."
-msgstr "从湖边接到基地的水管。浇水机器人补水更快。"
+msgid "Pumps push the murk away from the shore. Skimmers move faster."
+msgstr "水泵把浑水推离岸边。撇浮器跑得更快。"
 
 #: data/research.json:nodes[irrigation].name
-msgid "Irrigation"
-msgstr "灌溉"
+msgid "Clear Springs"
+msgstr "清泉"
 
 #: data/research.json:nodes[irrigation].desc
-msgid "Buried drip lines. The meadow drinks while you sleep."
-msgstr "埋在地下的滴灌管。你睡觉时草地也在喝水。"
+msgid "The old springs run clean again. The lakes clear, and the land round them greens faster."
+msgstr "老泉水又变清了。湖水清澈起来，周围的土地变绿更快。"
 
 #: data/research.json:nodes[field_notebook].name
 msgid "Field Notebook"
@@ -13058,24 +12831,24 @@ msgid "Dune Fences"
 msgstr "沙丘围栏"
 
 #: data/research.json:nodes[dune_fences].desc
-msgid "Brush fences and hedges that break the wind. Sustained hexes shelter two rings around them, and sandstorms carry less."
-msgstr "挡风的柴篱和树篱。稳定的六角格能庇护周围两圈，沙暴带来的废料也更少。"
+msgid "Brush fences and hedges that break the wind. Lush hexes shelter two rings around them, and sandstorms carry less."
+msgstr "挡风的枝条篱笆和树篱。繁茂的地块能护住周围两圈，沙暴卷走的也更少。"
 
 #: data/research.json:nodes[cold_hardy_seeds].name
-msgid "Cold-Hardy Seeds"
-msgstr "耐寒种子"
+msgid "Cold-Hardy Plants"
+msgstr "耐寒植物"
 
 #: data/research.json:nodes[cold_hardy_seeds].desc
-msgid "Seeds bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
-msgstr "用少数在严寒中存活下来的植物培育的种子。蕨类、荨麻、松树、长春花和霜苔可以在冰封港口的室外生长。"
+msgid "Plants bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
+msgstr "用少数熬过寒冷的植物培育出来的品种。蕨类、荨麻、松树、长春花和霜苔都能在冰封港的户外生长。"
 
 #: data/research.json:nodes[dew_condensers].name
-msgid "Dew Condensers"
-msgstr "露水冷凝器"
+msgid "Dew Catchers"
+msgstr "集露器"
 
 #: data/research.json:nodes[dew_condensers].desc
-msgid "Cold fins on every Water Tank pull water out of the night air. Tanks refill much faster where the ground is dry."
-msgstr "每个水箱上的冷却鳍片能从夜间空气中提取水分。在干燥的地方，水箱补水快得多。"
+msgid "Cold fins pull water out of the night air. Dry ground greens faster."
+msgstr "冰冷的散热片从夜晚的空气里收集水分。干燥的土地变绿更快。"
 
 #: data/research.json:nodes[pump_works].name
 msgid "Pump Works"
@@ -13269,7 +13042,7 @@ msgstr "拖钩"
 msgid "Winch and hook."
 msgstr "绞盘和吊钩。"
 
-#: data/robot_parts.json:parts[seed_drill].name data/robots.json:types[seedling].upgrades[1].name
+#: data/robot_parts.json:parts[seed_drill].name
 msgid "Seed Drill"
 msgstr "播种钻"
 
@@ -13421,14 +13194,12 @@ msgstr "Scoopie"
 msgid "Small cleaner. Picks junk in its hex and leaves bales behind."
 msgstr "小型清洁机器人。捡起所在六角格的废料，并留下捆包。"
 
-#: data/robots.json:types[scoopie].upgrades[0].name data/robots.json:types[haulbug].upgrades[0].name data/robots.json:types[seedling].upgrades[0].name
-#: data/robots.json:types[drip].upgrades[0].name data/robots.json:types[multibot].upgrades[0].name
+#: data/robots.json:types[scoopie].upgrades[0].name data/robots.json:types[haulbug].upgrades[0].name data/robots.json:types[multibot].upgrades[0].name
 msgid "Drive Motors"
 msgstr "驱动电机"
 
-#: data/robots.json:types[scoopie].upgrades[0].unit data/robots.json:types[haulbug].upgrades[0].unit data/robots.json:types[seedling].upgrades[0].unit
-#: data/robots.json:types[drip].upgrades[0].unit data/robots.json:types[skimmer].upgrades[0].unit data/robots.json:types[multibot].upgrades[0].unit
-#: data/upgrades.json:upgrades[tread_speed].unit
+#: data/robots.json:types[scoopie].upgrades[0].unit data/robots.json:types[haulbug].upgrades[0].unit data/robots.json:types[skimmer].upgrades[0].unit
+#: data/robots.json:types[multibot].upgrades[0].unit data/upgrades.json:upgrades[tread_speed].unit
 msgid " m/s"
 msgstr " 米/秒"
 
@@ -13436,8 +13207,7 @@ msgstr " 米/秒"
 msgid "Arm Servos"
 msgstr "手臂伺服"
 
-#: data/robots.json:types[scoopie].upgrades[1].unit data/robots.json:types[seedling].upgrades[1].unit data/robots.json:types[drip].upgrades[3].unit
-#: data/robots.json:types[skimmer].upgrades[1].unit data/upgrades.json:upgrades[scoop_speed].unit
+#: data/robots.json:types[scoopie].upgrades[1].unit data/robots.json:types[skimmer].upgrades[1].unit data/upgrades.json:upgrades[scoop_speed].unit
 msgid "/s"
 msgstr "/秒"
 
@@ -13461,39 +13231,6 @@ msgstr "叉车。把散落的捆包运到磅秤。"
 #: data/robots.json:types[haulbug].upgrades[1].name
 msgid "Longer Forks"
 msgstr "加长货叉"
-
-#: data/robots.json:types[seedling].name
-msgid "Seedling"
-msgstr "Seedling"
-
-#: data/robots.json:types[seedling].desc
-msgid "Plants seeds in clean ground. Uses your seed stock."
-msgstr "在干净的地面上播种。使用你的种子库存。"
-
-#: data/robots.json:types[drip].name
-msgid "Drip"
-msgstr "Drip"
-
-#: data/robots.json:types[drip].desc
-msgid "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake."
-msgstr "用弧形喷水给区域内最缺水的植物浇水。在基地水桶、水箱或干净的湖边补水。"
-
-#: data/robots.json:types[drip].upgrades[1].name
-msgid "Bigger Tank"
-msgstr "更大的水箱"
-
-#: data/robots.json:types[drip].upgrades[2].name
-msgid "Wide Nozzle"
-msgstr "宽喷嘴"
-
-#: data/robots.json:types[drip].upgrades[2].unit data/upgrades.json:upgrades[scoop_width].unit data/upgrades.json:upgrades[magnet_arm].unit
-#: data/upgrades.json:upgrades[detector_range].unit data/upgrades.json:upgrades[laser_reach].unit
-msgid " m"
-msgstr " 米"
-
-#: data/robots.json:types[drip].upgrades[3].name
-msgid "Fast Pump"
-msgstr "快速水泵"
 
 #: data/robots.json:types[skimmer].name
 msgid "Skimmer"
@@ -13520,8 +13257,8 @@ msgid "Multibot"
 msgstr "Multibot"
 
 #: data/robots.json:types[multibot].desc
-msgid "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist."
-msgstr "通用帮手。在分配面板上指派它清理、种植或浇水。比专精机器人慢。"
+msgid "General helper. It cleans or carries bales, wherever its crew is short. Slower than a specialist."
+msgstr "通用帮手。哪个队伍缺人，它就去清理或搬运垃圾块。比专门机器人慢。"
 
 #: data/robots.json:tiers[1].name
 msgid "Mk II"
@@ -14444,8 +14181,8 @@ msgid "Other old stations are waiting to be woken up."
 msgstr "还有别的旧清理站在等着被唤醒。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "The seed tin is nearly empty. Garden Row kept the seed store."
-msgstr "种子罐快空了。Garden Row 保存着种子库。"
+msgid "The Cradle lost most of its seeds in the storm. Garden Row kept a seed store."
+msgstr "摇篮号在风暴里丢了大部分种子。花园街留着一座种子仓。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "The rocket's skin is too thin for space. Gantry Works made hulls."
@@ -14516,8 +14253,8 @@ msgid "Big trash holds the most cubes. It takes strong arms."
 msgstr "大件垃圾里的方块最多。得有强壮的手臂才搬得动。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "Plants only grow on clean ground."
-msgstr "植物只在干净的土地上生长。"
+msgid "Clean ground turns green by itself."
+msgstr "干净的土地会自己变绿。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "A perfect bale has no gaps, so nothing is lost."
@@ -14572,36 +14309,20 @@ msgid "More robots, more clean ground. They carry on when you fly on."
 msgstr "机器人越多，干净的土地越多。你飞走以后，它们会继续干活。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "Nothing grows by itself here any more. You need seeds."
-msgstr "这里已经没有东西会自己长出来了。你需要种子。"
-
-#: data/story_reasons.json:goal_reasons
-msgid "Plants give green light for your Bloom Core."
-msgstr "植物会给你的绽放核心送去绿光。"
-
-#: data/story_reasons.json:goal_reasons
-msgid "Planted ground starts to give green light."
-msgstr "种上植物的地面开始发出绿光。"
-
-#: data/story_reasons.json:goal_reasons
-msgid "Every bloom gives green light, and a seed back."
-msgstr "每一朵花都会发出绿光，还会还给你一颗种子。"
+msgid "Green ground gives green light for your Bloom Core."
+msgstr "绿色的土地为你的绽放核心提供绿光。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "The Recycler turns bales into parts for robots."
 msgstr "回收炉把捆包变成机器人用的零件。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "Watered plants grow, and growing plants give more green light."
-msgstr "浇过水的植物会长大，长大的植物会发出更多绿光。"
+msgid "The more ground round it is clean, the faster it greens."
+msgstr "周围干净的地越多，它变绿越快。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Trash floats on the lakes too. A Skimmer nets it."
 msgstr "湖面上也漂着垃圾。Skimmer 会用网把它们捞起来。"
-
-#: data/story_reasons.json:goal_reasons
-msgid "A Seedling plants for you, so green spreads faster."
-msgstr "Seedling 会替你播种，绿色就能蔓延得更快。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "A little music makes the base feel like home."
@@ -14612,28 +14333,20 @@ msgid "Your robots work hard. Let them look their best."
 msgstr "你的机器人干活很辛苦。把它们打扮得漂亮一点吧。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "Thirsty plants stop growing. A Drip waters them for you."
-msgstr "口渴的植物会停止生长。Drip 会替你给它们浇水。"
-
-#: data/story_reasons.json:goal_reasons
-msgid "One helper that can clean, plant or water."
-msgstr "一个既能清理、又能播种和浇水的帮手。"
+msgid "One helper that cleans or carries, wherever the crew is short."
+msgstr "哪个队伍缺人，它就去清理或搬运。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "A Mk II robot does the same job faster."
 msgstr "Mk II 机器人干同样的活儿更快。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "Bees carry pollen. With bees, every plant grows faster."
-msgstr "蜜蜂会传播花粉。有了蜜蜂，每一株植物都长得更快。"
+msgid "Bees carry pollen. With bees, clean ground greens faster."
+msgstr "蜜蜂传播花粉。有了蜜蜂，干净的土地变绿更快。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "A tank near the plants saves your Drips a long trip."
-msgstr "把水箱放在植物旁边，Drip 就不用跑远路了。"
-
-#: data/story_reasons.json:goal_reasons
-msgid "Ground that stays watered can look after itself."
-msgstr "一直有水的土地能自己照顾自己。"
+msgid "Green ground that is left alone looks after itself."
+msgstr "不去打扰的绿地会自己照顾自己。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Animals come back where the ground is green."
@@ -14644,16 +14357,12 @@ msgid "Thriving ground is a home for animals again."
 msgstr "繁茂的土地又成了动物们的家。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "Healthy gardens pay you back, all by themselves."
-msgstr "健康的花园会自己回报你。"
-
-#: data/story_reasons.json:goal_reasons
 msgid "Clean air lets the sun through to the plants."
 msgstr "空气干净了，阳光才能照到植物上。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "Old robots have earned a rest in the garden."
-msgstr "老机器人该在花园里好好歇一歇了。"
+msgid "Old robots have earned a rest in the nursery garden."
+msgstr "老机器人该去养老花园休息了。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Fully restored ground stays green without you."
@@ -14678,6 +14387,10 @@ msgstr "工作台学会建造新东西。"
 #: data/story_reasons.json:goal_reasons
 msgid "Robots keep working while you do other things."
 msgstr "你忙别的事情时，机器人会继续干活。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Clean ground turns green by itself, and green ground gives green light."
+msgstr "干净的土地会自己变绿，绿色的土地会发出绿光。"
 
 #: data/story_reasons.json:exit
 msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
@@ -15048,6 +14761,11 @@ msgstr "铲子宽度"
 msgid "Longer arms, wider sweeps."
 msgstr "更长的手臂，更宽的横扫。"
 
+#: data/upgrades.json:upgrades[scoop_width].unit data/upgrades.json:upgrades[magnet_arm].unit data/upgrades.json:upgrades[detector_range].unit
+#: data/upgrades.json:upgrades[laser_reach].unit
+msgid " m"
+msgstr " 米"
+
 #: data/upgrades.json:upgrades[tread_speed].name
 msgid "Tread Speed"
 msgstr "履带速度"
@@ -15225,8 +14943,8 @@ msgid "Workbench Mk III: Research Desk"
 msgstr "工作台 Mk III：研究桌"
 
 #: data/workbench.json:tiers[2].desc
-msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
-msgstr "加装研究桌。研究你挖出的东西，解锁机器和种子。"
+msgid "Adds a research desk. Study what you dig up to unlock new machines."
+msgstr "加一张研究桌。研究你挖出来的东西，解锁新机器。"
 
 #: data/workbench.json:tiers[3].name
 msgid "Workbench Mk IV: Request Board"
@@ -16073,12 +15791,12 @@ msgid "The Dust Flats. That glitter on the horizon is a solar farm, or what is l
 msgstr "尘土平原。地平线上那片闪光是一座太阳能电站，或者说是它剩下的部分。小心风，Lumi。它会把东西吹走。"
 
 #: data/wren_lines.json:frontier_dust_flats
-msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."
-msgstr "沙子一直延伸到世界尽头。这里曾经有一整张电网。井已经干了，所以 Drip 需要水箱。"
+msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry. Green will come slowly out here."
+msgstr "沙子一直铺到世界尽头。这里以前有一整片电网。井干了。这里的绿意会来得很慢。"
 
 #: data/wren_lines.json:frontier_dust_flats
-msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."
-msgstr "尘土平原。我记得那些照片：蓝色的面板一直铺到地平线，嗡嗡作响。我们可以再做到。先种防风林。"
+msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Clean it, and the windbreaks grow back."
+msgstr "尘土平原。我记得那些照片：蓝色的板子一直排到地平线，嗡嗡作响。我们能再做到。清理干净，防风林就会长回来。"
 
 #: data/wren_lines.json:frontier_frozen_port
 msgid "...cold... ice on the lens..."
@@ -16093,8 +15811,8 @@ msgid "A harbour frozen in mid-shift. The cranes still have containers hanging o
 msgstr "一座在班次中途冻住的港口。起重机上还挂着集装箱。带上加热器，Lumi。"
 
 #: data/wren_lines.json:frontier_frozen_port
-msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."
-msgstr "冰封港口。以前每小时都有船进港。把它解冻，植物还需要温室，或者非常倔强的种子。"
+msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn roots."
+msgstr "冰封港。以前这里每小时都有船进港。把它解冻后，植物需要温室，或者特别倔强的根。"
 
 #: data/wren_lines.json:frontier_sunken_city
 msgid "...water... everywhere... rooftops?"
@@ -16125,8 +15843,8 @@ msgid "Cradle Returns. If we clean and green that pad, the ark can land. I mean 
 msgstr "Cradle号归来。如果我们把那个平台清理干净、种上绿色，方舟就能降落了。我是说真正地降落。就在这里。"
 
 #: data/wren_lines.json:frontier_cradle_returns
-msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."
-msgstr "Lumi。这就是发射场。我们离开的那晚，我从轨道上看着它。清理平台，种上植物，让它活着。然后我们就召唤他们回家。"
+msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad and let it grow green. Then we call them home."
+msgstr "Lumi。这里就是发射场。我们离开的那天夜里，我在轨道上看着它。把场地清理干净，让它变绿。然后我们就叫他们回家。"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "...wind... coming..."
@@ -16137,8 +15855,8 @@ msgid "Sandstorm on the horizon. Anything clean and bare out there is going to g
 msgstr "沙暴将至。外面所有干净又裸露的地方都会再次被掩埋。"
 
 #: data/wren_lines.json:sandstorm_warn
-msgid "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."
-msgstr "风越来越大了。种了植物的六角格能挺住，稳定的还能庇护邻格。其余的嘛，就那样了。"
+msgid "Wind's rising. Green hexes hold, and lush ones shelter their neighbours. The rest, well."
+msgstr "起风了。绿色地块撑得住，繁茂的还能护住邻居。其他的嘛，就难说了。"
 
 #: data/wren_lines.json:sandstorm_warn
 msgid "Storm front from the flats. Get the robots home or keep sweeping, your choice. The hedges will hold."
@@ -16153,8 +15871,8 @@ msgid "Storm's past. It dropped junk on {n} hexes. The sheltered ones came throu
 msgstr "沙暴过去了。它往 {n} 个六角格上倒了废料。有庇护的那些安然无恙。"
 
 #: data/wren_lines.json:sandstorm_over
-msgid "There. The wind gave some of it back. Plant a windbreak and it won't next time."
-msgstr "好了。风把一些废料吹回来了。种一道防风林，下次就不会了。"
+msgid "There. The wind gave some of it back. Once it greens, it won't next time."
+msgstr "好了。风又把一些吹回来了。等这里变绿，下次就不会了。"
 
 #: data/wren_lines.json:sandstorm_over
 msgid "Storm over. Every Sustained hex out there is a wall now. Good walls."
@@ -16213,8 +15931,8 @@ msgid "...pad... lights..."
 msgstr "……平台……灯光……"
 
 #: data/wren_lines.json:cradle_pad
-msgid "The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained."
-msgstr "着陆平台干净了。现在它需要焕发生机。种上植物，让它保持稳定。"
+msgid "The landing pad is clean. Now it needs to be alive: give it time to grow lush."
+msgstr "着陆场干净了。现在它得活起来：给它点时间长得繁茂。"
 
 #: data/wren_lines.json:cradle_pad
 msgid "Pad's clear. The ark won't land on bare concrete, though. It wants green under it."
@@ -16281,12 +15999,12 @@ msgid "...you're dim... find green... any green..."
 msgstr "……你很暗……找绿色……任何绿色……"
 
 #: data/wren_lines.json:low_core
-msgid "Your core's low. Plant something, Lumi. Anything. Green light is green light."
-msgstr "你的核心电量低。种点东西，Lumi。什么都行。绿光就是绿光。"
+msgid "Your core's low. Clean some ground, Lumi. Anything that greens. Green light is green light."
+msgstr "你的核心电量低了。清理一点土地吧，Lumi。只要能变绿就行。绿光就是绿光。"
 
 #: data/wren_lines.json:low_core
-msgid "Running a little dim. A few blooms will fix that."
-msgstr "有点暗了。开几朵花就好了。"
+msgid "Running a little dim. A few clean hexes will fix that."
+msgstr "有点暗了。清理几块地就好了。"
 
 #: data/wren_lines.json:egg_sand_piano
 msgid "...music... out here?..."
@@ -16453,8 +16171,8 @@ msgid "New world, new sky. Same job. You're better at it than you were the first
 msgstr "新世界，新天空。还是老活儿。你比第一次干得更好了。"
 
 #: data/wren_lines.json:new_world
-msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
-msgstr "看看这里。满目疮痍，尘土飞扬，几百年都没人种过东西了。你知道该怎么做。"
+msgid "Look at that. Ruined, dusty, nothing's grown here in centuries. You know what to do."
+msgstr "看看这里。一片废墟，满是灰尘，几百年来什么都没长过。你知道该怎么做。"
 
 #: data/wren_lines.json:garden_place
 msgid "...pretty..."
@@ -16659,6 +16377,492 @@ msgstr "资金耗尽时，那座龙门吊把采矿船队拆成了废铁。方舟
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Old salt flats where a solar farm once powered half a continent. Sandstorms roll in every few minutes and bury cleaned ground again; Sustained hexes shelter their neighbours. The well is dry: Drips need Water Tanks."
+#~ msgstr "古老的盐滩，曾有一座太阳能电站为半个大陆供电。每隔几分钟就会刮起沙暴，再次掩埋清理过的地面；稳定的六角格能庇护邻格。井已经干了：Drip 需要水箱。"
+
+#~ msgid "Needs no water. Mocks the Drips."
+#~ msgstr "不需要水。嘲笑 Drip。"
+
+#~ msgid "Your robot cleans on its own. Green spreads where it is clean."
+#~ msgstr "你的机器人会自己清理。哪里干净，绿意就在哪里蔓延。"
+
+#~ msgid "The Settlers' seed store: seeds to take to the next world."
+#~ msgstr "定居者的种子库：带去下一个世界的种子。"
+
+#~ msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
+#~ msgstr "你在下面种出的每一小片，都是又一块这样的苗床。你没有迷路，Lumi。你在重新播种。"
+
+#~ msgid "The First Seed"
+#~ msgstr "第一颗种子"
+
+#~ msgid "Find the first seed."
+#~ msgstr "找到第一颗种子。"
+
+#~ msgid "Plant a seed."
+#~ msgstr "种下一颗种子。"
+
+#~ msgid "Gardener"
+#~ msgstr "园丁"
+
+#~ msgid "Plant 100 seeds."
+#~ msgstr "种下 100 颗种子。"
+
+#~ msgid "Plant your first seeds."
+#~ msgstr "种下你的第一批种子。"
+
+#~ msgid "Keep planting."
+#~ msgstr "继续种吧。"
+
+#~ msgid "Golden today, a puff of wishes tomorrow. Each seed rides the wind to a new patch of clean ground. It plants itself, if you let it."
+#~ msgstr "今天金灿灿，明天就是一团愿望。每颗种子都乘着风飞向一片新的干净土地。只要你允许，它会自己种下自己。"
+
+#~ msgid "Knee-high today. In a hundred years, a forest that smells of resin and rain. Lumi plants it carefully, for whoever comes after."
+#~ msgstr "今天只有膝盖高。一百年后，会是一片散发着松脂和雨水气息的森林。Lumi 小心地种下它，为了后来的人。"
+
+#~ msgid "Plant in the Dust Flats."
+#~ msgstr "种在尘土平原。"
+
+#~ msgid "A cold-hardy seed for the Frozen Port."
+#~ msgstr "适合冰封港口的耐寒种子。"
+
+#~ msgid "Plant on the drained streets of the Sunken City."
+#~ msgstr "种在沉没之城排干的街道上。"
+
+#~ msgid "Plant in the Sunken City."
+#~ msgstr "种在沉没之城。"
+
+#~ msgid "Research the Seedling Blueprint."
+#~ msgstr "研究 Seedling 蓝图。"
+
+#~ msgid "A planter bot with a seed hopper on its back. It pats every seed into the soil, twice, just to be sure."
+#~ msgstr "一台背着种子料斗的种植机器人。它会把每颗种子拍进土里两次，就为了保险。"
+
+#~ msgid "Research the Drip Blueprint."
+#~ msgstr "研究 Drip 蓝图。"
+
+#~ msgid "A watering bot with a sloshy tank. It makes a little happy gurgle when a plant drinks."
+#~ msgstr "一台带着晃荡水箱的浇水机器人。植物喝水时它会开心地咕噜一声。"
+
+#~ msgid "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."
+#~ msgstr "一位能清理、种植或浇水的帮手。哪样都不是最快的，但总在需要它的地方。"
+
+#~ msgid "The wind picks up junk from the open flats and drops it on clean ground. Planted hexes are never touched, and Sustained hexes break the wind for every hex next to them."
+#~ msgstr "风会卷起空旷平原上的废料，丢到干净的地面上。种了植物的六角格永远不会被波及，稳定的六角格还能为相邻的每一格挡风。"
+
+#~ msgid "A ring of hexes in front of the base where the Cradle will set down. It has to be clean and Sustained before the ark will trust it."
+#~ msgstr "基地前的一圈六角格，Cradle号将在这里降落。它必须干净且稳定，方舟才会信任它。"
+
+#~ msgid "Where: The edges of Sustained ground."
+#~ msgstr "出没：稳定地块的边缘。"
+
+#~ msgid "Where: Sustained and Thriving hexes."
+#~ msgstr "出没：稳定和繁茂的六角格。"
+
+#~ msgid "Where: Flowers on Sustained hexes."
+#~ msgstr "出没：稳定六角格上的花丛。"
+
+#~ msgid "Bees came back with the blooms. Every flower bed that stays watered gets its own little hum."
+#~ msgstr "蜜蜂随着花朵一起回来了。每一片一直有人浇水的花坛，都有属于自己的小小嗡嗡声。"
+
+#~ msgid "Where: Lake shores once they're planted."
+#~ msgstr "出没：种上植物后的湖岸。"
+
+#~ msgid "Where: Planted ground in the Dust Flats."
+#~ msgstr "出没：尘土平原种了植物的地面。"
+
+#~ msgid "Where: Planted ground at the Frozen Port."
+#~ msgstr "出没：冰封港口种了植物的地面。"
+
+#~ msgid "8% more seeds per bloom per level; each new world starts with 40 seeds per level in the pod (ready for when Lumi finds that world's seed tin)."
+#~ msgstr "每级每次开花多得 8% 种子；每个新世界开局时，着陆舱里每级额外有 40 颗种子（等 Lumi 找到那个世界的种子罐时就能用）。"
+
+#~ msgid "Seeds"
+#~ msgstr "种子"
+
+#~ msgid "SEEDS"
+#~ msgstr "种子"
+
+#~ msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
+#~ msgstr "用来种植。堆肥压机把纸、纸板和凋谢的花变成种子。"
+
+#~ msgid "Rain! Your plants stay watered while it lasts."
+#~ msgstr "下雨了！雨停之前植物都不会缺水。"
+
+#~ msgid "Plants stay watered while it rains"
+#~ msgstr "下雨时植物保持湿润"
+
+#~ msgid "Plant %d sprouts"
+#~ msgstr "种下 %d 株嫩芽"
+
+#~ msgid "Grow %d plants to bloom"
+#~ msgstr "让 %d 株植物开花"
+
+#~ msgid "Get %d more hexes to Sustained"
+#~ msgstr "让另外 %d 个六角格达到稳定"
+
+#~ msgid "Get one more hex to Sustained"
+#~ msgstr "让再一个六角格达到稳定"
+
+#~ msgid "Find the seed tin"
+#~ msgstr "找到种子罐"
+
+#~ msgid "Plant the Settler seed"
+#~ msgstr "种下定居者的种子"
+
+#~ msgid "Get a hex to Planted"
+#~ msgstr "让一个六角格达到“已种植”"
+
+#~ msgid "Build a Seedling planter"
+#~ msgstr "建造一台 Seedling 种植机器人"
+
+#~ msgid "Plant 25 seeds"
+#~ msgstr "种下 25 颗种子"
+
+#~ msgid "Build a Drip watering robot"
+#~ msgstr "建造一台 Drip 浇水机器人"
+
+#~ msgid "Grow 5 flowers to bloom"
+#~ msgstr "让 5 朵花开放"
+
+#~ msgid "Get a hex to Growing"
+#~ msgstr "让一个六角格达到“生长中”"
+
+#~ msgid "Grow 25 flowers to bloom"
+#~ msgstr "让 25 朵花开放"
+
+#~ msgid "Plant 60 seeds"
+#~ msgstr "种下 60 颗种子"
+
+#~ msgid "Run 2 Drip robots"
+#~ msgstr "让 2 台 Drip 运转"
+
+#~ msgid "Get a hex to Sustained"
+#~ msgstr "让一个六角格达到稳定"
+
+#~ msgid "Run 4 Drip robots"
+#~ msgstr "让 4 台 Drip 运转"
+
+#~ msgid "Get 3 hexes to Sustained"
+#~ msgstr "让 3 个六角格达到稳定"
+
+#~ msgid "Get a hex to Thriving"
+#~ msgstr "让一个六角格达到繁茂"
+
+#~ msgid "Get 5 hexes to Sustained"
+#~ msgstr "让 5 个六角格达到稳定"
+
+#~ msgid "Plant 100 seeds"
+#~ msgstr "种下 100 颗种子"
+
+#~ msgid "Get 3 hexes to Thriving"
+#~ msgstr "让 3 个六角格达到繁茂"
+
+#~ msgid "Get 8 hexes to Sustained"
+#~ msgstr "让 8 个六角格达到稳定"
+
+#~ msgid "Grow 300 flowers to bloom"
+#~ msgstr "让 300 朵花开放"
+
+#~ msgid "Garden stipend: 2,000 cubes"
+#~ msgstr "花园补贴：2,000 方块"
+
+#~ msgid "Get 8 hexes to Thriving"
+#~ msgstr "让 8 个六角格达到繁茂"
+
+#~ msgid "Get 10 hexes to Sustained"
+#~ msgstr "让 10 个六角格达到稳定"
+
+#~ msgid "Get 15 hexes to Sustained"
+#~ msgstr "让 15 个六角格达到稳定"
+
+#~ msgid "Get 15 hexes to Thriving"
+#~ msgstr "让 15 个六角格达到繁茂"
+
+#~ msgid "Get 20 hexes to Sustained"
+#~ msgstr "让 20 个六角格达到稳定"
+
+#~ msgid "Garden stipend: 5,000 cubes"
+#~ msgstr "花园补贴：5,000 方块"
+
+#~ msgid "Grow 500 flowers to bloom"
+#~ msgstr "让 500 朵花开放"
+
+#~ msgid "Get 20 hexes to Thriving"
+#~ msgstr "让 20 个六角格达到繁茂"
+
+#~ msgid "Garden stipend: 7,500 cubes"
+#~ msgstr "花园补贴：7,500 方块"
+
+#~ msgid "Garden stipend: 10,000 cubes"
+#~ msgstr "花园补贴：10,000 方块"
+
+#~ msgid "Get 25 hexes to Thriving"
+#~ msgstr "让 25 个六角格达到繁茂"
+
+#~ msgid "Garden stipend: 20,000 cubes"
+#~ msgstr "花园补贴：20,000 方块"
+
+#~ msgid "Grow 800 flowers to bloom"
+#~ msgstr "让 800 朵花开放"
+
+#~ msgid "Fully restore 40 hexes"
+#~ msgstr "完全恢复 40 个六角格"
+
+#~ msgid "Plant a Seed Ark wave"
+#~ msgstr "种下一波种子方舟"
+
+#~ msgid "Plant three Seed Ark waves"
+#~ msgstr "种下三波种子方舟"
+
+#~ msgid "Plant five Seed Ark waves"
+#~ msgstr "完成五次种子方舟波次"
+
+#~ msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
+#~ msgstr "Cradle号没法降落在死去的世界上。我们一起让 Verdance 重新变绿吧。"
+
+#~ msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
+#~ msgstr "植物会发出绿光。绿光能充满你的绽放核心，还能为 Cradle号照亮回家的路。"
+
+#~ msgid "Buy Scoop Size"
+#~ msgstr "购买铲斗容量"
+
+#~ msgid "Workbench: grab more trash at once."
+#~ msgstr "工作台：一次抓起更多垃圾。"
+
+#~ msgid "A wider scoop. More trash per grab, less walking."
+#~ msgstr "更宽的铲斗。每次抓得更多，走得更少。"
+
+#~ msgid "Plants only grow on clean ground. Clear the outline."
+#~ msgstr "植物只在干净的土地上生长。把轮廓里清理干净。"
+
+#~ msgid "Clean 2 hexes"
+#~ msgstr "清理 2 个六角格"
+
+#~ msgid "Your robot cleans on its own. Clean one more hex."
+#~ msgstr "你的机器人会自己打扫。再清理一个六角格。"
+
+#~ msgid "One hex clean. Now one more, Lumi."
+#~ msgstr "一个六角格干净了。再来一个，Lumi。"
+
+#~ msgid "Your robot helps now. Clean ground lets the garden spread."
+#~ msgstr "现在你的机器人也来帮忙了。干净的土地让花园蔓延开来。"
+
+#~ msgid "Your robot cleans on its own. One more hex, Lumi."
+#~ msgstr "你的机器人会自己打扫。再来一个六角格，Lumi。"
+
+#~ msgid "Plant the first seed"
+#~ msgstr "种下第一颗种子"
+
+#~ msgid "Plants fill your Bloom Core."
+#~ msgstr "植物会充满你的绽放核心。"
+
+#~ msgid "Keep cleaning. Seeds turn up in clean ground."
+#~ msgstr "继续清理。干净的土地里会冒出种子。"
+
+#~ msgid "Lumi. I'm getting a signal. Green, faint, east of the base. An old greenhouse. Go look."
+#~ msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
+
+#~ msgid "Your robots help. Clean ground is room to plant."
+#~ msgstr "你的机器人会帮忙。干净的地面才能种东西。"
+
+#~ msgid "Look at the map"
+#~ msgstr "看看地图"
+
+#~ msgid "Press {open_globe}. See how much of Verdance is clean."
+#~ msgstr "按 {open_globe}。看看 Verdance 有多少已经干净了。"
+
+#~ msgid "Open the map, Lumi. It shows how much of Verdance is still buried."
+#~ msgstr "打开地图，Lumi。它会显示 Verdance 还有多少被埋着。"
+
+#~ msgid "Workbench, Build tab. Garden Row has the seeds we need."
+#~ msgstr "工作台，建造页签。花园街有我们需要的种子。"
+
+#~ msgid "Lumi, the seed tin is almost empty. Without seeds, Verdance can't turn green."
+#~ msgstr "Lumi，种子罐快空了。没有种子，Verdance 就绿不起来。"
+
+#~ msgid "I found another old base, far away: Garden Row. It kept a big seed store."
+#~ msgstr "我在很远的地方找到了另一座旧基地：花园街。那里存着一大批种子。"
+
+#~ msgid "Too far to walk. Your robots keep cleaning here. Build a shuttle on the pad and fly there."
+#~ msgstr "走路太远了。你的机器人会留在这里继续清理。在发射台上造一架穿梭机，飞过去吧。"
+
+#~ msgid "Your bench can study now. Research unlocks new machines and seeds."
+#~ msgstr "你的工作台现在可以做研究了。研究能解锁新机器和新种子。"
+
+#~ msgid "An old station off the route. Wake it for Seeds."
+#~ msgstr "航线之外的一座旧清理站。唤醒它可以得到种子。"
+
+#~ msgid "Seedling Blueprint"
+#~ msgstr "Seedling 蓝图"
+
+#~ msgid "Plans for a small planter bot. Build it at the workbench."
+#~ msgstr "一台小型种植机器人的设计图。在工作台建造它。"
+
+#~ msgid "Drip Blueprint"
+#~ msgstr "Drip 蓝图"
+
+#~ msgid "A watering bot with a sloshy tank. Plants will love it."
+#~ msgstr "一台带着晃荡水箱的浇水机器人。植物会爱上它的。"
+
+#~ msgid "A helper that can clean, plant or water. Jack of all trades."
+#~ msgstr "一位能清理、种植或浇水的帮手。样样都会。"
+
+#~ msgid "Nettles grow anywhere. Stingy, stubborn, and good for the soil."
+#~ msgstr "荨麻哪儿都能长。扎人、倔强，对土壤很好。"
+
+#~ msgid "A fresh green smell drifts over the cleared hexes."
+#~ msgstr "清理过的六角格上飘来一阵清新的绿意。"
+
+#~ msgid "Count the visitors. The bees are back: every plant grows much faster, blooms drop more seeds, and Seedlings learn where flowers want to be."
+#~ msgstr "数数来访者。蜜蜂回来了：每株植物都长得快多了，花朵掉落更多种子，Seedling 也学会了花儿想长在哪里。"
+
+#~ msgid "Dense little hedges. Birds will need somewhere to sit. Gardens grow a little faster again."
+#~ msgstr "茂密的小树篱。鸟儿需要地方歇脚。花园又长得快了一点。"
+
+#~ msgid "Tiny pines. In a hundred years, a forest. Blooms drop more seeds."
+#~ msgstr "小小的松树。一百年后，就是一片森林。花朵掉落更多种子。"
+
+#~ msgid "Big Tanks"
+#~ msgstr "大水箱"
+
+#~ msgid "Drip and Multibot carry more water per trip."
+#~ msgstr "Drip 和 Multibot 每趟能带更多水。"
+
+#~ msgid "Spray Heads"
+#~ msgstr "喷头"
+
+#~ msgid "A misting nozzle. Water bots reach further and work faster."
+#~ msgstr "一个雾化喷嘴。浇水机器人喷得更远、干得更快。"
+
+#~ msgid "Pump Lines"
+#~ msgstr "泵水管线"
+
+#~ msgid "Hoses from the lake to the hub. Water bots refill faster."
+#~ msgstr "从湖边接到基地的水管。浇水机器人补水更快。"
+
+#~ msgid "Irrigation"
+#~ msgstr "灌溉"
+
+#~ msgid "Buried drip lines. The meadow drinks while you sleep."
+#~ msgstr "埋在地下的滴灌管。你睡觉时草地也在喝水。"
+
+#~ msgid "Brush fences and hedges that break the wind. Sustained hexes shelter two rings around them, and sandstorms carry less."
+#~ msgstr "挡风的柴篱和树篱。稳定的六角格能庇护周围两圈，沙暴带来的废料也更少。"
+
+#~ msgid "Cold-Hardy Seeds"
+#~ msgstr "耐寒种子"
+
+#~ msgid "Seeds bred from the few things that survived the cold. Ferns, nettles, pines, periwinkle and frost moss can grow outdoors at the Frozen Port."
+#~ msgstr "用少数在严寒中存活下来的植物培育的种子。蕨类、荨麻、松树、长春花和霜苔可以在冰封港口的室外生长。"
+
+#~ msgid "Dew Condensers"
+#~ msgstr "露水冷凝器"
+
+#~ msgid "Cold fins on every Water Tank pull water out of the night air. Tanks refill much faster where the ground is dry."
+#~ msgstr "每个水箱上的冷却鳍片能从夜间空气中提取水分。在干燥的地方，水箱补水快得多。"
+
+#~ msgid "Seedling"
+#~ msgstr "Seedling"
+
+#~ msgid "Plants seeds in clean ground. Uses your seed stock."
+#~ msgstr "在干净的地面上播种。使用你的种子库存。"
+
+#~ msgid "Drip"
+#~ msgstr "Drip"
+
+#~ msgid "Waters the thirstiest plants in its zone with a spray arc. Refills at the base barrel, a Water Tank or a clean lake."
+#~ msgstr "用弧形喷水给区域内最缺水的植物浇水。在基地水桶、水箱或干净的湖边补水。"
+
+#~ msgid "Bigger Tank"
+#~ msgstr "更大的水箱"
+
+#~ msgid "Wide Nozzle"
+#~ msgstr "宽喷嘴"
+
+#~ msgid "Fast Pump"
+#~ msgstr "快速水泵"
+
+#~ msgid "General helper. Assign it to Clean, Plant or Water on the Allocation Board. Slower than a specialist."
+#~ msgstr "通用帮手。在分配面板上指派它清理、种植或浇水。比专精机器人慢。"
+
+#~ msgid "The seed tin is nearly empty. Garden Row kept the seed store."
+#~ msgstr "种子罐快空了。Garden Row 保存着种子库。"
+
+#~ msgid "Plants only grow on clean ground."
+#~ msgstr "植物只在干净的土地上生长。"
+
+#~ msgid "Nothing grows by itself here any more. You need seeds."
+#~ msgstr "这里已经没有东西会自己长出来了。你需要种子。"
+
+#~ msgid "Plants give green light for your Bloom Core."
+#~ msgstr "植物会给你的绽放核心送去绿光。"
+
+#~ msgid "Planted ground starts to give green light."
+#~ msgstr "种上植物的地面开始发出绿光。"
+
+#~ msgid "Every bloom gives green light, and a seed back."
+#~ msgstr "每一朵花都会发出绿光，还会还给你一颗种子。"
+
+#~ msgid "Watered plants grow, and growing plants give more green light."
+#~ msgstr "浇过水的植物会长大，长大的植物会发出更多绿光。"
+
+#~ msgid "A Seedling plants for you, so green spreads faster."
+#~ msgstr "Seedling 会替你播种，绿色就能蔓延得更快。"
+
+#~ msgid "Thirsty plants stop growing. A Drip waters them for you."
+#~ msgstr "口渴的植物会停止生长。Drip 会替你给它们浇水。"
+
+#~ msgid "One helper that can clean, plant or water."
+#~ msgstr "一个既能清理、又能播种和浇水的帮手。"
+
+#~ msgid "Bees carry pollen. With bees, every plant grows faster."
+#~ msgstr "蜜蜂会传播花粉。有了蜜蜂，每一株植物都长得更快。"
+
+#~ msgid "A tank near the plants saves your Drips a long trip."
+#~ msgstr "把水箱放在植物旁边，Drip 就不用跑远路了。"
+
+#~ msgid "Ground that stays watered can look after itself."
+#~ msgstr "一直有水的土地能自己照顾自己。"
+
+#~ msgid "Healthy gardens pay you back, all by themselves."
+#~ msgstr "健康的花园会自己回报你。"
+
+#~ msgid "Old robots have earned a rest in the garden."
+#~ msgstr "老机器人该在花园里好好歇一歇了。"
+
+#~ msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
+#~ msgstr "加装研究桌。研究你挖出的东西，解锁机器和种子。"
+
+#~ msgid "Sand to the edge of the world. There used to be a whole power grid out here. The well is dry, so the Drips will need tanks."
+#~ msgstr "沙子一直延伸到世界尽头。这里曾经有一整张电网。井已经干了，所以 Drip 需要水箱。"
+
+#~ msgid "The Dust Flats. I remember the photos: blue panels to the horizon, humming. We can do that again. Plant windbreaks first."
+#~ msgstr "尘土平原。我记得那些照片：蓝色的面板一直铺到地平线，嗡嗡作响。我们可以再做到。先种防风林。"
+
+#~ msgid "The Frozen Port. Ships came in here every hour once. Thaw it, and the plants will need a greenhouse, or very stubborn seeds."
+#~ msgstr "冰封港口。以前每小时都有船进港。把它解冻，植物还需要温室，或者非常倔强的种子。"
+
+#~ msgid "Lumi. This is the launch field. I watched it from orbit the night we left. Clean the pad, plant it, keep it alive. Then we call them home."
+#~ msgstr "Lumi。这就是发射场。我们离开的那晚，我从轨道上看着它。清理平台，种上植物，让它活着。然后我们就召唤他们回家。"
+
+#~ msgid "Wind's rising. Planted hexes hold, and Sustained ones shelter their neighbours. The rest, well."
+#~ msgstr "风越来越大了。种了植物的六角格能挺住，稳定的还能庇护邻格。其余的嘛，就那样了。"
+
+#~ msgid "There. The wind gave some of it back. Plant a windbreak and it won't next time."
+#~ msgstr "好了。风把一些废料吹回来了。种一道防风林，下次就不会了。"
+
+#~ msgid "The landing pad is clean. Now it needs to be alive. Plant it and keep it Sustained."
+#~ msgstr "着陆平台干净了。现在它需要焕发生机。种上植物，让它保持稳定。"
+
+#~ msgid "Your core's low. Plant something, Lumi. Anything. Green light is green light."
+#~ msgstr "你的核心电量低。种点东西，Lumi。什么都行。绿光就是绿光。"
+
+#~ msgid "Running a little dim. A few blooms will fix that."
+#~ msgstr "有点暗了。开几朵花就好了。"
+
+#~ msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
+#~ msgstr "看看这里。满目疮痍，尘土飞扬，几百年都没人种过东西了。你知道该怎么做。"
 
 #~ msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
 #~ msgstr "你为了救那个托盘钻进了货运舱。三百年后，你把它带回家了。"

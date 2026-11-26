@@ -43,7 +43,7 @@ func test_every_goal_has_a_reason() -> void:
 
 func test_goal_reason_lookup_order() -> void:
 	var why: String = Objectives.goal_reason({"id": "hex_5", "type": "stat", "key": "hexes_cleaned"})
-	assert_eq(why, "Plants only grow on clean ground.")
+	assert_eq(why, "Clean ground turns green by itself.")
 	assert_eq(Objectives.goal_reason({"id": "x", "type": "research", "key": "nope"}), "The bench learns to build something new.")
 	assert_eq(Objectives.goal_reason({"id": "rocket", "type": "districts"}), "Other old stations are waiting to be woken up.")
 	assert_true(Objectives.goal_reason({"id": "hub_fly_4", "type": "flag"}).contains("star chart"))

@@ -34,7 +34,7 @@ func test_no_step_or_goal_asks_for_a_zone() -> void:
 
 
 func test_no_early_text_tells_the_player_to_direct_the_robot() -> void:
-	var stop: int = _index("seed")
+	var stop: int = _index("robot2")  # [v13goals] the first-seed step is gone: up to the second robot
 	assert_gt(stop, 0)
 	var ch: Array = _chain()
 	for i: int in stop + 1:
@@ -43,10 +43,8 @@ func test_no_early_text_tells_the_player_to_direct_the_robot() -> void:
 		for bad: String in ["paint", "zone", "open_command", "show your robot", "show it where", "where to clean"]:
 			assert_false(all.contains(bad), "%s says '%s'" % [d.get("id", ""), bad])
 	var after: Dictionary = ch[_index("robot") + 1]
-	assert_eq(str(after["id"]), "hex2", "the story goes straight on after the first robot")
+	assert_eq(str(after["id"]), "hex3", "the story goes straight on after the first robot")
 	assert_string_contains(str(after.get("desc", "")), "on its own")
-	# hex2 is often done before the robot (the card skips it silently): WREN says it at hex3.
-	assert_string_contains(" ".join((ch[_index("hex3")] as Dictionary).get("lines", [])), "on its own")
 
 
 func _migrate(step: int, has_step: bool = true) -> int:
@@ -65,7 +63,7 @@ func _migrate(step: int, has_step: bool = true) -> int:
 
 
 func test_old_save_on_the_zone_step_moves_on() -> void:
-	var hex2: int = _index("hex2")
+	var hex2: int = Objectives.ORDER_V3.find("hex2")  # [v13goals] the old chain's own index (hex2 is gone today)
 	# The old chain had "zone" at hex2's index now: a save sitting on it lands on hex2.
 	assert_eq(_migrate(hex2), hex2)
 	assert_eq(int(GameState.flags["objective_step"]), hex2)
@@ -78,7 +76,7 @@ func test_old_save_on_the_zone_step_moves_on() -> void:
 
 
 func test_migration_runs_once_and_not_for_new_games() -> void:
-	var hex2: int = _index("hex2")
+	var hex2: int = Objectives.ORDER_V3.find("hex2")  # [v13goals] the old chain's own index (hex2 is gone today)
 	assert_eq(_migrate(0, false), 0)
 	assert_false(GameState.flags.has("objective_step"))
 	GameState.flags["objective_step"] = hex2 + 4

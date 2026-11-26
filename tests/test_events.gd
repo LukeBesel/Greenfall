@@ -160,10 +160,10 @@ func test_offer_uses_tier_numbers() -> void:
 
 func test_contract_requirements_filter_templates() -> void:
 	var ids: Array = Contracts.available_templates({}, []).map(func(t: Dictionary) -> String: return str(t["id"]))
-	assert_false("plant" in ids, "planting contracts wait for seeds")
+	assert_false("plant" in ids, "no planting requests (v13goals)")
 	assert_true("scoop" in ids)
 	var ids2: Array = Contracts.available_templates({"seeds_unlocked": true, "first_sprout": true}, ["scoop"]).map(func(t: Dictionary) -> String: return str(t["id"]))
-	assert_true("plant" in ids2 and "sustain" in ids2)
+	assert_false("plant" in ids2 or "sustain" in ids2 or "bloom" in ids2, "not even with an old save's seed flags")
 	assert_false("scoop" in ids2, "no duplicates on the board")
 
 

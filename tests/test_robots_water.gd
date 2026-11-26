@@ -89,8 +89,7 @@ func test_skimmer_defined_and_in_crews() -> void:
 	assert_eq(str(Economy.robots["skimmer"]["role"]), "skim")
 	assert_true(Fleet.ROLES.has("skim"))
 	assert_eq(Fleet.types_for_role("skim"), ["skimmer"] as Array[String])
-	for s: String in ["tank", "spray_radius", "refill_rate", "speed"]:
-		assert_gt(Economy.robot_stat("drip", s), 0.0, "drip has stat " + s)
+	assert_false(Economy.robots.has("drip"), "[v13goals] no watering robot: nothing gets thirsty")
 
 
 func test_crew_cap_follows_base_level() -> void:
@@ -124,90 +123,6 @@ func test_crew_cap_follows_base_level() -> void:
 		GameState.flags["research"] = fl
 	else:
 		GameState.flags.erase("research")
-
-
-func test_tier_scales_water_gear() -> void:
-	var w := _make()
-	var f := _fleet(w)
-	var a := _bot(f, "drip", "A")
-	var b := _bot(f, "drip", "B")
-	b.tier = 2
-	assert_gt(b.stat("tank"), a.stat("tank"))
-	assert_gt(b.stat("spray_radius"), a.stat("spray_radius"))
-	assert_gt(b.stat("refill_rate"), a.stat("refill_rate"))
-
-
-func test_waterer_picks_thirstiest_and_skips_taken() -> void:
-	var w := _make()
-	var f := _fleet(w)
-	var hid: int = 10
-	_clean(w, hid)
-	GameState.currencies["seeds"] = BigNum.from_float(10)
-	var slots: PackedInt32Array = w.garden.hex_slots[hid]
-	var near: int = slots[0]
-	var far: int = slots[slots.size() - 1]
-	assert_true(w.garden.plant(near) and w.garden.plant(far))
-	var sp_s: float = float(w.garden.species[w.garden.slot_species[near]]["water_s"])
-	w.garden.slot_water[near] = sp_s * 0.4
-	w.garden.slot_water[far] = sp_s * 0.05
-	var r := _bot(f, "drip", "A", w.garden.slot_pos[near])
-	assert_eq(r._find_thirsty(w.garden), far, "the driest plant wins even when farther")
-	var other := _bot(f, "drip", "B")
-	other._target_slot = far
-	assert_eq(r._find_thirsty(w.garden), near, "slots another waterer is heading for are skipped")
-	w.garden.slot_water[near] = sp_s
-	other._target_slot = -1
-	w.garden.slot_water[far] = sp_s
-	assert_eq(r._find_thirsty(w.garden), -1, "nothing thirsty")
-
-
-func test_zone_first_for_waterers() -> void:
-	var w := _make()
-	var f := _fleet(w)
-	_clean(w, 10)
-	_clean(w, 12)
-	GameState.currencies["seeds"] = BigNum.from_float(10)
-	var a: int = (w.garden.hex_slots[10] as PackedInt32Array)[0]
-	var b: int = (w.garden.hex_slots[12] as PackedInt32Array)[0]
-	w.garden.plant(a)
-	w.garden.plant(b)
-	w.garden.slot_water[a] = 0.0
-	w.garden.slot_water[b] = 1.0
-	var r := _bot(f, "drip", "A")
-	assert_eq(r._find_thirsty(w.garden), a)
-	f.toggle_zone_hex("water", false, 12, true)
-	assert_eq(r._find_thirsty(w.garden), b, "zone plants come first")
-
-
-func test_spray_waters_several_plants_in_radius() -> void:
-	var w := _make()
-	var f := _fleet(w)
-	var hid: int = 10
-	_clean(w, hid)
-	GameState.currencies["seeds"] = BigNum.from_float(50)
-	var slots: PackedInt32Array = w.garden.hex_slots[hid]
-	for s: int in slots:
-		w.garden.plant(s)
-		w.garden.slot_water[s] = 1.0
-	var at: Vector3 = w.garden.slot_pos[slots[0]]
-	var radius: float = 3.8
-	var inside: Array[int] = []
-	var outside: int = -1
-	for s: int in slots:
-		if w.garden.slot_pos[s].distance_to(at) <= radius:
-			inside.append(s)
-		elif outside < 0:
-			outside = s
-	assert_gt(inside.size(), 1, "test layout has neighbours in range")
-	var r := _bot(f, "drip", "A", at + Vector3(0.5, 0, 0))
-	r.water = 50.0
-	r._spray_at(w.garden, at, radius)
-	for s: int in inside:
-		assert_gt(w.garden.slot_water[s], 20.0, "slot %d in the spray got water" % s)
-	if outside >= 0:
-		assert_eq(w.garden.slot_water[outside], 1.0, "slots outside the radius are untouched")
-	assert_eq(r.water, 50.0 - inside.size(), "one unit of water per plant")
-	assert_eq(int(r.log_stats["watered"]), inside.size())
 
 
 func test_refill_points_and_tanks() -> void:

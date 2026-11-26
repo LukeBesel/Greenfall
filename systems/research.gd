@@ -76,6 +76,8 @@ static func max_queue() -> int:
 
 static func reward(kind: String) -> float:
 	_ensure()
+	if AutoGrow.on() and _cfg.has("auto_data_rewards"):  # [v13goals] blooms and restored hexes come by themselves now
+		return float(_cfg.get("auto_data_rewards", {}).get(kind, 0.0))
 	return float(_cfg.get("data_rewards", {}).get(kind, 0.0))
 
 

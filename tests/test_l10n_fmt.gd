@@ -17,7 +17,6 @@ func test_reward_suffixes_english_plurals() -> void:
 	TranslationServer.set_locale("en")
 	assert_eq(L10nFmt.reward("cubes", 25), "+25 cubes")
 	assert_eq(L10nFmt.reward("parts", 1), "+1 part")
-	assert_eq(L10nFmt.reward("seeds", 2), "+2 seeds")
 	assert_eq(L10nFmt.rewards({"cubes": 25, "parts": 1}), "+25 cubes  +1 part")
 	# [money] legacy ids show as the currency they pay now (trinket = 150 cubes, bolt = 5 parts)
 	Currencies.warn_legacy = false
@@ -29,7 +28,6 @@ func test_reward_suffixes_english_plurals() -> void:
 
 func test_reward_suffixes_translate() -> void:
 	TranslationServer.set_locale("de")
-	assert_eq(L10nFmt.reward("seeds", 1), "+1 Samen")
 	assert_eq(L10nFmt.reward("cubes", 3), "+3 Würfel")
 	TranslationServer.set_locale("fr")
 	assert_eq(L10nFmt.reward("cubes", 1), "+1 cube")
@@ -40,7 +38,7 @@ func test_reward_suffixes_translate() -> void:
 
 func test_big_amounts() -> void:
 	TranslationServer.set_locale("en")
-	assert_eq(L10nFmt.amount("seeds", 1.0, true), "+1 seed")
+	assert_eq(L10nFmt.amount("parts", 1.0, true), "+1 part")
 	assert_eq(L10nFmt.amount("cubes", 40.0), "40 cubes")
 	assert_eq(L10nFmt.amount("parts", 3.0), "3 parts")
 	assert_eq(L10nFmt.amount("sheet_metal", 3.0), "3 parts", "[money] old materials are parts")

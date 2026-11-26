@@ -37,8 +37,7 @@
       "name": "Compost Press",
       "desc": "Presses plant scraps into compost and seeds. Worth building once something grows.",
       "cost": {
-        "cubes": 300,
-        "seeds": 5
+        "cubes": 300
       },
       "requires_level": 1,
       "requires_flag": "first_sprout"

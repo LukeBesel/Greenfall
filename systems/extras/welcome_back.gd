@@ -76,7 +76,9 @@ static func build_summary(res: Dictionary, garden: Dictionary, robots: Array) ->
 			rows.append({"kind": "tip", "label": TranslationServer.translate("No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."), "value": ""})
 	if int(garden.get("grew", 0)) > 0:
 		rows.append({"kind": "plants", "label": TranslationServer.translate("Plants grew"), "value": str(int(garden["grew"]))})
-	if int(garden.get("bloomed", 0)) > 0:
+	if int(garden.get("bloomed", 0)) > 0 and AutoGrow.on():  # [v13goals] no seeds: just the flowers
+		rows.append({"kind": "plants", "label": TranslationServer.translate("Flowers bloomed"), "value": str(int(garden["bloomed"]))})
+	elif int(garden.get("bloomed", 0)) > 0:
 		rows.append({"kind": "seeds", "label": TranslationServer.translate("Bloomed (seeds)"), "value": "%d  (+%s)" % [int(garden["bloomed"]), Settings.fmt(BigNum.from_float(floorf(float(garden.get("seeds", 0.0)) + 1e-6)))]})  # [v10pace] whole seeds on screen
 	if float(res.get("air", 0.0)) > 0.0:
 		rows.append({"kind": "air", "label": TranslationServer.translate("Scrubbers cleaned the air"), "value": ""})

@@ -46,7 +46,7 @@ func test_old_save_drops_the_ledger() -> void:
 	assert_eq(int(m["stats"]["hexes_cleaned"]), 41)
 	# Three jammers stood (two at the base, one in another district): paid back at what they cost.
 	var mult: float = (1.0 + 2.2) + 1.0
-	assert_almost_eq(BigNum.from_serialized(m["currencies"]["cubes"]).to_float(), 100.0 + 900.0 * mult, 0.01)
+	assert_almost_eq(BigNum.from_serialized(m["currencies"]["cubes"]).to_float(), 100.0 + 900.0 * mult + 3.0 * 25.0, 0.01, "and v6 (v13goals): its 3 seeds became 75 cubes")
 	assert_almost_eq(BigNum.from_serialized(m["currencies"]["parts"]).to_float(), 10.0 + 42.0 * mult, 0.01)
 	# Again: nothing more happens (no second refund).
 	var again: Dictionary = SaveManager.drop_ledger(m.duplicate(true))

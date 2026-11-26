@@ -71,7 +71,7 @@ func test_the_chain_ends_on_the_cradle_and_the_seed_ark() -> void:
 		order.append(str(g["id"]))
 	# [v6pace] The frontier visits and the Cradle steps left the chain with the flat world
 	# (tests/test_v6pace.gd test_every_step_is_completable_on_the_globe).
-	for a: Array in [["base_5", "rocket"], ["rocket", "ark_1"], ["plant_5", "pollinator"]]:
+	for a: Array in [["base_5", "rocket"], ["rocket", "home_last_seed"], ["home_drive_5", "pollinator"]]:  # [v13goals] the planting goals are gone
 		assert_gt(order.find(a[0]), -1, "%s is in the chain" % a[0])
 		assert_lt(order.find(a[0]), order.find(a[1]), "%s comes before %s" % a)
 	# Research goals in the first district would wall the chain once its junk runs out.
@@ -133,8 +133,8 @@ func test_garden_ramp_stats_and_research() -> void:
 	assert_almost_eq(Economy.base_stat("seed_yield"), 1.0, 0.0001)
 	var eff: Array = Research.def("pollinator_survey").get("effects", [])
 	var stats: Array = eff.map(func(e: Dictionary) -> String: return str(e.get("stat", "")))
-	assert_true("plant_growth" in stats and "seed_yield" in stats, "Pollinator Survey is the garden ramp")
-	assert_gt(Research.cost("seedling_blueprint").to_float(), 100.0, "planter bots wait for the mid game")
+	assert_true("plant_growth" in stats and not ("seed_yield" in stats), "Pollinator Survey speeds the greening up (v13goals: no seeds)")
+	assert_gt(Research.cost("seedling_blueprint").to_float(), 100.0, "its robotics slot (now Sorting Arms) waits for the mid game")
 
 
 func test_credits_roll_reads_credits_md() -> void:

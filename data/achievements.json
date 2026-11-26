@@ -329,39 +329,6 @@
    }
   },
   {
-   "id": "seed",
-   "name": "The First Seed",
-   "desc": "Find the first seed.",
-   "icon": "sprout",
-   "cond": {
-    "type": "flag",
-    "target": 1,
-    "key": "seeds_unlocked"
-   }
-  },
-  {
-   "id": "plant_1",
-   "name": "Green Thumb",
-   "desc": "Plant a seed.",
-   "icon": "sprout",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "plants_planted"
-   }
-  },
-  {
-   "id": "plant_100",
-   "name": "Gardener",
-   "desc": "Plant 100 seeds.",
-   "icon": "leaf",
-   "cond": {
-    "type": "stat",
-    "target": 100,
-    "key": "plants_planted"
-   }
-  },
-  {
    "id": "bloom_50",
    "name": "In Bloom",
    "desc": "See 50 plants bloom.",
