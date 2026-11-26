@@ -123,6 +123,8 @@ func set_variant(v: String) -> void:
 const MODEL_PATH := "res://art/models/aurora/aurora.glb"
 ## Design add-ons (same build script): shoulder pads, sprout, cat ears, toolbox, case, gear, ...
 const DESIGNS_PATH := "res://art/models/aurora/designs.glb"
+## [art2] Hardware detail laid on the shells (build_lumi_detail.py): service hatch, seams, bolts, vent, rails.
+const DETAIL_PATH := "res://art/models/aurora/lumi_detail.glb"
 const HERO_PAINT := preload("res://art/shaders/hero_paint.gdshader")
 ## Visual layer bit the hero's meshes also sit on, so his own key light only lights him.
 const HERO_LAYER := 2
@@ -135,7 +137,7 @@ var _paint_mats: Array[ShaderMaterial] = []
 static func _load_parts() -> void:
 	if not _parts.is_empty():
 		return
-	for path: String in [MODEL_PATH, DESIGNS_PATH]:
+	for path: String in [MODEL_PATH, DESIGNS_PATH, DETAIL_PATH]:
 		var scene: PackedScene = load(path)
 		if scene == null:
 			continue
@@ -217,6 +219,9 @@ func _build() -> void:
 		"paint": _paint((v["paint"] as Color).darkened(0.04), 3.0, cover, float(v.get("metal", 0.0)), 0.42 - float(v.get("metal", 0.0)) * 0.3),
 		"trim": _paint((v["trim"] as Color).darkened(0.45), 7.0, cover, 0.35, 0.4),
 		"accent": _paint(accent_c, 11.0, cover - 0.04),
+		# [art2] The side modules (ear ring housings) have their own slot: the Locker's "side" colour
+		# (LumiStyle._recolor); the trim colour until it is set.
+		"side": _paint((v["trim"] as Color).darkened(0.45), 9.0, cover, 0.35, 0.4),
 		"dark": _paint(Color(0.17, 0.175, 0.19), 5.0, 0.75, 0.6, 0.38),
 		"steel": Mats.metal("steel"),
 		"glow": Mats.lamp(glow, 3.2),
@@ -234,6 +239,11 @@ func _build() -> void:
 	_face_mat.shader = preload("res://art/shaders/bot_face.gdshader")
 	_face_mat.set_shader_parameter("eye_color", glow)
 	for m: ShaderMaterial in _paint_mats:
+		# [art2] The concept sheet's shell: chipped to dark metal, speckled, dusty, stained.
+		m.set_shader_parameter("chips", 0.28 * float(v.get("wear", 1.0)))
+		m.set_shader_parameter("edge_wear", 0.95)
+		m.set_shader_parameter("specks", 1.0)
+		m.set_shader_parameter("dust", 0.6)
 		m.set_shader_parameter("grime", float(v.get("grime", 0.6)))
 		m.set_shader_parameter("moss", float(v.get("moss", 0.0)))
 	if float(v.get("stripes", 0.0)) > 0.0:
@@ -249,6 +259,8 @@ func _build() -> void:
 	# --- Body: rounded torso (white upper shell, dark lower section, orange side panels, chest
 	# screen with orange lights, cyan collar strip) on a dark hover bowl with a thruster ring.
 	_part(_float, "body")
+	if _parts.has("detail_body"):  # [art2]
+		_part(_float, "detail_body")
 	_part(_float, "thruster")
 	var hover_light := OmniLight3D.new()
 	hover_light.light_color = glow
@@ -308,6 +320,9 @@ func _build() -> void:
 	_head.position = _pivot("head")
 	_float.add_child(_head)
 	_part(_head, "head")
+	for dp: String in ["detail_head", "detail_ears"]:  # [art2] their origins are the head pivot
+		if _parts.has(dp):
+			_part(_head, dp)
 	_part(_head, "visor", _pivot("visor") - _pivot("head"))
 	call_deferred("_find_sun")
 	_build_accessories(v)
@@ -541,15 +556,61 @@ func _build_arm(side: float) -> Node3D:
 		_part(tip, "finger_tip")
 		f.set_meta("dir", Vector2(cos(a), sin(a)))
 		_claws.append(f)
+	shoulder.scale = Vector3.ONE * 1.16  # [art2] chunkier arms (concept sheet)
 	shoulder.set_meta("elbow", elbow)
 	shoulder.set_meta("wrist", wrist)
 	return shoulder
 
 
+# [art2] Motion with weight. The body rides springs instead of easing straight to its pose: it dips
+# and settles on a landing or a stop, leans with a little overshoot, banks into turns; the head
+# leads a turn and lags a lurch; the arms trail and swing through when he stops; standing still he
+# glances about now and then. All of it is in the model: Patch calls the same hooks as before.
+var _lean_v := Vector2.ZERO
+var _sq: float = 0.0      # body height on its spring (m, down is negative)
+var _sq_v: float = 0.0
+var _nod: float = 0.0     # head pitch following the body late
+var _nod_v: float = 0.0
+var _arm_lag: float = 0.0
+var _arm_v: float = 0.0
+var _turn: float = 0.0    # smoothed turn rate (rad/s, left is positive)
+var _fwd_prev := Vector3.ZERO
+var _speed_ratio: float = 0.0
+var _glance: float = 0.0
+var _glance_t: float = 3.0
+
+
+func _weight(delta: float) -> void:
+	var dt: float = minf(delta, 0.05)
+	_sq_v += (-190.0 * _sq - 11.0 * _sq_v) * dt
+	_sq = clampf(_sq + _sq_v * dt, -0.07, 0.05)
+	_nod_v += ((-_lean.x * 0.8 - _sq * 2.5 - _nod) * 70.0 - _nod_v * 8.0) * dt
+	_nod = clampf(_nod + _nod_v * dt, -0.3, 0.3)
+	_arm_v += ((minf(_speed_ratio, 1.6) * 0.32 - _arm_lag) * 55.0 - _arm_v * 5.5) * dt
+	_arm_lag = clampf(_arm_lag + _arm_v * dt, -0.5, 0.8)
+	if is_inside_tree():
+		var f: Vector3 = -global_basis.z
+		var up: Vector3 = global_basis.y.normalized()
+		var rate: float = 0.0
+		if _fwd_prev != Vector3.ZERO and delta > 0.0001:
+			rate = clampf(_fwd_prev.signed_angle_to(f, up) / delta, -6.0, 6.0)
+		_fwd_prev = f
+		_turn = lerpf(_turn, rate, clampf(delta * 7.0, 0.0, 1.0))
+	# Idle: a look to one side every few seconds (never while he looks at something).
+	_glance_t -= delta
+	if _glance_t <= 0.0:
+		var idle: bool = _speed_ratio < 0.05 and absf(_head_yaw_target) < 0.01 and not sleeping
+		_glance = 0.0 if _glance != 0.0 or not idle else (0.34 if randf() < 0.5 else -0.34)
+		_glance_t = randf_range(0.9, 1.6) if _glance != 0.0 else randf_range(3.5, 7.0)
+	if _speed_ratio > 0.05 or sleeping:
+		_glance = 0.0
+
+
 func _process(delta: float) -> void:
 	_t += delta
-	# Hover bob and ring pulse.
-	_float.position.y = 0.04 + sin(_t * 2.4) * 0.02 - _dip
+	_weight(delta)
+	# Hover bob (smaller under way) on the body spring, and ring pulse.
+	_float.position.y = 0.04 + sin(_t * 2.4) * lerpf(0.022, 0.01, clampf(_speed_ratio, 0.0, 1.0)) + _sq - _dip
 	_dip = maxf(0.0, _dip - delta * 0.4)
 	_ring_mat.emission_energy_multiplier = (3.5 + sin(_t * 9.0) * 0.4) * core_glow + _flash * 4.0
 	if _mats.has("glow"):
@@ -559,8 +620,8 @@ func _process(delta: float) -> void:
 	_scoop_amt = move_toward(_scoop_amt, 1.0 if _scoop_t > 0.0 else 0.0, delta * 5.0)
 	_scoop_t = maxf(0.0, _scoop_t - delta)
 	var s: float = _t * 8.0
-	_arm_r.rotation.x = lerpf(0.15 * sin(_t * 1.3), -0.9 + sin(s) * 0.15, _scoop_amt)
-	_arm_l.rotation.x = lerpf(0.15 * sin(_t * 1.3 + 1.0), -0.5 + sin(s + 1.5) * 0.12, _scoop_amt * 0.7)
+	_arm_r.rotation.x = lerpf(0.15 * sin(_t * 1.3) + _arm_lag, -0.9 + sin(s) * 0.15, _scoop_amt)
+	_arm_l.rotation.x = lerpf(0.15 * sin(_t * 1.3 + 1.0) + _arm_lag * 0.9, -0.5 + sin(s + 1.5) * 0.12, _scoop_amt * 0.7)
 	_arm_r.rotation.z = lerpf(0.0, -0.25, _scoop_amt)
 	_carry = move_toward(_carry, 1.0 if carrying else 0.0, delta * 5.0)
 	if _carry > 0.0:
@@ -600,16 +661,18 @@ func _process(delta: float) -> void:
 	_update_hopper(delta)
 	_update_accessories(delta)
 	# Press: the body compresses slightly while baling.
-	_root.scale = Vector3(1.0 + _press * 0.04, 1.0 - _press * 0.06, 1.0 + _press * 0.04)
+	var sq_s: float = clampf(_sq * 1.5, -0.09, 0.07)  # [art2] squash on the way down, stretch on the rebound
+	_root.scale = Vector3(1.0 + _press * 0.04 - sq_s * 0.5, 1.0 - _press * 0.06 + sq_s, 1.0 + _press * 0.04 - sq_s * 0.5)
 	if _shudder > 0.0:
 		_shudder -= delta
 		_root.position = Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)) * 0.01
 	else:
 		_root.position = Vector3.ZERO
-	_float.rotation = Vector3(_lean.x, 0, _lean.y)
+	_float.rotation = Vector3(_lean.x, 0, _lean.y + clampf(_turn * 0.035 * minf(0.4 + _speed_ratio, 1.4), -0.16, 0.16))  # [art2] banks into a turn
 	# Head look and face.
-	_head_yaw = lerp_angle(_head_yaw, _head_yaw_target, delta * 4.0)
-	_head.rotation.y = _head_yaw
+	_head_yaw = lerp_angle(_head_yaw, _head_yaw_target + _glance, delta * 4.0)
+	_head.rotation.y = _head_yaw + clampf(_turn * 0.085, -0.32, 0.32)  # [art2] the head leads the turn
+	_head.rotation.x = _nod
 	_head.rotation.z = sin(_t * 0.7) * 0.03 + (0.08 if _happy > 0.8 else 0.0) + pet_e * 0.2  # [fauna2] head tilt while petting
 	_look = _look.lerp(_look_target, minf(1.0, delta * 6.0))  # [v7play] clamped: long frames overshot
 	_happy = lerpf(_happy, _happy_target, minf(1.0, delta * 4.0))  # [v7play]
@@ -634,7 +697,12 @@ func _process(delta: float) -> void:
 func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: float) -> void:
 	# [v6feel] The run lean stops growing past twice walking speed: a boost leaned him 30 degrees.
 	var target := Vector2(clampf(-local_accel.y * 0.015, -0.18, 0.18) - minf(speed_ratio, 2.0) * 0.08, clampf(local_accel.x * 0.012, -0.15, 0.15))
-	_lean = _lean.lerp(target, clampf(delta * 6.0, 0.0, 1.0))
+	# [art2] On a spring: a little overshoot when he sets off, a rock back when he stops.
+	var dt: float = minf(delta, 0.05)
+	_lean_v += ((target - _lean) * 110.0 - _lean_v * 12.0) * dt
+	_lean += _lean_v * dt
+	_lean = Vector2(clampf(_lean.x, -0.32, 0.32), clampf(_lean.y, -0.25, 0.25))
+	_speed_ratio = speed_ratio
 	_ring_mat.emission_energy_multiplier += speed * 0.3
 
 
@@ -745,7 +813,7 @@ func shudder(duration: float = 0.3) -> void:
 
 
 func squash(amount: float) -> void:
-	_dip = clampf(_dip + absf(amount) * 0.04, 0.0, 0.05)
+	_sq_v -= clampf(absf(amount), 0.0, 0.6) * 1.1  # [art2] a push down into the body spring (was a linear dip)
 
 
 func look_toward(world_pos: Variant) -> void:

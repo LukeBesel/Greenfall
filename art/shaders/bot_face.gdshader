@@ -37,11 +37,20 @@ vec4 eye(vec2 p, vec2 c, float R, float bl) {
 	float disc = 1.0 - smoothstep(R - aa, R + aa, r);
 	// [main] One solid glowing eye per side (owner: the old C-ring + pupil ring read as two sets of
 	// eyes). A filled disc, brighter toward the middle, a soft outer halo and one small glint.
-	float core = disc * s_on;
-	float hot = core * (1.0 - smoothstep(0.0, R * 0.85, r)) * 0.55;
-	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 55.0) * (1.0 - disc) * 0.6 * s_on;
-	float glint = 1.0 - smoothstep(0.13 * R, 0.19 * R, length(d - vec2(-0.32, 0.34) * R));
-	glint *= core * step(0.5, s_open);
+	// [art2] Owner's concept sheet (26 Nov, "this is endgoal for characters"): a thick glowing C, one
+	// shape per side (a disc with an off-centre bite toward the nose side and up), and one small
+	// dot in the bite. Still one eye per side: no inner ring.
+	// A ring with a gap toward the upper right and one dot floating in the gap (both eyes alike).
+	float ring = disc * smoothstep(R * 0.5 - aa, R * 0.5 + aa, r);
+	vec2 gap_dir = normalize(vec2(-0.78, 0.62));
+	float ang = dot(normalize(d + vec2(1e-5)), gap_dir);
+	float gap = smoothstep(0.86, 0.9, ang);
+	float bite = gap;
+	float core = ring * (1.0 - gap) * s_on;
+	float hot = core * (1.0 - smoothstep(0.0, R * 0.12, abs(r - R * 0.75))) * 0.35;
+	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 55.0) * (1.0 - disc) * 0.6 * s_on * (1.0 - bite);
+	float glint = 1.0 - smoothstep(0.11 * R, 0.15 * R, length(d - gap_dir * R * 0.78));
+	glint *= step(0.5, s_open) * s_on;
 	// Happy: an upper arc (an upside-down U) like ^ ^.
 	vec2 dh = p - c - vec2(0.0, -R * 0.5);
 	dh.y /= max(a_open * (1.0 - bl * 0.9), 0.08);
@@ -83,7 +92,7 @@ void fragment() {
 	vec3 cyan = eye_color.rgb;
 	vec3 white = mix(cyan, vec3(1.0), 0.7);
 	vec3 eye_e = mix(cyan * 0.7, white, hot) * core * (0.9 + 0.1 * scan);
-	EMISSION = eye_e * energy * 0.6
+	EMISSION = eye_e * energy * 0.45
 		+ cyan * halo * energy * 0.16
 		+ vec3(1.0) * glint * energy * 0.6
 		+ cyan * 0.01 * (1.0 - length(q) * 0.5)

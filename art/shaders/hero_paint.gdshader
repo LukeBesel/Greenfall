@@ -14,6 +14,9 @@ uniform float grime : hint_range(0.0, 1.0) = 0.5;
 uniform float dust : hint_range(0.0, 1.0) = 0.4;
 uniform float edge_wear : hint_range(0.0, 1.0) = 0.6;
 uniform float specks : hint_range(0.0, 1.0) = 0.8;
+// [art2] Extra chipping (owner's concept sheet: paint knocked off in patches down to dark metal and
+// rust, most along edges and low on each part). 0 = as before.
+uniform float chips : hint_range(0.0, 0.5) = 0.0;
 uniform float metallic_bare = 0.85;
 uniform float paint_metallic = 0.0;
 uniform float paint_roughness = 0.42;
@@ -99,7 +102,8 @@ void fragment() {
 	float fine = fbm3(q * 4.0 + 3.0);
 	// Paint chips: noise everywhere, much stronger on convex edges.
 	float chip_n = big * 0.75 + fine * 0.35 - edge * edge_wear * 0.55;
-	float paint = smoothstep(1.0 - paint_coverage - 0.03, 1.0 - paint_coverage + 0.03, chip_n);
+	float chip_at = 1.0 - paint_coverage + chips * (0.75 + 0.5 * (1.0 - ao) + 0.35 * smoothstep(0.2, -0.6, onrm.y));
+	float paint = smoothstep(chip_at - 0.015, chip_at + 0.015, chip_n);
 	// Small dark specks / pits in the paint (like the concept's speckled shell).
 	float sp = smoothstep(0.8, 0.9, n3(opos * 110.0 + seed * 5.0)) * clamp(smoothstep(0.45, 0.75, fbm3(q * 0.8 + 5.0)) + edge * 0.6, 0.0, 1.0);
 	paint *= 1.0 - sp * specks;
@@ -112,7 +116,7 @@ void fragment() {
 	pc = mix(pc, vec3(dot(pc, vec3(0.33))), fade * 0.4);
 	pc *= mix(0.9, 1.05, fine);
 	// Thin lighter halo of worn paint around each chip.
-	float halo = smoothstep(0.0, 0.06, abs(chip_n - (1.0 - paint_coverage)));
+	float halo = smoothstep(0.0, 0.06, abs(chip_n - chip_at));
 	pc = mix(pc * 1.08, pc, halo);
 	// Rust/dirt streaks running down the sides.
 	float streak = smoothstep(0.55, 0.85, n3(vec3(opos.x * 24.0, opos.y * 2.5, opos.z * 24.0) + seed)) * (1.0 - smoothstep(-0.3, 0.6, onrm.y));
@@ -127,6 +131,11 @@ void fragment() {
 	// Fine scratches.
 	float scr = smoothstep(0.985, 1.0, n3(vec3(opos.x * 160.0, opos.y * 8.0, opos.z * 160.0) + seed));
 	alb = mix(alb, m_alb * 0.9, scr * paint * 0.6);
+	if (chips > 0.0) {  // [art2] sun-bleached and stained in broad patches: no two panels the same white
+		float patchy = fbm3(q * 0.55 + 41.0);
+		alb *= mix(vec3(0.8, 0.76, 0.7), vec3(1.04), smoothstep(0.3, 0.62, patchy));
+		rough = mix(rough, 0.75, (1.0 - smoothstep(0.3, 0.62, patchy)) * 0.6);
+	}
 	// Grime: cavities, occluded areas, low on each part; dust settles on top faces.
 	float g = clamp(cav * 1.2 + (1.0 - ao) * 1.1, 0.0, 1.0) * grime;
 	// Broad brownish smudges and stains.
