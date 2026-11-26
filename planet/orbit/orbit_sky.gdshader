@@ -27,13 +27,15 @@ uniform float storm = 0.0;        // dust storm 0..1
 uniform float night_lift = 1.0;   // brighter early nights (SkyDirector.night_lift)
 uniform float night_dark = 0.0;   // Long Nights
 uniform vec3 fog_col : source_color = vec3(0.9, 0.82, 0.7);  // [v5look] the depth fog's colour (SkyDirector)
-uniform vec3 zenith_day : source_color = vec3(0.24, 0.43, 0.78);
+uniform vec3 zenith_day : source_color = vec3(0.17, 0.37, 0.76);
 uniform vec3 zenith_clear : source_color = vec3(0.12, 0.38, 0.9);
-uniform vec3 horizon_day : source_color = vec3(0.93, 0.83, 0.68);
+uniform vec3 horizon_day : source_color = vec3(0.88, 0.79, 0.66);
 uniform vec3 horizon_clear : source_color = vec3(0.46, 0.66, 0.95);
 uniform vec3 haze_day : source_color = vec3(0.55, 0.52, 0.48);
 uniform vec3 zenith_night : source_color = vec3(0.03, 0.05, 0.11);
-uniform vec3 horizon_night : source_color = vec3(0.09, 0.12, 0.21);
+uniform vec3 horizon_night : source_color = vec3(0.11, 0.15, 0.27);
+// [art1] What the ground throws back up (the lower half of the radiance map, see sky()).
+uniform vec3 ground_bounce : source_color = vec3(0.5, 0.42, 0.34);
 uniform vec3 dusk : source_color = vec3(1.0, 0.52, 0.26);
 uniform vec3 dust : source_color = vec3(0.78, 0.6, 0.4);
 uniform vec3 sun1_color : source_color = vec3(1.0, 0.94, 0.82);
@@ -80,8 +82,10 @@ void sky() {
 	// [v5look] The dust is a warm golden haze over the lower sky (flat Verdance's look); it
 	// thins out as the planet is cleaned.
 	vec3 hor = mix(horizon_clear, horizon_day, haze * 0.7);
-	vec3 day_col = mix(hor, zen, pow(h, 0.4 + 0.25 * haze));
-	day_col = mix(day_col, horizon_day, haze * 0.5 * (1.0 - smoothstep(0.0, 0.3, h)));
+	// [art1] The dome goes blue quickly above the dust (it was beige to 40 degrees up); the dust
+	// is a band low on the horizon, where it also is the brightest part of the sky.
+	vec3 day_col = mix(hor, zen, 1.0 - exp(-h * mix(6.5, 4.2, haze)));
+	day_col = mix(day_col, horizon_day, haze * 0.4 * (1.0 - smoothstep(0.0, 0.2, h)));
 	float lift = 1.0 + 0.7 * night_lift - 0.5 * night_dark;
 	vec3 night_col = mix(horizon_night, zenith_night, pow(h, 0.7)) * lift;
 	vec3 col = mix(night_col, day_col, day);
@@ -95,7 +99,7 @@ void sky() {
 	// Moonlit night: a faint cool glow around the moon.
 	float cm = dot(d, moon_dir);
 	float vism = smoothstep(-0.03, 0.03, dot(moon_dir, up_dir));
-	col += moon_color * pow(max(cm, 0.0), 24.0) * 0.08 * (1.0 - day) * vism;
+	col += moon_color * (pow(max(cm, 0.0), 24.0) * 0.08 + pow(max(cm, 0.0), 500.0) * 0.35) * (1.0 - day) * vism;
 	// Dust storm: the whole dome goes ochre.
 	col = mix(col, dust * mix(0.25, 1.0, day), storm * 0.75);
 	// Sun disks and halos (only above the local horizon).
@@ -118,9 +122,17 @@ void sky() {
 	}
 	// Stars, fixed in space (they turn with the suns).
 	if (day < 0.6 && !AT_CUBEMAP_PASS) {
-		vec3 cell = floor(star_dir(d) * 260.0);
-		float st = step(0.9975, hash3(cell));
-		col += vec3(0.85, 0.9, 1.0) * st * (1.0 - day / 0.6) * smoothstep(0.0, 0.15, e) * (0.5 + hash3(cell + 7.0)) * clear_sky;
+		// [art1] Round points of mixed size and colour (they were square cells of one size).
+		vec3 sp = star_dir(d) * 260.0;
+		vec3 cell = floor(sp);
+		float pick = hash3(cell);
+		if (pick > 0.986) {
+			float mag = hash3(cell + 7.0);
+			float r = length(fract(sp) - 0.5) * mix(2.6, 1.7, mag * mag);
+			float st = pow(clamp(1.0 - r, 0.0, 1.0), 1.5) * (0.5 + 2.6 * mag * mag * mag);
+			vec3 tint = mix(vec3(1.0, 0.86, 0.7), vec3(0.75, 0.86, 1.0), hash3(cell + 3.0));
+			col += tint * st * (1.0 - day / 0.6) * smoothstep(0.0, 0.15, e) * clear_sky;
+		}
 	}
 	// Clouds: a deck 700 m up, sampled where the view ray meets it, anchored to the planet.
 	if (clouds > 0.01 && e > -0.02 && space < 0.5) {
@@ -140,7 +152,7 @@ void sky() {
 			float thick = smoothstep(cover, cover + 0.35, n);
 			vec3 lit_day = mix(vec3(1.0, 0.98, 0.95), vec3(0.62, 0.64, 0.7), thick * 0.6);
 			lit_day = mix(lit_day, dusk * 1.1, low1 * 0.55);
-			vec3 lit_night = vec3(0.16, 0.19, 0.27) * lift;
+			vec3 lit_night = vec3(0.16, 0.19, 0.27) * lift + moon_color * pow(max(cm, 0.0), 8.0) * (1.0 - thick) * 0.22 * vism;  // [art1] moonlit edges
 			vec3 cc = mix(lit_night, lit_day, day);
 			cc = mix(cc, dust * mix(0.3, 0.9, day), storm * 0.6);
 			// Silver lining toward a sun.
@@ -152,6 +164,15 @@ void sky() {
 	vec3 below = mix(horizon_night * 1.2 * lift, mix(horizon_clear * 0.75, haze_day, haze), day);
 	below = mix(below, dust * mix(0.3, 0.8, day), storm * 0.7);
 	below = mix(below, fog_col, 0.8);  // [v5look]
+	if (AT_CUBEMAP_PASS) {
+		// [art1] The ambient light's lower half is the ground's bounce, not pale haze: what the suns
+		// and the sky put on the ground, times the ground's colour. Shade is filled from above by the
+		// blue sky and from below by warm bounce, so it keeps a direction and a colour.
+		float sun_h = max(dot(sun1_dir, up_dir), 0.0);
+		vec3 lit = sun1_color * sun_h * 0.85 * (1.0 - 0.55 * storm) + mix(zenith_night * lift, zen * 0.35, day);
+		lit += moon_color * max(dot(moon_dir, up_dir), 0.0) * 0.05 * (1.0 - day);
+		below = mix(ground_bounce * lit, below, 0.15);
+	}
 	col = mix(below, col, smoothstep(-0.06, 0.01, e));
 	if (space > 0.5) {
 		vec3 cell = floor(star_dir(d) * 260.0);

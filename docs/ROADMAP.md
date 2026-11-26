@@ -42,6 +42,22 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   invisible walls (mostly street-lamp posts whose lamp is a MultiMesh the headless audit cannot read,
   the Locker cabinet's collider, a First Seed prop). The Locker's "side" colour and the "holo" held
   item change nothing on Lumi.
+## Art overhaul, from 26 Nov (branch claude/practical-meitner-eipd0h; state in studio/)
+
+Owner's order: 1 light and atmosphere, 2 Lumi, 3 buildings and the start town, 4 the bases, 5 the
+shuttle, 6 Scoopie and Haul Bug, 7 regrowth. Brief, bars and the round ledger: `studio/BRIEF.md`,
+`studio/BARS.md`, `studio/ROUNDS.md`. Fixed views: `tools/art_shots.sh OUTDIR` (start pad at noon,
+dusk, night and morning in one load; the lake shore by night and day), numbers with
+`tools/frame_stats.py`, boards with `tools/art_board.py`.
+
+- **Stage 1 done (light, tone, atmosphere):** one strong sun against a fill that is the sky from
+  above and the ground's bounce from below; a blue dome over a low dust band; round stars; the night
+  lake mirrors the night sky and the moon (it was a black band: 5.75% of the frame pure black, now
+  1.7%). Board: `docs/art/stage1_light_board.jpg`. Load time and hitches unchanged (headless).
+- **Guide marks (owner, 26 Nov):** the trail is four slim chevrons that drift slowly, the beam and
+  ring pulse less often (story/waypoint.gd), the objective hex beats at 0.6 Hz.
+- **Open:** nothing here was seen on the Mac (Forward+/Metal, High preset: SSAO, glow, four shadow
+  splits) or at 60 fps. The noon pad is still a pale slab (its material, stage 4). Stages 2-7.
 
 ## Walks reliable, 20-24 Nov (v9a, task 195)
 

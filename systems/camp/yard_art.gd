@@ -24,16 +24,16 @@ extends RefCounted
 
 
 # Palette: cosy, saturated, cohesive. Alpha 0 = bare metal.
-const TEAL := Color(0.18, 0.56, 0.6)
-const TEAL_D := Color(0.15, 0.4, 0.45)
-const ORANGE := Color(0.96, 0.5, 0.14)
-const YELLOW := Color(0.98, 0.74, 0.16)
-const CREAM := Color(0.93, 0.89, 0.8)
-const RED := Color(0.84, 0.25, 0.18)
-const GREEN := Color(0.32, 0.6, 0.32)
+const TEAL := Color(0.2, 0.47, 0.49)
+const TEAL_D := Color(0.15, 0.33, 0.36)
+const ORANGE := Color(0.8, 0.4, 0.13)
+const YELLOW := Color(0.85, 0.62, 0.13)
+const CREAM := Color(0.8, 0.76, 0.66)
+const RED := Color(0.68, 0.22, 0.16)
+const GREEN := Color(0.3, 0.47, 0.3)
 const OLIVE := Color(0.33, 0.42, 0.26)
-const BLUE := Color(0.22, 0.4, 0.68)
-const WOOD := Color(0.66, 0.45, 0.26)
+const BLUE := Color(0.22, 0.34, 0.52)
+const WOOD := Color(0.48, 0.34, 0.21)
 const DARK := Color(0.2, 0.21, 0.23)
 const RUBBER := Color(0.07, 0.07, 0.08)
 const STEEL := Color(0.66, 0.68, 0.7, 0.0)
@@ -51,9 +51,9 @@ static var _mat_cache: Dictionary = {}
 
 # --- Wear -> kit state ------------------------------------------------------------------------------
 
-## Kit state for a wear value: >= 0.5 broken, >= 0.25 repaired, else restored (art/kit, docs/ART_KIT.md).
+## Kit state for a wear value: >= 0.5 broken, >= 0.08 repaired, else restored (art/kit, docs/ART_KIT.md).
 static func state_for(wear: float) -> String:
-	return "broken" if wear >= 0.5 else ("repaired" if wear >= 0.25 else "restored")
+	return "broken" if wear >= 0.5 else ("repaired" if wear >= 0.08 else "restored")  # [art4] was 0.25: a working machine is used, not showroom-new
 
 
 # --- Meshes ---------------------------------------------------------------------------------------
@@ -203,6 +203,15 @@ class Kit:
 		for p: Vector3 in pts:
 			pv.append(_stack.back() * p)
 		b.tube(key_of(col, "paint"), pv, r, 8, 0.4)
+
+	## A ring (torus) of radius r in the local XY plane before `rot`: hand wheels, cage hoops, coils.
+	func ring(r: float, tube_r: float, pos: Vector3, col: Color, rot: Vector3 = Vector3.ZERO, segs: int = 18) -> void:
+		var t: Transform3D = _t(ProcMesh.xf(pos, rot))
+		var pv := PackedVector3Array()
+		for i: int in segs + 1:
+			var a: float = TAU * float(i) / float(segs)
+			pv.append(t * Vector3(cos(a) * r, sin(a) * r, 0))
+		b.tube(key_of(col, "paint"), pv, tube_r, 6, 0.0)
 
 	## Builds the MeshInstance3D. `wear` picks the kit state (YardArt.state_for); unpowered.
 	func mi(wear: float = 0.15, name: String = "") -> MeshInstance3D:
@@ -393,10 +402,10 @@ static func shack_roof() -> Kit:
 	for i: int in 10:  # corrugation ribs
 		var x: float = -1.71 + i * 0.38
 		k.box(Vector3(0.1, 0.06, 2.66), Vector3(x, 0.055, 0), TEAL, Vector3.ZERO, 0.025)
-	k.box(Vector3(3.92, 0.12, 0.1), Vector3(0, 0.03, 1.36), ORANGE)  # front trim
-	k.box(Vector3(3.92, 0.12, 0.1), Vector3(0, 0.03, -1.36), ORANGE)
-	k.box(Vector3(0.1, 0.12, 2.8), Vector3(1.93, 0.03, 0), ORANGE)
-	k.box(Vector3(0.1, 0.12, 2.8), Vector3(-1.93, 0.03, 0), ORANGE)
+	k.box(Vector3(3.92, 0.12, 0.1), Vector3(0, 0.03, 1.36), GUNMETAL)  # front trim
+	k.box(Vector3(3.92, 0.12, 0.1), Vector3(0, 0.03, -1.36), GUNMETAL)
+	k.box(Vector3(0.1, 0.12, 2.8), Vector3(1.93, 0.03, 0), GUNMETAL)
+	k.box(Vector3(0.1, 0.12, 2.8), Vector3(-1.93, 0.03, 0), GUNMETAL)
 	k.pipe(Vector3(-1.9, -0.06, 1.46), Vector3(1.9, -0.06, 1.46), 0.06, GUNMETAL, true)  # gutter
 	# A little solar panel and a stub antenna: the yard's first bit of the future.
 	k.push(ProcMesh.xf(Vector3(-0.7, 0.14, -0.2), Vector3(6, 0, 0)))
@@ -502,32 +511,88 @@ static func dress_bench(bench: Node3D) -> void:
 
 
 static func bench_body() -> Kit:
+	# [art4] An old steel shop bench (owner's world target): two teal pedestals, drawers on the
+	# left and a cupboard on the right, a plank top in a steel angle frame with a wear plate, a
+	# vice, a big hand wheel on a stand, a rag over the edge; and what Lumi added: a power cell on
+	# the shelf between the pedestals and a thin status strip under the top (dark until fixed).
 	var k := Kit.new()
-	k.box(Vector3(2.3, 0.08, 0.86), Vector3(0, 0.91, 0), WOOD, Vector3.ZERO, 0.025)  # butcher-block top
-	for i: int in 6:
-		k.box(Vector3(0.008, 0.012, 0.86), Vector3(-0.95 + i * 0.38, 0.95, 0), WOOD.darkened(0.3), Vector3.ZERO, 0.002)
-	k.box(Vector3(2.34, 0.07, 0.05), Vector3(0, 0.89, 0.44), STEEL)  # front edge trim
-	for x: float in [-1.05, 1.05]:
-		for z: float in [-0.34, 0.34]:
-			k.box(Vector3(0.1, 0.86, 0.1), Vector3(x, 0.43, z), TEAL)
-			k.box(Vector3(0.17, 0.04, 0.17), Vector3(x, 0.02, z), RUBBER)
-			k.bolt(Vector3(x, 0.8, z + 0.055 * signf(z)), Vector3(0, 0, signf(z)))
-	k.box(Vector3(2.1, 0.11, 0.06), Vector3(0, 0.8, 0.36), TEAL)
-	k.box(Vector3(2.1, 0.11, 0.06), Vector3(0, 0.8, -0.36), TEAL)
-	k.box(Vector3(2.1, 0.05, 0.72), Vector3(0, 0.25, 0), TEAL_D)  # lower shelf
-	k.hazard(Vector3(2.1, 0.07, 0.03), Vector3(0, 0.23, 0.37))
-	# Drawer cabinet (the middle drawer is a separate part).
-	k.box(Vector3(0.62, 0.54, 0.7), Vector3(-0.65, 0.54, 0), ORANGE)
-	for y: float in [0.38, 0.7]:
-		k.box(Vector3(0.54, 0.14, 0.03), Vector3(-0.65, y, 0.36), ORANGE.lightened(0.15))
-		k.box(Vector3(0.2, 0.025, 0.035), Vector3(-0.65, y + 0.02, 0.385), STEEL, Vector3.ZERO, 0.008)
-	# A bench vice at the right front corner.
-	k.box(Vector3(0.2, 0.1, 0.18), Vector3(0.98, 1.0, 0.3), GUNMETAL)
-	k.box(Vector3(0.2, 0.12, 0.05), Vector3(0.98, 1.06, 0.42), BLUE)
-	k.box(Vector3(0.2, 0.12, 0.05), Vector3(0.98, 1.06, 0.26), BLUE)
-	k.cyl(0.012, 0.3, Vector3(0.98, 1.02, 0.5), STEEL, Vector3(0, 0, 90), 0.003, 6)
-	# Cable from the top down the back leg to the floor.
-	k.cable([Vector3(0.9, 0.95, -0.4), Vector3(1.0, 0.7, -0.42), Vector3(1.05, 0.2, -0.44), Vector3(1.25, 0.03, -0.3)], 0.018)
+	var top := Color(0.42, 0.3, 0.19)
+	var patch := Color(0.6, 0.6, 0.56)
+	k.box(Vector3(2.3, 0.07, 0.86), Vector3(0, 0.915, 0), top, Vector3.ZERO, 0.012)
+	for i: int in 4:  # plank joints
+		k.box(Vector3(2.26, 0.006, 0.008), Vector3(0, 0.951, -0.3 + i * 0.2), top.darkened(0.5), Vector3.ZERO, 0.002)
+	k.box(Vector3(2.34, 0.09, 0.03), Vector3(0, 0.9, 0.44), GUNMETAL, Vector3.ZERO, 0.006)  # steel angle round the top
+	k.box(Vector3(2.34, 0.09, 0.03), Vector3(0, 0.9, -0.44), GUNMETAL, Vector3.ZERO, 0.006)
+	for sx: float in [-1.0, 1.0]:
+		k.box(Vector3(0.03, 0.09, 0.88), Vector3(sx * 1.16, 0.9, 0), GUNMETAL, Vector3.ZERO, 0.006)
+		for z: float in [-0.3, 0.0, 0.3]:
+			k.bolt(Vector3(sx * 1.177, 0.9, z), Vector3(sx, 0, 0), STEEL, 0.012)
+	k.box(Vector3(0.62, 0.012, 0.5), Vector3(0.5, 0.955, 0.12), STEEL, Vector3.ZERO, 0.004)  # wear plate
+	k.bolts4(Vector3(0.5, 0.961, 0.12), Vector3(0.27, 0, 0), Vector3(0, 0, 0.21), Vector3.UP, GUNMETAL, 0.012)
+	# Left pedestal: three drawers (the middle one is its own part and hangs out while broken).
+	k.box(Vector3(0.9, 0.74, 0.78), Vector3(-0.65, 0.51, 0), TEAL, Vector3.ZERO, 0.018)
+	for y: float in [0.35, 0.73]:
+		k.box(Vector3(0.8, 0.165, 0.03), Vector3(-0.65, y, 0.395), TEAL.lightened(0.06), Vector3.ZERO, 0.008)
+		k.box(Vector3(0.3, 0.022, 0.03), Vector3(-0.65, y + 0.03, 0.425), STEEL, Vector3.ZERO, 0.007)
+		for hx: float in [-0.14, 0.14]:
+			k.box(Vector3(0.02, 0.022, 0.03), Vector3(-0.65 + hx, y + 0.03, 0.41), GUNMETAL, Vector3.ZERO, 0.004)
+		k.box(Vector3(0.1, 0.045, 0.008), Vector3(-0.4, y - 0.03, 0.412), CREAM, Vector3.ZERO, 0.002)  # label holder
+	k.box(Vector3(0.8, 0.165, 0.02), Vector3(-0.65, 0.54, 0.37), DARK, Vector3.ZERO, 0.004)  # the middle drawer's dark mouth
+	# Right pedestal: a cupboard with a louvred door and a riveted patch plate (a hand repair).
+	k.box(Vector3(0.84, 0.74, 0.78), Vector3(0.68, 0.51, 0), TEAL, Vector3.ZERO, 0.018)
+	k.box(Vector3(0.74, 0.64, 0.03), Vector3(0.68, 0.51, 0.395), TEAL.lightened(0.05), Vector3(0, -2.5, 0), 0.008)
+	k.vent(0.44, 0.16, Vector3(0.68, 0.3, 0.413), TEAL_D, Vector3(0, -2.5, 0), 4)
+	k.box(Vector3(0.3, 0.2, 0.012), Vector3(0.56, 0.66, 0.416), patch, Vector3(0, -2.5, 3), 0.003)
+	k.bolts4(Vector3(0.56, 0.66, 0.423), Vector3(0.13, 0, 0), Vector3(0, 0.08, 0), Vector3.BACK, GUNMETAL, 0.011)
+	k.box(Vector3(0.03, 0.14, 0.035), Vector3(0.38, 0.52, 0.425), STEEL, Vector3.ZERO, 0.008)  # door handle
+	for y: float in [0.28, 0.74]:
+		k.cyl(0.016, 0.09, Vector3(1.06, y, 0.4), GUNMETAL, Vector3.ZERO, 0.004, 8)  # hinges
+	for x: float in [-1.04, -0.26, 0.32, 1.04]:  # feet with rubber pads
+		for z: float in [-0.32, 0.32]:
+			k.box(Vector3(0.06, 0.14, 0.06), Vector3(x, 0.08, z), GUNMETAL, Vector3.ZERO, 0.008)
+			k.box(Vector3(0.1, 0.025, 0.1), Vector3(x, 0.0125, z), RUBBER, Vector3.ZERO, 0.006)
+	# Between the pedestals: back panel, apron, a shelf with the power cell Lumi wired in.
+	k.box(Vector3(0.5, 0.7, 0.025), Vector3(0.02, 0.52, -0.37), TEAL_D, Vector3.ZERO, 0.006)
+	k.box(Vector3(2.2, 0.06, 0.03), Vector3(0, 0.855, 0.39), TEAL_D, Vector3.ZERO, 0.008)
+	k.box(Vector3(0.5, 0.03, 0.7), Vector3(0.02, 0.3, 0), TEAL_D, Vector3.ZERO, 0.008)
+	k.box(Vector3(0.3, 0.24, 0.34), Vector3(0.02, 0.435, -0.05), DARK, Vector3.ZERO, 0.03)
+	for x: float in [-0.13, 0.17]:
+		k.box(Vector3(0.03, 0.26, 0.36), Vector3(x, 0.435, -0.05), GUNMETAL, Vector3.ZERO, 0.006)
+	k.glow_box(Vector3(0.16, 0.03, 0.012), Vector3(0.02, 0.5, 0.125), CYAN)
+	k.glow_box(Vector3(0.03, 0.03, 0.012), Vector3(-0.07, 0.4, 0.125), MINT)
+	k.cable([Vector3(0.1, 0.55, -0.1), Vector3(0.22, 0.7, -0.25), Vector3(0.2, 0.86, -0.36)], 0.014)
+	k.glow_box(Vector3(0.5, 0.014, 0.01), Vector3(0.02, 0.84, 0.408), CYAN)  # status strip under the top
+	# A bench vice at the right front corner (cast iron, a bright screw).
+	k.box(Vector3(0.2, 0.05, 0.22), Vector3(0.98, 0.975, 0.28), DARK, Vector3.ZERO, 0.012)
+	k.box(Vector3(0.14, 0.1, 0.16), Vector3(0.98, 1.05, 0.25), GUNMETAL, Vector3.ZERO, 0.02)
+	k.box(Vector3(0.19, 0.12, 0.04), Vector3(0.98, 1.09, 0.4), DARK, Vector3.ZERO, 0.012)
+	k.box(Vector3(0.19, 0.12, 0.04), Vector3(0.98, 1.09, 0.31), DARK, Vector3.ZERO, 0.012)
+	k.cyl(0.016, 0.26, Vector3(0.98, 1.04, 0.47), STEEL, Vector3(90, 0, 0), 0.004, 8)
+	k.cyl(0.009, 0.24, Vector3(0.98, 1.04, 0.59), STEEL, Vector3(0, 0, 80), 0.003, 6)
+	# The big hand wheel on its stand, left rear of the top.
+	var wc := Vector3(-0.72, 1.44, -0.16)
+	k.box(Vector3(0.22, 0.03, 0.16), Vector3(wc.x, 0.965, wc.z - 0.03), GUNMETAL, Vector3.ZERO, 0.008)
+	k.box(Vector3(0.07, 0.5, 0.05), Vector3(wc.x, 1.21, wc.z - 0.05), GUNMETAL, Vector3.ZERO, 0.012)
+	k.cyl(0.03, 0.14, wc + Vector3(0, 0, -0.01), STEEL, Vector3(90, 0, 0), 0.006, 10)
+	k.cyl(0.075, 0.07, wc + Vector3(0, 0, 0.04), BRASS, Vector3(90, 0, 0), 0.015, 14)
+	k.ring(0.34, 0.03, wc + Vector3(0, 0, 0.04), top.lightened(0.08))
+	k.ring(0.22, 0.012, wc + Vector3(0, 0, 0.04), BRASS)
+	for a: int in 8:
+		var d := Vector3(cos(a * TAU / 8.0), sin(a * TAU / 8.0), 0)
+		k.pipe(wc + Vector3(0, 0, 0.04) + d * 0.06, wc + Vector3(0, 0, 0.04) + d * 0.43, 0.017, top.lightened(0.08), false)
+		k.cyl(0.026, 0.07, wc + Vector3(0, 0, 0.04) + d * 0.455, top.darkened(0.15), Vector3(0, 0, rad_to_deg(atan2(d.y, d.x)) - 90.0), 0.01, 8)
+	# A rag over the front edge, a mug, an oil can, a coil of wire.
+	var rag := Color(0.66, 0.62, 0.52)
+	k.box(Vector3(0.3, 0.014, 0.24), Vector3(0.05, 0.958, 0.33), rag, Vector3(0, 8, 0), 0.005, "pad")
+	k.box(Vector3(0.3, 0.26, 0.014), Vector3(0.068, 0.83, 0.466), rag, Vector3(3, 8, 2), 0.005, "pad")
+	k.box(Vector3(0.12, 0.1, 0.014), Vector3(0.16, 0.7, 0.472), rag.darkened(0.12), Vector3(3, 8, -6), 0.005, "pad")
+	k.cyl(0.045, 0.1, Vector3(-0.22, 1.0, 0.22), CREAM, Vector3.ZERO, 0.012, 12)
+	k.box(Vector3(0.016, 0.06, 0.05), Vector3(-0.16, 1.0, 0.22), CREAM, Vector3.ZERO, 0.006)
+	k.cyl(0.06, 0.09, Vector3(0.2, 0.995, -0.2), RED.darkened(0.2), Vector3.ZERO, 0.02, 12, "paint", 0.03)
+	k.pipe(Vector3(0.2, 1.03, -0.2), Vector3(0.34, 1.12, -0.2), 0.008, STEEL, false)
+	k.ring(0.08, 0.018, Vector3(-0.2, 0.972, -0.18), DARK, Vector3(90, 0, 0))
+	# Cable from the top down the back to the floor.
+	k.cable([Vector3(0.9, 0.95, -0.42), Vector3(1.0, 0.7, -0.44), Vector3(1.14, 0.2, -0.44), Vector3(1.3, 0.03, -0.3)], 0.018)
 	return k
 
 
@@ -547,24 +612,24 @@ static func bench_upper() -> Kit:
 	k.box(Vector3(0.16, 0.06, 0.05), Vector3(0.0, 1.55, -0.355), GUNMETAL, Vector3.ZERO, 0.012)
 	k.box(Vector3(0.36, 0.12, 0.01), Vector3(0.36, 1.32, -0.37), STEEL, Vector3(0, 0, -8), 0.004)
 	k.box(Vector3(0.1, 0.1, 0.04), Vector3(0.18, 1.34, -0.36), RED, Vector3(0, 0, -8), 0.012)
-	k.cyl(0.09, 0.05, Vector3(0.75, 1.4, -0.36), ORANGE, Vector3(90, 0, 0), 0.015, 14)
+	k.cyl(0.09, 0.05, Vector3(0.75, 1.4, -0.36), BRASS, Vector3(90, 0, 0), 0.015, 14)
 	k.cyl(0.05, 0.055, Vector3(0.75, 1.4, -0.36), DARK, Vector3(90, 0, 0), 0.01, 10)
 	# Parts bins.
-	for i: int in 4:
-		k.box(Vector3(0.18, 0.1, 0.12), Vector3(-0.85 + i * 0.2, 1.14, -0.32), [YELLOW, BLUE, RED, GREEN][i], Vector3.ZERO, 0.015)
+	for i: int in 2:
+		k.box(Vector3(0.18, 0.1, 0.12), Vector3(-0.2 + i * 0.2, 1.14, -0.32), [CREAM, GUNMETAL][i], Vector3.ZERO, 0.015)
 	# Top shelf with jars.
 	k.box(Vector3(2.12, 0.04, 0.22), Vector3(0, 1.82, -0.32), TEAL)
 	for i: int in 5:
-		k.cyl(0.045, 0.1, Vector3(-0.85 + i * 0.16, 1.89, -0.3), [CREAM, ORANGE, CREAM, BLUE, YELLOW][i], Vector3.ZERO, 0.01, 10)
+		k.cyl(0.045, 0.1, Vector3(-0.85 + i * 0.16, 1.89, -0.3), [CREAM, GUNMETAL, CREAM, DARK, BRASS][i], Vector3.ZERO, 0.01, 10)
 	# Monitor on the shelf.
-	k.box(Vector3(0.44, 0.3, 0.12), Vector3(0.55, 2.0, -0.32), CREAM)
-	k.glow_box(Vector3(0.36, 0.22, 0.02), Vector3(0.55, 2.0, -0.255), MINT)
+	k.box(Vector3(0.46, 0.3, 0.05), Vector3(0.55, 2.0, -0.3), DARK, Vector3.ZERO, 0.012)
+	k.glow_box(Vector3(0.4, 0.24, 0.012), Vector3(0.55, 2.0, -0.27), MINT)
 	k.box(Vector3(0.1, 0.04, 0.08), Vector3(0.55, 1.86, -0.32), DARK)
 	# Desk lamp clamped to the right post.
-	k.pipe(Vector3(1.0, 1.75, -0.36), Vector3(0.82, 1.92, 0.0), 0.018, ORANGE, false)
-	k.pipe(Vector3(0.82, 1.92, 0.0), Vector3(0.68, 1.62, 0.14), 0.018, ORANGE, false)
+	k.pipe(Vector3(1.0, 1.75, -0.36), Vector3(0.82, 1.92, 0.0), 0.014, GUNMETAL, false)
+	k.pipe(Vector3(0.82, 1.92, 0.0), Vector3(0.68, 1.62, 0.14), 0.014, GUNMETAL, false)
 	k.cyl(0.035, 0.05, Vector3(0.82, 1.92, 0.0), GUNMETAL, Vector3(0, 0, 90))
-	k.cyl(0.09, 0.12, Vector3(0.68, 1.58, 0.14), ORANGE, Vector3(25, 0, 0), -1.0, 14, "paint", 0.04)
+	k.cyl(0.1, 0.12, Vector3(0.68, 1.58, 0.14), TEAL_D, Vector3(25, 0, 0), -1.0, 14, "paint", 0.035)
 	k.glow_cyl(0.065, 0.02, Vector3(0.68, 1.52, 0.17), WARM, Vector3(25, 0, 0))
 	k.light(Vector3(0.62, 1.35, 0.2), WARM, 0.7, 1.8)
 	return k
@@ -572,9 +637,13 @@ static func bench_upper() -> Kit:
 
 static func bench_drawer() -> Kit:
 	var k := Kit.new()
-	k.box(Vector3(0.54, 0.14, 0.03), Vector3(0, 0, 0.36), ORANGE.lightened(0.15))
-	k.box(Vector3(0.2, 0.025, 0.035), Vector3(0, 0.02, 0.385), STEEL, Vector3.ZERO, 0.008)
-	k.box(Vector3(0.5, 0.11, 0.5), Vector3(0, -0.005, 0.1), DARK.lightened(0.1), Vector3.ZERO, 0.01)
+	k.box(Vector3(0.8, 0.165, 0.03), Vector3(0, 0, 0.395), TEAL.lightened(0.06), Vector3.ZERO, 0.008)
+	k.box(Vector3(0.3, 0.022, 0.03), Vector3(0, 0.03, 0.425), STEEL, Vector3.ZERO, 0.007)
+	for hx: float in [-0.14, 0.14]:
+		k.box(Vector3(0.02, 0.022, 0.03), Vector3(hx, 0.03, 0.41), GUNMETAL, Vector3.ZERO, 0.004)
+	k.box(Vector3(0.74, 0.13, 0.56), Vector3(0, -0.005, 0.1), DARK.lightened(0.1), Vector3.ZERO, 0.01)
+	k.box(Vector3(0.2, 0.05, 0.3), Vector3(-0.15, 0.07, 0.12), GUNMETAL, Vector3(0, 20, 0), 0.01)  # tools left in it
+	k.cyl(0.02, 0.3, Vector3(0.15, 0.075, 0.1), ORANGE, Vector3(90, 30, 0), 0.006, 8)
 	return k
 
 
@@ -620,26 +689,36 @@ const LAMP_HEAD_Y: float = 3.62
 
 
 static func street_lamp() -> Kit:
+	# [art4] An old cast post with a caged lantern (the light sits under the head, on the post's
+	# axis, as before), and a small relay box and antenna strapped on later.
 	var k := Kit.new()
-	k.cyl(0.36, 0.14, Vector3(0, 0.07, 0), DARK, Vector3.ZERO, 0.03, 8)
-	k.cyl(0.28, 0.24, Vector3(0, 0.26, 0), TEAL_D, Vector3.ZERO, 0.04, 8, "paint", 0.24)
+	k.cyl(0.3, 0.1, Vector3(0, 0.05, 0), DARK, Vector3.ZERO, 0.02, 8)
+	k.cyl(0.2, 0.34, Vector3(0, 0.27, 0), TEAL_D, Vector3.ZERO, 0.03, 8, "paint", 0.12)
 	for a: int in 8:
-		k.bolt(Vector3(cos(a * TAU / 8 + 0.39) * 0.3, 0.145, sin(a * TAU / 8 + 0.39) * 0.3), Vector3.UP)
-	k.hazard(Vector3(0.22, 0.42, 0.22), Vector3(0, 0.6, 0))
-	k.cyl(0.09, 3.0, Vector3(0, 1.98, 0), TEAL, Vector3.ZERO, 0.02, 12, "paint", 0.075)
-	for y: float in [0.85, 2.4, 3.4]:
-		k.cyl(0.11, 0.06, Vector3(0, y, 0), GUNMETAL, Vector3.ZERO, 0.015, 12)
-	# Junction box with its status LED and a hatch.
-	k.box(Vector3(0.2, 0.32, 0.14), Vector3(0, 1.35, 0.13), CREAM)
-	k.box(Vector3(0.15, 0.22, 0.02), Vector3(0, 1.33, 0.205), CREAM.darkened(0.1), Vector3.ZERO, 0.006)
-	k.glow_box(Vector3(0.03, 0.03, 0.02), Vector3(0.05, 1.47, 0.205), MINT)
-	k.decal("power", Vector2(0.1, 0.1), Vector3(0, 1.3, 0.215))
-	# Head: a chunky saucer with a warm lens ring underneath.
-	k.cyl(0.13, 0.12, Vector3(0, 3.5, 0), GUNMETAL, Vector3.ZERO, 0.03, 12)
-	k.cyl(0.42, 0.14, Vector3(0, LAMP_HEAD_Y, 0), CREAM, Vector3.ZERO, 0.05, 20, "paint", 0.36)
-	k.cyl(0.3, 0.08, Vector3(0, LAMP_HEAD_Y + 0.11, 0), ORANGE, Vector3.ZERO, 0.03, 20, "paint", 0.18)
-	k.cyl(0.05, 0.08, Vector3(0, LAMP_HEAD_Y + 0.18, 0), GUNMETAL, Vector3.ZERO, 0.015, 8)
-	k.glow_cyl(0.3, 0.03, Vector3(0, LAMP_HEAD_Y - 0.075, 0), WARM, Vector3.ZERO, 20)
+		k.bolt(Vector3(cos(a * TAU / 8 + 0.39) * 0.25, 0.105, sin(a * TAU / 8 + 0.39) * 0.25), Vector3.UP)
+	k.hazard(Vector3(0.17, 0.36, 0.17), Vector3(0, 0.64, 0))
+	k.cyl(0.07, 2.9, Vector3(0, 1.95, 0), TEAL, Vector3.ZERO, 0.012, 12, "paint", 0.052)
+	for y: float in [0.86, 2.2, 3.36]:
+		k.cyl(0.085, 0.05, Vector3(0, y, 0), GUNMETAL, Vector3.ZERO, 0.012, 12)
+	# Relay box with its status LED, a strap round the post, a stub antenna.
+	k.box(Vector3(0.18, 0.28, 0.12), Vector3(0, 1.35, 0.11), CREAM, Vector3.ZERO, 0.02)
+	k.box(Vector3(0.13, 0.19, 0.012), Vector3(0, 1.33, 0.175), CREAM.darkened(0.12), Vector3.ZERO, 0.004)
+	k.glow_box(Vector3(0.025, 0.025, 0.015), Vector3(0.05, 1.455, 0.172), MINT)
+	k.cyl(0.075, 0.03, Vector3(0, 1.42, 0), STEEL, Vector3.ZERO, 0.006, 12)
+	k.cyl(0.075, 0.03, Vector3(0, 1.27, 0), STEEL, Vector3.ZERO, 0.006, 12)
+	k.pipe(Vector3(0.06, 1.48, 0.1), Vector3(0.06, 1.9, 0.1), 0.006, STEEL, false)
+	k.cable([Vector3(0, 1.22, 0.12), Vector3(0.02, 0.8, 0.09), Vector3(0.05, 0.4, 0.12), Vector3(0.2, 0.05, 0.22)], 0.012)
+	# Head: a bracket collar, the lantern's base ring, a glass drum in a cage of bars, a vented cap.
+	k.cyl(0.1, 0.1, Vector3(0, 3.45, 0), GUNMETAL, Vector3.ZERO, 0.02, 12)
+	k.cyl(0.2, 0.04, Vector3(0, LAMP_HEAD_Y - 0.13, 0), TEAL_D, Vector3.ZERO, 0.012, 16)
+	k.glow_cyl(0.15, 0.24, Vector3(0, LAMP_HEAD_Y + 0.01, 0), WARM, Vector3.ZERO, 14)
+	for a: int in 6:
+		var d := Vector3(cos(a * TAU / 6.0), 0, sin(a * TAU / 6.0)) * 0.18
+		k.pipe(d + Vector3(0, LAMP_HEAD_Y - 0.12, 0), d + Vector3(0, LAMP_HEAD_Y + 0.15, 0), 0.009, DARK, false)
+	k.ring(0.18, 0.009, Vector3(0, LAMP_HEAD_Y + 0.01, 0), DARK, Vector3(90, 0, 0))
+	k.cyl(0.27, 0.1, Vector3(0, LAMP_HEAD_Y + 0.2, 0), TEAL_D, Vector3.ZERO, 0.02, 16, "paint", 0.1)
+	k.cyl(0.09, 0.06, Vector3(0, LAMP_HEAD_Y + 0.28, 0), GUNMETAL, Vector3.ZERO, 0.015, 10)
+	k.cyl(0.03, 0.06, Vector3(0, LAMP_HEAD_Y + 0.34, 0), BRASS, Vector3.ZERO, 0.01, 8)
 	return k
 
 
@@ -700,37 +779,58 @@ static func bin_body(l: int) -> Dictionary:
 
 
 static func _wheelie() -> Dictionary:
+	# [art4] An old steel tipping bin on castors: dented, chipped dark green paint, a welded patch,
+	# its lid thrown back; and the tech bolted on later: a sensor pod on a bracket with its cable
+	# (dark: nothing is lit until the yard has power).
 	var k := Kit.new()
-	var col: Color = Color(0.24, 0.42, 0.28)
+	var col: Color = Color(0.2, 0.31, 0.27)
+	var patch := Color(0.6, 0.6, 0.56)
 	var w: float = 0.86
 	var d: float = 0.92
-	k.box(Vector3(w * 0.9, 0.1, d * 0.9), Vector3(0, 0.1, 0), col.darkened(0.3), Vector3.ZERO, 0.03)
-	k.box(Vector3(w, 0.98, d), Vector3(0, 0.62, 0), col, Vector3.ZERO, 0.07)
-	for y: float in [0.34, 0.86]:
-		k.box(Vector3(w + 0.04, 0.05, d + 0.04), Vector3(0, y, 0), col.darkened(0.15), Vector3.ZERO, 0.02)
-	for x: float in [-0.22, 0.22]:  # moulded front ribs
-		k.box(Vector3(0.07, 0.62, 0.04), Vector3(x, 0.62, d * 0.5 + 0.01), col.lightened(0.05), Vector3.ZERO, 0.02)
-	k.box(Vector3(0.34, 0.26, 0.06), Vector3(0.14, 0.6, d * 0.5 - 0.01), col.darkened(0.35), Vector3(-10, 12, 8), 0.02)  # the dent
-	k.box(Vector3(w + 0.1, 0.08, d + 0.1), Vector3(0, 1.14, 0), col.darkened(0.2), Vector3.ZERO, 0.03)  # rim
-	k.box(Vector3(0.3, 0.12, 0.1), Vector3(0, 1.06, d * 0.5 + 0.06), col.darkened(0.2), Vector3.ZERO, 0.03)  # grip
-	k.decal("label_scrap", Vector2(0.52, 0.13), Vector3(0, 0.48, d * 0.5 + 0.005))
-	k.decal("num_01", Vector2(0.16, 0.16), Vector3(-0.32, 0.98, d * 0.5 + 0.005))
-	# Lid flopped back over the hinge.
-	k.push(ProcMesh.xf(Vector3(0, 1.16, -d * 0.5 - 0.06), Vector3(-118, 0, 4)))
-	k.box(Vector3(w + 0.12, 0.06, d + 0.06), Vector3(0, 0, d * 0.5 + 0.03), col.lightened(0.04), Vector3.ZERO, 0.025)
-	k.box(Vector3(w * 0.7, 0.03, d * 0.6), Vector3(0, 0.04, d * 0.5), col.darkened(0.1), Vector3.ZERO, 0.01)
+	k.box(Vector3(w * 0.86, 0.06, d * 0.86), Vector3(0, 0.2, 0), GUNMETAL, Vector3.ZERO, 0.012)  # chassis
+	for i: int in 3:  # the hopper flares toward the top
+		var f: float = 0.88 + 0.06 * i
+		k.box(Vector3(w * f, 0.33, d * f), Vector3(0, 0.39 + i * 0.3, 0), col, Vector3.ZERO, 0.02)
+	for s: float in [-1.0, 1.0]:  # pressed ribs on the sides, stiffeners front and back
+		for z: float in [-0.25, 0.0, 0.25]:
+			k.box(Vector3(0.03, 0.8, 0.07), Vector3(s * (w * 0.5 + 0.005), 0.66, z), col.darkened(0.12), Vector3(0, 0, -s * 3.0), 0.01)
+		for x: float in [-0.24, 0.24]:
+			k.box(Vector3(0.07, 0.8, 0.03), Vector3(x, 0.66, s * (d * 0.5 + 0.005)), col.darkened(0.12), Vector3(s * 3.0, 0, 0), 0.01)
+	k.box(Vector3(w + 0.1, 0.05, d + 0.1), Vector3(0, 1.15, 0), GUNMETAL, Vector3.ZERO, 0.012)  # rolled rim, worn bare
+	k.hazard(Vector3(w + 0.06, 0.08, 0.02), Vector3(0, 1.07, d * 0.5 + 0.045))
+	k.box(Vector3(0.36, 0.28, 0.05), Vector3(0.15, 0.6, d * 0.5 - 0.005), col.darkened(0.3), Vector3(-9, 11, 7), 0.02)  # the dent
+	k.box(Vector3(0.3, 0.24, 0.012), Vector3(-0.2, 0.74, d * 0.5 + 0.02), patch, Vector3(3, 0, -4), 0.003)  # welded patch
+	k.bolts4(Vector3(-0.2, 0.74, d * 0.5 + 0.028), Vector3(0.12, 0, 0), Vector3(0, 0.09, 0), Vector3.BACK, GUNMETAL, 0.012)
+	k.decal("label_scrap", Vector2(0.46, 0.115), Vector3(0.06, 0.4, d * 0.5 * 0.9 + 0.006))
+	# Lid thrown back over its hinge bar.
+	k.pipe(Vector3(-w * 0.46, 1.19, -d * 0.5 - 0.05), Vector3(w * 0.46, 1.19, -d * 0.5 - 0.05), 0.022, GUNMETAL, false)
+	k.push(ProcMesh.xf(Vector3(0, 1.19, -d * 0.5 - 0.06), Vector3(-116, 0, 4)))
+	k.box(Vector3(w + 0.1, 0.025, d + 0.04), Vector3(0, 0, d * 0.5 + 0.03), col.lightened(0.03), Vector3.ZERO, 0.008)
+	for x: float in [-0.25, 0.25]:
+		k.box(Vector3(0.06, 0.03, d * 0.8), Vector3(x, 0.025, d * 0.5 + 0.03), col.darkened(0.12), Vector3.ZERO, 0.008)
+	k.box(Vector3(0.24, 0.03, 0.05), Vector3(0, 0.03, d + 0.02), STEEL, Vector3.ZERO, 0.008)  # lid handle
 	k.pop()
-	for x: float in [-w * 0.42, w * 0.42]:
-		k.cyl(0.13, 0.08, Vector3(x, 0.13, -d * 0.5 - 0.03), RUBBER, Vector3(0, 0, 90), 0.025, 14)
-		k.cyl(0.06, 0.09, Vector3(x, 0.13, -d * 0.5 - 0.03), STEEL, Vector3(0, 0, 90), 0.012, 10)
-	k.pipe(Vector3(-w * 0.45, 0.13, -d * 0.5 - 0.03), Vector3(w * 0.45, 0.13, -d * 0.5 - 0.03), 0.02, GUNMETAL, false)
-	k.pipe(Vector3(-w * 0.42, 1.08, -d * 0.5 - 0.09), Vector3(w * 0.42, 1.08, -d * 0.5 - 0.09), 0.025, GUNMETAL, false)
+	# Tow bar and four castors.
+	for s: float in [-1.0, 1.0]:
+		k.pipe(Vector3(s * 0.2, 0.2, d * 0.42), Vector3(s * 0.2, 0.5, d * 0.5 + 0.16), 0.018, GUNMETAL, false)
+	k.pipe(Vector3(-0.2, 0.5, d * 0.5 + 0.16), Vector3(0.2, 0.5, d * 0.5 + 0.16), 0.02, STEEL, false)
+	for x: float in [-w * 0.36, w * 0.36]:
+		for z: float in [-d * 0.36, d * 0.36]:
+			k.box(Vector3(0.07, 0.07, 0.1), Vector3(x, 0.14, z), GUNMETAL, Vector3.ZERO, 0.01)
+			k.cyl(0.085, 0.05, Vector3(x, 0.085, z), RUBBER, Vector3(0, 0, 90), 0.015, 12)
+			k.cyl(0.035, 0.06, Vector3(x, 0.085, z), STEEL, Vector3(0, 0, 90), 0.008, 8)
+	# The sensor pod: a later fit on a bracket at the rim, its cable tied down the side.
+	k.box(Vector3(0.04, 0.34, 0.04), Vector3(w * 0.5 + 0.04, 1.3, d * 0.3), GUNMETAL, Vector3.ZERO, 0.008)
+	k.box(Vector3(0.15, 0.11, 0.13), Vector3(w * 0.5 + 0.0, 1.5, d * 0.3), CREAM, Vector3(0, 0, 12), 0.025)
+	k.box(Vector3(0.012, 0.07, 0.09), Vector3(w * 0.5 - 0.075, 1.485, d * 0.3), DARK, Vector3(0, 0, 12), 0.004, "glass")
+	k.glow_box(Vector3(0.02, 0.02, 0.02), Vector3(w * 0.5 + 0.03, 1.565, d * 0.3 + 0.03), MINT)
+	k.cable([Vector3(w * 0.5 + 0.06, 1.44, d * 0.3), Vector3(w * 0.5 + 0.07, 1.0, d * 0.22), Vector3(w * 0.5 + 0.03, 0.5, d * 0.1), Vector3(w * 0.42, 0.24, 0.0)], 0.012)
 	# Junk that missed: a crushed can and a bag at the foot.
-	k.cyl(0.04, 0.06, Vector3(0.5, 0.03, 0.55), RED, Vector3(90, 30, 0), 0.01, 8)
-	k.box(Vector3(0.26, 0.22, 0.24), Vector3(-0.58, 0.11, 0.42), DARK.lightened(0.05), Vector3(0, 20, 8), 0.08)
+	k.cyl(0.04, 0.06, Vector3(0.5, 0.03, 0.62), RED.darkened(0.15), Vector3(90, 30, 0), 0.01, 8)
+	k.box(Vector3(0.26, 0.22, 0.24), Vector3(-0.6, 0.11, 0.44), DARK.lightened(0.05), Vector3(0, 20, 8), 0.08)
 	var root := Node3D.new()
 	root.name = "Wheelie"
-	root.rotation = Vector3(0.0, 0.18, deg_to_rad(-3.0))  # a little crooked
+	root.rotation = Vector3(0.0, 0.18, deg_to_rad(-2.0))  # a little crooked
 	root.add_child(k.mi(0.72, "Body"))
 	return {"root": root, "size": Vector3(w + 0.1, 1.25, d + 0.1), "mouth_y": 1.43, "ram": null,
 		"fill": [Vector3(0, 1.12, 0), Vector3(0.4, 0.3, 0.42)]}
@@ -738,7 +838,7 @@ static func _wheelie() -> Dictionary:
 
 static func _skip(l: int) -> Dictionary:
 	var smart: bool = l >= 5
-	var body_col: Color = Color(0.92, 0.93, 0.92) if smart else Color(0.2, 0.5, 0.34)
+	var body_col: Color = Color(0.86, 0.87, 0.86) if smart else Color(0.2, 0.34, 0.29)
 	var trim: Color = TEAL if smart else YELLOW
 	var k := Kit.new()
 	var w: float = 2.6
@@ -818,14 +918,14 @@ static func _skip(l: int) -> Dictionary:
 static func depot_pad(radius: float) -> MeshInstance3D:
 	var k := Kit.new()
 	var s: float = radius * 1.9
-	k.box(Vector3(s, 0.07, s), Vector3(0, 0.035, 0), Color(0.36, 0.38, 0.39), Vector3.ZERO, 0.03)
+	k.box(Vector3(s, 0.07, s), Vector3(0, 0.035, 0), GUNMETAL, Vector3.ZERO, 0.02)  # [art4] a steel weigh plate, not pale paint
 	var q: float = s * 0.5 - 0.22
 	for ix: float in [-1.0, 1.0]:
 		for iz: float in [-1.0, 1.0]:
 			var c := Vector3(ix * q * 0.5 + ix * 0.04, 0.075, iz * q * 0.5 + iz * 0.04)
-			k.box(Vector3(q - 0.06, 0.02, q - 0.06), c, Color(0.5, 0.53, 0.55, 0.65), Vector3.ZERO, 0.008)
+			k.box(Vector3(q - 0.06, 0.02, q - 0.06), c, GUNMETAL, Vector3.ZERO, 0.008)
 			for t: int in 5:  # tread bars
-				k.box(Vector3(q - 0.2, 0.016, 0.05), c + Vector3(0, 0.014, -q * 0.36 + t * q * 0.18), Color(0.62, 0.64, 0.66, 0.5), Vector3(0, 45.0 * ix * iz, 0), 0.008)
+				k.box(Vector3(q - 0.2, 0.016, 0.05), c + Vector3(0, 0.014, -q * 0.36 + t * q * 0.18), STEEL, Vector3(0, 45.0 * ix * iz, 0), 0.008)
 			k.bolts4(c + Vector3(0, 0.01, 0), Vector3(q * 0.5 - 0.07, 0, 0), Vector3(0, 0, q * 0.5 - 0.07), Vector3.UP, STEEL, 0.018)
 	k.box(Vector3(0.5, 0.02, 0.5), Vector3(0, 0.075, 0), DARK, Vector3.ZERO, 0.008)  # drain grate
 	for t: int in 5:
@@ -853,8 +953,8 @@ static func depot_scale() -> MeshInstance3D:
 	k.box(Vector3(0.14, 1.24, 0.14), Vector3(0, 0.64, 0), TEAL)
 	k.hazard(Vector3(0.15, 0.3, 0.15), Vector3(0, 0.3, 0))
 	k.box(Vector3(0.54, 0.54, 0.18), Vector3(0, SCALE_DIAL_Y, 0), CREAM, Vector3.ZERO, 0.05)
-	k.box(Vector3(0.58, 0.07, 0.2), Vector3(0, SCALE_DIAL_Y - 0.28, 0), ORANGE, Vector3.ZERO, 0.025)
-	k.cyl(0.21, 0.04, Vector3(0, SCALE_DIAL_Y, 0.09), ORANGE, Vector3(90, 0, 0), 0.012, 24)
+	k.box(Vector3(0.58, 0.07, 0.2), Vector3(0, SCALE_DIAL_Y - 0.28, 0), TEAL_D, Vector3.ZERO, 0.025)
+	k.cyl(0.21, 0.04, Vector3(0, SCALE_DIAL_Y, 0.09), BRASS, Vector3(90, 0, 0), 0.012, 24)
 	k.cyl(0.18, 0.03, Vector3(0, SCALE_DIAL_Y, 0.1), Color(0.97, 0.96, 0.92), Vector3(90, 0, 0), 0.006, 24)
 	for t: int in 9:
 		var a: float = lerpf(-2.2, 2.2, t / 8.0)
@@ -1555,7 +1655,7 @@ static func fabricator_shell() -> Kit:
 		k.glow_box(Vector3(0.04, 0.04, 0.02), Vector3(1.8 + i * 0.12, 0.95, 0.755), [MINT, AMBER, MINT][i])
 	for i: int in 3:
 		for j: int in 2:
-			k.box(Vector3(0.36, 0.22, 0.4), Vector3(-1.95, 0.36 + j * 0.24, 0.6 - i * 0.42), [YELLOW, BLUE, RED][(i + j) % 3], Vector3.ZERO, 0.03)
+			k.box(Vector3(0.36, 0.22, 0.4), Vector3(-1.95, 0.36 + j * 0.24, 0.6 - i * 0.42), [CREAM, GUNMETAL, TEAL_D][(i + j) % 3], Vector3.ZERO, 0.03)
 	k.pipe(Vector3(-1.3, 0.25, -1.75), Vector3(-1.3, 2.4, -1.75), 0.07, GUNMETAL, true)
 	k.pipe(Vector3(-1.3, 2.4, -1.75), Vector3(1.3, 2.4, -1.75), 0.07, GUNMETAL, true)
 	k.cable([Vector3(1.95, 0.3, 0.25), Vector3(1.7, 0.25, -0.2), Vector3(1.3, 0.26, -0.6)], 0.025)
@@ -1611,7 +1711,7 @@ static func bot_bay() -> Kit:
 		k.glow_box(Vector3(0.04, 0.04, 0.02), Vector3(1.16 + i * 0.12, 0.85, 1.225), [MINT, AMBER, MINT][i])
 	for i: int in 2:
 		for j: int in 2:
-			k.box(Vector3(0.34, 0.22, 0.38), Vector3(-1.3, 0.3 + j * 0.24, 1.02 - i * 0.02 * j), [YELLOW, BLUE, RED][(i + j) % 3], Vector3.ZERO, 0.03)
+			k.box(Vector3(0.34, 0.22, 0.38), Vector3(-1.3, 0.3 + j * 0.24, 1.02 - i * 0.02 * j), [CREAM, GUNMETAL, TEAL_D][(i + j) % 3], Vector3.ZERO, 0.03)
 	k.pipe(Vector3(-1.15, 0.2, -1.25), Vector3(-1.15, 2.1, -1.25), 0.06, GUNMETAL, true)
 	k.cable([Vector3(1.28, 0.25, 0.8), Vector3(1.1, 0.22, 0.2), Vector3(0.8, 0.22, -0.4)], 0.025)
 	k.light(Vector3(0, 1.9, 0.9), CYAN, 0.3, 2.2)

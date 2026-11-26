@@ -1,11 +1,14 @@
 class_name PatchModel
 extends Node3D
 ## The player's robot, Lumi (LM-1): the ark's seed-keeper bot, fallen back to Verdance.
-## Matches the owner's concept sheet: a big wide rounded head with a glossy black visor and thick
-## glowing "C" eyes, vented ear side-pods with a thin glow stripe and an antenna stub, a curved antenna ending in an orange fin,
-## orange accents, a compact torso with an orange-framed chest screen and glowing waist slots,
-## segmented arms with three-finger claws (the right one projects a tractor beam), and a hover
-## bowl with a bright thruster ring instead of legs. Worn, dusty paint. Colorways are unlockable designs ("aurora" is
+## Matches the owner's Aurora portrait and turnaround (rebuilt Nov 2026, art/models/aurora/build_aurora.py):
+## a wide rounded-rectangle head (about 56% of his height) with a thick off-white shell, one curved
+## glossy black visor across nearly the whole front with two oversized cyan C-ring eyes (a ring with a
+## gap to the upper right and one dot in the gap), round side
+## modules with a thin cyan ring lens and a mechanical hub, a short swept-back fin with an amber edge,
+## a compact torso tucked under the head with a raised recycling plate and orange latches, short
+## chunky arms with curved claws (the right one projects the pickup lasers), and a compact rounded
+## underside with one recessed hover ring. Worn, dusty paint. Colorways are unlockable designs ("aurora" is
 ## the default look). Faces -Z. Base (hover ring) near y=0.
 
 # Unlockable designs (owner's concept sheet; gameplay side in systems/designs.gd + data/designs.json).
@@ -15,7 +18,7 @@ extends Node3D
 # procedural extras (holo, butterfly, case); icon: chest screen icon; happy: resting smile (0..1).
 # l10n:begin
 const VARIANTS: Dictionary = {
-	"aurora": {"name": "Aurora", "paint": Color(0.9, 0.88, 0.83), "trim": Color(0.36, 0.38, 0.42), "glow": Color(0.3, 0.88, 1.0), "accent": Color(1.0, 0.5, 0.12), "lamp": Color(1.0, 0.55, 0.15), "icon": "recycle", "acc": ["antenna"]},
+	"aurora": {"name": "Aurora", "paint": Color(0.78, 0.74, 0.725), "trim": Color(0.412, 0.435, 0.471), "glow": Color(0.25, 0.886, 0.94), "accent": Color(0.945, 0.42, 0.012), "lamp": Color(0.973, 0.686, 0.035), "paddle": Color(0.953, 0.753, 0.251), "icon": "recycle", "grime": 0.75, "acc": ["antenna"]},
 	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.7, 0.1), "trim": Color(0.32, 0.29, 0.24), "glow": Color(1.0, 0.68, 0.18), "accent": Color(0.95, 0.72, 0.12), "lamp": Color(1.0, 0.6, 0.12), "icon": "recycle", "coverage": 0.8, "grime": 0.85, "stripes": 1.0, "acc": ["antenna", "acc_pad_r", "acc_pad_l", "gear"]},
 	"sprout": {"name": "Sprout", "paint": Color(0.47, 0.53, 0.23), "trim": Color(0.33, 0.35, 0.22), "glow": Color(0.52, 1.0, 0.36), "accent": Color(0.86, 0.62, 0.22), "lamp": Color(0.6, 1.0, 0.35), "icon": "leaf", "grime": 0.7, "moss": 0.6, "acc": ["acc_sprout"]},
 	"pixel": {"name": "Pixel", "paint": Color(0.8, 0.15, 0.14), "trim": Color(0.6, 0.12, 0.12), "glow": Color(1.0, 0.33, 0.5), "accent": Color(0.93, 0.91, 0.88), "lamp": Color(1.0, 0.4, 0.55), "icon": "recycle", "happy": 1.0, "acc": ["acc_pixel", "butterfly"]},
@@ -27,11 +30,25 @@ const VARIANTS: Dictionary = {
 var variant: String = "aurora"
 
 # Interface used by Patch, the camera, the detector and baling.
-var chest_point := Vector3(0, 0.38, -0.22)
-var back_hatch_point := Vector3(0, 0.36, 0.2)
-var vent_points: Array[Vector3] = [Vector3(-0.33, 0.78, 0.0), Vector3(0.33, 0.78, 0.0)]
-var stack_point := Vector3(0, 1.22, 0.3)
-var lens_point := Vector3(0, 0.78, -0.3)
+var chest_point := Vector3(0, 0.4, -0.25)
+var back_hatch_point := Vector3(0, 0.38, 0.23)
+var vent_points: Array[Vector3] = [Vector3(-0.12, 0.93, 0.34), Vector3(0.12, 0.93, 0.34)]  # head's back vent band
+var stack_point := Vector3(0, 1.3, 0.3)
+var lens_point := Vector3(0, 0.86, -0.36)
+## [hero] Attachment anchors for head pieces, chest icons, held items and back gear (character
+## builder). Positions in the model's float space (head_top in the head's space); see get_anchor().
+const ANCHORS := {"head_top": Vector3(0, 0.66, 0.0), "chest_plate": Vector3(0, 0.407, -0.236), "hand_r": Vector3(0, 0, -0.13), "hand_l": Vector3(0, 0, -0.13), "back": Vector3(0, 0.42, 0.225)}
+## Eye shapes for bot_face.gdshader's eye_shape (VARIANTS may set "eyes"; set_eye_shape() at runtime).
+const EYE_SHAPES := ["crescent", "round", "happy", "bar", "heart"]
+var _anchors: Dictionary = {}
+## [hero] Detector beacon: a small red lamp on the rear of the fin mount (head space), parented to
+## the head so it follows hover bob, lean, head turn/tilt and every pose (owner: "the blinking red
+## dot sometimes comes off the player's head" when it lived on Patch at a fixed height).
+const BEACON_LOCAL := Vector3(0, 0.657, 0.21)  # on the fin mount, behind the stalk (build_aurora.py prints it)
+var _beacon: MeshInstance3D
+var _beacon_mat: StandardMaterial3D
+var _beacon_light: OmniLight3D
+var _beacon_amt: float = 0.0
 var sleeping: bool = false
 var _iris_now: float = 0.5
 
@@ -74,6 +91,41 @@ var _head_yaw: float = 0.0
 var _head_yaw_target: float = 0.0
 var _blink_timer: float = 2.5
 var _blink: float = 0.0
+## Blink phase time (s): < 0 idle (or the gap before a double blink), 0..BLINK_LEN blinking.
+var _blink_t: float = -1.0
+var _blink_double: bool = false
+var _sleep_amt: float = 0.0
+var _sleep_seen: bool = false
+## [hero v2] Idle arm pose: x = shoulder pitch (up/forward), z = outward (right arm; mirrored on
+## the left), y = elbow bend.
+## [hero v2] Character-builder slots: each swappable characteristic is its own part (or part pair)
+## in aurora.glb. A variant / builder save overrides any slot by naming another part with the same
+## pivot conventions; eyes ("eyes" -> EYE_SHAPES), colours (the colour keys below) and toppers
+## ("acc", head_top / beacon anchors) are already independent of the shapes.
+## [art2] On the ears part (the side modules) the dark housings and rings take the Locker's "side"
+## colour (_mats["side"]); their lens, ring light and steel fins stay as modelled.
+const SIDE_REMAP := {"dark": "side", "trim": "side"}
+## Add-ons in designs.glb were modelled for the previous, smaller head and narrower torso (not
+## rebuilt, see docs/HANDOVER_AURORA.md): offsets (and a widening) that seat them on the v2 shapes.
+const ACC_FIT := {
+	"acc_catears": {"pos": Vector3(0, 0.155, 0)},
+	"acc_sprout": {"pos": Vector3(0, 0.155, 0)},
+	"acc_pixel": {"pos": Vector3(0, 0.155, 0)},
+	"acc_pixel_hearts": {"pos": Vector3(0, 0.075, 0), "scale": Vector3(1.06, 1, 1)},
+	"acc_toolbox": {"pos": Vector3(-0.065, 0, 0)},
+}
+const SLOT_DEFAULTS := {"head": "head", "visor": "visor", "ears": "ears", "finger": "finger", "finger_tip": "finger_tip"}
+## Per-part colours a variant may override (defaults are Aurora's, sampled from the concept).
+const COLOR_DEFAULTS := {"dark": Color(0.114, 0.125, 0.141), "fin": Color(0.2, 0.225, 0.245), "claw": Color(0.6, 0.58, 0.555), "cable": Color(0.06, 0.062, 0.068)}
+const ARM_REST := Vector3(0.12, 0.4, 0.5)
+## [hero v2] The concept's arms and claws are chunkier than the modelled ones: scale the whole arm
+## from the shoulder socket, and the claws again on top (fingers spread a little wider).
+const ARM_SCALE := 1.2
+const CLAW_SCALE := 1.3
+const BLINK_CLOSE := 0.07
+const BLINK_HOLD := 0.04
+const BLINK_OPEN := 0.11
+const BLINK_LEN := BLINK_CLOSE + BLINK_HOLD + BLINK_OPEN
 var _flash: float = 0.0
 var _lean := Vector2.ZERO
 var _dip: float = 0.0
@@ -131,6 +183,9 @@ const MODEL_PATH := "res://art/models/aurora/aurora.glb"
 ## Design add-ons (same build script): shoulder pads, sprout, cat ears, toolbox, case, gear, ...
 const DESIGNS_PATH := "res://art/models/aurora/designs.glb"
 const HERO_PAINT := preload("res://art/shaders/hero_paint.gdshader")
+## [hero v2] Baked per-pixel AO / edge / cavity atlas for aurora.glb (tools/hero/bake_masks.py).
+const MASK_PATH := "res://art/models/aurora/aurora_masks.png"
+var _acc_mats: Dictionary = {}
 ## Visual layer bit the hero's meshes also sit on, so his own key light only lights him.
 const HERO_LAYER := 2
 ## Meshes and pivots baked from art/models/aurora (built by build_aurora.py in Blender).
@@ -151,6 +206,24 @@ static func _load_parts() -> void:
 			var mi: MeshInstance3D = n
 			_parts[str(mi.name)] = {"mesh": mi.mesh, "pos": mi.position}
 		inst.free()
+	# Pixel's add-on is one mesh (crown fins + heart lenses over the ear hubs). The v2 head moved the
+	# crown and the ear hubs by different amounts, so the hearts become their own part (ACC_FIT).
+	if _parts.has("acc_pixel") and not _parts.has("acc_pixel_hearts"):
+		var whole: Mesh = _parts["acc_pixel"]["mesh"]
+		_parts["acc_pixel_hearts"] = {"mesh": _surfaces_of(whole, ["glow"], true), "pos": _parts["acc_pixel"]["pos"]}
+		_parts["acc_pixel"] = {"mesh": _surfaces_of(whole, ["glow"], false), "pos": _parts["acc_pixel"]["pos"]}
+
+
+## A copy of `mesh` with only the surfaces whose material name is (keep) / is not in `names`.
+static func _surfaces_of(mesh: Mesh, names: Array, keep: bool) -> ArrayMesh:
+	var out := ArrayMesh.new()
+	for i: int in mesh.get_surface_count():
+		var src: Material = mesh.surface_get_material(i)
+		if names.has(src.resource_name if src else "") != keep:
+			continue
+		out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh.surface_get_arrays(i))
+		out.surface_set_material(out.get_surface_count() - 1, src)
+	return out
 
 
 static func _pivot(part: String) -> Vector3:
@@ -158,12 +231,25 @@ static func _pivot(part: String) -> Vector3:
 	return _parts[part]["pos"]
 
 
-func _paint(c: Color, seed_: float, coverage: float = 0.88, metal: float = 0.0, rough: float = 0.42) -> ShaderMaterial:
+## [hero v2] The part filling a character-builder slot (variant override, else Aurora's).
+static func _slot(v: Dictionary, slot: String) -> String:
+	var p: String = str(v.get(slot, SLOT_DEFAULTS[slot]))
+	return p if _parts.is_empty() or _parts.has(p) else str(SLOT_DEFAULTS[slot])
+
+
+static func _col(v: Dictionary, key: String) -> Color:
+	return v.get(key, COLOR_DEFAULTS[key])
+
+
+func _paint(c: Color, seed_: float, coverage: float = 0.88, metal: float = 0.0, rough: float = 0.42, coat: float = 0.0) -> ShaderMaterial:
 	var m: ShaderMaterial = Mats.worn_paint(c, coverage, 0.25, seed_, 0.5)
+	m.set_shader_parameter("clearcoat", coat)
 	m.shader = HERO_PAINT
 	m.set_shader_parameter("paint_roughness", rough)
 	m.set_shader_parameter("paint_metallic", metal)
 	m.set_shader_parameter("dust", 0.45)
+	m.set_shader_parameter("metallic_bare", 0.25)  # [hero v2] chips read matte brown, not mirror-dark
+	m.set_shader_parameter("rim_strength", 0.11)  # [hero v2] the concept's warm/cyan edge glints
 	m.set_shader_parameter("grime", 0.6)
 	m.set_shader_parameter("fade", 0.15 if c.s < 0.5 else 0.0)
 	_paint_mats.append(m)
@@ -171,7 +257,8 @@ func _paint(c: Color, seed_: float, coverage: float = 0.88, metal: float = 0.0, 
 
 
 ## Instance a baked part (mesh vertices are relative to its pivot) with per-surface materials.
-func _part(parent: Node3D, part: String, pos: Vector3 = Vector3.ZERO) -> MeshInstance3D:
+## `remap` swaps material keys for this instance (the ears' housings use the Locker's "side").
+func _part(parent: Node3D, part: String, pos: Vector3 = Vector3.ZERO, remap: Dictionary = {}) -> MeshInstance3D:
 	_load_parts()
 	var mi := MeshInstance3D.new()
 	mi.mesh = _parts[part]["mesh"]
@@ -180,8 +267,17 @@ func _part(parent: Node3D, part: String, pos: Vector3 = Vector3.ZERO) -> MeshIns
 	for i: int in mi.mesh.get_surface_count():
 		var src: Material = mi.mesh.surface_get_material(i)
 		var key: String = src.resource_name if src else ""
+		key = str(remap.get(key, key))
 		if _mats.has(key):
-			mi.set_surface_override_material(i, _mats[key])
+			var mat: Material = _mats[key]
+			# Add-ons (designs.glb, "acc_*") have their own UVs: no hero mask atlas on them.
+			if part.begins_with("acc_") and mat is ShaderMaterial and float((mat as ShaderMaterial).get_shader_parameter("use_mask")) > 0.5:
+				if not _acc_mats.has(key):
+					var c: ShaderMaterial = (mat as ShaderMaterial).duplicate()
+					c.set_shader_parameter("use_mask", 0.0)
+					_acc_mats[key] = c
+				mat = _acc_mats[key]
+			mi.set_surface_override_material(i, mat)
 	parent.add_child(mi)
 	return mi
 
@@ -221,13 +317,27 @@ func _build() -> void:
 	var cover: float = float(v.get("coverage", 0.9))
 	var lamp_c: Color = v.get("lamp", accent_c)
 	_mats = {
-		"paint": _paint((v["paint"] as Color).darkened(0.04), 3.0, cover, float(v.get("metal", 0.0)), 0.42 - float(v.get("metal", 0.0)) * 0.3),
+		"paint": _paint((v["paint"] as Color), 3.0, cover, float(v.get("metal", 0.0)), 0.3 - float(v.get("metal", 0.0)) * 0.15, 0.75),
 		"trim": _paint((v["trim"] as Color).darkened(0.45), 7.0, cover, 0.35, 0.4),
 		"accent": _paint(accent_c, 11.0, cover - 0.04),
-		"dark": _paint(Color(0.17, 0.175, 0.19), 5.0, 0.75, 0.6, 0.38),
+		# [hero v2] Dark joint metal (sampled #1D2024): metallic with sharp highlights.
+		"dark": _paint(_col(v, "dark"), 5.0, 0.8, 0.85, 0.26),
+		# [art2] The side modules (ear ring housings) have their own slot: the Locker's "side" colour
+		# (LumiStyle._recolor); the trim colour until it is set. Same dark metal finish as "dark".
+		"side": _paint((v["trim"] as Color).darkened(0.45), 9.0, 0.8, 0.85, 0.26),
 		"steel": Mats.metal("steel"),
-		"glow": Mats.lamp(glow, 3.2),
-		"lamp_accent": Mats.lamp(lamp_c, 2.4),
+		"glow": Mats.lamp(glow, 3.6),
+		"lamp_accent": Mats.lamp(lamp_c, 1.3),  # [hero v2] saturated amber, not blown out
+		# [hero] Rebuild: side-module ring lenses and the hatch frame (thinner, dimmer than the eyes),
+		# the raised chest plate, the fin and the claws.
+		"glow_soft": Mats.lamp(glow, 2.4),
+		"plate": _paint((v["paint"] as Color).lightened(0.05), 17.0, cover, 0.2, 0.3, 0.5),
+		"fin": _paint(_col(v, "fin"), 19.0, 0.97, 0.9, 0.28),  # concept: dark teal-grey stalk
+		"claw": _paint(_col(v, "claw"), 23.0, 0.85, 0.3, 0.34),  # [hero v2] light worn-grey finger armour (concept)
+		"paddle": _paint(v.get("paddle", accent_c), 29.0, 0.97, 0.1, 0.3, 0.6),
+		"paddle_edge": Mats.lamp((v.get("paddle", accent_c) as Color).lightened(0.12), 1.1),
+		"latch": Mats.lamp(accent_c, 1.4),  # [hero v2] saturated orange (sampled #F16B03)
+		"cable": _paint(_col(v, "cable"), 31.0, 1.0, 0.0, 0.55),
 		# Design add-on materials (designs.glb).
 		"rust": _paint(Color(0.42, 0.36, 0.3), 13.0, 0.45, 0.5, 0.5),
 		"leaf": _leaf_mat(),
@@ -235,18 +345,34 @@ func _build() -> void:
 		"wing": _wing_mat(glow),
 		"screen": screen,
 		"thruster": _ring_mat,
-		"thruster_core": Mats.lamp(glow.lightened(0.4), 5.0),
+		"thruster_core": Mats.lamp(glow.lightened(0.3), 2.2),
 	}
+	# [hero] The chest plate stays readable: lighter edge wear than the shell.
+	(_mats["plate"] as ShaderMaterial).set_shader_parameter("edge_wear", 0.25)
+	# [hero v2] The concept's paddle is clean, saturated amber: a few chips, no grime wash.
+	(_mats["paddle"] as ShaderMaterial).set_shader_parameter("specks", 0.35)
+	(_mats["paddle"] as ShaderMaterial).set_shader_parameter("dust", 0.0)
 	_face_mat = ShaderMaterial.new()
 	_face_mat.shader = preload("res://art/shaders/bot_face.gdshader")
 	_face_mat.set_shader_parameter("eye_color", glow)
 	for m: ShaderMaterial in _paint_mats:
 		m.set_shader_parameter("grime", float(v.get("grime", 0.6)))
 		m.set_shader_parameter("moss", float(v.get("moss", 0.0)))
+	(_mats["paddle"] as ShaderMaterial).set_shader_parameter("grime", 0.2)
+	(_mats["claw"] as ShaderMaterial).set_shader_parameter("specks", 0.5)
+	_acc_mats.clear()
+	if ResourceLoader.exists(MASK_PATH):
+		var mask: Texture2D = load(MASK_PATH)
+		for m: ShaderMaterial in _paint_mats:
+			m.set_shader_parameter("mask_tex", mask)
+			m.set_shader_parameter("use_mask", 1.0)
 	if float(v.get("stripes", 0.0)) > 0.0:
 		(_mats["accent"] as ShaderMaterial).set_shader_parameter("stripes", float(v["stripes"]))
-	_face_mat.set_shader_parameter("half_width", 0.29)
-	_face_mat.set_shader_parameter("half_height", 0.17)
+	_face_mat.set_shader_parameter("half_width", 0.35)
+	_face_mat.set_shader_parameter("half_height", 0.235)
+	_face_mat.set_shader_parameter("eye_radius", 0.46)  # [hero v2] turnaround: eye radius ~0.45 visor half-heights
+	_face_mat.set_shader_parameter("eye_spacing", 0.74)
+	_face_mat.set_shader_parameter("eye_shape", maxi(EYE_SHAPES.find(str(v.get("eyes", "crescent"))), 0))
 	_mats["face"] = _face_mat
 	_root = Node3D.new()
 	add_child(_root)
@@ -259,9 +385,9 @@ func _build() -> void:
 	_part(_float, "thruster")
 	var hover_light := OmniLight3D.new()
 	hover_light.light_color = glow
-	hover_light.light_energy = 1.6
-	hover_light.omni_range = 1.5
-	hover_light.position = Vector3(0, 0.02, 0)
+	hover_light.light_energy = 0.7  # [hero] tight glow: light the ground, not the whole bot
+	hover_light.omni_range = 0.9
+	hover_light.position = Vector3(0, 0.06, 0)
 	hover_light.shadow_enabled = false
 	hover_light.light_cull_mask = 0xFFFFF & ~(1 << 18)  # [fauna2] not on animals (FaunaRig.LAYER): no cyan cats
 	_float.add_child(hover_light)
@@ -284,7 +410,10 @@ func _build() -> void:
 	_icon = null
 	_icon_mesh = null
 	if icon == "leaf" or icon == "cross":
-		_icon_mesh = _part(_float, "acc_icon_" + icon, _pivot("acc_icon_" + icon))
+		# designs.glb icons (modelled for the old chest screen): placed on the new plate.
+		_icon_mesh = _part(_float, "acc_icon_" + icon, ANCHORS["chest_plate"] + Vector3(0, 0, -0.004))
+	elif icon == "recycle" and _parts.has("icon_recycle"):
+		_icon_mesh = _part(_float, "icon_recycle", _pivot("icon_recycle"))
 	var icon_l := Label3D.new()
 	icon_l.visible = _icon_mesh == null
 	icon_l.text = "♻"
@@ -293,11 +422,11 @@ func _build() -> void:
 	icon_l.modulate = glow.lightened(0.3)
 	icon_l.outline_size = 0
 	icon_l.shaded = false
-	icon_l.position = Vector3(0, 0.44, -0.182)
+	icon_l.position = ANCHORS["chest_plate"] + Vector3(0, 0, -0.004)
 	_float.add_child(icon_l)
 	_icon = icon_l
 	_icon_color = icon_l.modulate
-	_fill_bar = _mi(_float, ProcMesh.box(Vector3(0.14, 0.01, 0.006)), Mats.lamp(glow, 2.5), Vector3(0, 0.388, -0.182))
+	_fill_bar = _mi(_float, ProcMesh.box(Vector3(0.14, 0.008, 0.005)), Mats.lamp(glow, 2.5), Vector3(0, 0.338, -0.238))
 	_fill_bar.scale.x = 0.01
 	# Back hatch where bales come out (hinged at its top edge).
 	_hatch = Node3D.new()
@@ -314,8 +443,10 @@ func _build() -> void:
 	_head = Node3D.new()
 	_head.position = _pivot("head")
 	_float.add_child(_head)
-	_part(_head, "head")
-	_part(_head, "visor", _pivot("visor") - _pivot("head"))
+	_part(_head, _slot(v, "head"))
+	_part(_head, _slot(v, "ears"), _pivot(_slot(v, "ears")) - _pivot("head"), SIDE_REMAP)
+	_part(_head, _slot(v, "visor"), _pivot(_slot(v, "visor")) - _pivot("head"))
+	_make_anchors()
 	call_deferred("_find_sun")
 	_build_accessories(v)
 	# Tractor beam from the right claw: a cone of scrolling energy rings (tractor_beam shader)
@@ -369,10 +500,14 @@ func _build_accessories(v: Dictionary) -> void:
 	for a: String in v.get("acc", []):
 		match a:
 			"antenna", "acc_catears", "acc_pixel":
-				_part(_head, a, _pivot(a) - head_p)
+				var hp: MeshInstance3D = _part(_head, a, _pivot(a) - head_p + acc_fit(a))
+				hp.scale = (ACC_FIT.get(a, {}) as Dictionary).get("scale", Vector3.ONE)
+				if a == "acc_pixel":
+					var hearts: MeshInstance3D = _part(_head, "acc_pixel_hearts", _pivot(a) - head_p + acc_fit("acc_pixel_hearts"))
+					hearts.scale = ACC_FIT["acc_pixel_hearts"]["scale"]
 			"acc_sprout":
 				_sprout = Node3D.new()
-				_sprout.position = _pivot(a) - head_p
+				_sprout.position = _pivot(a) - head_p + acc_fit(a)
 				_head.add_child(_sprout)
 				_part(_sprout, a)
 			"acc_pad_r", "acc_pad_l":
@@ -380,7 +515,7 @@ func _build_accessories(v: Dictionary) -> void:
 				# Heavier stance: the padded shoulders sit a touch wider.
 				(_arm_r if a.ends_with("_r") else _arm_l).position.x += 0.012 * (1.0 if a.ends_with("_r") else -1.0)
 			"acc_toolbox":
-				_part(_float, a, _pivot(a))
+				_part(_float, a, _pivot(a) + acc_fit(a))
 			"gear":
 				# A spare gear gripped in the left claw by its rim, standing on edge.
 				var wrist: Node3D = _arm_l.get_meta("wrist")
@@ -424,6 +559,11 @@ func _build_accessories(v: Dictionary) -> void:
 					w.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 					w.scale.z = -1.0  # the big forewing toward the head (-Z)
 					_bfly_wings.append(hinge)
+
+
+## Where a designs.glb add-on moves to sit on the v2 head / torso (ACC_FIT; zero for the rest).
+static func acc_fit(part: String) -> Vector3:
+	return (ACC_FIT.get(part, {}) as Dictionary).get("pos", Vector3.ZERO)
 
 
 func _leaf_mat() -> StandardMaterial3D:
@@ -521,6 +661,7 @@ func _build_arm(side: float) -> Node3D:
 	var wp: Vector3 = _pivot("arm_wrist" + sfx)
 	var shoulder := Node3D.new()
 	shoulder.position = sp
+	shoulder.scale = Vector3.ONE * ARM_SCALE
 	_float.add_child(shoulder)
 	_part(shoulder, "arm_shoulder" + sfx)
 	var elbow := Node3D.new()
@@ -534,18 +675,19 @@ func _build_arm(side: float) -> Node3D:
 	for k: int in 3:
 		var a: float = TAU * k / 3.0 + PI * 0.5
 		var f := Node3D.new()
-		f.position = Vector3(cos(a) * 0.026, sin(a) * 0.026, -0.045)
+		f.position = Vector3(cos(a) * 0.036, sin(a) * 0.036, -0.058)
+		f.scale = Vector3.ONE * CLAW_SCALE
 		wrist.add_child(f)
 		# The finger meshes point down -Z with their outer face on +Y; turn them to face outward.
 		var orient := Node3D.new()
 		orient.rotation.z = a - PI * 0.5
 		f.add_child(orient)
-		_part(orient, "finger")
+		_part(orient, _slot(VARIANTS.get(variant, VARIANTS["aurora"]), "finger"))
 		var tip := Node3D.new()
-		tip.position = Vector3(0, 0.002, -0.058)
-		tip.rotation.x = -0.45
+		tip.position = Vector3(0, 0.0, -0.05)
+		tip.rotation.x = -0.35  # [hero v2] with the tip's own angled blocks the claw reads as an open C (concept)
 		orient.add_child(tip)
-		_part(tip, "finger_tip")
+		_part(tip, _slot(VARIANTS.get(variant, VARIANTS["aurora"]), "finger_tip"))
 		f.set_meta("dir", Vector2(cos(a), sin(a)))
 		_claws.append(f)
 	shoulder.set_meta("elbow", elbow)
@@ -553,22 +695,76 @@ func _build_arm(side: float) -> Node3D:
 	return shoulder
 
 
+# [art2] Motion with weight. The body rides springs instead of easing straight to its pose: it dips
+# and settles on a landing or a stop, leans with a little overshoot, banks into turns; the head
+# leads a turn and lags a lurch; the arms trail and swing through when he stops; standing still he
+# glances about now and then. All of it is in the model: Patch calls the same hooks as before.
+var _lean_v := Vector2.ZERO
+var _bob: float = 0.0      # [art2] body height on its spring; _sq is the hop's squash (m, down is negative)
+var _bob_v: float = 0.0
+var _nod: float = 0.0     # head pitch following the body late
+var _nod_v: float = 0.0
+var _arm_lag: float = 0.0
+var _arm_v: float = 0.0
+var _turn: float = 0.0    # smoothed turn rate (rad/s, left is positive)
+var _fwd_prev := Vector3.ZERO
+var _speed_ratio: float = 0.0
+var _glance: float = 0.0
+var _glance_t: float = 3.0
+
+
+func _weight(delta: float) -> void:
+	var dt: float = minf(delta, 0.05)
+	_bob_v += (-190.0 * _bob - 11.0 * _bob_v) * dt
+	_bob = clampf(_bob + _bob_v * dt, -0.07, 0.05)
+	_nod_v += ((-_lean.x * 0.8 - _bob * 2.5 - _nod) * 70.0 - _nod_v * 8.0) * dt
+	_nod = clampf(_nod + _nod_v * dt, -0.3, 0.3)
+	_arm_v += ((minf(_speed_ratio, 1.6) * 0.32 - _arm_lag) * 55.0 - _arm_v * 5.5) * dt
+	_arm_lag = clampf(_arm_lag + _arm_v * dt, -0.5, 0.8)
+	if is_inside_tree():
+		var f: Vector3 = -global_basis.z
+		var up: Vector3 = global_basis.y.normalized()
+		var rate: float = 0.0
+		if _fwd_prev != Vector3.ZERO and delta > 0.0001:
+			rate = clampf(_fwd_prev.signed_angle_to(f, up) / delta, -6.0, 6.0)
+		_fwd_prev = f
+		_turn = lerpf(_turn, rate, clampf(delta * 7.0, 0.0, 1.0))
+	# Idle: a look to one side every few seconds (never while he looks at something).
+	_glance_t -= delta
+	if _glance_t <= 0.0:
+		var idle: bool = _speed_ratio < 0.05 and absf(_head_yaw_target) < 0.01 and not sleeping
+		_glance = 0.0 if _glance != 0.0 or not idle else (0.34 if randf() < 0.5 else -0.34)
+		_glance_t = randf_range(0.9, 1.6) if _glance != 0.0 else randf_range(3.5, 7.0)
+	if _speed_ratio > 0.05 or sleeping:
+		_glance = 0.0
+
+
 func _process(delta: float) -> void:
 	_t += delta
-	# Hover bob and ring pulse.
-	_float.position.y = 0.04 + sin(_t * 2.4) * 0.02 - _dip
+	_weight(delta)
+	# Hover bob (smaller under way) on the body spring, and ring pulse.
+	_float.position.y = 0.04 + sin(_t * 2.4) * lerpf(0.022, 0.01, clampf(_speed_ratio, 0.0, 1.0)) + _bob - _dip
 	_dip = maxf(0.0, _dip - delta * 0.4)
 	_ring_mat.emission_energy_multiplier = (3.5 + sin(_t * 9.0) * 0.4) * core_glow + _flash * 4.0
 	if _mats.has("glow"):
 		(_mats["glow"] as StandardMaterial3D).emission_energy_multiplier = 3.2 * core_glow
+	if _mats.has("glow_soft"):
+		(_mats["glow_soft"] as StandardMaterial3D).emission_energy_multiplier = 2.8 * core_glow
 	_flash = maxf(0.0, _flash - delta * 2.0)
 	# Arms: reach forward and pinch while scooping; the right claw projects a small tractor beam.
 	_scoop_amt = move_toward(_scoop_amt, 1.0 if _scoop_t > 0.0 else 0.0, delta * 5.0)
 	_scoop_t = maxf(0.0, _scoop_t - delta)
 	var s: float = _t * 8.0
-	_arm_r.rotation.x = lerpf(0.15 * sin(_t * 1.3), -0.9 + sin(s) * 0.15, _scoop_amt)
-	_arm_l.rotation.x = lerpf(0.15 * sin(_t * 1.3 + 1.0), -0.5 + sin(s + 1.5) * 0.12, _scoop_amt * 0.7)
-	_arm_r.rotation.z = lerpf(0.0, -0.25, _scoop_amt)
+	# [hero v2] Idle: arms out and a little up and forward, elbows bent (the portrait's reaching pose).
+	# [art2] The arms trail behind under way and swing through when he stops (_arm_lag).
+	_arm_r.rotation.x = lerpf(ARM_REST.x + 0.08 * sin(_t * 1.3) + _arm_lag, -0.9 + sin(s) * 0.15, _scoop_amt)
+	_arm_l.rotation.x = lerpf(ARM_REST.x + 0.08 * sin(_t * 1.3 + 1.0) + _arm_lag * 0.9, -0.5 + sin(s + 1.5) * 0.12, _scoop_amt * 0.7)
+	_arm_r.rotation.z = lerpf(ARM_REST.z + 0.04 * sin(_t * 0.9), -0.25, _scoop_amt)
+	_arm_l.rotation.z = lerpf(-ARM_REST.z - 0.04 * sin(_t * 0.9 + 0.7), 0.0, _scoop_amt * 0.7)
+	var elbow_r: Node3D = _arm_r.get_meta("elbow")
+	var elbow_l: Node3D = _arm_l.get_meta("elbow")
+	elbow_r.rotation.x = lerpf(ARM_REST.y, 0.0, _scoop_amt)
+	elbow_l.rotation.x = lerpf(ARM_REST.y, 0.0, _scoop_amt * 0.7)
 	_carry = move_toward(_carry, 1.0 if carrying else 0.0, delta * 5.0)
 	if _carry > 0.0:
 		# [v6feel] Arms up and a little out, steadying the stack; the scooping arm still does its job.
@@ -578,16 +774,16 @@ func _process(delta: float) -> void:
 		_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -2.7 + sin(_t * 2.4) * 0.03, up_r)
 		_arm_l.rotation.x = lerpf(_arm_l.rotation.x, -2.7 + sin(_t * 2.4 + 0.6) * 0.03, up_l)
 		_arm_r.rotation.z = lerpf(_arm_r.rotation.z, 0.22, up_r)
-		_arm_l.rotation.z = lerpf(0.0, -0.22, up_l)
-	else:
-		_arm_l.rotation.z = 0.0
+		_arm_l.rotation.z = lerpf(_arm_l.rotation.z, -0.22, up_l)
+		elbow_r.rotation.x = lerpf(elbow_r.rotation.x, 0.0, up_r)  # straight arms under the load
+		elbow_l.rotation.x = lerpf(elbow_l.rotation.x, 0.0, up_l)
 	_hold = move_toward(_hold, 1.0 if holding else 0.0, delta * 3.0)
 	if _hold > 0.0:
 		var e: float = _hold * _hold * (3.0 - 2.0 * _hold)
 		_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -1.25 + sin(_t * 1.6) * 0.03, e)
 		_arm_r.rotation.z = lerpf(_arm_r.rotation.z, 0.35, e)
 		var elbow_h: Node3D = _arm_r.get_meta("elbow")
-		elbow_h.rotation.x = lerpf(0.0, 0.9, e)
+		elbow_h.rotation.x = lerpf(elbow_h.rotation.x, 0.9, e)
 	var pet_e: float = _pet_env(delta)
 	if pet_e > 0.0:
 		# [fauna2] Petting: the right claw reaches down and forward and strokes; the left arm lifts a
@@ -616,41 +812,69 @@ func _process(delta: float) -> void:
 	var sq_y: float = 1.0 + _sq * 0.16
 	var sq_xz: float = 1.0 / sqrt(maxf(sq_y, 0.5))
 	# Press: the body compresses slightly while baling.
-	_root.scale = Vector3((1.0 + _press * 0.04) * sq_xz, (1.0 - _press * 0.06) * sq_y, (1.0 + _press * 0.04) * sq_xz)
+	var sq_s: float = clampf(_bob * 1.5, -0.09, 0.07)  # [art2] squash on the way down, stretch on the rebound
+	# [main] The hop's squash and stretch (sq_xz, sq_y) and the art session's landing spring together.
+	_root.scale = Vector3((1.0 + _press * 0.04 - sq_s * 0.5) * sq_xz, (1.0 - _press * 0.06 + sq_s) * sq_y, (1.0 + _press * 0.04 - sq_s * 0.5) * sq_xz)
 	if _shudder > 0.0:
 		_shudder -= delta
 		_root.position = Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)) * 0.01
 	else:
 		_root.position = Vector3.ZERO
-	_float.rotation = Vector3(_lean.x, 0, _lean.y)
+	_float.rotation = Vector3(_lean.x, 0, _lean.y + clampf(_turn * 0.035 * minf(0.4 + _speed_ratio, 1.4), -0.16, 0.16))  # [art2] banks into a turn
 	# Head look and face.
-	_head_yaw = lerp_angle(_head_yaw, _head_yaw_target, delta * 4.0)
-	_head.rotation.y = _head_yaw
+	_head_yaw = lerp_angle(_head_yaw, _head_yaw_target + _glance, delta * 4.0)
+	_head.rotation.y = _head_yaw + clampf(_turn * 0.085, -0.32, 0.32)  # [art2] the head leads the turn
+	_head.rotation.x = _nod
 	_head.rotation.z = sin(_t * 0.7) * 0.03 + (0.08 if _happy > 0.8 else 0.0) + pet_e * 0.2  # [fauna2] head tilt while petting
 	_look = _look.lerp(_look_target, minf(1.0, delta * 6.0))  # [v7play] clamped: long frames overshot
 	_happy = lerpf(_happy, _happy_target, minf(1.0, delta * 4.0))  # [v7play]
 	_iris_now = _happy
+	# [hero] Crisp blinks (owner: "closing slowly"): ~70 ms close, a short hold, ~110 ms open, and
+	# now and then a double blink. Sleep closes/opens eased over about a second / half a second.
 	_blink_timer -= delta
-	if _blink_timer <= 0.0:
-		_blink_timer = randf_range(2.0, 5.0)
-		_blink = 1.0
-	_blink = maxf(0.0, _blink - delta * 7.0)
+	if _blink_timer <= 0.0 and _blink_t < 0.0:
+		_blink_t = 0.0
+		_blink_double = randf() < 0.22
+		_blink_timer = randf_range(2.2, 5.5)
+	if _blink_t >= 0.0:
+		_blink_t += delta
+		if _blink_t > BLINK_LEN:
+			if _blink_double:
+				_blink_double = false
+				_blink_t = -0.12  # a short gap, then the second blink
+			else:
+				_blink_t = -1.0
+	elif _blink_t > -0.5:
+		_blink_t = minf(_blink_t + delta, 0.0)  # counting the double-blink gap up to 0
+	_blink = blink_curve(_blink_t)
+	_sleep_amt = move_toward(_sleep_amt, 1.0 if sleeping else 0.0, delta * (0.9 if sleeping else 2.2))
+	if not _sleep_seen:
+		_sleep_seen = true
+		_sleep_amt = 1.0 if sleeping else 0.0  # a model that starts asleep starts with its eyes shut
+	var sleep_e: float = _sleep_amt * _sleep_amt * (3.0 - 2.0 * _sleep_amt)
 	_face_mat.set_shader_parameter("look", _look)
-	# [v10ui] The eyes rest on ONE shape: round (0) or the ^ ^ arcs (1), never a blend. A mood of 0.9
-	# (the title) used to rest at 0.75 here, which drew the arc over the disc: "eyes messed up".
+	# [v10ui] The eyes rest on ONE shape: the C ring (0) or the ^ ^ arcs (1), never a blend. A mood of
+	# 0.9 (the title) used to rest at 0.75 here, which drew the arc over the disc: "eyes messed up".
+	# The shader shuts the C before the arc opens, so the ~0.17 s move between them is clean too.
 	_face_happy = move_toward(_face_happy, 1.0 if _happy_target >= HAPPY_ARCS_FROM else 0.0, delta * 6.0)
 	_face_mat.set_shader_parameter("happy", maxf(_face_happy, _happy_bias * (1.0 - minf(_eye_flash * 2.0, 1.0))))
-	_face_mat.set_shader_parameter("blink", 1.0 if sleeping else _blink)  # [v2feel] asleep: cleanly shut (0.9 left a squashed sliver)
+	# [v2feel] Asleep: cleanly shut (0.9 left a squashed sliver); [hero] eased shut / open (sleep_e).
+	_face_mat.set_shader_parameter("blink", maxf(_blink, sleep_e))
 	_eye_flash = maxf(0.0, _eye_flash - delta * 6.0)
 	# [v2feel] Awake eyes stay fully lit on a low core (the intro's wake read as half-closed at 0.9);
 	# the core and ring still show the battery.
-	_face_mat.set_shader_parameter("energy", 1.2 * minf(core_glow, 1.0) if sleeping else maxf(4.0 * core_glow, EYE_MIN_ENERGY) + _flash * 2.0 + _eye_flash * 3.0)
+	_face_mat.set_shader_parameter("energy", lerpf(maxf(4.0 * core_glow, EYE_MIN_ENERGY) + _flash * 2.0 + _eye_flash * 3.0, 1.2 * minf(core_glow, 1.0), sleep_e))
 
 
 func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: float) -> void:
 	# [v6feel] The run lean stops growing past twice walking speed: a boost leaned him 30 degrees.
 	var target := Vector2(clampf(-local_accel.y * 0.015, -0.18, 0.18) - minf(speed_ratio, 2.0) * 0.08, clampf(local_accel.x * 0.012, -0.15, 0.15))
-	_lean = _lean.lerp(target, clampf(delta * 6.0, 0.0, 1.0))
+	# [art2] On a spring: a little overshoot when he sets off, a rock back when he stops.
+	var dt: float = minf(delta, 0.05)
+	_lean_v += ((target - _lean) * 110.0 - _lean_v * 12.0) * dt
+	_lean += _lean_v * dt
+	_lean = Vector2(clampf(_lean.x, -0.32, 0.32), clampf(_lean.y, -0.25, 0.25))
+	_speed_ratio = speed_ratio
 	_ring_mat.emission_energy_multiplier += speed * 0.3
 
 
@@ -664,18 +888,85 @@ func beam_at(world_pos: Variant, big: bool = false) -> void:
 
 func claw_point() -> Vector3:
 	var wrist: Node3D = _arm_r.get_meta("wrist")
-	return wrist.to_global(Vector3(0, 0, -0.1))
+	return wrist.to_global(Vector3(0, 0, -0.13))
 
 
 ## Left claw tip (the second laser emitter).
 func claw_point_l() -> Vector3:
 	var wrist: Node3D = _arm_l.get_meta("wrist")
-	return wrist.to_global(Vector3(0, 0, -0.1))
+	return wrist.to_global(Vector3(0, 0, -0.13))
 
 
 ## World position of the chest hopper screen (where pickups stream in).
 func chest_world() -> Vector3:
-	return _float.to_global(Vector3(0, 0.395, -0.2))
+	return _float.to_global(Vector3(0, 0.407, -0.24))
+
+
+## [hero] Anchor nodes for add-ons: "head_top" (on the head, turns with it), "chest_plate",
+## "back" (float space) and "hand_r" / "hand_l" (claw tips, on the wrists).
+func _make_anchors() -> void:
+	_anchors.clear()
+	_make_beacon()
+	for n: String in ANCHORS:
+		var a := Node3D.new()
+		a.name = n
+		a.position = ANCHORS[n]
+		var parent: Node3D = _float
+		if n == "head_top":
+			parent = _head
+		elif n == "hand_r":
+			parent = _arm_r.get_meta("wrist")
+		elif n == "hand_l":
+			parent = _arm_l.get_meta("wrist")
+		parent.add_child(a)
+		_anchors[n] = a
+
+
+func _make_beacon() -> void:
+	var b := Node3D.new()
+	b.name = "beacon"
+	b.position = BEACON_LOCAL
+	_head.add_child(b)
+	_anchors["beacon"] = b
+	_beacon_mat = StandardMaterial3D.new()
+	_beacon_mat.albedo_color = Color(0.25, 0.02, 0.02)
+	_beacon_mat.emission_enabled = true
+	_beacon_mat.emission = Color(1.0, 0.08, 0.05)
+	_beacon = MeshInstance3D.new()
+	_beacon.mesh = ProcMesh.sphere(0.014, 10, 5)
+	_beacon.material_override = _beacon_mat
+	_beacon.layers = 1 | HERO_LAYER
+	_beacon.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	b.add_child(_beacon)
+	_beacon_light = OmniLight3D.new()
+	_beacon_light.light_color = Color(1.0, 0.1, 0.05)
+	_beacon_light.omni_range = 2.5
+	_beacon_light.shadow_enabled = false
+	b.add_child(_beacon_light)
+	set_beacon(_beacon_amt)
+
+
+## Detector beacon brightness (0 idle glow .. 1 flash); PartDetector drives it.
+func set_beacon(amount: float) -> void:
+	_beacon_amt = amount
+	if _beacon_mat:
+		_beacon_mat.emission_energy_multiplier = 0.15 + amount * 6.0
+		_beacon_light.light_energy = amount * 1.6
+
+
+func beacon_world() -> Vector3:
+	return _head.to_global(BEACON_LOCAL)
+
+
+func get_anchor(anchor: String) -> Node3D:
+	return _anchors.get(anchor) as Node3D
+
+
+## Eye shape by name (EYE_SHAPES) for the face shader.
+func set_eye_shape(shape: String) -> void:
+	var i: int = EYE_SHAPES.find(shape)
+	if i >= 0 and _face_mat:
+		_face_mat.set_shader_parameter("eye_shape", i)
 
 
 ## Quick brightening of the visor eyes (target lock).
@@ -761,7 +1052,7 @@ func shudder(duration: float = 0.3) -> void:
 
 
 func squash(amount: float) -> void:
-	_dip = clampf(_dip + absf(amount) * 0.04, 0.0, 0.05)
+	_bob_v -= clampf(absf(amount), 0.0, 0.6) * 1.1  # [art2] a push down into the body spring (was a linear dip)
 
 
 ## [v11jump] Take-off: a two-frame crouch, the thruster ring flares, then he stretches while `air`.
@@ -811,6 +1102,19 @@ func _pet_env(delta: float) -> float:
 	var out: float = clampf(_pet_t / 0.45, 0.0, 1.0)
 	var e: float = minf(into, out)
 	return e * e * (3.0 - 2.0 * e)
+
+
+## Eyelid closure (0 open .. 1 shut) at blink phase time t: fast ease-in close, hold, ease-out open.
+static func blink_curve(t: float) -> float:
+	if t < 0.0 or t > BLINK_LEN:
+		return 0.0
+	if t < BLINK_CLOSE:
+		var a: float = t / BLINK_CLOSE
+		return a * a
+	if t < BLINK_CLOSE + BLINK_HOLD:
+		return 1.0
+	var b: float = 1.0 - (t - BLINK_CLOSE - BLINK_HOLD) / BLINK_OPEN
+	return b * b * (3.0 - 2.0 * b)
 
 
 func set_happy(amount: float) -> void:

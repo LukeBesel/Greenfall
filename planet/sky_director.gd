@@ -414,17 +414,21 @@ func _apply_sphere() -> void:
 	var nd: float = clampf(night_dark, 0.0, 1.0) * night
 	# Primary: warm and low at dawn and dusk, white at noon; it carries the shadows.
 	sun.global_basis = _toward_dir(s1)
-	sun.light_energy = 2.2 * sun_up * float(_suns["a"].get("energy", 1.0)) * (1.0 - 0.55 * storm)
+	# [art1] One hero light. The primary is stronger against a darker fill (it was 2.2 under an
+	# ambient of 1.1 and an unshadowed companion of 0.75: sunlit and shaded ground differed by a third).
+	sun.light_energy = 2.7 * sun_up * float(_suns["a"].get("energy", 1.0)) * (1.0 - 0.55 * storm)
 	# [v5look] Dusty air warms the noon sun (flat Verdance's golden light); it whitens as the air clears.
 	var noon_col: Color = Color(1.0, 0.95, 0.87).lerp(Color(1.0, 0.92, 0.79), haze)
 	sun.light_color = Color(1.0, 0.66, 0.4).lerp(noon_col, smoothstep(0.08, 0.5, e1))
 	sun.visible = sun.light_energy > 0.01
 	companion.global_basis = _toward_dir(s2)
-	companion.light_energy = 3.0 * float(_suns["b"].get("energy", 0.25)) * comp_up * (1.0 - 0.55 * storm)
+	# [art1] The companion casts no shadow, so all of its light lands inside the primary's shadows:
+	# a warm tint there (1.3), not a second key (3.0).
+	companion.light_energy = 1.3 * float(_suns["b"].get("energy", 0.25)) * comp_up * (1.0 - 0.55 * storm)
 	companion.visible = companion.light_energy > 0.01
 	# The moon: soft cool light on the night side, a little brighter until nights are learned.
 	moon.global_basis = _toward_dir(m)
-	moon.light_energy = (0.38 + 0.3 * lift) * moon_up * night * (1.0 - 0.45 * nd)
+	moon.light_energy = (0.5 + 0.3 * lift) * moon_up * night * (1.0 - 0.45 * nd)  # [art1] the night's key (0.38)
 	moon.visible = moon.light_energy > 0.01
 	var e: Vector3 = eye_fn.call() if eye_fn.is_valid() else p
 	var space: bool = bool(space_fn.call()) if space_fn.is_valid() else false
@@ -444,37 +448,62 @@ func _apply_sphere() -> void:
 	sky_shader.set_shader_parameter("night_dark", clampf(night_dark, 0.0, 1.0))
 	# Ambient and exposure: the night side keeps a readable blue fill (owner: nights not too dark).
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_energy = lerpf(0.85, 1.1, day) * (1.0 + 0.45 * lift) * (1.0 - 0.4 * nd)
+	# [art1] The fill is the sky's radiance map: blue from above, the ground's warm bounce from
+	# below (orbit_sky.gdshader paints it), a little flat colour under it. It was 40-70% flat colour.
+	env.ambient_light_energy = lerpf(0.9, 1.0, day) * (1.0 + 0.45 * lift) * (1.0 - 0.4 * nd)
 	# [v5look] By day the fill is part sky, part warm bounce off the dusty ground (the blue sky
 	# alone gave cold, hard shadows next to flat Verdance); at night the blue fill as before.
-	env.ambient_light_sky_contribution = lerpf(0.3, 0.6, day)
+	env.ambient_light_sky_contribution = lerpf(0.55, 0.85, day)
 	var low_sun: float = day * (1.0 - smoothstep(0.1, 0.45, maxf(e1, 0.0)))  # dawn and dusk
 	var amb_day: Color = Color(0.8, 0.86, 0.96).lerp(Color(0.97, 0.9, 0.78), haze).lerp(Color(1.0, 0.72, 0.56), low_sun * 0.5)
 	var amb := Color(0.36, 0.44, 0.62).lerp(amb_day, day)
 	if night_tint.a > 0.0:
 		amb = amb.lerp(Color(night_tint.r, night_tint.g, night_tint.b), night_tint.a * night * 0.5)
 	env.ambient_light_color = amb
-	env.tonemap_exposure = lerpf(1.55, 1.25, day) * (1.0 + 0.15 * lift) * (1.0 - 0.2 * nd)
+	env.tonemap_exposure = lerpf(1.55, 0.98, day) * (1.0 + 0.15 * lift) * (1.0 - 0.2 * nd)  # [art1] day 1.25: pale ground clipped to white
+	env.tonemap_exposure *= 1.0 + 0.22 * day * (1.0 - smoothstep(0.1, 0.45, maxf(e1, 0.0)))  # the eye opens up as the sun gets low
 	# [v11film] The opening film's grade (with its dusty sky): a little darker and harder, so the
 	# white landing pad and the pale town hold their shape. It eases off with film_dust.
 	var film: float = clampf(film_dust, 0.0, 1.0)
-	env.tonemap_exposure *= lerpf(1.0, 0.8, film)
+	env.tonemap_exposure *= lerpf(1.0, 0.94, film)  # [art1] was 0.8 under a day exposure of 1.25; the day is 0.98 now
 	# Fog: dusty and warm in Act 1, clear blue as the air is scrubbed, deep blue at night.
 	env.fog_enabled = not space
 	# Volumetric fog is for the flat district's short distances: the quality pass turns it on at
 	# Medium+ with Godot's default density (0.05), which washed the globe and its sky flat grey
 	# (owner: vivid blue sky with the two suns, not haze). Plain depth fog does the aerial haze.
 	env.volumetric_fog_enabled = false
-	env.fog_density = lerpf(0.0005, 0.0017, haze) * fog_scale  # [v5look] a real haze in Act 1
+	# [art3] Owner's world target (art/concept/world_target.jpg): shafts of light in hazy air and the
+	# sky in the puddles. Both need the Forward+ renderer (the Mac) and were written without seeing
+	# them: the cloud box renders on software GL, which has neither. So they are OFF unless a run
+	# asks with --look-fx, until someone has looked at them on a real GPU and measured their cost.
+	# Thin volumetric fog (0.004 at most; Godot's default 0.05 is what washed the globe grey), the
+	# sun's scatter strongest when it is low, and screen-space reflections for the wet ground.
+	if DevHooks.has("look-fx") and RenderingServer.get_current_rendering_method() == "forward_plus" and not space:
+		env.volumetric_fog_enabled = true
+		env.volumetric_fog_density = lerpf(0.0012, 0.004, haze) * fog_scale * DevHooks.get_f("look-fx", 1.0)
+		env.volumetric_fog_albedo = Color(0.9, 0.9, 0.95).lerp(Color(1.0, 0.9, 0.78), haze)
+		env.volumetric_fog_anisotropy = 0.75
+		env.volumetric_fog_length = 260.0
+		env.volumetric_fog_sky_affect = 0.0
+		env.volumetric_fog_ambient_inject = 0.15
+		sun.light_volumetric_fog_energy = lerpf(0.6, 2.2, low_sun)
+		companion.light_volumetric_fog_energy = 0.0
+		moon.light_volumetric_fog_energy = 0.4
+		env.ssr_enabled = true
+		env.ssr_max_steps = 48
+		env.ssr_fade_in = 0.15
+		env.ssr_fade_out = 2.0
+		env.ssr_depth_tolerance = 0.3
+	env.fog_density = lerpf(0.0005, 0.0014, haze) * fog_scale  # [v5look] a real haze in Act 1
 	env.fog_sky_affect = 0.0
 	env.adjustment_enabled = true
 	env.adjustment_saturation = lerpf(1.12, 1.24, day)
-	env.adjustment_contrast = lerpf(1.06, 1.1, day) + 0.08 * film
+	env.adjustment_contrast = lerpf(1.06, 1.14, day) + 0.08 * film
 	# [v5look] Warm golden haze (flat Verdance's fog), orange toward dawn and dusk. The sky shader
 	# paints its horizon band in this same colour, so far land fades into the sky, not against it.
-	var fog_day: Color = Color(0.62, 0.75, 0.94).lerp(Color(0.97, 0.86, 0.71), haze * 0.85)
+	var fog_day: Color = Color(0.62, 0.75, 0.94).lerp(Color(0.9, 0.81, 0.68), haze * 0.85)
 	fog_day = fog_day.lerp(Color(0.96, 0.62, 0.42), low_sun * 0.55)
-	var fog_night: Color = Color(0.11, 0.14, 0.22) * (1.0 + 0.6 * lift)
+	var fog_night: Color = Color(0.12, 0.16, 0.27) * (1.0 + 0.6 * lift)  # [art1] far land lifts into the night horizon
 	if night_tint.a > 0.0:
 		fog_night = fog_night.lerp(Color(night_tint.r, night_tint.g, night_tint.b) * 0.4, night_tint.a)
 	env.fog_light_color = fog_night.lerp(fog_day, day)
