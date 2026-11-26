@@ -116,7 +116,7 @@ func _job_kit(t: String) -> void:
 			var green: Material = _gloss(Color(0.35, 0.7, 0.3), 0.3) if shiny else _worn(Color(0.35, 0.6, 0.28), 0.7, 0.4)
 			_mi(_body, ProcMesh.cyl(0.11, 0.13, 0.26, 16), green, top + Vector3(0, 0.13, 0))
 			_mi(_body, ProcMesh.cyl(0.12, 0.12, 0.04, 16), _glow(Color(0.6, 1.0, 0.4), 1.5), top + Vector3(0, 0.27, 0))
-			_rod(_body, top + Vector3(0, 0.0, -0.05), emitter_point + Vector3(0, -0.05, 0), 0.018, green)
+			_rod(_body, top + Vector3(0.1, 0.0, -0.05), Vector3(0.24, 0.36, -0.31), 0.018, green)
 			_stencil(_body, "SEEDS", top + Vector3(0, 0.13, -0.125), Vector3(0, 180, 0), 28)
 		"drip":
 			_drip_kit(top)
@@ -147,9 +147,9 @@ func _drip_kit(top: Vector3) -> void:
 			_fill_gauge(top + Vector3(-0.2, 0.255, 0.1), ProcMesh.cyl(0.048, 0.048, 0.15, 12), Mats.lamp(Color(0.35, 0.7, 1.0), 1.2), 0.15)
 			# Garden hose to a pipe nozzle out front.
 			var hose: Material = Mats.rubber(Color(0.15, 0.55, 0.25))
-			_cable(_body, top + Vector3(-0.2, 0.14, -0.15), top + Vector3(-0.3, 0.0, -0.35), top + Vector3(0, 0.02, -0.48), 0.018, hose)
-			_mi(_body, ProcMesh.cyl(0.03, 0.02, 0.08, 10), Mats.metal("brass"), top + Vector3(0, 0.02, -0.52), Vector3(90, 0, 0))
-			nozzle_point = top + Vector3(0, 0.03, -0.57)
+			_cable(_body, top + Vector3(-0.2, 0.14, -0.15), top + Vector3(-0.3, 0.06, -0.3), Vector3(-0.2, 0.69, -0.3), 0.018, hose)
+			_mi(_body, ProcMesh.cyl(0.03, 0.02, 0.08, 10), Mats.metal("brass"), Vector3(-0.2, 0.69, -0.33), Vector3(90, 0, 0))
+			nozzle_point = Vector3(-0.2, 0.69, -0.38)
 		"restored":
 			# Painted backpack tank with a sight glass on top, piped to a chrome spray bar out front.
 			var blue: Material = _worn(Color(0.22, 0.5, 0.88), 0.95, 0.2, 0.3, 0.0)
@@ -162,12 +162,12 @@ func _drip_kit(top: Vector3) -> void:
 			_fill_node = gauge
 			_mi(gauge, ProcMesh.box(Vector3(0.22, 0.01, 0.03)), Mats.lamp(Color(0.35, 0.75, 1.0), 1.8), Vector3(0.11, 0, 0))
 			gauge.set_meta("axis", "x")
-			_cable(_body, bp + Vector3(0.24, 0.0, -0.1), Vector3(0.36, 0.72, 0.0), Vector3(0.18, 0.76, -0.42), 0.02, Mats.rubber(Color(0.12, 0.12, 0.13)))
-			_mi(_body, ProcMesh.cyl(0.018, 0.018, 0.4, 8), Mats.metal("chrome"), Vector3(0, 0.76, -0.43), Vector3(0, 0, 90))
+			_cable(_body, bp + Vector3(0.24, 0.0, -0.1), Vector3(0.27, 0.76, 0.1), Vector3(0.2, 0.7, -0.3), 0.02, Mats.rubber(Color(0.12, 0.12, 0.13)))
+			_mi(_body, ProcMesh.cyl(0.018, 0.018, 0.5, 8), Mats.metal("chrome"), Vector3(0, 0.69, -0.31), Vector3(0, 0, 90))
 			for x: float in [-0.14, 0.0, 0.14]:
-				_mi(_body, ProcMesh.cyl(0.015, 0.022, 0.05, 8), _glow(Color(0.5, 0.8, 1.0), 1.0), Vector3(x, 0.74, -0.45), Vector3(-60, 0, 0))
+				_mi(_body, ProcMesh.cyl(0.015, 0.022, 0.05, 8), _glow(Color(0.5, 0.8, 1.0), 1.0), Vector3(x * 1.5, 0.67, -0.33), Vector3(-60, 0, 0))
 			_stencil(_body, "H2O", bp + Vector3(0, 0, 0.143), Vector3.ZERO, 30)
-			nozzle_point = Vector3(0, 0.74, -0.48)
+			nozzle_point = Vector3(0, 0.67, -0.36)
 		"modern":
 			# A glossy backpack tank behind the visor head, level strip on top, hose to a front nozzle ring.
 			var white: Material = _gloss(Color(0.95, 0.95, 0.94), 0.25, 0.0, 0.6)
@@ -181,10 +181,10 @@ func _drip_kit(top: Vector3) -> void:
 			_fill_node = strip
 			_mi(strip, ProcMesh.box(Vector3(0.32, 0.012, 0.035)), _glow(Color(0.3, 0.85, 1.0), 2.5), Vector3(0.16, 0, 0))
 			strip.set_meta("axis", "x")
-			_cable(_body, bp + Vector3(0.24, -0.02, -0.08), Vector3(0.38, 0.62, 0.0), Vector3(0.12, 0.6, -0.38), 0.016, dk)
-			_mi(_body, ProcMesh.cyl(0.03, 0.03, 0.08, 12), dk, Vector3(0.08, 0.6, -0.4), Vector3(90, 0, 0))
-			_mi(_body, ProcMesh.torus(0.025, 0.042, 16, 4), _glow(Color(0.3, 0.85, 1.0), 3.0), Vector3(0.08, 0.6, -0.445), Vector3(90, 0, 0))
-			nozzle_point = Vector3(0.08, 0.6, -0.46)
+			_cable(_body, bp + Vector3(0.24, -0.02, -0.08), Vector3(0.27, 0.76, 0.1), Vector3(0.2, 0.69, -0.28), 0.016, dk)
+			_mi(_body, ProcMesh.cyl(0.03, 0.03, 0.08, 12), dk, Vector3(0.2, 0.69, -0.3), Vector3(90, 0, 0))
+			_mi(_body, ProcMesh.torus(0.025, 0.042, 16, 4), _glow(Color(0.3, 0.85, 1.0), 3.0), Vector3(0.2, 0.69, -0.345), Vector3(90, 0, 0))
+			nozzle_point = Vector3(0.2, 0.69, -0.36)
 		_:
 			# Mk IV: a floating glass orb of glowing water above the crown.
 			var orb_c: Vector3 = hopper_point + Vector3(0, 0.22, 0)
@@ -772,7 +772,7 @@ func _slow_tick() -> void:
 ## lip down (anticipation), crowd in and curl, throw the booms over the head, flick the bucket
 ## into the hopper, hang a beat, come back down.
 const SCOOP_KEYS: Array = [
-	[0.1, -0.07, -0.3, 0.035],
+	[0.1, -0.03, -0.12, 0.035],
 	[0.3, -0.03, 0.55, -0.05],
 	[0.56, 2.12, 0.75, 0.03],
 	[0.7, 2.12, 2.75, 0.05],
@@ -877,16 +877,10 @@ func _animate_worker(speed: float, working: bool, delta: float) -> void:
 	var roll_to: float = clampf(-_turn * speed * 0.016, -0.07, 0.07)
 	_roll_v += ((roll_to - _roll) * 85.0 - _roll_v * 8.0) * dt
 	_roll = clampf(_roll + _roll_v * dt, -0.12, 0.12)
-	var idle_yaw: float = 0.0
-	if idle:
-		_idle_t += delta
-		idle_yaw = sin(_idle_t * 0.9 + _seed) * 0.1
-	else:
-		_idle_t = 0.0
 	var bob: float = sin(_t * 2.2 + _seed) * 0.03 if hover else 0.0
-	_body.position = Vector3(0, _sq + bob, -lunge * 0.5)
+	_body.position = Vector3(0, _sq + bob, lunge * 0.5)
 	_body.rotation = Vector3(_pitch - (clampf(speed * 0.03, 0.0, 0.08) if hover else 0.0),
-		lerp_angle(_body.rotation.y, idle_yaw, clampf(delta * 4.0, 0.0, 1.0)),
+		0.0,
 		_roll + (sin(_t * 1.3 + _seed) * 0.02 if hover else 0.0))
 	if cargo != null:
 		cargo.transform = transform * _body.transform * Transform3D(Basis.IDENTITY, _bed_at + Vector3(0, 0.005, 0))
@@ -925,7 +919,7 @@ func _animate_worker(speed: float, working: bool, delta: float) -> void:
 			_glance_t = randf_range(0.7, 1.8) if _glance != 0.0 else randf_range(2.2, 5.5)
 		if speed > 0.15 or working:
 			_glance = 0.0
-		var yaw_to: float = _glance + clampf(_turn * 0.16, -0.4, 0.4)
+		var yaw_to: float = _glance + clampf(_turn * 0.16, -0.4, 0.4) + (sin(_t * 0.9 + _seed) * 0.25 if idle else 0.0)
 		var pit_to: float = -_pitch * 0.9 - _sq * 2.0
 		if working and _bucket != null:
 			pit_to += lerpf(-0.42, 0.3, smoothstep(0.3, 1.6, _arm_a))
