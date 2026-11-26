@@ -43,6 +43,27 @@ var _drag: bool = false
 var _yaw: float = 0.0
 var _pitch: float = 0.3
 var _zoom: float = 3.2
+## [v10ui] Owner, 20 Nov: "on map view it looks great but I should be able to manipulate globe with
+## mouse". The drag was written long ago but never arrived: the map's full-screen root Control took
+## every mouse press before _unhandled_input saw it. The root now reads the mouse itself (so the
+## cards and buttons on top of it keep their clicks), the ground under the cursor follows the
+## cursor, a let-go globe coasts a little, the wheel / two-finger scroll / pinch zoom smoothly, and
+## "Find Lumi" (button, key, double-click) turns back to where he stands.
+const ZOOM_MIN: float = 1.4
+const ZOOM_MAX: float = 6.0
+const ZOOM_HOME: float = 3.2
+const PITCH_MAX: float = 1.4
+const SPIN_MAX: float = 4.0  # rad/s a flick can leave the globe with
+const SPIN_FADE: float = 4.5  # per second: the coast is over in about a second
+var _zoom_to: float = ZOOM_HOME  # what the wheel asks for; _zoom glides to it
+var _spin := Vector2.ZERO  # coasting speed after a drag (yaw, pitch), rad/s
+var _drag_step := Vector2.ZERO  # what the drag turned this frame
+var _drag_still: float = 0.0  # seconds since the dragging mouse last moved
+var _home_yaw: float = 0.0  # the view that looks at Lumi
+var _home_pitch: float = 0.3
+var _homing: bool = false
+var _find_btn: Button
+var _first_hint: PromptLabel
 var _hub_list: VBoxContainer
 var _pct: Label
 var _pct_sub: Label
@@ -261,13 +282,27 @@ func _ready() -> void:
 	_big = UITheme.label("", 24, CREAM)
 	_big.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	tv.add_child(_big)
+	_first_hint = PromptLabel.new("[k]" + tr("Drag to turn the planet. Scroll to zoom.") + "[/k][p]" + tr("{@look}  turn the planet     {zoom_out}{zoom_in}  zoom") + "[/p]", 17, CREAM)
+	_first_hint.name = "FirstHint"
+	_first_hint.align_center = true
+	_first_hint.visible = false
+	tv.add_child(_first_hint)
 	var hint := PromptLabel.new(tr("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"), 13)  # [deck]
 	hint.align_center = true
 	tv.add_child(hint)
 	_hint = hint
+	_find_btn = Button.new()  # [v10ui] the obvious way back after turning the globe
+	_find_btn.name = "FindLumi"
+	_find_btn.custom_minimum_size = Vector2(150, 34)
+	_find_btn.text = tr("Find Lumi")
+	_find_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_holo_button(_find_btn)
+	_find_btn.pressed.connect(find_lumi)
+	tv.add_child(_find_btn)
 	_top_plate = top
 	_left_card = left
 	_root.resized.connect(_fit_top)  # [v6screens]
+	_root.gui_input.connect(_on_root_input)  # [v10ui] the mouse on the globe (not on a card)
 	_root.visible = false
 
 
@@ -284,7 +319,7 @@ func _fit_top() -> void:
 	var w: float = _root.size.x
 	var left_end: float = _left_card.position.x + _left_card.get_combined_minimum_size().x
 	var right_w: float = _rocket_card.get_combined_minimum_size().x + 28.0 if _rocket_card and _rocket_card.visible else 0.0
-	var plate_w: float = maxf(_big.get_minimum_size().x, _hint.get_combined_minimum_size().x) + 24.0  # the same whether _big shows or not
+	var plate_w: float = maxf(_big.get_minimum_size().x, maxf(_hint.get_combined_minimum_size().x, _first_hint.get_combined_minimum_size().x if _first_hint.visible else 0.0)) + 24.0  # the same whether _big shows or not
 	var narrow: bool = w * 0.5 - plate_w * 0.5 < left_end + 12.0 or (right_w > 0.0 and w * 0.5 + plate_w * 0.5 > w - right_w - 12.0)
 	_big.visible = not narrow
 	if narrow:  # under the rocket card on the right (the survey card fills the left)
@@ -367,7 +402,11 @@ func survey() -> void:
 func open_view() -> void:
 	_fit_top.call_deferred()  # [v6screens]
 	if DevHooks.has("survey-zoom"):  # [v5text] dev: open the survey at a zoom (1.4 near .. 6.0 far)
-		_zoom = clampf(DevHooks.get_f("survey-zoom", 3.2), 1.4, 6.0)
+		_zoom = clampf(DevHooks.get_f("survey-zoom", ZOOM_HOME), ZOOM_MIN, ZOOM_MAX)
+	_zoom_to = _zoom
+	_spin = Vector2.ZERO
+	_drag = false
+	_homing = false
 	if planet == null:
 		return
 	if _snapshot.is_empty() or progress_mode():  # [v10ui] the progress view is always live and free
@@ -390,7 +429,10 @@ func open_view() -> void:
 		_refresh_hubs()
 	elif not _hint.has_meta("v2map"):
 		_hint.set_meta("v2map", true)
-		_hint.set_template(tr("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"))
+		_hint.set_template(tr("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close") + "     {lens_view}  " + tr("Find Lumi"))
+	# [v10ui] Until the player has turned the globe once: one plain line that says how.
+	_first_hint.visible = not bool(GameState.flags.get("map_turned", false))
+	_first_hint.modulate.a = 1.0
 	_focus_first.call_deferred()  # [deck] pad players need a focused control for the D-pad
 
 
@@ -417,6 +459,9 @@ func _focus_first() -> void:
 				return
 	if _resurvey and _resurvey.visible and not _resurvey.disabled:
 		_resurvey.grab_focus()
+		return
+	if _find_btn and _find_btn.is_visible_in_tree():  # [v10ui] pad: A turns back to Lumi
+		_find_btn.grab_focus()
 
 
 func _refresh_hubs() -> void:
@@ -470,6 +515,10 @@ func fly(from_hub: int, to_hub: int, duration: float) -> void:
 	is_open = true
 	_root.visible = true
 	_zoom = 2.6
+	_zoom_to = _zoom
+	_drag = false
+	_spin = Vector2.ZERO
+	_homing = false
 	Audio.play("whoosh", 0.5, -4.0)
 
 
@@ -521,7 +570,7 @@ func _set_handheld(on: bool) -> void:
 		_dim.visible = false
 		_svc.visible = false
 		_anchor.scale = Vector3.ONE * 0.01
-		create_tween().tween_property(_anchor, "scale", Vector3.ONE * 0.3, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		create_tween().tween_property(_anchor, "scale", Vector3.ONE * 0.38, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		Audio.play("sparkle", 0.6, -10.0)
 		if world_root.get("hud") != null:
 			world_root.hud.visible = false
@@ -800,18 +849,45 @@ func _lat_long_mesh() -> ArrayMesh:
 func _process(delta: float) -> void:
 	if not is_open:
 		return
-	if not _drag:
-		_yaw += delta * 0.08
+	var free: bool = not _flight_locked and _fly_t < 0.0
+	if _drag and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):  # let go outside the window
+		_end_drag()
 	# [deck] Right stick spins and tilts the globe; the shoulders zoom (held, not per event).
 	var look: Vector2 = Input.get_vector("look_left", "look_right", "look_up", "look_down")
-	if look != Vector2.ZERO and not _flight_locked and _fly_t < 0.0:
+	if look == Vector2.ZERO and not Settings.last_input_pad:  # [v10ui] keyboard: the move keys turn it
+		look = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	if look != Vector2.ZERO and free:
 		_yaw += look.x * delta * 2.2
-		_pitch = clampf(_pitch + look.y * delta * 1.6, -1.4, 1.4)
+		_pitch = clampf(_pitch + look.y * delta * 1.6, -PITCH_MAX, PITCH_MAX)
+		_spin = Vector2.ZERO
+		_homing = false
+		_turned()
 	if _pad_held("zoom_in"):
-		_zoom = maxf(1.4, _zoom * (1.0 - delta * 1.2))
+		_zoom_to = maxf(ZOOM_MIN, _zoom_to * (1.0 - delta * 1.2))
 	elif _pad_held("zoom_out"):
-		_zoom = minf(6.0, _zoom * (1.0 + delta * 1.2))
-	_pivot.rotation = Vector3(_pitch, _yaw, 0.0)
+		_zoom_to = minf(ZOOM_MAX, _zoom_to * (1.0 + delta * 1.2))
+	if _drag:  # [v10ui] what the hand is doing now is the speed the globe keeps when let go
+		_drag_still += delta
+		_spin = _spin.lerp(_drag_step / maxf(delta, 0.001), 0.5).limit_length(SPIN_MAX)
+		_drag_step = Vector2.ZERO
+	elif _homing:
+		var k: float = clampf(delta * 7.0, 0.0, 1.0)
+		_yaw = lerp_angle(_yaw, _home_yaw, k)
+		_pitch = lerpf(_pitch, _home_pitch, k)
+		if absf(angle_difference(_yaw, _home_yaw)) < 0.002 and absf(_pitch - _home_pitch) < 0.002:
+			_yaw = _home_yaw
+			_pitch = _home_pitch
+			_homing = false
+	elif _spin != Vector2.ZERO and free:
+		_yaw += _spin.x * delta
+		_pitch = clampf(_pitch + _spin.y * delta, -PITCH_MAX, PITCH_MAX)
+		_spin *= exp(-delta * SPIN_FADE)
+		if _spin.length() < 0.02:
+			_spin = Vector2.ZERO
+	_zoom = lerpf(_zoom, _zoom_to, clampf(delta * 12.0, 0.0, 1.0))
+	if absf(_zoom - _zoom_to) < 0.002:
+		_zoom = _zoom_to
+	_pivot.basis = turn_basis(_yaw, _pitch)
 	_cam.position = Vector3(0, 0, _zoom)
 	_cam.look_at(Vector3.ZERO)
 	if _handheld:
@@ -823,7 +899,7 @@ func _process(delta: float) -> void:
 		_marker.position = dir * (1.02 + sin(t * PI) * 0.25)
 		_yaw = lerp_angle(_yaw, -atan2(dir.x, dir.z), delta * 3.0)
 		_pitch = lerpf(_pitch, asin(clampf(dir.y, -1.0, 1.0)), delta * 3.0)
-		_pivot.rotation = Vector3(_pitch, _yaw, 0.0)
+		_pivot.basis = turn_basis(_yaw, _pitch)
 		if _fly_t >= 1.0:
 			_fly_t = -1.0
 		return
@@ -839,21 +915,165 @@ func _process(delta: float) -> void:
 		_refresh_text()
 
 
-func _unhandled_input(event: InputEvent) -> void:
+## [v10ui] The globe's turn for a view: spun about its own axis (yaw), then tipped toward the
+## viewer (pitch). The point that focus_on() asks for faces the viewer exactly, and an up-down drag
+## always tips the globe toward the screen. (It was Euler(pitch, yaw): tipped first, then spun, so
+## away from the zero meridian the view missed Lumi and an up-down drag rolled the globe sideways.)
+static func turn_basis(yaw: float, pitch: float) -> Basis:
+	return Basis(Vector3.RIGHT, pitch) * Basis(Vector3.UP, yaw)
+
+
+## The yaw and pitch that bring the unit direction `c` (globe space) to face the viewer.
+static func view_of(c: Vector3) -> Vector2:
+	return Vector2(-atan2(c.x, c.z), clampf(asin(clampf(c.y, -1.0, 1.0)), -PITCH_MAX, PITCH_MAX))
+
+
+## How far the globe turns per pixel of drag so the ground under the cursor keeps up with it:
+## r = the globe's radius and d = the camera's distance from its middle (same units), fov in
+## degrees (vertical), screen_h in the pixels the mouse is measured in.
+static func turn_per_px(r: float, d: float, fov: float, screen_h: float) -> float:
+	return clampf(maxf(d - r, 0.05) * tan(deg_to_rad(fov) * 0.5) / (maxf(r, 0.001) * maxf(screen_h, 1.0) * 0.5), 0.001, 0.03)
+
+
+func _turn_per_px() -> float:
+	var h: float = _root.size.y
+	if _handheld and _world_cam and _anchor:
+		return turn_per_px(_anchor.scale.x, _world_cam.global_position.distance_to(_anchor.global_position), _world_cam.fov, h)
+	return turn_per_px(1.0, _zoom, _cam.fov, h)
+
+
+## Whether the point (in the root's own coordinates) is on a card, a button or the top plate.
+func _on_ui(at: Vector2) -> bool:
+	for c: Control in [_left_card, _rocket_card, _top_plate]:
+		if c and c.is_visible_in_tree() and c.get_global_rect().has_point(_root.get_global_transform() * at):
+			return true
+	return false
+
+
+## Mouse and trackpad on the globe. Presses on the cards never get here (they stop the mouse).
+func _on_root_input(event: InputEvent) -> void:
 	if not is_open:
 		return
+	var free: bool = not _flight_locked and _fly_t < 0.0
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
 		if mb.button_index == MOUSE_BUTTON_LEFT:
-			_drag = mb.pressed
-		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
-			_zoom = maxf(1.4, _zoom * 0.9)
-		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
-			_zoom = minf(6.0, _zoom * 1.1)
+			if mb.pressed and free and not _on_ui(mb.position):
+				if mb.double_click:
+					find_lumi()
+				else:
+					_drag = true
+					_homing = false
+					_spin = Vector2.ZERO
+					_drag_step = Vector2.ZERO
+					_drag_still = 0.0
+			elif not mb.pressed:
+				_end_drag()
+			_root.accept_event()
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_WHEEL_UP:
+			_zoom_by(pow(0.9, _wheel_step(mb)))
+			_root.accept_event()
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			_zoom_by(pow(1.1, _wheel_step(mb)))
+			_root.accept_event()
 	elif event is InputEventMouseMotion and _drag:
 		var mm: InputEventMouseMotion = event
-		_yaw += mm.relative.x * 0.006
-		_pitch = clampf(_pitch + mm.relative.y * 0.006, -1.4, 1.4)
+		var k: float = _turn_per_px()
+		# Near a pole a spin about the axis moves the ground in front less: turn more to keep up.
+		var d := Vector2(mm.relative.x * k / maxf(cos(_pitch), 0.35), mm.relative.y * k)
+		var p0: float = _pitch
+		_yaw += d.x
+		_pitch = clampf(_pitch + d.y, -PITCH_MAX, PITCH_MAX)
+		_drag_step += Vector2(d.x, _pitch - p0)
+		_drag_still = 0.0
+		if mm.relative.length() > 0.5:
+			_turned()
+		_root.accept_event()
+	elif event is InputEventPanGesture:  # two fingers on a MacBook trackpad
+		if not _gesture_twice(event, (event as InputEventPanGesture).delta):
+			_zoom_by(exp(clampf((event as InputEventPanGesture).delta.y, -4.0, 4.0) * 0.08))
+		_root.accept_event()
+	elif event is InputEventMagnifyGesture:  # pinch
+		if not _gesture_twice(event, Vector2((event as InputEventMagnifyGesture).factor, 0.0)):
+			_zoom_by(1.0 / clampf((event as InputEventMagnifyGesture).factor, 0.5, 2.0))
+		_root.accept_event()
+
+
+## The engine hands every trackpad gesture to the window twice (seen here: two copies of one pinch
+## in the same frame, each unhandled). The second copy of a pair is not counted.
+var _gest_sig: Array = []
+var _gest_dropped: bool = true
+
+
+func _gesture_twice(event: InputEvent, amount: Vector2) -> bool:
+	var sig: Array = [event.get_class(), amount, (event as InputEventGesture).position, Engine.get_process_frames()]
+	var twice: bool = sig == _gest_sig and not _gest_dropped
+	_gest_sig = sig
+	_gest_dropped = twice
+	return twice
+
+
+## One notch of a wheel is 1; a smooth wheel or a trackpad sends many small steps instead.
+static func _wheel_step(mb: InputEventMouseButton) -> float:
+	return clampf(mb.factor, 0.05, 3.0) if mb.factor > 0.0 else 1.0
+
+
+func _zoom_by(f: float) -> void:
+	_zoom_to = clampf(_zoom_to * f, ZOOM_MIN, ZOOM_MAX)
+	_turned()
+
+
+func _end_drag() -> void:
+	if not _drag:
+		return
+	_drag = false
+	if _drag_still > 0.08:  # the hand had stopped before letting go: the globe stays put
+		_spin = Vector2.ZERO
+
+
+## The player has turned or zoomed the globe: the first-time line has done its job.
+func _turned() -> void:
+	if bool(GameState.flags.get("map_turned", false)):
+		return
+	GameState.flags["map_turned"] = true
+	if _first_hint and _first_hint.visible:
+		var tw: Tween = create_tween()
+		tw.tween_interval(1.5)
+		tw.tween_property(_first_hint, "modulate:a", 0.0, 0.6)
+		tw.tween_callback(_hide_first_hint)
+
+
+func _hide_first_hint() -> void:
+	_first_hint.visible = false
+	_fit_top()
+
+
+## [v10ui] Back to the view the map opened with: Lumi in the middle, the opening zoom.
+func find_lumi() -> void:
+	if not is_open or _flight_locked or _fly_t >= 0.0:
+		return
+	var pc: int = int(patch_cell_provider.call())
+	if pc >= 0:
+		focus_on(pc, false)
+	_homing = true
+	_drag = false
+	_spin = Vector2.ZERO
+	_zoom_to = ZOOM_HOME
+	Audio.play("sparkle", 0.5, -12.0)
+
+
+## What the walk and tests read: where the globe is turned to, and what it is doing.
+func view_state() -> Dictionary:
+	return {"yaw": _yaw, "pitch": _pitch, "zoom": _zoom, "zoom_to": _zoom_to, "home_yaw": _home_yaw, "home_pitch": _home_pitch,
+		"drag": _drag, "spin": _spin, "homing": _homing, "hint": _first_hint != null and _first_hint.visible and _first_hint.modulate.a > 0.5}
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_open:
+		return
+	if event.is_action_pressed("lens_view"):
+		find_lumi()
+		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("open_globe") or event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
 		if _flight_locked or _fly_t >= 0.0:
 			get_viewport().set_input_as_handled()
@@ -868,7 +1088,7 @@ func _place_handheld(delta: float) -> void:
 	# [orbE] Local up: on a round planet "up" is the radial direction under Lumi.
 	var up: Vector3 = (holder.call("up") as Vector3) if holder.has_method("up") else Vector3.UP
 	var hand: Vector3 = model.hand_point() if model else holder.global_position + up * 1.0
-	var r: float = 0.3
+	var r: float = 0.38
 	var side: Vector3 = (model.global_basis.x if model else holder.global_basis.x).normalized()
 	var fwd0: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
 	fwd0 -= up * fwd0.dot(up)
@@ -876,10 +1096,19 @@ func _place_handheld(delta: float) -> void:
 	# [v2map] Glitch pass: the globe floats in front of Lumi at eye height and the camera looks over
 	# his right shoulder at it. (It used to sit at his hand with the camera in front of him, so his
 	# big head covered most of the globe.)
-	var center: Vector3 = holder.global_position + up * 1.25 + fwd0 * 0.75 + side * 0.05
+	# [v10ui] Critic 12: Lumi's head still filled the lower middle and the globe took a seventh of the
+	# screen. The globe floats higher and a little bigger; the camera stands further to his right.
+	# [v10ui] 1.55 -> 1.7: the tip of Lumi's antenna stood in front of the globe's underside.
+	var center: Vector3 = holder.global_position + up * 1.7 + fwd0 * 0.85 + side * 0.05
 	_anchor.global_position = center
-	if up != Vector3.UP:
-		_anchor.global_basis = SphereMath.basis_from_up_fwd(up, fwd0).scaled(_anchor.scale)
+	var right: Vector3 = fwd0.cross(up).normalized()
+	var dist: float = remap(_zoom, ZOOM_MIN, ZOOM_MAX, 1.1, 3.0)
+	var want: Vector3 = center - fwd0 * dist + right * dist * 0.5 + up * dist * 0.22
+	# [v10ui] The globe's "front" is the side the camera sees (it was the side facing Lumi, a good
+	# 28 degrees off), so the map opens with Lumi's glyph in the middle and a drag turns it squarely.
+	var to_cam: Vector3 = (want - center).normalized()
+	var ax: Vector3 = up.cross(to_cam).normalized()
+	_anchor.global_basis = Basis(ax, to_cam.cross(ax).normalized(), to_cam).scaled(_anchor.scale)
 	# Beam: from the claw to the globe's underside.
 	var bottom: Vector3 = center - up * r * 0.8
 	var axis: Vector3 = bottom - hand
@@ -888,9 +1117,6 @@ func _place_handheld(delta: float) -> void:
 	var x: Vector3 = y.cross(fwd0 if absf(y.dot(fwd0)) < 0.95 else side).normalized()
 	var z: Vector3 = x.cross(y).normalized()
 	_beam.global_transform = Transform3D(Basis(x * r * 0.9, y * h, z * r * 0.9), hand + axis * 0.5)
-	var right: Vector3 = fwd0.cross(up).normalized()
-	var dist: float = remap(_zoom, 1.4, 6.0, 1.1, 3.0)
-	var want: Vector3 = center - fwd0 * dist + right * dist * 0.3 + up * dist * 0.38
 	_world_cam.global_position = _world_cam.global_position.lerp(want, clampf(delta * 4.0, 0.0, 1.0))
 	# Aim a little left of the globe so it sits right of centre, clear of the survey card.
 	_world_cam.look_at(center - right * dist * 0.2, up)
@@ -981,6 +1207,9 @@ func _declutter(lumi_dir: Vector3) -> void:
 		for g: Node in _glyphs.get_children():
 			var sp: Sprite3D = g as Sprite3D
 			sp.pixel_size = GLYPH_PX * sc
+			for l: Node in sp.get_children():  # [v10ui] a base's name keeps its size on screen too (tiny zoomed out, huge zoomed in)
+				if l is Label3D:
+					(l as Label3D).pixel_size = GLYPH_PX * sc
 			sp.no_depth_test = true
 			sp.visible = faces_camera(sp.global_position - centre, to_cam)
 	if _plume and is_instance_valid(_plume):
@@ -1053,10 +1282,16 @@ func _place_glyphs() -> void:
 			_glyphs.add_child(g)
 
 
-func focus_on(cell: int) -> void:
+func focus_on(cell: int, at_once: bool = true) -> void:
 	var c: Vector3 = sphere_grid.centers[cell] if sphere_grid else planet.grid.centers[cell]  # [orbE]
-	_yaw = -atan2(c.x, c.z)
-	_pitch = asin(clampf(c.y, -1.0, 1.0))
+	var v: Vector2 = view_of(c.normalized())
+	_home_yaw = v.x
+	_home_pitch = v.y
+	if at_once:
+		_yaw = v.x
+		_pitch = v.y
+		_spin = Vector2.ZERO
+		_homing = false
 
 
 ## Legend / bar colour for a cell state (colour-blind palette aware).

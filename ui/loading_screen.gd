@@ -55,6 +55,7 @@ var _alpha: float = 0.0
 var _fading_out: bool = false
 var _path: String = ""
 var _stage: int = 0  # 0 idle, 1 threaded load, 2 instancing, 3 warm-up, 4 fade out
+var _threaded: bool = false  # [v12load] the scene file loads on loader threads (not headless: BuildBudget.threads_ok)
 var _t: float = 0.0
 var _shown_ms: int = 0
 var _warm: ShaderWarmup
@@ -148,9 +149,12 @@ func goto(path: String) -> void:
 	if _alpha <= 0.0:
 		_alpha = 1.0 if get_tree().current_scene == null or _is_boot() else 0.0
 	_apply_alpha()
-	var err: int = ResourceLoader.load_threaded_request(path, "PackedScene", true)
+	_threaded = BuildBudget.threads_ok()
+	var err: int = ResourceLoader.load_threaded_request(path, "PackedScene", true) if _threaded else OK
 	if err != OK:
 		push_warning("[loader] threaded request failed for %s (%d), loading directly" % [path, err])
+		_threaded = false
+	if not _threaded:
 		_stage = 2
 	print("[loader] loading %s" % path)
 
@@ -236,7 +240,7 @@ func _process(delta: float) -> void:
 				_stage = 5
 		5:
 			_stage = 6
-			var ps: PackedScene = ResourceLoader.load_threaded_get(_path) as PackedScene
+			var ps: PackedScene = ResourceLoader.load_threaded_get(_path) as PackedScene if _threaded else null
 			if ps == null:
 				ps = load(_path) as PackedScene
 			var tree := get_tree()

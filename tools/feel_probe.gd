@@ -28,6 +28,7 @@ class FeelInput:
 	var boost: bool = false
 	var scoop: bool = false
 	var jump: bool = false
+	var jump_hold: bool = false  # [v11jump] the hop button stays down
 	var cube: bool = false
 	var interact: bool = false
 	var drop: bool = false
@@ -45,6 +46,9 @@ class FeelInput:
 		var j: bool = jump
 		jump = false
 		return j
+
+	func jump_held() -> bool:
+		return jump_hold
 
 	func cube_pressed() -> bool:
 		var c: bool = cube

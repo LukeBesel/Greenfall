@@ -96,7 +96,7 @@ func _steep(d: Vector3) -> bool:
 	return false
 
 
-func _solid(d: Vector3) -> bool:
+func _solid(d: Vector3, soft: Node = null) -> bool:
 	if _q == null:
 		_q = PhysicsShapeQueryParameters3D.new()
 		var box := BoxShape3D.new()
@@ -112,6 +112,11 @@ func _solid(d: Vector3) -> bool:
 				continue
 			if (co as Node).is_in_group("ground"):
 				continue
+			if soft != null:  # [v11jump] junk goes as he cleans: heaps, loose big pieces
+				if co is CollisionObject3D and ((co as CollisionObject3D).collision_layer & PhysLayers.MOUND) != 0:
+					continue
+				if soft.is_ancestor_of(co as Node):
+					continue
 		return true
 	return false
 
@@ -206,6 +211,45 @@ func pockets(p: Vector3, r_in: float = 6.0, r_box: float = 10.0, step: float = 0
 
 
 var last_shut: Array[Vector2i] = []  # the last pockets() call's shut-in points (grid steps in p's frame)
+
+
+## [v11jump] Lumi hopped in here: is there a WALKING way out? A flood over free ground with the
+## colliders counted (0.5 m steps) from d; true when it never gets `r_m` away (he is shut in by
+## walls, props or water). Junk does not count: heaps and loose pieces (`soft`: the junk view) go as
+## he cleans. `hover`: lakes are open (Hover Jets). The spot itself counts as free (he is on it, maybe
+## pressed against a wall). Needs `space`. Used by Patch's pocket rescue (player/patch.gd).
+func shut_in(d: Vector3, soft: Node = null, hover: bool = false, r_m: float = 9.0, step: float = 0.5) -> bool:
+	if space == null:
+		return false
+	d = d.normalized()
+	var f: Basis = SphereGrid.frame(d)
+	var R: float = terrain.R
+	var lim: int = int(r_m / step)
+	var seen: Dictionary = {Vector2i.ZERO: true}
+	var stack: Array[Vector2i] = [Vector2i.ZERO]
+	var n: int = 0
+	var nb: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+	while not stack.is_empty() and n < 2500:
+		var at: Vector2i = stack.pop_back()
+		n += 1
+		if at.x * at.x + at.y * at.y >= lim * lim:
+			return false
+		var nxt: Array[Vector2i] = []
+		for o: Vector2i in nb:
+			var q: Vector2i = at + o
+			if seen.has(q):
+				continue
+			seen[q] = true
+			var qd: Vector3 = (d * R + (f.x * q.x + f.z * q.y) * step).normalized()
+			var g: String = why_ground(qd)
+			if g != "" and not (g == "water" and hover):
+				continue
+			if _solid(qd, soft):
+				continue
+			nxt.append(q)
+		nxt.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.length_squared() < b.length_squared())
+		stack.append_array(nxt)
+	return n < 2500  # a big walled area is a lot of ground, not a pocket
 
 
 ## The nearest ground point to p that is free and leads out (p's own ground point when it does),

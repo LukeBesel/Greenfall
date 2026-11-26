@@ -76,8 +76,12 @@ func _setup() -> void:
 		WalkTravel.run_dev(so)
 	if DevHooks.has("walk-goals"):  # [v9d] dev: every goal can complete, one of each kind played with real input (tools/walk_goals.gd)
 		WalkGoals.run_dev(so)
+	if DevHooks.has("walk-map"):  # [v10ui] dev: the map turned, zoomed and closed with a real mouse (tools/walk_map.gd)
+		WalkMap.run_dev(so)
 	if DevHooks.has("step-shots"):  # [v9d] dev: a rendered frame as each story step starts (tools/step_shots.gd)
 		StepShots.run_dev(so)
+	if DevHooks.has("walk-jump"):  # [v11jump] dev: Lumi's hop played with real keys (tools/walk_jump.gd)
+		WalkJump.run_dev(so)
 	if DevHooks.has("walk-radio"):  # [v10snd] dev: the first CD and the radio, real input (tools/walk_radio.gd)
 		WalkRadio.run_dev(so)
 	if DevHooks.has("walk-home"):  # [v9b] dev: the home steps after the first robot, real input (tools/walk_home.gd)
@@ -136,6 +140,8 @@ func _wire_survey() -> void:
 	picker.launch_home = func() -> void: HomewardDirector.launch_home(so.w)
 	picker.picked.connect(func(site: int) -> void: hop_to(site))
 	picker.closed.connect(func() -> void:
+		if Subtitles.current:
+			Subtitles.current.hush(0.0)  # the line waits and plays on after
 		if not hop.flying and not (so.layers and so.layers.system_map and so.layers.system_map.is_open):
 			so.on_modal_closed())
 	rocket_spot = Node3D.new()
@@ -150,6 +156,7 @@ func _wire_survey() -> void:
 			flown.append(to_i)
 		GameState.orbit["hubs_flown"] = flown)
 	purpose = HubPurpose.attach(self)  # [v6hubs] every hub's purpose: arrival, local steps, the wake
+	FarYard.attach(self)  # [v10base] every far base's bin, and the build spots for its bench, locker and Bot Bay
 	keepers = BaseKeepers.attach(self)  # [v6pace] woken bases clean their own region while Lumi is away
 	picker.planet_line_fn = func() -> String: return tr("Bases restored: %d of %d") % [HubPlan.restored_main(sm.planet_id), HubPlan.main_total(sm.planet_id)] if HubPlan.has_plan(sm.planet_id) else ""
 	_sync_rocket()
@@ -196,6 +203,8 @@ func open_rocket() -> void:
 	if picker == null or picker.is_open or hop.flying:
 		return
 	so.set_input(false)
+	if Subtitles.current:  # [v10base] play-tester item 22: a WREN line stayed readable through the list
+		Subtitles.current.hush(3600.0)
 	picker.open()
 
 

@@ -983,6 +983,28 @@ func _generate_feel() -> void:
 			var knock: float = sin(TAU * (f * 2.9 + 80.0 * exp(-t * 30.0)) * t) * exp(-t * 20.0)  # [v8snd] was 100% under 80 Hz
 			b[i] = (body * 0.45 + knock * 0.35 + lp * 0.5 * exp(-t * 22.0)) * 0.55
 		_add("thunk", _declick(b))
+	# [v11jump] Hop: a soft whiff of thruster air, brightening as he lifts (no tone, no thump).
+	for v: int in 3:
+		var b := _buf(0.2)
+		var lp: float = 0.0
+		var lp2: float = 0.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			var x: float = t / 0.2
+			lp += (_rng.randf_range(-1.0, 1.0) - lp) * (0.1 + 0.3 * x + 0.03 * v)
+			lp2 += (lp - lp2) * 0.5
+			b[i] = (lp - lp2 * 0.6) * sin(PI * pow(x, 0.6)) * 0.42
+		_add("hop", _declick(b))
+	# [v11jump] Land: a padded pat with a breath of dust (kept above 100 Hz: no rumble).
+	for f: float in [176.0, 158.0, 196.0]:
+		var b := _buf(0.16)
+		var lp: float = 0.0
+		for i: int in b.size():
+			var t: float = float(i) / RATE
+			lp += (_rng.randf_range(-1.0, 1.0) - lp) * 0.12
+			var pat: float = sin(TAU * (f + 60.0 * exp(-t * 40.0)) * t) * exp(-t * 34.0)
+			b[i] = (pat * 0.4 + lp * 0.5 * exp(-t * 26.0)) * minf(t / 0.004, 1.0)
+		_add("land", _declick(b))
 	for f: float in [2400.0, 2550.0, 2300.0]:
 		var b := _buf(0.035)
 		for i: int in b.size():

@@ -19,7 +19,7 @@ const KEY_PX: int = 13
 # does not push the Command view (owner); it stays in the full list (Tab, pause menu).
 const SHORT: Array = [["open_globe", "map"], ["lens_view", "lens"], ["toggle_goals", "goals"]]
 const FULL: Array = [
-	["scoop", "scoop"], ["cube", "press bale"], ["interact", "use"], ["drop", "drop"],
+	["scoop", "scoop"], ["cube", "press bale"], ["interact", "use"], ["drop", "drop"], ["jump", "jump"],
 	["tool_scoop", "tools"], ["open_upgrades", "workbench"], ["open_globe", "map"],
 	["open_command", "command"], ["lens_view", "lens"], ["toggle_goals", "goals"], ["photo_mode", "photo"],
 ]
@@ -30,7 +30,7 @@ const FULL: Array = [
 ## so the HUD key strip stayed English. Naming them in tr() calls puts them in the catalog.
 func _catalog_names() -> Array:
 	return [tr("map"), tr("command"), tr("lens"), tr("goals"), tr("scoop"), tr("use"), tr("drop"),
-		tr("workbench"), tr("photo")]
+		tr("workbench"), tr("photo"), tr("jump")]
 
 var mode: int = Mode.HUD
 var world: Node

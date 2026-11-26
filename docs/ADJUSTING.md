@@ -215,6 +215,24 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 ## How Lumi moves (v6feel)
 `data/patch.json` `move` controls how Lumi meets things on a round planet: `max_step` (0.45 m) is the tallest kerb, step or low planter he hovers over instead of stopping, and `round_keep` (0.6) is how much of his speed he keeps while rounding a post, bin or heap he clipped nearly head-on (0 = a plain slide, which nearly stops him). Check a change with `--feel=walk` (tools/feel_probe.gd).
 
+## Lumi's hop (v11jump)
+`data/patch.json` `jump` holds the hop (Space, or A on a controller; rebindable in Settings > Controls as "Jump").
+- `height_m` (0.6): how high a held hop lifts him. He gets onto things up to about `height_m` + 0.25 m high, because his body rides 0.25 m off the ground: bales, kerbs, benches, low crates. Not onto the workbench (0.95 m), bins, fences (1.8 m) or walls, and never onto or over a junk heap (heaps stop him at any height, so he still scoops them from the edge).
+- `rise_s` (0.22) and `fall_s` (0.19): seconds up to the top and back down. Shorter = snappier.
+- `cut_speed` (2.2): letting go of the button early drops his rise to this speed, so a tap is a small hop (0.1 m for the very shortest press, about 0.35 m for a quick tap).
+- `coyote_s` (0.12): he can still hop this long after gliding off an edge. `buffer_s` (0.14): a press this long before he lands hops on landing.
+- `air_control` (0.6): the share of his ground steering he keeps in the air.
+- `puff`, `dust`: size of the take-off haze and the landing dust. `hop_db`, `land_db`: loudness of the two sounds (quiet on purpose; `data/sound.json` `min_gap_s` `lumi:hop` / `lumi:land` stop them stacking).
+
+Rules the code keeps (planet/sphere/sphere_motor.gd, player/patch.gd):
+- The top of a hop is `height_m` above what he stands on, also when the boost or a kerb has already lifted him.
+- From a height (a crate, a roof, a pile of bales) he does not pass over anything a hop from the ground below could not clear. So a leap never drops him behind a wall he could not hop back over, and bales are no stair over a wall.
+- No hop while pressing a bale, in a film, on the hover-sled, wading, or with a menu, the map or the Command view open. Carrying bales, a full chest and the scoop do not stop it.
+- The safety net: a moment after a hop lands, the game checks for a walking way out. If there is none and the player keeps trying to move for 6 s (`Patch.RESCUE_AFTER_S`), his thrusters lift him to the nearest open ground. Junk never counts as a wall for this.
+- The camera leaves out most of the rise (planet/sphere/sphere_cam.gd `HOP_KEEP_OUT`).
+
+After changing `height_m`, rerun `godot --headless --path . -- --fresh --orbit --no-intro --city-walk` and `--target-reach`. Both print what the hop adds (ground it opens, what he can get onto, what is just out of reach) and fail on any spot he could hop into and not out of, except small pockets on the ground (up to 6 m2, `JumpReach.POCKET_MAX_M2`) that the rescue lift covers (planet/sites/jump_reach.gd). A pocket they print in town coordinates can be looked at with `--orbit-hop=K --hop-skip --spot-probe=hubK:x,z`. `--jump-reach-h=0.8` tries a height without editing the file. Then `--walk-jump` (real keys) and `tests/test_jump.gd`.
+
 ## The start area round base 1 (v8hex)
 `data/start_area.json` controls the start area round Verdance's Landing Yard. `radius_m` (50) is how far from the yard centre hexes hold only junk Lumi lifts with the starter scoop and no big thing stands (no wreck, drum, barrel, crate stack or landfill debris); `junk_look` is the list of words in prop names the audit treats as junk-looking. `leftover_from` (0.8) is how cleaned a hex must be before leftover pieces that are hidden (under or inside something) or out of reach stop counting and the hex clears; `heal_from` (0.9) is how cleaned a saved start-area hex must be to heal once on load; `greenhouse_half` is the First Seed greenhouse's junk-free ground (half x, z in metres).
 Check a change with `godot --headless --path . -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit` (exit 1 lists stuck hexes and big things; add `--seed=N` for other seeds, `--hex-audit-hubs` for the other hubs, `--hex-audit-all` for every hex). Test: `tests/test_hex_leftovers.gd`.

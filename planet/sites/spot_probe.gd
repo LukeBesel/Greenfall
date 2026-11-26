@@ -22,6 +22,14 @@ static func run_dev(so: Node) -> void:
 			var its: Array = m.get("items")
 			if int(xyz[0].trim_prefix("outpost")) < its.size():
 				p = (its[int(xyz[0].trim_prefix("outpost"))] as Node3D).global_position
+	elif xyz[0].begins_with("hub") and xyz.size() >= 2:  # [v11jump] --spot-probe=hubK:x,z: a town spot, site-local as --target-reach / --city-walk print it
+		var hx: PackedStringArray = xyz[0].trim_prefix("hub").split(":")
+		var sp: SitePrefab = (so.get("globe").get("site_manager") as SiteManager).prefab(int(hx[0]))
+		if sp == null:
+			print("[spot] hub %s has no town built (add --orbit-hop=%s --hop-skip)" % [hx[0], hx[0]])
+		else:
+			var up: Vector3 = (sp.global_transform * Vector3(float(hx[1]), 0.0, float(xyz[1]))).normalized()
+			p = (so.get("globe").get("terrain") as SphereTerrain).ground(up)
 	else:
 		p = Vector3(float(xyz[0]), float(xyz[1]), float(xyz[2]))
 	var stand: Vector3 = p

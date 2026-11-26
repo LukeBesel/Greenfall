@@ -98,18 +98,89 @@ func _physics_process(delta: float) -> void:
 	if _unstick_frames > 0 and not carried and not freeze:
 		_unstick_frames -= 1
 		unstick()
-	if planet_radius > 0.0:  # [orbit] round planet: fell into it (radial gravity, planet/orbit/)
-		if not carried and global_position.length() < planet_radius - 40.0:
-			var lumi: Node3D = get_tree().get_first_node_in_group("patch") as Node3D
-			var u: Vector3 = (lumi.global_position if lumi else global_position).normalized()
-			global_position = (lumi.global_position if lumi else u * planet_radius) + u * 2.0
-			linear_velocity = Vector3.ZERO
+	if planet_radius > 0.0:  # [orbit] round planet (radial gravity, planet/orbit/)
+		if not carried and not claimed:
+			_park_tick()
+		# Fell into the planet all the same (a collider that came late): back onto the ground at its
+		# OWN spot. [v10base] It used to be put 2 m over Lumi, wherever he was: after a flight or a
+		# Continue every unsold bale in the world had no ground under it, fell, and rained onto him
+		# (the start yard under a hundred bales, 6 m high).
+		if not carried and not parked and global_position.length() < planet_radius - 40.0:
+			seat()
+			_park(true)
 			GameState.inc_stat("cubes_fell")
 	elif global_position.y < -20.0 and not carried:
 		# Fell out of the world: put it back near the hub.
 		global_position = Vector3(randf_range(-1, 1), 2.0, randf_range(2, 4))
 		linear_velocity = Vector3.ZERO
 		GameState.inc_stat("cubes_fell")  # [beat] counted so long autoplay runs report it
+
+
+# --- [v10base] Left behind on the round planet: asleep until its ground is there ----------------
+## The globe's ground and collision are only loaded round Lumi and the robots (SphereStreamer).
+## A loose bale anywhere else does not simulate: it is frozen where it lies and keeps its place on
+## the globe; when a body comes near and the ground under it has its collider again, it is seated
+## on the ground at its own spot and wakes. Set by the planet (OrbitPlanet._build_gravity):
+static var ground_fn: Callable  # (dir: Vector3) -> Vector3, the ground point
+static var near_fn: Callable    # (pos: Vector3) -> bool, a body with loaded ground is near
+const PARK_EVERY: int = 12      # physics frames between checks (staggered per bale)
+
+var parked: bool = false
+var _park_n: int = PARK_EVERY  # the first tick checks at once (a loaded save: no ground yet)
+
+
+func _park_tick() -> void:
+	_park_n += 1
+	if _park_n < PARK_EVERY and not (parked and not freeze):
+		return
+	_park_n = 0
+	var near: bool = not near_fn.is_valid() or bool(near_fn.call(global_position))
+	if not parked:
+		# Far from every body, or its ground's collider not there (yet: a Continue, a landing):
+		# asleep where it lies, before it can fall.
+		if not near or not _ground_loaded():
+			_park(false)
+	elif not freeze or (near and _ground_loaded()):
+		seat()
+		parked = false
+		freeze = false
+		sleeping = false
+		_unstick_frames = 2
+
+
+func _park(keep_place: bool) -> void:
+	parked = true
+	freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+	freeze = true
+	linear_velocity = Vector3.ZERO
+	angular_velocity = Vector3.ZERO
+	if not keep_place:
+		seat()
+
+
+## Puts a bale that is under the ground, or falling with nothing under it, on the ground at its own
+## latitude and longitude. One that rests on something (a stack, a slab) is left as it lies.
+func seat() -> void:
+	if not ground_fn.is_valid():
+		return
+	var up: Vector3 = global_position.normalized()
+	var g: Vector3 = ground_fn.call(up)
+	var h: float = global_position.length() - g.length()
+	if h < size * 0.4 or (h > size * 0.6 and linear_velocity.dot(up) < -1.5):
+		global_position = g + up * size * 0.55
+		linear_velocity = Vector3.ZERO
+		angular_velocity = Vector3.ZERO
+
+
+## Whether the terrain's collider is loaded under this bale.
+func _ground_loaded() -> bool:
+	if not is_inside_tree():
+		return false
+	var up: Vector3 = global_position.normalized()
+	var q := PhysicsRayQueryParameters3D.create(global_position + up * 30.0, global_position - up * 30.0)
+	q.collision_mask = PhysLayers.WORLD
+	q.exclude = [get_rid()]
+	return not get_world_3d().direct_space_state.intersect_ray(q).is_empty()
 
 
 func _on_body_entered(_body: Node) -> void:
@@ -258,6 +329,7 @@ func flash() -> void:
 ## Switches between physical and carried (kinematic, no collision).
 func set_carried(on: bool) -> void:
 	carried = on
+	parked = false  # [v10base] picked up or put down: awake (a left-behind check parks it again)
 	if on:
 		# Off the ground: a hauler's reservation no longer applies (Patch may grab a bale a
 		# Haul Bug was heading for, and put it down somewhere else).
