@@ -18,3 +18,16 @@ Measured (tools/frame_stats.py, 8-bit luminance; before -> r2):
 Measured (headless): load 11.8 s / 11.8 s, frames over 30 ms in the boost walk 5 / 6 (base / after).
 Eyeballed: dusk shade is strongly blue; the noon pad is still a pale flat slab (material, stage 4).
 Not checked: Forward+/Metal, High preset (SSAO, glow, 4 shadow splits), 60 fps.
+
+## 26 Nov, later: helpers, Lumi v2, bases
+- Lumi: hero v2 merged (7db3f787). Round-1 outline overlap with the concept turnaround 0.45-0.54
+  (tools/hero/overlay.py, docs/art/lumi_overlay_r1.jpg): torso and pod too wide, head too flat, arms
+  raised, eye rings thick. A helper is matching it part by part.
+- World target art/concept/world_target.jpg (BARS.md). Wet ground in sphere_ground.gdshader (hardly
+  visible from the start pad), opt-in --look-fx (volumetric fog, SSR) for Forward+, unseen so far.
+- Bases merged (helper branch worktree-agent-a705c6a3ad429aae1): the pad is a wet concrete quay
+  (art/models/outpost, planet/sites/outpost_pad.gd), bench, bin, lamps aged; kit "repaired" state more
+  worn everywhere. Ground band at noon 171 -> 103 (bin view); target picture 70. Open: night crush
+  2% on the built yard (bar 0.5%), lean-to/generator/Bot Bay/tower only recoloured, far bases.
+- Running: buildings, shuttle, worker robots, regrowth, junk, Lumi match. Machine limits in
+  studio/HELPER_BRIEF.md (one headless run at a time, time limits).
