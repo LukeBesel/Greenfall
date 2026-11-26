@@ -2,6 +2,27 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## 26 Nov: planting out, one goal line, travel checked (v13goals, owner item 114)
+
+- **The player only cleans; clean ground greens by itself** (plants/auto_grow.gd, data/plants.json
+  `player_planting` false + `auto_grow`, data/hex_levels.json `auto_levels`). The garden sows its own
+  plants on soil (never paving), never thirsty, faster with clean neighbours (x3 with all six clean)
+  and in rain (x2). Hex levels Clean, Grassy, Blooming, Lush, Thriving follow; quiet, no cubes past
+  Clean; field notes for blooms 0 and restored hexes 3 (data/research.json `auto_data_rewards`).
+  Seeds are no currency (SaveManager v6 `drop_planting`: 25 cubes per seed, Seedling and Drip become
+  Scoopies, planting Requests wait). Seed tin, greenhouse, compost press, seed finds, the seed and
+  can tools, garden marks, Seedling and Drip are gone from play; the planting code stays behind the
+  switch. Research: the Plants branch is "Nature" (things grow by themselves, faster), the Water
+  branch serves the lakes and the Skimmer; Seedling/Drip blueprints became Sorting Arms / Haul Harness.
+- **Goal line:** "Buy Scoop Size", "Clean 2 hexes", "Plant the first seed" and "Look at the map" are
+  cut; the planting goals (seed, plant, bloom, hex levels, stipend, Seedling, Drip, restore) are out
+  of data/goals.json (before/after chain: docs/OWNER_FEEDBACK.md item 114). A save keeps its place
+  by step id (Objectives.ORDER_V4, flag objectives_v5). WREN's tower brief is two lines.
+- Checks: tests/test_planting_gone.gd, tests/test_auto_grow.gd, tools/check_old_planting_save.sh (in
+  check_exit, replaces seed_walk), walk_home part "green" (replaces "garden" and "map"), GoalAudit
+  SOURCES mark plants_planted and seeds_unlocked closed.
+- **Open:** see the hand-off (pacing, renders, travel findings).
+
 ## Walks reliable, 20-24 Nov (v9a, task 195)
 
 What the failing walks were, by evidence (logs under screenshots/, spot tests in tools/walk_opening.gd):

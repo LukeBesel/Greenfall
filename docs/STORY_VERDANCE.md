@@ -32,7 +32,10 @@ all that time. One night a meteor storm kills the Cradle's engines and breaks th
 WREN tells Lumi to take the tray to a pod, and then lets the pod go herself: she can't keep him
 safe up there and, without engines, can't follow. The pod falls all the way down to Verdance.
 **Glim**, a little lantern bot, holds on to the outside the whole way. The tray stays in the pod's
-cabin (it can be seen through the hatch) until the Homecoming carries it back to the vault.
+cabin (it can be seen through the hatch) until the Homecoming carries it back to the vault. The
+tray is the story's heart, not a tool: nothing in play is planted from it. Its one beat in play is
+WREN's line as the first robot starts ("Look at your clean hex, Lumi. Grass, coming back all by
+itself. The old seeds were only sleeping."): the green Lumi saved in the tray was never the last.
 
 Lumi wakes next to one of the old cleanup stations, with his battery at 4%. His **Bloom Core** runs
 on green light, the light living plants give off, and nothing green is left.
@@ -45,15 +48,19 @@ So the plan, in the order the game teaches it:
    Trash pressed into a tight **bale** recycles with nothing wasted, so a bale gives far more cubes.
 2. **A tower, so WREN can talk.** Her signal can't reach a dead station. The first thing built from
    cubes is the signal tower.
-3. **Clean ground, then plants.** Plants only grow on clean ground. Plants give green light. Green
-   light fills Lumi's Bloom Core (so he keeps going), and it is the sign the Cradle looks for from
-   space: the ark will not come down to a dead world.
+3. **Clean ground turns green by itself.** The old seeds never died: they slept under the trash.
+   Wherever Lumi (or a robot) cleans, grass comes back by itself, then flowers and bushes, then the
+   animals, and faster where the land round it is clean too. Nobody plants or waters anything
+   (owner, 26 Nov: "forget about the whole planting thing"). The green gives green light, which fills
+   Lumi's Bloom Core (so he keeps going), and it is the sign the Cradle looks for from space: the ark
+   will not come down to a dead world.
 4. **Robots, because a planet is big.** One small robot can't clean a world. The station can build
    helpers again once it has power, and a bigger station powers more of them. Robots also keep
    working when Lumi is somewhere else.
 5. **Six stations.** Lumi's little rocket can hop from town to town, but it can't leave the planet.
    When the Settlers left they used every big rocket they had. What is left of the last launch kit sits
-   in the landmarks of six old stations: seeds at **Garden Row**, hull plates at **Gantry Works**,
+   in the landmarks of six old stations: the Settlers' seed store at **Garden Row** (the storm broke the
+   Cradle's vault: these seeds are for the Settlers when they come home), hull plates at **Gantry Works**,
    the star chart at **Signal Heights**, a power cell at the **Fairground**, fuel at **Stack
    Works**. At each station Lumi cleans a little, wakes the landmark, takes its piece for the rocket,
    and leaves a crew of robots there to carry on.
@@ -62,8 +69,8 @@ So the plan, in the order the game teaches it:
    "wake us when the worlds can feed us", and one green town is not enough. Two more things make
    leaving the right call. First, some of Verdance can't be cleaned with what is here: the tools for
    its buried, flooded and frozen parts were left on the other worlds (the Deep Drill is on Ochre).
-   Second, Verdance is no longer alone: six stations are awake, and their robots keep cleaning and
-   planting while Lumi is away. Lumi goes on to wake the next world and comes back with better
+   Second, Verdance is no longer alone: six stations are awake, and their robots keep cleaning while
+   Lumi is away, and the clean ground keeps greening. Lumi goes on to wake the next world and comes back with better
    tools. When every world is green, the Cradle comes home.
 
 **There is no villain** (owner item 105: the Ledger, its coupons, drones, jammers and relay were
@@ -86,7 +93,7 @@ They are how the player learns what happened: found when the hex that holds them
 | 1 | Hears WREN's crash message | She can hardly reach him; fix the old workbench, pick up trash, find parts, build a signal tower so they can talk again | objectives.json `brief` | **rewritten** (v11film): it starts with the game's first job (the bench) and ends on why (to talk again); what the bin and cubes are is said by the first card |
 | 2 | Fixes the workbench | It is the Settlers' bench, dead for 300 years; everything is built on it | checklist (story/tutorial.gd) | **fixed**: the step now says whose bench it is |
 | 3 | Picks up trash, empties the chest in the bin | The bin's recycler turns trash into cubes | checklist + card `dump3` | **fixed**: nobody said why a bin pays cubes |
-| 4 | Buys a bigger chest, a wider scoop | Carry more, grab more: fewer walks to the bin | cards `compartment`, `scoop_size` | ok. **fixed**: the reason was hidden while saving up (the card showed only "Need N more cubes") |
+| 4 | Buys a bigger chest | Carry more: fewer walks to the bin | card `compartment` | ok. **fixed**: the reason was hidden while saving up. v13goals: "Buy Scoop Size" is no card of its own any more (the bench's second upgrade card in a row); the bench still sells it |
 | 5 | Saves up for the Baler | A tight bale recycles with nothing wasted: more cubes | card `baler` | **fixed**: "bales sell for more" had no why |
 | 6 | Recycles 3 bales | Enough cubes to build the tower | card `power` | **fixed**: WREN said "three of them and the base wakes up", then nothing woke up |
 | 7 | Builds the signal tower | WREN's signal can't reach a dead station | card `tower` | ok |
@@ -95,14 +102,14 @@ They are how the player learns what happened: found when the hex that holds them
 
 | # | What the player does | In-world reason | Where the game says it | Problem / status |
 |---|---|---|---|---|
-| 8 | Hears WREN's briefing | Who she is; plants make green light; green light fills the Bloom Core and is the sign the Cradle looks for | objectives.json `wren_brief` | **fixed**: it promised "when it's full, the Cradle comes down and we go home", which is not what happens on Verdance |
+| 8 | Hears WREN's briefing (two lines) | Who she is; clean ground turns green by itself; the green fills the Bloom Core and is the sign the Cradle looks for | objectives.json `wren_brief` | **fixed** (v13goals): two lines, not three (the tower beat was a burst), and no "plants make green light": nothing is planted |
 | 9 | Repairs Glim | He held on to the pod; he lights the night and spots missed trash | card `glim` + WREN | **fixed** (card gave only where to click) |
-| 10 | Cleans the glowing hex, then 2, then 3 | Plants only grow on clean ground; three clean hexes round the station give robots room to start | cards `hex`, `hex2`, `hex3` | **fixed**: "3 clean hexes unlock the Bot Bay" was a game rule, not a reason |
+| 10 | Cleans the glowing hex, then 3 in all with the robot | Clean ground greens by itself; three clean hexes round the station give robots room to start | cards `hex`, `hex3` | **fixed** (v13goals): "Clean 2 hexes" is gone (the same action as "Clean 3 hexes" right after it) |
 | 11 | Adds a Bot Bay to the bench | A planet is too big for one small robot | card `bench2` + WREN | **fixed** (card gave only where to click) |
-| 12 | Builds the first robot; it starts cleaning by itself | Robots clean on their own and keep going when Lumi is busy. Nothing asks the player to paint a zone (owner item 79: the old "show your robot where to clean first" step is gone) | cards `robot`, `hex2` ("Your robot cleans on its own."), WREN at `hex3` | **fixed**: WREN said "the base has power!" with no cause; the step read as if the robot did nothing until told |
-| 13 | Finds the Settler seed tin, plants and waters the first seed | Nothing grows by itself any more; every bloom gives green light and a seed back | story/first_seed.gd (WREN's long scene), card `seed` | ok. The best-told beat in the game |
+| 12 | Builds the first robot; it starts cleaning by itself | Robots clean on their own and keep going when Lumi is busy. Nothing asks the player to paint a zone (owner item 79) | cards `robot`, `hex3` ("Your robot cleans on its own.") | **fixed** |
+| 13 | Sees the first clean hex green over by itself | The old seeds slept under the trash; WREN says so as the robot starts ("Grass, coming back all by itself. The old seeds were only sleeping.") | WREN at `hex3` | **new** (v13goals, owner 26 Nov): replaces the seed tin, the greenhouse, planting and watering the first seed (story/first_seed.gd is no longer built) |
 | 14 | (removed, owner item 105: the Ledger and its drones are gone) | | | |
-| 15 | Cleans 10 hexes with the robots | More clean ground, more room to plant | card `hex10` | **fixed** (card gave only the key to press) |
+| 15 | Cleans 10 hexes with the robots | The more is clean, the faster it greens | card `hex10` | **fixed** (v13goals; was "room to plant") |
 | 16 | Rebuilds the base to level 2 | A bigger station makes more power: more robots can run | card `base2` | **fixed** ("the base can grow now" said nothing about why) |
 | 17 | Builds a Haul Bug | Robot bales pile up in the streets; a Haul Bug carries them to the scale | research.json `haul_rig` + card `haul` | ok |
 | 18 | Boosts the signal tower | A stronger tower lets WREN see further: she can find plans and the next station | card `tower2` | **fixed** ("WREN will sound clearer" is nice but not a reason) |
@@ -118,7 +125,7 @@ station kept one piece of the last launch kit, and each one woken keeps cleaning
 | # | Station (landmark) | What the player does | In-world reason for going | What it gives | Status |
 |---|---|---|---|---|---|
 | 1 | Landing Yard (water tower) | everything in A and B | Lumi fell here | a home, the first crew, the hop rocket | ok |
-| 2 | Garden Row (windpump) | cleans a few hexes, wakes the windpump | The seed tin is nearly empty; the Settlers' seed store was at Garden Row | seed stock, so planting never stops | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
+| 2 | Garden Row (windpump) | cleans a few hexes, wakes the windpump | The storm broke the Cradle's seed vault; the Settlers' seed store was at Garden Row | the Seed Stock (for the Settlers when they come home; nothing is planted with it), and Wild Mint, which then grows by itself | in game (v6hubs; v13goals: the reason is the vault, not "the tin is empty") |
 | 3 | Gantry Works (crane) | cleans, wakes the crane | The hop rocket's skin would burn up in space; the works made hull plates | hull plates (rocket tier) | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
 | 4 | Signal Heights (radio mast) | cleans, wakes the mast | Nobody knows where to fly; the tall mast kept the Settlers' star chart | the star chart: five buried worlds, and Ochre first | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
 | 5 | Fairground (ferris wheel) | cleans, wakes the wheel | A long flight needs power that lasts; the wheel ran on a big power cell | a power cell (rocket tier) | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
@@ -162,9 +169,8 @@ What the game says at each station (v6hubs' steps, v6story's wording):
 
 Goals come one at a time on the same card. Each used to show only "Reward: N cubes". Now each shows
 a reason first, from `data/goal_reasons.json` (by goal id, else by what the goal counts), then the
-reward. Examples: clean N hexes ("Plants only grow on clean ground"), buy N upgrades ("Better tools:
-more trash per trip"), earn N cubes ("Big machines are built from many cubes"), plant / bloom
-("Every bloom gives green light for your core"), Drip robots ("Thirsty plants stop growing"), pet a
+reward. Examples: clean N hexes ("Clean ground turns green by itself"), buy N upgrades ("Better tools:
+more trash per trip"), earn N cubes ("Big machines are built from many cubes"), pet a
 cat ("The animals are coming back. Say hello"), memory shards ("The Settlers left these. They tell what
 happened here").
 
@@ -177,9 +183,9 @@ happened here").
 | Why prices climb (owner 63–64) | Cubes description and the drive text: bigger machines are built from more cubes; a rocket takes a mountain |
 | Who built the bench, bin, scale, pad | "An old cleanup station" of the Settlers: crash message, checklist, base level 1 text |
 | Why "base levels" | Each rebuild gives the station more power: more robots, a better scale, the rocket pad |
-| Why cleaning matters to getting home | Briefing: clean ground → plants → green light → Lumi's core, and the sign the Cradle looks for |
+| Why cleaning matters to getting home | Briefing: clean ground → it greens by itself → green light → Lumi's core, and the sign the Cradle looks for |
 | Why robots | Bot Bay card and WREN: a planet is too big for one robot; crews carry on when Lumi leaves |
-| Why plant, if we leave | Green light for the core; the Cradle counts green |
+| Why the green matters, if we leave | Green light for the core; the Cradle counts green. Nobody plants: it greens by itself (v13goals) |
 | Why leave a dirty planet | The exit beat (E0–E3) |
 | WREN's step line could come a step late | A step line is dropped unsaid if its step is already done when her turn comes |
 | Steps with only a "where to click" line | Each has a reason now; where to click moved behind the reason |
@@ -189,7 +195,9 @@ happened here").
 
 ## Not changed (and why)
 
-- The first-seed scene, the shards and the eggs: already coherent and well liked. (The Ledger arc
+- The shards and the eggs: already coherent and well liked. (The first-seed scene went with planting,
+  owner 26 Nov: the greenhouse, the seed tin, planting and watering are gone from play; the tray stays
+  the story's heart, see the top of this page.) (The Ledger arc
   was removed on the owner's word, item 105: "it makes no sense".)
 - "Sell" stays as the everyday word for putting a bale on the scale (dozens of strings); the story
   says what really happens there (it is recycled into cubes).
