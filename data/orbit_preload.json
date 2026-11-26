@@ -208,6 +208,15 @@
 		"lite:old_drill_press@4000",
 		"old_drill_press",
 		"tex:res://art/models/flora/flora.glb",
-		"tex:res://art/models/flora/flora_atlas.png"
+		"tex:res://art/models/flora/flora_atlas.png",
+		"oil_tin",
+		"lite:can_rusted@90",
+		"circuit_board",
+		"multi_cleaner_bottle",
+		"bleach_bottle",
+		"lubricant_spray",
+		"russian_food_cans_01",
+		"drain_cleaner",
+		"garden_gloves_01"
 	]
 }

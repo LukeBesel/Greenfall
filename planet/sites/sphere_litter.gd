@@ -33,6 +33,31 @@ var _job_cells := PackedInt32Array()
 var _job_ctx: Dictionary = {}
 var _job_out: Dictionary = {}
 
+# [art3] The carpet as drifts of real litter (art overhaul, junk part). Same pieces in the same
+# places with the same thresholds (sweep, thinning and counts are untouched); what changed is how
+# they are drawn:
+# - the four tinted paper quads are ONE mesh under art/shaders/litter_carpet.gdshader, each piece a
+#   kind from a painted atlas (art/models/junk/build_litter.py: paper, newspaper, cardboard, film,
+#   leaves, grit ...) with a torn outline in the alpha, so a cell is 4 draws, not 13;
+# - kinds follow a slow noise over the ground: drifts of paper and cardboard, and between them
+#   small dark stuff (leaves, grit, bits) so the ground shows;
+# - the nine tiny scans are three meshes (the junk kit's bottle and can, a rusty tin);
+# - with distance pieces drop out one by one while the rest grow and lean to the mean colour, so
+#   the far carpet is a calm drift, not sparkle, and its range ends without a line.
+## Kinds, in atlas order (4 x 4): [width m, length m, weight in a drift, weight in a gap].
+const KINDS: Array = [
+	[0.21, 0.30, 3.0, 0.25], [0.22, 0.22, 2.0, 0.3], [0.34, 0.44, 1.6, 0.1], [0.40, 0.34, 2.2, 0.15],
+	[0.62, 0.50, 1.5, 0.04], [0.20, 0.16, 1.6, 0.5], [0.42, 0.36, 1.5, 0.15], [0.38, 0.32, 0.8, 0.12],
+	[0.16, 0.11, 0.9, 0.5], [0.30, 0.30, 0.8, 2.4], [0.11, 0.08, 0.6, 2.6], [0.12, 0.07, 0.8, 0.5],
+	[0.26, 0.26, 1.0, 2.2], [0.36, 0.28, 0.5, 0.08], [0.09, 0.24, 0.8, 0.3], [0.50, 0.50, 0.5, 2.0],
+]
+const ITEM_SLOTS: Array[int] = [1, 2, 1, 2, 3, 1, 2, 3, 1]  # the nine tiny-item draws -> bottle, can, tin
+const LOGIC_MESHES: int = 13  # the piece stream still draws among 4 sheets + 9 items
+const SHEET_TILT: float = 0.5  # share of the old tilt a (larger, flatter) sheet keeps
+const SHEET_LIFT: float = 0.035  # metres: the drawn ground can stand a few cm over the height the carpet is laid on
+var _art: bool = false
+var _litter_mat: ShaderMaterial
+
 
 ## Hooks onto a globe (OrbitPlanet: grid, terrain, cells, field, streamer).
 func setup_globe(g: Node) -> void:
@@ -108,6 +133,72 @@ func _process(_delta: float) -> void:
 	_task = WorkerThreadPool.add_task(_job, false, "litter cells")
 
 
+## [art3] The new carpet's meshes: one sheet (a shallow tent, 4 triangles) and three small items.
+func _build_meshes() -> void:
+	# Off by default until it has been seen in a rendered game frame: the first render showed no sheets
+	# (laid under the drawn ground); SHEET_LIFT is the fix, not yet looked at. `--litter-art` turns it on.
+	if not JunkLooks.enabled() or not DevHooks.has("litter-art"):
+		await super()
+		return
+	_art = true
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var pts: Array[Vector3] = [Vector3(-0.5, 0, -0.5), Vector3(0.5, 0, -0.5), Vector3(0.5, 0, 0.5), Vector3(-0.5, 0, 0.5)]
+	var top := Vector3(0.06, 0.05, -0.04)
+	for k: int in 4:
+		for p: Vector3 in [pts[k], pts[(k + 1) % 4], top]:
+			st.set_color(Color.WHITE)
+			st.set_uv(Vector2(p.x + 0.5, p.z + 0.5))
+			st.set_normal(Vector3.UP)
+			st.add_vertex(p)
+	st.generate_tangents()
+	_meshes.append(st.commit())
+	await JunkLooks.fetch()
+	_meshes.append(JunkLooks.kit_item("bottle_pet", 1))
+	_meshes.append(JunkLooks.kit_item("can_crushed", 1))
+	await AssetLib.fetch_model("can_rusted")
+	_meshes.append(JunkLooks.dressed(AssetLib.model_mesh_lite("can_rusted", [24, 90, 140, 140][clampi(Settings.quality, 0, 3)]), "can_rusted"))
+	for t: String in ["litter_atlas", "litter_normal"]:
+		var keep: Resource = await BuildBudget.fetch("res://art/models/junk/%s.png" % t)
+		keep = null
+	_litter_material()
+
+
+func _litter_material() -> ShaderMaterial:
+	if _litter_mat == null:
+		_litter_mat = ShaderMaterial.new()
+		_litter_mat.shader = load("res://art/shaders/litter_carpet.gdshader")
+		_litter_mat.set_shader_parameter("atlas", load("res://art/models/junk/litter_atlas.png"))
+		_litter_mat.set_shader_parameter("normal_atlas", load("res://art/models/junk/litter_normal.png"))
+		var r: float = CARPET_RANGE[clampi(Settings.quality, 0, 3)]
+		_litter_mat.set_shader_parameter("fade_from", r * 0.4)
+		_litter_mat.set_shader_parameter("fade_to", r)
+	return _litter_mat
+
+
+## [art3] Integer-hash value noise over world metres (thread-safe; the drifts cross cell borders).
+static func _vn(p: Vector3) -> float:
+	var i := Vector3i(floori(p.x), floori(p.y), floori(p.z))
+	var f: Vector3 = p - Vector3(i)
+	f = f * f * (Vector3.ONE * 3.0 - 2.0 * f)
+	var v: Array[float] = []
+	for k: int in 8:
+		v.append(float(hash(Vector3i(i.x + (k & 1), i.y + ((k >> 1) & 1), i.z + ((k >> 2) & 1))) & 0xffff) / 65535.0)
+	return lerpf(lerpf(lerpf(v[0], v[1], f.x), lerpf(v[2], v[3], f.x), f.y), lerpf(lerpf(v[4], v[5], f.x), lerpf(v[6], v[7], f.x), f.y), f.z)
+
+
+## [art3] How much of a drift each height-grid point of a cell is in (0 gap .. 1 drift).
+func _zone_grid(dir: Vector3, f: Basis) -> PackedFloat32Array:
+	var out := PackedFloat32Array()
+	out.resize(HG_N * HG_N)
+	var step: float = CELL_R * 2.0 / float(HG_N - 1)
+	for j: int in HG_N:
+		for i: int in HG_N:
+			var w: Vector3 = (dir + (f.x * (-CELL_R + i * step) + f.z * (-CELL_R + j * step)) / terrain.R).normalized() * terrain.R
+			out[j * HG_N + i] = _vn(w * 0.17) * 0.75 + _vn(w * 0.45 + Vector3(31.0, 7.0, 13.0)) * 0.25
+	return out
+
+
 ## Lays every cell of the current job (worker thread: no scene-tree access).
 func _job() -> void:
 	var out: Dictionary = {}
@@ -142,7 +233,16 @@ func _compute_cell(c: int) -> Dictionary:
 	# quality budget. Heights come from a small grid of terrain samples (bilinear), not one terrain
 	# lookup a piece, and cell ownership from the neighbours' centres, so a dense cell stays cheap.
 	var q: int = int(_job_ctx["q"])
-	var n_mesh: int = int(_job_ctx["n_mesh"])
+	var n_mesh: int = LOGIC_MESHES if _art else int(_job_ctx["n_mesh"])
+	var n_slot: int = int(_job_ctx["n_mesh"])
+	var zg: PackedFloat32Array = _zone_grid(dir, f) if _art else PackedFloat32Array()
+	var lr := RandomNumberGenerator.new()  # [art3] looks draw from their own stream: the piece stream is as it was
+	lr.seed = hash([c, 9911])
+	var w_drift: float = 0.0
+	var w_gap: float = 0.0
+	for kd: Array in KINDS:
+		w_drift += float(kd[2])
+		w_gap += float(kd[3])
 	var n: int = int(PI * CELL_R * CELL_R * PER_M2_Q[q] * density_mult)
 	var hg: PackedFloat32Array = _height_grid(dir, f, origin)
 	var nb := PackedVector3Array()
@@ -187,14 +287,39 @@ func _compute_cell(c: int) -> Dictionary:
 		if m >= 4:
 			bas = bas * Basis(Vector3.RIGHT, PI * 0.5)  # small items lie on their side
 			y += 0.04
-		bas = bas.rotated(Vector3.RIGHT, rng.randf_range(-0.25, 0.25))
-		bas = bas.scaled(Vector3.ONE * (rng.randf_range(0.7, 1.3) if m < 4 else rng.randf_range(0.8, 1.0)))
+		var tilt: float = rng.randf_range(-0.25, 0.25)
+		var scl: float = rng.randf_range(0.7, 1.3) if m < 4 else rng.randf_range(0.8, 1.0)
 		var col: Color = _color(rng) if m < 4 else Color.WHITE
-		raw.append_array([bas.x.x, bas.y.x, bas.z.x, lx, bas.x.y, bas.y.y, bas.z.y, y, bas.x.z, bas.y.z, bas.z.z, lz, col.r, col.g, col.b, 1.0])
+		if _art and m < 4:
+			# [art3] a kind for this spot: paper and cardboard in the drifts, small dark stuff between
+			var drift: float = smoothstep(0.44, 0.60, _grid_h(zg, lx, lz))
+			var pick: float = lr.randf() * lerpf(w_gap, w_drift, drift)
+			var kind: int = KINDS.size() - 1
+			for ki: int in KINDS.size():
+				pick -= lerpf(float(KINDS[ki][3]), float(KINDS[ki][2]), drift)
+				if pick <= 0.0:
+					kind = ki
+					break
+			y += SHEET_LIFT
+			var kd2: Array = KINDS[kind]
+			var grow: float = scl * lerpf(0.8, 1.05, drift)
+			bas = bas.rotated(Vector3.RIGHT, tilt * SHEET_TILT) * Basis.from_scale(Vector3(float(kd2[0]) * grow, (float(kd2[0]) + float(kd2[1])) * 0.5 * grow, float(kd2[1]) * grow))
+			var v: float = lr.randf_range(0.62, 1.0) * lerpf(0.8, 1.0, drift)
+			var warm: float = lr.randf_range(-0.05, 0.05)
+			col = Color(v * (1.0 + warm), v, v * (1.0 - warm), (float(kind) + 0.5) / 16.0)
+		else:
+			bas = bas.rotated(Vector3.RIGHT, tilt)
+			bas = bas.scaled(Vector3.ONE * scl)
+			col.a = 1.0
+		if _art:
+			m = 0 if m < 4 else ITEM_SLOTS[m - 4]
+		raw.append_array([bas.x.x, bas.y.x, bas.z.x, lx, bas.x.y, bas.y.y, bas.z.y, y, bas.x.z, bas.y.z, bas.z.z, lz, col.r, col.g, col.b, col.a])
 		raw_m.append(m)
 		raw_p.append(xf * Vector3(lx, y, lz))
 		raw_t.append(thr)
 	# Split per mesh (each buffer filled once: no copies of shared packed arrays).
+	var n_cols: int = 1 if _art else 4  # slots that carry a colour
+	n_mesh = n_slot
 	var counts := PackedInt32Array()
 	counts.resize(n_mesh)
 	for m: int in raw_m:
@@ -203,7 +328,7 @@ func _compute_cell(c: int) -> Dictionary:
 	var pts: Array = []
 	var thr_m: Array = []
 	for m: int in n_mesh:
-		var stride: int = 16 if m < 4 else 12
+		var stride: int = 16 if m < n_cols else 12
 		var buf := PackedFloat32Array()
 		buf.resize(counts[m] * stride)
 		var pp := PackedVector3Array()
@@ -226,7 +351,7 @@ func _compute_cell(c: int) -> Dictionary:
 	var bins: Dictionary = {}
 	var idx: int = 0
 	for m: int in n_mesh:
-		var stride: int = 16 if m < 4 else 12
+		var stride: int = 16 if m < n_cols else 12
 		var buf: PackedFloat32Array = bufs[m]
 		for k: int in counts[m]:
 			var key := Vector2i(floori(buf[k * stride + 3] / BIN_M), floori(buf[k * stride + 11] / BIN_M))
@@ -299,7 +424,7 @@ func _apply_cell(c: int, data: Dictionary) -> void:
 			continue
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.use_colors = m < 4
+		mm.use_colors = m < (1 if _art else 4)
 		mm.mesh = _meshes[m]
 		mm.instance_count = pp.size()
 		mm.buffer = data["bufs"][m]
@@ -323,7 +448,7 @@ func _apply_cell(c: int, data: Dictionary) -> void:
 			mmi.visibility_range_end = 90.0 if mm.use_colors else 60.0
 		mmi.visibility_range_end_margin = 4.0
 		if mm.use_colors:
-			mmi.material_override = _carpet()
+			mmi.material_override = _litter_material() if _art else _carpet()
 		node.add_child(mmi)
 		mms.append(mm)
 	var alive := PackedByteArray()
