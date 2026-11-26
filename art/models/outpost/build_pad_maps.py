@@ -465,7 +465,7 @@ alb = lay(alb, col(0.06, 0.055, 0.05), stone_joint)
 # use and weather on top
 alb = lay(alb, col(0.36, 0.2, 0.1), rust_stain * 0.55)
 alb = lay(alb, col(0.04, 0.04, 0.045), np.clip(tyres * 0.6, 0, 1) * (1.0 - gap))
-alb = lay(alb, col(0.035, 0.035, 0.037), np.clip(soot * 0.85, 0, 1))
+alb = lay(alb, col(0.06, 0.06, 0.062), np.clip(soot * 0.8, 0, 1))
 alb = lay(alb, alb * 0.4, oil * 0.85)
 alb = lay(alb, col(0.36, 0.35, 0.33), scratch * (1.0 - soot * 0.5) * 0.22)
 dirt_col = col(0.15, 0.125, 0.09) * (0.8 + 0.4 * n_fine[..., None])
@@ -474,7 +474,8 @@ alb = lay(alb, col(0.1, 0.14, 0.055) * (0.7 + 0.6 * n_fine[..., None]), moss * 0
 alb = lay(alb, col(0.03, 0.028, 0.025), gap * (1.0 - 0.4 * dirt))
 alb *= (0.94 + 0.12 * n_speck)[..., None]
 alb = lay(alb, alb * 0.62, damp * 0.8)  # wet concrete is darker
-alb = lay(alb, alb * 0.55 + col(0.012, 0.014, 0.018), puddle)
+alb = lay(alb, alb * 0.68 + col(0.016, 0.018, 0.022), puddle)
+alb = np.maximum(alb, 0.05)  # nothing on the quay is pure black: night frames crushed (tools/frame_stats.py)
 
 # ---------------------------------------------------------------- height -> normal, occlusion, roughness, metal
 h = np.zeros((N, N), np.float32)

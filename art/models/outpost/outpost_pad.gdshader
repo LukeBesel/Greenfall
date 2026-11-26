@@ -35,7 +35,7 @@ void fragment() {
 	float near = 1.0 - smoothstep(detail_fade * 0.35, detail_fade, -VERTEX.z);
 	float water = 1.0 - smoothstep(0.06, 0.3, orm.g);
 	float k = near * (1.0 - water);
-	a *= mix(1.0, 0.84 + 0.32 * d.a, k) * (0.92 + 0.16 * d2.a);
+	a *= mix(1.0, 0.91 + 0.18 * d.a, k) * (0.94 + 0.12 * d2.a);
 	a *= mix(1.0, 0.72, upright * smoothstep(0.1, -0.25, opos.y));  // the quay face darkens toward the ground
 	n.xy = (n.xy - 0.5) * normal_strength + (d.xy - 0.5) * detail_normal * k + 0.5;
 	ALBEDO = a * brightness;
