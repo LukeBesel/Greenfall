@@ -486,27 +486,27 @@ msgstr "E   望遠鏡：星系を見わたす"
 msgid "While you were away, your robots earned %s cubes."
 msgstr "るすの間に、ロボットがキューブを%s個かせいだ。"
 
-#: core/pace.gd:206
+#: core/pace.gd:209
 msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
 msgstr "このヘックスを片づけるにはリフト力 %d が必要。作業台でアップグレードしよう。"
 
-#: core/pace.gd:207
+#: core/pace.gd:210
 msgid "Too heavy: this needs Lift %d. Upgrade at the workbench."
 msgstr "重すぎる：リフト力 %d が必要。作業台でアップグレードしよう。"
 
-#: core/pace.gd:252
+#: core/pace.gd:255
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "もう入らない。[%s] を押してベールを作ろう。"
 
-#: core/pace.gd:264
+#: core/pace.gd:267
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "ベーラーがまだない。胸のゴミをゴミ箱へ運ぼう。"
 
-#: core/pace.gd:320 systems/events.gd:513 ui/goals_panel.gd:284
+#: core/pace.gd:323 systems/events.gd:513 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
-#: core/pace.gd:338 tools/walk_opening.gd:324
+#: core/pace.gd:341 tools/walk_opening.gd:324
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "もうバラのゴミは入れられないよ。[%s] でベールを作って、はかりにのせよう。"
 
@@ -923,75 +923,75 @@ msgstr "埋もれたパーツ  ·  シグナル %d%%"
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi はガタガタと庭に戻ってきた。いまのは何だったんだろう。"
 
-#: player/patch.gd:377
+#: player/patch.gd:391
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi は泳げない。作業台のホバージェットがあれば湖の上を浮いて進める。"
 
-#: player/patch.gd:510
+#: player/patch.gd:524
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "まずは種の缶を取ろう：光の柱をたどって温室へ。"
 
-#: player/patch.gd:511
+#: player/patch.gd:525
 msgid "No seeds yet. Keep cleaning."
 msgstr "まだ種がない。片づけを続けよう。"
 
-#: player/patch.gd:554 player/patch.gd:582
+#: player/patch.gd:568 player/patch.gd:596
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "種がなくなった。咲いた植物がまた落としてくれる。"
 
-#: player/patch.gd:561
+#: player/patch.gd:575
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "まず植えよう：{tool_plant}  で種を持つ"
 
-#: player/patch.gd:565
+#: player/patch.gd:579
 msgid "Watering can is empty. Refill at the base."
 msgstr "じょうろが空っぽ。基地で補給しよう。"
 
-#: player/patch.gd:584
+#: player/patch.gd:598
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "まずこのヘックスをきれいにしよう。種にはきれいな地面が必要だよ。"
 
-#: player/patch.gd:586
+#: player/patch.gd:600
 msgid "Something is growing here already. Try a free spot."
 msgstr "ここにはもう何か育っているよ。空いている場所を探そう。"
 
-#: player/patch.gd:587
+#: player/patch.gd:601
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "種は土に植えよう。道路や台の上はだめ。温室の苗床で試してみて。"
 
-#: player/patch.gd:588
+#: player/patch.gd:602
 msgid "Seeds need soil, not road or the pad."
 msgstr "種は土に植えよう。道路や台の上はだめ。"
 
-#: player/patch.gd:749
+#: player/patch.gd:763
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "チェストが空っぽ。まずゴミを集めよう。"
 
-#: player/patch.gd:789
+#: player/patch.gd:803
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:795
+#: player/patch.gd:809
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:799
+#: player/patch.gd:813
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:801
+#: player/patch.gd:815
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:804
+#: player/patch.gd:818
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:853
+#: player/patch.gd:869
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:884
+#: player/patch.gd:900
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -2071,7 +2071,7 @@ msgstr "目標達成  ·  %s"
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "ベーラー設置！チェストを満たして [%s] でベールを作ろう。"
 
-#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:774
+#: story/objectives.gd:1062 story/objectives.gd:1291 tools/walk_opening.gd:937
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
@@ -2235,19 +2235,19 @@ msgstr "Cradle号"
 msgid "WE'LL BE BACK"
 msgstr "また帰ってくる"
 
-#: systems/achievements.gd:167
+#: systems/achievements.gd:171
 msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
 msgstr "実績を %d 個解除。図鑑（{open_codex}）で見られます。"
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:446
+#: systems/achievements.gd:178 ui/notify_stack.gd:38 ui/subtitles.gd:446
 msgid "Achievement: %s. %s"
 msgstr "実績：%s。%s"
 
-#: systems/achievements.gd:179
+#: systems/achievements.gd:183
 msgid "Codex: %d new entries."
 msgstr "図鑑：新しい項目 %d 件。"
 
-#: systems/achievements.gd:182
+#: systems/achievements.gd:186
 msgid "Codex entry: %s"
 msgstr "図鑑の項目：%s"
 
@@ -2979,15 +2979,15 @@ msgstr "%sの種を解放"
 msgid "Unlocks: %s"
 msgstr "解放：%s"
 
-#: systems/research.gd:621
+#: systems/research.gd:624
 msgid "While you were away, research finished: %s."
 msgstr "留守のあいだに研究が完了：%s。"
 
-#: systems/research.gd:652
+#: systems/research.gd:663
 msgid "New robot plans: %s. %s"
 msgstr "新しいロボットの設計図：%s。%s"
 
-#: systems/research.gd:657
+#: systems/research.gd:668
 msgid "Research complete: %s."
 msgstr "研究完了：%s。"
 
@@ -3434,7 +3434,7 @@ msgstr "オープニングをもう一度見る"
 msgid "Close"
 msgstr "閉じる"
 
-#: tools/walk_opening.gd:593 ui/main_menu.gd:368 ui/pause_menu.gd:91
+#: tools/walk_opening.gd:756 ui/main_menu.gd:368 ui/pause_menu.gd:91
 msgid "Quit"
 msgstr "終了"
 

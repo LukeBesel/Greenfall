@@ -344,7 +344,7 @@ func can_hover_water() -> bool:
 func _water_at(p: Vector3) -> bool:
 	if world == null or world.field == null:
 		return false
-	var h: int = world.field.hex_at(p)
+	var h: int = world.field.hex_at_exact(p)  # [v9a] one sharp shoreline (hex_at speckles by an edge)
 	return h >= 0 and world.field.is_water(h)
 
 
@@ -360,13 +360,27 @@ func shore_clamp(wish: Vector3, probe_m: float) -> Vector3:
 
 static func shore_clamp_at(pos: Vector3, u: Vector3, wish: Vector3, probe_m: float, is_water: Callable) -> Vector3:
 	var n: Vector3 = wish.normalized()
-	if not bool(is_water.call(pos + n * probe_m)):
+	if _shore_free(pos, n, probe_m, is_water):
 		return wish
 	for deg: float in [25.0, -25.0, 50.0, -50.0, 70.0, -70.0, 85.0, -85.0]:
 		var d: Vector3 = n.rotated(u, deg_to_rad(deg))
-		if not bool(is_water.call(pos + d * probe_m)):
+		if _shore_free(pos, d, probe_m, is_water):
 			return d * wish.length() * cos(deg_to_rad(deg))
 	return Vector3.ZERO
+
+
+## [v9a] Land all the way along `dir`, not only at the far probe: a corner of the lake nearer than
+## the probe let him step into the water, the rule below put him back with no speed, and that
+## happened again every tick while the key was held (frozen by the bin's lake side).
+const SHORE_NEAR: Array[float] = [0.02, 0.08, 0.3, 0.6]
+
+static func _shore_free(pos: Vector3, dir: Vector3, probe_m: float, is_water: Callable) -> bool:
+	if bool(is_water.call(pos + dir * probe_m)):
+		return false
+	for m: float in SHORE_NEAR:
+		if m < probe_m and bool(is_water.call(pos + dir * m)):
+			return false
+	return true
 
 
 ## Once per save: why he stopped, and the fix.
@@ -391,7 +405,7 @@ func _move(delta: float) -> void:
 			wish = input.get_world_move(cam_yaw_provider.call())
 	var speed: float = stat("move_speed") * (0.55 if input.scoop_held() and wish.length() > 0.1 else 1.0)
 	# Wading: Patch can't swim yet. Shallow lake water slows him and splashes.
-	var here: int = world.field.hex_at(global_position) if world and world.field else -1
+	var here: int = world.field.hex_at_exact(global_position) if world and world.field else -1  # [v9a] as _water_at
 	var hover: bool = can_hover_water()
 	if here >= 0 and world.field.is_water(here) and not hover:  # [planet-tidewell] floats over water there
 		speed *= 0.45
@@ -819,12 +833,14 @@ func _handle_interact() -> void:
 	if _cubing > 0.0:
 		return
 	if input.interact_pressed():
-		if detector.can_dig() and carried.is_empty():
-			detector.dig(_on_part_found)
-			return
+		# [v9a] The same order as the prompt (_update_hints): a bale in reach first, then the buried
+		# part. A bale pressed over a buried part showed "pick up" and E dug the part instead (the
+		# opening walk: "bale: E picks it up").
 		var c: JunkCube = nearest_loose_cube()
 		if c and carried.size() < carry_cap() and not _bench_first():
 			pick_up(c)
+		elif detector.can_dig() and carried.is_empty():
+			detector.dig(_on_part_found)
 		elif not carried.is_empty():
 			place_top_cube()
 		elif world and world.has_method("try_interact"):
@@ -1160,6 +1176,8 @@ func _update_hints(delta: float) -> void:
 		prompt = "dig"
 	if world and world.has_method("interact_prompt") and prompt == "":
 		prompt = world.interact_prompt(self)
+	if _cubing > 0.0:  # [v9a] E waits out the press (_handle_interact): offer nothing meanwhile. With the
+		prompt = ""  # auto-compactor the prompt said "Repair outpost" while E did nothing (travel walk).
 	model.look_toward(look)
 	_update_aim()
 	# Idle: after a while Patch shakes off rust flakes; much later he dozes off.
