@@ -402,10 +402,10 @@ static func shack_roof() -> Kit:
 	for i: int in 10:  # corrugation ribs
 		var x: float = -1.71 + i * 0.38
 		k.box(Vector3(0.1, 0.06, 2.66), Vector3(x, 0.055, 0), TEAL, Vector3.ZERO, 0.025)
-	k.box(Vector3(3.92, 0.12, 0.1), Vector3(0, 0.03, 1.36), ORANGE)  # front trim
-	k.box(Vector3(3.92, 0.12, 0.1), Vector3(0, 0.03, -1.36), ORANGE)
-	k.box(Vector3(0.1, 0.12, 2.8), Vector3(1.93, 0.03, 0), ORANGE)
-	k.box(Vector3(0.1, 0.12, 2.8), Vector3(-1.93, 0.03, 0), ORANGE)
+	k.box(Vector3(3.92, 0.12, 0.1), Vector3(0, 0.03, 1.36), GUNMETAL)  # front trim
+	k.box(Vector3(3.92, 0.12, 0.1), Vector3(0, 0.03, -1.36), GUNMETAL)
+	k.box(Vector3(0.1, 0.12, 2.8), Vector3(1.93, 0.03, 0), GUNMETAL)
+	k.box(Vector3(0.1, 0.12, 2.8), Vector3(-1.93, 0.03, 0), GUNMETAL)
 	k.pipe(Vector3(-1.9, -0.06, 1.46), Vector3(1.9, -0.06, 1.46), 0.06, GUNMETAL, true)  # gutter
 	# A little solar panel and a stub antenna: the yard's first bit of the future.
 	k.push(ProcMesh.xf(Vector3(-0.7, 0.14, -0.2), Vector3(6, 0, 0)))
@@ -918,14 +918,14 @@ static func _skip(l: int) -> Dictionary:
 static func depot_pad(radius: float) -> MeshInstance3D:
 	var k := Kit.new()
 	var s: float = radius * 1.9
-	k.box(Vector3(s, 0.07, s), Vector3(0, 0.035, 0), Color(0.36, 0.38, 0.39), Vector3.ZERO, 0.03)
+	k.box(Vector3(s, 0.07, s), Vector3(0, 0.035, 0), GUNMETAL, Vector3.ZERO, 0.02)  # [art4] a steel weigh plate, not pale paint
 	var q: float = s * 0.5 - 0.22
 	for ix: float in [-1.0, 1.0]:
 		for iz: float in [-1.0, 1.0]:
 			var c := Vector3(ix * q * 0.5 + ix * 0.04, 0.075, iz * q * 0.5 + iz * 0.04)
-			k.box(Vector3(q - 0.06, 0.02, q - 0.06), c, Color(0.5, 0.53, 0.55, 0.65), Vector3.ZERO, 0.008)
+			k.box(Vector3(q - 0.06, 0.02, q - 0.06), c, GUNMETAL, Vector3.ZERO, 0.008)
 			for t: int in 5:  # tread bars
-				k.box(Vector3(q - 0.2, 0.016, 0.05), c + Vector3(0, 0.014, -q * 0.36 + t * q * 0.18), Color(0.62, 0.64, 0.66, 0.5), Vector3(0, 45.0 * ix * iz, 0), 0.008)
+				k.box(Vector3(q - 0.2, 0.016, 0.05), c + Vector3(0, 0.014, -q * 0.36 + t * q * 0.18), STEEL, Vector3(0, 45.0 * ix * iz, 0), 0.008)
 			k.bolts4(c + Vector3(0, 0.01, 0), Vector3(q * 0.5 - 0.07, 0, 0), Vector3(0, 0, q * 0.5 - 0.07), Vector3.UP, STEEL, 0.018)
 	k.box(Vector3(0.5, 0.02, 0.5), Vector3(0, 0.075, 0), DARK, Vector3.ZERO, 0.008)  # drain grate
 	for t: int in 5:
@@ -1655,7 +1655,7 @@ static func fabricator_shell() -> Kit:
 		k.glow_box(Vector3(0.04, 0.04, 0.02), Vector3(1.8 + i * 0.12, 0.95, 0.755), [MINT, AMBER, MINT][i])
 	for i: int in 3:
 		for j: int in 2:
-			k.box(Vector3(0.36, 0.22, 0.4), Vector3(-1.95, 0.36 + j * 0.24, 0.6 - i * 0.42), [YELLOW, BLUE, RED][(i + j) % 3], Vector3.ZERO, 0.03)
+			k.box(Vector3(0.36, 0.22, 0.4), Vector3(-1.95, 0.36 + j * 0.24, 0.6 - i * 0.42), [CREAM, GUNMETAL, TEAL_D][(i + j) % 3], Vector3.ZERO, 0.03)
 	k.pipe(Vector3(-1.3, 0.25, -1.75), Vector3(-1.3, 2.4, -1.75), 0.07, GUNMETAL, true)
 	k.pipe(Vector3(-1.3, 2.4, -1.75), Vector3(1.3, 2.4, -1.75), 0.07, GUNMETAL, true)
 	k.cable([Vector3(1.95, 0.3, 0.25), Vector3(1.7, 0.25, -0.2), Vector3(1.3, 0.26, -0.6)], 0.025)
@@ -1711,7 +1711,7 @@ static func bot_bay() -> Kit:
 		k.glow_box(Vector3(0.04, 0.04, 0.02), Vector3(1.16 + i * 0.12, 0.85, 1.225), [MINT, AMBER, MINT][i])
 	for i: int in 2:
 		for j: int in 2:
-			k.box(Vector3(0.34, 0.22, 0.38), Vector3(-1.3, 0.3 + j * 0.24, 1.02 - i * 0.02 * j), [YELLOW, BLUE, RED][(i + j) % 3], Vector3.ZERO, 0.03)
+			k.box(Vector3(0.34, 0.22, 0.38), Vector3(-1.3, 0.3 + j * 0.24, 1.02 - i * 0.02 * j), [CREAM, GUNMETAL, TEAL_D][(i + j) % 3], Vector3.ZERO, 0.03)
 	k.pipe(Vector3(-1.15, 0.2, -1.25), Vector3(-1.15, 2.1, -1.25), 0.06, GUNMETAL, true)
 	k.cable([Vector3(1.28, 0.25, 0.8), Vector3(1.1, 0.22, 0.2), Vector3(0.8, 0.22, -0.4)], 0.025)
 	k.light(Vector3(0, 1.9, 0.9), CYAN, 0.3, 2.2)

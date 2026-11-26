@@ -361,8 +361,8 @@ stripe = (np.mod((X + Z) * 2.2, 1.0) < 0.5).astype(np.float32)
 
 edge_wear = (1.0 - sm(0.02, 0.1, gap_d)) * (0.35 + 0.65 * n_mid)
 mark_wear = np.clip(traffic * 1.1 + (n_mid - 0.5) * 1.0 + (n_fine - 0.5) * 0.7 + edge_wear * 0.4 + crack_soft * 0.8 + (n_big - 0.5) * 0.5, 0, 1)
-mark_keep = (1.0 - sm(0.3, 0.5, mark_wear * 0.8 + (vnoise(160, 160, 515) - 0.5) * 0.45 + 0.08)) * (1.0 - scratch) * (1.0 - gap) * (1.0 - patch) * (1.0 - plate)
-mark_keep *= 0.55 + 0.45 * n_speck  # paint sits on the high grains only
+mark_keep = (1.0 - sm(0.36, 0.58, mark_wear * 0.8 + (vnoise(160, 160, 515) - 0.5) * 0.45 + 0.08)) * (1.0 - scratch) * (1.0 - gap) * (1.0 - patch) * (1.0 - plate)
+mark_keep *= 0.7 + 0.3 * n_speck  # paint sits on the high grains only
 white *= mark_keep
 yellow *= mark_keep
 hazard *= mark_keep * (0.75 + 0.25 * n_mid)
@@ -410,16 +410,16 @@ def lay(base, colour, mask):
 	return base * (1.0 - mask[..., None]) + colour * mask[..., None]
 
 
-conc = col(0.315, 0.305, 0.288) * (1.0 + 0.1 * ptone[..., None]) + pfresh[..., None] * col(0.07, 0.07, 0.065)
+conc = col(0.2, 0.193, 0.18) * (1.0 + 0.12 * ptone[..., None]) + pfresh[..., None] * col(0.045, 0.045, 0.04)
 conc = conc * (0.82 + 0.36 * n_mid[..., None]) * (0.9 + 0.2 * n_big[..., None])
 warm = sm(0.35, 0.75, vnoise(9, 9, 88))[..., None]
 conc = conc * (1.0 - warm * 0.5) + conc * col(1.1, 1.0, 0.86) * warm * 0.5  # warm and cool regions
 agg = sm(0.72, 0.9, n_speck)[..., None]  # aggregate showing where the surface has worn
-conc = conc * (1.0 - agg * 0.35) + col(0.5, 0.48, 0.44) * agg * 0.35
+conc = conc * (1.0 - agg * 0.35) + col(0.36, 0.345, 0.32) * agg * 0.35
 conc = conc * (1.0 - 0.14 * sm(0.3, 0.8, traffic)[..., None]) + 0.03 * sm(0.3, 0.8, traffic)[..., None]  # polished by feet
 alb = conc
-alb = lay(alb, col(0.44, 0.43, 0.41) * (0.9 + 0.2 * n_fine[..., None]), patch * 0.9)
-alb = lay(alb, alb * 0.8 + 0.2 * col(0.62, 0.6, 0.56), bleach * deck)
+alb = lay(alb, col(0.27, 0.265, 0.25) * (0.9 + 0.2 * n_fine[..., None]), patch * 0.85)
+alb = lay(alb, alb * 0.8 + 0.2 * col(0.45, 0.44, 0.41), bleach * deck)
 alb = lay(alb, col(0.66, 0.65, 0.6) * (0.85 + 0.3 * n_fine[..., None]), white * 0.92)
 alb = lay(alb, col(0.74, 0.52, 0.09) * (0.85 + 0.3 * n_fine[..., None]), yellow * 0.92)
 haz_col = np.where(stripe[..., None] > 0.5, col(0.74, 0.52, 0.09), col(0.075, 0.075, 0.08))
@@ -439,7 +439,7 @@ kerb_run = np.where(np.abs(X) > np.abs(Z), Z, X)
 stone_id = np.floor((kerb_run + 20.0) / 1.1)
 stone_tone = (np.mod(np.sin(stone_id * 12.9898 + np.where(np.abs(X) > np.abs(Z), np.sign(X) * 3.1, np.sign(Z) * 7.7)) * 43758.5453, 1.0) - 0.5).astype(np.float32)
 stone_joint = (np.mod(kerb_run + 20.0, 1.1) < 0.022).astype(np.float32) * kerb
-kerb_col = col(0.43, 0.42, 0.4) * (1.0 + 0.2 * stone_tone[..., None]) * (0.8 + 0.4 * n_mid[..., None]) * (0.92 + 0.16 * n_speck[..., None])
+kerb_col = col(0.3, 0.292, 0.275) * (1.0 + 0.2 * stone_tone[..., None]) * (0.8 + 0.4 * n_mid[..., None]) * (0.92 + 0.16 * n_speck[..., None])
 kerb_in_d = EDGE - PAD["kerb_in"]
 kerb_haz = (kerb_in_d < 0.19).astype(np.float32) * kerb
 kerb_keep = (1.0 - sm(0.36, 0.58, n_mid * 0.7 + n_fine * 0.5 + (1.0 - sm(0.0, 0.04, kerb_in_d)) * 0.35)) * (0.6 + 0.4 * n_speck)
@@ -467,10 +467,10 @@ alb = lay(alb, col(0.36, 0.2, 0.1), rust_stain * 0.55)
 alb = lay(alb, col(0.04, 0.04, 0.045), np.clip(tyres * 0.6, 0, 1) * (1.0 - gap))
 alb = lay(alb, col(0.035, 0.035, 0.037), np.clip(soot * 0.85, 0, 1))
 alb = lay(alb, alb * 0.4, oil * 0.85)
-alb = lay(alb, col(0.5, 0.49, 0.46), scratch * (1.0 - soot * 0.5) * 0.22)
-dirt_col = col(0.2, 0.165, 0.12) * (0.8 + 0.4 * n_fine[..., None])
+alb = lay(alb, col(0.36, 0.35, 0.33), scratch * (1.0 - soot * 0.5) * 0.22)
+dirt_col = col(0.15, 0.125, 0.09) * (0.8 + 0.4 * n_fine[..., None])
 alb = lay(alb, dirt_col, np.clip(dirt, 0, 0.9))
-alb = lay(alb, col(0.13, 0.17, 0.07) * (0.7 + 0.6 * n_fine[..., None]), moss * 0.85)
+alb = lay(alb, col(0.1, 0.14, 0.055) * (0.7 + 0.6 * n_fine[..., None]), moss * 0.85)
 alb = lay(alb, col(0.03, 0.028, 0.025), gap * (1.0 - 0.4 * dirt))
 alb *= (0.94 + 0.12 * n_speck)[..., None]
 alb = lay(alb, alb * 0.62, damp * 0.8)  # wet concrete is darker
