@@ -22,6 +22,7 @@ const K_FLAT: int = 6
 const K_COPING: int = 7
 const K_DARK: int = 8
 const K_GLASS: int = 9
+const K_LAMP: int = 10  # [art3] a lens that glows after dark (mast beacons)
 # Flag bits (UV2.y).
 const F_SHOP: int = 1
 const F_RIBBON: int = 2
@@ -30,10 +31,19 @@ const F_ROOF_SEAMS_X: int = 8
 const F_HOOPS: int = 16
 const F_RUST: int = 32
 const F_STRIPES: int = 64
-# Wall textures (UV2.x).
+const F_CURTAIN: int = 128   # [art3] glass from column to column over a spandrel band
+const F_RUIN: int = 2048     # [art3] whole bays of the skin are gone: rooms and slab edges show
+const F_LOUVRE: int = 4096   # [art3] K_METAL: a louvred plant screen
+# Wall materials (packed into UV2.y above the flags: * T_SHIFT).
 const T_RED_BRICK: int = 0
 const T_BRICK: int = 1
 const T_CONCRETE: int = 2
+const T_PANEL: int = 3       # [art3] composite cladding panels (later additions)
+const T_ALLOY: int = 4       # [art3] dark alloy panels
+const T_SHEET: int = 5       # [art3] standing-seam metal sheet, rusting
+const T_SHIFT: int = 256
+## [art3] UV.y / UV2.x of faces that are not walls (no foot or top to weather from).
+const NO_WALL: float = 100.0
 
 const FLOOR_H: float = 3.0
 const BAY: float = 3.0
@@ -46,15 +56,17 @@ const ROOF_IN: float = 0.02
 const TRIM_STEP: float = 0.012
 
 ## Facade palettes: [texture, tint]. Grounded, sun-faded city colours (no green paint).
+## [art3] An old harbour town (art/concept/world_target.jpg): aged red and brown brick, soot-dark
+## brick, sandstone and weathered render. No pastel paint.
 const APT_PALETTE: Array = [
-	[T_RED_BRICK, Color(1.0, 0.96, 0.92)], [T_RED_BRICK, Color(0.9, 0.82, 0.78)],
-	[T_BRICK, Color(1.0, 0.9, 0.76)], [T_BRICK, Color(0.92, 0.78, 0.66)], [T_BRICK, Color(0.86, 0.84, 0.82)],
-	[T_CONCRETE, Color(0.95, 0.88, 0.74)], [T_CONCRETE, Color(0.92, 0.74, 0.6)], [T_CONCRETE, Color(0.78, 0.8, 0.84)],
-	[T_CONCRETE, Color(0.94, 0.92, 0.88)], [T_CONCRETE, Color(0.9, 0.78, 0.55)], [T_CONCRETE, Color(0.86, 0.66, 0.58)],
+	[T_RED_BRICK, Color(0.92, 0.8, 0.74)], [T_RED_BRICK, Color(0.78, 0.66, 0.62)], [T_RED_BRICK, Color(0.98, 0.78, 0.66)],
+	[T_RED_BRICK, Color(0.66, 0.6, 0.6)], [T_BRICK, Color(0.86, 0.7, 0.56)], [T_BRICK, Color(0.7, 0.58, 0.5)],
+	[T_BRICK, Color(0.74, 0.72, 0.68)], [T_BRICK, Color(0.9, 0.62, 0.48)],
+	[T_CONCRETE, Color(0.74, 0.66, 0.54)], [T_CONCRETE, Color(0.62, 0.6, 0.56)], [T_CONCRETE, Color(0.78, 0.62, 0.48)],
 ]
 const FAC_PALETTE: Array = [
-	[T_CONCRETE, Color(0.8, 0.79, 0.77)], [T_CONCRETE, Color(0.86, 0.82, 0.74)], [T_CONCRETE, Color(0.72, 0.76, 0.8)],
-	[T_BRICK, Color(0.92, 0.84, 0.74)], [T_RED_BRICK, Color(0.86, 0.8, 0.76)],
+	[T_RED_BRICK, Color(0.8, 0.7, 0.66)], [T_BRICK, Color(0.74, 0.64, 0.56)], [T_RED_BRICK, Color(0.66, 0.58, 0.56)],
+	[T_CONCRETE, Color(0.62, 0.6, 0.57)], [T_SHEET, Color(0.44, 0.47, 0.48)], [T_SHEET, Color(0.5, 0.42, 0.36)],
 ]
 const ROOF_TINTS: Array = [Color(0.4, 0.4, 0.41), Color(0.5, 0.49, 0.47), Color(0.6, 0.59, 0.57), Color(0.46, 0.43, 0.41), Color(0.76, 0.76, 0.75)]
 const AWNINGS: Array = [Color(0.62, 0.2, 0.16), Color(0.16, 0.3, 0.52), Color(0.72, 0.52, 0.18), Color(0.2, 0.36, 0.34), Color(0.5, 0.18, 0.26), Color(0.58, 0.56, 0.5)]
@@ -64,7 +76,7 @@ const METAL_DARK := Color(0.16, 0.16, 0.17)
 const WOOD := Color(0.44, 0.32, 0.22)
 const DEAD_PLANT := Color(0.42, 0.34, 0.24)
 const SOIL := Color(0.3, 0.23, 0.17)
-const COPING := Color(0.9, 0.88, 0.84)
+const COPING := Color(0.74, 0.71, 0.66)  # [art3] weathered cast stone (was near white)
 
 static var _mat: ShaderMaterial
 ## [worlds2] Facade tint of a Cradle Mode world (CityView.look_tint).
@@ -85,6 +97,49 @@ static func material() -> ShaderMaterial:
 	return _mat
 
 
+static var _ivy_mat: ShaderMaterial
+
+
+## [art3] The cut-out ivy over kit facades (art/shaders/building_ivy.gdshader).
+static func ivy_material() -> ShaderMaterial:
+	if _ivy_mat == null:
+		_ivy_mat = ShaderMaterial.new()
+		_ivy_mat.shader = preload("res://art/shaders/building_ivy.gdshader")
+	return _ivy_mat
+
+
+## [art3] Two ivy cards over a facade: origin at its foot, `along` its length w, `out` its normal,
+## h its height. The shader grows the ivy; the cards stand 7 and 13 cm off the wall.
+static func ivy_card(origin: Vector3, along: Vector3, out: Vector3, w: float, h: float, seed_v: int) -> ArrayMesh:
+	var v := PackedVector3Array()
+	var n := PackedVector3Array()
+	var c := PackedColorArray()
+	var u := PackedVector2Array()
+	var u2 := PackedVector2Array()
+	var col := Color(float(seed_v % 251) / 251.0, 0, 0)
+	for layer: int in 2:
+		var o: Vector3 = origin + out * (0.07 + 0.06 * float(layer))
+		var corners: Array = [[0.0, 0.0], [w, 0.0], [w, h], [0.0, 0.0], [w, h], [0.0, h]]
+		if (Vector3.UP * h).cross(along * w).dot(out) < 0.0:  # front faces look along `out` (Geo.tri's rule)
+			corners = [[0.0, 0.0], [w, h], [w, 0.0], [0.0, 0.0], [0.0, h], [w, h]]
+		for q: Array in corners:
+			v.append(o + along * float(q[0]) + Vector3.UP * float(q[1]))
+			n.append(out)
+			c.append(col)
+			u.append(Vector2(q[0], q[1]))
+			u2.append(Vector2(h - float(q[1]), layer))
+	var arr: Array = []
+	arr.resize(Mesh.ARRAY_MAX)
+	arr[Mesh.ARRAY_VERTEX] = v
+	arr[Mesh.ARRAY_NORMAL] = n
+	arr[Mesh.ARRAY_COLOR] = c
+	arr[Mesh.ARRAY_TEX_UV] = u
+	arr[Mesh.ARRAY_TEX_UV2] = u2
+	var m := ArrayMesh.new()
+	m.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+	return m
+
+
 # --- Geometry --------------------------------------------------------------------------------
 
 ## Merged triangle soup with the per-vertex material data the city shader reads.
@@ -101,7 +156,7 @@ class Geo:
 
 	func mat(kind: int, tint: Color, tex: int = 0, flags: int = 0) -> void:
 		col = Color(tint.r, tint.g, tint.b, (float(kind) + 0.5) / 16.0)
-		uv2 = Vector2(tex, flags)
+		uv2 = Vector2(NO_WALL, flags + tex * T_SHIFT)  # [art3] x: metres below the wall's top (box sides)
 
 	func tri(a: Vector3, b: Vector3, d: Vector3, nrm: Vector3) -> void:
 		if (d - a).cross(b - a).dot(nrm) < 0.0:
@@ -128,6 +183,7 @@ class Geo:
 		var h: Vector3 = size * 0.5
 		var base_col: Color = col
 		var base_uv2: Vector2 = uv2
+		var yb: Vector3 = xf.basis.y.normalized()
 		for ax: int in 3:
 			for sgn: float in [-1.0, 1.0]:
 				if ax == 1 and sgn < 0.0 and not bottom:
@@ -151,6 +207,15 @@ class Geo:
 				elif front != Vector3.ZERO and nw.dot(front) > 0.9:
 					uv2.y = float(int(base_uv2.y) | front_flags)
 				quad(xf * (ctr - tt - bb), xf * (ctr + tt - bb), xf * (ctr + tt + bb), xf * (ctr - tt + bb), nw)
+				if ax != 1:
+					# [art3] Side faces carry where they are on their wall: UV.y metres above its foot,
+					# UV2.x metres below its top (the shader's grime, ivy and rain runs), and UV.x the
+					# bay offset of this face alone.
+					var off: float = uv.y if absf(nw.x) > absf(nw.z) else uv.x
+					for k: int in range(v.size() - 6, v.size()):
+						var ly: float = (v[k] - xf.origin).dot(yb)
+						u[k] = Vector2(off, ly + h.y)
+						u2[k].x = h.y - ly
 		col = base_col
 		uv2 = base_uv2
 
@@ -294,11 +359,20 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 	var origin: Vector2 = frame[0]
 	var along: Vector2 = frame[1]
 	var bays: int = maxi(1, int(round((r.size.x if absf(face.y) > 0.5 else r.size.y) / BAY)))
+	# [art3] Low, whole buildings often end in a slate mansard with chimney stacks, not a flat roof.
+	var mansard: bool = not factory and not bd.get("roofed", false) and tiers.size() == 1 and floors <= 7 and not ruined and minf(r.size.x, r.size.y) > 7.0 and rng.randf() < 0.45
+	var wall_flags: int = flags | (F_RUIN if ruined else 0)
 	for ti: int in tiers.size():
 		var tr_: Rect2 = tiers[ti][0]
 		var y0: float = float(tiers[ti][1]) * FLOOR_H
 		var y1: float = float(tiers[ti][2]) * FLOOR_H
-		body.mat(K_FACADE, tint, tex, flags)
+		# [art3] Some towers' upper blocks were added later: alloy or composite panels, glass from
+		# column to column.
+		if ti > 0 and rng.randf() < 0.4:
+			tex = T_ALLOY if rng.randf() < 0.5 else T_PANEL
+			tint = [Color(0.3, 0.33, 0.36), Color(0.42, 0.4, 0.37), Color(0.5, 0.52, 0.5), Color(0.36, 0.3, 0.26)][rng.randi() % 4] * world_tint
+			wall_flags = F_CURTAIN | (F_RUIN if ruined else 0)
+		body.mat(K_FACADE, tint, tex, wall_flags)
 		body.abox(_v3(tr_.position, y0), Vector3(tr_.size.x, y1 - y0, tr_.size.y), -2, f3, F_SHOP if (shop and ti == 0) else 0)
 		# Roof surface (own material, slightly above the walls' top). [v8bld] ROOF_IN m inside the
 		# walls: flush, its 5 cm sides lay on the facade's top strip all round and z-fought.
@@ -316,12 +390,17 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 		var ph: float = rng.randf_range(0.8, 1.2)
 		if bd.has("trim"):  # [v8bld] neighbours' copings overlap at the ends: never at one height
 			ph = 0.82 + 0.05 * float(int(bd["trim"]))
+		if mansard:
+			_mansard(body, tr_, y1, trim, tex, tint)
+			continue
 		_parapet(body, tr_, y1, ph, tex, tint)
 		# Ruined buildings: a broken notch in the roofline instead of props.
 		if ruined and ti == tiers.size() - 1:
 			body.mat(K_DARK, Color(0.05, 0.05, 0.05))
 			var c: Vector2 = tr_.get_center()
 			body.abox(_v3(c - Vector2(1.5, 1.5), y1 - 0.02), Vector3(3.0, 0.04, 3.0))
+			if not bd.get("roofed", false):
+				_broken_top(body, tr_, y1, tex, tint)  # [art3] wall stubs and bare frame against the sky
 			_junk(det, Rect2(tr_.position + Vector2(1, 1), tr_.size - Vector2(2, 2)), y1, rng.randi_range(3, 6), [])
 		elif ti == tiers.size() - 1:
 			dress_roof(body, det, tr_.grow(-0.6), y1, floors, factory)
@@ -337,6 +416,7 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 		body.abox(_v3(lr.position - Vector2(bo, bo), 2.95 + trim), Vector3(lr.size.x + bo * 2.0, 0.22, lr.size.y + bo * 2.0))
 	# Facade dressing on the street side (detail mesh).
 	var top0: int = int(tiers[0][2])
+	_facade_relief(body, det, origin, along, face, bays, float(top0) * FLOOR_H, trim, tex, tint, factory)
 	var fe_bay: int = -1
 	if not factory and floors >= 3 and rng.randf() < 0.45:
 		fe_bay = rng.randi_range(0, maxi(bays - 2, 0))
@@ -363,6 +443,101 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 		var sh: float = rng.randf_range(6.0, 12.0)
 		body.mat(K_PLAIN, Color(0.9, 0.8, 0.74), T_RED_BRICK)
 		body.cyl(Transform3D(Basis.IDENTITY, _v3(cp, float(floors) * FLOOR_H + sh * 0.5)), 0.7, 0.9, sh, 8)
+
+
+## [art3] Real relief on the street face: brick piers between the bays (they cast the facade's
+## shadow lines), iron downpipes at its ends and, on some, a sheet-metal riser added long after the
+## building was new. Piers and riser are in the body (they read from far), pipes in the detail mesh.
+func _facade_relief(body: Geo, det: Geo, origin: Vector2, along: Vector2, face: Vector2, bays: int, y1: float, trim: float,
+		tex: int, tint: Color, factory: bool) -> void:
+	var a3 := Vector3(along.x, 0, along.y)
+	var f3 := Vector3(face.x, 0, face.y)
+	var b := Basis(a3, Vector3.UP, f3)
+	var ya: float = 3.3
+	var yb: float = y1 - 0.42 - trim - 0.08  # under the cornice
+	if yb - ya > 2.0 and bays >= 2 and rng.randf() < (0.7 if factory else 0.5):
+		var pd: float = 0.14 + trim + rng.randf_range(0.0, 0.06)
+		var step_i: int = 2 if bays >= 6 and rng.randf() < 0.5 else 1
+		body.mat(K_PLAIN, tint.darkened(0.07), tex)
+		for i: int in range(1, bays, step_i):
+			# (Their backs stand 5 cm inside the wall, the riser's 3 cm: no two hidden backs on one plane.)
+			var c: Vector3 = _v3(origin + along * float(i) * BAY, (ya + yb) * 0.5) + f3 * (pd * 0.5 - 0.025)
+			body.box(Transform3D(b, c), Vector3(0.52, yb - ya, pd + 0.05), -1, true)
+	var w: float = float(bays) * BAY
+	det.mat(K_METAL, Color(0.11, 0.105, 0.1), 0, F_RUST)
+	for k: int in (2 if rng.randf() < 0.5 else 1):
+		var px: float = 0.3 if k == 0 else w - 0.3
+		var foot: Vector3 = _v3(origin + along * px, 0.25) + f3 * 0.1
+		det.rod(foot, foot + Vector3(0, y1 - 0.6, 0), 0.055)
+		det.box(Transform3D(b, foot + Vector3(0, y1 - 0.45, 0)), Vector3(0.3, 0.3, 0.2), -1, true)
+	if bays >= 3 and y1 > 8.0 and rng.randf() < 0.3:
+		var i2: int = rng.randi_range(1, bays - 1)
+		var dd: float = 0.42 + trim
+		var dc: Vector3 = _v3(origin + along * (float(i2) * BAY + 0.02), 0.0) + f3 * (dd * 0.5)
+		body.mat(K_METAL, METAL_LIGHT.darkened(rng.randf_range(0.25, 0.45)), 0, F_RUST | F_HOOPS)
+		body.box(Transform3D(b, dc + Vector3(0, (3.4 + y1 + 1.9) * 0.5, 0) - f3 * 0.015), Vector3(0.6, y1 + 1.9 - 3.4, dd + 0.03), -1, true)
+		body.box(Transform3D(b, dc + Vector3(0, y1 + 1.62, 0) + f3 * (dd * 0.5 - 0.92)), Vector3(0.58, 0.5, 1.8), -1, true)
+
+
+## [art3] A slate mansard on the wall head: four slopes, a flat top and brick chimney stacks.
+func _mansard(g: Geo, r: Rect2, y: float, trim: float, tex: int, tint: Color) -> void:
+	var rise: float = 2.2 + rng.randf_range(0.0, 0.6) + trim * 3.0
+	var inset: float = minf(rng.randf_range(1.3, 1.9), minf(r.size.x, r.size.y) * 0.3)
+	var slate: Color = [Color(0.2, 0.21, 0.24), Color(0.27, 0.24, 0.22), Color(0.19, 0.24, 0.23), Color(0.33, 0.2, 0.16)][rng.randi() % 4]
+	var y0: float = y + 0.012 + trim
+	var t: Rect2 = r.grow(-inset)
+	var lo: Array[Vector3] = [_v3(r.position, y0), _v3(Vector2(r.end.x, r.position.y), y0), _v3(r.end, y0), _v3(Vector2(r.position.x, r.end.y), y0)]
+	var hi: Array[Vector3] = [_v3(t.position, y0 + rise), _v3(Vector2(t.end.x, t.position.y), y0 + rise), _v3(t.end, y0 + rise), _v3(Vector2(t.position.x, t.end.y), y0 + rise)]
+	g.mat(K_ROOF, slate, 0, F_ROOF_SEAMS_X)
+	var out: Array[Vector3] = [Vector3(0, 0, -1), Vector3(1, 0, 0), Vector3(0, 0, 1), Vector3(-1, 0, 0)]
+	for k: int in 4:
+		var nrm: Vector3 = (out[k] * rise + Vector3.UP * inset).normalized()
+		g.quad(lo[k], lo[(k + 1) % 4], hi[(k + 1) % 4], hi[k], nrm)
+	g.quad(hi[0], hi[1], hi[2], hi[3], Vector3.UP)
+	# A lead roll round the top edge.
+	g.mat(K_METAL, Color(0.3, 0.31, 0.33))
+	g.abox(_v3(t.position - Vector2(0.07, 0.07), y0 + rise - 0.1), Vector3(t.size.x + 0.14, 0.16, t.size.y + 0.14))
+	for k: int in rng.randi_range(1, 3):
+		var cs := Vector2(0.75, 1.1) if rng.randf() < 0.5 else Vector2(1.1, 0.75)
+		if t.size.x < cs.x + 0.8 or t.size.y < cs.y + 0.8:
+			break
+		var cp := Vector2(rng.randf_range(t.position.x + 0.3, t.end.x - cs.x - 0.3), rng.randf_range(t.position.y + 0.3, t.end.y - cs.y - 0.3))
+		var ch: float = rng.randf_range(1.3, 2.4)
+		g.mat(K_PLAIN, tint.darkened(0.12), tex)
+		g.abox(_v3(cp, y0 + rise - 0.3), Vector3(cs.x, ch + 0.3, cs.y))
+		g.mat(K_COPING, COPING.darkened(0.2))
+		g.abox(_v3(cp - Vector2(0.06, 0.06), y0 + rise + ch), Vector3(cs.x + 0.12, 0.12, cs.y + 0.12))
+
+
+## [art3] What is left above a ruined building's roof: stubs of the next floor's walls along two
+## sides, stepping down, and a few bare frame posts with a beam.
+func _broken_top(g: Geo, r: Rect2, y: float, tex: int, tint: Color) -> void:
+	var inr: Rect2 = r.grow(-0.34)
+	if inr.size.x < 4.0 or inr.size.y < 4.0:
+		return
+	var along_x: bool = rng.randf() < 0.5
+	var far_side: bool = rng.randf() < 0.5
+	g.mat(K_PLAIN, tint.darkened(0.1), tex)
+	var len_t: float = inr.size.x if along_x else inr.size.y
+	var x: float = 0.0
+	var hgt: float = rng.randf_range(2.6, 4.6)
+	while x < len_t - 0.8 and hgt > 0.9:
+		var l: float = minf(rng.randf_range(1.2, 3.2), len_t - x)
+		var p: Vector2 = inr.position + (Vector2(x, inr.size.y - 0.3 if far_side else 0.0) if along_x else Vector2(inr.size.x - 0.3 if far_side else 0.0, x))
+		g.abox(_v3(p, y), Vector3(l if along_x else 0.3, hgt, 0.3 if along_x else l))
+		x += l
+		hgt -= rng.randf_range(0.3, 1.5)
+	g.mat(K_METAL, Color(0.2, 0.17, 0.15), 0, F_RUST)
+	var c: Vector2 = inr.get_center()
+	var prev := Vector3.INF
+	for k: int in rng.randi_range(2, 4):
+		var q: Vector2 = c + Vector2(rng.randf_range(-0.35, 0.35) * inr.size.x, rng.randf_range(-0.35, 0.35) * inr.size.y)
+		var ph: float = rng.randf_range(2.2, 5.5)
+		g.abox(_v3(q - Vector2(0.14, 0.14), y), Vector3(0.28, ph, 0.28))
+		var top := _v3(q, y + ph - 0.2)
+		if prev != Vector3.INF and rng.randf() < 0.7:
+			g.rod(prev, top, 0.09)
+		prev = top
 
 
 ## Strip along the front of a rect (depth d).
@@ -515,6 +690,30 @@ func dress_roof(body: Geo, det: Geo, rr: Rect2, y: float, floors: int, factory: 
 		if p2 != Vector2.INF:
 			det.mat(K_METAL, METAL_LIGHT.darkened(0.2), 0, F_RUST)
 			det.abox(_v3(p2 - Vector2(0.5, 0.5), y), Vector3(1.0, 0.45, 1.0))
+	# [art3] Later additions that read against the sky: a louvred plant screen, a duct run on
+	# sleepers and a lattice mast with a beacon.
+	if floors >= 6 and rng.randf() < 0.55:
+		var ps := Vector2(rng.randf_range(3.0, 4.6), rng.randf_range(2.2, 3.0))
+		var pp: Vector2 = _place(rr, used, ps)
+		if pp != Vector2.INF:
+			body.mat(K_METAL, METAL_LIGHT.darkened(rng.randf_range(0.3, 0.5)), 0, F_LOUVRE | F_RUST)
+			body.abox(_v3(pp - ps * 0.5, y), Vector3(ps.x, rng.randf_range(2.0, 3.2), ps.y))
+	if (factory or floors >= 4) and rng.randf() < 0.5:
+		var horiz: bool = rr.size.x > rr.size.y
+		var dl: float = (rr.size.x if horiz else rr.size.y) * rng.randf_range(0.45, 0.8)
+		var ds := Vector2(dl, 0.7) if horiz else Vector2(0.7, dl)
+		var dp3: Vector2 = _place(rr, used, ds)
+		if dp3 != Vector2.INF and dl > 2.5:
+			body.mat(K_METAL, METAL_LIGHT.darkened(rng.randf_range(0.15, 0.35)), 0, F_RUST)
+			body.abox(_v3(dp3 - ds * 0.5 + Vector2(0.05, 0.05), y + 0.35), Vector3(ds.x - 0.1, 0.55, ds.y - 0.1), -1)
+			det.mat(K_DARK, Color(0.09, 0.09, 0.09))
+			for k: int in 3:
+				var so: Vector2 = (Vector2(1, 0) if horiz else Vector2(0, 1)) * dl * (float(k) - 1.0) * 0.4
+				det.abox(_v3(dp3 + so - Vector2(0.3, 0.3), y), Vector3(0.6, 0.35, 0.6))
+	if floors >= 4 and rng.randf() < (0.6 if floors >= 9 else 0.3):
+		var mp2: Vector2 = _place(rr, used, Vector2(1.2, 1.2))
+		if mp2 != Vector2.INF:
+			_mast(body, _v3(mp2, y), rng.randf_range(7.0, 11.0) + (rng.randf_range(4.0, 10.0) if floors >= 9 else 0.0))
 	# Skylight ridges on factories.
 	if factory and rng.randf() < 0.6:
 		var n_sk: int = rng.randi_range(2, 4)
@@ -616,6 +815,35 @@ func dress_roof(body: Geo, det: Geo, rr: Rect2, y: float, floors: int, factory: 
 			_dead_garden(det, Rect2(gp - gs * 0.5, gs), y, rng.randi_range(2, 4))
 	# Junk.
 	_junk(det, rr, y, rng.randi_range(1, 5), used)
+
+
+## [art3] A lattice mast: three legs closing to a point, rings of bracing, a cross-arm with
+## aerials, a dish and a red beacon at the head (shader kind K_LAMP: it glows after dark).
+func _mast(g: Geo, base: Vector3, h: float) -> void:
+	g.mat(K_METAL, Color(0.36, 0.34, 0.33), 0, F_RUST)
+	var yaw: float = rng.randf() * TAU
+	var legs: Array[Vector3] = []
+	for k: int in 3:
+		legs.append(Vector3(cos(yaw + TAU * float(k) / 3.0), 0, sin(yaw + TAU * float(k) / 3.0)))
+	var top: Vector3 = base + Vector3(0, h, 0)
+	var rings: int = int(h / 2.2)
+	for k: int in 3:
+		g.rod(base + legs[k] * 0.5, top + legs[k] * 0.06, 0.045)
+		for j: int in range(1, rings):
+			var t0: float = float(j) / float(rings)
+			var t1: float = float(j + 1) / float(rings)
+			var a0: Vector3 = base.lerp(top, t0) + legs[k] * lerpf(0.5, 0.06, t0)
+			var a1: Vector3 = base.lerp(top, t1) + legs[(k + 1) % 3] * lerpf(0.5, 0.06, t1)
+			g.rod(a0, a1, 0.022)
+	g.rod(top, top + Vector3(0, 1.6, 0), 0.03)
+	var arm: Vector3 = legs[0].cross(Vector3.UP)
+	g.rod(top - Vector3(0, 1.2, 0) - arm * 1.1, top - Vector3(0, 1.2, 0) + arm * 1.1, 0.03)
+	for s: float in [-1.0, 1.0]:
+		g.rod(top - Vector3(0, 1.2, 0) + arm * s, top + Vector3(0, 0.1, 0) + arm * s, 0.02)
+	g.mat(K_METAL, Color(0.6, 0.6, 0.58))
+	g.cyl(Transform3D(Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, deg_to_rad(80.0)), base + Vector3(0, h * 0.62, 0) + legs[1] * 0.5), 0.55, 0.12, 0.25, 8)
+	g.mat(K_LAMP, Color(1.0, 0.22, 0.12))
+	g.box(Transform3D(Basis.IDENTITY, top + Vector3(0, 1.7, 0)), Vector3(0.22, 0.22, 0.22), -1, true)
 
 
 func _dead_garden(g: Geo, area: Rect2, y: float, n: int) -> void:

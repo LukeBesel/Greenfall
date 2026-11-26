@@ -116,7 +116,7 @@ func _build_archetypes() -> void:
 		var d: float = a[2]
 		var r := Rect2(-w * 0.5, -d * 0.5, w, d)
 		var gabled: bool = i <= 1 or i == 3  # [v5look] houses and the works shed get pitched roofs (no flat-roof clutter under them)
-		var bd: Dictionary = {"rect": r, "face": Vector2(0, 1), "bays": int(w / 3.0), "floors": int(a[3]), "style": a[4], "seed": 9001 + vi * 7919, "ruined": vi % 2 == 1 or gabled}
+		var bd: Dictionary = {"rect": r, "face": Vector2(0, 1), "bays": int(w / 3.0), "floors": int(a[3]), "style": a[4], "seed": 9001 + vi * 7919, "ruined": vi % 2 == 1 or gabled, "roofed": gabled}  # [art3] roofed: no mansard or broken top under the gable
 		var body := BuildingDetail.Geo.new()
 		var dg := BuildingDetail.Geo.new()
 		det.proxy_building(bd, body, dg)

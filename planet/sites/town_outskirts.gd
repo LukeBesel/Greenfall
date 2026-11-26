@@ -142,6 +142,8 @@ func build() -> void:
 		await BuildBudget.check("town:outskirts")
 		await _build_tile(tk, tiles[tk], cleared)  # [v6qa] yields per building too
 	stats["footprints"] = foot.size()
+	await BuildBudget.check("town:waterfront")
+	_build_waterfront()
 
 
 ## A tower block: one tower (podium plus setbacks via the proxy's tiers) on the side facing the
@@ -287,3 +289,102 @@ func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
 		dm.set_meta("no_collide", true)
 		node.add_child(dm)
 	node.move_child(sb, -1)  # [v6qa] (the body last, as before)
+
+
+# --- Waterfront ---------------------------------------------------------------------------------
+
+const WATERFRONT_R: float = 300.0
+
+## [art3] An old harbour's edge (art/concept/world_target.jpg): along every lake shore round the
+## town, weathered timber pilings stand in the shallows, some still carrying a bent iron railing
+## or the last planks of a jetty. Everything stands inside lake cells, at least 1.5 m out from the
+## shore edge (no colliders: Lumi's ground ends at the bank). One mesh, the city material, no shadows.
+func _build_waterfront() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value + 9091
+	var g := BuildingDetail.Geo.new()
+	var inv: Transform3D = site_xf.affine_inverse()
+	var hub: Vector3 = site_xf.basis.y.normalized()
+	var wood := Color(0.2, 0.16, 0.12)
+	var n_p: int = 0
+	for c: int in grid.cells_within(hub, WATERFRONT_R):
+		if cells.state[c] != 5 or cells.has_flag(c, SphereCells.F_SITE):
+			continue  # dry, or a wet cell under the pad
+		var cd: Vector3 = grid.centers[c].normalized()
+		for o: int in grid.neighbors(c):
+			if cells.state[o] == 5:
+				continue
+			var od: Vector3 = grid.centers[o].normalized()
+			var half: float = cd.angle_to(od) * R * 0.5  # centre to the shared edge
+			var to_land: Vector3 = (od - cd * od.dot(cd)).normalized()
+			var side: Vector3 = cd.cross(to_land).normalized()
+			var roll: float = rng.randf()
+			var count: int = rng.randi_range(1, 3) if roll < 0.75 else 0
+			var jetty: bool = roll > 0.9 and half > 4.0
+			var rail: bool = roll < 0.22
+			var prev := Vector3.INF
+			var prev_top: float = 0.0
+			for k: int in count:
+				var out_m: float = rng.randf_range(1.6, minf(3.6, half - 0.6))
+				var along_m: float = (float(k) - float(count - 1) * 0.5) * 2.1 + rng.randf_range(-0.4, 0.4)
+				var top_m: float = rng.randf_range(0.5, 1.7)
+				var p: Vector3 = _piling(g, inv, cd, to_land * (half - out_m) + side * along_m, top_m, rng, wood)
+				n_p += 1
+				if rail and prev != Vector3.INF:
+					# A bent iron handrail between two posts, one end let go.
+					g.mat(BuildingDetail.K_METAL, Color(0.24, 0.2, 0.17), 0, BuildingDetail.F_RUST)
+					var up: Vector3 = (inv.basis * cd).normalized()
+					g.rod(prev + up * (prev_top - 0.12), p + up * (top_m - 0.12 - rng.randf_range(0.0, 0.5)), 0.035)
+					g.rod(prev + up * (prev_top * 0.5), p + up * (top_m * 0.5 - rng.randf_range(0.0, 0.35)), 0.03)
+				prev = p
+				prev_top = top_m
+			if jetty:
+				# What is left of a jetty: pairs of piles walking out over the water, a few planks.
+				var up2: Vector3 = (inv.basis * cd).normalized()
+				var last := [Vector3.INF, Vector3.INF]
+				for j: int in rng.randi_range(2, 4):
+					var out_j: float = 2.0 + float(j) * 2.4
+					if out_j > half * 2.0 - 1.0:
+						break
+					for sgn: int in 2:
+						var q: Vector3 = _piling(g, inv, cd, to_land * (half - out_j) + side * (0.9 if sgn == 0 else -0.9), 0.95, rng, wood)
+						n_p += 1
+						if last[sgn] != Vector3.INF and rng.randf() < 0.7:
+							g.mat(BuildingDetail.K_FLAT, wood.lightened(0.12))
+							g.rod(last[sgn] + up2 * 0.85, q + up2 * 0.85, 0.07)
+						last[sgn] = q
+					if rng.randf() < 0.6 and last[0] != Vector3.INF and last[1] != Vector3.INF:
+						g.mat(BuildingDetail.K_FLAT, Color(0.3, 0.25, 0.19))
+						for pl: int in rng.randi_range(1, 3):
+							var off: Vector3 = (inv.basis * to_land).normalized() * (float(pl) * 0.32)
+							g.rod((last[0] as Vector3) + up2 * 0.95 + off, (last[1] as Vector3) + up2 * 0.95 + off, 0.06)
+	stats["pilings"] = n_p
+	if g.empty():
+		return
+	var mi := MeshInstance3D.new()
+	mi.name = "Waterfront"
+	mi.mesh = g.mesh()
+	mi.material_override = material()
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mi.visibility_range_end = 320.0
+	mi.visibility_range_end_margin = 20.0
+	mi.set_meta("no_collide", true)
+	add_child(mi)
+
+
+## One leaning timber pile at tangent offset `off` (world metres) from the lake cell centre `cd`,
+## from under the water to top_m above it. Returns its foot at the waterline (site-local).
+func _piling(g: BuildingDetail.Geo, inv: Transform3D, cd: Vector3, off: Vector3, top_m: float, rng: RandomNumberGenerator, wood: Color) -> Vector3:
+	var d: Vector3 = (cd * R + off).normalized()
+	var water: Vector3 = d * (R + terrain.height(d) - SphereWater.BELOW_LAND)
+	var up: Vector3 = (inv.basis * d).normalized()
+	var foot: Vector3 = inv * water
+	var lean: Vector3 = Vector3(rng.randf_range(-0.12, 0.12), 0.0, rng.randf_range(-0.12, 0.12))
+	var b := Basis(Quaternion(Vector3.UP, (up + lean).normalized()))
+	var r: float = rng.randf_range(0.11, 0.17)
+	g.mat(BuildingDetail.K_FLAT, wood.lightened(rng.randf_range(0.0, 0.18)))
+	g.cyl(Transform3D(b, foot + b.y * (top_m - 1.2) * 0.5), r * 0.9, r, top_m + 1.2, 7)
+	# The tide line: a dark, weedy band at the water.
+	g.mat(BuildingDetail.K_FLAT, Color(0.1, 0.12, 0.07))
+	g.cyl(Transform3D(b, foot + b.y * 0.12), r * 1.08, r * 1.12, 0.3, 7, false)
+	return foot
