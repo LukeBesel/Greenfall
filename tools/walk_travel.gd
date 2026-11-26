@@ -1326,7 +1326,9 @@ static func _outpost_repair(so: SliceOrbit, site: int) -> void:
 	# at his feet by the kiosk (E waits out the press, then picks the bale up, as its prompt says).
 	# The step here is the repair: an empty chest, as when a player walks up to sell first.
 	var pc: Patch = w.get("patch") as Patch
-	for i: int in 40:
+	# [main] A whole press, not 40 frames of one: the prompt is empty while a bale is pressed (the
+	# game's own rule), and a press still running here left the repair check reading '' (cubing 1.17).
+	for i: int in 900:
 		if float(pc.get("_cubing")) <= 0.0:
 			break
 		await w.get_tree().physics_frame
@@ -1334,6 +1336,10 @@ static func _outpost_repair(so: SliceOrbit, site: int) -> void:
 	var k: int = await _at_outpost(so, site)
 	if k < 0:
 		return
+	for i: int in 900:
+		if float(pc.get("_cubing")) <= 0.0:
+			break
+		await w.get_tree().physics_frame
 	var ops: Outposts = w.get("outposts") as Outposts
 	var rc: Dictionary = ops.repair_cost(k)
 	_set_money(maxf(GameState.get_currency("cubes").to_float(), float(rc.get("cubes", 0)) + 10.0), maxf(GameState.get_currency("parts").to_float(), float(rc.get("parts", 0)) + 2.0))
