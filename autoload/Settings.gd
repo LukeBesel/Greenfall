@@ -333,6 +333,7 @@ func load_settings() -> void:
 						evs.append(ev)
 			if not evs.is_empty():
 				_set_events(action, evs)
+	_drop_space_from_old_scoop()
 	reduced_motion = bool(cfg.get_value("feel", "reduced_motion", reduced_motion))
 	hold_to_scoop = bool(cfg.get_value("controls", "hold_to_scoop", hold_to_scoop))
 	mouse_sensitivity = float(cfg.get_value("controls", "mouse_sensitivity", mouse_sensitivity))
@@ -460,6 +461,35 @@ func _set_events(action: String, evs: Array[InputEvent]) -> void:
 		_overrides.erase(action)
 	else:
 		_overrides[action] = evs
+
+
+## [v11jump] Space was scoop's second key until the hop took it. The settings file keeps the whole
+## list of a rebound action, so a player who rebound the scoop before that still had Space in it,
+## and Space then scooped and hopped at once. Once on load: Space leaves a saved scoop binding (X,
+## the new second key, takes its place when free) and the file is written back.
+func _drop_space_from_old_scoop() -> void:
+	if not _overrides.has("scoop") or not InputMap.has_action("jump"):
+		return
+	var space := InputEventKey.new()
+	space.physical_keycode = KEY_SPACE
+	if not InputMap.action_has_event("jump", space):
+		return  # the player moved the hop off Space: Space may scoop again
+	var evs: Array[InputEvent] = []
+	var had: bool = false
+	for ev: InputEvent in _overrides["scoop"]:
+		if same_event(ev, space):
+			had = true
+		else:
+			evs.append(ev)
+	if not had:
+		return
+	var x := InputEventKey.new()
+	x.physical_keycode = KEY_X
+	if find_conflict("scoop", x) == "" and not evs.any(func(e: InputEvent) -> bool: return same_event(e, x)):
+		evs.append(x)
+	_set_events("scoop", evs)
+	print("[settings] Space left the saved scoop binding (it is the hop now)")
+	save_settings()
 
 
 func is_rebound(action: String) -> bool:
