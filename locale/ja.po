@@ -642,7 +642,7 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:249 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:251 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "基地 %d"
 
@@ -767,7 +767,7 @@ msgstr "ホーム：%d%% きれい"
 msgid "Restored: %d%% clean"
 msgstr "復旧済み：%d%% きれい"
 
-#: planet/sites/hub_purpose.gd:430 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:430
 msgid "New"
 msgstr "新規"
 
@@ -779,7 +779,7 @@ msgstr "起こせる"
 msgid "Asleep: %d / %d"
 msgstr "眠っている：%d / %d"
 
-#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:618
+#: planet/sites/hub_purpose.gd:445 ui/globe_view.gd:667
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% きれい"
 
@@ -799,31 +799,31 @@ msgstr "%d つの基地がそろった。ロケットでドライブを建造し
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:130
+#: planet/sites/orbit_sites.gd:132
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:152
+#: planet/sites/orbit_sites.gd:154
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:190
+#: planet/sites/orbit_sites.gd:192
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:230
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:230
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:232
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:248
+#: planet/sites/orbit_sites.gd:250
 msgid "%s site"
 msgstr "%sの地点"
 
@@ -1121,7 +1121,7 @@ msgstr "パーツが足りません"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
-#: ui/globe_view.gd:555
+#: ui/globe_view.gd:604
 msgid "Not enough cubes"
 msgstr "キューブが足りない"
 
@@ -1539,11 +1539,11 @@ msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけ�
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取りかかった。"
 
-#: scenes/slice.gd:129 ui/rockets_panel.gd:60
+#: scenes/slice.gd:134 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr "発射台のロケットまで歩いて、[%s]を押して行き先を選ぼう。"
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:39
+#: scenes/slice.gd:144 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
@@ -1555,19 +1555,19 @@ msgstr "ヘックス クリーン！  +%s"
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
+#: scenes/slice_orbit.gd:519 systems/camp/camp.gd:204 tools/orbit_roundtrip.gd:565
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:510 systems/camp/camp.gd:205
+#: scenes/slice_orbit.gd:519 systems/camp/camp.gd:205
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1049
+#: scenes/slice_orbit.gd:1058
 msgid "Upgrades need a workbench. Head back to the base."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1149 systems/camp/camp.gd:252
+#: scenes/slice_orbit.gd:1158 systems/camp/camp.gd:252
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "作業台が直った！そばで %s を押してアップグレードを買おう。"
 
@@ -1611,7 +1611,7 @@ msgstr "作ったロボット"
 msgid "Time played"
 msgstr "プレイ時間"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:365
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:410
 msgid "Wishlist on Steam"
 msgstr "Steam でウィッシュリストに追加"
 
@@ -1627,12 +1627,12 @@ msgstr "タイトル画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "プレイを続ける：最初の地区は基地レベル %d のまま遊べます。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:889 ui/main_menu.gd:590
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:889 ui/main_menu.gd:649
 msgid "%dh %02dm"
 msgstr "%d時間%02d分"
 
 #: steam/demo_end_screen.gd:124 systems/remote_progress.gd:287 systems/extras/welcome_back.gd:56
-#: ui/globe_view.gd:709 ui/upgrade_card.gd:259
+#: ui/globe_view.gd:758 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr "%d 分"
 
@@ -3426,13 +3426,54 @@ msgstr "Glim はまだスキャン中。少し待ってからもう一度。"
 msgid "Watch the opening again"
 msgstr "オープニングをもう一度見る"
 
+#: tools/title_walk.gd:70 ui/main_menu.gd:381 ui/profile_picker.gd:110
+msgid "Continue"
+msgstr "つづきから"
+
+#: tools/title_walk.gd:70 tools/title_walk.gd:81 tools/title_walk.gd:86
+#: ui/profile_picker.gd:114
+msgid "Start over"
+msgstr "最初から"
+
+#: tools/title_walk.gd:70 tools/title_walk.gd:80 ui/profile_picker.gd:115
+msgid "Rename"
+msgstr "名前変更"
+
+#: tools/title_walk.gd:70 tools/title_walk.gd:72 tools/title_walk.gd:77
+#: tools/title_walk.gd:78 ui/profile_picker.gd:117 ui/profile_picker.gd:236
+msgid "Delete"
+msgstr "削除"
+
+#: tools/title_walk.gd:75 tools/title_walk.gd:84 ui/lumi_builder.gd:191
+#: ui/profile_picker.gd:255 ui/profile_picker.gd:272
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: tools/title_walk.gd:80 ui/main_menu.gd:393 ui/profile_picker.gd:112
+msgid "Play"
+msgstr "あそぶ"
+
+#: tools/title_walk.gd:87 ui/profile_picker.gd:216
+msgid "Erase and start"
+msgstr "消去して始める"
+
+#: tools/title_walk.gd:153 ui/main_menu.gd:411 ui/main_menu.gd:775
+#: ui/pause_menu.gd:87
+msgid "Settings"
+msgstr "設定"
+
+#: tools/title_walk.gd:153 tools/walk_opening.gd:756 ui/main_menu.gd:413
+#: ui/pause_menu.gd:91
+msgid "Quit"
+msgstr "終了"
+
 #: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "閉じる"
 
-#: tools/walk_opening.gd:756 ui/main_menu.gd:368 ui/pause_menu.gd:91
-msgid "Quit"
-msgstr "終了"
+#: tools/walk_map.gd:69 ui/hud.gd:429
+msgid "%s  BASE"
+msgstr "%s  基地"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -3534,7 +3575,7 @@ msgstr "新しい世界に種をまく"
 msgid "The Cradle has to come home first."
 msgstr "まずは Cradle号が帰ってこないと。"
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:496
 #: ui/rockets_panel.gd:88 ui/system_map.gd:745
 msgid "Launch"
 msgstr "発射"
@@ -3601,7 +3642,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "機械"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:244 ui/locker_panel.gd:250
+#: ui/bench_lists.gd:11 ui/globe_view.gd:265 ui/locker_panel.gd:250
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "ロケット"
@@ -3705,7 +3746,7 @@ msgstr "散水範囲"
 msgid "Refill"
 msgstr "補給"
 
-#: ui/builder_panel.gd:21 ui/globe_view.gd:202 data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 ui/globe_view.gd:223 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清掃"
 
@@ -4049,7 +4090,7 @@ msgstr "でこぼこベール"
 msgid "Bales cashed in"
 msgstr "換金したベール"
 
-#: ui/codex_screen.gd:805 ui/globe_view.gd:212 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:805 ui/globe_view.gd:233 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "栽培"
 
@@ -4224,7 +4265,7 @@ msgstr "愛とガラクタでできています"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "コード、プロシージャルメッシュ、合成した音楽と効果音、テキストは Greenfall のオリジナルです。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:757
+#: ui/credits_roll.gd:148 ui/main_menu.gd:830
 msgid "Music by Lucas"
 msgstr "音楽：Lucas"
 
@@ -4572,103 +4613,115 @@ msgstr "見た目"
 msgid "???  %s"
 msgstr "???  %s"
 
-#: ui/globe_view.gd:176
+#: ui/globe_view.gd:197
 msgid "Survey"
 msgstr "調査"
 
-#: ui/globe_view.gd:176
+#: ui/globe_view.gd:197
 msgid "Verdance  ·  seed-keeper's survey"
 msgstr "Verdance  ·  種の守り手の調査"
 
-#: ui/globe_view.gd:202
+#: ui/globe_view.gd:223
 msgid "Trash"
 msgstr "ゴミ"
 
-#: ui/globe_view.gd:202
+#: ui/globe_view.gd:223
 msgid "Green"
 msgstr "みどり"
 
-#: ui/globe_view.gd:211
+#: ui/globe_view.gd:232
 msgid "Not cleaned yet"
 msgstr "未清掃"
 
-#: ui/globe_view.gd:211
+#: ui/globe_view.gd:232
 msgid "Cleaned"
 msgstr "清掃済み"
 
-#: ui/globe_view.gd:212 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:233 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "植え付け済み"
 
-#: ui/globe_view.gd:213 ui/system_map.gd:703 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:234 ui/system_map.gd:703 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "再生済み"
 
-#: ui/globe_view.gd:213
+#: ui/globe_view.gd:234
 msgid "Cities"
 msgstr "都市"
 
-#: ui/globe_view.gd:214
+#: ui/globe_view.gd:235
 msgid "Hubs"
 msgstr "基地"
 
-#: ui/globe_view.gd:229 ui/late_menu.gd:21
+#: ui/globe_view.gd:250 ui/late_menu.gd:21
 msgid "Solar system"
 msgstr "太陽系"
 
-#: ui/globe_view.gd:244
+#: ui/globe_view.gd:265
 msgid "Travel between bases"
 msgstr "基地間を移動"
 
-#: ui/globe_view.gd:264
+#: ui/globe_view.gd:285
+msgid "Drag to turn the planet. Scroll to zoom."
+msgstr "ドラッグで星を回す。スクロールでズーム。"
+
+#: ui/globe_view.gd:285
+msgid "{@look}  turn the planet     {zoom_out}{zoom_in}  zoom"
+msgstr "{@look}  星を回す     {zoom_out}{zoom_in}  ズーム"
+
+#: ui/globe_view.gd:290
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]ドラッグで回転   ·   ホイールでズーム   ·   [/k][p]{@look}  回転     {zoom_out}{zoom_in}  ズーム     {@dpad}  発射リスト     [/p]{open_globe}  閉じる"
 
-#: ui/globe_view.gd:393
+#: ui/globe_view.gd:297 ui/globe_view.gd:432
+msgid "Find Lumi"
+msgstr "Lumi をさがす"
+
+#: ui/globe_view.gd:432
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr "[k]ドラッグで回転   ·   ホイールでズーム   ·   [/k][p]{@look}  回転     {zoom_out}{zoom_in}  ズーム     [/p]{open_globe}  閉じる"
 
-#: ui/globe_view.gd:448
+#: ui/globe_view.gd:493
 msgid "%d sectors away"
 msgstr "%d セクター先"
 
-#: ui/globe_view.gd:589
+#: ui/globe_view.gd:638
 msgid "%s HEXES CLEAN"
 msgstr "きれいなヘックス %s"
 
-#: ui/globe_view.gd:591
+#: ui/globe_view.gd:640
 msgid "Surveyed %s ago%s"
 msgstr "%s前に調査%s"
 
-#: ui/globe_view.gd:591
+#: ui/globe_view.gd:640
 msgid "   ·   OUTDATED"
 msgstr "   ·   古い情報"
 
-#: ui/globe_view.gd:592
+#: ui/globe_view.gd:641
 msgid "Re-survey      %s cubes"
 msgstr "再調査      %s キューブ"
 
-#: ui/globe_view.gd:603
+#: ui/globe_view.gd:652
 msgid "%d%% clean"
 msgstr "%d%% きれい"
 
-#: ui/globe_view.gd:606
+#: ui/globe_view.gd:655
 msgid "%s of %s hexes around the bases"
 msgstr "基地のまわり %s / %s ヘックス"
 
-#: ui/globe_view.gd:609
+#: ui/globe_view.gd:658
 msgid "How much is clean"
 msgstr "どれだけきれいになった？"
 
-#: ui/globe_view.gd:611
+#: ui/globe_view.gd:660
 msgid "%d of %d bases clean"
 msgstr "%d / %d 基地がきれい"
 
-#: ui/globe_view.gd:691
+#: ui/globe_view.gd:740
 msgid "of the ground around your bases is clean"
 msgstr "基地のまわりの地面がきれいになった"
 
-#: ui/globe_view.gd:693
+#: ui/globe_view.gd:742
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "の土地を取り戻した  ·  陸のヘックス %s / %s"
 
@@ -4800,56 +4853,52 @@ msgstr "旧市街   0%"
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:432
+#: ui/hud.gd:425
 msgid "HEX  %d%% CLEAR"
 msgstr "ヘックス  %d%% きれい"
 
-#: ui/hud.gd:436
-msgid "%s  BASE"
-msgstr "%s  基地"
-
-#: ui/hud.gd:439
+#: ui/hud.gd:444
 msgid "CARRYING %d/%d"
 msgstr "運搬中 %d/%d"
 
-#: ui/hud.gd:490
+#: ui/hud.gd:495
 msgid "HEX  CLEAR"
 msgstr "ヘックス  きれい"
 
-#: ui/hud.gd:494
+#: ui/hud.gd:499
 msgid "HEX  %s"
 msgstr "ヘックス  %s"
 
-#: ui/hud.gd:497
+#: ui/hud.gd:502
 msgid "  SUSTAIN %d%%"
 msgstr "  維持 %d%%"
 
-#: ui/hud.gd:499
+#: ui/hud.gd:504
 msgid "  THIRSTY"
 msgstr "  水不足"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:529
+#: ui/hud.gd:534
 msgid "%s   pick up bale"
 msgstr "%s   ベールを持つ"
 
-#: ui/hud.gd:530
+#: ui/hud.gd:535
 msgid "%s   dig up part"
 msgstr "%s   パーツを掘り出す"
 
-#: ui/hud.gd:531
+#: ui/hud.gd:536
 msgid "%s   read memory shard"
 msgstr "%s   メモリーの破片を読む"
 
-#: ui/hud.gd:532
+#: ui/hud.gd:537
 msgid "%s   pick up the seed tin"
 msgstr "%s   種の缶を拾う"
 
-#: ui/hud.gd:533
+#: ui/hud.gd:538
 msgid "%s   set bale down"
 msgstr "%s   ベールを置く"
 
-#: ui/hud.gd:534
+#: ui/hud.gd:539
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
@@ -5072,10 +5121,6 @@ msgstr "プリセットに戻す"
 msgid "Test laser"
 msgstr "レーザーをテスト"
 
-#: ui/lumi_builder.gd:191 ui/profile_picker.gd:252 ui/profile_picker.gd:269
-msgid "Cancel"
-msgstr "キャンセル"
-
 #: ui/lumi_builder.gd:192
 msgid "Done"
 msgstr "完了"
@@ -5176,110 +5221,101 @@ msgstr "未保存の変更"
 msgid "Part of this look is still locked."
 msgstr "この外見の一部はまだロック中です。"
 
-#: ui/main_menu.gd:331
+#: ui/main_menu.gd:334
 msgid "One small robot. One very big cleanup."
 msgstr "小さなロボット。とても大きなお片づけ。"
 
-#: ui/main_menu.gd:335
+#: ui/main_menu.gd:338
 msgid "DEMO  ·  the first district"
 msgstr "体験版  ·  最初の地区"
 
-#: ui/main_menu.gd:347 ui/profile_picker.gd:110
-msgid "Continue"
-msgstr "つづきから"
+#: ui/main_menu.gd:402
+msgid "New profile"
+msgstr "新しいプロフィール"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:362
-msgid "New Game"
-msgstr "はじめから"
-
-#: ui/main_menu.gd:359 ui/profile_picker.gd:126
-msgid "%d planet"
-msgid_plural "%d planets"
-msgstr[0] "%d 個の惑星"
-
-#: ui/main_menu.gd:359
+#: ui/main_menu.gd:405
 msgid "Profiles"
 msgstr "プロフィール"
 
-#: ui/main_menu.gd:366 ui/main_menu.gd:699 ui/pause_menu.gd:87
-msgid "Settings"
-msgstr "設定"
+#: ui/main_menu.gd:405
+msgid "Rename, start over, delete"
+msgstr "名前変更、最初から、削除"
 
-#: ui/main_menu.gd:375
+#: ui/main_menu.gd:420
 msgid "Made with Godot"
 msgstr "Godot で制作"
 
-#: ui/main_menu.gd:590
+#: ui/main_menu.gd:649
 msgid "%dm"
 msgstr "%d分"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:597 ui/profile_picker.gd:133
+#: ui/main_menu.gd:656 ui/profile_picker.gd:136
 msgid "%s cubes"
 msgstr "%s キューブ"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:601
+#: ui/main_menu.gd:660
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:699
+#: ui/main_menu.gd:775
 msgid "Credits"
 msgstr "クレジット"
 
-#: ui/main_menu.gd:728
+#: ui/main_menu.gd:801
 msgid "CREDITS"
 msgstr "クレジット"
 
-#: ui/main_menu.gd:743 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:816 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "戻る"
 
-#: ui/main_menu.gd:756
+#: ui/main_menu.gd:829
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5289,29 +5325,13 @@ msgstr ""
 "コード、プロシージャルメッシュ、合成オーディオ、テキストは Greenfall のオリジナルです。\n"
 "\n"
 
-#: ui/main_menu.gd:760
+#: ui/main_menu.gd:833
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "サードパーティ素材：CC0、Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:778
+#: ui/main_menu.gd:851
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
-
-#: ui/main_menu.gd:812
-msgid "START A NEW GAME?"
-msgstr "新しくゲームを始めますか？"
-
-#: ui/main_menu.gd:813
-msgid "Your current save will be erased. This can't be undone."
-msgstr "現在のセーブデータは消去されます。元に戻せません。"
-
-#: ui/main_menu.gd:821
-msgid "Keep my save"
-msgstr "セーブを残す"
-
-#: ui/main_menu.gd:827 ui/profile_picker.gd:213
-msgid "Erase and start"
-msgstr "消去して始める"
 
 #: ui/pause_menu.gd:44
 msgid "PAUSED"
@@ -5587,53 +5607,50 @@ msgstr "セーブプロフィール"
 msgid "Each profile has its own planets and progress. Settings are shared."
 msgstr "プロフィールごとに惑星と進行状況が別々。設定は共通。"
 
-#: ui/profile_picker.gd:112
-msgid "Rename"
-msgstr "名前変更"
-
-#: ui/profile_picker.gd:114 ui/profile_picker.gd:233
-msgid "Delete"
-msgstr "削除"
-
-#: ui/profile_picker.gd:122
+#: ui/profile_picker.gd:125
 msgid "Empty slot"
 msgstr "空きスロット"
 
 #. Save profile summary: play time, number of planets, the current planet's name.
-#: ui/profile_picker.gd:125
+#: ui/profile_picker.gd:128
 msgid "%s  ·  %s  ·  on %s"
 msgstr "%s  ·  %s  ·  %s にいる"
 
+#: ui/profile_picker.gd:129
+msgid "%d planet"
+msgid_plural "%d planets"
+msgstr[0] "%d 個の惑星"
+
 #. Save profile summary: how far the Bloom (restoration milestones) has come.
-#: ui/profile_picker.gd:131
+#: ui/profile_picker.gd:134
 msgid "Bloom %d%%"
 msgstr "ブルーム %d%%"
 
-#: ui/profile_picker.gd:134
+#: ui/profile_picker.gd:137
 msgid "%s seeds"
 msgstr "種 %s 個"
 
-#: ui/profile_picker.gd:211
+#: ui/profile_picker.gd:214
 msgid "START OVER IN %s?"
 msgstr "%s でやり直す？"
 
-#: ui/profile_picker.gd:212
+#: ui/profile_picker.gd:215
 msgid "Every world, Heirloom and Starseed in this profile will be erased. The other profiles stay as they are."
 msgstr "このプロフィールのすべての世界、家宝、スターシードが消去される。ほかのプロフィールはそのまま。"
 
-#: ui/profile_picker.gd:231
+#: ui/profile_picker.gd:234
 msgid "DELETE %s?"
 msgstr "%s を削除する？"
 
-#: ui/profile_picker.gd:232
+#: ui/profile_picker.gd:235
 msgid "This profile's worlds and progress will be erased. This can't be undone."
 msgstr "このプロフィールの世界と進行状況が消去される。元に戻せない。"
 
-#: ui/profile_picker.gd:238
+#: ui/profile_picker.gd:241
 msgid "RENAME PROFILE"
 msgstr "プロフィール名を変更"
 
-#: ui/profile_picker.gd:252
+#: ui/profile_picker.gd:255
 msgid "Save"
 msgstr "保存"
 
@@ -16660,6 +16677,18 @@ msgstr "あのガントリーは、お金が尽きたとき採掘船団をスク
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
 
+#~ msgid "New Game"
+#~ msgstr "はじめから"
+
+#~ msgid "START A NEW GAME?"
+#~ msgstr "新しくゲームを始めますか？"
+
+#~ msgid "Your current save will be erased. This can't be undone."
+#~ msgstr "現在のセーブデータは消去されます。元に戻せません。"
+
+#~ msgid "Keep my save"
+#~ msgstr "セーブを残す"
+
 #~ msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
 #~ msgstr "あのトレイを守るために、あなたは貨物ポッドに乗り込んだ。300年後、ちゃんと持って帰ってきた。"
 
@@ -19816,3 +19845,6 @@ msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いて
 
 #~ msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
 #~ msgstr "鋭い粉砕刃と高温の炉。ベール1個あたりのボルトと建材が増える。"
+
+#~ msgid "Start a new game"
+#~ msgstr "新しいゲームをはじめる"
