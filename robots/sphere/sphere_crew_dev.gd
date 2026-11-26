@@ -13,9 +13,9 @@ extends RefCounted
 ##   --crew-zone-n=K / --crew-zone-log  [v8bot] with --crew-zone: K robots called (0 all); [zone] lines
 ##   --crew-build=type[,seconds]     [v6crew] builds a robot at the bench after a while and logs its hello
 ##   --crew-cam=i[,dist,height]      [v6crew] a dev camera on robot i (rendered audits of the crew)
-##   --crew-tour=PREFIX --crew-tour-start=S --crew-tour-stops="i,time,wait_s[,cam_dist,cam_pitch[,back_m,side_m]];..."
-##                                    [art6] play-camera frames: Lumi is put beside robot i (back_m behind
-##                                    it, side_m to its right), the local time is set, PREFIX_<k>.png saved
+##   --crew-tour=PREFIX --crew-tour-start=S --crew-tour-stops="i,time,wait_s[,cam_dist,cam_pitch[,ahead_m,side_m]];..."
+##                                    [art6] play-camera frames: Lumi is put ahead_m in front of robot i and
+##                                    side_m to its right, looking back at it; the local time is set, PREFIX_<k>.png saved
 ##   --crew-command=S                 [v6crew] opens the Command view after S seconds (as pressing B)
 ##                                    and prints its card's lines as [cmd] (renders, headless checks)
 ##   --offline-jump[=S]               offline jump of S seconds (default 7200) for the --robots
@@ -225,11 +225,13 @@ static func crew_tour(w: Node, lumi: Node3D, cam: SphereCam, crew: SphereCrew) -
 		var b: SphereBot = u.get("bot") as SphereBot
 		var fwd: Vector3 = b.heading if b != null else SphereMath.any_perpendicular(d)
 		var right: Vector3 = fwd.cross(d).normalized()
-		var back_m: float = float(a[5]) if a.size() > 5 else 2.6
-		var side_m: float = float(a[6]) if a.size() > 6 else 1.2
-		var at: Vector3 = crew.surface.ground(d) - fwd * back_m + right * side_m
+		# Lumi stands ahead of the robot and to its right and looks back along its way: the robot is
+		# in front of her, to the right of the frame, facing the camera.
+		var ahead_m: float = float(a[5]) if a.size() > 5 else 2.2
+		var side_m: float = float(a[6]) if a.size() > 6 else 1.6
+		var at: Vector3 = crew.surface.ground(d) + fwd * ahead_m + right * side_m
 		var ld: Vector3 = crew.surface.up_at(at)
-		var north: Vector3 = SphereMath.tangent_dir(crew.surface.ground(d) - at, ld, fwd)
+		var north: Vector3 = SphereMath.tangent_dir(-fwd, ld, fwd)
 		if lumi.has_method("place_on_sphere"):
 			lumi.call("place_on_sphere", crew.surface.ground(ld), north)
 		if cam != null:

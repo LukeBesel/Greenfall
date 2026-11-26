@@ -720,7 +720,8 @@ func _build_worker(base_type: String) -> void:
 	_ground_mat.disable_receive_shadows = true
 	_ground.material_override = _ground_mat
 	_ground.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_ground.position = Vector3(0, 0.035, 0.05)
+	# Just under the ring, above the litter and slabs the robot stands among.
+	_ground.position = Vector3(0, 0.09, 0.05)
 	add_child(_ground)
 	_glance_t = randf_range(0.5, 3.0)
 	_tint_ground()
@@ -750,7 +751,7 @@ func _tint_ground() -> void:
 	if _ring_mat == null or _ground_mat == null:
 		return
 	var c: Color = _ring_mat.emission
-	var k: float = 0.36 + 0.1 * float(_ring_mat.get_meta("base"))
+	var k: float = 0.42 + 0.1 * float(_ring_mat.get_meta("base"))
 	_ground_mat.albedo_color = Color(c.r * k, c.g * k, c.b * k, 1.0)
 	if _far_mat != null:
 		_far_mat.set_shader_parameter("glow", c)
