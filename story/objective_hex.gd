@@ -15,7 +15,7 @@ const GREEN := Color(0.55, 1.0, 0.7)
 ## the soft additive look.
 const LASER := Color(0.0, 0.78, 1.0)
 const LASER_DONE := Color(0.2, 1.0, 0.4)
-const PULSE_HZ: float = 0.9
+const PULSE_HZ: float = 0.6  # [art1] a calmer beat (0.9)
 const STEP_M: float = 0.25  ## contour grid spacing
 const WIDTH_M: float = 0.55  ## the ribbon (the bright core in the shader is ~1/4 of it) [v9d] was 0.22: hard to see from 12 m
 ## [v9d] A low glowing curtain stands on the border of the objective's hex (not the dimmer focus

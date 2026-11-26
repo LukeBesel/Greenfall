@@ -16,6 +16,7 @@ var _face: ShaderMaterial
 var _eyes: ShaderMaterial
 var _icon_mat: ShaderMaterial
 var _halo: Node3D
+var _halo_y: float = 0.6
 var _comp: Node3D
 var _comp_kind: String = ""
 var _comp_wings: Array[Node3D] = []
@@ -81,6 +82,16 @@ func _lib_part(parent: Node3D, part: String, pos: Vector3) -> MeshInstance3D:
 
 func _pivot(part: String) -> Vector3:
 	return PatchModel._pivot(part) if _lib_has(part) else Vector3.ZERO
+
+
+## [hero v2] A PatchModel anchor's position in its parent's space ("head_top" on the head,
+## "chest_plate" in float space), or `fallback` on a model without anchors.
+func _anchor_pos(anchor: String, fallback: Vector3) -> Vector3:
+	if model.has_method("get_anchor"):
+		var a: Variant = model.call("get_anchor", anchor)
+		if a is Node3D:
+			return (a as Node3D).position
+	return fallback
 
 
 func _mat(key: String, fallback: Material) -> Material:
@@ -154,14 +165,18 @@ func _build_heart_icon() -> void:
 	var lbl: Variant = model.get("_icon")
 	if lbl is Label3D:
 		(lbl as Label3D).visible = false
+	var im: Variant = model.get("_icon_mesh")  # [hero v2] the modelled recycling symbol on the plate
+	if im is MeshInstance3D:
+		(im as MeshInstance3D).visible = false
+	var plate: Vector3 = _anchor_pos("chest_plate", Vector3(0, 0.44, -0.1805)) + Vector3(0, 0, -0.004)
 	if _lib_has("acc_icon_heart"):
-		_lib_part(fl, "acc_icon_heart", _pivot("acc_icon_heart"))
+		_lib_part(fl, "acc_icon_heart", plate)
 		return
 	var q := QuadMesh.new()
 	q.size = Vector2(0.075, 0.075)
 	_icon_mat = ShaderMaterial.new()
 	_icon_mat.shader = preload("res://art/shaders/lumi_icon.gdshader")
-	var mi := _mesh(fl, q, _icon_mat, Vector3(0, 0.44, -0.1845), Vector3(0, 180, 0))
+	var mi := _mesh(fl, q, _icon_mat, plate, Vector3(0, 180, 0))
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 
@@ -182,7 +197,7 @@ func _build_part(slot: String, o: Dictionary) -> void:
 			if lib != "":
 				var hn := Node3D.new()
 				hn.name = "lumi_" + kind
-				hn.position = _pivot(lib) - _pivot("head")
+				hn.position = _pivot(lib) - _pivot("head") + PatchModel.acc_fit(lib)
 				head.add_child(hn)
 				_lib_part(hn, lib, Vector3.ZERO)
 				if kind == "halo":
@@ -224,7 +239,7 @@ func _build_part(slot: String, o: Dictionary) -> void:
 func _build_antenna(head: Node3D) -> void:
 	var a := Node3D.new()
 	a.name = "lumi_antenna"
-	a.position = Vector3(0.07, 0.455, 0.05)
+	a.position = Vector3(0.07, _anchor_pos("head_top", Vector3(0, 0.475, 0)).y - 0.02, 0.05)
 	a.rotation_degrees = Vector3(-8, 0, -10)
 	head.add_child(a)
 	var dark: Material = _mat("dark", Mats.metal("steel"))
@@ -236,7 +251,8 @@ func _build_antenna(head: Node3D) -> void:
 func _build_halo(head: Node3D) -> void:
 	_halo = Node3D.new()
 	_halo.name = "lumi_halo"
-	_halo.position = Vector3(0, 0.6, 0.03)
+	_halo_y = _anchor_pos("head_top", Vector3(0, 0.48, 0)).y + 0.12
+	_halo.position = Vector3(0, _halo_y, 0.03)
 	head.add_child(_halo)
 	var m: StandardMaterial3D = Mats.lamp(LumiStyle.col(style, "glow"), 2.2)
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -361,7 +377,7 @@ func _process(delta: float) -> void:
 	_sync_face()
 	if _halo:
 		_halo.rotation.y = _t * 0.6
-		_halo.position.y = 0.6 + sin(_t * 1.7) * 0.008
+		_halo.position.y = _halo_y + sin(_t * 1.7) * 0.008
 	if _comp == null or model == null or not model.is_inside_tree():
 		return
 	var head: Node3D = model.get("_head") as Node3D

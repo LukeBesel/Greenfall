@@ -18,6 +18,9 @@ uniform vec3 tint_clean = vec3(1.0);
 uniform vec3 tint_grass = vec3(1.0);
 // 1 on the far shell: coarser texture, no fine detail (it is only seen from far away).
 uniform float far_shell = 0.0;
+// [art3] Owner's world target (art/concept/world_target.jpg): dark, damp ground with puddles that
+// mirror the sky, not pale dry dirt. 0 = dry (as before), 1 = after rain.
+uniform float wetness = 0.85;
 // Debug: tint each LOD (0 = off).
 uniform float lod_tint = 0.0;
 uniform vec3 lod_color = vec3(1.0);
@@ -28,6 +31,8 @@ uniform float sky_day = 1.0;
 uniform vec3 sun_dir = vec3(0.0, 1.0, 0.0);
 uniform vec3 sun_col : source_color = vec3(1.0, 0.95, 0.85);
 uniform float sun_vis = 1.0;
+uniform vec3 moon_dir = vec3(0.0, -1.0, 0.0);  // [art1]
+uniform float moon_vis = 0.0;
 
 varying vec4 st;
 varying vec3 wpos;
@@ -160,15 +165,32 @@ void fragment() {
 		float fres = 0.02 + 0.98 * pow(1.0 - clamp(dot(nw, vw), 0.0, 1.0), 5.0);
 		vec3 rv = reflect(-vw, nw);
 		vec3 sky = mix(sky_hor, sky_zen, 0.3 + 0.7 * smoothstep(0.0, 0.45, clamp(dot(rv, up), 0.0, 1.0)));
-		wem = sky * min(fres, 0.55) * mix(0.32, 0.6, clear_w) * mix(0.25, 1.0, sky_day);
+		wem = sky * min(fres, mix(0.9, 0.55, sky_day)) * mix(0.32, 0.6, clear_w) * mix(1.5, 1.0, sky_day);  // [art1] as the lake surface
 		vec3 hv = normalize(sun_dir + vw);
 		float nh = clamp(dot(nw, hv), 0.0, 1.0);
 		wem += sun_col * (pow(nh, mix(140.0, 700.0, clear_w)) * mix(0.25, 5.0, clear_w) + pow(nh, 50.0) * mix(0.04, 0.08, clear_w)) * sun_vis;
+		wem += mix(sky_hor, sky_zen, 0.5) * 0.3 * (1.0 - sky_day);
+		if (moon_vis > 0.001) {
+			float nm = clamp(dot(nw, normalize(moon_dir + vw)), 0.0, 1.0);
+			wem += vec3(0.62, 0.72, 1.0) * (pow(nm, mix(90.0, 260.0, clear_w)) * mix(0.35, 1.3, clear_w) + pow(nm, 24.0) * 0.05) * moon_vis;
+		}
 		col = mix(col, wcol, ow);
 	}
+	// [art3] Damp patches and standing puddles on level ground (world-space noise, so they stay put
+	// and cross cell borders): damp ground is darker and a little glossy, a puddle is a dark mirror.
+	// Grass drinks them; the far shell only gets the darkening.
+	float pn = vnoise3(wpos * 0.31) * 0.6 + vnoise3(wpos * 1.17 + 9.0) * 0.4;
+	float level = smoothstep(0.985, 0.998, dot(wnrm, normalize(wpos)));
+	float soak = wetness * (1.0 - green * 0.8) * (1.0 - water);
+	float damp = smoothstep(0.3, 0.56, pn) * soak;
+	float puddle = smoothstep(0.6, 0.64, pn) * soak * level * (1.0 - far_shell);
+	col *= mix(1.0, 0.66, wetness * (1.0 - green * 0.6) * (1.0 - water) * 0.6);  // the whole ground sits darker
+	col *= mix(1.0, 0.7, damp);
+	col = mix(col, col * 0.4 + vec3(0.004, 0.006, 0.008), puddle);
 	col = mix(col, col * lod_color, lod_tint);
 	ALBEDO = col;
-	ROUGHNESS = mix(mix(0.95, 0.6, water), 1.0, ow);  // [v1world] was 0.12 / 0.6: glossy banks mirrored the sky as a white strip
-	SPECULAR = mix(mix(0.35, 0.4, water), 0.0, ow);  // [v4world] open water: the sky is our own (wem)
+	ROUGHNESS = mix(mix(mix(0.95, 0.6, water), 1.0, ow), 0.5, damp * (1.0 - ow));  // [v1world] was 0.12 / 0.6: glossy banks mirrored the sky as a white strip
+	ROUGHNESS = mix(ROUGHNESS, 0.05, puddle);
+	SPECULAR = mix(mix(mix(0.35, 0.4, water), 0.0, ow), 0.6, puddle);  // [v4world] open water: the sky is our own (wem)
 	EMISSION = wem * ow;
 }

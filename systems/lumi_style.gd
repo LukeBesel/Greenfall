@@ -593,7 +593,7 @@ static func _recolor(model: Node, s: Dictionary) -> void:
 	var mats: Variant = model.get("_mats")
 	if mats is Dictionary:
 		var m: Dictionary = mats
-		_paint_col(m.get("paint"), col(s, "paint").darkened(0.04))
+		_paint_col(m.get("paint"), col(s, "paint"))  # [hero v2] the sampled shell colour as it is
 		_paint_col(m.get("trim"), col(s, "trim").darkened(0.45))
 		_paint_col(m.get("accent"), col(s, "accent"))
 		if m.has("side"):
@@ -604,8 +604,8 @@ static func _recolor(model: Node, s: Dictionary) -> void:
 				(m[k] as StandardMaterial3D).emission = hv
 				(m[k] as StandardMaterial3D).albedo_color = hv.darkened(0.3)
 		if m.get("thruster_core") is StandardMaterial3D:
-			(m["thruster_core"] as StandardMaterial3D).emission = hv.lightened(0.4)
-			(m["thruster_core"] as StandardMaterial3D).albedo_color = hv.lightened(0.4).darkened(0.3)
+			(m["thruster_core"] as StandardMaterial3D).emission = hv.lightened(0.3)
+			(m["thruster_core"] as StandardMaterial3D).albedo_color = hv.lightened(0.3).darkened(0.3)
 	var ring: Variant = model.get("_ring_mat")
 	if ring is StandardMaterial3D:
 		(ring as StandardMaterial3D).emission = col(s, "hover")
