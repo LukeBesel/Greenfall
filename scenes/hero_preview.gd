@@ -104,6 +104,7 @@ func _ready() -> void:
 		pm.material = gm
 	ground.mesh = pm
 	add_child(ground)
+	ground.visible = not DevHooks.has("no-floor")  # [art2] outline measuring (tools/hero/overlay.py)
 	if portrait:
 		for spec: Array in [["old_tyre", Vector3(2.4, 0.08, 4.0)], ["trashbag", Vector3(-2.8, 0, 5.0)], ["can_rusted", Vector3(1.2, 0, 2.2)], ["plastic_bottle_gallon", Vector3(-1.6, 0, 3.4)]]:
 			if not AssetLib.has_model(spec[0]):
