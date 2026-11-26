@@ -512,6 +512,16 @@ Tools: `--load-report` prints `[budget] N ms (cpu M)` per long slice, `[lap]` li
 steps between yields, `[model]` for any blocking model or texture load, the models still loaded
 on the main thread, and the longest frame by CPU time.
 
+[v12load] Headless runs (the dummy renderer) no longer load files or make meshes on other threads:
+in Godot 4.7 that renderer's mesh, material and texture owners are not thread-safe, and two
+threads making meshes at once could share a slot (a dead mesh RID; the save round trip failed now
+and then in the town build). `BuildBudget.threads_ok()` is false there, so `OrbitPreload.start`,
+`BuildBudget.fetch` and the loader's scene file load on the main thread, and the two mesh tasks
+("preload meshes", "junk meshes", `BuildBudget.run_mesh_task`) run inline. Pure-data tasks keep
+their threads, and a player's renderer is unchanged. So headless `--load-report` frame times no
+longer show the threaded loader: measure those in a rendered run, or headless with `--rid-threads`
+(the old paths, which can hit the race; `tools/rid_race_stress.tscn` shows it).
+
 One rendered check (software GL, 960x540 Low, same box): the build took 20.6 s before and 18.0 s
 after, over 440 frames instead of 203, longest build slice 4.1 s before and 0.2 s after. What is
 left there is the frame in which the 3D scene first draws (the warm-up stage: 6.9 s in software

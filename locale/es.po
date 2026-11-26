@@ -1613,7 +1613,7 @@ msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "¡Banco de trabajo arreglado! Pulsa %s en él para comprar mejoras."
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:166
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:170
 msgid "Setting the scene"
 msgstr "Preparando la escena"
 
@@ -5055,11 +5055,11 @@ msgstr "Desentierra piezas y desmonta chatarra para conseguirlas."
 msgid "Need %s. %s"
 msgstr "Te faltan %s. %s"
 
-#: ui/loading_screen.gd:165
+#: ui/loading_screen.gd:169
 msgid "Loading"
 msgstr "Cargando"
 
-#: ui/loading_screen.gd:167
+#: ui/loading_screen.gd:171
 msgid "Warming up"
 msgstr "Calentando motores"
 

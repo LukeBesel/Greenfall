@@ -1613,7 +1613,7 @@ msgstr "Melhorias precisam de uma bancada. Volte para a base."
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Bancada consertada! Aperte %s nela para comprar melhorias."
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:166
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:170
 msgid "Setting the scene"
 msgstr "Preparando a cena"
 
@@ -5055,11 +5055,11 @@ msgstr "Desenterre peças e desmonte sucata para conseguir mais."
 msgid "Need %s. %s"
 msgstr "Faltam %s. %s"
 
-#: ui/loading_screen.gd:165
+#: ui/loading_screen.gd:169
 msgid "Loading"
 msgstr "Carregando"
 
-#: ui/loading_screen.gd:167
+#: ui/loading_screen.gd:171
 msgid "Warming up"
 msgstr "Aquecendo"
 

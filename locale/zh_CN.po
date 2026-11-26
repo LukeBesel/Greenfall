@@ -1607,7 +1607,7 @@ msgstr "升级需要工作台。回基地去吧。"
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:166
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:170
 msgid "Setting the scene"
 msgstr "正在布置场景"
 
@@ -5039,11 +5039,11 @@ msgstr "挖出零件、拆解废料就能得到。"
 msgid "Need %s. %s"
 msgstr "还差 %s。%s"
 
-#: ui/loading_screen.gd:165
+#: ui/loading_screen.gd:169
 msgid "Loading"
 msgstr "加载中"
 
-#: ui/loading_screen.gd:167
+#: ui/loading_screen.gd:171
 msgid "Warming up"
 msgstr "预热中"
 

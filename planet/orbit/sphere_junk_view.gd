@@ -251,7 +251,7 @@ func rebuild_async(near: PackedInt32Array) -> void:
 					JunkFarSingle.single(fm)
 			for m: String in marks:
 				AssetLib.model_mesh_lite(m, lm_tris)
-		await BuildBudget.join(BuildBudget.add_task(warm, "junk meshes"))
+		await BuildBudget.run_mesh_task(warm, "junk meshes")  # [v12load] on this thread when headless
 		AssetLib.tracing = was_tracing
 	while not _queue.is_empty():
 		_pump(40)
