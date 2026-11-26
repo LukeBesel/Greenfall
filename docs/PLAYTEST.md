@@ -32,7 +32,8 @@ Every push to this branch builds the game automatically on GitHub.
 |---|---|---|
 | Move | WASD | Left stick |
 | Look | Mouse | Right stick |
-| Scoop junk (tractor beam) | Hold Left mouse / Space | Right trigger |
+| Scoop junk (tractor beam) | Hold Left mouse / X | Right trigger |
+| Jump (hold for the full hop, tap for a small one) | Space | A (when there is nothing to use) |
 | Press a bale | Right mouse / C | X |
 | Pick up / interact | E | A |
 | Drop | Q | B |
@@ -56,7 +57,7 @@ Every push to this branch builds the game automatically on GitHub.
 
 ## Saves
 
-The game autosaves every minute and when you quit. On the title screen, **Continue** loads it and **New Game** starts over (it asks first).
+The game autosaves every minute and when you quit. On the title screen, **Continue** loads it (each profile that has been played has its own button). To start over, open **Profiles** and press **Start over** on that profile (it asks first).
 Saves live in Godot's user folder:
 - Windows: `%APPDATA%\Godot\app_userdata\Greenfall`
 - macOS: `~/Library/Application Support/Godot/app_userdata/Greenfall`

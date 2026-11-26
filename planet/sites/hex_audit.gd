@@ -51,8 +51,99 @@ func _run() -> void:
 	var clr: Array[String] = YardProbe.e_clearance(so)  # [v9a] no E spot crowds another in the start yard
 	for l: String in clr:
 		print(l)
+	var bare: int = await pads()
 	if DevHooks.has("hex-audit-quit"):
-		get_tree().quit(1 if int(res[1]) > 0 or clr.any(func(l: String) -> bool: return l.contains("FAIL")) else 0)
+		get_tree().quit(1 if int(res[1]) > 0 or bare > 0 or clr.any(func(l: String) -> bool: return l.contains("FAIL")) else 0)
+
+
+## [v10base] Owner playtest 3 #102: "All bases should have trash surrounding them right close by."
+## Per hub of the plan (hub 0 always; the others with --hex-audit-hubs, each town built first so
+## its buildings' keep-out counts): how close the junk starts to the landing pad's edge and how
+## many pieces lie within 15 / 30 / 50 m of the landing spot (the rocket pad). A hub is BARE when
+## the nearest piece is over PAD_NEAR_M from the pad's edge, fewer than PAD_SIDES of the pad's
+## four sides have a piece within PAD_SIDE_M of them, or fewer than PAD_MIN_30 lie within 30 m.
+##   [hexaudit] pad hubH (name): nearest junk X m from the pad edge, sides n/4, pieces within 15/30/50 m of the landing spot: a/b/c [BARE]
+const PAD_NEAR_M: float = 3.0
+const PAD_SIDE_M: float = 6.0
+const PAD_SIDES: int = 3
+const PAD_MIN_30: int = 60
+
+
+func pads() -> int:
+	var g: OrbitPlanet = so.get("globe")
+	var sm: SiteManager = g.site_manager
+	var pid: String = str(g.planet_id)
+	var bare: int = 0
+	for hi: int in g.sites.size():
+		if hi > 0 and (not DevHooks.has("hex-audit-hubs") or HubPlan.entry(pid, hi).is_empty()):
+			continue
+		var only: float = DevHooks.get_f("hex-audit-pad", -1.0)  # dev: one hub
+		if only >= 0.0 and int(only) != hi:
+			continue
+		var p: SitePrefab = sm.build_hub(hi, true)  # in one go: a play-budget build waits on frames a headless audit may not give it
+		for k: int in 600:
+			if p.is_built:
+				break
+			await get_tree().process_frame
+		for k: int in 3:
+			await get_tree().physics_frame
+		var m: Dictionary = HexAudit.pad_junk(g, hi)
+		var is_bare: bool = float(m["edge"]) > PAD_NEAR_M or int(m["sides"]) < PAD_SIDES or int(m["n30"]) < PAD_MIN_30
+		bare += 1 if is_bare else 0
+		if int(m["parts"]) > 0:
+			bare += 1
+			print("[hexaudit] pad hub%d: FAIL %d buried parts within %.1f m of the pad's edge (E there is the pad's)" % [hi, int(m["parts"]), YardKeepOut.FAR_PART_CLEAR_M])
+		print("[hexaudit] pad hub%d (%s): nearest junk %.1f m from the pad edge, sides %d/4, pieces within 15/30/50 m of the landing spot: %d/%d/%d%s" % [hi,
+			HubPlan.hub_name(pid, hi), float(m["edge"]), int(m["sides"]), int(m["n15"]), int(m["n30"]), int(m["n50"]), " BARE" if is_bare else ""])
+		if hi > 0:
+			sm.free_hub(hi)
+			await get_tree().process_frame
+	print("[hexaudit] PADS bare=%d" % bare)
+	return bare
+
+
+## The junk round hub hi's pad as it lies once its town stands: {edge: m from the pad's edge to
+## the nearest piece, sides: pad sides with a piece within PAD_SIDE_M, n15/n30/n50: pieces within
+## that many metres of the landing spot}.
+static func pad_junk(g: OrbitPlanet, hi: int) -> Dictionary:
+	var f: SphereField = g.field
+	var site: Dictionary = g.sites[hi]
+	var inv: Transform3D = (site["transform"] as Transform3D).affine_inverse()
+	var land: Vector3 = inv * g.site_manager.pad_xf(hi).origin
+	var land2 := Vector2(land.x, land.z)
+	var half: float = YardKeepOut.PAD_HALF_M
+	var c0: int = int(site["cell"])
+	var out: Dictionary = {"edge": INF, "sides": 0, "n15": 0, "n30": 0, "n50": 0}
+	var side: Array[bool] = [false, false, false, false]
+	for c: int in g.grid.cells_within(g.grid.centers[c0], 75.0, c0):
+		if f.hex_hub[c] == 1 or f.hex_clean[c] == 1 or f.hex_water[c] == 1:
+			continue
+		f.materialize(c)
+		f.relocate_blocked(c)
+		for pid: int in f.pieces_in(c):
+			if f.piece_alive[pid] == 0:
+				continue
+			var lp: Vector3 = inv * f.piece_pos[pid]
+			var q := Vector2(lp.x, lp.z)
+			var e: float = maxf(absf(q.x), absf(q.y)) - half
+			out["edge"] = minf(float(out["edge"]), maxf(e, 0.0))
+			if e < PAD_SIDE_M:  # which side of the pad it lies off
+				var k: int = (0 if q.x > 0.0 else 1) if absf(q.x) > absf(q.y) else (2 if q.y > 0.0 else 3)
+				side[k] = true
+			var d: float = q.distance_to(land2)
+			for r: int in [15, 30, 50]:
+				if d < float(r):
+					out["n%d" % r] = int(out["n%d" % r]) + 1
+	out["sides"] = side.count(true)
+	# Buried parts where E belongs to the pad's machines (E on a part digs first).
+	var near_parts: int = 0
+	if hi > 0:
+		for i: int in f.part_pos.size():
+			var pp: Vector3 = inv * f.part_pos[i]
+			if absf(pp.y) < 400.0 and maxf(absf(pp.x), absf(pp.z)) < half + YardKeepOut.FAR_PART_CLEAR_M - 0.05:
+				near_parts += 1
+	out["parts"] = near_parts
+	return out
 
 
 ## [lines, failures]

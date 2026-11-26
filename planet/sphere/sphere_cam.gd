@@ -10,6 +10,8 @@ extends Node3D
 ## pulls the camera back, widens the FOV and lazily swings it behind Lumi's heading.
 
 var target: Node3D
+## [v11jump] The share of a hop's height the camera does not follow.
+const HOP_KEEP_OUT: float = 0.8
 var surface: SphereSurface
 var frame := Basis()
 var view: String = "follow":
@@ -210,6 +212,10 @@ func update_camera(delta: float) -> void:
 		add_yaw(clampf(ang, -1.0, 1.0) * minf(1.0, follow_rate * boost * delta))
 	# Focus: smoothed in world space; tangent lag is bounded so a boost never loses Lumi.
 	var want: Vector3 = tp + u * 1.1
+	# [v11jump] A hop is Lumi's, not the view's: the camera leaves out most of the rise, so jumping
+	# again and again does not bob the picture (queasy for children).
+	if view != "command" and target.has_method("hop_lift"):
+		want -= u * float(target.call("hop_lift")) * HOP_KEEP_OUT
 	if _focus == Vector3.ZERO or delta <= 0.0:
 		_focus = want
 	else:

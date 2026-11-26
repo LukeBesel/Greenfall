@@ -23,8 +23,12 @@ const REBINDABLE: Array = [
 	["photo_mode", "Photo mode"],  # [photo]
 	["glim_scan", "Glim: scan (hold: upgrades)"],  # [buddy]
 	["boost", "Hover boost"],  # [orbD] hold on the walkable globe (SphereInput)
+	["jump", "Jump"],  # [v11jump] Lumi's hop (SphereInput)
 ]
 # l10n:end
+## [v11jump] Pairs of gameplay actions that share a button on purpose (no conflict shown). A on a
+## controller is "use" when there is something to use and the hop otherwise (Patch._use_takes_press).
+const SHARED_OK: Array = [["interact", "jump"]]
 # l10n:begin
 const JOY_NAMES: Dictionary = {
 	JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y",
@@ -204,7 +208,7 @@ func _register_default_actions() -> void:
 		"look_right": [_axis(JOY_AXIS_RIGHT_X, 1.0)],
 		"look_up": [_axis(JOY_AXIS_RIGHT_Y, -1.0)],
 		"look_down": [_axis(JOY_AXIS_RIGHT_Y, 1.0)],
-		"scoop": [_mouse(MOUSE_BUTTON_LEFT), _key(KEY_SPACE), _axis(JOY_AXIS_TRIGGER_RIGHT, 1.0)],
+		"scoop": [_mouse(MOUSE_BUTTON_LEFT), _key(KEY_X), _axis(JOY_AXIS_TRIGGER_RIGHT, 1.0)],  # [v11jump] the second key was Space (now the hop)
 		"cube": [_mouse(MOUSE_BUTTON_RIGHT), _key(KEY_C), _joy(JOY_BUTTON_X)],
 		"interact": [_key(KEY_E), _joy(JOY_BUTTON_A)],
 		"drop": [_key(KEY_Q), _joy(JOY_BUTTON_B)],
@@ -228,6 +232,7 @@ func _register_default_actions() -> void:
 		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
 		"glim_scan": [_key(KEY_F), _axis(JOY_AXIS_TRIGGER_LEFT, 1.0)],  # [buddy] tap: hex scan, hold: Glim panel
 		"boost": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],  # [orbD] hover-boost on the globe (x4), also the sled's boost
+		"jump": [_key(KEY_SPACE), _joy(JOY_BUTTON_A)],  # [v11jump] Lumi's hop; A is shared with "interact" (SHARED_OK)
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):
@@ -466,6 +471,8 @@ func find_conflict(action: String, ev: InputEvent) -> String:
 	for e: Array in REBINDABLE:
 		var other: String = e[0]
 		if other == action or not InputMap.has_action(other):
+			continue
+		if SHARED_OK.has([action, other]) or SHARED_OK.has([other, action]):
 			continue
 		for o: InputEvent in InputMap.action_get_events(other):
 			if same_event(o, ev):

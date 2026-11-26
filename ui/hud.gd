@@ -417,6 +417,19 @@ func _process(delta: float) -> void:
 		_update_context(delta, minimal)
 
 
+## The ground Lumi stands on, in a word or two: the hex's state, or on base ground the base's name.
+func _ground_line() -> String:
+	var h: int = patch.focus_hex()
+	if h >= 0 and world and world.field.hex_hub[h] == 0:
+		if not world.field.is_clean(h):
+			return tr("HEX  %d%% CLEAR") % int(floor(world.field.removed_fraction(h) * 100.0))
+		return _short_level(h)
+	if h >= 0 and world:  # [onboard] on the hub ground: say where you are
+		var bn: String = str(world.call("base_name_here")) if world.has_method("base_name_here") else ""  # [v10ui] critic 7: this base's own name
+		return tr("%s  BASE") % (bn if bn != "" else str(world.district_name)).to_upper()
+	return ""
+
+
 ## Hex %, part signal and carried bales in one quiet line that only shows while relevant:
 ## for a few seconds after it changes (scooping, a level-up), or while a part signal is strong.
 func _update_context(delta: float, minimal: bool) -> void:
@@ -426,14 +439,7 @@ func _update_context(delta: float, minimal: bool) -> void:
 	# carrying, or while the signal is strong, in every HUD mode.
 	var text: String = ""
 	var h: int = patch.focus_hex()
-	var hex_text: String = ""
-	if h >= 0 and world and world.field.hex_hub[h] == 0:
-		if not world.field.is_clean(h):
-			hex_text = tr("HEX  %d%% CLEAR") % int(floor(world.field.removed_fraction(h) * 100.0))
-		else:
-			hex_text = _short_level(h)
-	elif h >= 0 and world:  # [onboard] on the hub ground: say where you are
-		hex_text = tr("%s  BASE") % str(world.district_name).to_upper()
+	var hex_text: String = _ground_line()
 	var strong: bool = _signal_text != "" and (_signal_strength >= 0.5 or not minimal)
 	if not patch.carried.is_empty():
 		text = tr("CARRYING %d/%d") % [patch.carried.size(), patch.carry_cap()]
@@ -452,6 +458,10 @@ func _update_context(delta: float, minimal: bool) -> void:
 	# brightens for a few seconds after a change.
 	var want: float = (1.0 if (_context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) else 0.8) if text != "" else 0.0
 	if hotbar.celebrating():
+		want = 0.0
+	# [v10base] Play-tester item 22: by the rocket the prompt, the base's name and a WREN line sat
+	# on one spot. On the base's ground the name gives way while there is something to press.
+	if text == hex_text and h >= 0 and world and world.field.hex_hub[h] != 0 and _prompt.text.strip_edges() != "":
 		want = 0.0
 	if Subtitles.current and is_instance_valid(Subtitles.current) and Subtitles.current.current_text() != "":
 		want = 0.0  # [orbB] owner rule (onboard2): one message line on screen at a time

@@ -59,6 +59,7 @@ var sphere: SphereSurface
 var sphere_motor: SphereMotor
 var sphere_cam: Node3D  # SphereCam (anything with a `frame: Basis`)
 var _shape: CollisionShape3D
+var _hop_fx: Dictionary = {}  # [v11jump] data/patch.json "jump" (puff, dust and sound levels)
 var water: float = 0.0
 var _plant_t: float = 0.0
 var _water_t: float = 0.0
@@ -107,13 +108,8 @@ func enable_sphere(surface: SphereSurface, cam_node: Node3D) -> void:
 	sphere = surface
 	sphere_cam = cam_node
 	sphere_motor = SphereMotor.new(surface)
-	sphere_motor.landed.connect(func(impact: float) -> void:
-		if impact > 2.0:
-			rumble(0.0, clampf(impact * 0.06, 0.1, 0.4), 0.1)  # [v6feel]
-			model.squash(-clampf(impact * 0.06, 0.1, 0.45)))
-	sphere_motor.jumped.connect(func() -> void:
-		model.squash(0.3)
-		Audio.play("whoosh", 1.3, -12.0))
+	sphere_motor.landed.connect(_on_landed)
+	sphere_motor.jumped.connect(_on_hop)
 	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
 	wall_min_slide_angle = 0.0
 	# [v6feel] A round body that slides on the level: a box caught on every corner, post and heap
@@ -125,7 +121,161 @@ func enable_sphere(surface: SphereSurface, cam_node: Node3D) -> void:
 	var mv: Dictionary = Economy.read_json("res://data/patch.json").get("move", {})  # [v6feel] tunables
 	sphere_motor.max_step = float(mv.get("max_step", sphere_motor.max_step))
 	sphere_motor.round_keep = float(mv.get("round_keep", sphere_motor.round_keep))
+	apply_jump_cfg(Economy.read_json("res://data/patch.json").get("jump", {}))
 	_fit_shape()
+
+
+## [v11jump] The hop's numbers (data/patch.json "jump") on the motor: height_m and rise_s give the
+## take-off speed and the pull on the way up, fall_s the pull on the way down.
+func apply_jump_cfg(j: Dictionary) -> void:
+	var m: SphereMotor = sphere_motor
+	if m == null or j.is_empty():
+		return
+	var h: float = maxf(float(j.get("height_m", 0.7)), 0.05)
+	var rise: float = maxf(float(j.get("rise_s", 0.25)), 0.05)
+	var fall: float = maxf(float(j.get("fall_s", 0.22)), 0.05)
+	m.jump_speed = 2.0 * h / rise
+	m.gravity_up = 2.0 * h / (rise * rise)
+	m.gravity_down = 2.0 * h / (fall * fall)
+	m.jump_cut_speed = float(j.get("cut_speed", 2.2))
+	m.coyote_s = float(j.get("coyote_s", 0.12))
+	m.jump_buffer_s = float(j.get("buffer_s", 0.14))
+	m.air_control = float(j.get("air_control", 0.6))
+	m.mound_mask = PhysLayers.MOUND
+	m.wall_from_above = true
+	_hop_fx = j
+
+
+## [v11jump] Take-off: a soft thruster puff under him, a quiet whiff, the model crouches and stretches.
+func _on_hop() -> void:
+	_was_hop = true
+	model.hop(1.0)
+	var u: Vector3 = up()
+	Vfx.burst("puff", global_position + u * 0.1, Color(0.78, 0.95, 1.0, 0.55), float(_hop_fx.get("puff", 1.0)))
+	Audio.play("hop", 1.0, float(_hop_fx.get("hop_db", -9.0)), 0.07, "lumi")
+	_idle_time = 0.0
+
+
+## [v11jump] Landing: the model settles, a little dust, a soft pat (louder falls stay soft too).
+func _on_landed(impact: float) -> void:
+	if _was_hop:
+		_was_hop = false
+		_shut_check = 0.4  # the pocket watch: is there a way out of where the hop put him?
+	if impact <= 2.0:
+		model.air = false
+		return
+	var k: float = clampf(impact / 8.0, 0.25, 1.0)
+	rumble(0.0, clampf(impact * 0.06, 0.1, 0.4), 0.1)  # [v6feel]
+	model.land(k)
+	Vfx.burst("dust", global_position + up() * 0.08, Color(0.8, 0.68, 0.52, 0.55), float(_hop_fx.get("dust", 0.6)) * k)
+	Audio.play("land", lerpf(1.1, 0.9, k), float(_hop_fx.get("land_db", -14.0)) + linear_to_db(lerpf(0.6, 1.0, k)), 0.07, "lumi")
+
+
+## [v11jump] The safety net under the hop: a moment after a hop lands on the ground, is there a
+## walking way out of where he is (TargetReach.shut_in: walls, props and water count, junk does
+## not)? If not, and the player keeps trying to move for RESCUE_AFTER_S and is still shut in, his
+## thrusters lift him to the nearest open ground. So no hop can leave a player stuck, in any town
+## on any planet. Only after a hop: the autoplay bot never hops, so a spot that traps a walker
+## still shows up in the audits.
+const RESCUE_AFTER_S: float = 6.0
+var _was_hop: bool = false
+var _shut_check: float = 0.0
+var _shut: bool = false
+var _shut_try: float = 0.0
+var rescues: int = 0
+
+
+func _pocket_watch(delta: float, trying: bool) -> void:
+	if sphere_motor == null or world == null or not (world.get("field") is SphereField):
+		return
+	if _shut_check > 0.0:
+		_shut_check -= delta
+		if _shut_check <= 0.0 and not sphere_motor.grounded:
+			_shut_check = 0.2  # in the air: look when he is down
+		elif _shut_check <= 0.0:
+			_shut = _is_shut()
+			if _shut:
+				_shut_check = 1.5  # look again: he may hop or walk out
+			else:
+				_shut_try = 0.0
+	if not _shut:
+		return
+	if trying:
+		_shut_try += delta
+	if _shut_try >= RESCUE_AFTER_S and sphere_motor.grounded and _is_shut():
+		_rescue()
+
+
+## Standing on the ground (not on a crate, a bale, the sled or in a film) with no walking way out.
+func _is_shut() -> bool:
+	var m: SphereMotor = sphere_motor
+	if not m.grounded or cine_hold or m._perch > 0.0 or sphere.altitude(global_position) - m.ride_height > 0.45 or not can_hop():
+		return false
+	var t: TargetReach = TargetReach.for_world(world, true, self)
+	if t == null:
+		return false
+	return t.shut_in(global_position, _junk_node(), can_hover_water())
+
+
+func _junk_node() -> Node:
+	var g: Variant = world.get("orbit").get("globe") if world.get("orbit") != null else null
+	return g.get("junk_view") as Node if g is Object else null
+
+
+func _rescue() -> void:
+	_shut = false
+	_shut_try = 0.0
+	_shut_check = 0.0
+	var t: TargetReach = TargetReach.for_world(world, true, self)
+	if t == null:
+		return
+	var soft: Node = _junk_node()
+	var hover: bool = can_hover_water()
+	var from: Vector3 = global_position
+	var to: Vector3 = t.open_spot(from, func(p: Vector3) -> bool: return t.shut_in(p, soft, hover))
+	if to.distance_to(from) < 0.6:
+		return  # nowhere better was found
+	Vfx.burst("puff", from + up() * 0.1, Color(0.78, 0.95, 1.0, 0.6), 1.5)
+	place_on_sphere(to, forward())
+	Vfx.burst("puff", to + up() * 0.1, Color(0.78, 0.95, 1.0, 0.6), 1.5)
+	Audio.play("hop", 0.85, float(_hop_fx.get("hop_db", -9.0)), 0.05, "lumi")
+	rescues += 1
+	print("[hop] Lumi was shut in at %s: lifted %.1f m to open ground" % [str(from.snapped(Vector3.ONE * 0.1)), to.distance_to(from)])
+
+
+## [v11jump] Whether a hop may start now. Not while pressing a bale, in a film, on the sled or
+## wading; carrying bales, a full chest, the scoop and the other tools do not stop it.
+func can_hop() -> bool:
+	if _cubing > 0.0 or cine_hold or sphere_motor == null:
+		return false
+	var sled: HoverSled = get_node_or_null("HoverSled") as HoverSled
+	if sled != null and sled.mounted:
+		return false
+	if _water_at(global_position) and not can_hover_water():
+		return false
+	return true
+
+
+## [v11jump] A press that is both "use" and "hop" (A on a controller): use wins when there is
+## something to use: a prompt on screen, a bale in hand to put down, or anything _handle_interact
+## would act on this frame (a bale in reach, a buried part), even before the prompt shows it.
+func _use_takes_press() -> bool:
+	if not input.interact_pressed():
+		return false
+	if prompt != "" or not carried.is_empty():
+		return true
+	if nearest_loose_cube() != null and carried.size() < carry_cap():
+		return true
+	return detector != null and detector.can_dig()
+
+
+## [v11jump] How far the hop has lifted him off his take-off height (0 on the ground): the camera
+## leaves most of it out so the view stays level.
+func hop_lift() -> float:
+	var m: SphereMotor = sphere_motor
+	if m == null or not m.hopping:
+		return 0.0
+	return maxf(0.0, sphere.altitude(global_position) - m._hop_from)
 
 
 ## [v6feel] The round planet's body: lifted off the ground (he hovers; only walls and props touch
@@ -144,6 +294,8 @@ func _fit_shape() -> void:
 ## [orbit] Puts Lumi on the planet's ground under `pos`, facing `fwd`.
 func place_on_sphere(pos: Vector3, fwd: Vector3) -> void:
 	sphere_motor.place(self, pos, fwd)
+	if model:
+		model.air = false  # [v11jump] moved in the middle of a hop
 	_prev_vel = Vector3.ZERO
 
 
@@ -277,8 +429,15 @@ func _move(delta: float) -> void:
 	if sphere_motor:
 		sphere_motor.speed = speed
 		var boost: bool = _cubing <= 0.0 and input.has_method("boost_held") and bool(input.call("boost_held"))
-		var jump: bool = _cubing <= 0.0 and input.has_method("jump_pressed") and bool(input.call("jump_pressed"))
+		# [v11jump] The hop: Space / A. Held = the full hop, a tap = a small one.
+		sphere_motor.can_jump = can_hop()
+		if input.get("enabled") == false:
+			sphere_motor.clear_jump()  # a menu or a film took the keys: no remembered press fires later
+		var jump: bool = input.has_method("jump_pressed") and bool(input.call("jump_pressed"))  # read every tick (a latched source forgets it here)
+		jump = jump and sphere_motor.can_jump and not _use_takes_press()
+		sphere_motor.jump_hold = input.has_method("jump_held") and bool(input.call("jump_held"))
 		sphere_motor.step(self, wish, delta, boost, jump)
+		_pocket_watch(delta, wish.length() > 0.3 or sphere_motor.jump_hold)
 	else:
 		var target: Vector3 = wish * speed
 		var hv := Vector3(velocity.x, 0.0, velocity.z)
@@ -292,7 +451,8 @@ func _move(delta: float) -> void:
 			rotation.y = lerp_angle(rotation.y, target_yaw, clampf(TURN_RATE * delta, 0.0, 1.0))
 		move_and_slide()
 	if shore and _water_at(global_position):  # [v4bots] momentum (a boost) carried him past the probe
-		global_position = from
+		var back: Vector3 = from - global_position
+		global_position += back - up() * back.dot(up()) if sphere_motor else back  # [v11jump] along the ground only: a hop at the shore still rises and falls
 		if sphere_motor:
 			sphere_motor.hv = Vector3.ZERO
 		velocity = up() * velocity.dot(up())
@@ -1028,6 +1188,8 @@ func _update_hints(delta: float) -> void:
 	model.look_toward(look)
 	_update_aim()
 	# Idle: after a while Patch shakes off rust flakes; much later he dozes off.
+	if model.holding:  # [v10ui] the map in his hands: the player is turning it, not away (a snore's "z" floated over the globe)
+		_idle_time = 0.0
 	model.sleeping = _idle_time > 45.0
 	if _idle_time > 8.0 and fmod(_idle_time, 9.0) < delta:
 		model.shudder(0.25)

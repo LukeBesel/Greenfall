@@ -86,6 +86,7 @@ func build(p_world: Node3D) -> void:
 	if DevHooks.has("load-report"):  # [orbE] the stretch before the first yield
 		print("[orbit-load] before globe: %d ms" % (Time.get_ticks_msec() - t0))
 	BuildBudget.span(0.0, 0.5)  # [orbE] loading bar: the globe is the first half
+	globe.refill_old_pads = not od.is_empty() and int(od.get("pads", 1)) < OrbitPlanet.PADS_V  # [v10base] an older save: junk back round the far pads
 	await globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
 	BuildBudget.span(0.5, 0.65)
 	hub_states = (od.get("hubs", {}) as Dictionary).duplicate(true)
@@ -439,6 +440,15 @@ func on_hex_clean(hid: int, quiet: bool = false) -> void:
 			if patch:
 				Vfx.burst("confetti", patch.global_position + patch.up() * 1.5, Color.WHITE)
 			EventBus.toast.emit(tr("Milestone: %d hexes clean!") % n, "reward")  # [v4calm] cut (the fanfare says it)
+
+
+## [v10ui] Critic 7: the name of the base Lumi stands at (HUD "GARDEN ROW  BASE", the map's row
+## name), "" off any base or on a planet without a base plan.
+func base_name_here() -> String:
+	var sm: SiteManager = globe.site_manager if globe else null
+	if sm == null or sm.nearest < 0 or not HubPlan.has_plan(sm.planet_id):
+		return ""
+	return HubPlan.hub_name(sm.planet_id, sm.nearest)
 
 
 ## Hexes counted for milestones: the cells this save paid a first-clean bonus for (far crews'
@@ -1231,6 +1241,7 @@ func persist_save() -> void:
 		"cells_n": g.grid.cell_count(),
 		"planet": g.planet.to_dict(),
 		"cells": g.cells.to_dict(),
+		"pads": OrbitPlanet.PADS_V,  # [v10base]
 		"field": g.field.to_dict(),  # found parts, unlocked cells
 		"sites": OrbitSave.sites_to_array(g.sites),
 		"hubs": hub_states,

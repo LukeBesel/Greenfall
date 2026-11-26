@@ -5,7 +5,7 @@ extends CanvasLayer
 ## the camera follows a cursor that the move stick / WASD slides over the ground, and a ghost of
 ## the selected decoration shows where it would go (green = fits, red = it doesn't, with why).
 ##   Place: interact (E / A)      Rotate: cube (C / X)      Previous / next: 2 / 3, D-pad left / right
-##   Pick up (to move it) or remove: scoop (LMB, Space / RT)      Leave: drop (Q / B) or pause
+##   Pick up (to move it) or remove: scoop (LMB, X / RT)      Leave: drop (Q / B) or pause
 ## A picked-up decoration is refunded and selected, so placing it again moves it for free.
 
 signal opened
