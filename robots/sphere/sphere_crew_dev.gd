@@ -15,9 +15,6 @@ extends RefCounted
 ##   --crew-cam=i[,dist,height]      [v6crew] a dev camera on robot i (rendered audits of the crew)
 ##   --crew-command=S                 [v6crew] opens the Command view after S seconds (as pressing B)
 ##                                    and prints its card's lines as [cmd] (renders, headless checks)
-##   --offline-jump[=S]               offline jump of S seconds (default 7200) for the --robots
-##                                    fleet: flat Offline.compute vs SphereOffline.simulate, PASS
-##                                    within 10%, and the cells it cleaned
 
 
 ## The globe's planet id (OrbitPlanet.spec, GlobeSpec.of), Verdance for the phase A scene.
@@ -27,7 +24,7 @@ static func planet_of(src: Object) -> String:
 
 
 static func wanted() -> bool:
-	return DevHooks.has("robots") or DevHooks.has("orbit-far-crew") or DevHooks.has("offline-jump")
+	return DevHooks.has("robots") or DevHooks.has("orbit-far-crew")
 
 
 ## `src` = the globe (OrbitPlanet in the slice, VerdanceGlobe in the phase A scene): grid, cells,
@@ -148,9 +145,6 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		for k: int in 4:
 			crew.spawn("haulbug" if k == 3 else "scoopie", 0, far_around[k + 1], far, "Far-%d" % k)
 		_far_check(src, lumi, crew, far)
-	if DevHooks.has("offline-jump"):
-		offline_jump(src, fleet if not fleet.is_empty() else [{"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}],
-			DevHooks.get_f("offline-jump", 7200.0))
 	return crew
 
 
@@ -186,24 +180,6 @@ static func _far_check(src: Object, lumi: Node3D, crew: SphereCrew, far: int) ->
 		var ok: bool = drop > 0.001 and far_n >= 4
 		print("[bots] far crew: hub %d at %.0f m from Lumi, %d far robots, %d far-shell big hexes worked, junk down by up to %.3f, clean up by up to %.3f %s" % [
 			far, dist, far_n, before.size(), drop, greener, "PASS" if ok else "FAIL"]))
-
-
-## The offline jump on the globe vs the flat game, for one fleet at the start hub.
-static func offline_jump(src: Object, fleet: Array, seconds: float) -> Dictionary:
-	var start: int = int((src.sites[0] as Dictionary)["cell"])
-	var flat: Dictionary = Offline.compute(fleet, 0, 1.0, seconds, INF)
-	var res: Dictionary = SphereOffline.simulate(src.grid, src.cells, src.field, [{"cell": start, "robots": fleet}], seconds,
-		planet_of(src))
-	if src.get("junk_view") != null:
-		for pid: int in res["pieces"]:
-			src.junk_view.call("hide_piece", pid)
-	var fc: float = float(flat["cubes"]) + float(flat["waiting_value"])
-	var oc: float = float(res["cubes"]) + float(res["waiting_value"])
-	var diff: float = absf(oc - fc) / maxf(fc, 0.001)
-	print("[offline] %.0f s, %d robots: flat %.0f cubes (%.0f units), orbit %.0f cubes (%.0f units, %d hexes cleaned), diff %.1f%% %s" % [
-		seconds, fleet.size(), fc, float(flat["units"]), oc, float(res["units"]), int(res["cells"]), diff * 100.0, "PASS" if diff <= 0.10 else "FAIL"])
-	Offline.apply(res)
-	return res
 
 
 ## [v6crew] Dev camera for rendered audits: looks at robot `i` from `dist` m away and `height` m up.

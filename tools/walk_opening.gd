@@ -811,27 +811,20 @@ static func _reload(label: String) -> void:
 		return
 	await _secs(2.5)  # a step that just started picks its hex on the card's next refresh
 	var a: Dictionary = _snap()
-	var saved_at: float = Time.get_unix_time_from_system()
 	await _quit_and_continue(label, "menu")
 	if _quit_skipped:
 		_check(false, "reload at %s: Esc opens no pause menu, so there is no way to quit and save here" % label)
 		return
 	var b: Dictionary = _snap()
 	var diff: Array[String] = []
-	# Back after more than OrbitCrews.AWAY_MIN_S with a robot out, the game pays its offline work on
-	# load (by design): on a slow runner the round trip itself takes that long. Money may then go up.
-	var away: float = Time.get_unix_time_from_system() - saved_at
-	var paid: bool = int(a["robots"]) > 0 and away > OrbitCrews.AWAY_MIN_S and float(b["cubes"]) > float(a["cubes"]) + 1.0
-	if paid:
-		print("%s note: %s: back after %.0f s with a robot out: offline pay %.0f cubes" % [TAG, label, away, float(b["cubes"]) - float(a["cubes"])])
+	# Owner item 110: nothing is earned while the game is closed, however long the quit took: the
+	# money and the cleaned ground after Continue are the saved ones.
 	for k: String in a:
 		var x: Variant = a[k]
 		var y: Variant = b[k]
 		var same: bool = x == y
 		if k in ["cubes", "parts"]:
-			same = absf(float(x) - float(y)) < 1.0 or (paid and float(y) >= float(x))
-		elif paid and k in ["count", "hex", "clean", "beam", "to"]:
-			continue
+			same = absf(float(x) - float(y)) < 1.0
 		elif k == "chest":
 			same = absf(float(x) - float(y)) < 0.35
 		elif k == "clean" and int(a["robots"]) > 0:

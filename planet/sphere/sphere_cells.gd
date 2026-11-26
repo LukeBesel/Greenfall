@@ -123,7 +123,7 @@ func has_flag(i: int, f: int) -> bool:
 
 
 ## [v2feel] THE "this cell is clean" rule (owner item 36): 95% cleared counts as clean and the
-## rest sweeps away. Lumi, robots, offline, saves and loads all test junk left against this.
+## rest sweeps away. Lumi, robots, saves and loads all test junk left against this.
 const CLEAN_LEFT: float = 0.05
 
 

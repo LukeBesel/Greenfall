@@ -356,6 +356,9 @@ static func migrate(d: Dictionary) -> Dictionary:
 	if v < 5:
 		d = drop_ledger(d)  # owner item 105: the Ledger is gone
 		v = 5
+	if v < 6:
+		d = drop_offline(d)  # owner item 110: nothing happens while the game is closed
+		v = 6
 	d["version"] = v
 	return d
 
@@ -397,6 +400,52 @@ static func migrate_v2(d: Dictionary) -> Dictionary:
 ## and coupons, drone counts, the audit event and its trinkets, the two Codex pages. The memo shard
 ## and the system page keep their place under their new ids. Signal Jammers that were built are
 ## paid back (900 cubes and 42 parts, x2.2 for each one after the first: what they cost).
+const OFFLINE_STATS: Array[String] = ["welcome_backs", "offline_best_s"]
+const OFFLINE_WORLD_KEYS: Array[String] = ["offline_units", "junk_left"]
+
+
+## v5 -> v6 (owner item 110, "not when i log off"): the away / offline earnings are gone. Their
+## stats and per-base counters are dropped, and the two timers that ran on the system clock are
+## moved onto the play clock (stats.time_played) with what they had left when the game was saved:
+## the research in progress and the rocket's cells. After this nothing in a save is compared with
+## the system clock, so it loads the same today, in a year, or with the clock set back.
+static func drop_offline(d: Dictionary) -> Dictionary:
+	var stats: Dictionary = d.get("stats", {}) if d.get("stats") is Dictionary else {}
+	for k: String in OFFLINE_STATS:
+		stats.erase(k)
+	var played: float = float(stats.get("time_played", 0.0))
+	var saved: float = float(d.get("saved_unix", 0.0))
+	_erase_keys(d.get("world"), OFFLINE_WORLD_KEYS)
+	_erase_keys(d.get("districts"), OFFLINE_WORLD_KEYS)
+	_erase_keys(d.get("orbit"), OFFLINE_WORLD_KEYS)
+	var flags: Dictionary = d.get("flags", {}) if d.get("flags") is Dictionary else {}
+	var rs: Variant = flags.get("research")
+	if rs is Dictionary and (rs as Dictionary).get("active") is Dictionary and not ((rs as Dictionary)["active"] as Dictionary).is_empty():
+		var a: Dictionary = (rs as Dictionary)["active"]
+		var dur: float = maxf(float(a.get("dur", 0.0)), 0.0)
+		var done_s: float = clampf(saved - float(a.get("start", saved)), 0.0, dur) if saved > 0.0 else 0.0
+		a["start"] = played - done_s
+	if flags.has("rocket_ready_unix"):
+		var left: float = float(flags["rocket_ready_unix"]) - saved if saved > 0.0 else 0.0
+		flags.erase("rocket_ready_unix")
+		if left > 0.0:
+			flags["rocket_ready_at"] = played + left  # RocketTiers caps it at one full recharge
+	return d
+
+
+## Erases `keys` from every dictionary inside `v` (a base's dict sits at different depths in the
+## flat `world`, the `districts` and the globe's `orbit` sites).
+static func _erase_keys(v: Variant, keys: Array[String]) -> void:
+	if v is Dictionary:
+		for k: String in keys:
+			(v as Dictionary).erase(k)
+		for x: Variant in (v as Dictionary).values():
+			_erase_keys(x, keys)
+	elif v is Array:
+		for x: Variant in (v as Array):
+			_erase_keys(x, keys)
+
+
 const LEDGER_FLAGS: Array[String] = ["ledger_act", "ledger_resolved", "ledger_relay_hub", "ledger_coupons"]
 const LEDGER_STATS: Array[String] = ["ledger_drops", "ledger_jammed", "ledger_seed_drops"]
 const LEDGER_ONCE: Array[String] = ["toast_ledger_note", "wren_ledger_drop", "toast_ledger_drone"]

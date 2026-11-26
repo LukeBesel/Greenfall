@@ -167,5 +167,5 @@ static func _build_drive(world: Node, ff: bool) -> bool:
 
 ## Fast-forward: the cells are full and a rocket stands ready (a dev-hook start has no pad yet).
 static func _ff_rocket() -> void:
-	GameState.flags.erase("rocket_ready_unix")
+	GameState.flags.erase("rocket_ready_at")
 	GameState.world["rocket_parked"] = true

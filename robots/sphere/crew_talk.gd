@@ -121,8 +121,8 @@ static func hexes_per_hour(u: Dictionary) -> float:
 	var role: String = str(u["role"])
 	if role != "clean" and role != "skim":
 		return 0.0
-	var per: float = SphereOffline.UNITS_PER_WATER_CELL if role == "skim" else SphereOffline.UNITS_PER_CELL
-	return Offline.unit_rate(str(u["type"]), int(u["tier"])) * 3600.0 / per * RATE_SHARE
+	var per: float = SphereWork.UNITS_PER_WATER_CELL if role == "skim" else SphereWork.UNITS_PER_CELL
+	return CrewRate.unit_rate(str(u["type"]), int(u["tier"])) * 3600.0 / per * RATE_SHARE
 
 
 ## A hub's crew in numbers and one line: {robots, working, idle, hexes_per_hour, bales_waiting,

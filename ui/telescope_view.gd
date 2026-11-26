@@ -654,7 +654,7 @@ func _refresh_remote() -> void:
 		district.active_bots(), district.bots.size(), ago_text(float(snap.get("saved_unix", 0.0)))]
 	var bl: float = RemoteProgress.boost_left(w)
 	var boost_line: String = (tr("\nCARE PACKAGE  %d:%02d left") % [int(bl / 60.0), int(bl) % 60]) if bl > 0.0 else ""
-	_right.text = tr("Remote pace (%d%% of offline)\nWaiting for you: %s cubes%s") % [int(RemoteProgress.factor() * 100.0), Settings.fmt(BigNum.from_float(cubes)), boost_line]
+	_right.text = tr("Your robots there work while you play here.\nWaiting for you: %s cubes%s") % [Settings.fmt(BigNum.from_float(cubes)), boost_line]
 	district.boost = float(RemoteProgress.care_cfg().get("boost_mult", 2.0)) if bl > 0.0 else 1.0
 	var why: String = RemoteProgress.care_block_reason(w)
 	_care_btn.text = tr("Send a care package (%s cubes)") % Settings.fmt(BigNum.from_float(RemoteProgress.care_cost()))

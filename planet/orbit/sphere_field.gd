@@ -15,7 +15,7 @@ extends HexField
 ## - locked: cells of a locked biome (locked_biomes) can't be scooped until unlocked.
 ## - floating junk on water cells with junk left (lakes count as junk hexes, as on the flat).
 
-const FULL_PIECES: int = 70  # pacing units of an untouched 10 m hex (robots / offline: SphereOffline.UNITS_PER_CELL)
+const FULL_PIECES: int = 70  # pacing units of an untouched 10 m hex (robots: SphereWork.UNITS_PER_CELL)
 ## [v1world] Pieces drawn on an untouched land cell (owner, Nov 8: "way more trash, like the flat
 ## world"; the flat field lays 260-420 a hex, landfill x2.2). The ledger is in volume (FLAT_HEX_VOL),
 ## so more pieces are each lighter: a cell still takes the flat hex's scoop pulses to clean.

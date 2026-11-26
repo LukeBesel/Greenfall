@@ -11,7 +11,7 @@ extends Node
 ## Depot on the start pad, Lumi Level, the pause menu, hex levels (sparse), the Hub (logic; the
 ## site prefab shows its stage), the workbench + Upgrades, Research/Achievements/Codex, music,
 ## WREN + subtitles, Goals, Tutorial, Requests, Interactables, WorldEvents, the Signal Tower,
-## Extras (CD player, nursery, album, welcome back, Seed of the Week), the Telescope, Camp (broken
+## Extras (CD player, nursery, album, Seed of the Week), the Telescope, Camp (broken
 ## bench, trash bin, yard builds), Glim, the crashed pod, CoreCharge, Objectives (+ the cell
 ## outline), the garden (sparse, per cell). Yard systems stand on orbD's hub-0 anchors (yard_slot).
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
@@ -35,7 +35,6 @@ var day: OrbitDay
 var crews: OrbitCrews
 var cam: SphereCam
 var dev: OrbitDev
-var from_memory: bool = false  # [orbC] reloaded by rocket travel: no offline payout
 var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
@@ -53,7 +52,6 @@ func build(p_world: Node3D) -> void:
 	if GameState.reload_in_memory:
 		GameState.reload_in_memory = false
 		loaded = true
-		from_memory = true  # [orbC]
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
@@ -669,7 +667,7 @@ func yard_point(anchor: String) -> Vector3:
 	return (slot[0] as Node3D).global_transform * (slot[1] as Transform3D).origin
 
 
-## Extras as on the flat game (radio / CD player, robot nursery, album, welcome back, Seed of the
+## Extras as on the flat game (radio / CD player, robot nursery, album, Seed of the
 ## Week); the radio and the nursery stand on the start site's anchors (the nursery's caretakers
 ## wander in its own frame, so they come along).
 func _attach_extras() -> void:
@@ -1292,7 +1290,15 @@ func restore_world() -> void:
 	patch.restore_cargo(ld.get("cargo", {}))
 	if sites:  # [orbD]
 		sites.load_state(od.get("site_state", {}))
-	crews.restore_crew(self, od, not from_memory)  # [orbC] crew + offline jump
+	if ClockCheck.wanted():  # dev: --clock-check / --work-watch (tools/clock_check.gd)
+		ClockCheck.before_restore(self)
+	crews.restore_crew(self, od)  # [orbC] the crew as saved: no time is made up for a closed game (item 110)
+	# Landing from another planet: this planet's crews are paid for the play time spent elsewhere.
+	var remote: Dictionary = RemoteProgress.arrive(crews)
+	if float(remote.get("cubes", 0.0)) + float(remote.get("waiting_value", 0.0)) >= 1.0:
+		get_tree().create_timer(2.5).timeout.connect(func() -> void: EventBus.toast.emit(RemoteProgress.arrival_text(remote), "story"))
+	if ClockCheck.wanted():
+		ClockCheck.after_restore(self)
 
 
 static func _v_arr(v: Vector3) -> Array:

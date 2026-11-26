@@ -4,8 +4,8 @@ extends Node3D
 ## E at its door opens the telescope view (ui/telescope_view.gd): pick another world you've visited
 ## and watch its crew at work. While in use the dome's two shells part and the optical tube rises.
 ## Built once per district: GameState.world["telescope"] = {"built": true}. data/telescope.json.
-## It also runs the remote-progress payout on world arrival (systems/remote_progress.gd), whether
-## or not a telescope is built (robots work everywhere; the telescope just lets you watch).
+## It also counts play time for the crews on the other visited worlds (systems/remote_progress.gd),
+## whether or not a telescope is built (robots work everywhere; the telescope just lets you watch).
 ## Dev: --scope (build it free here), --scope-sample (a sample visited world with no save),
 ##      --open=scope[=N] (open the view; N = world list index to zoom straight in), --scope-open (dome open).
 
@@ -41,11 +41,9 @@ func _ready() -> void:
 	view.world = world
 	view.closed.connect(_on_view_closed)
 	add_child(view)
-	# Remote progress: pay what the crew here earned while Lumi was on another world.
-	var fm: bool = bool(world.get("scope_from_memory")) if world and world.get("scope_from_memory") != null else false
-	var res: Dictionary = RemoteProgress.on_district_ready(fm)
-	if not res.is_empty() and float(res.get("cubes", 0.0)) + float(res.get("waiting_value", 0.0)) > 0.0:
-		get_tree().create_timer(2.5).timeout.connect(func() -> void: EventBus.toast.emit(RemoteProgress.arrival_text(res), "story"))
+	# Remote progress: every second of play counts for the crews on the other visited worlds
+	# (sim_tick stands still while the game is paused or loading; nothing counts while it is closed).
+	EventBus.sim_tick.connect(_on_sim_tick)
 	if DevHooks.has("scope-open"):
 		_open_target = 1.0
 		_open = 1.0
@@ -58,6 +56,10 @@ func _ready() -> void:
 ## Deferred from _ready (--open=scope) as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
 func _dev_open_view() -> void:
 	open_view(int(DevHooks.get_f("scope-pick", -1.0)))
+
+
+func _on_sim_tick(dt: float) -> void:
+	RemoteProgress.tick(dt)
 
 
 static func of(n: Node) -> Telescope:
@@ -74,6 +76,7 @@ func state() -> Dictionary:
 
 func persist_save() -> void:
 	state()["built"] = built()
+	RemoteProgress.flush()  # the other worlds' away counts go to disk with every save
 
 
 func built() -> bool:

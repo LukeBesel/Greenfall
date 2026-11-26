@@ -123,6 +123,7 @@ static func from_dict(d: Dictionary) -> Dictionary:
 		var wd: Dictionary = (w as Dictionary).duplicate(true)
 		for k: String in ["index", "seed", "slot", "claimed"]:
 			wd[k] = int(wd.get(k, 0))
+		wd.erase("scope_boost")  # item 110: an old care package timed by the system clock
 		ws.append(wd)
 	if ws.is_empty():
 		ws = p["worlds"]

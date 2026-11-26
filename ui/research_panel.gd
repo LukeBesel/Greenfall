@@ -38,7 +38,7 @@ func _ready() -> void:
 	drow.add_child(CurrencyIcon.new("cubes", 30.0))
 	_data_lbl = UITheme.label("0", 30, UITheme.CREAM)
 	drow.add_child(_data_lbl)
-	var earn := UITheme.label(tr("Research costs cubes and takes real time. It keeps going while you play or are away."), 14, UITheme.MUTED)
+	var earn := UITheme.label(tr("Research costs cubes and takes time. It keeps going while you play."), 14, UITheme.MUTED)
 	earn.autowrap_mode = TextServer.AUTOWRAP_WORD
 	earn.custom_minimum_size = Vector2(200, 0)
 	dvb.add_child(earn)

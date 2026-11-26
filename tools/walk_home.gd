@@ -170,7 +170,7 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var a: Dictionary = _snap()
 	print("[walk-home] trace %s: save: step %s card %s count %s cubes %.1f" % [tag, str(a["step"]), str(a["card"]), str(a["pr"]), float(a["_cubes"])])
 	var ea: Dictionary = extra.call() if extra.is_valid() else {}
-	var saved_at: float = Time.get_unix_time_from_system()
+	var saved_ms: int = Time.get_ticks_msec()  # how long the quit and Continue took, for the notes only
 	var fl0: Fleet = w.get("fleet") as Fleet
 	var bots: bool = fl0 != null and fl0.robot_total() > 0
 	_reloads += 1
@@ -267,13 +267,8 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var cb: String = digits.sub(str((b["card"] as Array).slice(0, 2)), "#", true)
 	if ca != cb:  # the count: below, with the bar
 		diff.append("card %s -> %s" % [str(a["card"]), str(b["card"])])
-	# [v9a] Back after more than OrbitCrews.AWAY_MIN_S with robots out, the game pays their offline
-	# work on load (cubes up, cells cleaned): by design. On a slow runner the quit-title-Continue
-	# round trip itself takes that long (CI: "5.5 / 600 -> done", the outline on another hex).
-	var away: float = Time.get_unix_time_from_system() - saved_at
-	var paid: bool = bots and away > OrbitCrews.AWAY_MIN_S and float(b["_cubes"]) > float(a["_cubes"]) + 1.0
-	if paid:
-		print("[walk-home] note: %s: back after %.0f s with robots out: offline pay %.0f cubes (count and outline may move on)" % [tag, away, float(b["_cubes"]) - float(a["_cubes"])])
+	# Owner item 110: nothing is earned or cleaned while the game is closed, however long the quit
+	# and Continue took (it used to pay for the closed time after two minutes, which a slow runner hit).
 	var pa: Array = a["pr"]
 	var pb: Array = b["pr"]
 	# [v9a] A price line ("0 / 900") turns into the step's own count ("1 / 2") once the money is
@@ -284,15 +279,14 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	# loaded); money that appears in the load itself is a save fault, so that still fails.
 	var pc: float = float((b["_price"] as Dictionary).get("cubes", 0.0))
 	var kept_money: bool = absf(cubes_loaded - cubes_file) <= 1.0 or hexes_loaded > hexes_file
-	var earned: bool = pc > 0.0 and float(b["_cubes"]) >= pc and float(a["_cubes"]) < pc and (kept_money or paid)
+	var earned: bool = pc > 0.0 and float(b["_cubes"]) >= pc and float(a["_cubes"]) < pc and kept_money
+	var away: float = (Time.get_ticks_msec() - saved_ms) / 1000.0
 	# [v9a] Saving up: the load gave back the cubes the save held, and the game paid more in play while
 	# the card faded in (a run: 200 saved, 200 on load, 717 three seconds later, two robot hexes). The
 	# card counts what he has now.
 	var saving: bool = pc > 0.0 and absf(cubes_loaded - cubes_file) <= 1.0 and float(b["_cubes"]) > cubes_loaded + 0.5 and float(b["_cubes"]) < pc \
 		and str(pb[1]) == "%s / %s" % [Currencies.have_text(float(b["_cubes"])), Settings.fmt(BigNum.from_float(pc))]
-	if paid and float(pb[0]) >= float(pa[0]) - 0.01:
-		pass  # more money or more cleaned: the pay
-	elif earned:
+	if earned:
 		print("[walk-home] note: %s: the price %s was earned in play (cubes %.0f at the snapshot, %.0f in the save, %.0f on load, %.0f now; hexes cleaned %.0f saved, %.0f now): the card shows the step's count %s" % [tag,
 			str(pa[1]), float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), hexes_file, float(GameState.stats.get("hexes_cleaned", 0.0)), str(pb[1])])
 	elif saving:
@@ -305,8 +299,6 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var kept: float = (so.globe.field as HexField).removed_fraction(int(a["hex"])) if int(a["hex"]) >= 0 else 0.0
 	if int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and int(b["hex"]) >= 0 and absf(kept - float(a["frac"])) <= 0.05 and float(b["frac"]) >= float(a["frac"]) - 0.01:
 		print("[walk-home] note: %s: the outline moved to hex %d (%.0f%%); hex %d kept %.0f%%" % [tag, int(b["hex"]), float(b["frac"]) * 100.0, int(a["hex"]), kept * 100.0])
-	elif paid:
-		pass  # offline work cleaned cells: the outline may be on another hex
 	elif int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and kept >= 0.95:
 		print("[walk-home] note: %s: hex %d finished (%.0f%%); the outline moved on to hex %d (%.0f%%)" % [tag, int(a["hex"]), kept * 100.0, int(b["hex"]), float(b["frac"]) * 100.0])
 	elif int(a["hex"]) >= 0 and (int(b["hex"]) < 0 or float(b["frac"]) < float(a["frac"]) - 0.05):  # [v9d] robots may have cleaned on meanwhile: more is fine
@@ -1496,6 +1488,11 @@ static func _open_bench() -> ListDetail:
 			break
 		await tree.create_timer(0.1).timeout
 	_check(_up().is_open, "the interact key at the bench opens the workbench (near=%s)" % str(so.near_bench()))
+	if not _up().is_open:  # what took the key instead
+		var ia: Interactables = w.get("interactables") as Interactables
+		print("[walk-home] note: bench shut: prompt '%s', interactable '%s', carrying %d, can dig %s, input %s, paused %s, Lumi %.1f m from the bench" % [
+			so.interact_prompt(p), ia.prompt(p.global_position) if ia else "-", p.carried.size(), str(p.detector != null and p.detector.can_dig()),
+			str(p.input.enabled) if p.input is PlayerInput else "?", str(tree.paused), p.global_position.distance_to(so.bench_position())])
 	await tree.create_timer(0.6).timeout  # the unfold
 	return _list()
 

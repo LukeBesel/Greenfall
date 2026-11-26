@@ -13,8 +13,8 @@ extends InputSource
 ## Writes a timeline to screenshots/autoplay_report.json on exit (goal completions, hex level-ups,
 ## robots, research, base levels, gaps > 3 min with no goal and no new purchase). Run:
 ##   godot --headless --path . -- --fresh --autoplay --time-scale=8 --quit-after=950
-## Research runs on wall-clock time in the real game; the bot drives Research.now_override from the
-## game clock so a time-scaled run sees research at the same pace a player would.
+## Research and the rocket's cells run on the play clock (stats.time_played), so a time-scaled run
+## sees them at the same pace a player would.
 
 const BENCH_POS := Vector3(-3.6, 0, 2.2)
 const BENCH_STAND := Vector3(-1.4, 0, 2.2)
@@ -92,7 +92,6 @@ func _init(p_world: Node) -> void:
 	pw.world = p_world
 	p_world.add_child.call_deferred(pw)
 	_start_t = float(GameState.stats.get("time_played", 0.0))
-	Research.now_override = 1000.0
 	_hook(EventBus.cube_made, func(_i: Dictionary) -> void: _mark("first_cube_s"))
 	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void:
 		_mark("first_cashin_s")
@@ -299,8 +298,6 @@ func update(delta: float) -> void:
 	if p == null:
 		return
 	_dt = delta
-	Research.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))
-	RocketTiers.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))  # [beat]
 	if DevHooks.has("game-minutes") and _now() >= DevHooks.get_f("game-minutes", 60.0) * 60.0 and not _stopping:
 		_stopping = true
 		_stop_run("game-minutes")

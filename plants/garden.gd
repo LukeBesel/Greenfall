@@ -108,16 +108,18 @@ func ensure_hex(hid: int) -> void:
 		var ck: Vector2i = _chunk_of(i)
 		_chunk_cap[ck] = int(_chunk_cap.get(ck, 0)) + 1
 	var d: Variant = _saved_cells.get(hid)
-	if d is Array and (d as Array).size() == 3:
+	if d is Array and (d as Array).size() >= 3:
 		var sp: PackedByteArray = d[0]
 		var st: PackedByteArray = d[1]
 		var wa: PackedFloat32Array = d[2]
+		var pr: PackedFloat32Array = d[3] if (d as Array).size() > 3 else PackedFloat32Array()  # item 110
 		var ids: PackedInt32Array = hex_slots[hid]
 		for k: int in mini(ids.size(), sp.size()):
 			var sl: int = ids[k]
 			slot_species[sl] = int(sp[k]) - 1
 			slot_stage[sl] = st[k]
 			slot_water[sl] = wa[k] if k < wa.size() else 0.0
+			slot_progress[sl] = pr[k] if k < pr.size() else 0.0
 			if slot_species[sl] >= 0:
 				_update_inst(sl)
 		_saved_cells.erase(hid)
@@ -439,7 +441,9 @@ func _update_inst(s: int) -> void:
 
 # --- Persistence -----------------------------------------------------------------------
 
-## [orbB] Sparse save: per planted cell, its slots' species / stage / water.
+## [orbB] Sparse save: per planted cell, its slots' species / stage / water, and (owner item 110:
+## a save loads as exactly the world that was saved) how far each plant is into its stage. Saves
+## from before that have three arrays per cell and load with the stage's progress at 0, as they did.
 func persist_sparse() -> Dictionary:
 	var out: Dictionary = {}
 	for h: int in hex_slots:
@@ -448,16 +452,20 @@ func persist_sparse() -> Dictionary:
 		var sp := PackedByteArray()
 		var st := PackedByteArray()
 		var wa := PackedFloat32Array()
+		var pr := PackedFloat32Array()
 		for sl: int in ids:
 			sp.append(slot_species[sl] + 1)
 			st.append(slot_stage[sl])
 			wa.append(slot_water[sl])
+			pr.append(slot_progress[sl])
 			any = any or slot_species[sl] >= 0
 		if any:
-			out[str(h)] = [Marshalls.raw_to_base64(sp), Marshalls.raw_to_base64(st), Marshalls.raw_to_base64(wa.to_byte_array())]
+			out[str(h)] = [Marshalls.raw_to_base64(sp), Marshalls.raw_to_base64(st), Marshalls.raw_to_base64(wa.to_byte_array()), Marshalls.raw_to_base64(pr.to_byte_array())]
 	for h: int in _saved_cells:  # planted cells this run never came near: keep them
 		var e: Array = _saved_cells[h]
 		out[str(h)] = [Marshalls.raw_to_base64(e[0]), Marshalls.raw_to_base64(e[1]), Marshalls.raw_to_base64((e[2] as PackedFloat32Array).to_byte_array())]
+		if e.size() > 3:
+			(out[str(h)] as Array).append(Marshalls.raw_to_base64((e[3] as PackedFloat32Array).to_byte_array()))
 	var r: Dictionary = {"cells": out}
 	var beds: Array = persist_beds()  # [v8seed]
 	if not beds.is_empty():
@@ -473,6 +481,8 @@ func _load_sparse() -> void:
 		if e.size() < 3:
 			continue
 		_saved_cells[int(str(k))] = [Marshalls.base64_to_raw(str(e[0])), Marshalls.base64_to_raw(str(e[1])), Marshalls.base64_to_raw(str(e[2])).to_float32_array()]
+		if e.size() > 3:
+			(_saved_cells[int(str(k))] as Array).append(Marshalls.base64_to_raw(str(e[3])).to_float32_array())
 	for h: int in _saved_cells.keys():  # planted cells come back with their plants
 		ensure_hex(h)
 	_saved_beds = d.get("beds", [])  # [v8seed] restored as the beds come (add_bed)

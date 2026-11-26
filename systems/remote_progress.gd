@@ -1,26 +1,32 @@
 class_name RemoteProgress
 extends RefCounted
 ## [scope] Remote progress: robots on the other worlds of the profile keep working while Lumi is
-## somewhere else, at `remote_factor` (data/telescope.json) of the offline rate. The maths is the
-## one offline function, Offline.compute (core/offline.gd), so its rates, the 8 h cap and the
-## "junk left" cap are shared, never duplicated:
-##   remote cubes = Offline.compute(robots, elapsed (+ care-package boost), junk_left / f) x f
-## When it pays: on arrival at a world by world travel (CradleMode.switch_world loads it in memory,
-## so the slice skips its own offline payout). The window starts at that world's last save, which
-## is the moment Lumi left it. A cold start onto a world gets the normal offline payout instead,
-## never both. The units paid count into the district's `offline_units`, like the offline payout,
-## so the same junk can't pay twice. The telescope shows the same number live while you watch.
+## somewhere else AND THE GAME IS RUNNING, at `remote_factor` (data/telescope.json) of their full
+## rate. Owner item 110: "They work when I am in different locations and on different planets but
+## not when I log off." So nothing here reads the system clock:
+##   - every second of play (EventBus.sim_tick: not paused, not behind the loading screen) adds to
+##     the `away_s` of every OTHER visited world's record in the Cradle profile (tick());
+##   - landing on a world pays its crews for its `away_s` and sets it back to 0 (arrive()): on the
+##     round planet the crews' hub regions are really cleaned (OrbitCrews.catch_up), so the same
+##     junk can't pay twice;
+##   - the telescope shows the same number live while you watch (pending()).
+## Closing the game stops the count; the clock moving (either way) changes nothing.
+## Hard caps: CAP_S of away play time per stay, and the junk the crews' regions have left.
 ## Snapshots of other worlds are read-only: their saves are read, never written.
 ## Pure helpers are static and tested in tests/test_remote_progress.gd.
 
 const CFG_PATH: String = "res://data/telescope.json"
-const DEFAULT_FACTOR: float = 0.5
+const DEFAULT_FACTOR: float = 0.25
 const DEFAULT_MIN_AWAY_S: float = 120.0
+## The most away play time one stay elsewhere can pay for.
+const CAP_S: float = 8.0 * 3600.0
 ## Mean junk units per district hex (37 hexes of 10 m, measured on Verdance's Old Town).
 const AVG_HEX_UNITS: float = 337.0
 
-## The world index the last district ran on (this session only; -1 before the first one).
-static var last_world: int = -1
+## Play seconds counted since the last tick() pass over the world records.
+static var _acc: float = 0.0
+## True when a world record changed and the profile wants saving (flush()).
+static var _dirty: bool = false
 static var _cfg: Dictionary = {}
 ## Dev / screenshots: a synthetic visited world (no save on disk), see sample_snapshot().
 static var sample: Dictionary = {}
@@ -42,31 +48,21 @@ static func care_cfg() -> Dictionary:
 
 # --- Pure maths --------------------------------------------------------------------------
 
-## Seconds of a boost window [b_from, b_until] that fall inside [t0, t1].
-static func boost_overlap(t0: float, t1: float, b_from: float, b_until: float) -> float:
-	return maxf(0.0, minf(t1, b_until) - maxf(t0, b_from))
-
-
-## Effective work seconds: elapsed plus the extra speed of a boost, never past the offline cap.
+## Effective work seconds: elapsed plus the extra speed of a boost, never past the cap.
 static func effective_seconds(elapsed_s: float, boost_s: float = 0.0, boost_mult: float = 1.0) -> float:
 	var e: float = maxf(elapsed_s, 0.0)
 	var b: float = clampf(boost_s, 0.0, e)
-	return minf(e + b * maxf(boost_mult - 1.0, 0.0), Offline.CAP_S)
+	return minf(e + b * maxf(boost_mult - 1.0, 0.0), CAP_S)
 
 
-## Remote gains for a fleet away `elapsed_s` seconds. Same keys as Offline.compute; cubes and
-## units are scaled by `f`, the junk cap applies after scaling, waiting bales are paid like offline.
+## Remote gains for a fleet that worked `elapsed_s` seconds of play unwatched, at `f` of the full
+## rate (CrewRate.fleet_work), capped by the junk left. Keys: seconds, units, cubes,
+## waiting_value (bales with no hauler, paid all the same), elapsed.
 static func compute(robots: Array, elapsed_s: float, junk_left: float = INF, boost_s: float = 0.0, boost_mult: float = 1.0, f: float = -1.0) -> Dictionary:
 	if f < 0.0:
 		f = factor()
-	var t: float = effective_seconds(elapsed_s, boost_s, boost_mult)
-	var cap: float = INF if is_inf(junk_left) else maxf(junk_left, 0.0) / maxf(f, 0.0001)
-	var r: Dictionary = Offline.compute(robots, 0, 0.0, t, cap)
-	r["units"] = float(r["units"]) * f
-	r["cubes"] = float(r["cubes"]) * f
-	r["waiting_value"] = float(r["waiting_value"]) * f
-	r["air"] = 0.0
-	r["elapsed"] = minf(maxf(elapsed_s, 0.0), Offline.CAP_S)
+	var r: Dictionary = CrewRate.fleet_work(robots, effective_seconds(elapsed_s, boost_s, boost_mult), junk_left, f)
+	r["elapsed"] = minf(maxf(elapsed_s, 0.0), CAP_S)
 	return r
 
 
@@ -89,9 +85,9 @@ static func compute_boosted(robots: Array, elapsed_s: float, left: float, boost_
 	return r
 
 
-## Junk units still on a saved district: junk hexes x the mean, minus what offline already paid.
+## Junk units still on a saved district: junk hexes x the mean.
 static func junk_left(snap: Dictionary) -> float:
-	return maxf(0.0, float(snap.get("junk_hexes", 0)) * AVG_HEX_UNITS - float(snap.get("offline_units", 0.0)))
+	return maxf(0.0, float(snap.get("junk_hexes", 0)) * AVG_HEX_UNITS)
 
 
 ## Share of a district's land hexes that are no longer junk (0..1), from saved clean bits and levels.
@@ -187,7 +183,7 @@ static func snapshot_from_save(d: Dictionary, w: Dictionary = {}) -> Dictionary:
 		"planet_id": str(w.get("planet_id", w.get("planet", ""))),
 		"saved_unix": float(d.get("saved_unix", 0.0)), "hub": hub, "hub_level": int(dist.get("hub_level", 1)),
 		"radius": radius, "clean": clean, "levels": levels, "robots": robots, "junk_hexes": junk,
-		"offline_units": float(dist.get("offline_units", 0.0)), "share": district_share(clean, levels),
+		"share": district_share(clean, levels),
 	}
 
 
@@ -212,80 +208,109 @@ static func make_sample() -> void:
 			levels[i] = 2 if clean[i] == 1 and i % 2 == 0 else (1 if clean[i] == 1 else 0)
 	var robots: Array = [{"type": "scoopie", "tier": 2}, {"type": "scoopie", "tier": 1}, {"type": "scoopie", "tier": 2},
 		{"type": "haulbug", "tier": 1}, {"type": "haulbug", "tier": 2}, {"type": "drip", "tier": 1}, {"type": "seedling", "tier": 1}]
-	var w: Dictionary = {"index": 90, "name": "Tidewell", "type": "ocean_world", "slot": -1, "planet_id": "tidewell"}
+	var w: Dictionary = {"index": 90, "name": "Tidewell", "type": "ocean_world", "slot": -1, "planet_id": "tidewell", "away_s": 0.4 * 3600.0}
 	var snap: Dictionary = snapshot_from_save({"saved_unix": Time.get_unix_time_from_system() - 0.4 * 3600.0, "current_hub": 0,
 		"world": {"hub_level": 4, "robots": robots, "field": {"radius": radius, "clean": Marshalls.raw_to_base64(clean)},
 		"hex_levels": {"levels": Marshalls.raw_to_base64(levels)}}}, w)
 	sample = {"world": w, "snap": snap}
 
 
-# --- Live estimate and arrival -----------------------------------------------------------------
+# --- The away count (play time only), live estimate and arrival ------------------------------------
 
-## Boost window of a world's care package: [from, until] (unix), or [0, 0].
-static func boost_window(w: Dictionary) -> Array:
-	var b: Variant = w.get("scope_boost", [])
-	if b is Array and (b as Array).size() == 2:
-		return [float(b[0]), float(b[1])]
-	return [0.0, 0.0]
+## Play seconds Lumi has spent elsewhere since she left world `w` (never past CAP_S).
+static func away_s(w: Dictionary) -> float:
+	return clampf(float(w.get("away_s", 0.0)), 0.0, CAP_S)
+
+
+## Seconds of a care package still to run on world `w`, and the seconds of it already worked.
+static func boost_left(w: Dictionary) -> float:
+	return maxf(0.0, float(w.get("boost_left_s", 0.0)))
+
+
+static func boost_used(w: Dictionary) -> float:
+	return maxf(0.0, float(w.get("boost_used_s", 0.0)))
+
+
+## Adds `dt` seconds of play to one world record that Lumi is not on (pure: no profile, no clock).
+static func add_away(w: Dictionary, dt: float) -> void:
+	if dt <= 0.0:
+		return
+	w["away_s"] = minf(float(w.get("away_s", 0.0)) + dt, CAP_S)
+	var bl: float = boost_left(w)
+	if bl > 0.0:
+		var d: float = minf(bl, dt)
+		w["boost_left_s"] = bl - d
+		w["boost_used_s"] = boost_used(w) + d
+
+
+## Called with every simulation step of play (automation/telescope.gd on EventBus.sim_tick, which
+## stands still while the game is paused or loading). Once a second the other visited worlds'
+## records get the time. Seed of the Week runs are a side game: they count for nothing.
+static func tick(dt: float) -> void:
+	if WeeklyChallenge.active:
+		return
+	_acc += dt
+	if _acc < 1.0:
+		return
+	var step: float = _acc
+	_acc = 0.0
+	for w: Dictionary in visited_worlds():
+		if not sample.is_empty() and w == sample["world"]:
+			continue
+		add_away(w, step)
+		_dirty = true
+
+
+## Writes the profile if the away counts moved (with every save of the game).
+static func flush() -> void:
+	if _dirty:
+		_dirty = false
+		CradleMode.save_profile()
 
 
 ## What the crew on a saved world has earned since Lumi left it (live, for the telescope).
-static func pending(snap: Dictionary, w: Dictionary, now: float = -1.0) -> Dictionary:
-	if now < 0.0:
-		now = Time.get_unix_time_from_system()
-	var t0: float = float(snap.get("saved_unix", now))
-	var bw: Array = boost_window(w)
-	var bo: float = boost_overlap(t0, now, float(bw[0]), float(bw[1]))
-	return compute_boosted(snap.get("robots", []), now - t0, junk_left(snap), bo)
+static func pending(snap: Dictionary, w: Dictionary, extra_s: float = 0.0) -> Dictionary:
+	return compute_boosted(snap.get("robots", []), away_s(w) + extra_s, junk_left(snap), boost_used(w))
 
 
-## Called once per district start (automation/telescope.gd). Pays remote gains when this district
-## was reached by world travel from another world (from_memory); otherwise the offline payout ran.
-static func on_district_ready(from_memory: bool, now: float = -1.0) -> Dictionary:
-	var here: int = CradleMode.current_index()
-	var came_from: int = last_world
-	last_world = here
-	if not from_memory or came_from < 0 or came_from == here or GameState.saved_unix <= 0.0:
-		return {}
-	if now < 0.0:
-		now = Time.get_unix_time_from_system()
-	var away: float = now - GameState.saved_unix
-	if away < float(cfg().get("min_away_s", DEFAULT_MIN_AWAY_S)):
-		return {}
+## Called once when a world is up (scenes/slice_orbit.gd, after the crew is restored): this
+## world's crews catch up on the play time Lumi spent on other worlds, and she is paid for it.
+## The count is set back to 0 whatever happens, so it can never pay twice. Returns the catch-up
+## result ({} when there was nothing to pay).
+static func arrive(crews: OrbitCrews) -> Dictionary:
 	var w: Dictionary = CradleMode.current_world()
-	var bw: Array = boost_window(w)
-	var bo: float = boost_overlap(GameState.saved_unix, now, float(bw[0]), float(bw[1]))
-	var left: float = live_junk_left()
-	var res: Dictionary = compute_boosted(GameState.world.get("robots", []), away, left, bo)
-	GameState.world["offline_units"] = float(GameState.world.get("offline_units", 0.0)) + float(res["units"])
+	var t: float = away_s(w)
+	var bo: float = boost_used(w)
+	var had: bool = w.has("away_s") or w.has("boost_left_s") or w.has("boost_used_s")
+	for k: String in ["away_s", "boost_left_s", "boost_used_s"]:
+		w.erase(k)
+	if had:
+		CradleMode.save_profile()
+	if WeeklyChallenge.active or crews == null or crews.crew == null or crews.crew.robots().is_empty():
+		return {}
+	if t < float(cfg().get("min_away_s", DEFAULT_MIN_AWAY_S)):
+		return {}
+	# A care package's extra is capped (compute_boosted): take the same share of extra seconds.
+	var fleet: Array = []
+	for u: Dictionary in crews.crew.robots():
+		fleet.append({"type": u["type"], "tier": u["tier"]})
+	var plain: Dictionary = compute(fleet, t)
+	var boosted: Dictionary = compute_boosted(fleet, t, INF, bo)
+	var k_boost: float = float(boosted["units"]) / float(plain["units"]) if float(plain["units"]) > 0.0 else 1.0
+	var res: Dictionary = crews.catch_up(minf(t, CAP_S) * k_boost, factor())
+	res["elapsed"] = minf(t, CAP_S)
 	var pay: float = float(res["cubes"]) + float(res["waiting_value"])
 	if pay > 0.0:
 		GameState.add_currency("cubes", BigNum.from_float(pay))
 		GameState.inc_stat("remote_cubes", pay)
-	w.erase("scope_boost")
 	return res
-
-
-## Junk left in the live district (same accounting as the offline payout in scenes/slice.gd).
-static func live_junk_left() -> float:
-	var sc: Node = (Engine.get_main_loop() as SceneTree).current_scene if Engine.get_main_loop() is SceneTree else null
-	var f: Variant = sc.get("field") if sc else null
-	var left: float = 0.0
-	if f is HexField:
-		var hf: HexField = f
-		for h: int in hf.hex_count():
-			if not hf.is_clean(h):
-				left += hf.hex_left[h]
-	else:
-		return INF
-	return maxf(0.0, left - float(GameState.world.get("offline_units", 0.0)))
 
 
 static func arrival_text(res: Dictionary) -> String:
 	var pay: float = float(res.get("cubes", 0.0)) + float(res.get("waiting_value", 0.0))
 	var t: float = float(res.get("elapsed", 0.0))
 	var when: String = (TranslationServer.translate("%d min") % int(t / 60.0)) if t < 3600.0 else ("%.1f h" % (t / 3600.0))
-	return TranslationServer.translate("While you were away (%s), the crew here kept at it at a steady remote pace: %s cubes.") % [when, Settings.fmt(BigNum.from_float(pay))]
+	return TranslationServer.translate("While you were on another planet (%s of play), your robots here earned %s cubes.") % [when, Settings.fmt(BigNum.from_float(pay))]
 
 
 # --- Care package ------------------------------------------------------------------------------
@@ -295,31 +320,23 @@ static func care_cost() -> float:
 
 
 ## "" when a care package can go to world w now, else why not.
-static func care_block_reason(w: Dictionary, now: float = -1.0) -> String:
-	if now < 0.0:
-		now = Time.get_unix_time_from_system()
+static func care_block_reason(w: Dictionary) -> String:
 	if w.is_empty():
 		return TranslationServer.translate("No world in view.")
-	if now < float(boost_window(w)[1]):
+	if boost_left(w) > 0.0:
 		return TranslationServer.translate("A care package is already on its way.")
 	if not GameState.can_afford("cubes", BigNum.from_float(care_cost())):
 		return TranslationServer.translate("Needs %s cubes.") % Settings.fmt(BigNum.from_float(care_cost()))
 	return ""
 
 
-static func send_care(w: Dictionary, now: float = -1.0) -> bool:
-	if now < 0.0:
-		now = Time.get_unix_time_from_system()
-	if care_block_reason(w, now) != "":
+## Sends a care package: the crew on world `w` works at boost_mult for the next boost_s seconds
+## of play (counted by add_away, so it waits while the game is closed or paused).
+static func send_care(w: Dictionary) -> bool:
+	if care_block_reason(w) != "":
 		return false
 	GameState.spend("cubes", BigNum.from_float(care_cost()))
-	w["scope_boost"] = [now, now + float(care_cfg().get("boost_s", 300.0))]
+	w["boost_left_s"] = float(care_cfg().get("boost_s", 300.0))
 	GameState.inc_stat("care_packages")
 	CradleMode.save_profile()
 	return true
-
-
-static func boost_left(w: Dictionary, now: float = -1.0) -> float:
-	if now < 0.0:
-		now = Time.get_unix_time_from_system()
-	return maxf(0.0, float(boost_window(w)[1]) - now)

@@ -1,6 +1,6 @@
 extends GutTest
-## [orbC] Phase C: robots on the round planet (robots/sphere/), far crews, per-hub offline maths
-## (core/sphere_offline.gd, shared with core/offline.gd) and Command-view picking.
+## [orbC] Phase C: robots on the round planet (robots/sphere/), far crews, per-hub work maths
+## (core/sphere_work.gd, core/crew_rate.gd) and Command-view picking.
 
 var _g5: SphereGrid
 var _t5: SphereTerrain
@@ -196,9 +196,9 @@ func test_far_crew_works_at_the_online_rate() -> void:
 	assert_false(crew.is_near(u))
 	var secs: float = 1800.0
 	crew.run_far(secs, 1.0)
-	var expect: float = Offline.unit_rate("scoopie", 0) * secs
+	var expect: float = CrewRate.unit_rate("scoopie", 0) * secs
 	var got: float = float(u["log"]["junk"])
-	assert_gt(got, expect * 0.85, "far work = Offline.unit_rate minus a little travel")
+	assert_gt(got, expect * 0.85, "far work = CrewRate.unit_rate minus a little travel")
 	assert_lt(got, expect * 1.001)
 
 
@@ -240,53 +240,58 @@ func test_save_round_trip_by_direction() -> void:
 	assert_eq((crew.robots()[1]["carry"] as Array).size(), 1)
 
 
-# --- Offline (shared maths) -------------------------------------------------------------
+# --- Fleet work by numbers (CrewRate, SphereWork.catch_up: play time on another planet) ----
 
-func test_offline_compute_unchanged_by_the_refactor() -> void:
-	var r: Dictionary = Offline.compute([{"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}], 0, 1.0, 3600.0)
-	var units: float = Economy.robot_stat("scoopie", "scoop_rate", 0) * 0.35 * 0.9 * 3600.0 * Offline.OFFLINE_RATE
+func test_fleet_work_is_the_per_robot_rate() -> void:
+	var r: Dictionary = CrewRate.fleet_work([{"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}], 3600.0)
+	var units: float = Economy.robot_stat("scoopie", "scoop_rate", 0) * 0.35 * 0.9 * 3600.0
 	assert_almost_eq(float(r["units"]), units, 0.001)
-	assert_almost_eq(float(r["cubes"]), units * Offline.AVG_VALUE_PER_UNIT * Economy.robot_stat("scoopie", "efficiency", 0), 0.001)
+	assert_almost_eq(float(r["cubes"]), units * CrewRate.AVG_VALUE_PER_UNIT * Economy.robot_stat("scoopie", "efficiency", 0), 0.001)
+	assert_almost_eq(float(CrewRate.fleet_work([{"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}], 3600.0, INF, 0.25)["units"]), units * 0.25, 0.001, "pace scales it")
+	assert_eq(float(CrewRate.fleet_work([{"type": "scoopie", "tier": 0}], -500.0)["units"]), 0.0, "time never runs backwards")
+	var lone: Dictionary = CrewRate.fleet_work([{"type": "scoopie", "tier": 0}], 3600.0)
+	assert_eq(float(lone["cubes"]), 0.0)
+	assert_gt(float(lone["waiting_value"]), 0.0, "with no hauler the bales wait at the base")
 
 
-func test_two_hour_offline_matches_flat_within_10_percent() -> void:
+func test_two_hours_of_catch_up_match_the_fleet_rate_within_10_percent() -> void:
 	var g7: SphereGrid = SphereGrid.for_hex_size(7, 10.0)
 	var cells := SphereCells.new(g7.cell_count())
 	var fleet: Array = [{"type": "scoopie", "tier": 0}, {"type": "scoopie", "tier": 0}, {"type": "scoopie", "tier": 0},
 		{"type": "haulbug", "tier": 0}, {"type": "haulbug", "tier": 0}]
-	var flat: Dictionary = Offline.compute(fleet, 0, 1.0, 7200.0, 1e9)
-	var orbit: Dictionary = SphereOffline.simulate(g7, cells, null, [{"cell": 500, "robots": fleet}], 7200.0)
+	var flat: Dictionary = CrewRate.fleet_work(fleet, 7200.0, 1e9, 0.5)
+	var orbit: Dictionary = SphereWork.catch_up(g7, cells, null, [{"cell": 500, "robots": fleet}], 7200.0, "verdance", 0.5)
 	var fc: float = float(flat["cubes"])
 	assert_gt(fc, 0.0)
 	assert_lt(absf(float(orbit["cubes"]) - fc) / fc, 0.10, "orbit %.0f vs flat %.0f cubes" % [float(orbit["cubes"]), fc])
 	var cleaned: int = 0
-	for c: int in SphereOffline.region(g7, cells, 500):
+	for c: int in SphereWork.region(g7, cells, 500):
 		cleaned += 0 if cells.is_dirty(c) else 1
-	assert_almost_eq(float(cleaned), float(flat["units"]) / SphereOffline.UNITS_PER_CELL, 1.5, "the units became cleaned cells")
+	assert_almost_eq(float(cleaned), float(flat["units"]) / SphereWork.UNITS_PER_CELL, 1.5, "the units became cleaned cells")
 	# Nearest the hub first: the hub cell itself is clean.
 	assert_false(cells.is_dirty(500))
 
 
-func test_offline_capped_by_region_junk() -> void:
+func test_catch_up_capped_by_region_junk() -> void:
 	var cells := SphereCells.new(_g5.cell_count())
 	var fleet: Array = [{"type": "scoopie", "tier": 3}, {"type": "haulbug", "tier": 0}]
-	var reg: PackedInt32Array = SphereOffline.region(_g5, cells, 100, 2)
-	var r: Dictionary = SphereOffline.simulate(_g5, cells, null, [{"cell": 100, "robots": fleet, "rings": 2}], 8.0 * 3600.0)
-	assert_almost_eq(float(r["units"]), reg.size() * SphereOffline.UNITS_PER_CELL, 0.01)
-	var again: Dictionary = SphereOffline.simulate(_g5, cells, null, [{"cell": 100, "robots": fleet, "rings": 2}], 8.0 * 3600.0)
+	var reg: PackedInt32Array = SphereWork.region(_g5, cells, 100, 2)
+	var r: Dictionary = SphereWork.catch_up(_g5, cells, null, [{"cell": 100, "robots": fleet, "rings": 2}], 8.0 * 3600.0)
+	assert_almost_eq(float(r["units"]), reg.size() * SphereWork.UNITS_PER_CELL, 0.01)
+	var again: Dictionary = SphereWork.catch_up(_g5, cells, null, [{"cell": 100, "robots": fleet, "rings": 2}], 8.0 * 3600.0)
 	assert_eq(float(again["cubes"]), 0.0, "a clean region pays nothing")
 
 
 func test_region_scales_with_planet_size() -> void:
-	assert_eq(SphereOffline.region_rings(163842, 10), 16, "Verdance")
+	assert_eq(SphereWork.region_rings(163842, 10), 16, "Verdance")
 	# Every planet's hub region keeps the same share of its hub's ground (planets.json globe).
 	var ref: float = (1.0 + 3.0 * 16.0 * 17.0) / (163842.0 / 10.0)
 	for id: String in ["verdance", "ochre", "tidewell", "rime", "anvil"]:
 		var sp: Dictionary = GlobeSpec.of(id)
 		var n: int = GlobeSpec.cells_for(int(sp["frequency"]))
-		var hubs: int = SphereOffline.hub_count(id)
+		var hubs: int = SphereWork.hub_count(id)
 		assert_eq(hubs, int(sp["hub_count"]))
-		var r: int = SphereOffline.region_rings(n, hubs)
+		var r: int = SphereWork.region_rings(n, hubs)
 		var share: float = (1.0 + 3.0 * r * (r + 1)) / (float(n) / hubs)
 		assert_almost_eq(share / ref, 1.0, 0.15, "%s: %d rings" % [id, r])
 
@@ -326,8 +331,8 @@ func test_materialized_cell_takes_a_full_cell_of_work() -> void:
 	_run(crew, 200.0, 0.1)
 	assert_false(cells.is_dirty(c), "cleaned")
 	var got: float = at_clean[0]
-	assert_gt(got, SphereOffline.UNITS_PER_CELL * 0.93, "about a full cell baled (%.1f)" % got)
-	assert_lt(got, SphereOffline.UNITS_PER_CELL * 1.01)
+	assert_gt(got, SphereWork.UNITS_PER_CELL * 0.93, "about a full cell baled (%.1f)" % got)
+	assert_lt(got, SphereWork.UNITS_PER_CELL * 1.01)
 	var alive: int = 0
 	for pid: int in field.pieces_in(c):
 		alive += field.piece_alive[pid]
@@ -453,24 +458,24 @@ func test_skimmers_clean_lakes_and_bale_on_the_shore() -> void:
 	for c: int in lake:
 		cleaned += 1 if not crew.water_dirty(c) else 0
 	assert_gt(cleaned, 1, "the skimmer cleared lake hexes")
-	assert_gt(float(u["log"]["junk"]), SphereOffline.UNITS_PER_WATER_CELL, "it netted floaters")
+	assert_gt(float(u["log"]["junk"]), SphereWork.UNITS_PER_WATER_CELL, "it netted floaters")
 	for b: Dictionary in crew.bales:
 		assert_ne(cells.state[_g5.cell_at(b["dir"])], 5, "bales sit on the shore, not in the lake")
 	assert_eq(crew.stuck_count(), 0)
 
 
-func test_offline_skimmers_work_the_lakes() -> void:
+func test_catch_up_skimmers_work_the_lakes() -> void:
 	var cells := SphereCells.new(_g5.cell_count())
 	var lake: PackedInt32Array = _g5.cells_around(_g5.cells_around(100, 2)[14], 1)
 	for c: int in lake:
 		cells.set_state(c, 5)
 		cells.set_junk(c, 1.0)
-	var land0: float = SphereOffline.units_left(cells, SphereOffline.region(_g5, cells, 100, 4))
+	var land0: float = SphereWork.units_left(cells, SphereWork.region(_g5, cells, 100, 4))
 	var fleet: Array = [{"type": "skimmer", "tier": 0}, {"type": "haulbug", "tier": 0}]
-	var r: Dictionary = SphereOffline.simulate(_g5, cells, null, [{"cell": 100, "robots": fleet, "rings": 4}], 3600.0)
+	var r: Dictionary = SphereWork.catch_up(_g5, cells, null, [{"cell": 100, "robots": fleet, "rings": 4}], 3600.0)
 	assert_gt(float(r["cubes"]), 0.0)
-	assert_almost_eq(SphereOffline.units_left(cells, SphereOffline.region(_g5, cells, 100, 4)), land0, 0.01, "land untouched")
-	assert_lt(SphereOffline.units_left(cells, SphereOffline.region_water(_g5, cells, 100, 4)), lake.size() * SphereOffline.UNITS_PER_WATER_CELL, "lakes cleaner")
+	assert_almost_eq(SphereWork.units_left(cells, SphereWork.region(_g5, cells, 100, 4)), land0, 0.01, "land untouched")
+	assert_lt(SphereWork.units_left(cells, SphereWork.region_water(_g5, cells, 100, 4)), lake.size() * SphereWork.UNITS_PER_WATER_CELL, "lakes cleaner")
 
 
 func test_robot_cleaned_count_matches_a_reload() -> void:

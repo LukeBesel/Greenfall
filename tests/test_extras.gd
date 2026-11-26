@@ -1,6 +1,6 @@
 extends GutTest
 ## [extras] Radio unlocks and the music override, the nursery's retire rules and garden bonus,
-## album milestones, offline garden growth and the welcome-back summary, and Seed of the Week
+## album milestones, and Seed of the Week
 ## (ISO weeks, same seed for everyone, twists, score, one paint chip per week, decor gating).
 
 var _cur: Dictionary
@@ -125,63 +125,6 @@ func test_album_milestones() -> void:
 	assert_true(PhotoAlbum.dir().begins_with("user://"))
 
 
-# --- Welcome back ---------------------------------------------------------------------------
-
-func _garden(n: int) -> Garden:
-	var g := Garden.new()
-	g.species = [{"grow_s": 40, "seed_yield": 1.0}]
-	g.slot_species.resize(n)
-	g.slot_stage.resize(n)
-	g.slot_progress.resize(n)
-	g.slot_water.resize(n)
-	g.slot_hex.resize(n)
-	for i: int in n:
-		g.slot_species[i] = 0
-		g.slot_stage[i] = 0
-		g.slot_progress[i] = 0.0
-		g.slot_water[i] = 0.0
-		g.slot_hex[i] = i
-	return g
-
-
-func test_garden_grows_offline_once() -> void:
-	var g: Garden = _garden(4)
-	var dry: Dictionary = WelcomeBack.grow_garden(g, 3600.0, false)
-	assert_eq(int(dry["grew"]), 0, "dry plants don't grow without a waterer")
-	var wet: Dictionary = WelcomeBack.grow_garden(g, 3600.0, true)
-	assert_eq(int(wet["grew"]), 4)
-	assert_eq(int(wet["bloomed"]), 4)
-	assert_almost_eq(float(wet["seeds"]), 4.0, 0.001)
-	var again: Dictionary = WelcomeBack.grow_garden(g, 3600.0, true)
-	assert_eq(int(again["bloomed"]), 0, "a bloomed plant can't be farmed by reopening the game")
-	g.free()
-
-
-func test_watered_slots_grow_for_their_water_only() -> void:
-	var g: Garden = _garden(1)
-	g.slot_water[0] = 40.0
-	var r: Dictionary = WelcomeBack.grow_garden(g, 3600.0, false)
-	assert_eq(int(r["bloomed"]), 0)
-	assert_gt(g.slot_progress[0] + float(g.slot_stage[0]), 0.0, "it grew while the water lasted")
-	assert_eq(g.slot_water[0], 0.0)
-	g.free()
-
-
-func test_summary_rows_and_cap() -> void:
-	var bots: Array = [{"type": "scoopie", "tier": 0}, {"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}]
-	var res: Dictionary = Offline.compute(bots, 1, 1.0, 20.0 * 3600.0, 300.0)
-	res["away_raw"] = 20.0 * 3600.0
-	var s: Dictionary = WelcomeBack.build_summary(res, {"grew": 5, "bloomed": 2, "seeds": 3.0}, bots)
-	var kinds: Array = (s["rows"] as Array).map(func(r: Dictionary) -> String: return str(r["kind"]))
-	assert_has(kinds, "robots")
-	assert_has(kinds, "cubes")
-	assert_has(kinds, "plants")
-	assert_has(kinds, "seeds")
-	assert_true(bool(s["capped"]))
-	assert_almost_eq(float(s["away"]), Offline.CAP_S, 0.01)
-	assert_string_contains(WelcomeBack.fleet_text(bots), "×2")
-
-
 # --- Seed of the Week -----------------------------------------------------------------------
 
 func _unix(y: int, m: int, d: int) -> float:
@@ -257,19 +200,6 @@ func test_challenge_hooks_cradle_mode_only_while_active() -> void:
 	assert_eq(CradleMode.bank(), 0, "the challenge never banks Starseeds")
 	WeeklyChallenge.active = false
 	assert_eq(CradleMode.world_seed(), home_seed)
-
-
-func test_simulate_caps_and_never_pays_twice() -> void:
-	var ws: Dictionary = {"robots": [{"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}]}
-	var a: Dictionary = Offline.simulate(ws, 30.0 * 3600.0, 60.0)
-	assert_almost_eq(float(a["seconds"]), Offline.CAP_S, 0.01, "time is capped")
-	assert_almost_eq(float(a["units"]), 60.0, 0.001, "and so is the junk")
-	var b: Dictionary = Offline.simulate(ws, 30.0 * 3600.0, 60.0)
-	assert_eq(float(b["units"]), 0.0, "the same junk never pays twice (telescope + welcome back)")
-	var remote: Dictionary = Offline.simulate({"robots": ws["robots"]}, 3600.0)
-	assert_eq(float(remote["units"]), 0.0, "a district that never saved its junk_left pays nothing")
-	var r2: Dictionary = Offline.simulate({"robots": ws["robots"], "junk_left": 500.0}, 3600.0)
-	assert_gt(float(r2["cubes"]), 0.0)
 
 
 # --- [v6screens] Seed of the Week is switched off on the round world -------------------------

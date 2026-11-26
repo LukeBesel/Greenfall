@@ -4,16 +4,17 @@ extends RefCounted
 ## workbench Rockets tab. Each tier looks cooler (automation/rocket_model.gd) and travels better:
 ## a shorter launch, a faster flight, energy cells that refill faster between launches, bigger and
 ## more frequent cargo pods, and at Mk IV instant warp hops. Global (flies with you): stored in
-## GameState.flags "rocket_tier" and "rocket_ready_unix" (when the cells are full again).
+## GameState.flags "rocket_tier" and "rocket_ready_at" (the play-clock second, GameState.stats
+## time_played, at which the cells are full again: they refill while you play, not while the game
+## is closed; owner item 110).
 
 static var _data: Dictionary = {}
-## [beat] The autoplay bot drives this from the game clock so a time-scaled run recharges at
-## game speed (like Research.now_override); < 0 means the system clock.
+## Tests pin the clock with this (like Research.now_override); < 0 means the play clock.
 static var now_override: float = -1.0
 
 
 static func _clock() -> float:
-	return now_override if now_override >= 0.0 else Time.get_unix_time_from_system()
+	return now_override if now_override >= 0.0 else float(GameState.stats.get("time_played", 0.0))
 
 
 static func data() -> Dictionary:
@@ -71,7 +72,7 @@ static func upgrade() -> bool:
 	GameState.flags["rocket_tier"] = int(nd["tier"])
 	GameState.stats["rocket_tier"] = int(nd["tier"])  # [v6pace] the card's "Upgrade the rocket" steps read it
 	# A new rocket comes with full cells.
-	GameState.flags.erase("rocket_ready_unix")
+	GameState.flags.erase("rocket_ready_at")
 	EventBus.toast.emit(TranslationServer.translate("Rocket upgraded: %s.") % TranslationServer.translate(str(nd["name"])), "story")
 	return true
 
@@ -80,22 +81,22 @@ static func upgrade() -> bool:
 static func recharge_left() -> float:
 	if DevHooks.has("auto-launch"):
 		return 0.0
-	var at: float = float(GameState.flags.get("rocket_ready_unix", 0.0))
+	var at: float = float(GameState.flags.get("rocket_ready_at", 0.0))
 	# [beat] Never more than a full recharge (clock set back, or a save from another clock): restart
 	# the countdown from now instead of waiting for the old timestamp.
 	var full: float = float(def().get("recharge_s", 0.0))
 	if at - _clock() > full:
 		at = _clock() + full
-		GameState.flags["rocket_ready_unix"] = at
+		GameState.flags["rocket_ready_at"] = at
 	return maxf(0.0, at - _clock())
 
 
 static func mark_launched() -> void:
 	var r: float = float(def().get("recharge_s", 0.0))
 	if r > 0.0:
-		GameState.flags["rocket_ready_unix"] = _clock() + r
+		GameState.flags["rocket_ready_at"] = _clock() + r
 	else:
-		GameState.flags.erase("rocket_ready_unix")
+		GameState.flags.erase("rocket_ready_at")
 
 
 static func fmt_time(s: float) -> String:

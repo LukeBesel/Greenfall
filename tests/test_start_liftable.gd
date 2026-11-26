@@ -81,15 +81,15 @@ func test_95_percent_clears_the_rest() -> void:
 	assert_true(SphereCells.clean_left(0.05) and not SphereCells.clean_left(0.06), "the shared rule: 5% left is clean")
 
 
-func test_robots_and_offline_use_the_rule() -> void:
+func test_robots_near_and_far_use_the_rule() -> void:
 	var f := _field()
 	var c: int = _grid.cell_at(Vector3(-0.3, -0.8, -0.4).normalized())
 	f.materialize(c)
-	SphereOffline.write_cell(f.cells, f, c, 0.04)
+	SphereWork.write_cell(f.cells, f, c, 0.04)
 	assert_false(f.cells.is_dirty(c), "4% left: clean")
 	assert_eq(f.hex_clean[c], 1)
 	var c2: int = _grid.neighbors(c)[0]
-	SphereOffline.write_cell(f.cells, f, c2, 0.045)  # not materialized (offline / far robots)
+	SphereWork.write_cell(f.cells, f, c2, 0.045)  # not materialized (far robots)
 	assert_false(f.cells.is_dirty(c2))
 	f.settle(c2)
 	assert_eq(f.hex_clean[c2], 1, "and the save/load ledger agrees")

@@ -25,7 +25,7 @@ extends Node
 ##   --robots=type:n,..  spawn test robots (slice.gd); any --robots run prints a [bots] report before quitting
 ##   --clean-hexes=N    pre-clean the N land hexes nearest the base
 ##   --bot-report       print the [bots] robot report before --quit-after
-##   --orbit-far-crew[=N] --offline-jump[=S]  [orbC] round-planet crew checks (robots/sphere/sphere_crew_dev.gd)
+##   --orbit-far-crew[=N]  [orbC] round-planet crew checks (robots/sphere/sphere_crew_dev.gd)
 ##   --fabricator [--fabricator-build]  [orbC] unlock (and, on --orbit, build and fund) the Bot Fabricator
 ##   --trace-bot=NAME   print one robot's state every 2 s (target, hopper, stall timer, status)
 ##   --demo-scoop       Patch scoops the nearest junk nonstop (pickup animation shots; --demo-yaw, --demo-speed)

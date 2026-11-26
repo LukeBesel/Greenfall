@@ -661,15 +661,27 @@ static func run(rt: Node, check: Callable) -> void:
 		for i: int in 2:
 			worst = maxf(worst, crew2.unit_dir(crew2.robots()[i]).angle_to(bot_dirs[i]) * rad)
 	check.call("orbit_robot_positions_within_1m", true, worst < 1.0)
-	# [orbC] Reopened from disk 2 h later: the offline jump pays what the flat game would (10%).
+	# Owner item 110: a save stamped 2 h (and 30 days) in the past, and one from the future, load
+	# as they were saved: the crew is restored and nothing is paid or cleaned for the closed time.
 	if crew2 != null:
-		GameState.saved_unix = Time.get_unix_time_from_system() - 7200.0
 		var so2: SliceOrbit = s2.get("orbit")
-		var res: Dictionary = so2.crews.restore_crew(so2, GameState.orbit, true)
-		var flat: Dictionary = Offline.compute([{"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}], 0, 1.0, 7200.0, INF)
+		var f2: SphereField = so2.globe.field as SphereField
+		var same: bool = true
+		for back: float in [7200.0, 30.0 * 86400.0, -7200.0]:
+			GameState.saved_unix = Time.get_unix_time_from_system() - back
+			var c0: float = GameState.get_currency("cubes").to_float()
+			var n0: int = f2.cleaned_count
+			so2.crews.restore_crew(so2, GameState.orbit)
+			var got: Dictionary = RemoteProgress.arrive(so2.crews)
+			same = same and got.is_empty() and GameState.get_currency("cubes").to_float() == c0 and f2.cleaned_count == n0
+		check.call("orbit_closed_time_pays_nothing", true, same)
+		# Play time on another planet does count: 2 h of it at the full pace is what the fleet's
+		# rate says (10%), and the crews' regions are really cleaned.
+		var res: Dictionary = so2.crews.catch_up(7200.0, 1.0)
+		var flat: Dictionary = CrewRate.fleet_work([{"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}], 7200.0)
 		var fc: float = float(flat["cubes"]) + float(flat["waiting_value"])
 		var oc: float = float(res.get("cubes", 0.0)) + float(res.get("waiting_value", 0.0))
-		check.call("orbit_offline_2h_within_10pct", true, fc > 0.0 and absf(oc - fc) / fc <= 0.10)
+		check.call("orbit_other_planet_2h_play_within_10pct", true, fc > 0.0 and absf(oc - fc) / fc <= 0.10 and int(res.get("cells", 0)) > 0)
 	s2.queue_free()
 	await tree.process_frame
 	# [v7planet] Old flat saves migrate onto Verdance's grid only (OrbitMigrate.can_migrate): on any

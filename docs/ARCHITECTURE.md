@@ -52,7 +52,7 @@ Written in the `[health]` pass, Nov 2026, against Godot 4.7.2. Line counts are a
 2. **District generation**: `PlanetData.new(seed).generate()` plus the saved planet state. It picks the hub, anchor cell, district name and city/wild, and reads the frontier params (`Frontiers.field_params`). Then come `CityLayout`, then `HexField` (radius, hex size, biome, pieces per hex, lake hexes taken from planet water cells, natural borders for old saves), then `field.generate()`, landmarks, buried parts and the saved `field` dict. Last is `_map_slice_to_planet()`.
 3. **Views**: `FrontierDistrict` (frontiers only), `FieldView`, `WaterView`, `LitterView`, `CityView`, `StreetDressing` (unless `--no-dressing`), the cubes root, `Depot`, the board.
 4. **Base and player**: `Hub` (level changes call `_apply_base_level`), rocket site, `Stations`, the flower, `Patch` (with `AutoplayBot`/`DemoScoopInput` input under dev flags), `CameraRig`, `LumiLevel`, `HUD`, `LensOverlay`, `GlobeView` (lambdas for rocket state), `Fleet`, `RobotBuilder`, `UpgradesScreen`, `MusicHooks`, `CommandView`, `PauseMenu`, `PhotoMode`.
-5. **Restore**: `_restore_world()` (cubes, Patch, offline catch-up), `cam.snap()`, spawn dev flags.
+5. **Restore**: `_restore_world()` (cubes, Patch, robots as saved), `cam.snap()`, spawn dev flags.
 6. **Dev setup**: camera presets, `--give`, `--unlock-seeds`, `--upgrade-levels`, `--give-parts`, `--clean-hexes`, `--robots`, `--order`, `--open=...`.
 7. **Global hooks**: `EventBus.hitstop_requested` and the cosmetics unlock checks. It prints `[slice] built in N ms`, then handles `--auto-launch` and the rocket arrival.
 8. **Story and systems** (the order matters: later nodes read earlier ones in `setup()`): `Wren` + `Subtitles`, `Garden`, `HexLevels`, `FutureLayer` (plus `--future` preview), `Goals`, `Wildlife`, `FirstSeed`, `ShardSystem`, `DocumentView`, `Tutorial`, research/codex/achievements (`_setup_research_codex`), `CargoPods`, `Composter`, `Interactables`, `Outposts`, `EasterEggs`, `WorldEvents`, `Contracts`, `Bloom`, frontier setup, `CoreCharge`, `Intro` (plays, or places the pod and wakes WREN).
@@ -98,7 +98,7 @@ Shape: `slice.gd` stays the root `Node3D` and keeps every public member variable
 - Keep the wrappers `world._launch`, `world.rocket_status`, `world.refresh_rocket`, `world.travel_to` and `world.launching`, which are used externally.
 
 **D. `world/world_persistence.gd` (`WorldPersistence`, RefCounted).** The world's save hooks.
-- Functions: `save()` (body of `persist_save`: field, planet, garden, patch, cubes...), `restore(from_memory)` (`_restore_world`, including offline catch-up), `load_cubes()`.
+- Functions: `save()` (body of `persist_save`: field, planet, garden, patch, cubes...), `restore(from_memory)` (`_restore_world`), `load_cubes()`.
 - Depends on: `field`, `planet`, `garden`, `patch`, `_cubes_root`, `GameState.world/saved_unix`, `JunkCube`.
 - `slice.persist_save()` stays a one-line wrapper (it is called through the `persist` group). The round-trip tool must still pass unchanged.
 

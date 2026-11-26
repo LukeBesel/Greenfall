@@ -1,5 +1,5 @@
 {
-  "_doc": "[scope] The Telescope (automation/telescope.gd, ui/telescope_view.gd, systems/remote_progress.gd). Built once per base from the Hub tab. Unlocked by the 'observatory' research node or base level 4. 'parts' is paid in the 'parts' currency when the game has one, else in bolts. Remote progress: robots on other worlds work at remote_factor x the offline rate (core/offline.gd), capped by Offline.CAP_S and the junk left there. A care package spends cubes here for boost_s seconds of boost_mult robot speed on the watched world (one at a time).",
+  "_doc": "[scope] The Telescope (automation/telescope.gd, ui/telescope_view.gd, systems/remote_progress.gd). Built once per base from the Hub tab. Unlocked by the 'observatory' research node or base level 4. 'parts' is paid in the 'parts' currency when the game has one, else in bolts. Remote progress: while the game is being played, robots on the other visited worlds work at remote_factor x their full rate (core/crew_rate.gd), for at most RemoteProgress.CAP_S of play time per stay and the junk left there; nothing is earned while the game is closed. min_away_s: shorter stays elsewhere pay nothing. A care package spends cubes here for boost_s seconds of play at boost_mult robot speed on the watched world (one at a time).",
   "name": "Telescope",
   "desc": "A small observatory dome with a long-range optical array. Look across the system at the other worlds you have visited and watch your crews there at work.",
   "requires_level": 4,
@@ -8,7 +8,7 @@
   "pos": [-4.4, -6.2],
   "yaw_deg": 30.0,
   "use_range": 2.0,
-  "remote_factor": 0.5,
+  "remote_factor": 0.25,
   "min_away_s": 120.0,
   "care": {"cost_cubes": 400, "boost_s": 300.0, "boost_mult": 2.0, "extra_cap": 0.75},
   "spot_s": 1.2,

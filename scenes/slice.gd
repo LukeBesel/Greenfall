@@ -27,7 +27,6 @@ var goals: Goals
 var first_seed: FirstSeed
 var doc_view: DocumentView
 var interactables: Interactables
-var scope_from_memory: bool = false  # [scope]
 var camp: Camp  # [camp] the landing yard: broken bench, trash bin, yard builds (systems/camp/camp.gd)
 var eggs: EasterEggs
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)

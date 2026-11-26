@@ -1,11 +1,10 @@
 class_name ExtrasDirector
 extends Node
 ## [extras] Wires the keepsake features into a district (one call from scenes/slice.gd): the base
-## radio (radio.gd), the robot nursery (nursery.gd), the photo album (album.gd), the welcome-back
-## card (welcome_back.gd), the Seed of the Week run (weekly.gd / weekly_run.gd) and the Keepsakes
+## radio (radio.gd), the robot nursery (nursery.gd), the photo album (album.gd),
+## the Seed of the Week run (weekly.gd / weekly_run.gd) and the Keepsakes
 ## panel (ui/extras_panel.gd, Pause > Keepsakes). Dev hooks:
 ##   --extras=radio|album|nursery|weekly   open the Keepsakes panel on that tab (after --extras-at=S s)
-##   --extras-welcome[=H]   fake an H-hour break (default 3) and show the welcome-back card
 ##   --album-snap=before+m50+thriving+base5   take those album pictures now (after --album-at=S s)
 ##   --album-adopt          list album pictures already on disk for this slot (staged shots with --save-dir)
 ##   --nursery-sample=N     N retired caretakers in the nursery;  --radio-all unlocks every song
@@ -79,13 +78,6 @@ func _setup() -> void:
 				(Radio.st()["unlocked"] as Array).append(str(s["id"]))
 	if DevHooks.has("radio-play"):
 		Radio.play(DevHooks.get_s("radio-play", "verdance_sweep"))
-	if DevHooks.has("extras-welcome"):
-		var h: float = DevHooks.get_f("extras-welcome", 3.0)
-		var bots: Array = GameState.world.get("robots", [])
-		if bots.is_empty():
-			bots = [{"type": "scoopie", "tier": 1}, {"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}, {"type": "drip", "tier": 0}]
-		WelcomeBack.offer(Offline.simulate({"robots": bots}, h * 3600.0, 400.0, 1), h * 3600.0, bots)
-	_resolve_welcome_back.call_deferred()
 	if DevHooks.has("weekly") and not WeeklyChallenge.active:
 		get_tree().create_timer(0.5).timeout.connect(func() -> void: WeeklyChallenge.start(get_tree()))
 	if DevHooks.has("album-snap"):
@@ -105,29 +97,11 @@ func _dev_hide_hud() -> void:
 	world.hud.visible = false
 
 
-## Deferred from _setup as a method: the engine drops it if this node is freed first (tests/test_deferred_calls.gd).
-func _resolve_welcome_back() -> void:
-	WelcomeBack.resolve(world)
-
-
 ## [v5load] On the globe the loader's build waits for this setup (BuildBudget.idle), so it may hand
 ## frames back between its steps. The flat game and budget-less runs stay synchronous.
 func _slice(at: String) -> void:
 	if world.get("orbit") != null:
 		await BuildBudget.check(at)
-
-
-## Saved with the district: what junk is left, so Offline.simulate can cap a district that
-## isn't loaded (remote progress) without its field.
-func persist_save() -> void:
-	var f: HexField = world.get("field") as HexField
-	if f == null:
-		return
-	var left: float = 0.0
-	for h: int in OrbitUp.hexes(f, world.call("bench_pos") if world.has_method("bench_pos") else Vector3.ZERO):  # [orbB] the hub region on a globe
-		if not f.is_clean(h):
-			left += f.hex_left[h] if not (f is SphereField) else (1.0 - f.removed_fraction(h)) * SphereField.FLAT_HEX_VOL  # [orbB] volume, materialized or not
-	GameState.world["junk_left"] = left
 
 
 ## Dev / shots: a few retired caretakers with varied types, tiers and traits.

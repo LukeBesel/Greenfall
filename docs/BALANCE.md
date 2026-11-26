@@ -175,8 +175,8 @@ measured, and what was tuned. All numbers are game time (the sim clock, `GameSta
 - **Garden**: picks up the seed tin, plants one hex at a time, waters by hand until a Drip exists (and
   again when there is nothing left to clean), refills at the base barrel. Reads memory shards (closes the
   document), gives up on unreachable shards/parts/pieces after a while.
-- Research runs on wall-clock time in the real game; the bot drives `Research.now_override` from the game
-  clock so a time-scaled run sees research at a player's pace.
+- Research and the rocket's cells run on the play clock (`stats.time_played`; since 20 Nov, owner item 110), so
+  a time-scaled run sees them at a player's pace and nothing finishes while the game is closed or paused.
 
 Run (about 125 game minutes at 8x on a shared 4-core box):
 
@@ -712,22 +712,24 @@ was tried and reverted (Old Town launch slipped to 93 min).
 - Parts pile up after the first district (the recycler and requests keep paying); the late sinks are
   rocket stages (Mk III 3,300, Mk IV 10,000 parts), robot tiers and the Builder.
 
-### Remote progress and the Telescope (wt/scope, Nov 7)
-Robots on the other worlds of a Cradle Mode profile keep working while Lumi is elsewhere. One function
-does the maths for both: `Offline.compute` (core/offline.gd). `RemoteProgress.compute` (systems/remote_progress.gd)
-calls it and scales the result; nothing is duplicated.
-- **Rate:** `remote_factor` 0.5 of the offline rate (data/telescope.json), and offline is already 0.5 of the
-  online scoop rate, so a remote crew works at **25%** of what it does with Lumi there. Scrubbers pay nothing
-  from afar.
-- **Caps:** the offline 8 h cap (`Offline.CAP_S`) per absence, and the junk left in that district
-  (junk hexes x 337 units, the measured mean, minus `offline_units` already paid). A clean district pays nothing.
-- **When it pays:** on arrival by world travel (`CradleMode.switch_world` loads the world in memory, so the
-  slice skips its own offline payout; `Telescope` calls `RemoteProgress.on_district_ready`). The window starts
-  at that world's last save, i.e. when Lumi left it; under 120 s pays nothing. A cold start onto a world gets
-  the normal offline payout instead, and rocket travel inside one world gets neither, so time is never paid
-  twice. The units paid are added to `offline_units`, so the same junk can't pay again (the same rule as offline).
-  If the extras idle-gains work lands, it should also call `Offline.compute`; remote progress only covers
-  worlds other than the current one, so the two never overlap.
+### Remote progress and the Telescope (wt/scope, Nov 7; play time only since 20 Nov, owner item 110)
+Robots on the other worlds of a Cradle Mode profile keep working while Lumi is elsewhere **and the game is
+being played**. Nothing is earned while the game is closed: there is no offline payout of any kind (the owner:
+"They work when I am in different locations and on different planets but not when i log off").
+`RemoteProgress` (systems/remote_progress.gd) counts play seconds; `CrewRate.fleet_work` (core/crew_rate.gd)
+is the rate maths, the same per-robot numbers the far crews on the round planet use every tick.
+- **Rate:** `remote_factor` 0.25 of the full rate (data/telescope.json): a crew on another planet works at
+  **25%** of what it does with Lumi there (the same pace as before the change).
+- **The count:** every second of play (EventBus.sim_tick: not paused, not loading) adds to the `away_s` of every
+  OTHER visited world in the profile. It is saved with the profile at every save.
+- **Caps:** 8 h of away play time per stay (`RemoteProgress.CAP_S`), and the junk left in the crews' hub regions.
+- **When it pays:** on landing on that planet (`RemoteProgress.arrive`, called by scenes/slice_orbit.gd after
+  the crew is restored): the crews' regions are really cleaned by what they baled (`OrbitCrews.catch_up`,
+  `SphereWork.catch_up`), Lumi gets the cubes, and `away_s` goes back to 0, so nothing can pay twice. Under
+  120 s (`min_away_s`) pays nothing. Loading a save never pays: the system clock is not read.
+- **Care package:** 5 minutes of play at double speed for that crew (it waits while the game is closed).
+- Other planets are closed in this release (data/homeward.json `closed`), so this path is covered by unit
+  tests and the save round trip only, not by a played flight.
 - **What the telescope shows** is the same number live (`RemoteProgress.pending`): the district % and
   "waiting for you" cubes tick up at the remote rate; piles shrink and hexes turn clean nearest the base first.
   Estimates use the current world's upgrades; the payout on arrival uses the visited world's own.

@@ -110,6 +110,13 @@ else
 	echo "[check_exit] FAIL old_ledger_save: see screenshots/check_exit_old_ledger.log"
 	fail=1
 fi
+if tools/check_clock_save.sh >screenshots/check_exit_clock_save.log 2>&1; then  # owner item 110: "not when i log off"
+	echo "[check_exit] PASS clock_save (a save loads as it was saved: closed 2 h / 30 days, clock set back, old save)"
+else
+	echo "[check_exit] FAIL clock_save: see screenshots/check_exit_clock_save.log"
+	grep "^\[clock\] \(DIFF\|FAIL\)" screenshots/check_exit_clock_save.log | head -20
+	fail=1
+fi
 # [v10snd] Owner (Nov 15): the first song plays when the CD by the start pad is found, and the radio
 # (N) plays a found song at will: a new game with real keys and clicks, two reloads (tools/walk_radio.gd).
 run walk_radio -- --fresh --orbit --no-intro --walk-radio --save-dir=check_exit_radio_$$
