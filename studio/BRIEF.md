@@ -22,3 +22,6 @@ game budget. Blender headless -> .glb in art/models.
 Budget: render here is software GL (opengl3, 960x540, Low, one at a time). Sub-agents: at most 2-3.
 Cannot check here: real Mac, Metal/Forward+, 60 fps, High preset effects (SSAO, shadows splits).
 Hand-off in stages; stage 1 = light and atmosphere.
+
+Target machine (owner, 26 Nov): a 2025 MacBook Pro. Character target: art/concept/lumi_concept.png, to be matched exactly (owner).
+Helpers: as many as the lead sees fit (owner, 26 Nov); brief in studio/HELPER_BRIEF.md.
