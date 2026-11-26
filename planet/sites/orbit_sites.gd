@@ -84,6 +84,10 @@ func _setup() -> void:
 		WalkRadio.run_dev(so)
 	if DevHooks.has("walk-home"):  # [v9b] dev: the home steps after the first robot, real input (tools/walk_home.gd)
 		WalkHome.run_dev(so)
+	if DevHooks.has("art-guard"):  # [artguard] dev: what new art can break (tools/art_guard.gd, tools/art_guard.sh)
+		(load("res://tools/art_guard.gd") as GDScript).call("run_dev", so)
+	if DevHooks.has("art-guard-views"):  # [artguard] rendered: four fixed views, draw calls and memory
+		(load("res://tools/art_guard.gd") as GDScript).call("run_views", so)
 	if DevHooks.has("target-reach"):  # [v4world] dev: every collectible and objective target reachable (planet/sites/target_audit.gd)
 		TargetAudit.run_dev(so)
 	if DevHooks.has("planet-smoke"):  # [v7planet] dev: any planet boots, walks, hops, wakes, saves (planet/sites/planet_smoke.gd)
