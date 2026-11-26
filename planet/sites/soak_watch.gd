@@ -170,7 +170,17 @@ func _check() -> void:
 				if ua < -1.0 or ua > 6.0:
 					_warn("robot %s %.1f m %s the terrain (cell %d)" % [u["name"], absf(ua), "under" if ua < 0 else "above", g.grid.cell_at(b.global_position)])
 			if crew.is_stuck(u):
-				_warn("robot %s (%s) stuck at cell %d mode %s" % [u["name"], u["type"], crew.unit_cell(u), str(u["mode"])])
+				# [v14travel] which base it belongs to, how far it is from it, what it was going for
+				var uc: int = crew.unit_cell(u)
+				var hs: int = -1
+				for si: int in g.sites.size():
+					if int(g.sites[si]["cell"]) == int(u["hub"]):
+						hs = si
+				var pth: Array = (u["rec"] as Dictionary).get("path", [])
+				var tgt: int = int(pth[pth.size() - 1]) if not pth.is_empty() else int(u["job"])
+				_warn("robot %s (%s) stuck at cell %d mode %s (base %d, %.0f m from it, %s, target cell %d %.0f m away, near %s, Lumi at base %d)" % [u["name"], u["type"], uc, str(u["mode"]),
+					hs, g.grid.distance_m(uc, int(u["hub"])), "unstuck %.0f s ago" % (crew._t - float(u.get("unstuck_at", -1.0e9))) if crew._t - float(u.get("unstuck_at", -1.0e9)) < 1.0e6 else "stalled %.0f s" % float(u["stall_t"]),
+					tgt, g.grid.distance_m(uc, tgt) if tgt >= 0 else -1.0, str(crew.is_near(u)), so.sites.sm.nearest if so.sites and so.sites.sm else -1])
 	if DevHooks.has("soak-debug"):
 		var comp: Compartment = p.compartment
 		var dep: Variant = so.w.get("depot")

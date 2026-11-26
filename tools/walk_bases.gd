@@ -448,6 +448,10 @@ static func planet_trip(so: SliceOrbit) -> void:
 		print("%s   planet trip: the 'to be continued' card shows (planets closed): closed by E" % TAG)
 		await WalkTravel._tap(tree, "interact")
 		await WalkTravel._wait(tree, 1.0)
+	if not Homeward.discovered(1):  # [v14travel] not on the map yet (Verdance under discover_at): spotted by the telescope, as a player can
+		print("%s   planet trip: %s is not on the map after the drive and six bases (Verdance %.0f%%, needs %.0f%% or the telescope): spotted" % [TAG,
+			Homeward.planet_name(1), float(Homeward.pct_list()[0]) * 100.0, float(Homeward.cfg().get("discover_at", 0.25)) * 100.0])
+		Homeward.spot(1)
 	WalkTravel._check(Homeward.discovered(1), "planet trip: %s is charted" % Homeward.planet_name(1))
 	var stock: Array = [GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float()]
 	var woke: int = HubPlan.restored_main(hp.planet)
@@ -562,8 +566,12 @@ static func _planet_landed(so: SliceOrbit, k: int, stock: Array) -> void:
 	var inside: PackedStringArray = _inside(p)
 	WalkTravel._check(inside.is_empty(), "on %s: Lumi stands inside nothing%s" % [nm, "" if inside.is_empty() else " (in %s)" % ", ".join(inside)])
 	WalkTravel._check((p.input as PlayerInput).enabled and p.visible, "on %s: Lumi can move" % nm)
-	WalkTravel._check(GameState.get_currency("cubes").to_float() >= float(stock[0]) * 0.5 and GameState.get_currency("parts").to_float() >= float(stock[1]) * 0.5,
-		"on %s: the purse came along (cubes %.0f, Parts %.0f; had %.0f, %.0f)" % [nm, GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float(), float(stock[0]), float(stock[1])])
+	# Each world keeps its own purse (CradleMode: a new planet starts with the starter kit); Verdance's
+	# comes back when Lumi does.
+	print("%s   on %s: purse cubes %.0f, Parts %.0f (Verdance's when it left: %.0f, %.0f)" % [TAG, nm, GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float(), float(stock[0]), float(stock[1])])
+	if k == 0:
+		WalkTravel._check(GameState.get_currency("cubes").to_float() >= float(stock[0]) - 1.0 and GameState.get_currency("parts").to_float() >= float(stock[1]) - 0.5,
+			"back on Verdance: its purse is as it was left (cubes %.0f -> %.0f, Parts %.0f -> %.0f)" % [float(stock[0]), GameState.get_currency("cubes").to_float(), float(stock[1]), GameState.get_currency("parts").to_float()])
 	var junk: int = 0
 	var f: SphereField = so.globe.field
 	if f:
