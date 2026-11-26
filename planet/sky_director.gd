@@ -472,6 +472,28 @@ func _apply_sphere() -> void:
 	# Medium+ with Godot's default density (0.05), which washed the globe and its sky flat grey
 	# (owner: vivid blue sky with the two suns, not haze). Plain depth fog does the aerial haze.
 	env.volumetric_fog_enabled = false
+	# [art3] Owner's world target (art/concept/world_target.jpg): shafts of light in hazy air and the
+	# sky in the puddles. Both need the Forward+ renderer (the Mac) and were written without seeing
+	# them: the cloud box renders on software GL, which has neither. So they are OFF unless a run
+	# asks with --look-fx, until someone has looked at them on a real GPU and measured their cost.
+	# Thin volumetric fog (0.004 at most; Godot's default 0.05 is what washed the globe grey), the
+	# sun's scatter strongest when it is low, and screen-space reflections for the wet ground.
+	if DevHooks.has("look-fx") and RenderingServer.get_current_rendering_method() == "forward_plus" and not space:
+		env.volumetric_fog_enabled = true
+		env.volumetric_fog_density = lerpf(0.0012, 0.004, haze) * fog_scale * DevHooks.get_f("look-fx", 1.0)
+		env.volumetric_fog_albedo = Color(0.9, 0.9, 0.95).lerp(Color(1.0, 0.9, 0.78), haze)
+		env.volumetric_fog_anisotropy = 0.75
+		env.volumetric_fog_length = 260.0
+		env.volumetric_fog_sky_affect = 0.0
+		env.volumetric_fog_ambient_inject = 0.15
+		sun.light_volumetric_fog_energy = lerpf(0.6, 2.2, low_sun)
+		companion.light_volumetric_fog_energy = 0.0
+		moon.light_volumetric_fog_energy = 0.4
+		env.ssr_enabled = true
+		env.ssr_max_steps = 48
+		env.ssr_fade_in = 0.15
+		env.ssr_fade_out = 2.0
+		env.ssr_depth_tolerance = 0.3
 	env.fog_density = lerpf(0.0005, 0.0014, haze) * fog_scale  # [v5look] a real haze in Act 1
 	env.fog_sky_affect = 0.0
 	env.adjustment_enabled = true
