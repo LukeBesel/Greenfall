@@ -10,7 +10,7 @@ render_mode cull_disabled, world_vertex_coords, depth_draw_opaque;
 uniform sampler2D atlas : source_color, filter_linear_mipmap, repeat_disable;
 uniform float wind = 1.0;
 uniform float cut = 0.42;
-uniform float gain = 1.5;
+uniform float gain = 1.15;
 uniform float leaf_gain = 1.5;
 // 0 = this plant's own colours; towards 1 the far crowns sink into the ground's green.
 uniform float lush = 1.0;
@@ -74,7 +74,7 @@ void fragment() {
 	col = mix(col, col * var_c, leaf * (1.0 - white));
 	col *= mix(0.5, 1.0, vc.g);
 	// leaves are painted at their true (dark) reflectance; the game's ground is graded brighter
-	ALBEDO = col * gain * mix(1.0, leaf_gain, leaf) * lush;
+	ALBEDO = min(col * mix(mix(gain, leaf_gain, leaf), 1.0, white) * lush, vec3(0.92));
 	ROUGHNESS = mix(0.9, 0.62, leaf);
 	SPECULAR = mix(0.1, 0.28, leaf);
 }
