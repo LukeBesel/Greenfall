@@ -66,6 +66,19 @@ func _ready() -> void:
 	var script_path: String = DevHooks.get_s("model", "res://player/patch_model.gd")
 	var scr: GDScript = load(script_path)
 	_model = scr.new()
+	# --design=ID shows one of Lumi's designs (its preset look); --style=slot:value,... changes Locker
+	# slots on top (colours as hex without #), e.g. --design=sprout --style=side:ff3d8a,head:halo.
+	if DevHooks.has("design") and _model is PatchModel:
+		var id: String = DevHooks.get_s("design", "aurora")
+		(_model as PatchModel).preview_variant = id
+		var sets: String = DevHooks.get_s("style", "")
+		if sets != "":
+			var st: Dictionary = LumiStyle.preset(id)
+			for kv: String in sets.split(","):
+				var kvp: PackedStringArray = kv.split(":")
+				if kvp.size() == 2:
+					LumiStyle.set_value(st, kvp[0], ("#" + kvp[1]) if kvp[0] in LumiStyle.COLOR_SLOTS else kvp[1])
+			_model.set_meta("lumi_style", st)
 	add_child(_model)
 	if DevHooks.has("happy") and _model.has_method("set_happy"):  # [v10ui] the face at a mood (title 0.9)
 		_model.call("set_happy", DevHooks.get_f("happy", 0.5))
