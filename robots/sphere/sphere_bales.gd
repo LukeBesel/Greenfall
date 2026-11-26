@@ -15,6 +15,11 @@ const FAR_M: float = 140.0  # hysteresis: a cube goes back to a record past this
 const MAX_CUBES: int = 60
 const ADOPT_REST_S: float = 3.0  # [v4bots] a loose bale lies still this long before haulers take it
 const ADOPT_DEPOT_M: float = 6.0
+## [v14qa] A bale left lying by the Depot but not on its scale: nobody sold it (the scale takes only
+## what is on it) and the haulers left it to Lumi for ever, so bales put down by the bin piled up on
+## the home pad (17 by the bin at 91 bot minutes, travel helper's soak). After this long still it is
+## the haulers'.
+const ADOPT_DEPOT_REST_S: float = 20.0
 
 var crew: SphereCrew
 var _cubes: Dictionary = {}  # bale id -> JunkCube
@@ -183,10 +188,10 @@ func adopt_loose(dt: float) -> int:
 			continue  # still rolling: the clock starts again
 		seen[key] = true
 		_rest[key] = float(_rest.get(key, 0.0)) + dt
-		if float(_rest[key]) < ADOPT_REST_S or _cubes.size() >= MAX_CUBES:
+		if float(_rest[key]) < ADOPT_REST_S:  # [v14qa] not capped by MAX_CUBES: the cube is already there
 			continue
 		var d: Vector3 = crew.surface.up_at(c.global_position)
-		if fd.angle_to(d) * crew.surface.radius > NEAR_M or not keep_for_haulers(c, depot):
+		if fd.angle_to(d) * crew.surface.radius > NEAR_M or not keep_for_haulers(c, depot, float(_rest[key])):
 			continue
 		adopt(c)
 		seen.erase(key)
@@ -198,13 +203,13 @@ func adopt_loose(dt: float) -> int:
 
 
 ## False for a bale Lumi is cashing or feeding himself (a pad, or right by the Depot).
-func keep_for_haulers(c: JunkCube, depot: Node3D = null) -> bool:
+func keep_for_haulers(c: JunkCube, depot: Node3D = null, rest_s: float = 0.0) -> bool:
 	if Stations.on_feeder(c) or Outposts.on_pad(crew.world, c.global_position):
 		return false
 	if depot != null and is_instance_valid(depot):
 		if depot.has_method("pad_contains") and bool(depot.call("pad_contains", c.global_position)):
 			return false
-		if depot.global_position.distance_to(c.global_position) < ADOPT_DEPOT_M:
+		if depot.global_position.distance_to(c.global_position) < ADOPT_DEPOT_M and rest_s < ADOPT_DEPOT_REST_S:
 			return false
 	return true
 

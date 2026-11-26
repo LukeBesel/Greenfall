@@ -80,3 +80,21 @@ func test_hex_at_exact_has_one_edge() -> void:
 		last32 = h32
 	assert_eq(flips, 1, "walking across an edge in 1 mm steps the hex changes once (the 32-bit lookup: %d times)" % flips32)
 	assert_ne(last, _cell, "and half a metre on it is the neighbour")
+
+
+## [v14qa] Every piece lies in the hex it counts toward: clearing all that lies inside a hex's
+## outline clears the hex (the spots were drawn in a disc wider than the hex: up to 20% of a
+## start-area hex's junk lay in its neighbours, so it read "94%" with its outline empty).
+func test_pieces_lie_inside_their_own_hex() -> void:
+	var cells: PackedInt32Array = _grid.cells_around(_grid.neighbors(_cell)[2], 2)
+	var n: int = 0
+	var outside: int = 0
+	for c: int in cells:
+		if _field.materialized[c] == 0:
+			_field.materialize(c)
+		for pid: int in _field.pieces_in(c):
+			n += 1
+			if _field.hex_at_exact(_field.piece_pos[pid]) != c:
+				outside += 1
+	assert_gt(n, 100, "pieces to look at")
+	assert_eq(outside, 0, "%d of %d pieces lie outside the hex they count toward" % [outside, n])

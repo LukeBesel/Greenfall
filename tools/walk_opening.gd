@@ -644,6 +644,116 @@ static func _spot_test() -> void:
 				await _walk_to(func() -> Vector3: return gp, func() -> bool: return _flat(_p.global_position - gp).length() < 1.6, "the point %s" % goal, 1.2)
 				print("%s spot %s -> %s: %.1f game s, ends %.1f m from it" % [TAG, sp, goal, _gt() - tp, _flat(gp - _p.global_position).length()])
 				continue
+			if goal.begins_with("into:"):  # [v14qa] "into:x:z": W held 3 s from the spot straight at yard point x,z (no steering); prints where he stops
+				var gi: PackedStringArray = goal.split(":")
+				var tp: Vector3 = _so.globe.terrain.ground((xf * Vector3(float(gi[1]), 0.0, float(gi[2]))).normalized())
+				_stand(at, tp)
+				_so.cam.reset_frame(_p.forward())
+				_so.cam.snap()
+				await _secs(3.0)  # far spots: the town's colliders stream in round him
+				_stand(at, tp)
+				await _secs(0.3)
+				var best: float = INF
+				var t_e: float = _gt() + 3.0
+				while _gt() < t_e:
+					_hold_action("move_forward", true)
+					await _frames(1)
+					best = minf(best, _flat(tp - _p.global_position).length())
+				_release_all()
+				var hits: Array = (_p.get("sphere_motor") as SphereMotor).hits
+				var what: String = ""
+				for h: Variant in hits:
+					var col: Variant = (h as KinematicCollision3D).get_collider() if h is KinematicCollision3D else null
+					if col is Node:
+						what = str((col as Node).get_path()).get_slice("/root/", 1).right(90)
+				print("%s spot %s into %s: closest %.2f m, ends %s, touching %s" % [TAG, sp, goal, best, _yard(_p.global_position).split(" =")[0], what if what != "" else "-"])
+				continue
+			if goal == "farbale":  # [v14qa] bales left lying far from Lumi stay where they lie (no ground collider out there)
+				var fell0: int = int(GameState.stats.get("cubes_fell", 0))
+				var put: Array = []
+				var fwd0: Vector3 = _flat(_p.global_position - (_w.get("depot") as Node3D).global_position).normalized()  # away from the scale (it would sell the near one)
+				if fwd0.length() < 0.5:
+					fwd0 = _flat(Vector3(1, 0, 0)).normalized()
+				for dist: float in [6.0, 150.0, 300.0, 600.0]:
+					var info: Dictionary = Economy.evaluate_cube({"plastic": 6.0, "metal": 2.0}, 10.0)
+					var c: JunkCube = JunkCube.create(info["value"], info)
+					_w.call("add_cube", c)
+					var gp: Vector3 = _so.globe.terrain.ground((_p.global_position + fwd0 * dist).normalized())
+					c.global_position = gp + gp.normalized() * 0.4
+					put.append([c, gp, dist])
+				await _secs(15.0)
+				for e: Array in put:
+					if not is_instance_valid(e[0]):
+						print("%s spot farbale %.0f m: the bale is gone (freed)" % [TAG, e[2]])
+						_check(false, "farbale: the bale left %.0f m from Lumi is still there" % e[2])
+						continue
+					var c2: JunkCube = e[0]
+					var moved: float = (c2.global_position - (e[1] as Vector3)).length()
+					print("%s spot farbale %.0f m: moved %.2f m, %.1f m from Lumi, parked %s" % [TAG, e[2], moved, c2.global_position.distance_to(_p.global_position), str(c2.get("parked"))])
+					_check(moved < 1.5, "farbale: a bale %.0f m from Lumi stays where it lies (moved %.1f m)" % [e[2], moved])
+				_check(int(GameState.stats.get("cubes_fell", 0)) == fell0, "farbale: no bale fell into the planet (%d)" % (int(GameState.stats.get("cubes_fell", 0)) - fell0))
+				var near: Array = put[1]
+				if not is_instance_valid(near[0]):
+					continue
+				_stand((near[1] as Vector3) - fwd0 * 8.0, near[1])
+				await _secs(8.0)
+				var c3: JunkCube = near[0]
+				var moved3: float = (c3.global_position - (near[1] as Vector3)).length()
+				print("%s spot farbale: Lumi walked up to the 150 m bale: parked %s, moved %.2f m" % [TAG, str(c3.get("parked")), moved3])
+				_check(not bool(c3.get("parked")) and moved3 < 1.5, "farbale: with Lumi near it the bale is a loose bale again, on the ground")
+				continue
+			if goal == "shackwall":  # [v14qa] the lean-to built: W held into each wall from outside never takes Lumi through it
+				var shack: Node3D = null
+				for n: Node in _w.find_children("Shack", "Node3D", true, false):
+					shack = n as Node3D
+				if shack == null:
+					_check(false, "shackwall: the lean-to is in the yard")
+					continue
+				if not YardBuilds.built("shack"):  # not built yet: no wall stands there, none may stop him
+					var a0: Vector3 = shack.global_transform * Vector3(1.45, 0, -2.4)
+					var b0: Vector3 = shack.global_transform * Vector3(1.45, 0, 0.5)
+					_stand(a0, b0)
+					_so.cam.reset_frame(_p.forward())  # W is the camera's forward: behind him, facing the wall
+					_so.cam.snap()
+					await _secs(0.6)
+					var past: bool = false
+					var t0e: float = _gt() + 2.5
+					while _gt() < t0e and not past:
+						_hold_action("move_forward", true)
+						await _frames(1)
+						past = (shack.global_transform.affine_inverse() * _p.global_position).z > -1.0  # the back wall stood at -1.15 (his centre stopped about -1.6)
+					_release_all()
+					var l0: Vector3 = shack.global_transform.affine_inverse() * _p.global_position
+					print("%s spot shackwall unbuilt back: W held from (1.45, -2.4) ends shack-local (%.2f, %.2f)" % [TAG, l0.x, l0.z])
+					_check(past, "shackwall: before the lean-to is built no invisible wall stands behind the bench")
+				YardBuilds.mark_built("shack")
+				YardBuilds.events.built.emit("shack")
+				await _secs(1.0)
+				# shack-local: [from, toward, the wall's plane test]; the opening faces +Z
+				var tries: Array = [
+					["side (left)", Vector3(-2.7, 0, -0.45), Vector3(-0.4, 0, -0.45), func(l: Vector3) -> bool: return l.x > -1.75 and l.z < 0.25 and l.z > -1.15],  # (his centre in the panel)
+					["back", Vector3(0.0, 0, -2.3), Vector3(0.0, 0, 0.0), func(l: Vector3) -> bool: return l.z > -1.15 and absf(l.x) < 1.6],
+				]
+				for tr: Array in tries:
+					var a: Vector3 = shack.global_transform * (tr[1] as Vector3)
+					var b: Vector3 = shack.global_transform * (tr[2] as Vector3)
+					_stand(a, b)
+					_so.cam.reset_frame(_p.forward())
+					_so.cam.snap()
+					await _secs(0.6)
+					var inside: bool = false
+					var t_end: float = _gt() + 3.0
+					while _gt() < t_end:
+						_hold_action("move_forward", true)  # straight on, no steering round it
+						await _frames(1)
+						var l: Vector3 = shack.global_transform.affine_inverse() * _p.global_position
+						if (tr[3] as Callable).call(l):
+							inside = true
+					_release_all()
+					var lf: Vector3 = shack.global_transform.affine_inverse() * _p.global_position
+					print("%s spot shackwall %s: W held 3 s from %s toward %s, ends shack-local (%.2f, %.2f)%s" % [TAG, tr[0], str(tr[1]), str(tr[2]), lf.x, lf.z, " THROUGH THE WALL" if inside else ""])
+					_check(not inside, "shackwall: Lumi cannot walk through the lean-to's %s wall" % tr[0])
+				continue
 			if goal == "digbale":  # [v9a] a bale pressed on a buried part: E does what the prompt says (pick it up)
 				var f2: HexField = _w.get("field") as HexField
 				var det2: PartDetector = _p.get("detector") as PartDetector

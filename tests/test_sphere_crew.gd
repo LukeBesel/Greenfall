@@ -550,3 +550,27 @@ func test_robot_bales_are_sold_near_and_far() -> void:
 		var r: Array = _pressed_vs_cashed(far, 1200.0)
 		assert_gt(float(r[0]), 5.0, "the Scoopies press bales (%s)" % ("far" if far else "near"))
 		assert_gt(float(r[1]), float(r[0]) * 0.7, "the Haul Bug sells most of them (%s): %s" % ["far" if far else "near", str(r)])
+
+
+## [v14qa] From about 68 bot minutes the home Haul Bugs stood "no path" for good: bales pressed over
+## a lake lay on lake cells, and a Haul Bug that drove up to one stood on a lake cell itself. A haul
+## route now ends and starts at the nearest shore, and the bale is fetched and sold.
+func test_haulbug_fetches_a_bale_lying_on_a_lake_cell() -> void:
+	var w: Dictionary = _world(false)
+	var crew: SphereCrew = w["crew"]
+	var cells: SphereCells = w["cells"]
+	var lake: int = _g5.cells_around(100, 3)[_g5.cells_around(100, 3).size() - 1]
+	for c: int in _g5.cells_around(lake, 1):
+		cells.state[c] = 5
+	assert_eq(cells.state[lake], 5)
+	assert_false(crew.route(100, lake, "haul").is_empty(), "a route to a bale on the lake (to its shore)")
+	assert_false(crew.route(lake, 100, "haul").is_empty(), "a route from a Haul Bug standing on the lake")
+	assert_true(crew.route(100, lake, "skim").size() > 0, "skimmers still route on the water")
+	crew.focus = null
+	crew._bale_seq += 1
+	crew.bales.append({"id": crew._bale_seq, "cell": lake, "dir": _g5.centers[lake], "value": 50.0, "units": 12.0, "claimed": "", "info": SphereBales.bale_info(12.0), "raw": 50.0})
+	crew.spawn("haulbug", 0, 100)
+	var c0: float = crew.cashed
+	crew.run_far(600.0, 1.0)
+	assert_eq(crew.bales.size(), 0, "the bale on the lake was fetched")
+	assert_gt(crew.cashed, c0, "and sold")

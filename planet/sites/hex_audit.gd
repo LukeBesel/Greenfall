@@ -216,12 +216,53 @@ func report() -> Array:
 					100.0 * (1.0 - f.clean_threshold), tag, " ".join(why)])
 				for s: String in r["samples"]:
 					lines.append("[hexaudit]     " + s)
+	lines.append(HexAudit.owner_line(f, g.grid.cells_within(g.grid.centers[int(g.sites[0]["cell"])], r_m, int(g.sites[0]["cell"]))))  # [v14qa]
 	var big: PackedStringArray = StartArea.big_things(g, w)
 	for s: String in big:
 		lines.append("[hexaudit] big " + s)
 	lines.append("[hexaudit] RESULT hexes=%d stuck=%d big=%d lakes=%d (r=%.0fm, hubs=%d)%s" % [n_hex, stuck, big.size(), lakes, r_m, hubs.size(),
 		" stations_short=%d" % short if hubs.size() > 1 else ""])
 	return [lines, stuck + big.size() + short]
+
+
+## [v14qa] Pieces whose own hex (piece_hex: the hex they count toward) is not the hex under them:
+## by the 32-bit hex_at, by the sharp hex_at_exact, and where those two disagree.
+static func owner_line(f: SphereField, cells: PackedInt32Array) -> String:
+	var n: int = 0
+	var off: int = 0
+	var off_exact: int = 0
+	var split: int = 0
+	var worst: float = 0.0
+	var hexes_over: int = 0  # hexes with over the clear threshold's rest of their volume lying outside them
+	var worst_share: float = 0.0
+	for c: int in cells:
+		var out_vol: float = 0.0
+		var all_vol: float = 0.0
+		for pid: int in f.pieces_in(c):
+			if f.piece_alive[pid] != 0:
+				all_vol += f.piece_vol[pid]
+				if f.hex_at_exact(f.piece_pos[pid]) != c:
+					out_vol += f.piece_vol[pid]
+		if f.hex_water[c] == 0 and all_vol > 0.0:
+			worst_share = maxf(worst_share, out_vol / all_vol)
+			hexes_over += 1 if out_vol / all_vol > 1.0 - f.clean_threshold else 0
+		for pid: int in f.pieces_in(c):
+			if f.piece_alive[pid] == 0:
+				continue
+			n += 1
+			var p: Vector3 = f.piece_pos[pid]
+			var a: int = f.hex_at(p)
+			var b: int = f.hex_at_exact(p)
+			off += 1 if a != f.piece_hex[pid] else 0
+			off_exact += 1 if b != f.piece_hex[pid] else 0
+			split += 1 if a != b else 0
+			if b != f.piece_hex[pid]:
+				var d: Vector3 = p.normalized()
+				var own: float = f.grid.centers[f.piece_hex[pid]].dot(d)
+				var other: float = f.grid.centers[b].dot(d)
+				var gap: float = maxf((f.grid.centers[b] - f.grid.centers[f.piece_hex[pid]]).length(), 0.0001)
+				worst = maxf(worst, (other - own) / gap * f.grid.radius_m)  # metres past the shared border (small angles)
+	return "[hexaudit] owner pieces=%d off_hex_at=%d off_exact=%d hex_at_vs_exact=%d worst_past_border=%.2fm land_hexes_over_rest=%d worst_share_outside=%.1f%%" % [n, off, off_exact, split, worst, hexes_over, 100.0 * worst_share]
 
 
 ## [v9c] A far station: [finishable, dirty] land hexes within r_m of its pad, with Lift `lift`

@@ -158,6 +158,32 @@ func hex_at(world: Vector3) -> int:
 	return grid.cell_at(world)
 
 
+## [v14qa] A piece's spot inside its own cell (and INTO_MARGIN_M in from the edge). The spots are
+## drawn in a disc of 0.92 hex sizes round the centre, wider than a hex's inner circle: 500 of 5174
+## start-area pieces lay outside the hex they count toward (up to 1.2 m past the edge), 24 of 25
+## land hexes had over 5% of their junk outside their outline, so clearing all inside a hex's
+## outline left it under the 95% (owner, 13 Nov: "I cleared it but it says 94%"). A spot outside
+## is pulled toward the centre; one inside is left alone (same layout, same random draws).
+const INTO_MARGIN_M: float = 0.3
+
+
+func into_cell(cell: int, d: Vector3) -> Vector3:
+	var ctr: Vector3 = grid.centers[cell]
+	var off: Vector3 = d - ctr
+	var len_m: float = off.length() * grid.radius_m
+	if len_m < 0.01:
+		return d
+	var pad: float = (len_m + INTO_MARGIN_M) / len_m
+	if grid.cell_at_exact((ctr + off * pad).normalized()) == cell:
+		return d
+	for i: int in range(1, 13):
+		var sc: float = 1.0 - 0.07 * float(i)
+		var q: Vector3 = (ctr + off * sc).normalized()
+		if grid.cell_at_exact((ctr + off * (sc * pad)).normalized()) == cell:
+			return q
+	return ctr.normalized()
+
+
 ## [v9a] The hex under a point with a sharp edge (SphereGrid.cell_at_exact): for rules that must
 ## give the same answer a step later (Lumi's shore).
 func hex_at_exact(world: Vector3) -> int:
@@ -296,13 +322,17 @@ func _mz_run(budget_us: int) -> PackedInt32Array:
 				dv = (dv if dv.length() > 0.01 else Vector2(cos(a), sin(a))).normalized() * lm_clear
 				lx = lm_at.x + dv.x
 				lz = lm_at.y + dv.y
-		var d: Vector3 = (ctr + (f.x * lx + f.z * lz) / grid.radius_m).normalized()
+		var d: Vector3 = into_cell(cell, (ctr + (f.x * lx + f.z * lz) / grid.radius_m).normalized())  # [v14qa]
+		if not lm.is_empty() and d != (ctr + (f.x * lx + f.z * lz) / grid.radius_m).normalized():  # pulled in: still off the wreck?
+			var lv: Vector3 = (d - ctr) * grid.radius_m
+			if (Vector2(lv.dot(f.x), lv.dot(f.z)) - lm_at).length() < lm_clear:
+				continue
 		if keep_out.is_valid() and bool(keep_out.call(d)):  # [v1yard] off the pad: another spot in the cell, else none
 			var tries: int = 0
 			while tries < KEEP_OUT_TRIES and bool(keep_out.call(d)):
 				var r2: float = sqrt(rng.randf()) * hex_size * 0.92
 				var a2: float = rng.randf() * TAU
-				d = (ctr + (f.x * cos(a2) * r2 + f.z * sin(a2) * r2) / grid.radius_m).normalized()
+				d = into_cell(cell, (ctr + (f.x * cos(a2) * r2 + f.z * sin(a2) * r2) / grid.radius_m).normalized())  # [v14qa]
 				tries += 1
 			if bool(keep_out.call(d)):
 				continue
@@ -551,7 +581,7 @@ func relocate_blocked(cell: int, hidden: Callable = Callable()) -> Array:
 		for t: int in KEEP_OUT_TRIES * 2:
 			var r: float = sqrt(rng.randf()) * hex_size * 0.92
 			var a: float = rng.randf() * TAU
-			d = (ctr + (f.x * cos(a) * r + f.z * sin(a) * r) / grid.radius_m).normalized()
+			d = into_cell(cell, (ctr + (f.x * cos(a) * r + f.z * sin(a) * r) / grid.radius_m).normalized())  # [v14qa]
 			if not bool(bad.call(d, lift)):
 				break
 		if bool(bad.call(d, lift)):
@@ -847,7 +877,7 @@ func _float_run(budget_us: int) -> PackedInt32Array:
 			return out
 		var r: float = sqrt(rng.randf()) * hex_size * 0.92
 		var a: float = rng.randf() * TAU
-		var d: Vector3 = (ctr + (f.x * cos(a) + f.z * sin(a)) * (r / grid.radius_m)).normalized()
+		var d: Vector3 = into_cell(cell, (ctr + (f.x * cos(a) + f.z * sin(a)) * (r / grid.radius_m)).normalized())  # [v14qa]
 		var fl: Array = FLOATERS[rng.randi() % FLOATERS.size()]
 		if fl[1] == "old_tyre" and small_only.has(cell):  # [v2feel] no heavy floaters at the start
 			fl = FLOATERS[0]
