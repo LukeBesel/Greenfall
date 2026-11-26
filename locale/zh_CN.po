@@ -4901,48 +4901,48 @@ msgstr "WREN 信号   %d%%"
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:444
+#: ui/hud.gd:445
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:499
+#: ui/hud.gd:500
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:503
+#: ui/hud.gd:504
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:506
+#: ui/hud.gd:507
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:508
+#: ui/hud.gd:509
 msgid "  THIRSTY"
 msgstr "  缺水"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:538
+#: ui/hud.gd:539
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:539
+#: ui/hud.gd:540
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:540
+#: ui/hud.gd:541
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:541
+#: ui/hud.gd:542
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:542
+#: ui/hud.gd:543
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:543
+#: ui/hud.gd:544
 msgid "%s   workbench"
 msgstr "%s   工作台"
 

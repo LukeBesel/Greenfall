@@ -4917,48 +4917,48 @@ msgstr "SINAL DA WREN   %d%%"
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% LIMPO"
 
-#: ui/hud.gd:444
+#: ui/hud.gd:445
 msgid "CARRYING %d/%d"
 msgstr "CARREGANDO %d/%d"
 
-#: ui/hud.gd:499
+#: ui/hud.gd:500
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPO"
 
-#: ui/hud.gd:503
+#: ui/hud.gd:504
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:506
+#: ui/hud.gd:507
 msgid "  SUSTAIN %d%%"
 msgstr "  SUSTENTADO %d%%"
 
-#: ui/hud.gd:508
+#: ui/hud.gd:509
 msgid "  THIRSTY"
 msgstr "  COM SEDE"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:538
+#: ui/hud.gd:539
 msgid "%s   pick up bale"
 msgstr "%s   pegar fardo"
 
-#: ui/hud.gd:539
+#: ui/hud.gd:540
 msgid "%s   dig up part"
 msgstr "%s   desenterrar peça"
 
-#: ui/hud.gd:540
+#: ui/hud.gd:541
 msgid "%s   read memory shard"
 msgstr "%s   ler fragmento de memória"
 
-#: ui/hud.gd:541
+#: ui/hud.gd:542
 msgid "%s   pick up the seed tin"
 msgstr "%s   pegar a lata de sementes"
 
-#: ui/hud.gd:542
+#: ui/hud.gd:543
 msgid "%s   set bale down"
 msgstr "%s   largar fardo"
 
-#: ui/hud.gd:543
+#: ui/hud.gd:544
 msgid "%s   workbench"
 msgstr "%s   bancada"
 

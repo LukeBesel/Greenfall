@@ -4901,48 +4901,48 @@ msgstr "WREN 信号   %d%%"
 msgid "HEX  %d%% CLEAR"
 msgstr "ヘックス  %d%% きれい"
 
-#: ui/hud.gd:444
+#: ui/hud.gd:445
 msgid "CARRYING %d/%d"
 msgstr "運搬中 %d/%d"
 
-#: ui/hud.gd:499
+#: ui/hud.gd:500
 msgid "HEX  CLEAR"
 msgstr "ヘックス  きれい"
 
-#: ui/hud.gd:503
+#: ui/hud.gd:504
 msgid "HEX  %s"
 msgstr "ヘックス  %s"
 
-#: ui/hud.gd:506
+#: ui/hud.gd:507
 msgid "  SUSTAIN %d%%"
 msgstr "  維持 %d%%"
 
-#: ui/hud.gd:508
+#: ui/hud.gd:509
 msgid "  THIRSTY"
 msgstr "  水不足"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:538
+#: ui/hud.gd:539
 msgid "%s   pick up bale"
 msgstr "%s   ベールを持つ"
 
-#: ui/hud.gd:539
+#: ui/hud.gd:540
 msgid "%s   dig up part"
 msgstr "%s   パーツを掘り出す"
 
-#: ui/hud.gd:540
+#: ui/hud.gd:541
 msgid "%s   read memory shard"
 msgstr "%s   メモリーの破片を読む"
 
-#: ui/hud.gd:541
+#: ui/hud.gd:542
 msgid "%s   pick up the seed tin"
 msgstr "%s   種の缶を拾う"
 
-#: ui/hud.gd:542
+#: ui/hud.gd:543
 msgid "%s   set bale down"
 msgstr "%s   ベールを置く"
 
-#: ui/hud.gd:543
+#: ui/hud.gd:544
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
