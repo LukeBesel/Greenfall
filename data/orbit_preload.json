@@ -206,6 +206,8 @@
 		"lite:covered_car@4000",
 		"covered_car",
 		"lite:old_drill_press@4000",
-		"old_drill_press"
+		"old_drill_press",
+		"tex:res://art/models/flora/flora.glb",
+		"tex:res://art/models/flora/flora_atlas.png"
 	]
 }
