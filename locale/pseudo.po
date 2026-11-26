@@ -643,7 +643,7 @@ msgstr "[ŢÔĜÉŢĤÉŔ ŴÉ BĻÔÔM ~~~]"
 msgid "LIGHT  WATER  LIFE"
 msgstr "[ĻÎĜĤŢ  ŴÀŢÉŔ  ĻÎFÉ ~~~]"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:258 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:262 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "[Bàšé %d ~]"
 
@@ -837,35 +837,35 @@ msgstr "[Àļļ %d bàšéš šţàñð. Bûîļð ţĥé ðŕîvé àţ ţĥé 
 msgid "%s  ·  the %s"
 msgstr "[%s  ·  ţĥé %s ~~]"
 
-#: planet/sites/orbit_sites.gd:134
+#: planet/sites/orbit_sites.gd:138
 msgid "The rocket is in flight."
 msgstr "[Ţĥé ŕôçķéţ îš îñ ƒļîĝĥţ. ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:159
+#: planet/sites/orbit_sites.gd:163
 msgid "Bases restored: %d of %d"
 msgstr "[Bàšéš ŕéšţôŕéð: %d ôƒ %d ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:197
+#: planet/sites/orbit_sites.gd:201
 msgid "E   Rocket: choose a destination"
 msgstr "E   [Ŕôçķéţ: çĥôôšé à ðéšţîñàţîôñ ~~~~~~~]"
 
-#: planet/sites/orbit_sites.gd:237
+#: planet/sites/orbit_sites.gd:241
 msgid "HOME"
 msgstr "[ĤÔMÉ ~]"
 
-#: planet/sites/orbit_sites.gd:237
+#: planet/sites/orbit_sites.gd:241
 msgid "NEXT STOP"
 msgstr "[ÑÉXŢ ŠŢÔÞ ~]"
 
-#: planet/sites/orbit_sites.gd:239
+#: planet/sites/orbit_sites.gd:243
 msgid "Upgrade the rocket first"
 msgstr "[Ûþĝŕàðé ţĥé ŕôçķéţ ƒîŕšţ ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:257
+#: planet/sites/orbit_sites.gd:261
 msgid "%s site"
 msgstr "[%s šîţé ~]"
 
-#: planet/sites/sphere_water.gd:263
+#: planet/sites/sphere_water.gd:269
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "[Ţĥé ŵàţéŕ... Î çàñ šéé ţĥé bôţţôm. Ļûmî, ţĥéŕé'š šôméţĥîñĝ môvîñĝ ðôŵñ ţĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -945,11 +945,11 @@ msgstr "[+1 ŠÉÉÐ ~]"
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr "[À ðŕý ôļð šééð, šţîļļ šéàļéð îñ îţš ĥûšķ. Ĵûñķ ĥîðéš à ƒéŵ ôƒ ţĥéšé. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: player/detector.gd:94
+#: player/detector.gd:77
 msgid "BURIED PART  %s  ·  %.1f m"
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ  %s  ·  %.1f m ~~~~~~]"
 
-#: player/detector.gd:97
+#: player/detector.gd:80
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ  ·  ŠÎĜÑÀĻ %d%% ~~~~~~]"
 
@@ -1029,27 +1029,27 @@ msgstr "[Šàļvàĝéð: %s ~]"
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
-#: player/patch_model.gd:18 data/designs.json:designs[aurora].name data/radio.json:songs[rime_aurora].name
+#: player/patch_model.gd:21 data/designs.json:designs[aurora].name data/radio.json:songs[rime_aurora].name
 msgid "Aurora"
 msgstr "[Àûŕôŕà ~]"
 
-#: player/patch_model.gd:19 data/designs.json:designs[bolt].name
+#: player/patch_model.gd:22 data/designs.json:designs[bolt].name
 msgid "Bolt"
 msgstr "[Bôļţ ~]"
 
-#: player/patch_model.gd:20 data/designs.json:designs[sprout].name data/glim.json:tops[sprout].name
+#: player/patch_model.gd:23 data/designs.json:designs[sprout].name data/glim.json:tops[sprout].name
 msgid "Sprout"
 msgstr "[Šþŕôûţ ~]"
 
-#: player/patch_model.gd:21 data/designs.json:designs[pixel].name
+#: player/patch_model.gd:24 data/designs.json:designs[pixel].name
 msgid "Pixel"
 msgstr "[Þîxéļ ~]"
 
-#: player/patch_model.gd:22 data/designs.json:designs[nova].name
+#: player/patch_model.gd:25 data/designs.json:designs[nova].name
 msgid "Nova"
 msgstr "[Ñôvà ~]"
 
-#: player/patch_model.gd:23 data/designs.json:designs[patch].name
+#: player/patch_model.gd:26 data/designs.json:designs[patch].name
 msgid "Patch"
 msgstr "[Þàţçĥ ~]"
 
