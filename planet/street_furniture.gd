@@ -467,7 +467,38 @@ func _kerb_wrecks() -> void:
 						var yaw: float = (0.0 if axis == 0 else PI * 0.5) + (PI if _rng.randf() < 0.5 else 0.0)
 						if _rng.randf() < 0.12:
 							yaw += _rng.randf_range(-0.5, 0.5)  # left skewed across the lane
+						if _kerb_squeeze(p, axis):  # slide along the kerb to a clear stretch, else leave it out
+							var slid: bool = false
+							for dt: float in [2.0, -2.0, 4.0, -4.0]:
+								var p2: Vector2 = p + (Vector2(dt, 0) if axis == 0 else Vector2(0, dt))
+								if _ok(p2, goal_r) and not _kerb_squeeze(p2, axis):
+									p = p2
+									slid = true
+									break
+							_count("wrecks_slid" if slid else "wrecks_left_out")
+							if not slid:
+								continue
 						_car(p, yaw + PI * 0.5)
+
+
+## [v11jump] A wreck parked at the kerb with a sidewalk prop (a bin, a bench, a lamp) less than
+## KERB_PASS_M from its side leaves a slot between the two that Lumi cannot walk through, and with
+## a second choke further along (a pillar, another prop) a strip of sidewalk is shut in: hub 4 had
+## one that his hop could get into over a bin and not out of. Such a wreck is not parked.
+## The car is taken at its largest (4.8 x 1.95 m, skewed a little).
+const KERB_PASS_M: float = 1.3
+
+
+func _kerb_squeeze(p: Vector2, axis: int) -> bool:
+	var along: Vector2 = Vector2(1, 0) if axis == 0 else Vector2(0, 1)
+	var across: Vector2 = Vector2(-along.y, along.x)
+	for o: Vector2 in obstacles:
+		var d: Vector2 = o - p
+		var a: float = absf(d.dot(along)) - 2.6
+		var c: float = absf(d.dot(across)) - 1.1
+		if maxf(a, 0.0) ** 2 + maxf(c, 0.0) ** 2 < KERB_PASS_M * KERB_PASS_M:
+			return true
+	return false
 
 
 ## Rows of wrecks on the parking lots, a few dumped on the other open lots.
