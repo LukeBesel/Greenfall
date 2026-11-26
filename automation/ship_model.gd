@@ -637,7 +637,7 @@ func _process(delta: float) -> void:
 	if _land:
 		_land.emission_energy_multiplier = lerpf(0.5, 9.0, _wake)
 	if _belly:
-		_belly.light_energy = lerpf(0.55, 2.6, _wake)
+		_belly.light_energy = lerpf(1.0, 2.6, _wake)
 	for bp: RocketPlume in _boosters:
 		bp.power = pw
 	var spin: float = (1.2 if tier >= 4 else 0.4) + lift * 34.0 + _charge * 6.0

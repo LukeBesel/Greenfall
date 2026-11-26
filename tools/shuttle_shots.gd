@@ -47,6 +47,7 @@ static func run_dev(so: Node) -> void:
 		os_.hop._shot_done.clear()
 		os_.hop.shot_prefix = "%s_%s" % [prefix, TIMES[k][0]]
 		var to_i: int = 1 if os_.sm.nearest <= 0 else 0
+		_keep_time(so, os_, float(TIMES[k][1]))
 		var ok: bool = await os_.hop_to(to_i)
 		print("[shuttle-shots] hop %d to %d: %s" % [k, to_i, ok])
 		await _save(tree, "%s_%s_landed.png" % [prefix, TIMES[k][0]])
@@ -58,6 +59,19 @@ static func run_dev(so: Node) -> void:
 			await tree.process_frame
 		await _save(tree, "%s_%s_after.png" % [prefix, TIMES[k][0]])
 	tree.quit()
+
+
+## The far pad lies under another sun: when the ship comes out of the veil, set the same local
+## time there, so a night hop lands at night.
+static func _keep_time(so: Node, os_: OrbitSites, t: float) -> void:
+	var tree: SceneTree = so.get_tree()
+	while not os_.hop.flying:
+		await tree.process_frame
+	while os_.hop.flying and os_.hop.progress <= 0.5:
+		await tree.process_frame
+	_time(so, t)
+	await tree.process_frame
+	_time(so, t)
 
 
 static func _save(tree: SceneTree, path: String) -> void:
