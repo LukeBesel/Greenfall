@@ -77,6 +77,13 @@ var _blink: float = 0.0
 var _flash: float = 0.0
 var _lean := Vector2.ZERO
 var _dip: float = 0.0
+## [v11jump] Squash and stretch of the whole body on a spring: + = taller and slimmer (rising),
+## - = flatter and wider (the crouch before a hop, the landing). air = he is in a hop.
+var _sq: float = 0.0
+var _sq_v: float = 0.0
+var _sq_to: float = 0.0
+var _crouch_t: float = 0.0
+var air: bool = false
 ## [v6feel] Carrying bales: both arms up under the load (set by Patch).
 var carrying: bool = false
 var _carry: float = 0.0
@@ -599,8 +606,17 @@ func _process(delta: float) -> void:
 	_update_beam(delta)
 	_update_hopper(delta)
 	_update_accessories(delta)
+	# [v11jump] The hop: a short crouch, a stretch while he is in the air, a squash and one soft
+	# rebound on landing (a damped spring; about 0.3 s to rest).
+	_crouch_t = maxf(0.0, _crouch_t - delta)
+	_sq_to = -0.5 if _crouch_t > 0.0 else (0.55 if air else 0.0)
+	var sdt: float = minf(delta, 1.0 / 30.0)
+	_sq_v += ((_sq_to - _sq) * 520.0 - _sq_v * 26.0) * sdt
+	_sq = clampf(_sq + _sq_v * sdt, -1.2, 1.2)
+	var sq_y: float = 1.0 + _sq * 0.16
+	var sq_xz: float = 1.0 / sqrt(maxf(sq_y, 0.5))
 	# Press: the body compresses slightly while baling.
-	_root.scale = Vector3(1.0 + _press * 0.04, 1.0 - _press * 0.06, 1.0 + _press * 0.04)
+	_root.scale = Vector3((1.0 + _press * 0.04) * sq_xz, (1.0 - _press * 0.06) * sq_y, (1.0 + _press * 0.04) * sq_xz)
 	if _shudder > 0.0:
 		_shudder -= delta
 		_root.position = Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)) * 0.01
@@ -746,6 +762,22 @@ func shudder(duration: float = 0.3) -> void:
 
 func squash(amount: float) -> void:
 	_dip = clampf(_dip + absf(amount) * 0.04, 0.0, 0.05)
+
+
+## [v11jump] Take-off: a two-frame crouch, the thruster ring flares, then he stretches while `air`.
+func hop(amount: float = 1.0) -> void:
+	_crouch_t = 0.05
+	_sq_v -= 6.0 * amount
+	_flash = maxf(_flash, 0.5 * amount)
+	air = true
+
+
+## [v11jump] Landing (k 0..1 by how hard): squash, then the spring settles him.
+func land(k: float = 1.0) -> void:
+	air = false
+	_crouch_t = 0.0
+	_sq_v -= lerpf(20.0, 38.0, clampf(k, 0.0, 1.0))
+	_dip = clampf(_dip + 0.03 * k, 0.0, 0.05)
 
 
 func look_toward(world_pos: Variant) -> void:

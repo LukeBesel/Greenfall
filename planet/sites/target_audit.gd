@@ -9,6 +9,7 @@ extends RefCounted
 ## the hub's build anchors (SiteReach.audit), no shut-in pocket round each outpost (TargetReach.pockets), and the purple beacon's point for raw hex centres
 ## (TargetReach.beacon_point, every 3rd hex). Prints a [targets] line per hub and kind, the
 ## failures, and "[targets] N unreachable" with PASS/FAIL; exits 1 on any failure.
+## [v11jump] Also per hub: no spot Lumi's hop gets into and not out of (planet/sites/jump_reach.gd).
 ## Run: godot --headless --path . -- --fresh --orbit --target-reach
 
 const CD_EVERY: int = 3
@@ -116,6 +117,21 @@ static func run_dev(so: SliceOrbit) -> void:
 				var shut: int = TargetReach.for_world(so.w, true, patch).pockets(o.global_position)
 				if shut > 0:
 					notes.append("hub %d %s: %d" % [i, _where(so, i, o.global_position), shut])
+		# [v11jump] No spot in the hub's town that a hop gets into and not out of (JumpReach). Lumi back
+		# on the pad first: the junk colliders round it are the ones a player meets.
+		patch.global_position = so.globe.terrain.ground(pad.origin.normalized()) + pad.origin.normalized() * 0.3
+		for k: int in 6:
+			await tree.physics_frame
+		var jr := JumpReach.new(so.w.get_world_3d().direct_space_state, so.globe.terrain, so.globe.field, p.global_transform, (VerdanceSite.TOWN_R if i == 0 else VerdanceSite.HUB_TOWN_R) + 14.0)
+		var pl: Vector3 = p.global_transform.affine_inverse() * pad.origin
+		var jres: Dictionary = jr.run(_free_start(jr, Vector2(pl.x, pl.z)))
+		for line: String in JumpReach.report("[targets] hub %d" % i, jres):
+			print(line)
+		counts["hop_trap_check"] = 1
+		if jres.has("error"):
+			fails.append("hop(%s)" % str(jres["error"]))
+		for e: Array in jres.get("bad_traps", []):
+			fails.append("hop_trap@(%.0f,%.0f)" % [(e[1] as Vector2).x, (e[1] as Vector2).y])
 		await SiteReach.fix_anchors(p, so.globe.terrain)
 		var ra: Dictionary = await SiteReach.audit(p, so.globe.terrain)
 		if not ra.is_empty():
@@ -139,6 +155,17 @@ static func run_dev(so: SliceOrbit) -> void:
 		print("[targets] note: shut-in spots inside outpost ruins (0.5 m grid, can't be walked into): %s" % ", ".join(notes))
 	print("[targets] %s" % ("PASS" if bad.is_empty() else "FAIL"))
 	tree.quit(0 if bad.is_empty() else 1)
+
+
+## [v11jump] A free ground cell at or near `at` (site-local) for the hop audit to start from.
+static func _free_start(jr: JumpReach, at: Vector2) -> Vector2:
+	for r: float in [0.0, 2.0, 4.0, 6.0, 9.0, 12.0]:
+		for k: int in (1 if r == 0.0 else 12):
+			var q: Vector2 = at + Vector2.from_angle(TAU * k / 12.0) * r
+			var c: int = jr.cell_of(q.x, q.y)
+			if c >= 0 and not jr.levels(c).is_empty() and jr.levels(c)[jr.levels(c).size() - 1] == 0.0:
+				return q
+	return at
 
 
 ## [v8fix] Junk colliders (heaps, big pieces) standing on an outpost's ruin footprint

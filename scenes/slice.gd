@@ -112,6 +112,11 @@ func planet_cell_at(pos: Vector3) -> int:
 	return orbit.cell_at(pos)
 
 
+## [v10ui] The name of the base Lumi stands at ("" away from any), for the HUD's ground line.
+func base_name_here() -> String:
+	return orbit.base_name_here() if orbit else ""
+
+
 func collect_piece(pid: int) -> void:
 	orbit.collect_piece(pid)
 

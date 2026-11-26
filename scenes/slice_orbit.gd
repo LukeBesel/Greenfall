@@ -442,6 +442,15 @@ func on_hex_clean(hid: int, quiet: bool = false) -> void:
 			EventBus.toast.emit(tr("Milestone: %d hexes clean!") % n, "reward")  # [v4calm] cut (the fanfare says it)
 
 
+## [v10ui] Critic 7: the name of the base Lumi stands at (HUD "GARDEN ROW  BASE", the map's row
+## name), "" off any base or on a planet without a base plan.
+func base_name_here() -> String:
+	var sm: SiteManager = globe.site_manager if globe else null
+	if sm == null or sm.nearest < 0 or not HubPlan.has_plan(sm.planet_id):
+		return ""
+	return HubPlan.hub_name(sm.planet_id, sm.nearest)
+
+
 ## Hexes counted for milestones: the cells this save paid a first-clean bonus for (far crews'
 ## numbers flip cells clean too, but they are not Lumi's milestones).
 func cleaned_by_lumi() -> int:
