@@ -75,7 +75,9 @@ run walk_opening -- --fresh --orbit --intro --walk-opening --save-dir=check_exit
 # lake's edge by the bin in every key direction Lumi moves or the way is all lake (he froze there),
 # and with a bale pressed over a buried part E picks the bale up, as the prompt says (it dug);
 # and from behind the Shack's back wall (a CI run paced there) the walker gets to the Bot Bay.
-run walk_opening_spots -- --fresh --orbit --no-intro --detector-on --walk-opening --walk-opening-spot="-7.4,-6.7;-7.0,-3.0;-10.5,7.7@pt:6.0:7.6" --walk-opening-spot-goals=shore,digbale --save-dir=check_exit_spots_$$
+# [v14qa] the lean-to built: W into its side and back walls never takes Lumi through (before it is built no wall stops him);
+# bales left 150-600 m from Lumi stay where they lie (they fell into the planet and dropped onto Lumi).
+run walk_opening_spots -- --fresh --orbit --no-intro --detector-on --walk-opening --walk-opening-spot="-7.4,-6.7;-7.0,-3.0;-10.5,7.7@pt:6.0:7.6;-7.4,-6.7@shackwall+farbale" --walk-opening-spot-goals=shore,digbale --save-dir=check_exit_spots_$$
 # [v9c] The travel steps (rocket, stations 2 and 6, the drive, the end card) played with real
 # input (tools/walk_travel.gd), and a save in the middle of station 2's chain loaded back.
 run walk_travel -- --fresh --orbit --no-intro --walk-travel --quit-after=4000 --save-dir=check_exit_travel_$$

@@ -102,12 +102,20 @@ func _build(bench: Node3D) -> void:
 	lamp.rotation_degrees = Vector3(-90, 0, 0)
 	shack.add_child(lamp)
 	bits["lamp"] = lamp
-	var sb := StaticBody3D.new()  # the back wall and the front posts (Camp switches them with the build)
+	var sb := StaticBody3D.new()  # the front posts (Camp switches them with the build)
 	sb.collision_layer = PhysLayers.PROP
+	# [v14qa] The back wall's body under its mesh, as the side's: it was always on, an invisible
+	# wall behind the bench before the lean-to was built.
+	var back_sb := StaticBody3D.new()
+	back_sb.name = "BackBody"
+	back_sb.collision_layer = PhysLayers.PROP
 	var back_cs := CollisionShape3D.new()
 	back_cs.shape = PropColliders.box_shape(Vector3(3.3, 2.3, 0.2))
-	back_cs.position = Vector3(0, 1.15, -1.15)
-	sb.add_child(back_cs)
+	back_sb.add_child(back_cs)
+	(bits["back"] as Node3D).add_child(back_sb)
+	if DevHooks.get_s("shack-fault", "") == "old":  # dev: the old colliders (back always on, no side), to show the walk's check fails
+		back_sb.reparent(shack, false)
+		back_sb.position = (bits["back"] as Node3D).position
 	for px: float in [-1.6, 1.6]:
 		var pcs := CollisionShape3D.new()
 		pcs.shape = PropColliders.box_shape(Vector3(0.22, 2.1, 0.22))
@@ -115,6 +123,17 @@ func _build(bench: Node3D) -> void:
 		sb.add_child(pcs)
 		bits["post_l" if px < 0.0 else "post_r"] = pcs
 	shack.add_child(sb)
+	# [v14qa] The side panel stops Lumi too: its own body under the mesh, so Camp's _set_solid
+	# switches it with the panel (shown once the lean-to is built; a far base's ruin leaves it off).
+	var side_sb := StaticBody3D.new()
+	side_sb.name = "SideBody"
+	side_sb.collision_layer = PhysLayers.PROP
+	var side_cs := CollisionShape3D.new()
+	side_cs.shape = PropColliders.box_shape(Vector3(0.14, 1.6, 1.42))
+	side_sb.add_child(side_cs)
+	(bits["side"] as Node3D).add_child(side_sb)
+	if DevHooks.get_s("shack-fault", "") == "old":
+		side_sb.queue_free()
 	if bench:
 		bits["bench"] = bench
 	# Yard lamps: the first is the one Camp drives (street_lamp + street_light), the rest follow it.
