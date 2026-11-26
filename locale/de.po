@@ -200,67 +200,67 @@ msgstr "Touchpad"
 msgid "Paddle 1"
 msgstr "Paddle 1"
 
-#: autoload/Settings.gd:567
+#: autoload/Settings.gd:597
 msgid "LMB"
 msgstr "LMT"
 
-#: autoload/Settings.gd:568
+#: autoload/Settings.gd:598
 msgid "RMB"
 msgstr "RMT"
 
-#: autoload/Settings.gd:569
+#: autoload/Settings.gd:599
 msgid "MMB"
 msgstr "MMT"
 
-#: autoload/Settings.gd:570
+#: autoload/Settings.gd:600
 msgid "Wheel up"
 msgstr "Rad hoch"
 
-#: autoload/Settings.gd:571
+#: autoload/Settings.gd:601
 msgid "Wheel down"
 msgstr "Rad runter"
 
-#: autoload/Settings.gd:572
+#: autoload/Settings.gd:602
 msgid "Mouse %d"
 msgstr "Maus %d"
 
-#: autoload/Settings.gd:574
+#: autoload/Settings.gd:604
 msgid "Button %d"
 msgstr "Taste %d"
 
-#: autoload/Settings.gd:579
+#: autoload/Settings.gd:609
 msgid "LS left"
 msgstr "LS links"
 
-#: autoload/Settings.gd:579
+#: autoload/Settings.gd:609
 msgid "LS right"
 msgstr "LS rechts"
 
-#: autoload/Settings.gd:580
+#: autoload/Settings.gd:610
 msgid "LS up"
 msgstr "LS hoch"
 
-#: autoload/Settings.gd:580
+#: autoload/Settings.gd:610
 msgid "LS down"
 msgstr "LS runter"
 
-#: autoload/Settings.gd:581
+#: autoload/Settings.gd:611
 msgid "RS left"
 msgstr "RS links"
 
-#: autoload/Settings.gd:581
+#: autoload/Settings.gd:611
 msgid "RS right"
 msgstr "RS rechts"
 
-#: autoload/Settings.gd:582
+#: autoload/Settings.gd:612
 msgid "RS up"
 msgstr "RS hoch"
 
-#: autoload/Settings.gd:582
+#: autoload/Settings.gd:612
 msgid "RS down"
 msgstr "RS runter"
 
-#: autoload/Settings.gd:593
+#: autoload/Settings.gd:623
 msgid "hold %s"
 msgstr "%s halten"
 
@@ -1000,35 +1000,35 @@ msgstr "Samen brauchen Erde, keine Straße und keine Plattform. Versuch es in de
 msgid "Seeds need soil, not road or the pad."
 msgstr "Samen brauchen Erde, keine Straße und keine Plattform."
 
-#: player/patch.gd:770
+#: player/patch.gd:774
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "Deine Truhe ist leer. Sammle zuerst etwas Müll."
 
-#: player/patch.gd:810
+#: player/patch.gd:814
 msgid "PERFECT BALE  %s"
 msgstr "PERFEKTER BALLEN  %s"
 
-#: player/patch.gd:816
+#: player/patch.gd:820
 msgid "OVERSTUFFED  %s"
 msgstr "ÜBERSTOPFT  %s"
 
-#: player/patch.gd:820
+#: player/patch.gd:824
 msgid "PURE  %s"
 msgstr "REIN  %s"
 
-#: player/patch.gd:822
+#: player/patch.gd:826
 msgid "SURGE  %s"
 msgstr "SCHUB  %s"
 
-#: player/patch.gd:825
+#: player/patch.gd:829
 msgid "  (streak +%d%%)"
 msgstr "  (Serie +%d%%)"
 
-#: player/patch.gd:876
+#: player/patch.gd:880
 msgid "Salvaged: %s"
 msgstr "Geborgen: %s"
 
-#: player/patch.gd:907
+#: player/patch.gd:911
 msgid "Recovered: %s"
 msgstr "Gefunden: %s"
 
