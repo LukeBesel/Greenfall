@@ -13,6 +13,9 @@ extends RefCounted
 ##   --crew-zone-n=K / --crew-zone-log  [v8bot] with --crew-zone: K robots called (0 all); [zone] lines
 ##   --crew-build=type[,seconds]     [v6crew] builds a robot at the bench after a while and logs its hello
 ##   --crew-cam=i[,dist,height]      [v6crew] a dev camera on robot i (rendered audits of the crew)
+##   --crew-tour=PREFIX --crew-tour-start=S --crew-tour-stops="i,time,wait_s[,cam_dist,cam_pitch[,ahead_m,side_m]];..."
+##                                    [art6] play-camera frames: Lumi is put ahead_m in front of robot i and
+##                                    side_m to its right, looking back at it; the local time is set, PREFIX_<k>.png saved
 ##   --crew-command=S                 [v6crew] opens the Command view after S seconds (as pressing B)
 ##                                    and prints its card's lines as [cmd] (renders, headless checks)
 ##   --offline-jump[=S]               offline jump of S seconds (default 7200) for the --robots
@@ -122,6 +125,8 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		var cc := CrewCam.new()
 		cc.crew = crew
 		parent.add_child(cc)
+	if DevHooks.has("crew-tour"):  # [art6] play-camera frames of Lumi standing by robot i
+		crew_tour(parent, lumi, cam, crew)
 	if DevHooks.has("crew-command"):  # [v6crew]
 		var open_cmd: Callable = func() -> void:
 			await DevHooks.wait_wall(DevHooks.get_f("crew-command", 20.0))  # [v7look] wall clock, as --shot-delay
@@ -204,6 +209,50 @@ static func offline_jump(src: Object, fleet: Array, seconds: float) -> Dictionar
 		seconds, fleet.size(), fc, float(flat["units"]), oc, float(res["units"]), int(res["cells"]), diff * 100.0, "PASS" if diff <= 0.10 else "FAIL"])
 	Offline.apply(res)
 	return res
+
+
+## [art6] --crew-tour: the play camera behind Lumi, who stands by robot i, at a set hour.
+static func crew_tour(w: Node, lumi: Node3D, cam: SphereCam, crew: SphereCrew) -> void:
+	var prefix: String = DevHooks.get_s("crew-tour", "screenshots/crew")
+	await DevHooks.wait_wall(DevHooks.get_f("crew-tour-start", 105.0))
+	var k: int = 0
+	for stop: String in DevHooks.get_s("crew-tour-stops", "0,0.5,4").split(";", false):
+		var a: PackedStringArray = stop.split(",")
+		if crew.units.is_empty() or lumi == null:
+			break
+		var u: Dictionary = crew.units[clampi(int(a[0]), 0, crew.units.size() - 1)]
+		var d: Vector3 = crew.unit_dir(u)
+		var b: SphereBot = u.get("bot") as SphereBot
+		var fwd: Vector3 = b.heading if b != null else SphereMath.any_perpendicular(d)
+		var right: Vector3 = fwd.cross(d).normalized()
+		# Lumi stands ahead of the robot and to its right and looks back along its way: the robot is
+		# in front of her, to the right of the frame, facing the camera.
+		var ahead_m: float = float(a[5]) if a.size() > 5 else 2.2
+		var side_m: float = float(a[6]) if a.size() > 6 else 1.6
+		var at: Vector3 = crew.surface.ground(d) + fwd * ahead_m + right * side_m
+		var ld: Vector3 = crew.surface.up_at(at)
+		var north: Vector3 = SphereMath.tangent_dir(-fwd, ld, fwd)
+		if lumi.has_method("place_on_sphere"):
+			lumi.call("place_on_sphere", crew.surface.ground(ld), north)
+		if cam != null:
+			if a.size() > 3:
+				cam.distance = float(a[3])
+			if a.size() > 4:
+				cam.pitch = float(a[4])
+			cam.reset_frame(north)
+			cam.snap()
+		var sky: Variant = w.get("sky_director")
+		if sky is SkyDirector:
+			(sky as SkyDirector).time_of_day = float(a[1])
+			(sky as SkyDirector).spin = SkyDirector.spin_for_local_time(float(a[1]), lumi.global_position)
+			(sky as SkyDirector).frozen = true
+		await DevHooks.wait_wall_for(float(a[2]) if a.size() > 2 else 4.0)
+		DevHooks.save_viewport("%s_%d.png" % [prefix, k])
+		var b2: SphereBot = u.get("bot") as SphereBot
+		print("[crew-tour] stop %d: %s  %s %s, %.1f m from Lumi, bot %s" % [k, stop, u["name"], u["mode"],
+			lumi.global_position.distance_to(crew.surface.ground(crew.unit_dir(u))), "near" if b2 != null and b2.visible else "far or hidden"])
+		k += 1
+	w.get_tree().quit()
 
 
 ## [v6crew] Dev camera for rendered audits: looks at robot `i` from `dist` m away and `height` m up.

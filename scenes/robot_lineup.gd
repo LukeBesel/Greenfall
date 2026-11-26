@@ -13,6 +13,7 @@ var _out: String
 var _visuals: Array[RobotVisual] = []
 var _beam_bot: RobotVisual
 var _can: Node3D
+var _frozen: bool = false
 
 
 func _ready() -> void:
@@ -52,6 +53,9 @@ func _ready() -> void:
 	ground.mesh = pm
 	add_child(ground)
 
+	if DevHooks.has("poses"):
+		_build_poses()
+		return
 	var x: float = 4.9
 	for look: String in LOOKS:
 		for type_id: String in ["scoopie", "haulbug"]:
@@ -105,6 +109,79 @@ func _ready() -> void:
 	]
 
 
+## [art6] --poses[=look]: motion from stills. A Scoopie frozen at four moments of its scoop cycle
+## (dip, crowd and curl, the throw over the head, the dump), one braking from speed, and Haul Bugs
+## with 0, 3 and 6 bales (the last just landed: the body is at the bottom of its bounce).
+## Views: pose_wide, pose_scoop, pose_haul, pose_top (the play camera's height).
+func _build_poses() -> void:
+	var lk: String = DevHooks.get_s("poses", "salvage")
+	if not lk in LOOKS:
+		lk = "salvage"
+	var x: float = 4.2
+	for t: float in [0.2, 0.75, 1.45, 1.85]:
+		var v := _pose_bot("scoopie", lk, x)
+		var n: int = int(t / 0.02)
+		for i: int in n:
+			v.animate(0.0, true, 0.02)
+		x -= 1.45
+	var b := _pose_bot("scoopie", lk, x)
+	for i: int in 60:
+		b.animate(3.2, false, 0.02)
+	for i: int in 7:
+		b.animate(0.0, false, 0.02)
+	x -= 1.7
+	for n: int in [0, 3, 6]:
+		var v := _pose_bot("haulbug", lk, x)
+		var cargo := Node3D.new()
+		cargo.name = "Cargo"
+		v.get_parent().add_child(cargo)
+		for i: int in 40:
+			v.animate(0.0, false, 0.02)
+		_fill_cargo(cargo, maxi(n - 1, 0))
+		for i: int in 80:
+			v.animate(0.0, false, 0.02)
+		_fill_cargo(cargo, n)
+		for i: int in (7 if n == 6 else 90):
+			v.animate(0.0, false, 0.02)
+		x -= 1.75
+	_frozen = true
+	_cam = Camera3D.new()
+	add_child(_cam)
+	_cam.current = true
+	_views = [
+		["pose_wide", Vector3(-0.6, 2.4, -8.6), Vector3(-0.6, 0.5, 0), 45.0],
+		["pose_scoop", Vector3(2.6, 1.5, -4.4), Vector3(2.0, 0.6, 0), 42.0],
+		["pose_haul", Vector3(-4.2, 1.7, -4.2), Vector3(-4.6, 0.6, 0), 42.0],
+		["pose_top", Vector3(-0.6, 6.5, -6.5), Vector3(-0.6, 0.3, 0), 40.0],
+	]
+
+
+func _pose_bot(type_id: String, lk: String, x: float) -> RobotVisual:
+	var holder := Node3D.new()
+	holder.position = Vector3(x, 0.05 if lk == "hover" else 0.0, 0)
+	holder.rotation_degrees.y = -35.0
+	add_child(holder)
+	var v := RobotVisual.new()
+	holder.add_child(v)
+	v.build(type_id, lk)
+	_visuals.append(v)
+	return v
+
+
+func _fill_cargo(cargo: Node3D, n: int) -> void:
+	for ch: Node in cargo.get_children():
+		cargo.remove_child(ch)
+		ch.free()
+	for k: int in n:
+		for part: int in 2:
+			var mi := MeshInstance3D.new()
+			mi.mesh = JunkCube.bale_mesh() if part == 0 else JunkCube.strap_mesh()
+			mi.material_override = Mats.worn_paint(Color(0.45, 0.42, 0.38), 0.45, 0.85, 3.0, 0.7) if part == 0 else Mats.metal("dark_steel")
+			mi.scale = Vector3.ONE * 0.38
+			mi.position = Vector3((float(k % 2) - 0.5) * 0.4 if n > 1 else 0.0, 0.2 + floorf(k / 2.0) * 0.38, 0)
+			cargo.add_child(mi)
+
+
 func _add_bale(holder: Node3D, at: Vector3) -> void:
 	var b := Node3D.new()
 	b.position = at + Vector3(0, 0.25, 0)
@@ -134,7 +211,8 @@ func _add_bale(holder: Node3D, at: Vector3) -> void:
 
 func _process(delta: float) -> void:
 	for v: RobotVisual in _visuals:
-		v.animate(0.0, false, delta)
+		if not _frozen:
+			v.animate(0.0, false, delta)
 	if _beam_bot and _can:
 		_can.rotation += Vector3(0.6, 0.9, 0.3) * delta
 		_can.position.y = 0.35 + sin(Time.get_ticks_msec() * 0.002) * 0.05
