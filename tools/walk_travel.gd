@@ -242,6 +242,7 @@ static func _finish_station(so: SliceOrbit, site: int, redirty: bool) -> void:
 	var cost: Dictionary = HubPlan.wake_cost(hp.planet)
 	_set_money(float(cost.get("cubes", 0)) * 0.5, float(cost.get("parts", 0)))
 	_toasts.clear()
+	await _wait_input(tree, p)  # [v13goals] a story moment (the Bloom Core's 25% memory) may hold Lumi: a player waits it out too
 	print("%s   before E: woken %s, cubes %s, afford %s, prompt '%s'" % [TAG, HubPlan.woken(site), GameState.get_currency("cubes").to_float(), GameState.can_afford_all(cost), ia.prompt(p.global_position)])
 	await _tap(tree, "interact")
 	await _frames(tree, 4)
@@ -249,6 +250,7 @@ static func _finish_station(so: SliceOrbit, site: int, redirty: bool) -> void:
 	_set_money(float(cost.get("cubes", 0)) + 50.0, float(cost.get("parts", 0)) + 2.0)
 	var hs0: int = HubPlan.restored_main(hp.planet)
 	_toasts.clear()
+	await _wait_input(tree, p)
 	await _tap(tree, "interact")
 	await _frames(tree, 4)
 	_check(HubPlan.woken(site) and HubPlan.restored_main(hp.planet) == hs0 + 1 and _said("awake"),
@@ -1231,6 +1233,15 @@ static func _send(action: String, down: bool) -> void:
 		jm.axis_value = (1.0 if jm.axis_value >= 0.0 else -1.0) if down else 0.0
 	Input.parse_input_event(ev)
 	Input.flush_buffered_events()
+
+
+## [v13goals] Waits (up to 90 s) while a story moment holds Lumi's input.
+static func _wait_input(tree: SceneTree, p: Patch) -> void:
+	for k: int in 900:
+		if p == null or not (p.input is PlayerInput) or (p.input as PlayerInput).enabled:
+			break
+		await tree.create_timer(0.1, true, false, true).timeout
+	await _frames(tree, 4)
 
 
 static func _tap(tree: SceneTree, action: String) -> void:
