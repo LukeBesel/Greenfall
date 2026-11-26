@@ -47,8 +47,8 @@ cannot be answered on any machine.
 
 Suggested for the puddle branch of the opaque ground shader: `ROUGHNESS` 0.05 to 0.10,
 `SPECULAR` 0.5, albedo about 0.03 to 0.05 (dark, not black: the old `puddle.gdshader` note says
-near-black read as a hole where reflections were missing). The 2023-era note on line 178
-("0.12 mirrored the sky as a white strip") was seen on software GL's radiance probe; it needs
+near-black read as a hole where reflections were missing). The note on line 178
+("0.12 mirrored the sky as a white strip") may have been seen on software GL (the water shader reports the same white mirror on opengl3); it needs
 re-checking on Metal, where the reflection should be the sky gradient, not white.
 If the frames confirm no visible change from reflections, drop them from the flag until the
 puddles land and save their cost.
