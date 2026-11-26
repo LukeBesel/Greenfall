@@ -1,9 +1,9 @@
 """[hero v2] Bake the hero's per-pixel wear-mask atlas from art/models/aurora/aurora.glb.
 
 Needs a Blender whose Cycles bakes correctly. Debian's blender 4.0.2 bakes every shaded pass black,
-so this runs on the official `bpy` wheel from PyPI (Blender 4.2) in its own Python 3.11 venv:
-    uv venv -p 3.11 /tmp/bpyenv && uv pip install -p /tmp/bpyenv/bin/python bpy==4.2.0 numpy
-    /tmp/bpyenv/bin/python tools/hero/bake_masks.py [SIZE=2048] [SAMPLES=16]
+so this runs on the `bpy` Python module instead (checked with Blender 5.3, the module on the art
+box, and with the 4.2 wheel from PyPI; no API differences in what this script uses):
+    python3 tools/hero/bake_masks.py          (SIZE=2048 SAMPLES=16 by default; about 2 minutes)
 
 build_aurora.py lays every hero part into ONE shared UV atlas (TEXCOORD_0), so a single image
 serves every hero material. Channels (linear, written as PNG):

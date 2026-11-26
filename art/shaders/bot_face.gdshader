@@ -1,8 +1,9 @@
 shader_type spatial;
 // Screen face for the hero bot (and the rocket): glossy black convex glass with two oversized cyan
-// eyes like the owner's concept sheet (art/concept/aurora_turnaround.png): ONE thick glowing ring per
-// side with a gap toward the viewer's upper right (a "C") and ONE small dot floating in the gap, a
-// tight soft glow just outside the outer edge. No inner hot ring and no pupil halo: those read as a
+// eyes like the owner's concept (art/concept): ONE large THIN glowing ring per side (diameter 0.55
+// of the visor's height, stroke about a third of the radius: the turnaround's proportions) with a
+// gap toward the viewer's upper right (the sheet's "C") and ONE tiny dot floating in the gap, and a
+// soft glow fading away on both sides of the stroke. No second ring and no pupil: those read as a
 // second pair of eyes (owner, title screen). Happy = ^ ^ arcs: the C eye squashes shut first
 // (s_open), THEN the arc opens (a_open), so the two shapes never show at the same time (a crossfade
 // at happy ~0.75 drew both = "two sets of eyes"). Blink / sleep squash vertically. Drawn only on the
@@ -23,7 +24,7 @@ uniform float eye_radius = 0.52;
 // [hero] Eye shape for the character builder: 0 crescent C (Aurora), 1 round, 2 happy arcs,
 // 3 visor bar (one rounded bar across both eyes), 4 heart. Blink/happy/wink work on every shape.
 uniform int eye_shape = 0;
-uniform float ring_inner = 0.56;    // [art2] C ring: inner radius (in eye radii)
+uniform float ring_inner = 0.56;    // [art2] C ring: inner radius (in eye radii); PatchModel sets the concept's thin stroke (0.7)
 uniform vec2 gap_dir = vec2(-0.78, 0.62); // [art2] where the C opens (-x = viewer's right, +y = up)
 
 varying vec3 lp;
@@ -54,6 +55,7 @@ vec4 eye(vec2 p, vec2 c, float R, float bl, float hp) {
 	float core;
 	float shade;
 	float halo_cut = 0.0;
+	float halo_in = 0.0;
 	float glint;
 	if (eye_shape == 1) {
 		// Round: one solid disc with a small catchlight at the upper right.
@@ -78,11 +80,15 @@ vec4 eye(vec2 p, vec2 c, float R, float bl, float hp) {
 		float mid = R * (1.0 + ring_inner) * 0.5;
 		shade = clamp(1.0 - abs(r - mid) / max(R * (1.0 - ring_inner) * 0.5, 0.01), 0.0, 1.0);
 		halo_cut = gap;
-		glint = (1.0 - smoothstep(0.11 * R, 0.15 * R, length(d - gd * R * 0.78))) * step(0.3, s_open) * step(0.0, R);
+		// Soft glow inside the ring too (the concept's ring lights the glass on both sides of it).
+		float di = max(R * ring_inner - r, 0.0);
+		halo_in = (exp(-di * di * 150.0) * 0.5 + exp(-di * di * 14.0) * 0.2) * step(r, R * ring_inner) * (1.0 - gap);
+		glint = (1.0 - smoothstep(0.085 * R, 0.125 * R, length(d - gd * R * (1.0 + ring_inner) * 0.5))) * step(0.3, s_open) * step(0.0, R);
 	}
 	core *= on_c;
 	// Soft glow just outside the shape only (never across the C's opening).
-	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 160.0) * (1.0 - disc) * (1.0 - halo_cut) * 0.5 * on_c;
+	float d_out = max(r - R, 0.0);
+	float halo = ((exp(-d_out * d_out * 150.0) * 0.5 + exp(-d_out * d_out * 14.0) * 0.2) * (1.0 - disc) * (1.0 - halo_cut) + halo_in) * on_c;
 	// Happy: an upper arc (^) that opens over the second half of the morph.
 	float a_open = smoothstep(0.5, 1.0, hp) * (1.0 - bl * 0.9);
 	float on_a = step(0.04, a_open);
@@ -134,17 +140,17 @@ void fragment() {
 	float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 4.0);
 	vec3 glass = vec3(0.006, 0.008, 0.011);
 	ALBEDO = glass * (1.0 - core) + eye_color.rgb * 0.12 * core;
-	ROUGHNESS = 0.04;
+	ROUGHNESS = 0.07;
 	METALLIC = 0.0;
-	SPECULAR = 0.85;
-	CLEARCOAT = 1.0;
+	SPECULAR = 0.5;   // [art2] the concept's visor stays black: a mirror finish turned half of it sky-coloured
+	CLEARCOAT = 0.45;
 	CLEARCOAT_ROUGHNESS = 0.03;
 	vec3 cyan = eye_color.rgb;
 	// One solid shape: even cyan, a touch lighter along the middle of the stroke (no separate ring).
 	// Kept under the clip point so the ring stays the eye colour (the concept's saturated cyan), not white.
-	vec3 eye_e = mix(cyan * 0.8, mix(cyan, vec3(1.0), 0.22), shade * shade) * core;
-	EMISSION = eye_e * energy * 0.36
-		+ cyan * halo * energy * 0.08
+	vec3 eye_e = mix(cyan * 0.8, mix(cyan, vec3(1.0), 0.12), shade * shade) * core;
+	EMISSION = eye_e * energy * 0.27
+		+ cyan * halo * energy * 0.11
 		+ mix(cyan, vec3(1.0), 0.35) * glint * energy * 0.4
 		+ vec3(1.0, 0.72, 0.5) * streak * 0.16 + vec3(0.5, 0.7, 0.8) * streak2 * 0.06
 		+ vec3(0.35, 0.45, 0.55) * fres * 0.1;

@@ -146,3 +146,45 @@ Final comparison sheets are committed: `screenshots/hero/compare_{portrait,head,
 - **Hover pod.** Still bulkier than the concept's slim dark disc, and the concept's underside shows concentric glowing rings that read more strongly than our inner ring and core.
 - **Turnaround floor.** The plain studio floor shows bright reflection patches behind the 3/4 and back views; that's the preview scene, not the model.
 - **Not re-rendered this session:** the in-game Old Town shot and the title-screen shot.
+
+## Concept match pass (art2, 26 Nov): measured against the turnaround
+The owner asked for Lumi to look exactly like the concept. This pass rebuilt the proportions and the part layout by measurement; the sections above describe the model before it (sizes there are out of date).
+
+### Measuring loop
+```
+blender -b --python art/models/aurora/build_aurora.py     # about 20 s
+python3 tools/hero/quick_views.py screenshots/hero/q      # flat-shaded turnaround views of the posed glb, 2 s, no Godot
+python3 tools/hero/overlay.py screenshots/hero/sheet.png screenshots/hero/q     # IoU, band widths, part measures, sheet
+python3 tools/hero/bake_masks.py                          # ALWAYS before a Godot render (python3 = the bpy 5.3 module; 2 min)
+tools/hero/render_gl.sh 1280x800 --view=turn --no-floor --out=screenshots/hero/turn_nf   # the real look (queues)
+python3 tools/hero/overlay.py screenshots/hero/sheet.png  # same numbers on the Godot frames
+python3 tools/hero/overlay.py --board docs/art/lumi_match_board.jpg docs/art/lumi_overlay_r1.jpg   # the three-row board
+```
+- `overlay.py`: concept masks come from a per-row backdrop model (the empty columns between the figures), holes filled, largest blob kept, the glow plume cut at the lit lower disc. Renders are keyed on the green backdrop `--no-floor` now draws. Every figure is scaled from the top of the head shell to the bottom of the hover unit and centred on the head, so the antenna's pose does not move the numbers.
+- `quick_views.py` reads `ARM_REST`, `ARM_SCALE`, `CLAW_SCALE`, `ACC_FIT`, `VARIANTS` from `player/patch_model.gd` and `TURN_VIEWS` from `scenes/hero_preview.gd`. `--design=ID` adds a design's add-ons, `--pose=scoop|carry|hold|pet` shows an arm move.
+- `TURN_VIEWS` (hero_preview.gd) are the sheet's five views at eye level: front, front 3/4 (his left ear toward us), the body side-on with the head turned on, straight back, back turned 20 degrees. The sheet's third figure is not a true side view (it shows the back of the head over a side-on body), so that view turns the head 45 degrees.
+
+### What the concept measures (and where the sheet disagrees with itself)
+| Measure | Concept | Model |
+|---|---|---|
+| Head height / width with ears, front | 0.73 | 0.79 |
+| Same, straight back / turned back | 0.81 / 0.85 | 0.79 / 0.74 |
+| Head share of body height | 0.55 | 0.57 |
+| Head width / body height, front / back | 0.75 / 0.68 | 0.71 / 0.71 |
+| Torso width / head width, front / back | 0.63 / 0.58 | 0.62 / 0.62 |
+| Arm span / head width, front / back | 1.12 / 0.85 | 1.07 |
+| Hover ring / head width | 0.40 to 0.53 | 0.46 |
+| Eye ring diameter / visor height | 0.55 | set 0.55 |
+| Eye ring stroke / visor height | 0.09 | set 0.08 |
+| Ear ring diameter / head height | 0.48 | 0.47 |
+The sheet's back views draw a smaller head (0.68 against 0.75 of the body height) and arms tucked in (span 0.85 against 1.12) than its front view. One model cannot be both: the head is set between them and the arms to the front view. That is the floor under the back views' overlap numbers.
+
+### What changed in the model
+- Head: half sizes 0.36 x 0.325 x 0.315 (was 0.43 x 0.32 x 0.335), a rounded box (exponents 2.7 in plan, 3.0 up, 3.1 down). Visor 0.60 x 0.356 in a dark frame. Bigger cheek lamps lying on the shell. Ear modules R 0.16 seated in sockets with a thin ring (R 0.132, tube 5.8 mm). Raised back plate over the vent band (now at mid height with four amber lights), belt seam, a tall neck recess with ribs, drums and cables. Shorter stalk, small paddle.
+- Torso: 0.52 x 0.32 x 0.385 (was 0.60 x 0.34 x 0.42), straight sides with the hips angling in, dark keel, dark underside. Cyan strip along the top front and a line down each side of the plate (the closed loop round the torso is gone). Latches on the shoulder plates. Cyan-lit square frame round the bale hatch.
+- Hover unit: stem, dark tiered ring disc (R 0.178) with a cyan ring on its top face and one underneath, and a lower emitter disc (R 0.114) whose top and underside glow. The old wide bowl is gone.
+- Arms: shorter segments with thicker armour; `ARM_REST = (-0.2, -0.75, 0.55)` hangs them down and a little out (x = shoulder pitch, y = elbow bend, z = roll outward), `ARM_SCALE` 0.85, `CLAW_SCALE` 1.15.
+- Glow: `GLOW_E`, `GLOW_SOFT_E`, `RING_E` (about 1.3 to 1.45) instead of 2.8 to 4.5, so strips and rings stay cyan instead of clipping to white.
+- Paint: warmer cream; `hero_paint.gdshader` gained `rust_bright`, `rust_chips`, `rust_stain` (rust-orange chips and soft stains from seams), fewer dark specks.
+- Eyes: `ring_inner` 0.7 (set by PatchModel; the shader default stays 0.56 for the rocket's face), radius 0.55, a soft glow on both sides of the stroke, a smaller dot.
+- `ACC_FIT` re-fitted for the five other designs (cat ears and Pixel's fins narrower, hearts on the new ear hubs, toolbox on the slimmer hip).
