@@ -3534,7 +3534,7 @@ msgstr "%s  ·  %d hexágonos  ·  %d oleadas del arca  ·  %d curiosidades"
 msgid "restored"
 msgstr "restaurado"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:831
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:834
 msgid "You are here"
 msgstr "Estás aquí"
 
@@ -3555,7 +3555,7 @@ msgid "The Cradle has to come home first."
 msgstr "Primero tiene que volver el Cradle."
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
-#: ui/rockets_panel.gd:88 ui/system_map.gd:745
+#: ui/rockets_panel.gd:88 ui/system_map.gd:748
 msgid "Launch"
 msgstr "Despegar"
 
@@ -5823,7 +5823,7 @@ msgstr "%.1f km"
 msgid "Fly"
 msgstr "Volar"
 
-#: ui/rocket_picker.gd:181 ui/system_map.gd:736 data/goals.json:goals[home_launch].text
+#: ui/rocket_picker.gd:181 ui/system_map.gd:739 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "Despegar hacia casa"
 
@@ -6255,39 +6255,43 @@ msgstr "Lumi está aquí"
 msgid "Ready to launch"
 msgstr "Listo para despegar"
 
-#: ui/system_map.gd:726 ui/system_map.gd:741
+#: ui/system_map.gd:721
+msgid "Bloom Core %d%%"
+msgstr "Núcleo Floral %d%%"
+
+#: ui/system_map.gd:729 ui/system_map.gd:744
 msgid "Choose a base"
 msgstr "Elegir una base"
 
-#: ui/system_map.gd:726
+#: ui/system_map.gd:729
 msgid "Launch from the rocket pad"
 msgstr "Despega desde la plataforma del cohete"
 
-#: ui/system_map.gd:731
+#: ui/system_map.gd:734
 msgid "Bases on this planet"
 msgstr "Bases en este planeta"
 
-#: ui/system_map.gd:760
+#: ui/system_map.gd:763
 msgid "System %d%% restored  ·  relics %d/%d"
 msgstr "Sistema restaurado al %d%%  ·  reliquias %d/%d"
 
-#: ui/system_map.gd:762
+#: ui/system_map.gd:765
 msgid "%d Heirloom picks"
 msgstr "%d elecciones de Herencia"
 
-#: ui/system_map.gd:764
+#: ui/system_map.gd:767
 msgid "Left/Right planet  ·  A zoom  ·  B back"
 msgstr "Izq./Der. planeta  ·  A zoom  ·  B volver"
 
-#: ui/system_map.gd:817
+#: ui/system_map.gd:820
 msgid "Build the drive"
 msgstr "Construye el propulsor"
 
-#: ui/system_map.gd:833
+#: ui/system_map.gd:836
 msgid "Not discovered yet"
 msgstr "Aún sin descubrir"
 
-#: ui/system_map.gd:841
+#: ui/system_map.gd:844
 msgid "Rocket not ready"
 msgstr "Cohete no listo"
 

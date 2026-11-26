@@ -3531,7 +3531,7 @@ msgstr "[%s  ·  %d ĥéxéš  ·  %d àŕķ ŵàvéš  ·  %d çûŕîôšîţ�
 msgid "restored"
 msgstr "[ŕéšţôŕéð ~]"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:831
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:834
 msgid "You are here"
 msgstr "[Ýôû àŕé ĥéŕé ~]"
 
@@ -3552,7 +3552,7 @@ msgid "The Cradle has to come home first."
 msgstr "[Ţĥé Çŕàðļé ĥàš ţô çômé ĥômé ƒîŕšţ. ~~~~~~~~~]"
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
-#: ui/rockets_panel.gd:88 ui/system_map.gd:745
+#: ui/rockets_panel.gd:88 ui/system_map.gd:748
 msgid "Launch"
 msgstr "[Ļàûñçĥ ~]"
 
@@ -5820,7 +5820,7 @@ msgstr "[%.1f ķm ~]"
 msgid "Fly"
 msgstr "[Fļý ~]"
 
-#: ui/rocket_picker.gd:181 ui/system_map.gd:736 data/goals.json:goals[home_launch].text
+#: ui/rocket_picker.gd:181 ui/system_map.gd:739 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "[Ļàûñçĥ ĥômé ~]"
 
@@ -6252,39 +6252,43 @@ msgstr "[Ļûmî îš ĥéŕé ~]"
 msgid "Ready to launch"
 msgstr "[Ŕéàðý ţô ļàûñçĥ ~~]"
 
-#: ui/system_map.gd:726 ui/system_map.gd:741
+#: ui/system_map.gd:721
+msgid "Bloom Core %d%%"
+msgstr "[Bļôôm Çôŕé %d%% ~~]"
+
+#: ui/system_map.gd:729 ui/system_map.gd:744
 msgid "Choose a base"
 msgstr "[Çĥôôšé à bàšé ~~]"
 
-#: ui/system_map.gd:726
+#: ui/system_map.gd:729
 msgid "Launch from the rocket pad"
 msgstr "[Ļàûñçĥ ƒŕôm ţĥé ŕôçķéţ þàð ~~~~~~]"
 
-#: ui/system_map.gd:731
+#: ui/system_map.gd:734
 msgid "Bases on this planet"
 msgstr "[Bàšéš ôñ ţĥîš þļàñéţ ~~~~]"
 
-#: ui/system_map.gd:760
+#: ui/system_map.gd:763
 msgid "System %d%% restored  ·  relics %d/%d"
 msgstr "[Šýšţém %d%% ŕéšţôŕéð  ·  ŕéļîçš %d/%d ~~~~~~~~~~]"
 
-#: ui/system_map.gd:762
+#: ui/system_map.gd:765
 msgid "%d Heirloom picks"
 msgstr "[%d Ĥéîŕļôôm þîçķš ~~~]"
 
-#: ui/system_map.gd:764
+#: ui/system_map.gd:767
 msgid "Left/Right planet  ·  A zoom  ·  B back"
 msgstr "[Ļéƒţ/Ŕîĝĥţ þļàñéţ  ·  À žôôm  ·  B bàçķ ~~~~~~~~~~~]"
 
-#: ui/system_map.gd:817
+#: ui/system_map.gd:820
 msgid "Build the drive"
 msgstr "[Bûîļð ţĥé ðŕîvé ~~]"
 
-#: ui/system_map.gd:833
+#: ui/system_map.gd:836
 msgid "Not discovered yet"
 msgstr "[Ñôţ ðîšçôvéŕéð ýéţ ~~~]"
 
-#: ui/system_map.gd:841
+#: ui/system_map.gd:844
 msgid "Rocket not ready"
 msgstr "[Ŕôçķéţ ñôţ ŕéàðý ~~~]"
 

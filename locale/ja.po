@@ -3522,7 +3522,7 @@ msgstr "%s  ·  ヘックス %d  ·  アークウェーブ %d  ·  珍品 %d"
 msgid "restored"
 msgstr "再生済み"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:831
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:834
 msgid "You are here"
 msgstr "現在地"
 
@@ -3543,7 +3543,7 @@ msgid "The Cradle has to come home first."
 msgstr "まずは Cradle号が帰ってこないと。"
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
-#: ui/rockets_panel.gd:88 ui/system_map.gd:745
+#: ui/rockets_panel.gd:88 ui/system_map.gd:748
 msgid "Launch"
 msgstr "発射"
 
@@ -5806,7 +5806,7 @@ msgstr "%.1f km"
 msgid "Fly"
 msgstr "飛ぶ"
 
-#: ui/rocket_picker.gd:181 ui/system_map.gd:736 data/goals.json:goals[home_launch].text
+#: ui/rocket_picker.gd:181 ui/system_map.gd:739 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "ふるさとへ発射"
 
@@ -6238,39 +6238,43 @@ msgstr "Lumi はここ"
 msgid "Ready to launch"
 msgstr "発射準備完了"
 
-#: ui/system_map.gd:726 ui/system_map.gd:741
+#: ui/system_map.gd:721
+msgid "Bloom Core %d%%"
+msgstr "ブルームコア %d%%"
+
+#: ui/system_map.gd:729 ui/system_map.gd:744
 msgid "Choose a base"
 msgstr "基地を選ぶ"
 
-#: ui/system_map.gd:726
+#: ui/system_map.gd:729
 msgid "Launch from the rocket pad"
 msgstr "ロケット発射台から出発"
 
-#: ui/system_map.gd:731
+#: ui/system_map.gd:734
 msgid "Bases on this planet"
 msgstr "この惑星の基地"
 
-#: ui/system_map.gd:760
+#: ui/system_map.gd:763
 msgid "System %d%% restored  ·  relics %d/%d"
 msgstr "星系 %d%% 復元  ·  遺物 %d/%d"
 
-#: ui/system_map.gd:762
+#: ui/system_map.gd:765
 msgid "%d Heirloom picks"
 msgstr "家宝の選択 %d 回"
 
-#: ui/system_map.gd:764
+#: ui/system_map.gd:767
 msgid "Left/Right planet  ·  A zoom  ·  B back"
 msgstr "左右 惑星  ·  A ズーム  ·  B 戻る"
 
-#: ui/system_map.gd:817
+#: ui/system_map.gd:820
 msgid "Build the drive"
 msgstr "ドライブを建造"
 
-#: ui/system_map.gd:833
+#: ui/system_map.gd:836
 msgid "Not discovered yet"
 msgstr "まだ未発見"
 
-#: ui/system_map.gd:841
+#: ui/system_map.gd:844
 msgid "Rocket not ready"
 msgstr "ロケットの準備ができていない"
 

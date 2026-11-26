@@ -3534,7 +3534,7 @@ msgstr "%s  ·  %d hexagones  ·  %d vagues de l'arche  ·  %d curiosités"
 msgid "restored"
 msgstr "restauré"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:831
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:834
 msgid "You are here"
 msgstr "Tu es ici"
 
@@ -3555,7 +3555,7 @@ msgid "The Cradle has to come home first."
 msgstr "Le Cradle doit d'abord rentrer au port."
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:451
-#: ui/rockets_panel.gd:88 ui/system_map.gd:745
+#: ui/rockets_panel.gd:88 ui/system_map.gd:748
 msgid "Launch"
 msgstr "Décoller"
 
@@ -5823,7 +5823,7 @@ msgstr "%.1f km"
 msgid "Fly"
 msgstr "Voler"
 
-#: ui/rocket_picker.gd:181 ui/system_map.gd:736 data/goals.json:goals[home_launch].text
+#: ui/rocket_picker.gd:181 ui/system_map.gd:739 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "Décoller vers la maison"
 
@@ -6255,39 +6255,43 @@ msgstr "Lumi est ici"
 msgid "Ready to launch"
 msgstr "Prêt au décollage"
 
-#: ui/system_map.gd:726 ui/system_map.gd:741
+#: ui/system_map.gd:721
+msgid "Bloom Core %d%%"
+msgstr "Cœur floral %d%%"
+
+#: ui/system_map.gd:729 ui/system_map.gd:744
 msgid "Choose a base"
 msgstr "Choisir une base"
 
-#: ui/system_map.gd:726
+#: ui/system_map.gd:729
 msgid "Launch from the rocket pad"
 msgstr "Décollage depuis l'aire de la fusée"
 
-#: ui/system_map.gd:731
+#: ui/system_map.gd:734
 msgid "Bases on this planet"
 msgstr "Bases sur cette planète"
 
-#: ui/system_map.gd:760
+#: ui/system_map.gd:763
 msgid "System %d%% restored  ·  relics %d/%d"
 msgstr "Système restauré à %d%%  ·  reliques %d/%d"
 
-#: ui/system_map.gd:762
+#: ui/system_map.gd:765
 msgid "%d Heirloom picks"
 msgstr "%d choix d'Héritage"
 
-#: ui/system_map.gd:764
+#: ui/system_map.gd:767
 msgid "Left/Right planet  ·  A zoom  ·  B back"
 msgstr "Gauche/Droite planète  ·  A zoom  ·  B retour"
 
-#: ui/system_map.gd:817
+#: ui/system_map.gd:820
 msgid "Build the drive"
 msgstr "Construis le propulseur"
 
-#: ui/system_map.gd:833
+#: ui/system_map.gd:836
 msgid "Not discovered yet"
 msgstr "Pas encore découvert"
 
-#: ui/system_map.gd:841
+#: ui/system_map.gd:844
 msgid "Rocket not ready"
 msgstr "Fusée pas prête"
 
@@ -11777,7 +11781,7 @@ msgstr "Je pilote le Cradle, notre grand vaisseau. Je n'ai jamais cessé de t'é
 
 #: data/objectives.json:wren_brief.lines
 msgid "Clean the ground, and Verdance turns green by itself. That green fills your Bloom Core, and it shows the Cradle the way home."
-msgstr "Nettoie le sol, et Verdance verdit toute seule. Ce vert remplit ton Cœur de floraison, et il montre au Cradle le chemin du retour."
+msgstr "Nettoie le sol, et Verdance verdit toute seule. Ce vert remplit ton Cœur floral, et il montre au Cradle le chemin du retour."
 
 #: data/objectives.json:brief.lines
 msgid "Lumi... it's WREN. Can you hear me? I can hardly reach you down there."
@@ -14327,7 +14331,7 @@ msgstr "Plus de robots, plus de sol propre. Ils continuent quand tu repars."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Green ground gives green light for your Bloom Core."
-msgstr "Le sol vert donne de la lumière verte à ton Cœur de floraison."
+msgstr "Le sol vert donne de la lumière verte à ton Cœur floral."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The Recycler turns bales into parts for robots."

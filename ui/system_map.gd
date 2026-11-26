@@ -716,7 +716,10 @@ func _info_panel() -> PanelContainer:
 		bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		row.add_child(bar)
-		row.add_child(UITheme.label("%d%%" % int(floor(p * 100.0 + 0.0001)), 13, Color.WHITE))
+		# [v13goals] Verdance's bar is Lumi's Bloom Core (Homeward.measure_current), not the cleaned
+		# ground the survey map counts: say so, so the two numbers never share a word.
+		var pct_t: String = (tr("Bloom Core %d%%") if k == 0 else "%d%%") % int(floor(p * 100.0 + 0.0001))
+		row.add_child(UITheme.label(pct_t, 13, Color.WHITE))
 		b.add_child(row)
 	_arc_rows(b, k, here)  # [v7arc]
 	var act := Button.new()
