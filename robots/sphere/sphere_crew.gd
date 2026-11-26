@@ -337,6 +337,21 @@ func _hopper_contents(units: float) -> Dictionary:
 ## Where a hauler unloads: the nearest working scale (the Depot or an outpost's, as the flat
 ## Outposts.nearest_depot), and for a near hauler the conveyor's hopper when Stations.haul_drop
 ## says it is closer. Returns a unit direction; sets u["drop"].
+## [v14qa] The conveyor's hopper (world) when a Haul Bug stands within reach of it, else ZERO (the
+## bales are then sold as at the Depot: never dropped loose on the pad).
+const HOPPER_REACH_M: float = 5.0
+
+
+static func conveyor_drop_point(bot: Variant) -> Vector3:
+	if not (bot is Node3D) or not is_instance_valid(bot):
+		return Vector3.ZERO
+	var st: Stations = Stations.of(bot as Node3D)
+	if st == null or st.conveyor == null or not is_instance_valid(st.conveyor):
+		return Vector3.ZERO
+	var hp: Vector3 = st.conveyor._g(st.conveyor.hopper_pos())
+	return hp if (bot as Node3D).global_position.distance_to(hp) < HOPPER_REACH_M else Vector3.ZERO
+
+
 func _haul_target(u: Dictionary) -> Vector3:
 	u["drop"] = ""
 	var d: Vector3 = drop_dir(int(u["hub"]))  # [v6crew] its own hub's drop point
@@ -683,6 +698,9 @@ func units_per(c: int) -> float:
 
 
 func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
+	if role != "skim":  # [v14qa] a bale lying on a lake hex, or a robot that stepped onto one: route from / to the nearest shore
+		from = land_cell(from)
+		to = land_cell(to)
 	if from == to:
 		return PackedInt32Array([to])
 	var pass_fn: Callable = func(c: int) -> bool: return cells.state[c] != 5 and not blocked.has(c)
@@ -1218,13 +1236,18 @@ func _arrive(u: Dictionary) -> void:
 			for x: float in u["carry"]:
 				v += x
 			u["log"]["hauled"] = float(u["log"]["hauled"]) + (u["carry"] as Array).size()
-			if str(u.get("drop", "")) == "conveyor" and add_cube_fn.is_valid() and u["bot"] != null:
+			var hp: Vector3 = conveyor_drop_point(u["bot"]) if str(u.get("drop", "")) == "conveyor" and add_cube_fn.is_valid() else Vector3.ZERO
+			if hp != Vector3.ZERO:
 				# Real bales onto the conveyor's hopper; the belt carries them to the Depot.
-				var at: Vector3 = (u["bot"] as SphereBot).global_position
+				# [v14qa] ON the hopper's pad (the belt takes only what lies there), stacked: they were
+				# dropped where the Haul Bug stopped, a step short of it, beside the Depot, where nothing
+				# picks a loose bale up (38 on the home pad by 91 bot minutes, travel helper's soak).
+				var k: int = 0
 				for x: float in u["carry"]:
 					var cube := JunkCube.create(BigNum.from_float(x), SphereBales.bale_info(10.0))
 					add_cube_fn.call(cube)
-					cube.global_position = at + surface.up_at(at) * 0.9
+					cube.global_position = hp + surface.up_at(hp) * (0.5 + 0.7 * k)
+					k += 1
 			else:
 				cash(v, int(u["hub"]))
 			(u["carry"] as Array).clear()
@@ -1482,6 +1505,20 @@ func _drop_bale(u: Dictionary) -> void:
 
 
 ## Nearest land cell centre to a lake cell (BFS, a few rings), or the cell itself.
+## [v14qa] c, or for a lake cell the nearest open land cell within 4 rings (c if none). From about
+## 68 bot minutes the home Haul Bugs stood "no path" for good (33-44 bales waiting at base 1 by
+## 88 min, main and v10base): bales Lumi pressed over a lake (Hover Jets) lay on lake cells, and a
+## Haul Bug that drove up to one stood on a lake cell itself; a land route can neither end nor
+## start there. The last stretch to the bale is the bale's own spot (_append_goal), as before.
+func land_cell(c: int) -> int:
+	if c < 0 or cells.state[c] != 5:
+		return c
+	for k: int in grid.cells_around(c, 4):
+		if cells.state[k] != 5 and not blocked.has(k):
+			return k
+	return c
+
+
 func _shore_of(c: int) -> Vector3:
 	for k: int in grid.cells_around(c, 4):
 		if cells.state[k] != 5 and not blocked.has(k):
