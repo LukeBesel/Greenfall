@@ -60,3 +60,14 @@ of surface detail, wear and glow is the target for hardware too.
 What you replaced and why it now meets the bar; the board path; before/after numbers (load, hitch,
 draw calls, prims); test totals and walk results; every name or position other code calls that
 changed; what still falls short, honestly; your branch name and commit hashes.
+
+## Machine limits (added 26 Nov, after renders were killed for lack of memory)
+The box has 15 GB and 4 cores, shared by every helper. A rendered game run takes about 5 GB, a
+headless game run about 2 GB. So:
+- Every headless Godot run (game runs, walks, the unit suite, --import) goes through one shared lock:
+  `flock /tmp/gf-headless.lock godot --headless ...`. One at a time across all helpers.
+- Rendered runs already queue on /tmp/gf-render.lock (tools/shot.sh, tools/turnaround.sh). Never start
+  a rendered run any other way without `flock -o /tmp/gf-render.lock`.
+- A run that prints "Killed" ran out of memory: wait and run it again, do not shorten the check.
+- When a frame's wall-clock delay was not enough (the world is not built in the frame), raise DELAY
+  and --life-tour-start: under load the game builds several times slower.
