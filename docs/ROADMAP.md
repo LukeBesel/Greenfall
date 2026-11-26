@@ -33,8 +33,10 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - **Travel and bases (read, walked with walk_travel):** the rocket picker lists HOME first and the
   NEXT STOP with why to go, the far base's card says the step (clean N hexes, repair an outpost, wake
   the landmark with its price), the wake says the base keeps cleaning, and the rocket brings you home
-  from any pad. Fixed here: Garden Row's reason (the broken seed vault, not an empty seed tin). Left for
-  main / the base helpers: a station wake is a burst (six toasts and a WREN line at once); "Dig the
+  from any pad. Fixed here: Garden Row's reason (the broken seed vault, not an empty seed tin); at a far base the
+  wake step's card says the base's current step with its own count ("Clean hexes round this base. Then
+  wake its Windpump." N / M); a wake is one toast with its gifts on a row, one sound, and WREN no
+  longer reads out the station steps' reasons the card shows. Left for main / the base helpers: "Dig the
   landmark out" (item 101, v10base); "Upgrade it at the workbench" for the rocket's base limit was not
   played; the two far-base stretches above are the longest quiet parts of the line.
 - **Not done:** the Homecoming's "Plant the last seed" (one E press at the very end) is kept as the
