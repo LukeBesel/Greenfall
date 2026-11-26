@@ -71,3 +71,7 @@ headless game run about 2 GB. So:
 - A run that prints "Killed" ran out of memory: wait and run it again, do not shorten the check.
 - When a frame's wall-clock delay was not enough (the world is not built in the frame), raise DELAY
   and --life-tour-start: under load the game builds several times slower.
+- Every headless run under the shared lock needs a time limit, so a hung run cannot block everyone:
+  `flock /tmp/gf-headless.lock timeout 900 godot --headless ...` (1800 for the unit suite and walks).
+  In a `-s script.gd` run, `quit()` inside `_init()` does not end the process: call it from `_initialize()`
+  or `_process()`.
