@@ -33,21 +33,27 @@ What the failing walks were, by evidence (logs under screenshots/, spot tests in
   just built: saved and loaded (kill)" saw "0 / 600" become a full bar: a robot finished the outlined hex
   while the walk quit and came back (cubes 0 -> 1466.8), the price was covered, so the card shows the step's
   own count, as in play. That is af48bf9's case (money earned in play while the walk reloads; money that
-  appears in the load itself still fails), which main did not have yet. "shuttle: the price is paid" (1322
+  appears in the load itself still fails), which main did not have yet; 508fa70 does the same while saving up
+  (save and load agree, the count reads what he has now, the payers since the load are printed;
+  `--walk-home-fault=tower2` still fails, `--walk-home-earn=tower2` passes). "shuttle: the price is paid" (1322
   left right after the click) now checks the change log: the price taken, and what is left equals what the
   game paid since. Every payment of 300+ and every Lumi level is printed as a `[walk-home] note`, and the
   change log after the shuttle is built; `--walk-home-paylog` prints every payment with its payer. Also
   measured: base level 2 and the shuttle stand on no start-area junk, so a load has nothing new to tidy.
-- **OPEN: 1.2K-1.5K cubes in the seconds after the shuttle is built** (2 of 10 home walks here, main's run,
-  v10snd's): 1,346.75 per robot hex that finished next to the yard then (one run 1, one run 2: the toasts
-  say so), of which bonus + notes + level are 246.75; none of it one payment of 300 or more. Not reproduced
-  since the change log went in (0 of 6). If a
-  player sees it, it is in play (no reload needed), so the walks no longer count it as a save fault; what
-  pays it is not known.
+- **Game fault, fixed (3e6cb19): every world load added one more EventBus listener** (the 1.2K-1.5K cube
+  jumps the home walks saw: v10snd's shuttle card, main's "shuttle just built (kill)", two runs here).
+  Research, Goals, Achievements and MusicHooks connected EventBus signals to lambdas that use no member of
+  the node; such a lambda is bound to the script, so it outlived the node on the autoload. After 12 world
+  loads a robot's hex paid its field notes 12 times (+121.75 bonus, then +100 x 12; the change log showed
+  it), each scoop counted 12 times toward junk_scooped, each restored hex toward hexes_restored, and the
+  music stings played 12 times. They are methods now. tests/test_bus_listeners.gd fails on the old code
+  (5 of 5) and passes. Other EventBus lambdas use a member of their node and die with it.
 - **Game fault, fixed (0188201): the fauna perch scan raised a SCRIPT ERROR** on a mesh the headless
   renderer held no arrays for (FaunaSpace.top_point; 7 times in one home walk). Skipped, named once.
-- walk_travel "E by the cleared outpost ... repairs it" failed once in 6 (prompt named the repair, the
-  outpost stayed at level 0): the check now says what E met (block, Lumi's own prompt, input hold, toasts).
+- **Game fault, fixed (36c1ee1): the prompt offered E while the bale press ran** and E did nothing then
+  (walk_travel "E by the cleared outpost ... repairs it", 2 runs in 8: the auto-compactor pressed the full
+  chest by the kiosk, cubing 1.53 s). The prompt is empty during the press (test_no_e_prompt_while_pressing_a_bale);
+  the walk waits out a press and empties the chest before the repair, and reads Lumi's own prompt.
 - From the code, not played: the Shack's side panel (planet/sites/yard_site.gd "side") has no collider (the
   StaticBody holds the back wall and the two front posts), so Lumi could walk through it. Not a stuck.
 - Other code still uses the 32-bit `hex_at` (robots, junk, the card's hex): the speckle at edges is still

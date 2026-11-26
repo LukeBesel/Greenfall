@@ -2281,19 +2281,19 @@ msgstr "CRADLE"
 msgid "WE'LL BE BACK"
 msgstr "VOLTAREMOS"
 
-#: systems/achievements.gd:167
+#: systems/achievements.gd:171
 msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
 msgstr "%d conquistas desbloqueadas. Veja no Códice ({open_codex})."
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:446
+#: systems/achievements.gd:178 ui/notify_stack.gd:38 ui/subtitles.gd:446
 msgid "Achievement: %s. %s"
 msgstr "Conquista: %s. %s"
 
-#: systems/achievements.gd:179
+#: systems/achievements.gd:183
 msgid "Codex: %d new entries."
 msgstr "Códice: %d novas entradas."
 
-#: systems/achievements.gd:182
+#: systems/achievements.gd:186
 msgid "Codex entry: %s"
 msgstr "Entrada do Códice: %s"
 
@@ -3031,15 +3031,15 @@ msgstr "Desbloqueia sementes: %s"
 msgid "Unlocks: %s"
 msgstr "Desbloqueia: %s"
 
-#: systems/research.gd:621
+#: systems/research.gd:624
 msgid "While you were away, research finished: %s."
 msgstr "Enquanto você esteve fora, uma pesquisa terminou: %s."
 
-#: systems/research.gd:652
+#: systems/research.gd:663
 msgid "New robot plans: %s. %s"
 msgstr "Novos planos de robô: %s. %s"
 
-#: systems/research.gd:657
+#: systems/research.gd:668
 msgid "Research complete: %s."
 msgstr "Pesquisa concluída: %s."
 

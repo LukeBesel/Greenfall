@@ -26,7 +26,11 @@ var quiet: bool = false
 
 func _ready() -> void:
 	load_chain()
-	EventBus.junk_scooped.connect(func(_t: String, _p: Vector3) -> void: GameState.inc_stat("junk_scooped"))
+	EventBus.junk_scooped.connect(_on_junk_scooped)  # [v9a] a method: a lambda using no member outlived the node (one more per world load)
+
+
+func _on_junk_scooped(_t: String, _p: Vector3) -> void:
+	GameState.inc_stat("junk_scooped")
 
 
 func load_chain() -> void:

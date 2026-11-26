@@ -17,15 +17,11 @@ var _pinned_resto: float = -1.0  # [sound] dev --restoration
 
 
 func _ready() -> void:
-	EventBus.upgrade_bought.connect(func(_id: String, _lvl: int) -> void:
-		Audio.music_activity(0.06)  # [sound] busy play picks the upbeat tracks
-		Audio.music_sting("upgrade"))
-	EventBus.robot_built.connect(func(_n: String) -> void:
-		Audio.music_activity(0.15)
-		Audio.music_sting("robot_built"))
-	EventBus.hex_restored.connect(func(_h: int) -> void:
-		Audio.music_activity(0.1)
-		Audio.music_sting("level_up"))
+	# [v9a] Methods, not lambdas: a lambda that uses no member of this node is bound to the script, so
+	# it outlived the node on the EventBus autoload and every world load added one more sting.
+	EventBus.upgrade_bought.connect(_on_upgrade_bought)
+	EventBus.robot_built.connect(_on_robot_built)
+	EventBus.hex_restored.connect(_on_hex_restored)
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void:
 		Audio.music_activity(0.07)
 		var now: float = Time.get_ticks_msec() * 0.001
@@ -33,7 +29,7 @@ func _ready() -> void:
 			_last_hex_sting = now
 			Audio.music_sting("hex_clean"))
 	# [v6sound] A base restored: a song marked "base_restored" in data/songs.json, if there is one.
-	EventBus.cradle_district_complete.connect(func(_hub: int) -> void: Tunes.play_moment("base_restored"))
+	EventBus.cradle_district_complete.connect(_on_district_complete)
 	Audio.set_music_mood("explore")
 	_tunes_setup()  # [tunes]
 	# [sound] Dev: --planet-theme=ochre|tidewell|rime|anvil and --restoration=0..1 (pins it).
@@ -45,10 +41,30 @@ func _ready() -> void:
 	_update_intensity()
 
 
+func _on_upgrade_bought(_id: String, _lvl: int) -> void:
+	Audio.music_activity(0.06)  # [sound] busy play picks the upbeat tracks
+	Audio.music_sting("upgrade")
+
+
+func _on_robot_built(_n: String) -> void:
+	Audio.music_activity(0.15)
+	Audio.music_sting("robot_built")
+
+
+func _on_hex_restored(_h: int) -> void:
+	Audio.music_activity(0.1)
+	Audio.music_sting("level_up")
+
+
+func _on_district_complete(_hub: int) -> void:
+	Tunes.play_moment("base_restored")
+
+
 ## [tunes] The owner's songs in play: the background shuffle (unless the intro is about to take
 ## over), the CDs in the rubble and the radio (N, from the first CD on).
 ## Dev: --cds=id,id grants CDs, --scratched=id,id puts scratched CDs in the case, --cd-drop makes
 ## the next cleaned hex turn up a CD.
+
 func _tunes_setup() -> void:
 	for id: String in DevHooks.get_s("cds", "").split(",", false):
 		Tunes.grant(id.strip_edges(), true)
