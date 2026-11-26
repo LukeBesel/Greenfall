@@ -257,9 +257,16 @@ func can_hop() -> bool:
 
 
 ## [v11jump] A press that is both "use" and "hop" (A on a controller): use wins when there is
-## something to use (a prompt on screen, a bale in hand to put down).
+## something to use: a prompt on screen, a bale in hand to put down, or anything _handle_interact
+## would act on this frame (a bale in reach, a buried part), even before the prompt shows it.
 func _use_takes_press() -> bool:
-	return input.interact_pressed() and (prompt != "" or not carried.is_empty())
+	if not input.interact_pressed():
+		return false
+	if prompt != "" or not carried.is_empty():
+		return true
+	if nearest_loose_cube() != null and carried.size() < carry_cap():
+		return true
+	return detector != null and detector.can_dig()
 
 
 ## [v11jump] How far the hop has lifted him off his take-off height (0 on the ground): the camera

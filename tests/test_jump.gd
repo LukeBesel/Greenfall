@@ -364,6 +364,17 @@ func test_use_wins_the_shared_button() -> void:
 	lumi.prompt = ""
 	inp.interact = true
 	assert_false(lumi._use_takes_press(), "nothing to use: the press is the hop")
+	# A bale in reach is picked up by E / A (Patch._handle_interact) even on a frame before the
+	# prompt shows it: that press is 'use' too, never a hop.
+	var b := JunkCube.new()
+	b.freeze = true
+	add_child_autofree(b)
+	b.global_position = lumi.global_position + lumi.forward() * 0.8
+	await _ticks(2)
+	assert_eq(lumi.nearest_loose_cube(), b, "the test bale is in reach")
+	lumi.prompt = ""
+	inp.interact = true
+	assert_true(lumi._use_takes_press(), "a bale in reach, no prompt yet: the press is 'use'")
 
 
 func test_camera_leaves_out_most_of_a_hop() -> void:
