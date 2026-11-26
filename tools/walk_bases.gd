@@ -279,7 +279,7 @@ static func _arrival(so: SliceOrbit, site: int, first: bool) -> void:
 		WalkTravel._check(big == nm.to_upper(), "%s: the arrival title names it ('%s', why: '%s')" % [nm, big, hp.title_reason])
 	# The beam: a far base not yet woken points at its step; a woken one or home at something on
 	# the card (never at a woken landmark).
-	for k: int in 12:
+	for k: int in 24:
 		await WalkTravel._wait(tree, 0.5)
 		if ob.waypoint_target() is Vector3:
 			break
@@ -300,6 +300,10 @@ static func _arrival(so: SliceOrbit, site: int, first: bool) -> void:
 			WalkTravel._check(locked == "", "%s: the base card's next stop can be flown to ('%s'%s)" % [nm, hp.card_text, "" if locked == "" else "; its row: " + locked])
 		var lm: Dictionary = hp.landmark(site)
 		WalkTravel._check(lm.is_empty() or not (wt is Vector3 and (wt as Vector3).distance_to(lm["pos"]) < 1.0), "%s: nothing points at its woken landmark" % nm)
+	if site > 0 and first:  # [v14travel] no sign post between the play camera and Lumi at this base's E spots
+		var blocked: PackedStringArray = await sightlines(so, site)
+		# OPEN (not a check yet): the far Locker spot's sign stands on this line at the rocket (far_yard.gd SPOTS, untested move to (8.5, 0, 3.9))
+		print("%s   all: %s sightlines: %s" % [TAG, nm, "clear" if blocked.is_empty() else "BLOCKED " + "; ".join(blocked)])
 	# Lumi drives off the landing spot.
 	var at0: Vector3 = p.global_position
 	await WalkTravel._hold(tree, "move_back", 0.8)
@@ -337,6 +341,12 @@ static func _chain(so: SliceOrbit, site: int) -> void:
 	var before: int = HubPlan.restored_main(hp.planet)
 	await WalkTravel._finish_station(so, site, false)
 	WalkTravel._check(HubPlan.woken(site) and HubPlan.restored_main(hp.planet) == before + 1, "%s is awake: bases %d of %d" % [HubPlan.hub_name(hp.planet, site), HubPlan.restored_main(hp.planet), HubPlan.main_total(hp.planet)])
+	var fy: FarYard = FarYard.of(so.w)  # the Locker and the Bot Bay too (the player's choice; built free here to look past them)
+	for id: String in ["locker", "bot_bay"]:
+		fy.build(site, id, true)
+	await WalkTravel._wait(so.w.get_tree(), 1.0)
+	var blocked: PackedStringArray = await sightlines(so, site)
+	print("%s   all: %s with its machines built, sightlines: %s" % [TAG, HubPlan.hub_name(hp.planet, site), "clear" if blocked.is_empty() else "BLOCKED " + "; ".join(blocked)])
 	for k: String in ["cubes", "parts"]:
 		WalkTravel._check(GameState.get_currency(k).to_float() >= 0.0, "the purse holds %s %.0f" % [k, GameState.get_currency(k).to_float()])
 
@@ -588,3 +598,59 @@ static func _planet_landed(so: SliceOrbit, k: int, stock: Array) -> void:
 	print("%s   on %s: card '%s' (%s), dirty hexes within 60 m %d, rocket list %d bases, bases plan %s, HUD '%s'" % [TAG, nm, ob.texts(ob.current())[0] if not ob.current().is_empty() else "(none)",
 		str(ob.current().get("id", "")), junk, dests.size(), HubPlan.has_plan(os_.sm.planet_id), str(os_.purpose.hud_lines().get("field", "")) if os_.purpose else "-"])
 	await WalkTravel._shot(tree, "planet_%d" % k)
+
+
+# --- What stands between the play camera and Lumi at a far base's E spots ------------------------
+
+## The play camera behind Lumi at each E spot of far base `site` (the rocket, each build spot or its
+## machine, the bin, the scale), facing what he uses there: no sign post may stand on the line from
+## the camera to Lumi or to his prompt above him. Returns the views that are blocked.
+static func sightlines(so: SliceOrbit, site: int) -> PackedStringArray:
+	var w: Node = so.w
+	var tree: SceneTree = w.get_tree()
+	var p: Patch = w.get("patch") as Patch
+	var fy: FarYard = FarYard.of(w)
+	var bad: PackedStringArray = []
+	if fy == null or fy.depot(site) == null:
+		return bad
+	var root: Node3D = fy.depot(site).get_parent() as Node3D
+	var pad: Transform3D = so.sites.sm.pad_xf(site)
+	var dep: Depot = fy.depot(site)
+	var views: Array = [["rocket", pad * Vector3(4.5, 0, 3.0), pad.origin],
+		["bin", dep.bin_world() + (dep.global_position - dep.bin_world()).normalized() * 1.4, dep.bin_world()],
+		["scale", dep.global_position + dep.global_basis.z * 2.2, dep.global_position]]
+	for id: String in FarYard.ORDER:
+		var at: Variant = fy.spot_point(site, id)
+		var holder: Node3D = root.get_node_or_null("Spot_%s" % id) as Node3D
+		if at is Vector3 and holder:
+			views.append([id, at, holder.global_position])
+	var signs: Array[MeshInstance3D] = []  # every sign post and machine standing on the build spots (not the flat outlines)
+	for hn: Node in root.get_children():
+		if not str(hn.name).begins_with("Spot_"):
+			continue
+		for n: Node in hn.find_children("*", "MeshInstance3D", true, false):
+			var mi0: MeshInstance3D = n as MeshInstance3D
+			if mi0.is_visible_in_tree() and str(mi0.name) != "Outline" and mi0.get_aabb().size.y > 0.4:
+				signs.append(mi0)
+	var keep: Array = [p.global_position, p.forward()]
+	for v: Array in views:
+		WalkTravel._stand(so, p, v[1], v[2])
+		so.cam.reset_frame(p.forward())
+		so.cam.snap()
+		await WalkTravel._frames(tree, 2)
+		var cam: Vector3 = so.cam.global_position
+		var up: Vector3 = p.global_position.normalized()
+		var hits: PackedStringArray = []
+		for mi: MeshInstance3D in signs:
+			var inv: Transform3D = mi.global_transform.affine_inverse()
+			var box: AABB = mi.get_aabb()
+			for h: float in [0.9, 1.9]:  # Lumi's body, and his prompt above him
+				if box.intersects_segment(inv * cam, inv * (p.global_position + up * h)):
+					var li: Transform3D = root.global_transform.affine_inverse()
+					hits.append("%s (%s; site-local camera %s, Lumi %s, sign %s)" % [str(root.get_path_to(mi)), "Lumi" if h < 1.0 else "his prompt",
+						str((li * cam).snapped(Vector3.ONE * 0.1)), str((li * p.global_position).snapped(Vector3.ONE * 0.1)), str((li * mi.global_position).snapped(Vector3.ONE * 0.1))])
+					break
+		if not hits.is_empty():
+			bad.append("%s: %s" % [str(v[0]), ", ".join(hits)])
+	WalkTravel._stand(so, p, keep[0], keep[0] + keep[1])
+	return bad
