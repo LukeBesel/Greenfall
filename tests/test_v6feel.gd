@@ -216,3 +216,20 @@ func test_camera_shake_on_the_globe() -> void:
 	assert_almost_eq(cam.camera.h_offset, 0.0, 0.0001)
 	Settings.reduced_motion = was_rm
 	Settings.shake_intensity = was_sh
+
+
+# [v9a] While the bale press runs E does nothing (Patch._handle_interact), so the prompt offers
+# nothing: a travel walk read "E Repair outpost" during an auto-compactor press and E was eaten.
+func test_no_e_prompt_while_pressing_a_bale() -> void:
+	var p: Patch = _lumi()
+	var c: JunkCube = _bale()
+	add_child_autofree(c)
+	c.global_position = p.global_position + Vector3(0, 0.3, 0.9)
+	p._update_hints(0.016)
+	assert_eq(p.prompt, "pick_up", "a bale at his feet: E picks it up")
+	p.set("_cubing", 1.0)
+	p._update_hints(0.016)
+	assert_eq(p.prompt, "", "while the press runs E offers nothing")
+	p.set("_cubing", 0.0)
+	p._update_hints(0.016)
+	assert_eq(p.prompt, "pick_up", "after the press, the bale again")
