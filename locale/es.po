@@ -646,7 +646,7 @@ msgstr "FLOREZCAMOS JUNTOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  AGUA  VIDA"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:258 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:262 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "Base %d"
 
@@ -840,31 +840,31 @@ msgstr "Las %d bases están en pie. Construye el propulsor en el cohete."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:134
+#: planet/sites/orbit_sites.gd:138
 msgid "The rocket is in flight."
 msgstr "El cohete está en vuelo."
 
-#: planet/sites/orbit_sites.gd:159
+#: planet/sites/orbit_sites.gd:163
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:197
+#: planet/sites/orbit_sites.gd:201
 msgid "E   Rocket: choose a destination"
 msgstr "E   Cohete: elige un destino"
 
-#: planet/sites/orbit_sites.gd:237
+#: planet/sites/orbit_sites.gd:241
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:237
+#: planet/sites/orbit_sites.gd:241
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:239
+#: planet/sites/orbit_sites.gd:243
 msgid "Upgrade the rocket first"
 msgstr "Primero mejora el cohete"
 
-#: planet/sites/orbit_sites.gd:257
+#: planet/sites/orbit_sites.gd:261
 msgid "%s site"
 msgstr "Lugar: %s"
 
