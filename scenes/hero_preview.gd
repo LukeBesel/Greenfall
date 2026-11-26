@@ -22,6 +22,14 @@ var _can: Node3D
 var _lasers: Array[MeshInstance3D] = []
 var _settle: float = 8.0
 const BLINK_PHASES := [-1.0, 0.05, 0.09, 0.17]
+## [art2] The concept turnaround's five views (art/concept/aurora_turnaround.png), eye level like the
+## sheet: [camera yaw in degrees (0 = from the front, negative = round toward his left side),
+## elevation in degrees, head yaw in degrees]. The sheet's five are: front; front 3/4 with his left
+## ear toward us; a side view of the body with the head turned further away (the sheet's "side"
+## shows the back of the head with the ear at the left); straight back; back turned 20 degrees.
+## tools/hero/quick_views.py reads this list too.
+const TURN_VIEWS := [[0.0, 0.0, 0.0], [-45.0, 0.0, 0.0], [-105.0, 0.0, -45.0], [180.0, 0.0, 0.0], [160.0, 0.0, 0.0]]
+const TURN_TARGET := Vector3(0, 0.68, 0)
 
 
 func _ready() -> void:
@@ -69,6 +77,8 @@ func _ready() -> void:
 	if not portrait:
 		env.background_mode = Environment.BG_COLOR  # plain dark studio backdrop; the sky still lights/reflects
 		env.background_color = Color(0.07, 0.065, 0.065)
+		if DevHooks.has("no-floor"):
+			env.background_color = Color(0.0, 0.5, 0.0)  # [art2] key backdrop: a clean outline for tools/hero/overlay.py
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
@@ -160,11 +170,10 @@ func _ready() -> void:
 	else:
 		_cam.fov = 22.0
 		var d2: float = 5.4
-		var h: float = 0.95
-		var tgt := Vector3(0, 0.68, 0)
-		for deg: float in [0.0, 40.0, 90.0, 140.0, 180.0]:
-			var r: float = deg_to_rad(deg)
-			_shots.append([Vector3(sin(r) * d2, h, -cos(r) * d2), tgt])
+		for tv: Array in TURN_VIEWS:
+			var r: float = deg_to_rad(tv[0])
+			var el: float = deg_to_rad(tv[1])
+			_shots.append([TURN_TARGET + Vector3(sin(r) * cos(el), sin(el), -cos(r) * cos(el)) * d2, TURN_TARGET])
 
 
 func _build_can_and_lasers() -> void:
@@ -208,6 +217,14 @@ func _pose() -> void:
 		_model._blink_timer = 100.0
 		var ph: float = BLINK_PHASES[clampi(_i, 0, BLINK_PHASES.size() - 1)]
 		(_model.get("_face_mat") as ShaderMaterial).set_shader_parameter("blink", PatchModel.blink_curve(ph))
+		return
+	if _view == "turn":
+		# [art2] A still, eyes-open figure with the head turned as the sheet has it in that view.
+		_model._blink_timer = 100.0
+		_model._blink_t = -1.0
+		_model._glance = 0.0
+		_model._glance_t = 100.0
+		(_model.get("_head") as Node3D).rotation = Vector3(0.0, deg_to_rad(TURN_VIEWS[clampi(_i, 0, TURN_VIEWS.size() - 1)][2]), 0.0)
 		return
 	if not _view in ["portrait", "head", "chest", "hands"]:
 		return

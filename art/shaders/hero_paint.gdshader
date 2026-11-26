@@ -26,6 +26,11 @@ uniform float seed = 0.0;
 uniform float ao_strength = 1.0;
 uniform vec4 chip_color : source_color = vec4(0.3, 0.2, 0.14, 1.0);  // concept: warm dark brown chips (sampled 60..85, 38..68, 24..62)
 uniform vec4 rust_color : source_color = vec4(0.42, 0.22, 0.1, 1.0);
+// [art2] The concept's wear is rust-orange and brown, not black freckles: this share of the chips shows
+// orange primer / rust instead of dark metal, and soft rust stains bleed out of seams and edges.
+uniform vec4 rust_bright : source_color = vec4(0.62, 0.3, 0.1, 1.0);
+uniform float rust_chips : hint_range(0.0, 1.0) = 0.55;
+uniform float rust_stain : hint_range(0.0, 1.0) = 0.6;
 uniform vec4 rim_color : source_color = vec4(0.62, 0.85, 1.0, 1.0);      // shadow-side rim (cool)
 uniform vec4 rim_warm : source_color = vec4(1.0, 0.72, 0.5, 1.0);        // sun-side rim (peach)
 uniform float rim_strength = 0.07;
@@ -149,10 +154,10 @@ void fragment() {
 	float dc = clamp(dens * 0.75 + cluster * 0.65, 0.0, 1.0);
 	float r1 = 0.1 + 0.26 * dc;
 	vec2 c1 = cell(wp * 48.0 + seed);
-	float on1 = step(c1.y, 0.02 + 0.42 * dc * dc);
+	float on1 = step(c1.y, 0.012 + 0.3 * dc * dc);
 	float sp1 = (1.0 - smoothstep(0.0, 0.06, c1.x - r1 * mix(0.7, 1.25, n3(wp * 140.0)))) * on1;
 	vec2 c2 = cell(wp * 150.0 + seed * 2.0);
-	float sp2 = (1.0 - smoothstep(0.0, 0.08, c2.x - (0.14 + 0.18 * dc))) * step(c2.y, 0.02 + 0.2 * dc);
+	float sp2 = (1.0 - smoothstep(0.0, 0.08, c2.x - (0.14 + 0.18 * dc))) * step(c2.y, 0.012 + 0.13 * dc);
 	vec2 c3 = cell(wp * 26.0 + seed * 3.0);
 	float fl_r = 0.32 * smoothstep(0.35, 1.0, edge * edge_wear * 1.4 + joint * 0.5);
 	float flake = (1.0 - smoothstep(0.0, 0.04, c3.x - fl_r)) * step(c3.y, 0.5) * step(0.001, fl_r);
@@ -183,7 +188,8 @@ void fragment() {
 	// [skins] Hazard chevrons painted across the part (worn with the paint).
 	float stp = step(0.5, fract((opos.x + opos.y * 0.9 - opos.z * 0.4) * 11.0 + seed * 0.37));
 	pc = mix(pc, stripe_color.rgb * mix(0.9, 1.1, fine), stp * stripes);
-	vec3 bare = mix(chip_color.rgb, m_alb * 0.4, 0.2) * mix(0.75, 1.15, fine);
+	float rusty = step(fract(c1.y * 91.7 + c3.y * 37.3 + c5.y * 13.1), rust_chips);
+	vec3 bare = mix(mix(chip_color.rgb, m_alb * 0.4, 0.2), rust_bright.rgb, rusty * 0.85) * mix(0.75, 1.15, fine);
 	vec3 alb = mix(bare, pc, paint);
 	alb = mix(alb, rust_color.rgb * mix(0.7, 1.2, fine), rs * 0.85);
 	vec3 nrm = mix(mix(m_nrm, r_nrm, rs), mix(vec3(0.5, 0.5, 1.0), m_nrm, 0.12), paint);
@@ -197,13 +203,18 @@ void fragment() {
 	scr *= clamp(smoothstep(0.35, 0.7, fbm3(q * 0.9 + 41.0)) + edge * 0.6 + joint * 0.6, 0.0, 1.0);
 	alb = mix(alb, m_alb * 0.95 + 0.1, scr * paint * 0.55);
 	rough = mix(rough, 0.3, scr * paint * 0.5);
+	// Rust stains: soft orange-brown blooms that start at seams, cavities and worn edges.
+	float rb = smoothstep(0.42, 0.72, fbm3(q * 1.1 + 60.0)) * clamp(cav * 1.1 + edge * edge_wear * 0.8 + (1.0 - ao) * 0.35 + joint * 0.4, 0.0, 1.0);
+	rb = max(rb, smoothstep(0.66, 0.8, fbm3(q * 0.8 + 77.0)) * 0.55) * rust_stain;
+	alb = mix(alb, rust_bright.rgb * mix(0.75, 1.2, fine), rb * 0.5 * paint);
+	rough = mix(rough, 0.7, rb * 0.5);
 	// Grime: seams / cavities / occlusion, short streaks running down from them, broad stains.
 	float g = clamp(cav * 1.3 + (1.0 - ao) * 0.9, 0.0, 1.0);
 	float streak = smoothstep(0.55, 0.85, n3(vec3(opos.x * 34.0, opos.y * 3.0, opos.z * 34.0) + seed)) * (1.0 - smoothstep(-0.2, 0.6, onrm.y));
 	g = max(g, streak * 0.55);
 	g = max(g, smoothstep(0.5, 0.85, fbm3(q * 1.3 + 21.0)) * 0.5);  // broad brown stains (concept)
 	g *= grime;
-	alb = mix(alb, alb * vec3(0.42, 0.36, 0.3), g);
+	alb = mix(alb, alb * vec3(0.5, 0.4, 0.3), g);
 	rough = mix(rough, 0.85, g * 0.8);
 	float d = up * dust * smoothstep(0.4, 0.8, fbm3(q * 3.0));
 	alb = mix(alb, vec3(0.62, 0.55, 0.47), d * 0.55);

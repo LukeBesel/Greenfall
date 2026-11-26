@@ -146,8 +146,9 @@ func target(p: String, t: float) -> Dictionary:
 	var bob: float = sin(t * 2.4) * 0.02
 	var d: Dictionary = {
 		"float_y": 0.04 + bob, "lean": Vector2.ZERO, "head": Vector3(0, 0, sin(t * 0.7) * 0.03),
-		"sh_r": Vector3(0.15 * sin(t * 1.3), 0, 0), "sh_l": Vector3(0.15 * sin(t * 1.3 + 1.0), 0, 0),
-		"el_r": Vector3.ZERO, "el_l": Vector3.ZERO, "wr_r": Vector3.ZERO, "wr_l": Vector3.ZERO,
+		# [art2] An arm a pose does not use hangs as in play (PatchModel.ARM_REST: the concept's idle).
+		"sh_r": Vector3(PatchModel.ARM_REST.x + 0.08 * sin(t * 1.3), 0, PatchModel.ARM_REST.z), "sh_l": Vector3(PatchModel.ARM_REST.x + 0.08 * sin(t * 1.3 + 1.0), 0, -PatchModel.ARM_REST.z),
+		"el_r": Vector3(PatchModel.ARM_REST.y, 0, 0), "el_l": Vector3(PatchModel.ARM_REST.y, 0, 0), "wr_r": Vector3.ZERO, "wr_l": Vector3.ZERO,
 		"claw_r": Vector3(0.2, 0.2, 0.2), "claw_l": Vector3(0.2, 0.2, 0.2), "ring": 3.5 + sin(t * 9.0) * 0.4,
 		"happy": 0.0, "blink": 0.0, "energy": 4.0, "look": Vector2.ZERO, "wink": 0.0, "dim": 0.0,
 	}

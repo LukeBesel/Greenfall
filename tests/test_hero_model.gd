@@ -45,13 +45,15 @@ func test_gameplay_points_near_previous_rig() -> void:
 	var m := _model()
 	m._process(0.0)
 	var local: Vector3 = m.to_local(m.claw_point())
-	# v2 idle pose: the arms reach out and a little up (portrait); the right claw tip sits out to
-	# the side, in front, around torso height, where the pickup lasers start.
+	# [art2] Idle pose of the concept turnaround: the arms hang down and a little out, elbows bent;
+	# the right claw tip (where the pickup lasers start) sits beside the body at about hip height,
+	# below the shoulder socket and a little in front.
 	assert_true(local.x > 0.3 and local.x < 0.6, "claw out to the side (%.2f)" % local.x)
-	assert_true(local.z < -0.15, "claw in front (%.2f)" % local.z)
-	assert_true(local.y > 0.25 and local.y < 0.6, "claw height %.2f" % local.y)
+	assert_true(local.z < 0.0 and local.z > -0.3, "claw a little in front (%.2f)" % local.z)
+	assert_true(local.y > 0.15 and local.y < 0.4, "claw at hip height (%.2f)" % local.y)
+	assert_true(local.y < PatchModel._pivot("arm_shoulder_r").y - 0.12, "the arm hangs")
 	var chest: Vector3 = m.to_local(m.chest_world())
-	assert_true(chest.z < -0.2 and chest.y > 0.38 and chest.y < 0.5, "chest hopper on the plate")
+	assert_true(chest.z < -0.19 and chest.y > 0.38 and chest.y < 0.5, "chest hopper on the plate")
 
 
 func test_eye_shapes() -> void:
@@ -197,3 +199,91 @@ func test_default_eye_is_the_c_ring() -> void:
 	assert_null(m._face_mat.next_pass, "no overlay eyes on top of the native ones")
 	var src: String = (load("res://art/shaders/bot_face.gdshader") as Shader).code
 	assert_true(src.contains("gap_dir") and src.contains("ring_inner"), "the default shape is a ring with a gap")
+
+
+## Bounds of a part in the model's float space (its mesh is stored relative to its pivot); `only`
+## limits it to the surfaces with that material name.
+func _bounds(part: String, only: String = "") -> AABB:
+	var mesh: Mesh = PatchModel._parts[part]["mesh"]
+	var out := AABB()
+	var first: bool = true
+	for i: int in mesh.get_surface_count():
+		var src: Material = mesh.surface_get_material(i)
+		if only != "" and (src == null or src.resource_name != only):
+			continue
+		var verts: PackedVector3Array = mesh.surface_get_arrays(i)[Mesh.ARRAY_VERTEX]
+		for v: Vector3 in verts:
+			if first:
+				out = AABB(v, Vector3.ZERO)
+				first = false
+			else:
+				out = out.expand(v)
+	out.position += PatchModel._parts[part]["pos"]
+	return out
+
+
+## [art2] The proportions measured on the owner's turnaround (tools/hero/overlay.py prints them for
+## the concept and for a render): a fat pill of a head over half the figure, a small torso, a small
+## hover disc, big ear modules. A rebuild that drifts away from them fails here.
+func test_proportions_follow_the_concept_turnaround() -> void:
+	_model()
+	var head: AABB = _bounds("head", "paint")
+	var ears: AABB = _bounds("ears")
+	var torso: AABB = _bounds("body", "paint")
+	var pod: AABB = _bounds("thruster")
+	var head_w: float = ears.size.x  # the head with its ear modules, as seen from the front
+	var body_h: float = head.end.y - pod.position.y
+	# The shell's own box, with the underside the torso hides: as seen it measures 0.78 (concept 0.73 front, 0.81 back).
+	assert_almost_eq(head.size.y / head_w, 0.86, 0.07, "head height / width with ears")
+	assert_almost_eq(head.size.y / body_h, 0.57, 0.05, "the head is over half the figure (concept 0.55)")
+	assert_almost_eq(torso.size.x / head_w, 0.63, 0.08, "torso width as a share of the head's (concept 0.58 to 0.63)")
+	assert_almost_eq(pod.size.x / head_w, 0.45, 0.08, "hover ring width as a share of the head's (concept 0.40 to 0.53)")
+	assert_almost_eq(ears.size.y / head.size.y, 0.46, 0.07, "ear module across as a share of head height (concept ring 0.48)")
+	assert_gt(head.size.z / head.size.x, 0.85, "the head is nearly as deep as it is wide")
+	assert_almost_eq(body_h, 1.1, 0.04, "the figure's height is unchanged (the collider is not the model's to move)")
+
+
+## [art2] Eyes: one large thin ring per side, sized from the visor (never a second shape on top).
+func test_eye_ring_is_large_and_thin() -> void:
+	var m := _model()
+	var hh: float = float(m._face_mat.get_shader_parameter("half_height"))
+	var visor: AABB = _bounds("visor", "face")
+	assert_almost_eq(hh, visor.size.y * 0.5, 0.012, "the face is scaled to the modelled visor")
+	assert_almost_eq(float(m._face_mat.get_shader_parameter("half_width")), visor.size.x * 0.5, 0.02)
+	assert_almost_eq(float(m._face_mat.get_shader_parameter("eye_radius")), 0.55, 0.06, "ring diameter about 0.55 of the visor's height")
+	assert_gt(float(m._face_mat.get_shader_parameter("ring_inner")), 0.64, "a thin stroke")
+	assert_almost_eq(2.0 * float(m._face_mat.get_shader_parameter("eye_spacing")) * hh / _bounds("ears").size.x, 0.38, 0.05, "eye centres about 0.36 of the head's width apart")
+
+
+## [art2] Light strips, ear rings and the hover unit stay the glow COLOUR: emission far above 1
+## clips to white on screen (the ear rings, torso band and pod ring did).
+func test_glow_does_not_clip_to_white() -> void:
+	var m := _model()
+	m._process(0.016)
+	for k: String in ["glow", "glow_soft", "thruster", "thruster_core"]:
+		var mat: StandardMaterial3D = m._mats[k]
+		assert_lt(mat.emission_energy_multiplier, 1.8, k)
+		assert_gt(mat.emission_energy_multiplier, 0.8, k + " still glows")
+	m.flash()
+	m._process(0.016)
+	assert_gt((m._mats["thruster"] as StandardMaterial3D).emission_energy_multiplier, 2.0, "a flash still flares the ring")
+
+
+## Every design's add-ons sit on the head or body they were re-fitted to (ACC_FIT), not in the air.
+func test_design_addons_touch_the_model() -> void:
+	_model()
+	var head: AABB = _bounds("head", "paint")
+	for a: String in ["acc_catears", "acc_sprout", "acc_pixel"]:
+		var b: AABB = _bounds(a)
+		var fit: Dictionary = PatchModel.ACC_FIT.get(a, {})
+		var scl: Vector3 = fit.get("scale", Vector3.ONE)
+		var piv: Vector3 = PatchModel._parts[a]["pos"]
+		var lo: float = b.position.y + PatchModel.acc_fit(a).y
+		var half_w: float = maxf(absf(b.position.x - piv.x), absf(b.end.x - piv.x)) * scl.x + absf(piv.x)
+		assert_lt(lo, head.end.y, "%s reaches down onto the crown" % a)
+		assert_gt(b.end.y + PatchModel.acc_fit(a).y, head.end.y, "%s stands above the crown" % a)
+		assert_lt(half_w, head.size.x * 0.5 + 0.02, "%s is no wider than the head" % a)
+	var box: AABB = _bounds("acc_toolbox")
+	var torso: AABB = _bounds("body", "paint")
+	var inner: float = box.end.x + PatchModel.acc_fit("acc_toolbox").x  # the toolbox hangs on his left hip (-X)
+	assert_almost_eq(inner, torso.position.x, 0.05, "the toolbox hangs on the hip, not away from it")
