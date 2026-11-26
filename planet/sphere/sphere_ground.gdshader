@@ -126,6 +126,19 @@ void fragment() {
 		gcol *= mix(0.55, 1.15, clump) * mix(0.85, 1.08, fine) * 0.9;
 		gcol = mix(gcol, gcol * vec3(1.3, 1.12, 0.62), smoothstep(0.55, 0.85, clump) * (1.0 - lush * 0.3));
 		clean = mix(clean, clean * vec3(0.78, 0.86, 0.7), smoothstep(-0.25, 0.0, k) * (1.0 - gcov) * 0.7);
+		// [art7] The first comers, ahead of the grass edge: moss along wandering cracks and in the damp
+		// hollows (where the mask is low, the same spots the grass reaches first). Near only.
+		float crack = 1.0 - smoothstep(0.012, 0.06, abs(vnoise3(wpos * 0.8 + 7.3) - 0.5));
+		float damp = (1.0 - smoothstep(0.25, 0.5, m)) * smoothstep(0.45, 0.75, clump);
+		float pion = smoothstep(-0.6, -0.12, k) * smoothstep(0.0, 0.06, verd) * (1.0 - gcov) * near_k;
+		clean = mix(clean, vec3(0.11, 0.17, 0.06) * (0.6 + 0.9 * fine) * tint_grass, max(crack, damp) * pion * 0.85);
+		// [art7] Under the grass clumps the sward is deep and shaded, not lime: the plants of the flora
+		// kit carry the light greens. Far off, where no plants are drawn, the land that would carry
+		// bushes and trees darkens in crown-sized blots, so a restored district reads wooded from afar.
+		gcol *= mix(1.0, 0.9, near_k * smoothstep(0.1, 0.5, k));
+		float wood = smoothstep(0.5, 1.0, k) * smoothstep(60.0, 110.0, dist);
+		float crown = smoothstep(0.48, 0.66, vnoise3(wpos * 0.19 + 3.1) * 0.7 + vnoise3(wpos * 0.53) * 0.3);
+		gcol = mix(gcol, gcol * vec3(0.5, 0.62, 0.48), wood * crown * 0.8);
 	}
 	green = max(green, gcov);
 	vec3 col = mix(mix(clean, gcol, green), dirt, dirty);
