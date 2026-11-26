@@ -1574,7 +1574,7 @@ msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô �
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð! Þŕéšš %s àţ îţ ţô bûý ûþĝŕàðéš. ~~~~~~~~~~~~~~]"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:166
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:170
 msgid "Setting the scene"
 msgstr "[Šéţţîñĝ ţĥé šçéñé ~~~]"
 
@@ -5012,11 +5012,11 @@ msgstr "[Ðîĝ ûþ þàŕţš àñð šàļvàĝé ĵûñķ ţô ĝéţ ţĥé
 msgid "Need %s. %s"
 msgstr "[Ñééð %s. %s ~]"
 
-#: ui/loading_screen.gd:165
+#: ui/loading_screen.gd:169
 msgid "Loading"
 msgstr "[Ļôàðîñĝ ~]"
 
-#: ui/loading_screen.gd:167
+#: ui/loading_screen.gd:171
 msgid "Warming up"
 msgstr "[Ŵàŕmîñĝ ûþ ~]"
 

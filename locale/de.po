@@ -1577,7 +1577,7 @@ msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Werkbank repariert! Drück dort %s, um Upgrades zu kaufen."
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:166
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:170
 msgid "Setting the scene"
 msgstr "Die Bühne wird bereitet"
 
@@ -5015,11 +5015,11 @@ msgstr "Grab Teile aus und zerleg Schrott, um sie zu bekommen."
 msgid "Need %s. %s"
 msgstr "Dir fehlen noch %s. %s"
 
-#: ui/loading_screen.gd:165
+#: ui/loading_screen.gd:169
 msgid "Loading"
 msgstr "Lädt"
 
-#: ui/loading_screen.gd:167
+#: ui/loading_screen.gd:171
 msgid "Warming up"
 msgstr "Wärmt auf"
 

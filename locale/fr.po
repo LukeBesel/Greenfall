@@ -1577,7 +1577,7 @@ msgstr "Les améliorations demandent un établi. Retourne à la base."
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Établi réparé ! Appuie sur %s devant lui pour acheter des améliorations."
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:166
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:170
 msgid "Setting the scene"
 msgstr "Mise en place"
 
@@ -5015,11 +5015,11 @@ msgstr "Déterre des pièces et démonte de la ferraille pour en avoir."
 msgid "Need %s. %s"
 msgstr "Il te manque encore %s. %s"
 
-#: ui/loading_screen.gd:165
+#: ui/loading_screen.gd:169
 msgid "Loading"
 msgstr "Chargement"
 
-#: ui/loading_screen.gd:167
+#: ui/loading_screen.gd:171
 msgid "Warming up"
 msgstr "Préchauffage"
 

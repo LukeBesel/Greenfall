@@ -1571,7 +1571,7 @@ msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "作業台が直った！そばで %s を押してアップグレードを買おう。"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:166
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:170
 msgid "Setting the scene"
 msgstr "舞台を準備中"
 
@@ -4999,11 +4999,11 @@ msgstr "パーツを掘り出したり、ガラクタを分解したりすると
 msgid "Need %s. %s"
 msgstr "あと %s 必要。%s"
 
-#: ui/loading_screen.gd:165
+#: ui/loading_screen.gd:169
 msgid "Loading"
 msgstr "読み込み中"
 
-#: ui/loading_screen.gd:167
+#: ui/loading_screen.gd:171
 msgid "Warming up"
 msgstr "ウォームアップ中"
 

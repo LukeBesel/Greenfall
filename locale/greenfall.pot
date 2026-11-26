@@ -1572,7 +1572,7 @@ msgstr ""
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr ""
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:166
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:170
 msgid "Setting the scene"
 msgstr ""
 
@@ -4993,11 +4993,11 @@ msgstr ""
 msgid "Need %s. %s"
 msgstr ""
 
-#: ui/loading_screen.gd:165
+#: ui/loading_screen.gd:169
 msgid "Loading"
 msgstr ""
 
-#: ui/loading_screen.gd:167
+#: ui/loading_screen.gd:171
 msgid "Warming up"
 msgstr ""
 
