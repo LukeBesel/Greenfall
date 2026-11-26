@@ -611,8 +611,12 @@ func plant_refusal_text(why: String) -> String:
 
 # --- Scooping -----------------------------------------------------------------
 
+## [v11jump] How far ahead of Lumi's middle the scoop reaches from (--city-walk counts it).
+const SCOOP_AHEAD: float = 0.25
+
+
 func scoop_origin() -> Vector3:
-	return global_position + up() * 0.2 - global_transform.basis.z * 0.25
+	return global_position + up() * 0.2 - global_transform.basis.z * SCOOP_AHEAD
 
 
 func forward() -> Vector3:

@@ -173,3 +173,40 @@ func test_dev_runs_do_not_write_the_players_settings() -> void:
 	assert_true(FileAccess.file_exists(TEST_PATH))
 	for f: String in ["ui-scale", "locale", "quality", "ui-audit"]:
 		assert_has(DevHooks.NO_SETTINGS_WRITE, f)
+
+
+## [v11jump] A settings file from before the hop: the player had rebound the scoop's mouse slot to
+## J, and the file kept the whole list, Space (then scoop's second key) included. Loading it must
+## not leave Space on both the scoop and the hop.
+func _old_file(bindings: Dictionary) -> void:
+	var cfg := ConfigFile.new()
+	for a: String in bindings:
+		cfg.set_value("bindings", a, bindings[a])
+	cfg.save(TEST_PATH)
+
+
+func test_old_scoop_binding_loses_space() -> void:
+	_old_file({"scoop": [{"t": "key", "code": KEY_J}, {"t": "key", "code": KEY_SPACE}, {"t": "axis", "axis": JOY_AXIS_TRIGGER_RIGHT, "value": 1.0}]})
+	Settings.load_settings()
+	assert_false(InputMap.action_has_event("scoop", _key(KEY_SPACE)), "Space no longer scoops")
+	assert_true(InputMap.action_has_event("jump", _key(KEY_SPACE)), "Space hops")
+	assert_true(InputMap.action_has_event("scoop", _key(KEY_J)), "the player's own key stays")
+	assert_true(InputMap.action_has_event("scoop", _key(KEY_X)), "X, the new second key, takes Space's place")
+	var trig := InputEventJoypadMotion.new()
+	trig.axis = JOY_AXIS_TRIGGER_RIGHT
+	trig.axis_value = 1.0
+	assert_true(InputMap.action_has_event("scoop", trig), "the trigger stays")
+	assert_eq(Settings.find_conflict("jump", _key(KEY_SPACE)), "", "no clash shown in Controls")
+	var cfg := ConfigFile.new()
+	cfg.load(TEST_PATH)
+	assert_false(JSON.stringify(cfg.get_value("bindings", "scoop", [])).contains('"code":%d' % KEY_SPACE), "the file is written back without it")
+	Settings.load_settings()
+	assert_false(InputMap.action_has_event("scoop", _key(KEY_SPACE)), "and it stays gone on the next load")
+
+
+func test_old_scoop_keeps_space_when_the_hop_moved() -> void:
+	_old_file({"scoop": [{"t": "mouse", "button": MOUSE_BUTTON_LEFT}, {"t": "key", "code": KEY_SPACE}, {"t": "axis", "axis": JOY_AXIS_TRIGGER_RIGHT, "value": 1.0}],
+		"jump": [{"t": "key", "code": KEY_K}, {"t": "joy", "button": JOY_BUTTON_A}]})
+	Settings.load_settings()
+	assert_true(InputMap.action_has_event("scoop", _key(KEY_SPACE)), "the player moved the hop to K: Space may scoop")
+	assert_false(InputMap.action_has_event("jump", _key(KEY_SPACE)))

@@ -121,6 +121,27 @@ static func run(p: SitePrefab, terrain: SphereTerrain, field: SphereField, half_
 	var bad_pieces: int = 0
 	var pieces: int = 0
 	var bad_at: Array = []
+	# [v11jump] A piece counts as reachable when Lumi can stand on walked ground within the starter
+	# scoop's reach of it: data/patch.json stats.scoop_reach from the scoop's origin, which is
+	# Patch.SCOOP_AHEAD in front of him (the beam has no line-of-sight test). Was a flat 1 m.
+	var reach_m: float = Economy.base_stat("scoop_reach") + Patch.SCOOP_AHEAD
+	_half = half_m
+	var rc: int = ceili(reach_m / STEP)
+	var far: Array = []  # pieces past the old 1 m but in reach: [pid, piece (local), nearest walked cell (local)]
+	var planted: Array = []  # --city-walk-plant: positions with no walked ground in reach (the check must fail)
+	if DevHooks.has("city-walk-plant"):
+		var bestp: Vector2 = Vector2.ZERO
+		var bestd: float = 0.0
+		for i5: int in n * n:
+			if state[i5] != 2 or i5 % 7 != 0:
+				continue
+			var l5 := Vector2((i5 % n) * STEP - half_m, floori(float(i5) / n) * STEP - half_m)
+			var d5: float = _nearest_seen(l5, seen, idx, rc + 4)
+			if d5 > bestd:
+				bestd = d5
+				bestp = l5
+		planted.append(bestp)
+		print("[walk] planted a test piece at (%.1f, %.1f), %s from walked ground" % [bestp.x, bestp.y, "%.1f m" % bestd if bestd < 99.0 else "over %.0f m" % ((rc + 4) * STEP)])
 	if field:
 		var inv: Transform3D = xf.affine_inverse()
 		for c3: int in p.site.get("cells", PackedInt32Array()):
@@ -132,29 +153,27 @@ static func run(p: SitePrefab, terrain: SphereTerrain, field: SphereField, half_
 				if j3 < 0 or state[j3] == 0:
 					continue
 				pieces += 1
-				# Lumi scoops from a little way off: the piece is fine if a reached cell is within 1 m.
-				var ok3: bool = false
-				for dz: int in range(-2, 3):
-					for dx: int in range(-2, 3):
-						var j4: int = idx.call(lp.x + dx * STEP, lp.z + dz * STEP)
-						if j4 >= 0 and seen[j4] == 1:
-							ok3 = true
-				if not ok3:
+				var best: float = _nearest_seen(Vector2(lp.x, lp.z), seen, idx, rc)
+				if best > 1.0 and best <= reach_m:
+					far.append([pid, Vector2(lp.x, lp.z), _nearest_cell])
+				if best > reach_m:
 					bad_pieces += 1
 					if bad_at.size() < 8:
 						bad_at.append(Vector2(lp.x, lp.z))
-						# [v11jump] How far off the walked ground it lies (the scoop reaches a little further than 1 m).
-						var best: float = 99.0
-						for dz2: int in range(-8, 9):
-							for dx2: int in range(-8, 9):
-								var j5: int = idx.call(lp.x + dx2 * STEP, lp.z + dz2 * STEP)
-								if j5 >= 0 and seen[j5] == 1:
-									best = minf(best, Vector2(dx2, dz2).length() * STEP)
-						print("[walk] junk piece %d at (%.1f, %.1f): nearest walked ground %s" % [pid, lp.x, lp.z, "%.1f m" % best if best < 99.0 else "over 4 m"])
+						print("[walk] junk piece %d at (%.1f, %.1f): nearest walked ground %s (the scoop reaches %.2f m)" % [pid, lp.x, lp.z, "%.1f m" % best if best < 99.0 else "over %.1f m" % (rc * STEP), reach_m])
 						if DevHooks.has("walk-debug"):
 							var ko: Variant = field.keep_out
 							print("[walk] piece %d cell %d at (%.1f, %.1f) keep-out %s mid %s" % [pid, c3, lp.x, lp.z,
 								str(ko.call(field.piece_xf[pid].origin.normalized())) if ko is Callable and (ko as Callable).is_valid() else "-", str(field.piece_model[pid]) if "piece_model" in field else "?"])
+	for pp: Vector2 in planted:
+		pieces += 1
+		var bp: float = _nearest_seen(pp, seen, idx, rc)
+		if bp > reach_m:
+			bad_pieces += 1
+			bad_at.append(pp)
+			print("[walk] planted piece at (%.1f, %.1f): no walked ground within the scoop's %.2f m" % [pp.x, pp.y, reach_m])
+	out["far"] = far
+	out["reach_m"] = reach_m
 	out["free_m2"] = free_n * STEP * STEP
 	out["reached_m2"] = reached * STEP * STEP
 	out["pockets"] = pockets
@@ -165,6 +184,26 @@ static func run(p: SitePrefab, terrain: SphereTerrain, field: SphereField, half_
 	var big: Array = pockets.filter(func(pk: Array) -> bool: return float(pk[0]) >= 25.0)
 	out["pass"] = bool(out["start_free"]) and not dirs.has(false) and big.is_empty() and bad_pieces == 0
 	return out
+
+
+static var _nearest_cell := Vector2.ZERO
+static var _half: float = 0.0
+
+
+## [v11jump] Distance (m) from a site-local point to the nearest walked cell within `r` cells (99
+## when none); the cell is left in _nearest_cell.
+static func _nearest_seen(at: Vector2, seen: PackedByteArray, idx: Callable, r: int) -> float:
+	var best: float = 99.0
+	for dz: int in range(-r, r + 1):
+		for dx: int in range(-r, r + 1):
+			var j: int = idx.call(at.x + dx * STEP, at.y + dz * STEP)
+			if j >= 0 and seen[j] == 1:
+				var cell := Vector2(roundf((at.x + dx * STEP + _half) / STEP) * STEP - _half, roundf((at.y + dz * STEP + _half) / STEP) * STEP - _half)
+				var d: float = cell.distance_to(at)  # to the middle of the cell he can stand in
+				if d < best:
+					best = d
+					_nearest_cell = cell
+	return best
 
 
 ## The dev flag: waits for the start site and the junk near it, runs the check, prints and quits.
@@ -217,5 +256,54 @@ static func run_dev(so: SliceOrbit) -> void:
 		print(line)
 	print("[walk] hop audit %d ms" % (Time.get_ticks_msec() - t1))
 	var ok: bool = bool(r["pass"]) and bool(jres["ok"])
+	print("[walk] %d pieces lie more than 1 m but within the scoop's %.2f m of walked ground" % [(r["far"] as Array).size(), float(r["reach_m"])])
+	if DevHooks.has("city-walk-scoop"):
+		ok = await _scoop_proof(so, p, r) and ok
 	print("[walk] %s" % ("PASS" if ok else "FAIL"))
 	tree.quit(0 if ok else 1)
+
+
+## [v11jump] --city-walk-scoop: the game's own truth for the reach rule. For each piece that lies
+## more than 1 m from walked ground (up to 6), Lumi stands on the nearest walked cell facing it
+## and the scoop key is held (a real input event, as the walks send it) until the piece is gone.
+static func _scoop_proof(so: SliceOrbit, p: SitePrefab, r: Dictionary) -> bool:
+	var tree: SceneTree = so.w.get_tree()
+	var lumi: Patch = so.w.get("patch") as Patch
+	var field: SphereField = so.globe.field
+	if lumi == null:
+		print("[walk] scoop proof: no Lumi")
+		return false
+	for k: int in 240:
+		if lumi.input is PlayerInput and (lumi.input as PlayerInput).enabled:
+			break
+		await tree.create_timer(0.5).timeout
+	var all_ok: bool = true
+	for e: Array in (r["far"] as Array).slice(0, 6):
+		var pid: int = int(e[0])
+		var cell: Vector2 = e[2]
+		var up: Vector3 = (p.global_transform * Vector3(cell.x, 0, cell.y)).normalized()
+		var g: Vector3 = so.globe.terrain.ground(up)
+		if not Pace.can_lift(field, pid):  # too heavy for the starter: the hex audit's "big", not a reach question
+			print("[walk] scoop proof: piece %d is too heavy for the starter scoop (size %d, lift class %d): skipped" % [pid, Pace.piece_size(field, pid), Pace.lift_class()])
+			continue
+		lumi.compartment.take_all()  # an empty chest each time
+		var piece: Vector3 = field.piece_xf[pid].origin
+		var fwd: Vector3 = piece - g
+		fwd = (fwd - up * fwd.dot(up)).normalized()
+		lumi.place_on_sphere(g, fwd)
+		for f: int in 10:
+			await tree.physics_frame
+		var d: float = Vector2((e[1] as Vector2) - cell).length()
+		var taken: bool = false
+		WalkHome._send("scoop", true)
+		for t: int in 40:
+			await tree.create_timer(0.1).timeout
+			if field.piece_alive[pid] == 0:
+				taken = true
+				break
+		WalkHome._send("scoop", false)
+		for f2: int in 4:
+			await tree.physics_frame
+		print("[walk] scoop proof: piece %d, %.2f m from where Lumi stands (walked cell %s), scoop key held: %s" % [pid, d, str(cell), "taken" if taken else "NOT taken (chest %.1f / %.1f)" % [lumi.compartment.fill, lumi.capacity()]])
+		all_ok = all_ok and taken
+	return all_ok
