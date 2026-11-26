@@ -1,0 +1,356 @@
+class_name HexAudit
+extends Node
+## [v8hex] Dev QA: `--orbit --hex-audit[=FRAMES] [--hex-audit-r=M] [--hex-audit-hubs] [--hex-audit-all] [--hex-audit-quit]`.
+## Owner item (Nov 13): "This starter hex i cleared but it says 94% and i dont get anything".
+## For every junk hex whose centre lies within R m of the start pad (default: the start area,
+## data/start_area.json "radius_m"), and with --hex-audit-hubs every other hub pad's too, it
+## lays the hex's pieces, then pretends Lumi takes every piece the starter tools can take
+## (HexLeftovers.why: Lift Strength 0, reachable dry ground, not under or inside a collider).
+## A land hex is STUCK when what is left then is over the clear threshold's 5% (it would lean on
+## the leftover rule, SphereField.leftover_from, or never clear). Lake hexes are listed (they wait
+## for Hover Jets) but don't fail. It also lists big things in the start area
+## (StartArea.big_things: pieces over Lift 0, wreck landmarks, junk-looking props).
+## Lines:
+##   [hexaudit] hubH hex C at (x, z) d=Dm: pieces N, takeable T, now P%, left after X% (needs <= 5%) [STUCK|LAKE] <why %>
+##   [hexaudit] big <what> at (x, z) d=Dm
+##   [hexaudit] RESULT hexes=H stuck=S big=B lakes=L
+## Exit 1 (with --hex-audit-quit) when S or B is above 0. Positions are hub-site local metres.
+## --hex-audit-raw: without the start area's collider tidy (StartJunkTidy), the root cause alone.
+## Colliders are loaded round Lumi only, so the under/inside tests run on hub 0 (where he starts).
+
+var so: Node  # SliceOrbit
+
+
+static func attach(p_so: Node) -> HexAudit:
+	var a := HexAudit.new()
+	a.name = "HexAudit"
+	a.so = p_so
+	p_so.add_child(a)
+	return a
+
+
+func _ready() -> void:
+	_run.call_deferred()
+
+
+func _run() -> void:
+	for i: int in int(DevHooks.get_f("hex-audit", 240.0)):
+		await get_tree().process_frame
+	for i: int in 1500:  # the start area's tidy and the one-time heal (StartJunkTidy) first
+		var t: StartJunkTidy = so.get_node_or_null("StartJunkTidy") as StartJunkTidy
+		if t and t.done():
+			break
+		await get_tree().process_frame
+	await get_tree().physics_frame
+	if DevHooks.has("hex-audit-stick"):
+		_stick()
+		return
+	var res: Array = report()
+	for l: String in res[0]:
+		print(l)
+	var clr: Array[String] = YardProbe.e_clearance(so)  # [v9a] no E spot crowds another in the start yard
+	for l: String in clr:
+		print(l)
+	var bare: int = await pads()
+	if DevHooks.has("hex-audit-quit"):
+		get_tree().quit(1 if int(res[1]) > 0 or bare > 0 or clr.any(func(l: String) -> bool: return l.contains("FAIL")) else 0)
+
+
+## [v10base] Owner playtest 3 #102: "All bases should have trash surrounding them right close by."
+## Per hub of the plan (hub 0 always; the others with --hex-audit-hubs, each town built first so
+## its buildings' keep-out counts): how close the junk starts to the landing pad's edge and how
+## many pieces lie within 15 / 30 / 50 m of the landing spot (the rocket pad). A hub is BARE when
+## the nearest piece is over PAD_NEAR_M from the pad's edge, fewer than PAD_SIDES of the pad's
+## four sides have a piece within PAD_SIDE_M of them, or fewer than PAD_MIN_30 lie within 30 m.
+##   [hexaudit] pad hubH (name): nearest junk X m from the pad edge, sides n/4, pieces within 15/30/50 m of the landing spot: a/b/c [BARE]
+const PAD_NEAR_M: float = 3.0
+const PAD_SIDE_M: float = 6.0
+const PAD_SIDES: int = 3
+const PAD_MIN_30: int = 60
+
+
+func pads() -> int:
+	var g: OrbitPlanet = so.get("globe")
+	var sm: SiteManager = g.site_manager
+	var pid: String = str(g.planet_id)
+	var bare: int = 0
+	for hi: int in g.sites.size():
+		if hi > 0 and (not DevHooks.has("hex-audit-hubs") or HubPlan.entry(pid, hi).is_empty()):
+			continue
+		var only: float = DevHooks.get_f("hex-audit-pad", -1.0)  # dev: one hub
+		if only >= 0.0 and int(only) != hi:
+			continue
+		var p: SitePrefab = sm.build_hub(hi, true)  # in one go: a play-budget build waits on frames a headless audit may not give it
+		for k: int in 600:
+			if p.is_built:
+				break
+			await get_tree().process_frame
+		for k: int in 3:
+			await get_tree().physics_frame
+		var m: Dictionary = HexAudit.pad_junk(g, hi)
+		var is_bare: bool = float(m["edge"]) > PAD_NEAR_M or int(m["sides"]) < PAD_SIDES or int(m["n30"]) < PAD_MIN_30
+		bare += 1 if is_bare else 0
+		if int(m["parts"]) > 0:
+			bare += 1
+			print("[hexaudit] pad hub%d: FAIL %d buried parts within %.1f m of the pad's edge (E there is the pad's)" % [hi, int(m["parts"]), YardKeepOut.FAR_PART_CLEAR_M])
+		print("[hexaudit] pad hub%d (%s): nearest junk %.1f m from the pad edge, sides %d/4, pieces within 15/30/50 m of the landing spot: %d/%d/%d%s" % [hi,
+			HubPlan.hub_name(pid, hi), float(m["edge"]), int(m["sides"]), int(m["n15"]), int(m["n30"]), int(m["n50"]), " BARE" if is_bare else ""])
+		if hi > 0:
+			sm.free_hub(hi)
+			await get_tree().process_frame
+	print("[hexaudit] PADS bare=%d" % bare)
+	return bare
+
+
+## The junk round hub hi's pad as it lies once its town stands: {edge: m from the pad's edge to
+## the nearest piece, sides: pad sides with a piece within PAD_SIDE_M, n15/n30/n50: pieces within
+## that many metres of the landing spot}.
+static func pad_junk(g: OrbitPlanet, hi: int) -> Dictionary:
+	var f: SphereField = g.field
+	var site: Dictionary = g.sites[hi]
+	var inv: Transform3D = (site["transform"] as Transform3D).affine_inverse()
+	var land: Vector3 = inv * g.site_manager.pad_xf(hi).origin
+	var land2 := Vector2(land.x, land.z)
+	var half: float = YardKeepOut.PAD_HALF_M
+	var c0: int = int(site["cell"])
+	var out: Dictionary = {"edge": INF, "sides": 0, "n15": 0, "n30": 0, "n50": 0}
+	var side: Array[bool] = [false, false, false, false]
+	for c: int in g.grid.cells_within(g.grid.centers[c0], 75.0, c0):
+		if f.hex_hub[c] == 1 or f.hex_clean[c] == 1 or f.hex_water[c] == 1:
+			continue
+		f.materialize(c)
+		f.relocate_blocked(c)
+		for pid: int in f.pieces_in(c):
+			if f.piece_alive[pid] == 0:
+				continue
+			var lp: Vector3 = inv * f.piece_pos[pid]
+			var q := Vector2(lp.x, lp.z)
+			var e: float = maxf(absf(q.x), absf(q.y)) - half
+			out["edge"] = minf(float(out["edge"]), maxf(e, 0.0))
+			if e < PAD_SIDE_M:  # which side of the pad it lies off
+				var k: int = (0 if q.x > 0.0 else 1) if absf(q.x) > absf(q.y) else (2 if q.y > 0.0 else 3)
+				side[k] = true
+			var d: float = q.distance_to(land2)
+			for r: int in [15, 30, 50]:
+				if d < float(r):
+					out["n%d" % r] = int(out["n%d" % r]) + 1
+	out["sides"] = side.count(true)
+	# Buried parts where E belongs to the pad's machines (E on a part digs first).
+	var near_parts: int = 0
+	if hi > 0:
+		for i: int in f.part_pos.size():
+			var pp: Vector3 = inv * f.part_pos[i]
+			if absf(pp.y) < 400.0 and maxf(absf(pp.x), absf(pp.z)) < half + YardKeepOut.FAR_PART_CLEAR_M - 0.05:
+				near_parts += 1
+	out["parts"] = near_parts
+	return out
+
+
+## [lines, failures]
+func report() -> Array:
+	var g: OrbitPlanet = so.get("globe")
+	var w: Node = so.get("w")
+	var f: SphereField = g.field
+	var lines: PackedStringArray = []
+	var hl: HexLeftovers = HexLeftovers.for_world(w)
+	hl.lumi = null  # judge every start-area piece, wherever Lumi stands
+	var r_m: float = DevHooks.get_f("hex-audit-r", StartArea.radius_m())
+	var hubs: Array[int] = [0]
+	if DevHooks.has("hex-audit-hubs"):
+		for i: int in range(1, g.sites.size()):
+			hubs.append(i)
+	var n_hex: int = 0
+	var stuck: int = 0
+	var lakes: int = 0
+	# [v9c] Far stations: judged with the Lift a player has there (--hex-audit-lift=L, default the
+	# game's own), not the start area's Lift 0 rule, and each pad must have the station's count of
+	# finishable land hexes (HubPlan chain "clean") within --hex-audit-hub-r m (default 100).
+	var far_lift: int = int(DevHooks.get_f("hex-audit-lift", float(Pace.lift_class())))
+	var hub_r: float = DevHooks.get_f("hex-audit-hub-r", 100.0)
+	var short: int = 0
+	for hi: int in hubs:
+		var site: Dictionary = g.sites[hi]
+		var inv: Transform3D = (site["transform"] as Transform3D).affine_inverse()
+		var c0: int = int(site["cell"])
+		if hi > 0:
+			var fin: Array = HexAudit.far_hub(hl, g, f, hi, c0, hub_r, far_lift, inv, lines)
+			var need: int = 0
+			for st: Dictionary in HubPlan.chain(str(g.get("planet_id")) if g.get("planet_id") != null else "verdance", hi):
+				if str(st.get("do", "")) == "clean":
+					need = int(st.get("hexes", 0))
+			var plan: bool = not HubPlan.entry(str(g.get("planet_id")) if g.get("planet_id") != null else "verdance", hi).is_empty()
+			lines.append("[hexaudit] hub%d: %d finishable of %d dirty land hexes within %.0f m of the pad (lift %d)%s" % [hi, fin[0], fin[1], hub_r, far_lift,
+				(", needs %d%s" % [need, " SHORT" if fin[0] < need else ""]) if plan and need > 0 else ""])
+			if plan and fin[0] < need:
+				short += 1
+			continue
+		for c: int in g.grid.cells_within(g.grid.centers[c0], r_m, c0):
+			if f.hex_hub[c] == 1 or f.hex_clean[c] == 1:
+				continue
+			f.materialize(c)
+			var mv: Array = f.relocate_blocked(c)  # as the late keep-out sweep would
+			if g.junk_view:
+				for pid: int in mv[1]:
+					g.junk_view.hide_piece(pid)
+			var tidy: StartJunkTidy = so.get_node_or_null("StartJunkTidy") as StartJunkTidy
+			if tidy and hi == 0 and not DevHooks.has("hex-audit-raw"):  # as the start area's tidy does once a cell is laid
+				tidy.tidy_cell(c)
+			var lake: bool = f.hex_water[c] == 1
+			n_hex += 1
+			var r: Dictionary = audit_hex(hl, c, hi == 0, inv)
+			var lp: Vector3 = inv * g.terrain.ground(g.grid.centers[c])
+			var ok: bool = float(r["after"]) <= 1.0 - f.clean_threshold + 0.0005
+			if lake:
+				lakes += 1
+			elif not ok:
+				stuck += 1
+			if (not ok and not lake) or DevHooks.has("hex-audit-all"):
+				var why: PackedStringArray = []
+				for k: String in r["why"]:
+					why.append("%s %.1f%%" % [k, 100.0 * float(r["why"][k]) / maxf(f.hex_total[c], 0.001)])
+				var tag: String = " LAKE" if lake else ("" if ok else " STUCK")
+				if not ok and not lake and 1.0 - float(r["after"]) >= f.leftover_from:
+					tag += " (the leftover rule would sweep it)"
+				lines.append("[hexaudit] hub%d hex %d at (%.0f, %.0f) d=%.0fm: pieces %d, takeable %d, now %.1f%%, left after %.1f%% (needs <= %.0f%%)%s %s" % [
+					hi, c, lp.x, lp.z, Vector2(lp.x, lp.z).length(), r["pieces"], r["take"], 100.0 * f.removed_fraction(c), 100.0 * float(r["after"]),
+					100.0 * (1.0 - f.clean_threshold), tag, " ".join(why)])
+				for s: String in r["samples"]:
+					lines.append("[hexaudit]     " + s)
+	lines.append(HexAudit.owner_line(f, g.grid.cells_within(g.grid.centers[int(g.sites[0]["cell"])], r_m, int(g.sites[0]["cell"]))))  # [v14qa]
+	var big: PackedStringArray = StartArea.big_things(g, w)
+	for s: String in big:
+		lines.append("[hexaudit] big " + s)
+	lines.append("[hexaudit] RESULT hexes=%d stuck=%d big=%d lakes=%d (r=%.0fm, hubs=%d)%s" % [n_hex, stuck, big.size(), lakes, r_m, hubs.size(),
+		" stations_short=%d" % short if hubs.size() > 1 else ""])
+	return [lines, stuck + big.size() + short]
+
+
+## [v14qa] Pieces whose own hex (piece_hex: the hex they count toward) is not the hex under them:
+## by the 32-bit hex_at, by the sharp hex_at_exact, and where those two disagree.
+static func owner_line(f: SphereField, cells: PackedInt32Array) -> String:
+	var n: int = 0
+	var off: int = 0
+	var off_exact: int = 0
+	var split: int = 0
+	var worst: float = 0.0
+	var hexes_over: int = 0  # hexes with over the clear threshold's rest of their volume lying outside them
+	var worst_share: float = 0.0
+	for c: int in cells:
+		var out_vol: float = 0.0
+		var all_vol: float = 0.0
+		for pid: int in f.pieces_in(c):
+			if f.piece_alive[pid] != 0:
+				all_vol += f.piece_vol[pid]
+				if f.hex_at_exact(f.piece_pos[pid]) != c:
+					out_vol += f.piece_vol[pid]
+		if f.hex_water[c] == 0 and all_vol > 0.0:
+			worst_share = maxf(worst_share, out_vol / all_vol)
+			hexes_over += 1 if out_vol / all_vol > 1.0 - f.clean_threshold else 0
+		for pid: int in f.pieces_in(c):
+			if f.piece_alive[pid] == 0:
+				continue
+			n += 1
+			var p: Vector3 = f.piece_pos[pid]
+			var a: int = f.hex_at(p)
+			var b: int = f.hex_at_exact(p)
+			off += 1 if a != f.piece_hex[pid] else 0
+			off_exact += 1 if b != f.piece_hex[pid] else 0
+			split += 1 if a != b else 0
+			if b != f.piece_hex[pid]:
+				var d: Vector3 = p.normalized()
+				var own: float = f.grid.centers[f.piece_hex[pid]].dot(d)
+				var other: float = f.grid.centers[b].dot(d)
+				var gap: float = maxf((f.grid.centers[b] - f.grid.centers[f.piece_hex[pid]]).length(), 0.0001)
+				worst = maxf(worst, (other - own) / gap * f.grid.radius_m)  # metres past the shared border (small angles)
+	return "[hexaudit] owner pieces=%d off_hex_at=%d off_exact=%d hex_at_vs_exact=%d worst_past_border=%.2fm land_hexes_over_rest=%d worst_share_outside=%.1f%%" % [n, off, off_exact, split, worst, hexes_over, 100.0 * worst_share]
+
+
+## [v9c] A far station: [finishable, dirty] land hexes within r_m of its pad, with Lift `lift`
+## (a hex is finishable when what Lumi can't take there is at most the clear threshold's rest, or
+## it reaches the leftover rule with only unfindable pieces left). Colliders aren't loaded there:
+## only the lift, buildings and reach count.
+static func far_hub(hl: HexLeftovers, g: OrbitPlanet, f: SphereField, hi: int, c0: int, r_m: float, lift: int, inv: Transform3D, lines: PackedStringArray) -> Array:
+	var fin: int = 0
+	var dirty: int = 0
+	for c: int in g.grid.cells_within(g.grid.centers[c0], r_m, c0):
+		if f.hex_hub[c] == 1 or f.hex_clean[c] == 1 or f.hex_water[c] == 1:
+			continue
+		f.materialize(c)
+		f.relocate_blocked(c)
+		dirty += 1
+		var left: float = 0.0
+		var big: float = 0.0
+		for pid: int in f.pieces_in(c):
+			if f.piece_alive[pid] == 0:
+				continue
+			var k: String = hl.why(pid, true, false, lift)
+			if k == "big":
+				big += f.piece_vol[pid]
+			elif k != "":
+				left += f.piece_vol[pid]
+		var tot: float = maxf(f.hex_total[c], 0.001)
+		# The 95% rule: all that is left (too heavy, or stuck where it lies) within the threshold's rest.
+		# The leftover rule: past leftover_from with only unfindable pieces left; a piece over the lift
+		# still counts as findable outside the start area (HexLeftovers.findable), so none may be left.
+		var ok: bool = (big + left) / tot <= 1.0 - f.clean_threshold + 0.0005 \
+			or (big < 0.0001 and left / tot <= 1.0 - f.leftover_from + 0.0005)
+		fin += 1 if ok else 0
+		if DevHooks.has("hex-audit-all"):
+			var lp: Vector3 = inv * g.terrain.ground(g.grid.centers[c])
+			lines.append("[hexaudit] hub%d hex %d at (%.0f, %.0f) d=%.0fm: over lift %.1f%%, stuck %.1f%% %s" % [hi, c, lp.x, lp.z, Vector2(lp.x, lp.z).length(),
+				100.0 * big / tot, 100.0 * left / tot, "ok" if ok else "NOT FINISHABLE"])
+	return [fin, dirty]
+
+
+## What Lumi with the starter tools can take of hex c, and what would be left (a fraction of its total).
+func audit_hex(hl: HexLeftovers, c: int, phys: bool, inv: Transform3D) -> Dictionary:
+	var f: SphereField = hl.field
+	var why: Dictionary = {}
+	var take: int = 0
+	var n: int = 0
+	var alive_vol: float = 0.0
+	var left_vol: float = 0.0
+	var samples: PackedStringArray = []
+	var seen: Dictionary = {}
+	for pid: int in f.pieces_in(c):
+		if f.piece_alive[pid] == 0:
+			continue
+		n += 1
+		alive_vol += f.piece_vol[pid]
+		hl.last_hit = ""
+		var k: String = hl.why(pid, true, phys)
+		if k == "":
+			take += 1
+			continue
+		why[k] = float(why.get(k, 0.0)) + f.piece_vol[pid]
+		left_vol += f.piece_vol[pid]
+		if samples.size() < 4 or (hl.last_hit != "" and not seen.has(hl.last_hit) and samples.size() < 10):
+			seen[hl.last_hit] = true
+			var lp: Vector3 = inv * f.piece_pos[pid]
+			samples.append("%s: %s (vol %.2f) at (%.1f, %.1f) %s" % [k, f.piece_model[pid], f.piece_vol[pid], lp.x, lp.z, hl.last_hit])
+	var ghost: float = f.hex_left[c] - alive_vol
+	if ghost > 0.01:  # ledger volume with no piece behind it
+		why["ghost"] = ghost
+		left_vol += ghost
+	return {"pieces": n, "take": take, "why": why, "samples": samples, "after": left_vol / maxf(f.hex_total[c], 0.001)}
+
+
+## Dev (--hex-audit-stick, with --save-dir=NAME): makes a save like the owner's (Nov 13): a start-area
+## land hex scooped to 94% and left there, saved without the one-time heal flag, then quits. Load it
+## (same --save-dir, no --fresh): StartJunkTidy.heal prints "[hexheal] 1 ..." and the hex is clean.
+func _stick() -> void:
+	var g: OrbitPlanet = so.get("globe")
+	var f: SphereField = g.field
+	var c0: int = g.start_cell()
+	for c: int in g.grid.cells_within(g.grid.centers[c0], StartArea.radius_m(), c0):
+		if f.hex_hub[c] == 1 or f.hex_clean[c] == 1 or f.hex_water[c] == 1:
+			continue
+		f.materialize(c)
+		for pid: int in f.pieces_in(c):
+			if f.piece_alive[pid] == 1 and f.removed_fraction(c) + f.piece_vol[pid] / f.hex_total[c] < 0.945:
+				so.call("collect_piece", pid)
+		print("[hexaudit] stick: hex %d left at %.1f%% clear (clean=%d)" % [c, 100.0 * f.removed_fraction(c), f.hex_clean[c]])
+		GameState.flags.erase("v8hex_heal")
+		print("[hexaudit] stick: saved=%s" % str(SaveManager.save_game()))
+		get_tree().quit(0)
+		return

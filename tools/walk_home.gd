@@ -1,0 +1,1640 @@
+class_name WalkHome
+extends RefCounted
+## [v9b] Goal audit, "home": the Landing Yard steps after the first robot, played the way a player
+## does (the model is tools/seed_walk.gd): the real keys and mouse button the input map binds, and
+## real mouse clicks on the workbench (a press and release pushed into the window at the button's
+## place on screen), on the real globe. Each part sets up the state a player is in when the step
+## starts (dev: the step index, cubes and parts, the tower and bench tiers, a Scoopie; said per part),
+## then checks the card, the action, the refusals, and that the next step comes.
+##   hex2    the card, the outlined hex, cleaning it with the scoop key -> "Clean 3 hexes"
+##   hex3    a robot's hex counts, and a line says so -> the seed step
+##   garden  after the first seed: thirsty, the water key on the bed, an empty can and the refill,
+##           out of seeds (each refusal says why)
+##   robot2  [v10pace] the second robot: the beam on the Bot Bay, E opens its own screen, the click
+##   map     [v10pace] "Look at the map": the map key completes it
+##   shuttle [v10pace] no rocket and no Shuttle build before the step; WREN says why; the marked spot;
+##           the price; the click; it goes up piece by piece; only then "Fly to the next station"
+##   base2   short of Parts: the card and the bench say how many; then the price tag click builds it
+##   haul    the plans wait: the card's hint and a bar; the Bots row is locked; they arrive; the click
+##   tower2  the bench opens on the tower row; the click
+##   research1  the Research Desk first (the tab is not there yet), then a project by clicks
+##   base3   the click; the Requests board: the line, the Request Board, the tab, the first offers
+##   hex10 / hex20  played: Lumi cleans one hex with the scoop key, the real Scoopies another (time x8)
+##   order   steps met out of order (base 3 before base2 / the Haul Bug plans / the desk) never strand
+##   heavy   outside the start area: a piece too heavy for Lift 0 gets its mark ("Needs Lift N") and
+##           line; a hex left with only too-heavy pieces says which Lift finishes it
+## [v9b] Save and reload mid-step: in each part, the game is saved and loaded through the real path
+## (odd ones: the pause key, the Quit button, the title's Continue; even ones: the autosave, then the
+## game is dropped without a quit save, as a kill, and Continue), and the card, its count or bar, the
+## outlined hex, the bench row and the beam must come back the same; then the part finishes the step.
+## --walk-home[=S] (after S s, default 8): prints [walk-home] lines, exit 1 on a failure.
+## --walk-home-only=hex2,base2 runs some parts; --walk-home-noreload skips the reloads;
+## --walk-home-shots=/abs/dir (rendered) saves a frame at each step start and at the bench rows.
+## tools/check_exit.sh runs it with the tests.
+
+static var _toasts: Array[String] = []
+static var _fails: Array[String] = []
+static var so: SliceOrbit
+static var w: Node
+static var tree: SceneTree
+static var ob: Objectives
+static var p: Patch
+static var _live: bool = false
+static var _reborn: SliceOrbit = null
+static var _reloads: int = 0
+static var _shot_n: int = 0
+
+
+static func run_dev(p_so: SliceOrbit) -> void:
+	if _live:  # a reload built a new world: the walk already running picks it up (_reload)
+		_reborn = p_so
+		return
+	_live = true
+	_bind(p_so)
+	await tree.create_timer(DevHooks.get_f("walk-home", 8.0)).timeout
+	if not await _wait_world():
+		print("[walk-home] FAIL: no objectives / Lumi")
+		tree.quit(1)
+		return
+	EventBus.toast.connect(func(t: String, _k: String) -> void: _toasts.append(t))
+	_cubes_seen = GameState.get_currency("cubes").to_float()
+	EventBus.currency_changed.connect(_on_cubes)
+	_base_state()
+	for k: int in 1200:  # [v9a] WREN's brief reveals the card (subtitle clock: slow on a slow runner)
+		if ob.revealed:
+			break
+		await tree.create_timer(0.25).timeout
+	await tree.create_timer(1.0).timeout
+	var only: String = DevHooks.get_s("walk-home-only", "")  # dev: --walk-home-only=hex2,base2 (iterating)
+	for part: String in ["hex2", "hex3", "garden", "robot2", "haul", "hex10", "map", "base2", "shuttle", "tower2", "research1", "hex20", "base3", "order", "heavy", "probe"]:  # [v10pace] the order of the card
+		if (only == "" and part != "probe") or part in only.split(","):
+			await Callable(WalkHome, "_part_" + part).call()
+	print("[walk-home] %d reloads" % _reloads)
+	print("[walk-home] %s" % ("PASS" if _fails.is_empty() else "FAIL: " + "; ".join(_fails)))
+	tree.quit(0 if _fails.is_empty() else 1)
+
+
+static var _cubes_seen: float = 0.0
+
+
+## [v9a] Every lump of cubes the game pays at once (300 or more), with the script lines that paid
+## it: CI saw 1.2K-1.5K appear in a few seconds (shuttle, saving up; after a reload).
+static func _on_cubes(id: String, v: BigNum) -> void:
+	if id != "cubes":
+		return
+	var now: float = v.to_float()
+	var d: float = now - _cubes_seen
+	_cubes_seen = now
+	if absf(d) < 0.5:
+		_since_set_sum[0 if d < 0.0 else 1] += d
+		return
+	var st: Array = get_stack()
+	if st.size() >= 2 and str(st[1].get("function", "")) == "_set_money":
+		_since_set.clear()
+		_since_set_sum = [0.0, 0.0]
+		return  # the walk's own money
+	_since_set_sum[0 if d < 0.0 else 1] += d
+	var from: Array[String] = []
+	for f: Dictionary in st.slice(1):
+		var src: String = str(f.get("source", "")).get_file()
+		if src == "GameState.gd" or from.size() >= 6:
+			continue
+		from.append("%s:%d %s" % [src, int(f.get("line", 0)), str(f.get("function", ""))])
+	if _since_set.size() < 80:
+		_since_set.append("%+.2f %s" % [d, " < ".join(from.slice(0, 3))])
+	if _since_load.size() < 40:
+		_since_load.append("%+.2f %s" % [d, " < ".join(from.slice(0, 2))])
+	if DevHooks.has("walk-home-paylog"):  # dev: every payment as it comes
+		print("[walk-home] pay %+.2f (now %.2f) step %s from %s" % [d, now, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
+	if d >= 300.0:
+		print("[walk-home] note: the game paid +%.2f cubes at once (step %s) from %s" % [d, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
+
+
+## [v9a] Every change of cubes since the walk last set them (what a money check failed on), and
+## their sums: [spent, earned].
+static var _since_set: Array[String] = []
+static var _since_set_sum: Array[float] = [0.0, 0.0]
+static var _since_load: Array[String] = []  # every change of cubes since the last load came up
+
+
+## [v9a] A Lumi level pays a reward scaled to the cubes earned so far (systems/lumi_level.gd).
+static func _on_level(lv: int, reward: String) -> void:
+	print("[walk-home] note: Lumi reached level %d (%s), step %s" % [lv, reward, _step_id() if ob != null and is_instance_valid(ob) else "-"])
+
+
+static func _bind(p_so: SliceOrbit) -> void:
+	so = p_so
+	w = so.w
+	tree = w.get_tree()
+
+
+static func _wait_world() -> bool:
+	for k: int in 4800:  # the world is whole (the build counts frames: long at a low frame rate)
+		if is_instance_valid(w) and not bool(w.get("building")) and w.get("objectives") != null and w.get("upgrades") != null and w.get("fleet") != null and w.get("hud") != null:
+			break
+		await tree.create_timer(0.5).timeout
+	ob = w.get("objectives") as Objectives
+	p = w.get("patch") as Patch
+	var ll: LumiLevel = w.get("lumi_level") as LumiLevel if is_instance_valid(w) else null
+	if ll and not ll.leveled.is_connected(_on_level):
+		ll.leveled.connect(_on_level)
+	_cubes_seen = GameState.get_currency("cubes").to_float()  # a load sets them without a signal
+	_since_load.clear()
+	return ob != null and p != null and not bool(w.get("building"))
+
+
+# --- [v9b] Save and reload through the real path, and compare ----------------------------------
+
+## What the player sees of the step: the card, its count / bar, the outlined hex and how far it is,
+## the bench row it opens on, where the beam points.
+static func _snap() -> Dictionary:
+	return {"step": _step_id(), "card": _card(), "pr": ob.progress(), "hex": ob.target_hex,
+		"frac": ob.hex_fraction() if ob.target_hex >= 0 else -1.0, "row": ob.bench_row(), "way": ob.waypoint_target(),
+		"_cubes": GameState.get_currency("cubes").to_float(), "_parts": GameState.get_currency("parts").to_float(),
+		"_pos": p.global_position if p else Vector3.ZERO, "_hub": GameState.current_hub, "_price": ob._step_price()}
+
+
+## Saves and loads the game the way a player does, then checks the step came back the same.
+## `extra` returns part-specific values to compare too (floats within 5%, keys ending in "_s" within
+## 3 minutes, as a clock moves on). Returns false if the world did not come back.
+static func _reload(tag: String, extra: Callable = Callable()) -> bool:
+	if DevHooks.has("walk-home-noreload"):
+		return true
+	await tree.create_timer(1.0).timeout
+	for k: int in 24:  # not in the card's DONE beat: the next step is what the player reads
+		if _card()[3] != "DONE":
+			break
+		await tree.create_timer(0.25).timeout
+	var hub0: int = GameState.current_hub
+	var tower0: bool = w.get_node_or_null("SignalTower") != null
+	var a: Dictionary = _snap()
+	print("[walk-home] trace %s: save: step %s card %s count %s cubes %.1f" % [tag, str(a["step"]), str(a["card"]), str(a["pr"]), float(a["_cubes"])])
+	var ea: Dictionary = extra.call() if extra.is_valid() else {}
+	var saved_ms: int = Time.get_ticks_msec()  # how long the quit and Continue took, for the notes only
+	var fl0: Fleet = w.get("fleet") as Fleet
+	var bots: bool = fl0 != null and fl0.robot_total() > 0
+	_reloads += 1
+	var kill: bool = _reloads % 2 == 0
+	DevHooks.args.erase("fresh")  # from now on the game loads its save, as Continue does
+	DevHooks.args["menu"] = "1"  # dev flags skip the title; with --menu it shows, Continue and all
+	_reborn = null
+	if kill:  # the autosave writes, then the game is gone without a quit save
+		# Wait for the autosave itself, not for frames: on a slow runner several physics frames
+		# pass inside one process frame (where the autosave fires), and Continue then loaded the
+		# save before this one (CI: the step's count and outlined hex from the base3 reload).
+		var saved: Array = [false]
+		var on_saved: Callable = func() -> void: saved[0] = true
+		EventBus.game_saved.connect(on_saved)
+		SaveManager.set("_timer", SaveManager.AUTOSAVE_INTERVAL)
+		var pf: int = 0
+		var phys0: int = Engine.get_physics_frames()
+		for k: int in 600:
+			if bool(saved[0]):
+				break
+			await tree.process_frame
+			pf += 1
+			SaveManager.finish_write()
+		EventBus.game_saved.disconnect(on_saved)
+		print("[walk-home] note: %s: the autosave landed after %d process / %d physics frames" % [tag, pf, Engine.get_physics_frames() - phys0])
+		_check(bool(saved[0]), "%s: the autosave wrote before the game went (kill)" % tag)
+		Loader.goto(PauseMenu.TITLE_SCENE)
+	else:  # the pause key, then Quit
+		await _tap("pause")
+		await tree.create_timer(0.5).timeout
+		var pm: PauseMenu = w.get("pause_menu") as PauseMenu
+		var quit: Button = _button_named(pm, "Quit")
+		_check(pm != null and pm.is_open and quit != null, "%s: the pause key opens the pause menu with Quit" % tag)
+		if quit == null:
+			return await _fatal(tag)
+		await _click(quit)
+	var menu: Node = null
+	for k: int in 240:
+		var cs: Node = tree.current_scene
+		if cs and cs.scene_file_path == PauseMenu.TITLE_SCENE and cs.get("_continue") != null and (cs.get("_continue") as Button).is_visible_in_tree():
+			menu = cs
+			break
+		await tree.create_timer(0.5).timeout
+	_check(menu != null, "%s: back at the title with Continue (%s)" % [tag, "kill" if kill else "Quit"])
+	if menu == null:
+		return await _fatal(tag)
+	# [v9a] What the save on disk holds, to tell money the load made up from money earned in play.
+	var sv: Dictionary = SaveManager.read_dict(SaveManager.slot_path())
+	var cubes_file: float = BigNum.from_serialized((sv.get("currencies", {}) as Dictionary).get("cubes", [0.0, 0])).to_float()
+	var hexes_file: float = float((sv.get("stats", {}) as Dictionary).get("hexes_cleaned", 0.0))
+	await tree.create_timer(1.5).timeout
+	await _click(menu.get("_continue") as Button)
+	DevHooks.args.erase("menu")
+	for k: int in 600:
+		if _reborn != null:
+			break
+		await tree.create_timer(0.5).timeout
+	if _reborn == null:
+		_check(false, "%s: Continue builds the world again" % tag)
+		return await _fatal(tag)
+	_bind(_reborn)
+	if not await _wait_world():
+		_check(false, "%s: the loaded world has its card and Lumi" % tag)
+		return await _fatal(tag)
+	# [v9a] dev: prove the check both ways. --walk-home-fault=TAG: money the load made up (fails);
+	# --walk-home-earn=TAG: the price earned in play right after the load (a note, passes).
+	var cost_now: float = float(ob._step_price().get("cubes", 0.0))
+	if tag in DevHooks.get_s("walk-home-fault", "").split(","):
+		GameState.add_currency("cubes", BigNum.from_float(cost_now))
+	var cubes_loaded: float = GameState.get_currency("cubes").to_float()  # [v9a] as the world comes up
+	var hexes_loaded: float = float(GameState.stats.get("hexes_cleaned", 0.0))
+	if tag in DevHooks.get_s("walk-home-earn", "").split(","):
+		GameState.add_currency("cubes", BigNum.from_float(cost_now))
+	await tree.create_timer(3.0).timeout  # the card fades in
+	# [main] The new card shows a step's reason first and its hint a few seconds later (ui/objective_card.gd):
+	# give the loaded card that long to show the same lines before comparing.
+	for k: int in 40:
+		if str(_card().slice(0, 3)) == str((a["card"] as Array).slice(0, 3)):
+			break
+		await tree.create_timer(0.3).timeout
+	var b: Dictionary = _snap()
+	print("[walk-home] trace %s: load: step %s card %s count %s cubes %.1f on load, %.1f compared" % [tag, str(b["step"]), str(b["card"]), str(b["pr"]), cubes_loaded, float(b["_cubes"])])
+	if GameState.current_hub != hub0 or (w.get_node_or_null("SignalTower") != null) != tower0:
+		print("[walk-home] note: %s: current hub %d -> %d, tower node %s -> %s" % [tag, hub0, GameState.current_hub, str(tower0), str(w.get_node_or_null("SignalTower") != null)])
+	var eb: Dictionary = extra.call() if extra.is_valid() else {}
+	var diff: Array[String] = []
+	for k: String in ["step", "row"]:
+		if str(a[k]) != str(b[k]):
+			diff.append("%s %s -> %s" % [k, str(a[k]), str(b[k])])
+	var digits := RegEx.create_from_string("[0-9.,]+[KMB]?")
+	# [v9d] Title and reason: the hint line is the moment's situation (a full chest, a heavy piece
+	# just aimed at), held a few seconds on the card; a reload starts without it.
+	var ca: String = digits.sub(str((a["card"] as Array).slice(0, 2)), "#", true)  # numbers in a price line tick on
+	var cb: String = digits.sub(str((b["card"] as Array).slice(0, 2)), "#", true)
+	if ca != cb:  # the count: below, with the bar
+		diff.append("card %s -> %s" % [str(a["card"]), str(b["card"])])
+	# Owner item 110: nothing is earned or cleaned while the game is closed, however long the quit
+	# and Continue took (it used to pay for the closed time after two minutes, which a slow runner hit).
+	var pa: Array = a["pr"]
+	var pb: Array = b["pr"]
+	# [v9a] A price line ("0 / 900") turns into the step's own count ("1 / 2") once the money is
+	# there. Robots keep cleaning while the walk saves, quits and loads (a hex they finish pays ~120
+	# cubes plus a research grant per note, 500-900 in all), and on a slow runner that round trip is
+	# long enough for one (CI: "0 / 900" -> "1 / 2" at tower2). Right if the save on disk holds the
+	# money the world had at the write and the load gave it back (or a hex was finished while it
+	# loaded); money that appears in the load itself is a save fault, so that still fails.
+	var pc: float = float((b["_price"] as Dictionary).get("cubes", 0.0))
+	var kept_money: bool = absf(cubes_loaded - cubes_file) <= 1.0 or hexes_loaded > hexes_file
+	var earned: bool = pc > 0.0 and float(b["_cubes"]) >= pc and float(a["_cubes"]) < pc and kept_money
+	var away: float = (Time.get_ticks_msec() - saved_ms) / 1000.0
+	# [v9a] Saving up: the load gave back the cubes the save held, and the game paid more in play while
+	# the card faded in (a run: 200 saved, 200 on load, 717 three seconds later, two robot hexes). The
+	# card counts what he has now.
+	var saving: bool = pc > 0.0 and absf(cubes_loaded - cubes_file) <= 1.0 and float(b["_cubes"]) > cubes_loaded + 0.5 and float(b["_cubes"]) < pc \
+		and str(pb[1]) == "%s / %s" % [Currencies.have_text(float(b["_cubes"])), Settings.fmt(BigNum.from_float(pc))]
+	if earned:
+		print("[walk-home] note: %s: the price %s was earned in play (cubes %.0f at the snapshot, %.0f in the save, %.0f on load, %.0f now; hexes cleaned %.0f saved, %.0f now): the card shows the step's count %s" % [tag,
+			str(pa[1]), float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), hexes_file, float(GameState.stats.get("hexes_cleaned", 0.0)), str(pb[1])])
+	elif saving:
+		print("[walk-home] note: %s: the game paid %.2f in play after the load (save and load agree at %.0f); the card counts it: %s -> %s; paid since the load: %s" % [tag,
+			float(b["_cubes"]) - cubes_loaded, cubes_loaded, str(pa[1]), str(pb[1]), str(_since_load)])
+	elif absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
+		diff.append("count %s -> %s (cubes %.0f at the snapshot, %.0f in the save, %.0f on load, %.0f compared, %.0f s away)" % [str(pa), str(pb), float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), away])
+	# The outline is picked afresh on load (the most-cleared hex near Lumi): another hex is fine if
+	# the old one kept its progress and the new one is at least as far along.
+	var kept: float = (so.globe.field as HexField).removed_fraction(int(a["hex"])) if int(a["hex"]) >= 0 else 0.0
+	if int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and int(b["hex"]) >= 0 and absf(kept - float(a["frac"])) <= 0.05 and float(b["frac"]) >= float(a["frac"]) - 0.01:
+		print("[walk-home] note: %s: the outline moved to hex %d (%.0f%%); hex %d kept %.0f%%" % [tag, int(b["hex"]), float(b["frac"]) * 100.0, int(a["hex"]), kept * 100.0])
+	elif int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and kept >= 0.95:
+		print("[walk-home] note: %s: hex %d finished (%.0f%%); the outline moved on to hex %d (%.0f%%)" % [tag, int(a["hex"]), kept * 100.0, int(b["hex"]), float(b["frac"]) * 100.0])
+	elif int(a["hex"]) >= 0 and (int(b["hex"]) < 0 or float(b["frac"]) < float(a["frac"]) - 0.05):  # [v9d] robots may have cleaned on meanwhile: more is fine
+		diff.append("outlined hex %d %.0f%% -> %d %.0f%%" % [int(a["hex"]), float(a["frac"]) * 100.0, int(b["hex"]), float(b["frac"]) * 100.0])
+	# [v9d] On a cleaning step the beam joins the outline only while the hex is far or off screen (the
+	# camera after a load differs, and the outline is picked afresh), so the beam is judged by the outline.
+	var hex_step: bool = int(a["hex"]) >= 0 or int(b["hex"]) >= 0
+	if hex_step:
+		pass  # the outline check above covers it (the beam follows the outlined or nearest finishable hex)
+	elif (a["way"] is Vector3) != (b["way"] is Vector3) or (a["way"] is Vector3 and (a["way"] as Vector3).distance_to(b["way"]) > 4.0):
+		diff.append("beam %s -> %s" % [str(a["way"]), str(b["way"])])
+	for k: String in ea:
+		var va: Variant = ea[k]
+		var vb: Variant = eb.get(k)
+		if va is float or va is int:
+			var tol: float = 180.0 if k.ends_with("_s") else maxf(absf(float(va)) * 0.05, 0.01)
+			if vb == null or absf(float(va) - float(vb)) > tol:
+				diff.append("%s %s -> %s" % [k, str(va), str(vb)])
+		elif str(va) != str(vb):
+			diff.append("%s %s -> %s" % [k, str(va), str(vb)])
+	if not diff.is_empty():  # [v9a] what moved underneath
+		print("[walk-home] debug %s: cubes %.1f -> %.1f in the save -> %.1f on load -> %.1f when compared, %.0f s away, robots %s; parts %.1f -> %.1f, Lumi moved %.1f m, hub %d -> %d, price %s -> %s, old hex kept %.2f" % [tag,
+			float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), away, str(bots), float(a["_parts"]), float(b["_parts"]), (a["_pos"] as Vector3).distance_to(b["_pos"]), int(a["_hub"]), int(b["_hub"]), str(a["_price"]), str(b["_price"]), kept])
+	_check(diff.is_empty(), "%s: saved and loaded (%s): the same card, count, marker and bench row%s" % [tag, "kill" if kill else "Quit", "" if diff.is_empty() else ": " + "; ".join(diff)])
+	return true
+
+
+## A reload that did not come back: the walk can't go on in a freed world.
+static func _fatal(tag: String) -> bool:
+	print("[walk-home] FAIL: the reload at %s did not come back; stopping. %s" % [tag, "; ".join(_fails)])
+	tree.quit(1)
+	await tree.create_timer(600.0).timeout
+	return false
+
+
+static func _button_named(root: Node, text: String) -> Button:
+	if root == null:
+		return null
+	for n: Node in root.find_children("*", "Button", true, false):
+		var b: Button = n as Button
+		if b.is_visible_in_tree() and (b.text == text or b.text == TranslationServer.translate(text)):
+			return b
+	return null
+
+
+## (shot runs) Lumi a few metres from the outlined hex, facing it, as a player who followed the beam.
+static func _face_target() -> void:
+	if not _quick() or ob.target_hex < 0:
+		return
+	var f: SphereField = so.globe.field
+	var c: Vector3 = f.hex_center(ob.target_hex)
+	var away: Vector3 = p.global_position - c
+	var up: Vector3 = c.normalized()
+	away = (away - up * away.dot(up))
+	away = away.normalized() if away.length() > 0.5 else -_north(c)
+	_stand(c + away * f.hex_size * 1.6, c)
+	await tree.create_timer(1.0).timeout
+
+
+## Rendered shot runs skip the long scooping and robot waits (the headless walk plays those).
+static func _quick() -> bool:
+	return DevHooks.has("walk-home-shots")
+
+
+## (rendered runs, --walk-home-shots=DIR) one frame of what the player sees now.
+static func _shot(name: String) -> void:
+	var dir: String = DevHooks.get_s("walk-home-shots", "")
+	if dir == "" or DisplayServer.get_name() == "headless":
+		return
+	await tree.create_timer(0.8).timeout
+	await RenderingServer.frame_post_draw
+	DirAccess.make_dir_recursive_absolute(dir)
+	var img: Image = tree.root.get_texture().get_image()
+	var path: String = "%s/%02d_%s.png" % [dir, _shot_n, name]
+	_shot_n += 1
+	img.save_png(path)
+	print("[walk-home] shot %s" % path)
+
+
+# --- The state a player has after the first robot (dev setup) ----------------------------------
+
+static func _base_state() -> void:
+	GameState.flags["onboard_brief"] = true
+	GameState.flags["tutorial_step"] = Tutorial.STEPS.size()
+	var tut: Tutorial = w.get("tutorial") as Tutorial
+	if tut:
+		tut.step = Tutorial.STEPS.size()  # the restart checklist is long done by now
+		EventBus.tutorial_changed.emit(tut.current_text())
+	YardBuilds.state()["bench"] = true  # the bench was repaired back then
+	ob.revealed = true
+	if SignalTower.tier() < 1:
+		GameState.flags["signal_tower"] = 1  # the tower stands (the "tower" step)
+	if BenchTiers.tier() < 2:  # the Bot Bay ("bench2"): as BenchTiers.buy does
+		GameState.flags["bench_tier"] = 2
+		Research.grant("salvage_logic")
+	var fl: Fleet = w.get("fleet") as Fleet
+	if fl.robot_total() < 1:  # the first Scoopie ("robot")
+		_set_money(fl.build_cost("scoopie").to_float() + 1.0, fl.build_parts("scoopie").to_float() + 1.0)  # [v10pace] paid as in play
+		fl.build("scoopie", so.bench_position())
+	GameState.stats["robots_built"] = maxf(float(GameState.stats.get("robots_built", 0.0)), 1.0)
+	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0))
+	for u: String in ["compartment_size", "multi_lock", "baler"]:
+		if GameState.level_of(u) < 1:
+			GameState.upgrades[u] = 1
+	_set_money(300.0, 10.0)
+	_check(float(GameState.stats.get("research_done", 0.0)) == 0.0, "the Bot Bay's free Salvage Logic is not a finished research project (research_done=%s)" % str(GameState.stats.get("research_done", 0.0)))
+
+
+static func _set_money(cubes: float, parts: float) -> void:
+	GameState.currencies["cubes"] = BigNum.from_float(cubes)
+	GameState.currencies["parts"] = BigNum.from_float(parts)
+	EventBus.currency_changed.emit("cubes", GameState.currencies["cubes"])
+
+
+static func _goto(id: String) -> bool:
+	var idx: int = ob.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find(id)
+	if idx < 0:
+		_check(false, "no step %s" % id)
+		return false
+	ob.step = idx
+	GameState.flags["objective_step"] = idx
+	ob.changed.emit(idx)
+	await tree.create_timer(0.8).timeout
+	for k: int in 240:  # the card draws (and fades in) on its own refresh: wait for it, not a time
+		if _card()[0] != "" and (ob.target_hex >= 0 or not bool(ob.current().get("hex", false))):
+			break
+		await tree.create_timer(0.25).timeout
+	return true
+
+
+static func _step_id() -> String:
+	return str(ob.current().get("id", ""))
+
+
+## The card as the player reads it: [title, why, hint, count].
+static func _card() -> Array[String]:
+	var hud: Node = w.get("hud")
+	var gp: GoalsPanel = hud.get("goals") as GoalsPanel if hud else null
+	var oc: ObjectiveCard = gp.objective if gp else null
+	if oc == null:
+		return ["", "", "", ""]
+	return oc.read()  # [v9d] the card as text: title, why (also when folded), hint or cost chips, count
+
+
+static func _wait_step_not(id: String, secs: float) -> bool:
+	for k: int in int(secs * 4.0):
+		if _step_id() != id:
+			return true
+		await tree.create_timer(0.25).timeout
+	return _step_id() != id
+
+
+# --- hex2: clean one more hex with the scoop key -----------------------------------------------
+
+static func _part_hex2() -> void:
+	GameState.stats["hexes_cleaned"] = 1.0
+	if not await _goto("hex2"):
+		return
+	var c: Array[String] = _card()
+	_check(c[0] == "Clean 2 hexes" and c[3] == "1 / 2", "hex2: the card says Clean 2 hexes, 1 / 2 (%s)" % str(c))
+	_check(ob.target_hex >= 0, "hex2: a hex is outlined on the ground (%d)" % ob.target_hex)
+	await _face_target()
+	await _shot("hex2_start")
+	if _quick():
+		GameState.stats["hexes_cleaned"] = 2.0
+		await _wait_step_not("hex2", 4.0)
+		return
+	var took: int = await _scoop_until("hex2", func() -> int: return ob.target_hex, func() -> bool: return ob.target_hex >= 0 and ob.hex_fraction() >= 0.5)
+	await _reload("hex2 half cleaned")
+	took += await _scoop_until("hex2", func() -> int: return ob.target_hex, func() -> bool: return float(GameState.stats.get("hexes_cleaned", 0.0)) >= 2.0)
+	await tree.create_timer(0.3).timeout
+	_check(float(GameState.stats.get("hexes_cleaned", 0.0)) >= 2.0, "hex2: scooping cleans the outlined hex (%d scoops)" % took)
+	var moved: bool = await _wait_step_not("hex2", 4.0)
+	await tree.create_timer(2.5).timeout  # the card's DONE beat, then the next step slides in
+	c = _card()
+	_check(moved and _step_id() == "hex3" and c[0] == "Clean 3 hexes", "hex2 done: the card moves on to Clean 3 hexes (%s, %s)" % [_step_id(), str(c)])
+	# [v10ui] Owner #109: the map (M) is the planet's progress view, pointed at on the first clean hex.
+	_check(_said("how much of the planet is clean"), "map: the first clean hex points at the map key (%s)" % Settings.glyph("open_globe"))
+	var before: Dictionary = await _map_look("after a clean hex")
+	await _reload("hex2 done, the map looked at")
+	var after: Dictionary = await _map_look("after a reload")
+	# The walk starts hex2 with the stat set to 1 (no hex played before it), so the map is held to
+	# the hexes really cleaned on the ground (each pays once: GameState.orbit hexes_paid).
+	var real: int = (GameState.orbit.get("hexes_paid", {}) as Dictionary).size()
+	_check(not before.is_empty() and real >= 1 and int(before["ok"]) >= real, "map: the hexes cleaned are counted (%s, %d cleaned on the ground)" % [str(before.get("sub", "")), real])
+	_check(not before.is_empty() and not after.is_empty() and int(after["ok"]) == int(before["ok"]) and str(after["rows"]) == str(before["rows"]),
+		"map: the same numbers after a reload (%s%% / %s%%)" % [str(before.get("pct", "?")), str(after.get("pct", "?"))])
+
+
+## [v10ui] Opens the map with its key, checks the progress card against the game's own numbers
+## (SiteManager's cells, the HUD's line), closes it with the key. Returns what the card showed.
+static func _map_look(tag: String) -> Dictionary:
+	var gv: GlobeView = so.layers.survey
+	var sm: SiteManager = so.globe.site_manager
+	await _tap("open_globe")
+	for k: int in 40:
+		if gv.is_open:
+			break
+		await tree.create_timer(0.1).timeout
+	_check(gv.is_open, "map %s: %s opens it" % [tag, Settings.glyph("open_globe")])
+	if not gv.is_open:
+		return {}
+	await tree.create_timer(0.8).timeout
+	var rd: Dictionary = gv.read_progress()
+	var ok: int = 0
+	var n: int = 0
+	var rows_ok: bool = true
+	var areas: Array = so.layers.map_areas()
+	for i: int in areas.size():
+		ok += int(areas[i]["ok"])
+		n += int(areas[i]["n"])
+		rows_ok = rows_ok and int(rd["rows"][i]["pct"]) == int(floor(100.0 * float(areas[i]["ok"]) / maxf(1.0, float(areas[i]["n"])) + 0.0001))
+	var want: int = int(floor(100.0 * float(ok) / maxf(1.0, float(n)) + 0.0001))
+	_check(int(rd["total"]) == HubPlan.main_total(sm.planet_id) and int(rd["shown_rows"]) == int(rd["total"]),
+		"map %s: one row per base area, the ones not visited too (%d of %d)" % [tag, int(rd["shown_rows"]), HubPlan.main_total(sm.planet_id)])
+	_check(int(rd["ok"]) == ok and int(rd["n"]) == n and str(rd["sub"]).contains(GlobeView._num(ok)), "map %s: the hex count under it is the game's (%s)" % [tag, str(rd["sub"])])
+	_check(int(rd["pct"]) == want and rows_ok and str(rd["big"]).contains(str(want)) and not str(rd["big"]).contains("."),
+		"map %s: the big number is the areas' ground, whole (%s, cells %d / %d)" % [tag, str(rd["big"]), ok, n])
+	var home: Dictionary = rd["rows"][0]
+	var hud_pct: int = int(floor(sm.region_clean(0) * 100.0))
+	_check(str(home["kind"]) == "home" and bool(home["here"]) and int(home["pct"]) == hud_pct,
+		"map %s: the home row is where Lumi is and shows the HUD's %d%% (%s)" % [tag, hud_pct, str(home)])
+	var locked: int = 0
+	for r: Dictionary in rd["rows"]:
+		if str(r["kind"]) == "locked":
+			locked += 1
+	_check(locked >= 1, "map %s: areas not visited yet show as locked rows (%d)" % [tag, locked])
+	_check(bool(GameState.flags.get("map_seen", false)), "map %s: opening it sets map_seen" % tag)
+	_check(not gv._resurvey.visible, "map %s: nothing to pay" % tag)
+	await _shot("map_" + tag.replace(" ", "_"))
+	await _tap("open_globe")
+	for k: int in 40:
+		if not gv.is_open:
+			break
+		await tree.create_timer(0.1).timeout
+	_check(not gv.is_open, "map %s: the same key closes it" % tag)
+	await tree.create_timer(0.3).timeout
+	return rd
+
+
+## Scoops (the scoop key held at the nearest liftable piece of hex_fn's hex) until done_fn says so.
+## Lumi is put by each piece; a near-full chest is emptied (dev: the bin trips are earlier steps).
+static func _scoop_until(tag: String, hex_fn: Callable, done_fn: Callable, secs: float = 240.0) -> int:
+	await _tap("tool_scoop")
+	var t0: int = Time.get_ticks_msec()
+	var took: int = 0
+	var stall: int = 0
+	while not done_fn.call() and Time.get_ticks_msec() - t0 < int(secs * 1000.0):
+		var f: SphereField = so.globe.field
+		var h: int = hex_fn.call()
+		if h < 0:
+			await tree.create_timer(0.3).timeout
+			continue
+		var best: int = -1
+		var bd: float = INF
+		for pid: int in f.hex_pieces[h]:
+			if f.piece_alive[pid] == 1 and Pace.can_lift(f, pid):
+				var d: float = f.piece_pos[pid].distance_to(p.global_position)
+				if d < bd:
+					bd = d
+					best = pid
+		if best < 0:
+			print("[walk-home] note: %s: hex %d has nothing liftable left at %.0f%%" % [tag, h, f.removed_fraction(h) * 100.0])
+			return took
+		var at: Vector3 = f.piece_pos[best]
+		var up: Vector3 = at.normalized()
+		var away: Vector3 = p.global_position - at
+		away = (away - up * away.dot(up))
+		away = away.normalized() if away.length() > 0.05 else -SphereGrid.frame(up).z
+		_stand(at + away * 1.1, at)
+		await _frames(3)
+		if p.compartment.fill >= p.capacity() * 0.85:
+			p.compartment.take_all()
+		await _hold("scoop", 0.7)
+		took += 1
+		stall = stall + 1 if f.piece_alive[best] == 1 else 0
+		if stall == 6:
+			print("[walk-home] note: %s: piece %d (size %d, lift %d) stays after 6 scoops" % [tag, best, Pace.piece_size(f, best), Pace.lift_class()])
+	p.compartment.take_all()  # (dev) the bin trip after the hex
+	return took
+
+
+# --- hex3: a robot's hex counts, and says so ------------------------------------------------------
+
+static func _part_hex3() -> void:
+	if _step_id() != "hex3" and not await _goto("hex3"):
+		return
+	await _shot("hex3_start")
+	await _reload("hex3")
+	var crews: OrbitCrews = so.get("crews") as OrbitCrews
+	if crews == null or crews.crew == null:
+		_check(false, "hex3: no robot crew")
+		return
+	var f: SphereField = so.globe.field
+	var far: int = -1
+	for h: int in f.hexes_near(p.global_position, 8):
+		if not f.is_clean(h) and f.hex_hub[h] == 0 and not f.is_water(h) and f.hex_center(h).distance_to(p.global_position) > 70.0:
+			far = h
+			break
+	if far < 0:
+		_check(false, "hex3: no far dirty hex for the robot")
+		return
+	_toasts.clear()
+	crews.work_cell(far, 0.0)  # the Scoopie finishes a hex out of Lumi's sight (its report, as SphereCrew sends it)
+	crews.crew.cell_cleaned.emit(far)
+	await tree.create_timer(0.3).timeout
+	_check(_said("robot"), "hex3: a robot's hex says so on screen (%s)" % str(_toasts))
+	if _step_id() == "hex3":  # one hex was not enough (the robot's counted, 2 / 3 -> 3 / 3 needs one more)
+		GameState.stats["hexes_cleaned"] = 3.0
+	var moved: bool = await _wait_step_not("hex3", 4.0)
+	_check(moved and _step_id() == "seed", "hex3 done: on to the seed (%s)" % _step_id())
+
+
+# --- After the first seed: water, empty can, refill, out of seeds ----------------------------------
+
+static func _part_garden() -> void:
+	var g: Garden = w.get("garden") as Garden
+	var fs: FirstSeed = w.get("first_seed") as FirstSeed
+	if g == null or fs == null:
+		_check(false, "garden: no garden / greenhouse")
+		return
+	# (dev) the seed step as tools/seed_walk.gd plays it: the tin taken, the seed in the first bed.
+	GameState.flags["seed_signal"] = true
+	GameState.flags["seeds_unlocked"] = true
+	GameState.add_currency("seeds", BigNum.from_float(1.0))
+	fs.set("_hint_water", true)  # (dev) as taking the tin does
+	var slot: int = fs.bed_slots[0]
+	if g.slot_species[slot] < 0:
+		g.plant(slot)
+	var moved: bool = await _wait_step_not("seed", 4.0)
+	_check(moved, "seed planted: the card moves on (%s)" % _step_id())
+	_check(g.slot_water[slot] <= 0.0, "garden: the new seed is thirsty (water %.1f)" % g.slot_water[slot])
+	var marks: Node = _find_marks()
+	_check(marks != null, "garden: the plant marks (thirsty drop, soil, rings) are in the world")
+	await tree.create_timer(1.0).timeout
+	var wc: Array[String] = _card()
+	_check(wc[0].contains("watering can") and not (wc[1] + wc[2]).contains("more cubes"), "garden: after planting, the card says one thing: water it, with the keys (%s)" % str(wc))
+	var garden_vals: Callable = func() -> Dictionary:
+		var gg: Garden = w.get("garden") as Garden
+		return {"species": gg.slot_species[slot] if gg else -9, "water": gg.slot_water[slot] if gg else -9.0, "marks": _find_marks() != null, "seeds": GameState.get_currency("seeds").to_float()}
+	await _reload("seed planted, not watered", garden_vals)
+	g = w.get("garden") as Garden
+	fs = w.get("first_seed") as FirstSeed
+	if g == null or fs == null:
+		_check(false, "garden: no garden after the reload")
+		return
+	# The water key on the bed.
+	_stand(fs.to_global(FirstSeed.GREENHOUSE_POS + Vector3(0.0, 0.0, FirstSeed.BED_SPOTS[0].z)), g.slot_pos[slot])
+	await _frames(4)
+	await _shot("seed_bed_thirsty")
+	p.water = p.water_cap()
+	await _tap("tool_water")
+	_check(p.tool == Patch.Tool.WATER, "garden: the water key takes the can")
+	await _hold("scoop", 1.0)
+	_check(g.slot_water[slot] > 0.0, "garden: holding the button on the bed waters the seed (water %.1f)" % g.slot_water[slot])
+	await _shot("seed_watered")
+	# An empty can away from the yard: refused with a line; back in the yard it fills.
+	var f: SphereField = so.globe.field
+	var clean: int = -1
+	for h: int in f.hexes_near(p.global_position, 6):
+		if f.is_clean(h) and f.hex_hub[h] == 0 and not f.is_water(h) and f.hex_center(h).distance_to(so.bench_position()) > Patch.REFILL_YARD_M + 6.0:
+			clean = h
+			break
+	if clean < 0:
+		_check(false, "garden: no clean hex outside the yard")
+		return
+	var c: Vector3 = f.hex_center(clean)
+	_stand(c, c + _north(c) * 3.0)
+	await _frames(4)
+	await _tap("tool_water")
+	p.water = 0.0
+	_toasts.clear()
+	await _hold("scoop", 0.8)
+	_check(_said("empty") and p.water <= 0.0, "garden: an empty can says so, away from the yard (%s)" % str(_toasts))
+	var yard: Vector3 = so.bench_position()
+	_stand(yard + _north(yard) * 4.0, yard)
+	await tree.create_timer(1.5).timeout
+	_check(p.water > 5.0, "garden: the can fills by itself in the yard (%.1f)" % p.water)
+	# No seeds left: the seed key on clean ground says why.
+	GameState.currencies["seeds"] = BigNum.zero()
+	_stand(c, c + _north(c) * 3.0)
+	await _frames(4)
+	await _tap("tool_plant")
+	_toasts.clear()
+	await _hold("scoop", 1.0)
+	_check(_said("seeds"), "garden: no seeds left, a line says where more come from (%s)" % str(_toasts))
+	await _tap("tool_scoop")
+
+
+static func _find_marks() -> Node:
+	for n: Node in w.get_tree().root.find_children("*", "GardenMarks", true, false):
+		return n
+	return null
+
+
+## [v9b] A seed planted with the seed key on the steepest clean hex near the yard, then watered:
+## the plant and water rings on a slope (a frame of it in rendered runs).
+static func _plant_on_slope() -> void:
+	var f: SphereField = so.globe.field
+	var g: Garden = w.get("garden") as Garden
+	var cands: Array = []  # [slope deg, hex]
+	var yard: Vector3 = so.bench_position()
+	for h: int in f.hexes_near(yard, 12):
+		if not f.is_clean(h) or f.hex_hub[h] != 0 or f.is_water(h):
+			continue
+		var c: Vector3 = f.hex_center(h)
+		var n: Vector3 = c.normalized()
+		var fr: Basis = SphereGrid.frame(n)
+		var g0: Vector3 = so.globe.terrain.ground(n)
+		var dx: Vector3 = so.globe.terrain.ground((c + fr.x * 2.0).normalized()) - g0
+		var dz: Vector3 = so.globe.terrain.ground((c + fr.z * 2.0).normalized()) - g0
+		cands.append([rad_to_deg(acos(clampf(absf(dx.cross(dz).normalized().dot(n)), 0.0, 1.0))), h])
+	cands.sort_custom(func(x: Array, y: Array) -> bool: return float(x[0]) > float(y[0]))
+	GameState.add_currency("seeds", BigNum.from_float(1.0))
+	var steep: float = -1.0
+	var at: Vector3 = Vector3.ZERO
+	for cd: Array in cands.slice(0, 12):  # the steepest clean ground a seed takes (not road or pad)
+		var c: Vector3 = f.hex_center(int(cd[1]))
+		for k: int in 24:  # [v9a] 8 directions x 3 distances: which hexes are clean varies run to run
+			var off: Vector3 = SphereGrid.frame(c.normalized()) * Vector3(cos(k * 0.785), 0.0, sin(k * 0.785)) * [2.5, 1.5, 3.5][k / 8]
+			_stand(c + off, c + off + _north(c) * 3.0)
+			await _pframes(3)
+			if g.free_slot_near(p.global_position, p.forward()) >= 0:
+				steep = float(cd[0])
+				at = c + off
+				break
+		if steep >= 0.0:
+			break
+	if steep < 0.0:
+		_check(false, "garden: no clean hex near the yard that takes a seed (%d clean hexes)" % cands.size())
+		return
+	var n0: float = float(GameState.stats.get("plants_planted", 0.0))
+	await _tap("tool_plant")
+	_toasts.clear()
+	await _hold("scoop", 1.0)
+	var planted: bool = float(GameState.stats.get("plants_planted", 0.0)) > n0
+	_check(planted, "garden: the seed key plants on a %.0f deg slope (%s)" % [steep, str(_toasts)])
+	p.water = p.water_cap()
+	await _tap("tool_water")
+	await _hold("scoop", 1.0)
+	await _shot("slope_plant_%ddeg" % int(steep))
+	await _tap("tool_scoop")
+
+
+# --- hex10 / hex20: Lumi cleans one, the Scoopies another --------------------------------------
+
+static func _part_hex10() -> void:
+	await _hex_goal("hex10", 10)
+
+
+static func _part_hex20() -> void:
+	await _hex_goal("hex20", 20)
+
+
+static func _hex_goal(id: String, goal: int) -> void:
+	GameState.stats["hexes_cleaned"] = float(goal - 2)
+	if not await _goto(id):
+		return
+	var c: Array[String] = _card()
+	_check(c[0] == "Clean %d hexes" % goal and c[3] == "%d / %d" % [goal - 2, goal], "%s: the card says Clean %d hexes, %d / %d (%s)" % [id, goal, goal - 2, goal, str(c)])
+	var way: Variant = ob.waypoint_target()
+	_check(ob.target_hex >= 0 or way is Vector3, "%s: a hex is outlined (%d) or the beam points to dirty ground (%s)" % [id, ob.target_hex, str(way)])
+	await _face_target()
+	await _shot(id + "_start")
+	if _quick():
+		GameState.stats["hexes_cleaned"] = float(goal)
+		await _wait_step_not(id, 4.0)
+		if goal >= 20:
+			await _plant_on_slope()
+		return
+	var n0: float = float(GameState.stats.get("hexes_cleaned", 0.0))
+	_toasts.clear()
+	var took: int = await _scoop_until(id, func() -> int: return ob.target_hex, func() -> bool: return ob.target_hex >= 0 and ob.hex_fraction() >= 0.5)
+	await _reload(id + " half cleaned")
+	took += await _scoop_until(id, func() -> int: return ob.target_hex, func() -> bool: return float(GameState.stats.get("hexes_cleaned", 0.0)) >= n0 + 1.0)
+	_check(float(GameState.stats.get("hexes_cleaned", 0.0)) >= n0 + 1.0, "%s: Lumi's hex counts (%d scoops)" % [id, took])
+	# The last one: the real Scoopies, time x8, Lumi idle by the bench.
+	var fl: Fleet = w.get("fleet") as Fleet
+	_set_money(5000.0, 500.0)
+	for k: int in 2:
+		if fl.count("scoopie") < 3:
+			fl.build("scoopie", so.bench_position())
+	var yard: Vector3 = so.bench_position()
+	_stand(yard + _north(yard) * 4.0, yard)
+	Engine.time_scale = 8.0
+	var t0: int = Time.get_ticks_msec()
+	while float(GameState.stats.get("hexes_cleaned", 0.0)) < float(goal) and Time.get_ticks_msec() - t0 < 300000:
+		await tree.create_timer(0.5, true, false, true).timeout
+	Engine.time_scale = 1.0
+	_check(float(GameState.stats.get("hexes_cleaned", 0.0)) >= float(goal), "%s: %d Scoopies clean the last hex (%.0f s real at x8)" % [id, fl.count("scoopie"), (Time.get_ticks_msec() - t0) / 1000.0])
+	_check(_said("robot"), "%s: a robot's hex in this step says so on screen (%s)" % [id, str(_toasts.filter(func(t: String) -> bool: return "obot" in t))])
+	# [v10pace] After the robots worked: no heap of bales on the pad, none in the air, none on an E spot (tools/bale_watch.gd).
+	var br: Dictionary = BaleWatch.count(so)
+	_check(not br.is_empty() and BaleWatch.breaches(br).is_empty(), "%s: the robots' bales do not pile up on the pad (%s; pad %s, robots pressed %d)" % [id, "; ".join(BaleWatch.breaches(br)) if not br.is_empty() else "no count", str(br.get("pad", "-")), int(float(GameState.stats.get("robot_bales", 0.0)))])
+	var moved: bool = await _wait_step_not(id, 4.0)
+	_check(moved, "%s done: the card moves on (%s)" % [id, _step_id()])
+	if goal >= 20:
+		await _plant_on_slope()  # by now there is clean ground round the yard to choose from
+
+
+# --- Steps met out of order never strand the card --------------------------------------------------
+
+static func _part_order() -> void:
+	var hub: Hub = w.get("hub") as Hub
+	while hub.level < 3:
+		var nd: Dictionary = hub.level_def(hub.level + 1)
+		var cost: Dictionary = nd.get("cost", {})
+		_set_money(float(cost.get("cubes", 0.0)) + 10.0, float(cost.get("parts", 0.0)) + 10.0)
+		if not hub.upgrade():
+			break
+	_check(hub.level >= 3, "order: (dev) the base at level 3 (%d)" % hub.level)
+	if await _goto("base2"):
+		_check(await _wait_step_not("base2", 4.0), "order: base 2 bought before its step: the step passes by itself (%s)" % _step_id())
+	GameState.flags.erase("haul_rig")
+	Research.done_list().erase("haul_rig")
+	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0))
+	if await _goto("haul"):
+		for k: int in 12:
+			if GameState.flags.get("haul_rig", false):
+				break
+			await tree.create_timer(0.25).timeout
+		_check(GameState.flags.get("haul_rig", false), "order: base 3 before the Haul Bug: the plans come at once, no 20 min wait")
+		var fl: Fleet = w.get("fleet") as Fleet
+		if fl.count("haulbug") >= 1:
+			_check(await _wait_step_not("haul", 4.0), "order: a Haul Bug already built: the step passes (%s)" % _step_id())
+		else:
+			await tree.create_timer(0.6).timeout
+			_check(_card()[1].contains("Bots tab"), "order: the card says Bots tab (%s)" % str(_card()))
+	GameState.stats["research_done"] = maxf(float(GameState.stats.get("research_done", 0.0)), 1.0)
+	if BenchTiers.tier() >= 3 and await _goto("research1"):
+		_check(await _wait_step_not("research1", 4.0), "order: a project finished before its step: the step passes (%s)" % _step_id())
+
+
+# --- Too heavy, outside the start area ----------------------------------------------------------------
+
+static func _part_heavy() -> void:
+	GameState.upgrades["lift_strength"] = 0
+	Pace.sync_flags()
+	_check(Pace.lift_class() == 0, "heavy: (dev) Lift 0 (%d)" % Pace.lift_class())
+	var pad: Vector3 = so.bench_position()
+	var f: SphereField = so.globe.field
+	var found: int = -1
+	var tries: int = 0
+	for h0: int in f.hexes_near(pad, 12):
+		var c0: Vector3 = f.hex_center(h0)
+		var dist: float = OrbitUp.ground_dist(c0, pad)
+		if dist < 70.0 or dist > 130.0 or f.is_water(h0) or f.hex_hub[h0] != 0:
+			continue
+		tries += 1
+		if tries > 8:
+			break
+		_stand(c0, c0 + _north(c0) * 3.0)
+		for k: int in 16:
+			if f.materialized[h0] == 1:
+				break
+			await tree.create_timer(0.25).timeout
+		found = await _aim_heavy(f)
+		if found >= 0:
+			break
+	_check(found >= 0, "heavy: a too-heavy piece with nothing liftable in front of it, 70-130 m out (%d places)" % tries)
+	if found >= 0:
+		p.compartment.take_all()
+		await _tap("tool_scoop")
+		_toasts.clear()
+		await tree.physics_frame
+		_send("scoop", true)
+		await tree.create_timer(0.8).timeout
+		var need: int = Pace.piece_size(f, found)
+		var mark: Node3D = Vfx.heavy_node
+		var lab: String = ""
+		if mark:
+			for ch: Node in mark.get_children():
+				if ch is Label3D:
+					lab = (ch as Label3D).text
+		_check(mark != null and mark.visible and lab.contains(str(need)), "heavy: the piece gets its mark (%s, '%s')" % [str(mark.visible) if mark else "none", lab])
+		var c: Array[String] = _card()
+		for k: int in 12:  # the card's line follows within a beat (slow frames in rendered runs)
+			c = _card()
+			if (c[1] + c[2]).contains("Lift %d" % need):
+				break
+			await tree.create_timer(0.25).timeout
+		_check((c[1] + c[2]).contains("Lift %d" % need), "heavy: the card says which Lift (%s)" % str(c))
+		await _shot("heavy_piece")
+		_send("scoop", false)
+		await _frames(2)
+	if _quick():
+		return
+	# A hex with only too-heavy pieces left.
+	var stuck: int = -1
+	var fewest: int = 1 << 30
+	for h: int in f.hexes_near(p.global_position, 3):
+		if f.materialized[h] == 0 or f.is_clean(h) or f.is_water(h) or f.hex_hub[h] != 0 or Pace.hex_clearable(f, h, 0):
+			continue
+		var n: int = 0
+		for pid: int in f.hex_pieces[h]:
+			if f.piece_alive[pid] == 1 and Pace.can_lift(f, pid):
+				n += 1
+		if n < fewest:
+			fewest = n
+			stuck = h
+	_check(stuck >= 0, "heavy: a hex here that Lift 0 can't finish")
+	if stuck < 0:
+		return
+	var took: int = await _scoop_until("heavy hex", func() -> int: return stuck, func() -> bool: return Pace.hex_stuck(so.globe.field, stuck), 300.0)
+	_check(Pace.hex_stuck(f, stuck), "heavy: everything liftable taken from hex %d (%d scoops, %.0f%%)" % [stuck, took, f.removed_fraction(stuck) * 100.0])
+	var hc: Vector3 = f.hex_center(stuck)
+	# [v9a] Walk up to what is left in the hex and scoop at it, as a player does. Facing north from
+	# the centre, the beam's origin could lie past a small hex's edge and the card said "Too heavy"
+	# for the piece instead of "This hex needs Lift N" (home walk, 1 run in 5).
+	var left: int = -1
+	var ld2: float = INF
+	for pid: int in f.hex_pieces[stuck]:
+		if f.piece_alive[pid] == 1 and f.piece_pos[pid].distance_squared_to(hc) < ld2:
+			ld2 = f.piece_pos[pid].distance_squared_to(hc)
+			left = pid
+	var aim: Vector3 = f.piece_pos[left] if left >= 0 else hc + _north(hc) * 3.0
+	var back: Vector3 = hc - aim
+	back = back - aim.normalized() * back.dot(aim.normalized())
+	var reach_m: float = 1.2 + (pow(maxf(f.piece_vol[left], 0.01), 1.0 / 3.0) * 0.5 if left >= 0 else 0.0)  # clear of its bulk
+	_stand(aim + (back.normalized() if back.length() > 0.3 else -_north(hc)) * reach_m, aim)
+	# [v9a] Pieces still flying into the chest from the last scoops land after an early take_all and
+	# fill it again ("Your chest is full" instead of the hex line): let them land, then empty it.
+	for k: int in 40:
+		if p.compartment.pending <= 0.0:
+			break
+		await tree.create_timer(0.1).timeout
+	await _frames(4)
+	p.compartment.take_all()
+	_toasts.clear()
+	await _hold("scoop", 1.2)
+	await tree.create_timer(0.4).timeout
+	var need_h: int = Pace.hex_need(f, stuck)
+	# [v9a] The card holds a hint at least ObjectiveCard.HINT_HOLD_S (3.5 s): the chest-full line
+	# from the last scoops can stand that long before the hex line takes its place (FAIL: "Your
+	# chest is full" read 1.6 s after the scoop). The heavy line itself lasts HEAVY_MS (6 s).
+	for k: int in int(ObjectiveCard.HINT_HOLD_S / 0.25) + 4:
+		if (_card()[1] + _card()[2]).contains("This hex needs Lift %d" % need_h):
+			break
+		await tree.create_timer(0.25).timeout
+	var c2: Array[String] = _card()
+	_check(Pace.heavy_hex and (c2[1] + c2[2]).contains("This hex needs Lift %d" % need_h), "heavy: the stuck hex says it needs Lift %d (%s; hex %d, Lumi on %d, the piece %d m from its centre, chest %.1f / %.1f)" % [need_h, str(c2), stuck, f.hex_at(p.global_position), int(sqrt(ld2)) if ld2 < INF else -1, p.compartment.fill, p.capacity()])
+	_check(Vfx.heavy_node != null and Vfx.heavy_node.visible, "heavy: the stuck hex's nearest piece is marked")
+	await _shot("heavy_hex")
+
+
+## Lumi round each too-heavy piece near him: a spot where the scoop sees it and nothing it can lift.
+static func _aim_heavy(f: SphereField) -> int:
+	var lc: int = Pace.lift_class()
+	for h: int in f.hexes_near(p.global_position, 2):
+		for pid: int in f.hex_pieces[h]:
+			if f.piece_alive[pid] == 0 or Pace.can_lift(f, pid):
+				continue
+			var at: Vector3 = f.piece_pos[pid]
+			var fr: Basis = SphereGrid.frame(at.normalized())
+			for k: int in 6:
+				var ang: float = TAU * k / 6.0
+				var dir: Vector3 = fr.x * cos(ang) + fr.z * sin(ang)
+				_stand(at + dir * (1.4 + pow(f.piece_vol[pid], 1.0 / 3.0) * 0.5), at)
+				await _frames(2)
+				var o: Vector3 = p.scoop_origin()
+				var fw: Vector3 = p.forward()
+				var r: float = p.stat("scoop_reach")
+				var wd: float = p.stat("scoop_width")
+				if Pace.find_scoop_target(f, o, fw, r, wd, lc) < 0 and f.find_scoop_target(o, fw, r, wd) == pid:
+					return pid
+	return -1
+
+
+## dev (--walk-home-only=probe): big meshes round the yard (what a dark box there is).
+static func _part_probe() -> void:
+	var yard: Vector3 = so.bench_position()
+	var n_seen: int = 0
+	for n: Node in tree.root.find_children("*", "VisualInstance3D", true, false):
+		var vi: VisualInstance3D = n as VisualInstance3D
+		if not vi.is_visible_in_tree():
+			continue
+		var ab: AABB = vi.global_transform * vi.get_aabb()
+		n_seen += 1
+		if ab.size.length() < 12.0 or ab.size.length() > 400.0 or ab.get_center().distance_to(yard) > 90.0:
+			continue
+		var info: String = vi.get_class()
+		if vi is MeshInstance3D and (vi as MeshInstance3D).mesh:
+			var mi: MeshInstance3D = vi
+			var mat: Material = mi.material_override if mi.material_override else (mi.mesh.surface_get_material(0) if mi.mesh.get_surface_count() > 0 else null)
+			info += " %s mat %s" % [mi.mesh.get_class(), str(mat.get("albedo_color")) if mat else "none"]
+		print("[walk-home] probe %s size %s at %.0f m, %s" % [str(vi.get_path()).right(100), str(ab.size.round()), ab.get_center().distance_to(yard), info])
+	print("[walk-home] probe: %d visual nodes" % n_seen)
+
+
+# --- base2: short of Parts, then the click ----------------------------------------------------------
+
+static func _part_base2() -> void:
+	var hub: Hub = w.get("hub") as Hub
+	if not await _goto("base2"):
+		return
+	_set_money(1500.0, 100.0)
+	await tree.create_timer(0.6).timeout
+	var c: Array[String] = _card()
+	_check(c[0] == "Base to level 2" and "50" in c[2], "base2: the card says how many Parts are missing (%s)" % str(c))
+	await _shot("base2_start")
+	await _reload("base2 short of Parts", func() -> Dictionary: return {"level": (w.get("hub") as Hub).level, "parts": GameState.get_currency("parts").to_float()})
+	hub = w.get("hub") as Hub
+	var ld: ListDetail = await _open_bench()
+	await _shot("base2_bench")
+	if ld == null:
+		return
+	_check(_tab() == "patch" and str(ld.get("_sel")) == "hub_level", "base2: the bench opens on the base row (%s / %s)" % [_tab(), str(ld.get("_sel"))])
+	_check(str(ld.get("_d_req").text).contains("50"), "base2: the bench says 50 more Parts (%s)" % str(ld.get("_d_req").text))
+	await _click(_price_tag(ld, "hub_level"))
+	_check(hub.level == 1, "base2: a click while short builds nothing")
+	_set_money(1500.0, 150.0)
+	await tree.create_timer(0.4).timeout
+	for k: int in 3:  # the row turns from short to ready on the bench's next refresh
+		await _click(_price_tag(ld, "hub_level"))
+		if hub.level == 2:
+			break
+		await tree.create_timer(0.5).timeout
+	_check(hub.level == 2, "base2: clicking the price tag builds level 2 (level %d)" % hub.level)
+	await _close_bench()
+	var moved: bool = await _wait_step_not("base2", 4.0)
+	_check(moved, "base2 done: the card moves on (%s)" % _step_id())
+	# [v10pace] The next step (the shuttle) counts cubes: a nearly clean hex that heals and pays on
+	# load (item 82) would move that count. With the shuttle's price in hand the count stays full.
+	var sc: Dictionary = YardBuilds.def("shuttle").get("cost", {})
+	_set_money(float(sc.get("cubes", 0.0)) + 50.0, float(sc.get("parts", 0.0)) + 10.0)
+	await _reload("base2 just bought", func() -> Dictionary: return {"level": (w.get("hub") as Hub).level})
+
+
+# --- haul: the plans wait, then the click -------------------------------------------------------
+
+static func _part_haul() -> void:
+	var fl: Fleet = w.get("fleet") as Fleet
+	GameState.flags.erase("haul_rig")
+	Research.done_list().erase("haul_rig")
+	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0)) - 120.0  # 2 min since the Scoopie
+	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0.0)), 10.0)
+	if not await _goto("haul"):
+		return
+	await tree.create_timer(0.6).timeout
+	var c: Array[String] = _card()
+	var pr: Array = ob.progress()
+	_check(c[1].contains("Keep cleaning") and float(pr[0]) > 0.1 and float(pr[0]) < 0.5, "haul: while the plans come, the card says so with a bar (%s, %s)" % [str(c), str(pr)])
+	await _shot("haul_waiting")
+	await _reload("haul, plans on the way", func() -> Dictionary: return {"plans": GameState.flags.get("haul_rig", false), "t0_s": float(GameState.flags.get("first_robot_t", -1.0))})
+	fl = w.get("fleet") as Fleet
+	var ld: ListDetail = await _open_bay()  # [v10pace] robots are the Bot Bay's, not a workbench tab
+	if ld == null:
+		return
+	var row: Dictionary = _row(ld, "build_haulbug")
+	_check(str(row.get("state", "")) == "locked", "haul: the Haul Bug row is locked while the plans come (%s)" % str(row.get("state", "")))
+	await _close_bay()
+	# The plans come (7 min after the first robot).
+	_toasts.clear()
+	GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0)) - 421.0
+	for k: int in 12:
+		if GameState.flags.get("haul_rig", false):
+			break
+		await tree.create_timer(0.25).timeout
+	_check(GameState.flags.get("haul_rig", false), "haul: the plans arrive")
+	await tree.create_timer(0.5).timeout
+	c = _card()
+	_check(c[1].contains("Bot Bay"), "haul: then the card says Bot Bay (%s)" % str(c))
+	_check(_beam_on_bay(), "haul: the beam stands on the Bot Bay (%s)" % str(ob.waypoint_target()))
+	_set_money(400.0, 40.0)
+	ld = await _open_bay()
+	if ld == null:
+		return
+	_check(str(ld.get("_sel")) == "build_haulbug", "haul: the Bot Bay opens on the Haul Bug (%s)" % str(ld.get("_sel")))
+	await _shot("haul_bay")
+	await _click(_price_tag(ld, "build_haulbug"))
+	_check(fl.count("haulbug") >= 1, "haul: clicking its price tag builds a Haul Bug")
+	await _close_bay()
+	var moved: bool = await _wait_step_not("haul", 4.0)
+	_check(moved, "haul done: the card moves on (%s)" % _step_id())
+
+
+# --- [v10pace] robot2, map, shuttle: what comes before the first flight -----------------------------
+
+static func _bay() -> BotBay:
+	return BotBay.of(w)
+
+
+static func _beam_on_bay() -> bool:
+	var wp: Variant = ob.waypoint_target()
+	return wp is Vector3 and _bay() != null and (wp as Vector3).distance_to(_bay().stand_point()) < 3.0
+
+
+## Puts Lumi in front of the Bot Bay and presses the interact key: its own screen opens.
+static func _open_bay() -> ListDetail:
+	var bay: BotBay = _bay()
+	if bay == null or not bay.visible:
+		_check(false, "the Bot Bay stands in the yard")
+		return null
+	if bay.is_open():
+		await _close_bay()
+	var at: Vector3 = bay.stand_point()
+	_stand(so.globe.terrain.ground(at.normalized()), bay.global_position)
+	await _frames(4)
+	_check("Bot Bay" in str(w.call("interact_prompt", p)), "the prompt by the Bot Bay names it (%s)" % str(w.call("interact_prompt", p)))
+	await _tap("interact")
+	for k: int in 12:
+		if bay.is_open():
+			break
+		await tree.create_timer(0.1).timeout
+	_check(bay.is_open() and not _up().is_open, "the interact key at the Bot Bay opens its own screen, not the workbench")
+	await tree.create_timer(0.6).timeout
+	if not bay.is_open():
+		return null
+	_check(str(bay.screen.get("_tab")) == "bots" and not (bay.screen.get("_tab_buttons") as Array).any(func(b: Button) -> bool: return b.is_visible_in_tree()),
+		"the Bot Bay's screen is the robots list alone, with no tabs")
+	return bay.screen.get("_panel") as ListDetail
+
+
+static func _close_bay() -> void:
+	var bay: BotBay = _bay()
+	if bay and bay.is_open():
+		await _click(bay.screen.get("_close_btn") as Control)
+	_check(bay == null or not bay.is_open(), "the Close button closes the Bot Bay")
+	await tree.create_timer(0.5).timeout
+
+
+static func _part_robot2() -> void:
+	var fl: Fleet = w.get("fleet") as Fleet
+	if not await _goto("robot2"):
+		return
+	if fl.robot_total() < 1:  # the first Scoopie (an earlier part may have taken it): this is the second
+		_set_money(fl.build_cost("scoopie").to_float() + 1.0, fl.build_parts("scoopie").to_float() + 1.0)
+		fl.build("scoopie", so.bench_position())
+	GameState.stats["robots_built"] = maxf(float(GameState.stats.get("robots_built", 0.0)), 1.0)
+	_set_money(100.0, 10.0)
+	await tree.create_timer(0.6).timeout
+	var c: Array[String] = _card()
+	_check(c[0] == "Build a second robot" and c[1].contains("Bot Bay"), "robot2: the card says Build a second robot, at the Bot Bay (%s)" % str(c))
+	var price: Dictionary = ob.step_price()
+	_check(float(price.get("cubes", 0.0)) > 0.0, "robot2: the card shows the robot's price (%s)" % str(price))
+	_check(not _up().is_open and not UpgradesScreen.tab_visible("bots", w), "robot2: the workbench has no Bots tab")
+	await _shot("robot2_start")
+	var ld: ListDetail = await _open_bay()
+	if ld == null:
+		return
+	var n0: int = fl.robot_total()
+	await _click(_price_tag(ld, "build_scoopie"))
+	_check(fl.robot_total() == n0, "robot2: a click while short builds nothing")
+	await _close_bay()
+	_set_money(float(price.get("cubes", 400.0)), float(price.get("parts", 60.0)))
+	await _reload("robot2, price in hand", func() -> Dictionary: return {"robots": (w.get("fleet") as Fleet).robot_total(), "bay": BotBay.built()})
+	fl = w.get("fleet") as Fleet
+	_check(_beam_on_bay(), "robot2: the beam stands on the Bot Bay (%s)" % str(ob.waypoint_target()))
+	ld = await _open_bay()
+	if ld == null:
+		return
+	await _shot("robot2_bay")
+	for k: int in 3:
+		await _click(_price_tag(ld, "build_scoopie"))
+		if fl.robot_total() > n0:
+			break
+		await tree.create_timer(0.5).timeout
+	_check(fl.robot_total() == n0 + 1, "robot2: clicking the Scoopie's price tag builds the second robot (%d)" % fl.robot_total())
+	await _close_bay()
+	var moved: bool = await _wait_step_not("robot2", 4.0)
+	_check(moved, "robot2 done: the card moves on (%s)" % _step_id())
+
+
+static func _part_map() -> void:
+	GameState.flags.erase("map_seen")
+	if not await _goto("map"):
+		return
+	await tree.create_timer(0.6).timeout
+	var c: Array[String] = _card()
+	_check(c[0] == "Look at the map" and c[1].contains(Settings.glyph("open_globe")), "map: the card says Look at the map with its key (%s)" % str(c))
+	await _reload("map, not looked yet", func() -> Dictionary: return {"seen": GameState.flags.get("map_seen", false)})
+	var sv: Variant = so.layers.survey if so.layers else null
+	await _tap("open_globe")
+	await tree.create_timer(0.8).timeout
+	_check(sv != null and bool((sv as Object).get("is_open")), "map: the map key opens the map")
+	_check(bool(GameState.flags.get("map_seen", false)), "map: opening it is remembered (flags.map_seen)")
+	await _shot("map_open")
+	await _tap("open_globe")
+	await tree.create_timer(0.8).timeout
+	if sv != null and bool((sv as Object).get("is_open")):
+		await _tap("pause")
+		await tree.create_timer(0.8).timeout
+	_check(sv == null or not bool((sv as Object).get("is_open")), "map: the same key closes it")
+	var moved: bool = await _wait_step_not("map", 4.0)
+	_check(moved, "map done: the card moves on (%s)" % _step_id())
+
+
+static func _part_shuttle() -> void:
+	var os_: OrbitSites = OrbitSites.of(w)
+	# The state before: no rocket was ever built or flown, WREN has not asked for one.
+	# [v10pace] Base 2 comes right before the shuttle: step back to the map step so the shuttle
+	# step has not started yet (it is what sets shuttle_plans).
+	GameState.flags.erase("map_seen")
+	await _goto("map")
+	GameState.flags.erase("shuttle_plans")
+	await tree.create_timer(1.0).timeout
+	_check(not Hub.rocket_built() and not os_.rocket_unlocked() and not os_.rocket_spot.visible, "shuttle: no rocket stands on the pad before it is built")
+	_check(not HubBuilds.listed(w, "shuttle"), "shuttle: the Build tab does not list it before WREN asks")
+	var spot: Node3D = w.get_node_or_null("BuildSpot_shuttle") as Node3D
+	_check(spot != null and not spot.visible, "shuttle: its spot is not marked yet")
+	_check(not ob.chain.slice(0, ob.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find("shuttle")).any(func(d: Dictionary) -> bool: return str(d.get("key", "")) in ["hubs_seen", "hubs_woken"]),
+		"shuttle: no 'Fly to' or 'Wake' step stands before 'Build the shuttle'")
+	GameState.flags["map_seen"] = true
+	var cost: Dictionary = YardBuilds.def("shuttle").get("cost", {})
+	_set_money(200.0, 10.0)
+	var stats0: Dictionary = GameState.stats.duplicate()  # [v10snd] what paid, if the count is off
+	_toasts.clear()
+	# [v9a] Every cube payment in these seconds, with the script line that made it (CI: the card
+	# read 1.42K two seconds after the walk set 200).
+	var pays: Array[String] = []
+	var last: Array[float] = [200.0]
+	var paid: Array[float] = [0.0]  # what the game paid since the 200 were set
+	var on_pay: Callable = func(id: String, v: BigNum) -> void:
+		if id != "cubes":
+			return
+		var dv: float = v.to_float() - last[0]
+		paid[0] += dv
+		if absf(dv) < 0.5:
+			last[0] = v.to_float()
+			return
+		var from: Array[String] = []
+		for f: Dictionary in get_stack():
+			var src: String = str(f.get("source", "")).get_file()
+			if src in ["GameState.gd", "walk_home.gd"] and from.is_empty():
+				continue
+			from.append("%s:%d" % [src, int(f.get("line", 0))])
+			if from.size() >= 4:
+				break
+		pays.append("%+.2f at frame %d from %s" % [v.to_float() - last[0], Engine.get_physics_frames(), " < ".join(from)])
+		last[0] = v.to_float()
+	EventBus.currency_changed.connect(on_pay)
+	if not await _goto("shuttle"):
+		return
+	await tree.create_timer(1.0).timeout
+	var c: Array[String] = _card()
+	_check(c[0] == "Build the shuttle" and c[1].contains("Garden Row"), "shuttle: the card says Build the shuttle and why (%s)" % str(c))
+	_check(bool(GameState.flags.get("shuttle_plans", false)) and HubBuilds.listed(w, "shuttle"), "shuttle: the step lists the Shuttle in the Build tab")
+	_check(spot != null and is_instance_valid(spot) and spot.visible and spot.global_position.distance_to(os_.sm.pad_xf(0).origin) < 1.0, "shuttle: its spot on the launch pad is marked")
+	_check(ob.step_price() == cost, "shuttle: the card shows its price (%s)" % str(ob.step_price()))
+	var pr: Array = ob.progress()
+	# [v9a] The 200 the walk set plus what the game paid since, as the card writes it. CI read
+	# "1.42K / 2K" here (1,421.75 cubes): the game pays while the card is read (a start-area hex a
+	# robot finishes pays 221.75 at once with its field notes, 25 more for its first level; a Lumi
+	# level pays 30 s of income up to 0.4% of all cubes earned). The old check wanted 200-400 and
+	# read "1.42K" as 1.42.
+	var price_c: float = float(cost.get("cubes", 0.0))
+	var want: String = "%s / %s" % [Currencies.have_text(200.0 + paid[0]), Settings.fmt(BigNum.from_float(price_c))]
+	_check(str(pr[1]) == want and 200.0 + paid[0] < price_c, "shuttle: the card counts the cubes saved toward it (%s; 200 set, %+.2f paid by the game since)" % [str(pr), paid[0]])
+	if true:  # [v9a] always: what pays in these seconds, on a passing run too
+		var diff: Dictionary = {}
+		for k: Variant in GameState.stats:
+			if (GameState.stats[k] is float or GameState.stats[k] is int) and float(GameState.stats[k]) != float(stats0.get(k, 0.0)):
+				diff[k] = float(GameState.stats[k]) - float(stats0.get(k, 0.0))
+		print("[walk-home] note: shuttle: cubes now %.0f; stats that moved since the 200 were set: %s; toasts: %s; payments: %s" % [GameState.get_currency("cubes").to_float(), str(diff), str(_toasts), str(pays)])
+	EventBus.currency_changed.disconnect(on_pay)
+	await _shot("shuttle_start")
+	await _reload("shuttle, saving up", func() -> Dictionary: return {"plans": GameState.flags.get("shuttle_plans", false), "built": Hub.rocket_built()})
+	os_ = OrbitSites.of(w)
+	var ld: ListDetail = await _open_bench()
+	if ld == null:
+		return
+	_check(_tab() == "build" and str(ld.get("_sel")) == "shuttle", "shuttle: the bench opens on the Shuttle in the Build tab (%s / %s)" % [_tab(), str(ld.get("_sel"))])
+	await _click(_price_tag(ld, "shuttle"))
+	_check(not Hub.rocket_built(), "shuttle: a click while short builds nothing")
+	_set_money(float(cost.get("cubes", 0.0)), float(cost.get("parts", 0.0)))
+	var stats_b: Dictionary = GameState.stats.duplicate()
+	await tree.create_timer(0.4).timeout
+	await _shot("shuttle_bench")
+	for k: int in 3:
+		await _click(_price_tag(ld, "shuttle"))
+		if Hub.rocket_built():
+			break
+		await tree.create_timer(0.5).timeout
+	_check(Hub.rocket_built(), "shuttle: clicking its price tag builds it")
+	# [v9a] The game took the price, and what is left is what it paid since (robots, field notes, a
+	# hex: a run read 1,322 left right after the click, earned in that second).
+	var left_c: float = GameState.get_currency("cubes").to_float()
+	_check(absf(-_since_set_sum[0] - float(cost.get("cubes", 0.0))) < 1.0 and absf(left_c - _since_set_sum[1]) < 1.0,
+		"shuttle: the price is paid (%.2f taken, %.2f left, %.2f earned since; every change since the walk set the price: %s)" % [-_since_set_sum[0], left_c, _since_set_sum[1], str(_since_set)])
+	await tree.create_timer(1.5).timeout
+	_check(not _up().is_open, "shuttle: the workbench closes by itself so the build is seen")
+	_check(ShuttleBuild.building, "shuttle: it is being put together on the pad")
+	var pad: Vector3 = os_.sm.pad_xf(0).origin
+	_stand(so.globe.terrain.ground((pad + _north(pad) * -5.0).normalized()), pad)
+	await _frames(4)
+	_check(not ("ocket" in str(w.call("interact_prompt", p))), "shuttle: no way to fly while it is still being built (%s)" % str(w.call("interact_prompt", p)))
+	await _shot("shuttle_building")
+	for k: int in 80:
+		if not ShuttleBuild.building:
+			break
+		await tree.create_timer(0.25).timeout
+	_check(not ShuttleBuild.building and os_.rocket_spot.visible and os_.hop.parked() != null and os_.hop.parked().visible, "shuttle: it stands finished on the pad")
+	_check(w.get_node_or_null("BuildSpot_shuttle") == null, "shuttle: the spot's marks are gone")
+	_check(_said("Shuttle"), "shuttle: a line says it is built (%s)" % str(_toasts))
+	await tree.create_timer(0.6).timeout
+	_check("ocket" in str(w.call("interact_prompt", p)), "shuttle: now E at the rocket answers (%s)" % str(w.call("interact_prompt", p)))
+	await _shot("shuttle_built")
+	var moved: bool = await _wait_step_not("shuttle", 4.0)
+	_check(moved and _step_id() == "hub_fly_2", "shuttle done: only now the card says to fly (%s)" % _step_id())
+	# [v9a] CI and two of three runs here: 1.3K-2.7K cubes in the seconds after the build, none of it
+	# one payment of 300 or more. Each change since the walk set the price, with its payer.
+	var moved_b: Dictionary = {}
+	for k: Variant in GameState.stats:
+		if (GameState.stats[k] is float or GameState.stats[k] is int) and float(GameState.stats[k]) != float(stats_b.get(k, 0.0)):
+			moved_b[k] = float(GameState.stats[k]) - float(stats_b.get(k, 0.0))
+	print("[walk-home] note: shuttle built: cubes %.2f; every change since the price was set: %s; stats moved: %s" % [GameState.get_currency("cubes").to_float(), str(_since_set), str(moved_b)])
+	await _reload("shuttle just built", func() -> Dictionary: return {"built": Hub.rocket_built()})
+	os_ = OrbitSites.of(w)
+	await tree.create_timer(1.0).timeout
+	_check(os_.rocket_spot.visible, "shuttle: it still stands after a reload")
+
+
+# --- tower2 ----------------------------------------------------------------------------------------
+
+static func _part_tower2() -> void:
+	if not await _goto("tower2"):
+		return
+	await _shot("tower2_start")
+	await _reload("tower2", func() -> Dictionary: return {"tier": SignalTower.tier()})
+	var cost: Dictionary = SignalTower.next_cost()
+	_set_money(float(cost.get("cubes", 0.0)), float(cost.get("parts", 0.0)))
+	var ld: ListDetail = await _open_bench()
+	if ld == null:
+		return
+	if str(ld.get("_sel")) != "hb_signal_tower":
+		var fw: Fleet = _up().get("fleet") as Fleet
+		var uw: Node = fw.world if fw else null
+		print("[walk-home] note: bench fleet.world valid %s, is w %s, its tower %s, available tiered %s" % [str(is_instance_valid(uw)), str(uw == w), str(uw.get_node_or_null("SignalTower") != null) if is_instance_valid(uw) else "-", str(HubBuilds.available(uw, "tiered").map(func(e: Dictionary) -> String: return str(e["id"]))) if is_instance_valid(uw) else "-"])
+		print("[walk-home] note: tower row: listed %s, kind %s, built %s, hidden %s, node %s, tier %d/%d, bench world is this world %s, target %s" % [str(HubBuilds.listed(w, "signal_tower")), HubBuilds.kind_now("signal_tower"), str(HubBuilds.is_built(w, "signal_tower")), str(Homeward.hidden_builds()), str(w.get_node_or_null("SignalTower") != null), SignalTower.tier(), SignalTower.max_tier(), str(uw == w), str(ob.step_target(ob.current()))])
+	_check(str(ld.get("_sel")) == "hb_signal_tower", "tower2: the bench opens on the tower row (%s)" % str(ld.get("_sel")))
+	await _shot("tower2_bench")
+	await _click(_price_tag(ld, "hb_signal_tower"))
+	_check(SignalTower.tier() >= 2, "tower2: clicking its price tag boosts the tower (tier %d)" % SignalTower.tier())
+	await _close_bench()
+	var moved: bool = await _wait_step_not("tower2", 4.0)
+	_check(moved, "tower2 done: the card moves on (%s)" % _step_id())
+
+
+# --- research1: the Research Desk first, then a project ------------------------------------------
+
+static func _part_research1() -> void:
+	GameState.stats["research_done"] = 0.0
+	var hub: Hub = w.get("hub") as Hub
+	if hub.level < 2:  # (dev) base 2 comes before this step; the desk waits for it
+		_set_money(1500.0, 150.0)
+		hub.upgrade()
+	if not await _goto("research1"):
+		return
+	_set_money(100.0, 0.0)
+	await tree.create_timer(0.6).timeout
+	_check(_step_id() == "research1", "research1: does not complete by itself (research_done=%s)" % str(GameState.stats.get("research_done", 0.0)))
+	var c: Array[String] = _card()
+	_check(c[1].contains("Research Desk") and c[3].contains("/"), "research1: no Research tab yet: the card says Research Desk first, with its price (%s)" % str(c))
+	await _shot("research1_start")
+	_set_money(2850.0, 60.0)  # the desk, and a first project (250)
+	var ld: ListDetail = await _open_bench()
+	if ld == null:
+		return
+	_check(_tab() == "patch" and str(ld.get("_sel")) == "bench_tier", "research1: the bench opens on the Research Desk (%s / %s)" % [_tab(), str(ld.get("_sel"))])
+	await _shot("research1_bench")
+	await _click(_price_tag(ld, "bench_tier"))
+	_check(BenchTiers.tier() >= 3, "research1: clicking its price tag adds the desk (tier %d)" % BenchTiers.tier())
+	await tree.create_timer(1.2).timeout  # the tabs refresh once a second
+	var rb: Button = _tab_button("research")
+	_check(rb != null and rb.visible, "research1: the Research tab is there now")
+	if rb == null:
+		return
+	await _click(rb)
+	ld = _list()
+	var pick: String = ""
+	for it: Dictionary in BenchLists.research():
+		if str(it.get("state", "")) == "ready":
+			pick = str(it["id"])
+			break
+	_check(pick != "", "research1: a project you can pay for (cubes %s)" % Settings.fmt(GameState.get_currency("cubes")))
+	if pick == "":
+		return
+	if not ld.select_id(pick):
+		_check(false, "research1: %s not listed" % pick)
+		return
+	await _frames(3)
+	var pick_cat: String = str(Research.def(pick).get("branch", ""))
+	await _click(_price_tag(ld, pick))
+	if Research.active().is_empty() and not Research.has(pick):
+		print("[walk-home] note: %s after the click: status %s, row %s, sel %s, cat %s, can_start %s (%s), toasts %s" % [pick, Research.status(pick), str(_row(ld, pick).get("state", "?")), str(ld.get("_sel")), str(ld.get("_cat")), str(Research.can_start(pick)), Research.reason(pick), str(_toasts.slice(-3))])
+	_check(not Research.active().is_empty() or Research.has(pick), "research1: clicking a project's price tag starts it (%s, %s)" % [pick, pick_cat])
+	await _shot("research1_running")
+	await _close_bench()
+	await _reload("research1, a project running", func() -> Dictionary: return {"active": Research.active_id(), "left_s": Research.remaining(), "tier": BenchTiers.tier()})
+	Research.now_override = Research.now() + Research.duration(pick) + 1.0  # (dev) its research time passes
+	await tree.create_timer(1.2).timeout
+	Research.now_override = -1.0
+	_check(float(GameState.stats.get("research_done", 0.0)) >= 1.0, "research1: the project finishes")
+	var moved: bool = await _wait_step_not("research1", 4.0)
+	_check(moved, "research1 done: the card moves on (%s)" % _step_id())
+
+
+# --- base3 and the Requests board ------------------------------------------------------------
+
+static func _part_base3() -> void:
+	var hub: Hub = w.get("hub") as Hub
+	if not await _goto("base3"):
+		return
+	_set_money(9000.0, 350.0)
+	await _shot("base3_start")
+	await _reload("base3", func() -> Dictionary: return {"level": (w.get("hub") as Hub).level})
+	hub = w.get("hub") as Hub
+	var ld: ListDetail = await _open_bench()
+	if ld == null:
+		return
+	_check(str(ld.get("_sel")) == "hub_level", "base3: the bench opens on the base row (%s)" % str(ld.get("_sel")))
+	_toasts.clear()
+	await _click(_price_tag(ld, "hub_level"))
+	_check(hub.level == 3, "base3: clicking the price tag builds level 3 (level %d)" % hub.level)
+	await _close_bench()
+	var moved: bool = await _wait_step_not("base3", 4.0)
+	_check(moved, "base3 done: the card moves on (%s)" % _step_id())
+	await tree.create_timer(1.5).timeout
+	_check(not _said("New at the workbench") and _said("Request Board"), "base3: the Requests line points at the Request Board, not a tab that isn't there (%s)" % str(_toasts))
+	_set_money(8000.0, 150.0)
+	ld = await _open_bench()
+	if ld == null:
+		return
+	if not ld.select_id("bench_tier"):
+		_check(false, "base3: no Request Board row")
+		return
+	await _frames(3)
+	await _click(_price_tag(ld, "bench_tier"))
+	_check(BenchTiers.tier() >= 4, "base3: clicking the Request Board's price tag adds it (tier %d)" % BenchTiers.tier())
+	await tree.create_timer(1.2).timeout
+	var cb: Button = _tab_button("contracts")
+	_check(cb != null and cb.visible, "base3: the Requests tab is there")
+	if cb:
+		await _click(cb)
+	await tree.create_timer(1.2).timeout
+	_check(_tab() == "contracts" and Contracts.unlocked(), "base3: the Requests tab opens (%s)" % _tab())
+	var offers: int = 0
+	for s: Variant in Contracts.slots():
+		if s is Dictionary and str((s as Dictionary).get("state", "")) in ["offer", "open", "active"]:
+			offers += 1
+	_check(offers > 0, "base3: the board has a first request (%d)" % offers)
+	await _shot("requests_tab")
+	await _close_bench()
+	var board: Callable = func() -> Dictionary:
+		var ids: Array[String] = []
+		for sl: Variant in Contracts.slots():
+			if sl is Dictionary:
+				ids.append("%s:%s" % [str((sl as Dictionary).get("state", "")), str((sl as Dictionary).get("tpl", ""))])
+		return {"open": Contracts.unlocked(), "tier": BenchTiers.tier(), "slots": ",".join(ids)}
+	await _reload("Request Board bought, no request taken", board)
+	ld = await _open_bench()
+	cb = _tab_button("contracts")
+	_check(cb != null and cb.visible, "after the reload the Requests tab is there")
+	if cb:
+		await _click(cb)
+	await tree.create_timer(1.2).timeout
+	_check(_tab() == "contracts", "after the reload the Requests tab opens (%s)" % _tab())
+	await _close_bench()
+
+
+# --- The workbench by real input -------------------------------------------------------------------
+
+static func _up() -> UpgradesScreen:
+	return w.get("upgrades") as UpgradesScreen
+
+
+static func _tab() -> String:
+	return str(_up().get("_tab"))
+
+
+static func _list() -> ListDetail:
+	return _up().get("_panel") as ListDetail
+
+
+## Walks (puts) Lumi at the bench and presses the interact key: the workbench opens.
+static func _open_bench() -> ListDetail:
+	if _up().is_open:
+		await _close_bench()
+	var b: Vector3 = so.bench_position()
+	var gp: Vector3 = so.globe.terrain.ground(b.normalized())
+	var off: Vector3 = (so.globe.terrain.ground((b + _north(b) * 2.0).normalized()) - gp)
+	_stand(gp + off.normalized() * 1.8, b)
+	await _frames(4)
+	await _tap("interact")
+	for k: int in 12:
+		if _up().is_open:
+			break
+		await tree.create_timer(0.1).timeout
+	_check(_up().is_open, "the interact key at the bench opens the workbench (near=%s)" % str(so.near_bench()))
+	if not _up().is_open:  # what took the key instead
+		var ia: Interactables = w.get("interactables") as Interactables
+		print("[walk-home] note: bench shut: prompt '%s', interactable '%s', carrying %d, can dig %s, input %s, paused %s, Lumi %.1f m from the bench" % [
+			so.interact_prompt(p), ia.prompt(p.global_position) if ia else "-", p.carried.size(), str(p.detector != null and p.detector.can_dig()),
+			str(p.input.enabled) if p.input is PlayerInput else "?", str(tree.paused), p.global_position.distance_to(so.bench_position())])
+	await tree.create_timer(0.6).timeout  # the unfold
+	return _list()
+
+
+static func _close_bench() -> void:
+	if _up().is_open:
+		await _click(_up().get("_close_btn") as Control)
+	_check(not _up().is_open, "the Close button closes the workbench")
+	await tree.create_timer(0.5).timeout
+
+
+static func _tab_button(id: String) -> Button:
+	var bs: Array = _up().get("_tab_buttons")
+	for i: int in UpgradesScreen.TABS.size():
+		if str(UpgradesScreen.TABS[i]["id"]) == id and i < bs.size():
+			return bs[i] as Button
+	return null
+
+
+static func _row(ld: ListDetail, id: String) -> Dictionary:
+	if ld == null:
+		return {}
+	for it: Dictionary in (ld.get("_items") as Array):
+		if str(it.get("id", "")) == id:
+			return it
+	return {}
+
+
+## The price square on a row (the owner's buy button: a click on the row only selects it).
+static func _price_tag(ld: ListDetail, id: String) -> Control:
+	if ld == null:
+		return null
+	ld.refresh()
+	var b: Button = (ld.get("_rows") as Dictionary).get(id) as Button
+	if b == null:
+		_check(false, "no row %s on the %s tab" % [id, _tab()])
+		return null
+	return (b.get_meta("parts") as Array)[3] as Control
+
+
+## A left click (press and release) at the control's place on screen, through the window.
+## [v9a] Process frames: the GUI picks the hovered control and presses buttons on process frames;
+## at a low frame rate several physics frames pass inside one, and a click went in before the
+## pointer had registered (CI, --fixed-fps 10).
+static func _pframes(n: int) -> void:
+	for k: int in n:
+		await tree.process_frame
+
+
+static func _click(c: Control) -> void:
+	if c == null:
+		return
+	await _pframes(2)
+	var vp: Viewport = c.get_viewport()
+	var at: Vector2 = (c.get_global_transform_with_canvas() * (c.size * 0.5))
+	var win: Vector2 = tree.root.get_final_transform() * at
+	var mv := InputEventMouseMotion.new()
+	mv.position = win
+	mv.global_position = win
+	Input.parse_input_event(mv)
+	Input.flush_buffered_events()
+	await _pframes(2)
+	var hov: Control = vp.gui_get_hovered_control()
+	if hov != c and not c.is_ancestor_of(hov) and not (hov != null and hov.is_ancestor_of(c) and hov.mouse_filter == Control.MOUSE_FILTER_PASS):
+		print("[walk-home] note: the mouse over %s finds %s" % [c.name, str(hov.get_path()) if hov else "nothing"])
+	for down: bool in [true, false]:
+		var ev := InputEventMouseButton.new()
+		ev.button_index = MOUSE_BUTTON_LEFT
+		ev.pressed = down
+		ev.position = win
+		ev.global_position = win
+		Input.parse_input_event(ev)  # once, through the window as a real click (it also sets the button state rows read)
+		Input.flush_buffered_events()
+		await _pframes(2)
+	await tree.create_timer(0.3).timeout
+
+
+# --- Small helpers (as tools/seed_walk.gd) -------------------------------------------------------
+
+static func _said(t: String) -> bool:
+	for s: String in _toasts:
+		if not s.begins_with("Achievement") and t.to_lower() in s.to_lower():
+			return true
+	return false
+
+
+static func _check(ok: bool, what: String) -> void:
+	print("[walk-home] %s %s" % ["PASS" if ok else "FAIL", what])
+	if not ok:
+		_fails.append(what)
+
+
+static func _frames(n: int) -> void:
+	for k: int in n:
+		await tree.physics_frame
+
+
+static func _event(action: String) -> InputEvent:
+	for ev: InputEvent in InputMap.action_get_events(action):
+		if ev is InputEventMouseButton or ev is InputEventKey:
+			return ev.duplicate()
+	return null
+
+
+static func _send(action: String, down: bool) -> void:
+	var ev: InputEvent = _event(action)
+	if ev == null:
+		_check(false, "no key or button bound to %s" % action)
+		return
+	if ev is InputEventMouseButton:
+		(ev as InputEventMouseButton).pressed = down
+	elif ev is InputEventKey:
+		(ev as InputEventKey).pressed = down
+	Input.parse_input_event(ev)
+	Input.flush_buffered_events()
+
+
+static func _tap(action: String) -> void:
+	await tree.physics_frame
+	_send(action, true)
+	await tree.create_timer(0.1).timeout
+	_send(action, false)
+	await _frames(2)
+
+
+static func _hold(action: String, secs: float) -> void:
+	await tree.physics_frame
+	_send(action, true)
+	await tree.create_timer(secs).timeout
+	_send(action, false)
+	await _frames(2)
+
+
+static func _stand(pos: Vector3, look: Vector3) -> void:
+	var gp: Vector3 = so.globe.terrain.ground(pos.normalized())
+	var up: Vector3 = gp.normalized()
+	var fwd: Vector3 = look - gp
+	fwd = (fwd - up * fwd.dot(up)).normalized()
+	p.place_on_sphere(gp, fwd)
+
+
+static func _north(at: Vector3) -> Vector3:
+	return -SphereGrid.frame(at.normalized()).z
+
+

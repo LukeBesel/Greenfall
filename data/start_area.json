@@ -1,0 +1,9 @@
+{
+  "_doc": "The start area round base 1 (Verdance's Landing Yard). See docs/ADJUSTING.md. radius_m: hexes whose centre is this close to the start pad hold only junk Lumi lifts at the start, and no big wreck, drum, barrel or heap stands there. station_radius_m: [v9c] the same rule round every other hub's pad (the far stations), so a player who never bought Lift Strength can still clean a station's hexes (0 = off). leftover_from: a hex this far cleaned whose last pieces are all hidden or out of reach counts as clean. heal_from: a saved start-area hex this far cleaned but stuck heals once on load.",
+  "radius_m": 50.0,
+  "station_radius_m": 85.0,
+  "leftover_from": 0.8,
+  "heal_from": 0.9,
+  "greenhouse_half": [3.7, 5.2],
+  "junk_look": ["drum", "barrel", "wreck", "car", "tyre", "fridge", "crate", "pallet", "tarp", "heap", "rubble"]
+}

@@ -1,0 +1,35 @@
+{
+ "_doc": "[v6life] How the world comes back to life where Lumi cleans (core/life_cfg.gd). _default holds every value; a planet block (verdance, ochre, ...) repeats only the keys it changes. Nothing here is saved: a change shows on the next start. See docs/ADJUSTING.md, \"The world coming back to life\". The sound bed that follows the ground is in data/sound.json, planets.<id>.ambience.life.",
+ "planets": {
+  "_default": {
+   "ground": {
+    "_doc": "green_per_level: how green a clean cell grows, per hex level 0..5 (0 = none, 1 = closed lush sward; 6 numbers). grow_s: seconds a freshly cleaned cell takes from bare to fully green. tufts_per_cell / tuft_rings: grass tufts per cell and rings of cells round Lumi that carry them, per quality preset Low..Ultra (4 numbers each). flower_share: share of tufts that are flowers. petals: flower colours.",
+    "green_per_level": [0.0, 0.34, 0.52, 0.72, 0.86, 1.0],
+    "grow_s": 340.0,
+    "tufts_per_cell": [70, 84, 100, 120],
+    "tuft_rings": [4, 4, 5, 5],
+    "flower_share": 0.14,
+    "petals": ["#faf5e6", "#ffdb4d", "#f59ec7", "#a899f2", "#ff994d"]
+   },
+   "town": {
+    "_doc": "Each city block rates the cells in and round it. swept_at: clean share for stage 1 (first windows glow at dusk). awake_at: clean share for stage 2 (street lamps on). planted_cells: planted cells (hex level 2+) that, with the block awake, make stage 3 (neon, string lights, shop windows). lit_windows: share of windows lit at dusk per stage 0..3 (4 numbers). lamps_at_stage / signs_at_stage: the stage that turns street lamps / signs and string lights on. ease_s: seconds a block's colour and windows take to follow a change.",
+    "swept_at": 0.55,
+    "awake_at": 0.9,
+    "planted_cells": 1,
+    "lit_windows": [0.0, 0.07, 0.22, 0.5],
+    "lamps_at_stage": 2,
+    "signs_at_stage": 3,
+    "ease_s": 7.0
+   },
+   "flutter": {
+    "_doc": "Butterflies by day, fireflies from dusk, over clean cells round Lumi. per_level: how many per cell at hex level 0..5 (6 numbers; about a third of the cells get none). max: most at once. rings: rings of cells round Lumi. colors: butterfly wing colours.",
+    "per_level": [0, 0, 1, 2, 2, 3],
+    "max": 24,
+    "rings": 4,
+    "colors": ["#ff9e26", "#f5f2d9", "#6699ff", "#ffd940", "#e673b8"]
+   }
+  },
+  "verdance": {},
+  "testworld": {"_doc": "[v7planet] Dev stub planet (docs/NEW_PLANET.md): only what differs from _default.", "ground": {"grow_s": 120, "petals": ["#ffd27a", "#ff9e5e", "#f4f1e8"]}, "flutter": {"colors": ["#ffcf6b", "#ffffff"]}}
+ }
+}

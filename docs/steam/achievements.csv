@@ -1,0 +1,72 @@
+api_name,display_name,description,hidden,set_by,progress_stat,progress_min,progress_max,game_id,icon_hint
+FIRST_SCOOP,First Scoop,Scoop your first piece of junk.,no,Client,,,,first_scoop,scoop
+HEX_1,Clean Slate,Clean your first hex.,no,Client,,,,hex_1,star
+HEX_10,Tidy Ten,Clean 10 hexes.,no,Client,HEXES_CLEANED,0,10,hex_10,star
+HEX_50,Half a Hundred,Clean 50 hexes.,no,Client,HEXES_CLEANED,0,50,hex_50,star
+HEX_100,Century of Hexes,Clean 100 hexes.,no,Client,HEXES_CLEANED,0,100,hex_100,star
+HEX_250,The Whole Yard,Clean 250 hexes.,no,Client,HEXES_CLEANED,0,250,hex_250,trophy
+CUBE_1,Bale Begins,Press your first bale.,no,Client,,,,cube_1,press
+CUBE_100,Bale Baron,Press 100 bales.,no,Client,CUBES_MADE,0,100,cube_100,press
+CUBE_1000,Mountain of Bales,"Press 1,000 bales.",no,Client,CUBES_MADE,0,1000,cube_1000,trophy
+PURE_10,Pure Intentions,Press 10 pure bales (one kind of junk only).,no,Client,,,,pure_10,sort
+PERFECT_1,Just Right,Press a perfect bale.,no,Client,,,,perfect_1,check
+PERFECT_50,Perfectionist,Press 50 perfect bales.,no,Client,PERFECT_CUBES,0,50,perfect_50,check
+LUMPY_10,Lumpy but Loved,Press 10 lumpy bales. They still count.,no,Client,,,,lumpy_10,junk
+EARN_1K,Pocket Change,"Earn 1,000 cubes in total.",no,Client,,,,earn_1k,data
+EARN_100K,Junk Tycoon,"Earn 100,000 cubes in total.",no,Client,,,,earn_100k,data
+EARN_1M,Million-Cube Planet,"Earn 1,000,000 cubes in total.",no,Client,,,,earn_1m,trophy
+KG_METAL,Heavy Metal,Clear 500 kg of scrap metal.,no,Client,,,,kg_metal,magnet
+KG_PLASTIC,Plastic Purge,Clear 200 kg of plastic.,no,Client,,,,kg_plastic,recycle
+KG_GLASS,Glass Act,Clear 200 kg of glass.,no,Client,,,,kg_glass,drop
+KG_RUBBER,Bounce Back,Clear 150 kg of rubber.,no,Client,,,,kg_rubber,junk
+KG_ELECTRONICS,Circuit Breaker,Clear 100 kg of electronics.,no,Client,,,,kg_electronics,chip
+KG_PAPER,Paper Trail,Clear 100 kg of paper and fabric.,no,Client,,,,kg_paper,book
+KG_TOTAL,A Tonne of Fun,"Clear 1,000 kg of junk.",no,Client,,,,kg_total,hopper
+KG_10T,Ten Tonnes Lighter,"Clear 10,000 kg of junk.",no,Client,,,,kg_10t,trophy
+UPGRADE_1,Tinkerer,Buy your first upgrade.,no,Client,,,,upgrade_1,gear
+UPGRADE_50,Fully Kitted,Buy 50 upgrade levels.,no,Client,UPGRADES_BOUGHT,0,50,upgrade_50,gear
+ROBOT_1,Not Alone,Build your first robot.,no,Client,,,,robot_1,bot
+ROBOT_5,Little Crew,Build 5 robots.,no,Client,ROBOTS_BUILT,0,5,robot_5,bot
+ROBOT_15,Fleet Commander,Build 15 robots.,no,Client,ROBOTS_BUILT,0,15,robot_15,swarm
+ROBOT_TYPES,Whole Family,Build every kind of robot.,no,Client,,,,robot_types,swarm
+SEED,The First Seed,Find the first seed.,no,Client,,,,seed,sprout
+PLANT_1,Green Thumb,Plant a seed.,no,Client,,,,plant_1,sprout
+PLANT_100,Gardener,Plant 100 seeds.,no,Client,PLANTS_PLANTED,0,100,plant_100,leaf
+BLOOM_50,In Bloom,See 50 plants bloom.,no,Client,PLANTS_BLOOMED,0,50,bloom_50,flower
+RESTORED_1,Alive Again,Fully restore a hex.,no,Client,,,,restored_1,tree
+RESTORED_25,Meadowmaker,Fully restore 25 hexes.,no,Client,HEXES_RESTORED,0,25,restored_25,tree
+SHARD_1,Memory Keeper,Read a memory shard.,no,Client,,,,shard_1,book
+SHARD_ALL,Every Story,Read all eight memory shards.,no,Client,,,,shard_all,book
+RESEARCH_1,Curious,Finish your first research.,no,Client,,,,research_1,data
+RESEARCH_10,Lab Coat,Finish 10 research projects.,no,Client,,,,research_10,data
+RESEARCH_ALL,Know-It-All,Finish every research project.,no,Client,,,,research_all,trophy
+TRACTOR,Beam Me Up,Research the Tractor Beam.,no,Client,,,,tractor,tractor
+ROCKET_CARGO,Special Delivery,Research Rocket Cargo.,no,Client,,,,rocket_cargo,rocket
+DATA_500,Data Hoarder,Collect 500 field data.,no,Client,,,,data_500,data
+DISTANCE_1K,Long Way Round,Roll 1 km.,no,Client,DISTANCE_M,0,1000,distance_1k,map
+DISTANCE_10K,Marathon Treads,Roll 10 km.,no,Client,DISTANCE_M,0,10000,distance_10k,map
+TIME_1H,Settling In,Spend an hour on the planet.,no,Client,MINUTES_PLAYED,0,60,time_1h,star
+HUB_2,Home Improvements,Upgrade the hub.,no,Client,,,,hub_2,gear
+HUB_5,Hub Sweet Hub,Reach hub level 5.,no,Client,,,,hub_5,rocket
+PARTS_10,Magpie,Dig up 10 robot parts.,no,Client,,,,parts_10,chip
+AIR,Breath of Fresh Air,Filter 500 units of dusty air.,no,Client,,,,air,wave
+CODEX_20,Naturalist,Fill in 20 codex entries.,no,Client,,,,codex_20,book
+LANDMARKS_ALL,Sightseer,Visit every kind of landmark.,no,Client,,,,landmarks_all,map
+ACH_25,Overachiever,Unlock 25 achievements.,no,Client,,,,ach_25,trophy
+CURIO_5,Nosy Parker,Find 5 curiosities.,no,Client,EGGS_FOUND,0,5,curio_5,star
+CURIO_15,Cabinet of Curiosities,Find 15 curiosities.,no,Client,EGGS_FOUND,0,15,curio_15,star
+CURIO_ALL,Every Last Secret,Find all 29 curiosities on Verdance.,no,Client,EGGS_FOUND,0,29,curio_all,trophy
+WILD_CURIO,Off the Beaten Path,Find a curiosity that only lives in the wilderness.,no,Client,,,,wild_curio,map
+WILD_CURIO_ALL,Wild at Heart,Find all six wilderness curiosities.,no,Client,,,,wild_curio_all,map
+BIOME_1,Off-Road,Land at a wilderness base.,no,Client,,,,biome_1,rocket
+BIOME_3,Postcards From Verdance,Visit wilderness bases in three different biomes.,no,Client,,,,biome_3,rocket
+CAMPFIRE,Sit a While,Rekindle the last campfire.,yes,Client,,,,campfire,flower
+BLOOM_MEADOW,First Meadow,Reach 25 Thriving hexes across Verdance.,no,Client,,,,bloom_meadow,flower
+BLOOM_DISTRICT,A District in Bloom,Bring one district to 60% Thriving.,no,Client,,,,bloom_district,tree
+BLOOM_VERDANCE,Verdance Bloom,"Wake the Cradle: three districts in bloom, or 1% of the planet reclaimed.",no,Client,,,,bloom_verdance,tree
+BLOOM_EVERGREEN,Evergreen,"Twelve districts in bloom, or 3% of the planet reclaimed.",no,Client,,,,bloom_evergreen,leaf
+ARK_1,Seed Ark,Complete a Seed Ark wave.,no,Client,,,,ark_1,sprout
+ARK_10,Tender of Worlds,Complete 10 Seed Ark waves.,no,Client,ARK_WAVES,0,10,ark_10,sprout
+OUTPOST_1,Frontier Scale,Repair a ruined outpost.,no,Client,,,,outpost_1,map
+OUTPOST_3,Outpost Network,Repair 3 outposts.,no,Client,OUTPOSTS_REPAIRED,0,3,outpost_3,map
+OUTPOST_CHARGE,Pit Stop,Build a recharge pad at an outpost.,no,Client,,,,outpost_charge,gear

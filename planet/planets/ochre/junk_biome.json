@@ -1,0 +1,44 @@
+{
+  "_doc": "[planet-ochre] Ochre's junk biome set (same shape as data/junk.json biomes; OchreEnv.prepare registers it as Economy.biome_sets[kind.junk_biome]). ochre_* models are procedural (planet/planets/ochre/props.gd).",
+  "name": "Ochre Pit",
+  "swap": 0.74,
+  "shore_swap": 0.74,
+  "coat": [0.86, 0.6, 0.36, 0.5],
+  "grass_tint": [0.95, 1.02, 0.78],
+  "ground_tint": [0.78, 0.52, 0.3, 0.5],
+  "hills": [0.9, 0.6, 0.4],
+  "models": {
+    "metal": [
+      {"id": "ochre_drill_bit", "vol": 1.2, "w": 2.0, "lie": 0.55},
+      {"id": "ochre_drill_rod", "vol": 1.4, "w": 1.6, "lie": 0.97},
+      {"id": "ochre_bucket_tooth", "vol": 0.9, "w": 1.4, "lie": 0.85},
+      {"id": "metal_jerrycan", "vol": 1.8, "w": 0.5, "lie": 0.5},
+      {"id": "rusted_spade_01", "vol": 0.7, "w": 0.5, "lie": 0.95}
+    ],
+    "paper": [
+      {"id": "ochre_crate", "vol": 2.0, "w": 2.0, "lie": 0.1},
+      {"id": "ochre_crate_open", "vol": 1.8, "w": 1.2, "lie": 0.1},
+      {"id": "ochre_ore_sack", "vol": 1.0, "w": 1.8, "lie": 0.3}
+    ],
+    "plastic": [
+      {"id": "ochre_tailings", "vol": 1.4, "w": 2.0, "lie": 0.0},
+      {"id": "ochre_tailings_b", "vol": 1.2, "w": 2.0, "lie": 0.0},
+      {"id": "ochre_ore_sack", "vol": 1.0, "w": 1.0, "lie": 0.3},
+      {"id": "plastic_jerrycan", "vol": 1.6, "w": 0.6, "lie": 0.4}
+    ],
+    "glass": [
+      {"id": "ochre_tailings_b", "vol": 1.2, "w": 2.0, "lie": 0.0},
+      {"id": "jug_01", "vol": 0.8, "w": 0.6, "lie": 0.6}
+    ],
+    "rubber": [
+      {"id": "old_tyre", "vol": 3.0, "w": 2.0, "lie": 0.9}
+    ]
+  },
+  "landmarks": [
+    {"id": "old_drill_press", "count": 2},
+    {"id": "old_military_compressor", "count": 2},
+    {"id": "Barrel_01", "count": 4},
+    {"id": "propane_tank", "count": 2},
+    {"id": "small_lpg_tank", "count": 1}
+  ]
+}
