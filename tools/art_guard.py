@@ -184,7 +184,7 @@ def static_census(root=ROOT):
     total = 0
     by_dir = {}
     for dp, dn, fn in os.walk(art):
-        dn[:] = [d for d in dn if not d.startswith(".")]
+        dn[:] = [d for d in dn if not d.startswith(".") and not os.path.exists(os.path.join(dp, d, ".gdignore"))]
         for f in fn:
             p = os.path.join(dp, f)
             rel = os.path.relpath(p, root)
