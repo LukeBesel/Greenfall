@@ -146,11 +146,15 @@ static func check_all(now_unix: float = -1.0) -> Array[String]:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	EventBus.hex_restored.connect(func(_h: int) -> void: GameState.inc_stat("hexes_restored"))
+	EventBus.hex_restored.connect(_on_hex_restored)  # [v9a] a method: a lambda using no member outlived the node (one more per world load)
 	EventBus.research_completed.connect(func(_id: String) -> void: _t = 1.0)
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _t = maxf(_t, 0.7))
 	Designs.dev_hooks(world)  # [skins] --design / --designs-all / --design-unlock
 	LumiStyle.dev_hooks(world)  # [style] --lumi-random / --lumi-set / --lumi-builder
+
+
+func _on_hex_restored(_h: int) -> void:
+	GameState.inc_stat("hexes_restored")
 
 
 func _process(delta: float) -> void:

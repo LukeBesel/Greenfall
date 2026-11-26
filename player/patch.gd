@@ -1023,6 +1023,8 @@ func _update_hints(delta: float) -> void:
 		prompt = "dig"
 	if world and world.has_method("interact_prompt") and prompt == "":
 		prompt = world.interact_prompt(self)
+	if _cubing > 0.0:  # [v9a] E waits out the press (_handle_interact): offer nothing meanwhile. With the
+		prompt = ""  # auto-compactor the prompt said "Repair outpost" while E did nothing (travel walk).
 	model.look_toward(look)
 	_update_aim()
 	# Idle: after a while Patch shakes off rust flakes; much later he dozes off.

@@ -993,6 +993,15 @@ static func _at_outpost(so: SliceOrbit, site: int) -> int:
 ## E at the nearest ruined outpost with its price: repaired.
 static func _outpost_repair(so: SliceOrbit, site: int) -> void:
 	var w: Node = so.w
+	# [v9a] The real cleaning before this fills the chest: with the auto-compactor a bale is pressed
+	# at his feet by the kiosk (E waits out the press, then picks the bale up, as its prompt says).
+	# The step here is the repair: an empty chest, as when a player walks up to sell first.
+	var pc: Patch = w.get("patch") as Patch
+	for i: int in 40:
+		if float(pc.get("_cubing")) <= 0.0:
+			break
+		await w.get_tree().physics_frame
+	pc.compartment.take_all()
 	var k: int = await _at_outpost(so, site)
 	if k < 0:
 		return
@@ -1004,6 +1013,7 @@ static func _outpost_repair(so: SliceOrbit, site: int) -> void:
 	var pt: Patch = w.get("patch") as Patch
 	var before: String = "block '%s', Lumi's prompt '%s', cine_hold %s, cubing %.2f, can dig %s, carrying %d, levels %s" % [ops.repair_block(k), str(pt.prompt), str(pt.cine_hold),
 		float(pt.get("_cubing")), str((pt.get("detector") as PartDetector).can_dig()), pt.carried.size(), str(ops.levels())]
+	_check(str(pt.prompt).contains("Repair outpost"), "by the cleared outpost Lumi's own prompt names the repair (%s)" % str(pt.prompt))
 	_toasts.clear()
 	await _tap(w.get_tree(), "interact")
 	await _wait(w.get_tree(), 4.0)

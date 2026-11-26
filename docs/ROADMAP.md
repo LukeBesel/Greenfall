@@ -7,7 +7,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - **Map (M):** the globe is turned by dragging (the ground follows the cursor, a short coast, pole limits), zoomed by wheel / two-finger scroll / pinch, and "Find Lumi" (button, V, double-click) goes back to the opening view. The cause was the map's root Control swallowing the mouse. Proof: `--walk-map` (in tools/check_exit.sh), rendered frames looked at.
 - **Title:** no New Game button. The title lists the played profiles (CONTINUE for the last one, a button each for the others), PLAY on a first launch, NEW PROFILE while a slot is free; Start over and Delete are per profile on the Profiles page, each behind a question. Proof: `--menu --title-walk` (in tools/check_exit.sh), rendered frames looked at.
 - **HUD base name (critic 7):** the 72516d7 change never reached the HUD (the HUD asks the slice, the method was on the round-world object); wired through and checked on the pad by `--walk-map`.
-- **Follow-up (24 Nov):** Lumi no longer dozes off while holding the map (a snore's "z" floated over the globe in a rendered run; `--walk-map` checks it). The title no longer logs "Couldn't open directory" for never-played profiles. `--walk-home` failed twice here on the money the game pays while the walk reads the card (a bale pressed in a salvage surge pays over 1K): the shuttle's count and "price is paid" checks are v9a's (merged from main); on top, a reload whose count only went up passes when the load gave back the saved money and the cubes now, less `cubes_earned_total` paid since the snapshot, are the cubes at the snapshot. Found, not fixed: a world event running when the game is saved is not saved, and its countdown stays at 0, so a new random event (toast, WREN line) starts the moment the game loads (systems/events.gd: only `_finish` resets `next_in`); 6 of 18 loads in one home walk started a Salvage Surge.
+- **Follow-up (24 Nov):** Lumi no longer dozes off while holding the map (a snore's "z" floated over the globe in a rendered run; `--walk-map` checks it). The title no longer logs "Couldn't open directory" for never-played profiles. `--walk-home` failed twice here on the money the game pays while the walk reads the card (a bale pressed in a salvage surge pays over 1K): main's v9a fixes cover both (the shuttle's count and "price is paid" checks, a reload that saves up while the card fades in); this branch's own versions were dropped at the merge. Found, not fixed: a world event running when the game is saved is not saved, and its countdown stays at 0, so a new random event (toast, WREN line) starts the moment the game loads (systems/events.gd: only `_finish` resets `next_in`); 6 of 18 loads in one home walk started a Salvage Surge.
 - **Open:** real MacBook trackpad feel (drag speed, coast, scroll speed) and a real controller on the new title list are not verified here. v10snd's `walk_radio` and v11film's rewatch option must use the title's `_continue` / `_play` buttons (there is no `_new_game` any more).
 
 ## Walks reliable, 20-24 Nov (v9a, task 195)
@@ -41,21 +41,27 @@ What the failing walks were, by evidence (logs under screenshots/, spot tests in
   just built: saved and loaded (kill)" saw "0 / 600" become a full bar: a robot finished the outlined hex
   while the walk quit and came back (cubes 0 -> 1466.8), the price was covered, so the card shows the step's
   own count, as in play. That is af48bf9's case (money earned in play while the walk reloads; money that
-  appears in the load itself still fails), which main did not have yet. "shuttle: the price is paid" (1322
+  appears in the load itself still fails), which main did not have yet; 508fa70 does the same while saving up
+  (save and load agree, the count reads what he has now, the payers since the load are printed;
+  `--walk-home-fault=tower2` still fails, `--walk-home-earn=tower2` passes). "shuttle: the price is paid" (1322
   left right after the click) now checks the change log: the price taken, and what is left equals what the
   game paid since. Every payment of 300+ and every Lumi level is printed as a `[walk-home] note`, and the
   change log after the shuttle is built; `--walk-home-paylog` prints every payment with its payer. Also
   measured: base level 2 and the shuttle stand on no start-area junk, so a load has nothing new to tidy.
-- **OPEN: 1.2K-1.5K cubes in the seconds after the shuttle is built** (2 of 10 home walks here, main's run,
-  v10snd's): 1,346.75 per robot hex that finished next to the yard then (one run 1, one run 2: the toasts
-  say so), of which bonus + notes + level are 246.75; none of it one payment of 300 or more. Not reproduced
-  since the change log went in (0 of 6). If a
-  player sees it, it is in play (no reload needed), so the walks no longer count it as a save fault; what
-  pays it is not known.
+- **Game fault, fixed (3e6cb19): every world load added one more EventBus listener** (the 1.2K-1.5K cube
+  jumps the home walks saw: v10snd's shuttle card, main's "shuttle just built (kill)", two runs here).
+  Research, Goals, Achievements and MusicHooks connected EventBus signals to lambdas that use no member of
+  the node; such a lambda is bound to the script, so it outlived the node on the autoload. After 12 world
+  loads a robot's hex paid its field notes 12 times (+121.75 bonus, then +100 x 12; the change log showed
+  it), each scoop counted 12 times toward junk_scooped, each restored hex toward hexes_restored, and the
+  music stings played 12 times. They are methods now. tests/test_bus_listeners.gd fails on the old code
+  (5 of 5) and passes. Other EventBus lambdas use a member of their node and die with it.
 - **Game fault, fixed (0188201): the fauna perch scan raised a SCRIPT ERROR** on a mesh the headless
   renderer held no arrays for (FaunaSpace.top_point; 7 times in one home walk). Skipped, named once.
-- walk_travel "E by the cleared outpost ... repairs it" failed once in 6 (prompt named the repair, the
-  outpost stayed at level 0): the check now says what E met (block, Lumi's own prompt, input hold, toasts).
+- **Game fault, fixed (36c1ee1): the prompt offered E while the bale press ran** and E did nothing then
+  (walk_travel "E by the cleared outpost ... repairs it", 2 runs in 8: the auto-compactor pressed the full
+  chest by the kiosk, cubing 1.53 s). The prompt is empty during the press (test_no_e_prompt_while_pressing_a_bale);
+  the walk waits out a press and empties the chest before the repair, and reads Lumi's own prompt.
 - From the code, not played: the Shack's side panel (planet/sites/yard_site.gd "side") has no collider (the
   StaticBody holds the back wall and the two front posts), so Lumi could walk through it. Not a stuck.
 - Other code still uses the 32-bit `hex_at` (robots, junk, the card's hex): the speckle at edges is still
