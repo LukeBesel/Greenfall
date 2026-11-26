@@ -415,7 +415,9 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 	_detail.kit_roof(_body, _det, r, face, mass_h, floors, kit == FAC, int(bd["seed"]), ruin_from < floors)
 	# [art3] Ivy over most kit fronts (two cut-out cards; the growth is in the shader). Drawn from the
 	# building's seed, not _rng: the dressing after this lands where it did.
-	if (int(bd["seed"]) >> 5) % 100 < 60 and mass_h > 4.0:
+	# OFF unless --ivy-cards: in the combined render the cards drew as black blotches on the fronts
+	# (lead, 26 Nov). To fix: the card's winding/normals and its shading at low sun, then make it default.
+	if DevHooks.has("ivy-cards") and (int(bd["seed"]) >> 5) % 100 < 60 and mass_h > 4.0:
 		_static.merge(BuildingDetail.ivy_card(Vector3(origin.x, 0.0, origin.y), bx, bz, float(bays) * BAY, mass_h, int(bd["seed"]) >> 7),
 			Transform3D.IDENTITY, BuildingDetail.ivy_material(), false, Vector3(r.get_center().x, 0.0, r.get_center().y))
 	# Fire escape on some apartment facades.
