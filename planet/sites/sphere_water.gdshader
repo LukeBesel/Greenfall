@@ -21,6 +21,8 @@ uniform float sky_day = 1.0;
 uniform vec3 sun_dir = vec3(0.0, 1.0, 0.0);
 uniform vec3 sun_col : source_color = vec3(1.0, 0.95, 0.85);
 uniform float sun_vis = 1.0;
+uniform vec3 moon_dir = vec3(0.0, -1.0, 0.0);  // [art1] the moon's path on the water
+uniform float moon_vis = 0.0;
 // [v5load] Per-pixel cost. The three shortest waves (1.3 m and under) and the value-noise chop
 // fade out between 0.6 x ripple_far and ripple_far from the camera, where they are a few pixels
 // wide or less, and are not computed past it (SphereWater sets it by preset: Low 60 m, Medium
@@ -127,13 +129,19 @@ void fragment() {
 	vec3 rv = reflect(-vw, nw);
 	float el = clamp(dot(rv, up), 0.0, 1.0);
 	vec3 sky = mix(sky_hor, sky_zen, 0.3 + 0.7 * smoothstep(0.0, 0.45, el));  // blue-leaning: the dusty horizon alone read as concrete
-	float refl = min(fres, 0.6) * mix(0.55, 0.62, c) * (1.0 - foam * 0.8);
-	vec3 em = sky * refl * mix(0.25, 1.0, sky_day);
+	// [art1] sky_zen / sky_hor already are the night colours at night; the old extra 0.25 left the
+	// night lake black. Calm night water mirrors more of the low sky than the capped day value.
+	vec3 em = sky * min(fres, mix(0.9, 0.6, sky_day)) * mix(0.55, 0.62, c) * (1.0 - foam * 0.8) * mix(1.5, 1.0, sky_day);
 	// Sun glints on the wave facets (and a broad sheen), only with the sun up.
 	vec3 h = normalize(sun_dir + vw);
 	float nh = clamp(dot(nw, h), 0.0, 1.0);
 	float glint = pow(nh, mix(140.0, 600.0, c)) * mix(0.3, 4.0, c) + pow(nh, 60.0) * mix(0.05, 0.12, c);
 	em += sun_col * glint * sun_vis * (1.0 - foam);
+	em += mix(sky_hor, sky_zen, 0.5) * 0.3 * (1.0 - sky_day) * (1.0 - foam);  // [art1] skylight scattered in the water: no black holes at night
+	if (moon_vis > 0.001) {
+		float nm = clamp(dot(nw, normalize(moon_dir + vw)), 0.0, 1.0);
+		em += vec3(0.62, 0.72, 1.0) * (pow(nm, mix(90.0, 260.0, c)) * mix(0.35, 1.3, c) + pow(nm, 24.0) * 0.05) * moon_vis * (1.0 - foam);
+	}
 	EMISSION = em;
 
 	// See-through over the shallows once it is clean; murky water stays nearly opaque.

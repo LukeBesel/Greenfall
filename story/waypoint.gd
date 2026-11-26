@@ -11,8 +11,16 @@ extends Node3D
 ## stands straight on the round planet; the trail follows the globe's ground.
 
 const COLOR := Color(0.74, 0.48, 1.0)
-const TRAIL_N: int = 7
-const TRAIL_STEP_M: float = 2.2  # [v10guide] critic 13: fewer, bigger, evenly spaced arrows (was 9 x 1.7 m)
+## [art1] Owner 26 Nov ("fix frequency and stuff of those indicators"): the trail was seven solid
+## 1.1 m arrowheads 2.2 m apart, flowing at 1.4 m/s under a 0.35 Hz flicker, with a ring pulse every
+## 1.8 s: busy, and toy-like on the ground. Now four slim chevrons 3.2 m apart that drift at 0.8 m/s,
+## a steadier beam, and a ring pulse every 3.3 s.
+const TRAIL_N: int = 4
+const TRAIL_FLOW_MPS: float = 0.8
+const PULSE_RATE: float = 1.2   # rad/s of the beam's and trail's breathing
+const PULSE_DEPTH: float = 0.07
+const RING_PULSE_HZ: float = 0.3
+const TRAIL_STEP_M: float = 3.2  # [v10guide] critic 13: fewer, bigger, evenly spaced arrows (was 9 x 1.7 m)
 const TRAIL_START_M: float = 2.0
 ## [v10guide] Critic 13: no trail when the target is this close and on screen (the beam and ring say it).
 const TRAIL_HIDE_NEAR_M: float = 6.0
@@ -184,11 +192,11 @@ func _process(delta: float) -> void:
 		return
 	var goal: Vector3 = _target
 	_pos = goal if _pos.distance_to(goal) > 30.0 or _pos == Vector3.ZERO else _pos.lerp(goal, clampf(delta * 6.0, 0.0, 1.0))
-	var pulse: float = 0.85 + 0.15 * sin(_t * 2.2)
+	var pulse: float = 1.0 - PULSE_DEPTH + PULSE_DEPTH * sin(_t * PULSE_RATE)
 	_mat.set_shader_parameter("alpha", _alpha * pulse)
 	_mat_beam.set_shader_parameter("alpha", _alpha * pulse)
 	_mat_disc.set_shader_parameter("alpha", _alpha)
-	_mat_disc.set_shader_parameter("pulse", 0.4 if Settings.reduced_motion else fmod(_t * 0.55, 1.0))
+	_mat_disc.set_shader_parameter("pulse", 0.4 if Settings.reduced_motion else fmod(_t * RING_PULSE_HZ, 1.0))
 	_mat_trail.set_shader_parameter("alpha", _alpha * pulse)  # [qafix]
 	var up: Vector3 = OrbitUp.up(_pos)  # [v1guide] local up: straight on the round planet
 	_beam.global_position = _pos
@@ -253,7 +261,7 @@ func _update_trail(lumi: Patch, to: Vector3) -> void:
 	d -= up0 * d.dot(up0)  # [v1guide] along the ground (the flat game: the x/z plane)
 	var dist: float = d.length()
 	var dir: Vector3 = d / maxf(dist, 0.001)
-	var flow: float = 0.0 if Settings.reduced_motion else fmod(_t * 1.4, TRAIL_STEP_M)
+	var flow: float = 0.0 if Settings.reduced_motion else fmod(_t * TRAIL_FLOW_MPS, TRAIL_STEP_M)
 	var f: HexField = world.get("field") as HexField
 	var sf: SphereField = f as SphereField
 	for i: int in TRAIL_N:
@@ -288,7 +296,7 @@ func _update_trail(lumi: Patch, to: Vector3) -> void:
 				y += f.ground_height(f.hex_at(pt), pt)
 			xf = Transform3D(Basis.looking_at(dir, Vector3.UP), Vector3(pt.x, y, pt.z))
 		mm.set_instance_transform(i, xf)
-		mm.set_instance_color(i, Color(1, 1, 1, a * 0.95 * _trail_alpha))
+		mm.set_instance_color(i, Color(1, 1, 1, a * 0.85 * _trail_alpha))
 
 
 ## A flat solid chevron pointing along -Z (Basis.looking_at's forward), 1.1 m wide.
@@ -298,11 +306,14 @@ func _update_trail(lumi: Patch, to: Vector3) -> void:
 static func _chevron() -> ArrayMesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var tip := Vector3(0, 0, -0.42)
-	var notch := Vector3(0, 0, -0.04)  # the concave back: an arrowhead, not a triangle
-	var left := Vector3(-0.55, 0, 0.26)
-	var right := Vector3(0.55, 0, 0.26)
-	var tris: Array[Vector3] = [tip, left, notch, tip, notch, right]
+	# [art1] A slim chevron band (a projected mark, 0.8 m wide, 0.15 m thick), built without overlaps.
+	var tip := Vector3(0, 0, -0.36)
+	var tip_in := Vector3(0, 0, -0.14)
+	var left := Vector3(-0.4, 0, 0.2)
+	var left_in := Vector3(-0.28, 0, 0.24)
+	var right := Vector3(0.4, 0, 0.2)
+	var right_in := Vector3(0.28, 0, 0.24)
+	var tris: Array[Vector3] = [tip, left, left_in, tip, left_in, tip_in, tip, tip_in, right_in, tip, right_in, right]
 	for v: Vector3 in tris:
 		st.set_color(Color.WHITE)
 		st.add_vertex(v)

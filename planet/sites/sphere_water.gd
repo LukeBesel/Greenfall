@@ -209,13 +209,19 @@ static func sky_params(sm: ShaderMaterial, cam: Camera3D) -> Dictionary:
 	var hc: Color = _c(gv.call("horizon_clear", Color(0.46, 0.66, 0.95)))
 	var zn: Color = _c(gv.call("zenith_night", Color(0.03, 0.05, 0.11)))
 	var hn: Color = _c(gv.call("horizon_night", Color(0.09, 0.12, 0.21)))
-	var zen: Color = zn.lerp(zc.lerp(zd, haze * 0.4), day)
-	var hor: Color = hn.lerp(hc.lerp(hd, haze * 0.4), day)
+	# [art1] The night sky as the sky shader shows it (its night lift), and the moon for its path
+	# on the water: the lake mirrored a quarter of an unlifted night sky and read as a black slab.
+	var lift: float = 1.0 + 0.7 * float(gv.call("night_lift", 1.0)) - 0.5 * float(gv.call("night_dark", 0.0))
+	var zen: Color = (zn * lift).lerp(zc.lerp(zd, haze * 0.4), day)
+	var hor: Color = (hn * lift).lerp(hc.lerp(hd, haze * 0.4), day)
 	out["sky_zen"] = Vector3(zen.r, zen.g, zen.b)
 	out["sky_hor"] = Vector3(hor.r, hor.g, hor.b)
 	out["sky_day"] = day
 	var s1: Vector3 = gv.call("sun1_dir", Vector3.UP)
 	var up: Vector3 = cam.global_position.normalized() if cam else Vector3.UP
+	var md: Vector3 = gv.call("moon_dir", Vector3.DOWN)
+	out["moon_dir"] = md.normalized()
+	out["moon_vis"] = smoothstep(-0.02, 0.1, md.normalized().dot(up)) * (1.0 - day)
 	out["sun_dir"] = s1.normalized()
 	out["sun_vis"] = smoothstep(-0.03, 0.12, s1.normalized().dot(up))
 	var warm: float = 1.0 - smoothstep(0.05, 0.4, s1.normalized().dot(up))  # low sun: a warmer glint

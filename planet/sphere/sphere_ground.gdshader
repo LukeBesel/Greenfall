@@ -28,6 +28,8 @@ uniform float sky_day = 1.0;
 uniform vec3 sun_dir = vec3(0.0, 1.0, 0.0);
 uniform vec3 sun_col : source_color = vec3(1.0, 0.95, 0.85);
 uniform float sun_vis = 1.0;
+uniform vec3 moon_dir = vec3(0.0, -1.0, 0.0);  // [art1]
+uniform float moon_vis = 0.0;
 
 varying vec4 st;
 varying vec3 wpos;
@@ -160,10 +162,15 @@ void fragment() {
 		float fres = 0.02 + 0.98 * pow(1.0 - clamp(dot(nw, vw), 0.0, 1.0), 5.0);
 		vec3 rv = reflect(-vw, nw);
 		vec3 sky = mix(sky_hor, sky_zen, 0.3 + 0.7 * smoothstep(0.0, 0.45, clamp(dot(rv, up), 0.0, 1.0)));
-		wem = sky * min(fres, 0.55) * mix(0.32, 0.6, clear_w) * mix(0.25, 1.0, sky_day);
+		wem = sky * min(fres, mix(0.9, 0.55, sky_day)) * mix(0.32, 0.6, clear_w) * mix(1.5, 1.0, sky_day);  // [art1] as the lake surface
 		vec3 hv = normalize(sun_dir + vw);
 		float nh = clamp(dot(nw, hv), 0.0, 1.0);
 		wem += sun_col * (pow(nh, mix(140.0, 700.0, clear_w)) * mix(0.25, 5.0, clear_w) + pow(nh, 50.0) * mix(0.04, 0.08, clear_w)) * sun_vis;
+		wem += mix(sky_hor, sky_zen, 0.5) * 0.3 * (1.0 - sky_day);
+		if (moon_vis > 0.001) {
+			float nm = clamp(dot(nw, normalize(moon_dir + vw)), 0.0, 1.0);
+			wem += vec3(0.62, 0.72, 1.0) * (pow(nm, mix(90.0, 260.0, clear_w)) * mix(0.35, 1.3, clear_w) + pow(nm, 24.0) * 0.05) * moon_vis;
+		}
 		col = mix(col, wcol, ow);
 	}
 	col = mix(col, col * lod_color, lod_tint);
