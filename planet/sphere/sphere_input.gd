@@ -2,11 +2,11 @@ class_name SphereInput
 extends PlayerInput
 ## [smove] PlayerInput plus the two planet-walk intents: hover-boost (hold) and jump (press).
 ## Actions "boost" / "jump" are registered here if the project doesn't define them yet
-## (Shift / left trigger, F / left-stick click); Settings can take them over later.
+## (Shift / left trigger, Space / A); Settings defines both in the game.
 
 static func ensure_actions() -> void:
 	_ensure("boost", [_k(KEY_SHIFT), _ax(JOY_AXIS_TRIGGER_LEFT, 1.0)])
-	_ensure("jump", [_k(KEY_F), _jb(JOY_BUTTON_LEFT_STICK)])
+	_ensure("jump", [_k(KEY_SPACE), _jb(JOY_BUTTON_A)])
 
 
 static func _ensure(action: String, evs: Array) -> void:
@@ -46,3 +46,8 @@ func boost_held() -> bool:
 
 func jump_pressed() -> bool:
 	return _fresh() and Input.is_action_just_pressed("jump")
+
+
+## [v11jump] The hop button is down (a hold makes the full hop, letting go early a small one).
+func jump_held() -> bool:
+	return enabled and Input.is_action_pressed("jump")

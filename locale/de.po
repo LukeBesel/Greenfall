@@ -16,7 +16,7 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "NEUES CREWMITGLIED  ·  %s"
 
-#: art/vfx.gd:458
+#: art/vfx.gd:487
 msgid "Needs Lift %d"
 msgstr "Braucht Hebekraft %d"
 
@@ -144,119 +144,123 @@ msgstr "Glim: scannen (halten: Upgrades)"
 msgid "Hover boost"
 msgstr "Schwebeschub"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:26
+msgid "Jump"
+msgstr "Springen"
+
+#: autoload/Settings.gd:35
 msgid "View"
 msgstr "Ansicht"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:35
 msgid "Menu"
 msgstr "Menü"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:35
 msgid "LS"
 msgstr "LS"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "RS"
 msgstr "RS"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "LB"
 msgstr "LB"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "RB"
 msgstr "RB"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:37
 msgid "D-pad up"
 msgstr "Steuerkreuz oben"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:37
 msgid "D-pad down"
 msgstr "Steuerkreuz unten"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:38
 msgid "D-pad left"
 msgstr "Steuerkreuz links"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:38
 msgid "D-pad right"
 msgstr "Steuerkreuz rechts"
 
-#: autoload/Settings.gd:35
+#: autoload/Settings.gd:39
 msgid "Share"
 msgstr "Teilen"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:40
 msgid "Touchpad"
 msgstr "Touchpad"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:40
 msgid "Paddle 1"
 msgstr "Paddle 1"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:567
 msgid "LMB"
 msgstr "LMT"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:568
 msgid "RMB"
 msgstr "RMT"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:569
 msgid "MMB"
 msgstr "MMT"
 
-#: autoload/Settings.gd:563
+#: autoload/Settings.gd:570
 msgid "Wheel up"
 msgstr "Rad hoch"
 
-#: autoload/Settings.gd:564
+#: autoload/Settings.gd:571
 msgid "Wheel down"
 msgstr "Rad runter"
 
-#: autoload/Settings.gd:565
+#: autoload/Settings.gd:572
 msgid "Mouse %d"
 msgstr "Maus %d"
 
-#: autoload/Settings.gd:567
+#: autoload/Settings.gd:574
 msgid "Button %d"
 msgstr "Taste %d"
 
-#: autoload/Settings.gd:572
+#: autoload/Settings.gd:579
 msgid "LS left"
 msgstr "LS links"
 
-#: autoload/Settings.gd:572
+#: autoload/Settings.gd:579
 msgid "LS right"
 msgstr "LS rechts"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:580
 msgid "LS up"
 msgstr "LS hoch"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:580
 msgid "LS down"
 msgstr "LS runter"
 
-#: autoload/Settings.gd:574
+#: autoload/Settings.gd:581
 msgid "RS left"
 msgstr "RS links"
 
-#: autoload/Settings.gd:574
+#: autoload/Settings.gd:581
 msgid "RS right"
 msgstr "RS rechts"
 
-#: autoload/Settings.gd:575
+#: autoload/Settings.gd:582
 msgid "RS up"
 msgstr "RS hoch"
 
-#: autoload/Settings.gd:575
+#: autoload/Settings.gd:582
 msgid "RS down"
 msgstr "RS runter"
 
-#: autoload/Settings.gd:586
+#: autoload/Settings.gd:593
 msgid "hold %s"
 msgstr "%s halten"
 
@@ -916,79 +920,79 @@ msgstr "VERGRABENES TEIL  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "VERGRABENES TEIL  ·  SIGNAL %d%%"
 
-#: player/patch.gd:178
+#: player/patch.gd:323
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi rattert zurück auf den Hof. Das war seltsam."
 
-#: player/patch.gd:246
+#: player/patch.gd:391
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi kann nicht schwimmen. Mit Schwebedüsen von der Werkbank schwebt er über Seen."
 
-#: player/patch.gd:371
+#: player/patch.gd:524
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "Hol zuerst die Samendose: Folge dem Strahl zum Gewächshaus."
 
-#: player/patch.gd:372
+#: player/patch.gd:525
 msgid "No seeds yet. Keep cleaning."
 msgstr "Noch keine Samen. Weiter aufräumen."
 
-#: player/patch.gd:415 player/patch.gd:443
+#: player/patch.gd:568 player/patch.gd:596
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Keine Samen mehr. Blühende Pflanzen geben neue."
 
-#: player/patch.gd:422
+#: player/patch.gd:575
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "Erst pflanzen: Drück  {tool_plant}  für den Samen"
 
-#: player/patch.gd:426
+#: player/patch.gd:579
 msgid "Watering can is empty. Refill at the base."
 msgstr "Gießkanne leer. An der Basis nachfüllen."
 
-#: player/patch.gd:445
+#: player/patch.gd:598
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "Mach dieses Feld zuerst sauber. Samen brauchen sauberen Boden."
 
-#: player/patch.gd:447
+#: player/patch.gd:600
 msgid "Something is growing here already. Try a free spot."
 msgstr "Hier wächst schon etwas. Such dir einen freien Platz."
 
-#: player/patch.gd:448
+#: player/patch.gd:601
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "Samen brauchen Erde, keine Straße und keine Plattform. Versuch es in den Gewächshausbeeten."
 
-#: player/patch.gd:449
+#: player/patch.gd:602
 msgid "Seeds need soil, not road or the pad."
 msgstr "Samen brauchen Erde, keine Straße und keine Plattform."
 
-#: player/patch.gd:610
+#: player/patch.gd:763
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "Deine Truhe ist leer. Sammle zuerst etwas Müll."
 
-#: player/patch.gd:650
+#: player/patch.gd:803
 msgid "PERFECT BALE  %s"
 msgstr "PERFEKTER BALLEN  %s"
 
-#: player/patch.gd:656
+#: player/patch.gd:809
 msgid "OVERSTUFFED  %s"
 msgstr "ÜBERSTOPFT  %s"
 
-#: player/patch.gd:660
+#: player/patch.gd:813
 msgid "PURE  %s"
 msgstr "REIN  %s"
 
-#: player/patch.gd:662
+#: player/patch.gd:815
 msgid "SURGE  %s"
 msgstr "SCHUB  %s"
 
-#: player/patch.gd:665
+#: player/patch.gd:818
 msgid "  (streak +%d%%)"
 msgstr "  (Serie +%d%%)"
 
-#: player/patch.gd:716
+#: player/patch.gd:869
 msgid "Salvaged: %s"
 msgstr "Geborgen: %s"
 
-#: player/patch.gd:747
+#: player/patch.gd:900
 msgid "Recovered: %s"
 msgstr "Gefunden: %s"
 
@@ -4957,6 +4961,10 @@ msgstr "Werkbank"
 #: ui/key_hints.gd:33
 msgid "photo"
 msgstr "Foto"
+
+#: ui/key_hints.gd:33
+msgid "jump"
+msgstr "springen"
 
 #: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"

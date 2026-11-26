@@ -16,7 +16,7 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "NUEVO TRIPULANTE  ·  %s"
 
-#: art/vfx.gd:458
+#: art/vfx.gd:487
 msgid "Needs Lift %d"
 msgstr "Necesita Fuerza de elevación %d"
 
@@ -144,119 +144,123 @@ msgstr "Glim: escanear (mantén: mejoras)"
 msgid "Hover boost"
 msgstr "Impulso flotante"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:26
+msgid "Jump"
+msgstr "Saltar"
+
+#: autoload/Settings.gd:35
 msgid "View"
 msgstr "Vista"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:35
 msgid "Menu"
 msgstr "Menú"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:35
 msgid "LS"
 msgstr "JI"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "RS"
 msgstr "JD"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "LB"
 msgstr "LB"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "RB"
 msgstr "RB"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:37
 msgid "D-pad up"
 msgstr "Cruceta arriba"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:37
 msgid "D-pad down"
 msgstr "Cruceta abajo"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:38
 msgid "D-pad left"
 msgstr "Cruceta izquierda"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:38
 msgid "D-pad right"
 msgstr "Cruceta derecha"
 
-#: autoload/Settings.gd:35
+#: autoload/Settings.gd:39
 msgid "Share"
 msgstr "Compartir"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:40
 msgid "Touchpad"
 msgstr "Panel táctil"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:40
 msgid "Paddle 1"
 msgstr "Paleta 1"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:567
 msgid "LMB"
 msgstr "Clic izq."
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:568
 msgid "RMB"
 msgstr "Clic der."
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:569
 msgid "MMB"
 msgstr "Clic central"
 
-#: autoload/Settings.gd:563
+#: autoload/Settings.gd:570
 msgid "Wheel up"
 msgstr "Rueda arriba"
 
-#: autoload/Settings.gd:564
+#: autoload/Settings.gd:571
 msgid "Wheel down"
 msgstr "Rueda abajo"
 
-#: autoload/Settings.gd:565
+#: autoload/Settings.gd:572
 msgid "Mouse %d"
 msgstr "Ratón %d"
 
-#: autoload/Settings.gd:567
+#: autoload/Settings.gd:574
 msgid "Button %d"
 msgstr "Botón %d"
 
-#: autoload/Settings.gd:572
+#: autoload/Settings.gd:579
 msgid "LS left"
 msgstr "JI izquierda"
 
-#: autoload/Settings.gd:572
+#: autoload/Settings.gd:579
 msgid "LS right"
 msgstr "JI derecha"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:580
 msgid "LS up"
 msgstr "JI arriba"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:580
 msgid "LS down"
 msgstr "JI abajo"
 
-#: autoload/Settings.gd:574
+#: autoload/Settings.gd:581
 msgid "RS left"
 msgstr "JD izquierda"
 
-#: autoload/Settings.gd:574
+#: autoload/Settings.gd:581
 msgid "RS right"
 msgstr "JD derecha"
 
-#: autoload/Settings.gd:575
+#: autoload/Settings.gd:582
 msgid "RS up"
 msgstr "JD arriba"
 
-#: autoload/Settings.gd:575
+#: autoload/Settings.gd:582
 msgid "RS down"
 msgstr "JD abajo"
 
-#: autoload/Settings.gd:586
+#: autoload/Settings.gd:593
 msgid "hold %s"
 msgstr "mantén %s"
 
@@ -916,79 +920,79 @@ msgstr "PIEZA ENTERRADA  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "PIEZA ENTERRADA  ·  SEÑAL %d%%"
 
-#: player/patch.gd:178
+#: player/patch.gd:323
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi vuelve traqueteando al patio. Qué raro."
 
-#: player/patch.gd:246
+#: player/patch.gd:391
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi no sabe nadar. Con los Chorros flotantes del banco de trabajo flota sobre los lagos."
 
-#: player/patch.gd:371
+#: player/patch.gd:524
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "Primero coge la lata de semillas: sigue el rayo hasta el invernadero."
 
-#: player/patch.gd:372
+#: player/patch.gd:525
 msgid "No seeds yet. Keep cleaning."
 msgstr "Aún no hay semillas. Sigue limpiando."
 
-#: player/patch.gd:415 player/patch.gd:443
+#: player/patch.gd:568 player/patch.gd:596
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Sin semillas. Las plantas en flor dan más."
 
-#: player/patch.gd:422
+#: player/patch.gd:575
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "Primero planta: pulsa  {tool_plant}  para la semilla"
 
-#: player/patch.gd:426
+#: player/patch.gd:579
 msgid "Watering can is empty. Refill at the base."
 msgstr "Regadera vacía. Rellénala en la base."
 
-#: player/patch.gd:445
+#: player/patch.gd:598
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "Limpia primero este hexágono. Las semillas necesitan suelo limpio."
 
-#: player/patch.gd:447
+#: player/patch.gd:600
 msgid "Something is growing here already. Try a free spot."
 msgstr "Aquí ya está creciendo algo. Prueba en un sitio libre."
 
-#: player/patch.gd:448
+#: player/patch.gd:601
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "Las semillas necesitan tierra, no carretera ni plataforma. Prueba en los bancales del invernadero."
 
-#: player/patch.gd:449
+#: player/patch.gd:602
 msgid "Seeds need soil, not road or the pad."
 msgstr "Las semillas necesitan tierra, no carretera ni plataforma."
 
-#: player/patch.gd:610
+#: player/patch.gd:763
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "Tu cofre está vacío. Recoge algo de basura primero."
 
-#: player/patch.gd:650
+#: player/patch.gd:803
 msgid "PERFECT BALE  %s"
 msgstr "PACA PERFECTA  %s"
 
-#: player/patch.gd:656
+#: player/patch.gd:809
 msgid "OVERSTUFFED  %s"
 msgstr "REPLETA  %s"
 
-#: player/patch.gd:660
+#: player/patch.gd:813
 msgid "PURE  %s"
 msgstr "PURA  %s"
 
-#: player/patch.gd:662
+#: player/patch.gd:815
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:665
+#: player/patch.gd:818
 msgid "  (streak +%d%%)"
 msgstr "  (racha +%d%%)"
 
-#: player/patch.gd:716
+#: player/patch.gd:869
 msgid "Salvaged: %s"
 msgstr "Rescatado: %s"
 
-#: player/patch.gd:747
+#: player/patch.gd:900
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -4957,6 +4961,10 @@ msgstr "banco"
 #: ui/key_hints.gd:33
 msgid "photo"
 msgstr "foto"
+
+#: ui/key_hints.gd:33
+msgid "jump"
+msgstr "saltar"
 
 #: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"

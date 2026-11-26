@@ -7,7 +7,9 @@ extends RefCounted
 ##   - the walkable area reached, and the free ground Lumi can NOT reach (pockets walled in by
 ##     buildings or props: junk lying there could never be cleaned),
 ##   - whether the walk gets out of the town in all eight compass directions (no walled-in yard),
-##   - the junk pieces already laid on the site's cells that lie on blocked or unreachable ground.
+##   - the junk pieces already laid on the site's cells that lie on blocked or unreachable ground,
+##   - [v11jump] what Lumi's hop adds (JumpReach): the ground it opens, what he can get onto, and
+##     any spot he could hop into and not out of (a failure).
 ## Run: godot --headless --path . -- --fresh --orbit --city-walk   (exit 1 on a failure).
 
 const STEP: float = 0.5
@@ -141,6 +143,14 @@ static func run(p: SitePrefab, terrain: SphereTerrain, field: SphereField, half_
 					bad_pieces += 1
 					if bad_at.size() < 8:
 						bad_at.append(Vector2(lp.x, lp.z))
+						# [v11jump] How far off the walked ground it lies (the scoop reaches a little further than 1 m).
+						var best: float = 99.0
+						for dz2: int in range(-8, 9):
+							for dx2: int in range(-8, 9):
+								var j5: int = idx.call(lp.x + dx2 * STEP, lp.z + dz2 * STEP)
+								if j5 >= 0 and seen[j5] == 1:
+									best = minf(best, Vector2(dx2, dz2).length() * STEP)
+						print("[walk] junk piece %d at (%.1f, %.1f): nearest walked ground %s" % [pid, lp.x, lp.z, "%.1f m" % best if best < 99.0 else "over 4 m"])
 						if DevHooks.has("walk-debug"):
 							var ko: Variant = field.keep_out
 							print("[walk] piece %d cell %d at (%.1f, %.1f) keep-out %s mid %s" % [pid, c3, lp.x, lp.z,
@@ -162,6 +172,12 @@ static func run_dev(so: SliceOrbit) -> void:
 	var tree: SceneTree = so.w.get_tree()
 	var sm: SiteManager = so.globe.site_manager
 	await tree.create_timer(DevHooks.get_f("city-walk", 8.0)).timeout
+	# [v11jump] On a busy machine the load outlasts the timer, and behind the loading screen the
+	# world's colliders are out of the physics space: the walk then "passed" an empty town (70674 m2
+	# free, 0 pieces). Wait for the world, then for the junk round the yard.
+	while so.hub_frame == null or bool(so.w.get("building")):
+		await tree.process_frame
+	await tree.create_timer(4.0).timeout
 	var p: SitePrefab = sm.prefab(0)
 	if p == null or not p.is_built:
 		print("[walk] FAIL: no start site")
@@ -192,5 +208,14 @@ static func run_dev(so: SliceOrbit) -> void:
 		int(r["free_m2"]), int(r["reached_m2"]), "every side" if shut.is_empty() else "all but " + ",".join(shut),
 		(r["pockets"] as Array).size(), "" if pk.is_empty() else " (" + ", ".join(pk) + ")", int(r["pieces"]), int(r["bad_pieces"]),
 		"" if (r["bad_at"] as Array).is_empty() else " at " + str(r["bad_at"]), Time.get_ticks_msec() - t0])
-	print("[walk] %s" % ("PASS" if r["pass"] else "FAIL"))
-	tree.quit(0 if r["pass"] else 1)
+	# [v11jump] What the hop adds: ground it opens, what he can get onto, and no spot he can hop
+	# into and not out of (planet/sites/jump_reach.gd).
+	var t1: int = Time.get_ticks_msec()
+	var jr := JumpReach.new(p.get_world_3d().direct_space_state, so.globe.terrain, so.globe.field, p.global_transform, half)
+	var jres: Dictionary = jr.run(Vector2(0, 6))
+	for line: String in JumpReach.report("[walk]", jres):
+		print(line)
+	print("[walk] hop audit %d ms" % (Time.get_ticks_msec() - t1))
+	var ok: bool = bool(r["pass"]) and bool(jres["ok"])
+	print("[walk] %s" % ("PASS" if ok else "FAIL"))
+	tree.quit(0 if ok else 1)

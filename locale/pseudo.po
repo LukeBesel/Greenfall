@@ -13,7 +13,7 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "[ÑÉŴ ÇŔÉŴMÀŢÉ  ·  %s ~~~~]"
 
-#: art/vfx.gd:458
+#: art/vfx.gd:487
 msgid "Needs Lift %d"
 msgstr "[Ñééðš Ļîƒţ %d ~~]"
 
@@ -141,119 +141,123 @@ msgstr "[Ĝļîm: šçàñ (ĥôļð: ûþĝŕàðéš) ~~~~~~]"
 msgid "Hover boost"
 msgstr "[Ĥôvéŕ bôôšţ ~]"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:26
+msgid "Jump"
+msgstr "[Ĵûmþ ~]"
+
+#: autoload/Settings.gd:35
 msgid "View"
 msgstr "[Vîéŵ ~]"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:35
 msgid "Menu"
 msgstr "[Méñû ~]"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:35
 msgid "LS"
 msgstr "[ĻŠ ~]"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "RS"
 msgstr "[ŔŠ ~]"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "LB"
 msgstr "[ĻB ~]"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:36
 msgid "RB"
 msgstr "[ŔB ~]"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:37
 msgid "D-pad up"
 msgstr "[Ð-þàð ûþ ~]"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:37
 msgid "D-pad down"
 msgstr "[Ð-þàð ðôŵñ ~]"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:38
 msgid "D-pad left"
 msgstr "[Ð-þàð ļéƒţ ~]"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:38
 msgid "D-pad right"
 msgstr "[Ð-þàð ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:35
+#: autoload/Settings.gd:39
 msgid "Share"
 msgstr "[Šĥàŕé ~]"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:40
 msgid "Touchpad"
 msgstr "[Ţôûçĥþàð ~]"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:40
 msgid "Paddle 1"
 msgstr "[Þàððļé 1 ~]"
 
-#: autoload/Settings.gd:560
+#: autoload/Settings.gd:567
 msgid "LMB"
 msgstr "[ĻMB ~]"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:568
 msgid "RMB"
 msgstr "[ŔMB ~]"
 
-#: autoload/Settings.gd:562
+#: autoload/Settings.gd:569
 msgid "MMB"
 msgstr "[MMB ~]"
 
-#: autoload/Settings.gd:563
+#: autoload/Settings.gd:570
 msgid "Wheel up"
 msgstr "[Ŵĥééļ ûþ ~]"
 
-#: autoload/Settings.gd:564
+#: autoload/Settings.gd:571
 msgid "Wheel down"
 msgstr "[Ŵĥééļ ðôŵñ ~]"
 
-#: autoload/Settings.gd:565
+#: autoload/Settings.gd:572
 msgid "Mouse %d"
 msgstr "[Môûšé %d ~]"
 
-#: autoload/Settings.gd:567
+#: autoload/Settings.gd:574
 msgid "Button %d"
 msgstr "[Bûţţôñ %d ~]"
 
-#: autoload/Settings.gd:572
+#: autoload/Settings.gd:579
 msgid "LS left"
 msgstr "[ĻŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:572
+#: autoload/Settings.gd:579
 msgid "LS right"
 msgstr "[ĻŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:580
 msgid "LS up"
 msgstr "[ĻŠ ûþ ~]"
 
-#: autoload/Settings.gd:573
+#: autoload/Settings.gd:580
 msgid "LS down"
 msgstr "[ĻŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:574
+#: autoload/Settings.gd:581
 msgid "RS left"
 msgstr "[ŔŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:574
+#: autoload/Settings.gd:581
 msgid "RS right"
 msgstr "[ŔŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:575
+#: autoload/Settings.gd:582
 msgid "RS up"
 msgstr "[ŔŠ ûþ ~]"
 
-#: autoload/Settings.gd:575
+#: autoload/Settings.gd:582
 msgid "RS down"
 msgstr "[ŔŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:586
+#: autoload/Settings.gd:593
 msgid "hold %s"
 msgstr "[ĥôļð %s ~]"
 
@@ -913,79 +917,79 @@ msgstr "[BÛŔÎÉÐ ÞÀŔŢ  %s  ·  %.1f m ~~~~~~]"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ  ·  ŠÎĜÑÀĻ %d%% ~~~~~~]"
 
-#: player/patch.gd:178
+#: player/patch.gd:323
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "[Ļûmî ŕàţţļéš bàçķ ûþ îñţô ţĥé ýàŕð. Ţĥàţ ŵàš ôðð. ~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:246
+#: player/patch.gd:391
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "[Ļûmî çàñ'ţ šŵîm. Ĥôvéŕ Ĵéţš àţ ţĥé ŵôŕķbéñçĥ ļéţ ĥîm ƒļôàţ ôvéŕ ļàķéš. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:371
+#: player/patch.gd:524
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "[Ĝéţ ţĥé šééð ţîñ ƒîŕšţ: ƒôļļôŵ ţĥé béàm ţô ţĥé ĝŕééñĥôûšé. ~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:372
+#: player/patch.gd:525
 msgid "No seeds yet. Keep cleaning."
 msgstr "[Ñô šééðš ýéţ. Ķééþ çļéàñîñĝ. ~~~~~~~]"
 
-#: player/patch.gd:415 player/patch.gd:443
+#: player/patch.gd:568 player/patch.gd:596
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "[Ôûţ ôƒ šééðš. Bļôômîñĝ þļàñţš ðŕôþ môŕé. ~~~~~~~~~~~]"
 
-#: player/patch.gd:422
+#: player/patch.gd:575
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "[Þļàñţ ƒîŕšţ: þŕéšš  {tool_plant}  ƒôŕ ţĥé šééð ~~~~~~~~~~~~~]"
 
-#: player/patch.gd:426
+#: player/patch.gd:579
 msgid "Watering can is empty. Refill at the base."
 msgstr "[Ŵàţéŕîñĝ çàñ îš émþţý. Ŕéƒîļļ àţ ţĥé bàšé. ~~~~~~~~~~~~]"
 
-#: player/patch.gd:445
+#: player/patch.gd:598
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "[Çļéàñ ţĥîš ĥéx ƒîŕšţ. Šééðš ñééð çļéàñ ĝŕôûñð. ~~~~~~~~~~~~~]"
 
-#: player/patch.gd:447
+#: player/patch.gd:600
 msgid "Something is growing here already. Try a free spot."
 msgstr "[Šôméţĥîñĝ îš ĝŕôŵîñĝ ĥéŕé àļŕéàðý. Ţŕý à ƒŕéé šþôţ. ~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:448
+#: player/patch.gd:601
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "[Šééðš ñééð šôîļ, ñôţ ŕôàð ôŕ ţĥé þàð. Ţŕý ţĥé ĝŕééñĥôûšé béðš. ~~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:449
+#: player/patch.gd:602
 msgid "Seeds need soil, not road or the pad."
 msgstr "[Šééðš ñééð šôîļ, ñôţ ŕôàð ôŕ ţĥé þàð. ~~~~~~~~~~]"
 
-#: player/patch.gd:610
+#: player/patch.gd:763
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "[Ýôûŕ çĥéšţ îš émþţý. Šçôôþ šômé ţŕàšĥ ƒîŕšţ. ~~~~~~~~~~~~]"
 
-#: player/patch.gd:650
+#: player/patch.gd:803
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:656
+#: player/patch.gd:809
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:660
+#: player/patch.gd:813
 msgid "PURE  %s"
 msgstr "[ÞÛŔÉ  %s ~]"
 
-#: player/patch.gd:662
+#: player/patch.gd:815
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:665
+#: player/patch.gd:818
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:716
+#: player/patch.gd:869
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:747
+#: player/patch.gd:900
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -4954,6 +4958,10 @@ msgstr "[ŵôŕķbéñçĥ ~]"
 #: ui/key_hints.gd:33
 msgid "photo"
 msgstr "[þĥôţô ~]"
+
+#: ui/key_hints.gd:33
+msgid "jump"
+msgstr "[ĵûmþ ~]"
 
 #: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"

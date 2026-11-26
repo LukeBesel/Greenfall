@@ -20,7 +20,7 @@ func _ready() -> void:
 	add_child(_root)
 	_soft_tex = _radial_texture(Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.0)
 	_star_tex = _radial_texture(Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.55)
-	for kind: String in ["dust", "sparkle", "steam", "confetti", "soil", "bits", "big_sparkle", "spark"]:  # [v7look] + spark
+	for kind: String in ["dust", "sparkle", "steam", "confetti", "soil", "bits", "big_sparkle", "spark", "puff"]:  # [v7look] + spark; [v11jump] + puff
 		_pools[kind] = []
 		_pool_idx[kind] = 0
 		for i: int in POOL_PER_KIND:
@@ -108,6 +108,23 @@ func _make(kind: String) -> CPUParticles3D:
 			p.scale_amount_max = 1.6
 			curve.add_point(Vector2(0, 0.5))
 			curve.add_point(Vector2(1, 1.6))
+		"puff":  # [v11jump] Lumi's hop: a small soft ring of thruster haze that spreads low and is gone
+			q.material = _quad_material(_soft_tex, false)
+			q.size = Vector2(0.24, 0.24)
+			p.amount = 9
+			p.lifetime = 0.38
+			p.direction = Vector3(0, 1, 0)
+			p.spread = 86.0
+			p.flatness = 0.0
+			p.initial_velocity_min = 1.2
+			p.initial_velocity_max = 2.2
+			p.gravity = Vector3(0, 0.3, 0)
+			p.damping_min = 5.0
+			p.damping_max = 7.0
+			p.scale_amount_min = 0.7
+			p.scale_amount_max = 1.2
+			curve.add_point(Vector2(0, 0.5))
+			curve.add_point(Vector2(1, 1.5))
 		"steam":
 			q.material = _quad_material(_soft_tex, false)
 			q.size = Vector2(0.45, 0.45)
@@ -200,6 +217,7 @@ func _make(kind: String) -> CPUParticles3D:
 			curve.add_point(Vector2(0, 1.0))
 			curve.add_point(Vector2(1, 0.3))
 	p.scale_amount_curve = curve
+	p.set_meta("g", p.gravity)
 	return p
 
 
@@ -212,6 +230,16 @@ func burst(kind: String, pos: Vector3, color: Color = Color.WHITE, amount_scale:
 	_pool_idx[kind] = (idx + 1) % list.size()
 	var p: CPUParticles3D = list[idx]
 	p.global_position = pos
+	# [v11jump] On the globe "up" is away from the planet's centre: the burst rose and fell along
+	# the world's Y, which is sideways or down anywhere far from the start.
+	var u: Vector3 = OrbitUp.up(pos)
+	var bz: Basis = Basis.IDENTITY
+	if u.dot(Vector3.UP) < -0.9999:
+		bz = Basis(Vector3.RIGHT, PI)
+	elif u.dot(Vector3.UP) < 0.9999:
+		bz = Basis(Quaternion(Vector3.UP, u))
+	p.global_basis = bz
+	p.gravity = bz * (p.get_meta("g", p.gravity) as Vector3)
 	p.color = color
 	p.amount = maxi(1, int(_base_amount(kind) * amount_scale * Settings.particle_scale()))  # [deck] fewer on Low
 	p.restart()
@@ -222,6 +250,7 @@ func _base_amount(kind: String) -> int:
 	match kind:
 		"dust": return 10
 		"steam": return 14
+		"puff": return 9
 		"sparkle": return 16
 		"spark": return 10
 		"big_sparkle": return 48
