@@ -13,7 +13,6 @@ var _near_base: bool = false
 var _cinematic: bool = false
 var _last_hex_sting: float = -10.0
 var _t: float = 0.0
-var _pinned_resto: float = -1.0  # [sound] dev --restoration
 
 
 func _ready() -> void:
@@ -36,8 +35,6 @@ func _ready() -> void:
 	if DevHooks.has("planet-theme"):
 		var ok: bool = Audio.set_planet_theme(DevHooks.get_s("planet-theme", "verdance"))
 		print("[sound] planet theme %s (%s)" % [Audio.get_planet_theme(), "ok" if ok else "unknown id ignored"])
-	if DevHooks.has("restoration"):
-		_pinned_resto = clampf(DevHooks.get_f("restoration", 0.0), 0.0, 1.0)
 	_update_intensity()
 
 
@@ -137,6 +134,9 @@ func _update_intensity() -> void:
 	if world.get("field") != null and world.field.junk_hex_count > 0:
 		district = float(world.field.junk_hexes_cleaned()) / float(world.field.junk_hex_count)
 	var planet: float = world.planet.restored_fraction() if world.get("planet") != null else 0.0
-	Audio.set_restoration(_pinned_resto if _pinned_resto >= 0.0 else planet)  # [sound] themes and ambience bloom with it
+	# The campaign sets its own restoration for audio. The local ground fraction still helps
+	# set intensity, but alternating the two values kept restarting faint restored loops.
+	if HomewardDirector.of(world) == null or Homeward.current_planet() < 0:
+		Audio.set_restoration(planet)
 	var robots: float = minf(1.0, float(world.fleet.robot_total()) / 12.0) if world.get("fleet") != null else 0.0
 	Audio.set_music_intensity(clampf(0.12 + 0.45 * district + 0.25 * robots + 0.6 * planet, 0.0, 1.0))

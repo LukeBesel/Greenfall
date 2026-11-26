@@ -456,6 +456,8 @@ func get_planet_theme() -> String:
 ## How restored the current planet is, 0..1: the theme blooms fuller and warmer, and the ambience
 ## swaps wind and groans for birds, insects and water. MusicHooks feeds this from the planet.
 func set_restoration(x: float) -> void:
+	if DevHooks.has("restoration"):
+		x = DevHooks.get_f("restoration", 0.0)
 	if is_nan(x):
 		return
 	_resto_world = clampf(x, 0.0, 1.0)

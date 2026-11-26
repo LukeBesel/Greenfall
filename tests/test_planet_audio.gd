@@ -11,6 +11,12 @@ const Tracks := preload("res://audio/music_tracks.gd")
 
 static var _samples: Dictionary = {}
 
+class RestorationWorld:
+	extends Node
+	var planet: Node
+	var field: Node
+	var fleet: Node
+
 
 func _all_samples() -> Dictionary:
 	if _samples.is_empty():
@@ -228,6 +234,27 @@ func test_ambience_beds() -> void:
 	for id: String in ["ochre", "rime", "anvil"]:
 		Audio.set_planet_theme(id)
 		assert_gt(amb.active_loops().size(), 0, "%s bed" % id)
+
+
+func test_music_hooks_leave_campaign_restoration_to_its_owner() -> void:
+	var profile: Dictionary = CradleMode.profile
+	CradleMode.profile = CradleMode.default_profile()
+	var world := RestorationWorld.new()
+	add_child_autofree(world)
+	var campaign := HomewardDirector.new()
+	campaign.name = "HomewardDirector"
+	world.add_child(campaign)
+	campaign.set_process(false)
+	var hooks := MusicHooks.new()
+	autofree(hooks)
+	hooks.world = world
+	Audio.set_restoration(0.35)
+	hooks._update_intensity()
+	assert_almost_eq(Audio.get_restoration(), 0.35, 0.001, "the local ground estimate leaves the campaign amount alone")
+	campaign.free()
+	hooks._update_intensity()
+	assert_eq(Audio.get_restoration(), 0.0, "a world without a campaign still updates its own score")
+	CradleMode.profile = profile
 
 
 func test_hover_spray_loop_and_duck() -> void:
