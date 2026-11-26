@@ -94,6 +94,12 @@ run walk_goals -- --fresh --orbit --no-intro --walk-goals --save-dir=check_exit_
 # [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
 # with real keys and mouse clicks on the workbench (tools/walk_home.gd).
 run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$
+# [v10ui] Owner (Nov 20): "I should be able to manipulate globe with mouse": the M map turned by a
+# real mouse drag, zoomed by wheel / trackpad, Find Lumi, and play back after closing (tools/walk_map.gd).
+run walk_map -- --fresh --orbit --no-intro --walk-map --save-dir=check_exit_map_$$
+# [v10ui] Owner (Nov 20): "Remove new game button if we have profiles thing": the title's profile
+# buttons in every state, Start over and Delete behind their confirm, clicked for real (tools/title_walk.gd).
+run title_walk -- --menu --title-walk --save-dir=check_exit_title_$$
 # [v11jump] Owner (20 Nov): "Also build in jump mechanic". Lumi's hop with real keys and a
 # controller's A (tools/walk_jump.gd): held, tapped, pressed early, with the scoop, with a bale,
 # onto a bale, with the map open, and on the far side of the globe.

@@ -1316,7 +1316,7 @@ func _build_puddles() -> void:
 ## Stacks of bright plastic crates and a barrel or two, tucked into the yard's fence corners
 ## (hub ground: no junk, no plant slots, nothing parks there).
 func _build_crates() -> void:
-	if start_base:  # [v8hex] owner (Nov 13): no drums, barrels or crate heaps round base 1
+	if start_base or kit_yard:  # [v8hex] owner (Nov 13): no drums, barrels or crate heaps round base 1; [v10base] nor on any base's pad (its corners are build spots)
 		return
 	var y: float = CityLayout.YARD_HALF - 0.95
 	var corners: Array[Vector2] = [Vector2(-y, -y), Vector2(y, -y), Vector2(-y, y), Vector2(y, y)]
@@ -2372,6 +2372,8 @@ func _build_ruin() -> void:
 			_pole(bp, 5.6)
 			continue
 		var dir: Vector3 = (-bp).normalized().rotated(Vector3.UP, _rng.randf_range(-0.7, 0.7))
+		if kit_yard and not start_base:  # [v10base] a far base's pad: outward, clear of its bin bay and build spots
+			dir = bp.normalized().rotated(Vector3.UP, _rng.randf_range(-0.5, 0.5))
 		_fallen_pole(bp, dir, 5.6)
 		if i < 2:  # only along the back: a wire to a front pole would hang across the view
 			var tip: Vector3 = bp + dir * 5.2 + Vector3(0, 0.15, 0)
@@ -2381,7 +2383,10 @@ func _build_ruin() -> void:
 	var h: float = CityLayout.YARD_HALF - 0.6
 	var placed: int = 0
 	for k: int in 80:
-		if placed >= 34:
+		# [v10base] Owner playtest 3 #102: a far base's pad is left clear, with real junk right round
+		# it. These were kit props that looked like junk and could never be scooped, lying where
+		# the base's bin bay and build spots now are (planet/sites/far_yard.gd).
+		if placed >= 34 or (kit_yard and not start_base):
 			break
 		var p: Vector3
 		if _rng.randf() < 0.7:

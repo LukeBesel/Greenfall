@@ -296,12 +296,15 @@ func _yield_to_real_systems() -> void:
 ## (a dark band with a yellow painted border, chevrons toward the yard) and a lamp post that is always
 ## lit, so the bin reads from across the yard, day or night.
 func _bin_bay() -> void:
-	var dep: Vector3 = prefab.anchor_local("depot").origin
-	var bin: Vector3 = prefab.anchor_local("bin").origin
+	add_child(YardSite.bin_bay(prefab.anchor_local("depot").origin, prefab.anchor_local("bin").origin))
+
+
+## [v10base] The bay as a node for any pad (site-local depot and bin spots): the far bases' yards
+## use the same one (planet/sites/far_yard.gd).
+static func bin_bay(dep: Vector3, bin: Vector3) -> Node3D:
 	var bay := Node3D.new()
 	bay.name = "BinBay"
 	bay.position = Vector3(dep.x, 0.07, (dep.z + bin.z) * 0.5)  # on the pad's slab
-	add_child(bay)
 	var sz := Vector2(4.6, absf(dep.z - bin.z) + 4.4)  # x across, z along
 	var k := YardArt.Kit.new()
 	for side: int in 4:  # a dark band inside the paint, so the bay reads against the pale pad
@@ -338,6 +341,7 @@ func _bin_bay() -> void:
 	post.add_child(light)
 	YardArt.set_powered(post, true)
 	YardArt.solid(post, Vector3(0.3, 2.0, 0.3), Vector3(0, 1.0, 0), "PostBody")
+	return bay
 
 
 static func _show(n: Node3D, on: bool) -> void:

@@ -91,7 +91,7 @@ static func warm() -> void:
 			elif AssetLib.has_model(id):
 				AssetLib.model_mesh(id)
 	AssetLib.tracing = false  # fetched: not blocking loads
-	await BuildBudget.join(BuildBudget.add_task(work, "preload meshes"))
+	await BuildBudget.run_mesh_task(work, "preload meshes")  # [v12load] on this thread when headless
 	AssetLib.tracing = was
 
 
@@ -119,6 +119,8 @@ static func done() -> void:
 static func start() -> int:
 	_paths.clear()
 	if DevHooks.has("orbit-no-preload"):  # A/B for load timing
+		return 0
+	if not BuildBudget.threads_ok():  # [v12load] headless: loader threads must not make meshes beside the build's
 		return 0
 	var ids: PackedStringArray = PackedStringArray()
 	for e: Variant in listed():  # [v5load] the build's own models first: they are needed first

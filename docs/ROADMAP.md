@@ -2,7 +2,14 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
-## Jump (v11jump, 20 Nov, owner item 114)
+## 20 Nov, v10ui: map mouse control (owner item 114), title without New Game (item 115)
+
+- **Map (M):** the globe is turned by dragging (the ground follows the cursor, a short coast, pole limits), zoomed by wheel / two-finger scroll / pinch, and "Find Lumi" (button, V, double-click) goes back to the opening view. The cause was the map's root Control swallowing the mouse. Proof: `--walk-map` (in tools/check_exit.sh), rendered frames looked at.
+- **Title:** no New Game button. The title lists the played profiles (CONTINUE for the last one, a button each for the others), PLAY on a first launch, NEW PROFILE while a slot is free; Start over and Delete are per profile on the Profiles page, each behind a question. Proof: `--menu --title-walk` (in tools/check_exit.sh), rendered frames looked at.
+- **HUD base name (critic 7):** the 72516d7 change never reached the HUD (the HUD asks the slice, the method was on the round-world object); wired through and checked on the pad by `--walk-map`.
+- **Follow-up (24 Nov):** Lumi no longer dozes off while holding the map (a snore's "z" floated over the globe in a rendered run; `--walk-map` checks it). The title no longer logs "Couldn't open directory" for never-played profiles. `--walk-home` failed twice here on the money the game pays while the walk reads the card (a bale pressed in a salvage surge pays over 1K): main's v9a fixes cover both (the shuttle's count and "price is paid" checks, a reload that saves up while the card fades in); this branch's own versions were dropped at the merge. Found, not fixed: a world event running when the game is saved is not saved, and its countdown stays at 0, so a new random event (toast, WREN line) starts the moment the game loads (systems/events.gd: only `_finish` resets `next_in`); 6 of 18 loads in one home walk started a Salvage Surge.
+- **Open:** real MacBook trackpad feel (drag speed, coast, scroll speed) and a real controller on the new title list are not verified here. v10snd's `walk_radio` and v11film's rewatch option must use the title's `_continue` / `_play` buttons (there is no `_new_game` any more).
+## Jump (v11jump, 20 Nov, owner item 116)
 
 - **Built:** Lumi hops on Space / A (rebindable "Jump"; scoop's second key moved from Space to X). 0.6 m held, smaller on a tap, 0.41 s in the air; onto things up to about 0.85 m. Numbers in `data/patch.json` "jump", how-to in docs/ADJUSTING.md "Lumi's hop".
 - **Rules in code:** junk heaps stop him at any height; from a height he does not pass over what a hop from the ground below could not clear (no leaps over walls, no bale stairs); a rescue lift to open ground when a hop leaves him shut in and he keeps trying for 6 s.
@@ -112,7 +119,15 @@ The owner asked to end all work at a good stopping point.
   - **Cause found and fixed (v10ci, 20 Nov):** `FirstSeed._resume_planting` deferred a lambda that uses the node (`(func() -> void: ...).call_deferred()`); tests/test_first_seed_hint.gd frees the node in the same frame. For such a lambda the engine keeps only the node's address, so at the next frame it ran on whatever lay there (on the CI runner: a wild pointer, signal 11). All 25 deferred lambdas in node functions are methods now (the engine drops a deferred method when its node is gone), and the two flyer tweens that can outlive their owner (robots/robot.gd, automation/auto_baler.gd) reach it by weak ref. `tests/test_deferred_calls.gd` replays the fault and scans the scripts for the pattern. Rule: never `call_deferred` a lambda from a node's function; a tween on ANOTHER node must not use `self` in its lambdas.
 - **Merged on local main, not pushed** (the combined full run was stopped): v10guide 4148bc4 (critic 3, 5, 13, 20, 21, 23). Its own full run passed on its branch.
 - **WIP on helper branches** (local worktrees under /home/user/gf-wt), not merged:
-  - v10base (101, 102, 104, far half of 97; critic 1 bale rain, 4, 10, 15, 22).
+  - v10base (101, 102, 104, far half of 97; critic 1 bale rain, 4, 10, 15, 22), handed off 24 Nov: every far base
+    has its own bin and scale and marked spots for a Workbench, Locker and Bot Bay (played by `--walk-travel`,
+    rendered with `--faryard-look`); the far pads keep their junk; bales left behind sleep where they lie; E
+    picks up the bale the prompt names. Far-base pace measured by autoplay: station 2 3.7-4.4 bot min (was 8.0),
+    station 3 5.6 (was 9.4) once the bot stopped walking across the town to the far Workbench. Still open:
+    the main card says only "Wake base N of 6" through the cleaning (the step and its count are on the far
+    base's own card, HubPurpose), and the wake's
+    6 toasts and 2 WREN lines come together (critic 15). The opening walk's stuck spots by the Shack were the
+    walker's (v9a's way-round planner, merged).
   - v10snd (90, 91, 92, 108: sliders, quieter stingers and ambience, radio and first CD).
   - v10ui follow-up renders.
   - v9a walk fixes and Pace.heavy_hint.

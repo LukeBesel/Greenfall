@@ -1192,6 +1192,8 @@ func _update_hints(delta: float) -> void:
 	model.look_toward(look)
 	_update_aim()
 	# Idle: after a while Patch shakes off rust flakes; much later he dozes off.
+	if model.holding:  # [v10ui] the map in his hands: the player is turning it, not away (a snore's "z" floated over the globe)
+		_idle_time = 0.0
 	model.sleeping = _idle_time > 45.0
 	if _idle_time > 8.0 and fmod(_idle_time, 9.0) < delta:
 		model.shudder(0.25)

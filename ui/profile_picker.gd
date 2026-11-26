@@ -2,8 +2,8 @@ class_name ProfilePicker
 extends Control
 ## [worlds2] Title screen save profiles (ui/main_menu.gd > Profiles): three slots, each with its
 ## name, play time, worlds, current world and district, and Bloom %. Per slot: Continue (then the
-## world list, ui/world_picker.gd, when the profile has more than one world), New (confirm when it
-## would erase), Rename and Delete (confirm). Pad friendly: a focus grid over the slot buttons;
+## world list, ui/world_picker.gd, when the profile has more than one world) or, when empty, Play;
+## Start over (confirm; [v10ui] the title has no New Game button any more), Rename and Delete (confirm). Pad friendly: a focus grid over the slot buttons;
 ## cancel backs out of a dialog, then the picker. All text through tr().
 
 signal go          ## a profile/world is chosen: the title screen loads the game
@@ -108,7 +108,10 @@ func _card(n: int) -> Control:
 	var btns: Array = []
 	if not s["empty"]:
 		btns.append(_btn(row, tr("Continue"), _continue.bind(n), true))
-	btns.append(_btn(row, tr("New"), _new.bind(n, bool(s["empty"]))))
+	else:
+		btns.append(_btn(row, tr("Play"), _new.bind(n, true), true))
+	if not s["empty"]:
+		btns.append(_btn(row, tr("Start over"), _new.bind(n, false)))
 	btns.append(_btn(row, tr("Rename"), _rename.bind(n)))
 	if not s["empty"]:
 		btns.append(_btn(row, tr("Delete"), _delete.bind(n)))
