@@ -59,6 +59,7 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 				"lv": mini(in_crew, cap), "max": cap if cap <= 10 else 0, "price": cost,
 				"state": "ready" if why == "" else ("short" if short or n > 0 else "locked"),  # owned types keep their name
 				"table": table, "requires": "" if why == "" or short else why,
+				"purchase_sound": false,  # MusicHooks plays the build cue on EventBus.robot_built.
 				"action": _tr("Build a %s") % name_ if n > 0 else _tr("Build your first %s") % name_,
 				"act": func() -> bool: return fleet.build(rid, build_at.call() if build_at.is_valid() else Vector3.ZERO) != null})
 		# Tiers (only for types you have).

@@ -48,7 +48,7 @@ func _on_upgrade_bought(_id: String, _lvl: int) -> void:
 
 func _on_robot_built(_n: String) -> void:
 	Audio.music_activity(0.15)
-	Audio.music_sting("robot_built")
+	Audio.play("robot_start", 1.0, -7.0)
 
 
 func _on_hex_restored(_h: int) -> void:
@@ -94,6 +94,8 @@ func _tunes_setup() -> void:
 
 
 func _exit_tree() -> void:
+	if is_instance_valid(world):
+		Audio.fade_planet_ambience()
 	if Tunes.context() == "play":
 		Tunes.set_context("none")  # [tunes] the next scene picks its own music
 

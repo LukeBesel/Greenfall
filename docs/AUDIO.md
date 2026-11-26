@@ -1,7 +1,50 @@
 # Greenfall audio
 
-Everything is synthesized in GDScript at startup or on first use: no audio files ship. API and the
-reasons behind it: docs/DECISIONS.md, "Planet audio".
+Greenfall synthesizes its effects, ambience and procedural score in GDScript. The seven recorded
+songs under [audio/songs](../audio/songs/README.md) run through the title, opening film and CD
+player. See [DECISIONS.md](DECISIONS.md) for how the planet audio was designed.
+
+## Where sounds play
+
+| Moment | What plays | Source |
+| --- | --- | --- |
+| Scoop | A short intake sweep when a piece lifts, a soft beam hum while the beam is busy, and a material or combo clink as junk reaches the chest. Heavy pieces get a hydraulic accent. | [PickupFx](../player/pickup_fx.gd), [Patch](../player/patch.gd) |
+| Loose bin dump | Scrap spills against a hollow bin wall. A separate payout tone plays when cubes are credited. | [Pace](../core/pace.gd) |
+| Baler | Hydraulics and a motor groan begin the chest press. A short bite and chassis knock mark compression. The hatch clunks on ejection. The Auto Baler has its own intake, press, vent and output timing and uses the same synthesized press bite. | [Patch](../player/patch.gd), [FeelFx](../art/feel_fx.gd), [Auto Baler](../automation/auto_baler.gd) |
+| Bale scale | A suction sweep at intake, a clunk at the chute and a rising readout when the bale pays. Consecutive sales raise the pitch. | [Depot](../automation/depot.gd) |
+| Robot built | A mechanical latch and two short startup notes play once on the build event, including while a song is on. Normal purchases and upgrades still use their own feedback. | [MusicHooks](../audio/music_hooks.gd), [BenchBots](../ui/bench_bots.gd) |
+| Launch and landing | The globe's intra- and interplanetary flights use a takeoff whoosh and a touchdown thud. The separate Rocket sequence has countdown beeps, a siren, charge, repeated engine roars, and landing gear, impact and steam cues. The opening film uses some of those sources for pod and ark effects. | [HubHop](../planet/sites/hub_hop.gd), [Rocket](../automation/rocket.gd), [film shot table](../data/intro_shots.json) |
+| Interface | Button clicks on the Interface bus, focus blips on title/profile/world navigation, and short confirm, refusal and purchase cues. | [Main menu](../ui/main_menu.gd), [Pause menu](../ui/pause_menu.gd), [Settings](../ui/settings_panel.gd), [ListDetail](../ui/list_detail.gd) |
+| Other effects | Lumi's treads and gestures, animal calls, robot work, detector and dig cues, puzzle and Easter egg sounds, discoveries, restoration and upgrade rewards. | [Audio](../autoload/Audio.gd), [Fauna](../fauna/fauna_sounds.gd), [StorySfx](../story/story_sfx.gd), [MusicHooks](../audio/music_hooks.gd) |
+| Planet ambience | Verdance tracks dirt and greenery around Lumi. Ochre has warm wind and grit, Tidewell has waves and buoy bells, Rime has wind and ice, and Anvil has dust and foundry sounds. Restoration changes the mix. Birds in the planet beds share the wildlife clock. | [Life ambience](../audio/life_ambience.gd), [planet beds](../audio/ambience.gd), [sound data](../data/sound.json) |
+
+## Recorded music and direction
+
+- **Title and opening film.** Greenfall (Main Theme) opens the title playlist with warm piano and a
+  slow string swell. The Fall of LM-1 scores the opening and rewatch, moving from storm percussion
+  to sparse piano and fading at the landing. The title may shuffle the other recordings too.
+- **World and radio.** Clean Sweep and Morning Shift are Verdance tracks. Sunbaked, Dune Caravan
+  and Strip Mine Shuffle are Ochre tracks available in the current shuffle. Finding the first
+  Sunbaked CD starts the world playlist. The background leaves space between songs. The radio can
+  shuffle, repeat one song or stop. Selecting the song already playing preserves its position.
+  A repeat fades at the seam without playing two copies together.
+- **Music direction.** The [existing Suno prompts](music/suno_prompts.json) specify plucky, bright
+  rhythms for Verdance, warm hand percussion and winding melodies for Ochre, breezy flow for
+  Tidewell, glassy space for Rime, and dark grooves that grow warmer for Anvil. The procedural
+  themes below cover those worlds while most recordings are still pending. Small Robot, Big Sky
+  is the direction for a future launch recording with driving rhythm, rising strings and a
+  bright lead. The launch currently has no recorded moment track.
+
+## Handoff
+
+- For dedicated ship sounds on the globe, replace the existing cues in the travel owner's
+  [HubHop](../planet/sites/hub_hop.gd). Use the same short thrust rise for `hop_with` and
+  `depart_with`, then one gear impact for `hop_with` and `_step_off`. Check a complete
+  approach and one skipped with E so each arrival has one impact.
+- Title, profile and world navigation play the shared `blip` on focus. Set Interface to zero,
+  leave Sound effects up and move controller focus to hear it. The UI owner can switch those
+  call sites to a dedicated Interface-bus focus cue. The existing click already follows that
+  slider. [Title](../ui/main_menu.gd), [profiles](../ui/profile_picker.gd), [worlds](../ui/world_picker.gd)
 
 ## Files
 | File | What |
@@ -96,11 +139,13 @@ I add9 - vi7 - IVmaj7 - V7 and builds every 4 chords: piano and pads; then bass,
 doubling; then a choir pad, a soft heartbeat kick and shaker; finally the melody an octave up.
 
 ## Mix
-- Buses: Master (hard limiter -0.5 dB), Music (low-pass by mood, reverb, limiter -1 dB), SFX
-  (light reverb), Ambience (-> SFX). Settings sliders set Master / Music / SFX; 0 mutes.
+- Settings offers Master, Music, Sound effects, Wind and animals, Interface and Reward sounds.
+  Zero mutes the matching bus. Music controls both the procedural Music bus and recorded Songs
+  bus. The jukebox fades both music buses. Master has a small-speaker high-pass and a -0.5 dB
+  limiter. Music has a mood-driven low-pass, reverb and a -1 dB limiter. SFX uses light reverb.
 - Music RMS (offline, before the bus): generative explore ~-26 dBFS; tracks -23.5 to -28 dBFS (calm
   Rime the quietest, Anvil's sub-heavy grooves the loudest). Ambience loops are levelled to -20 dBFS
-  RMS and sit at -14 dB on the bed, i.e. below the music.
+  RMS. Each bed applies its own level and restoration weights before the Wind and animals slider.
 - WREN ducking: music -7 dB, ambience -4.5 dB, 0.25 s attack, 0.9 s release.
 
 ## Tools

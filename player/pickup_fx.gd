@@ -128,7 +128,7 @@ func launch(mesh: Mesh, xf: Transform3D, dur: float, big: bool, tint: Color) -> 
 	_regen_arcs(s)
 	if model:
 		model.eye_flash(0.6 if big else 0.35)
-	_sfx("blip", (1.5 if big else 2.1) + _rng.randf_range(-0.15, 0.15), -15.0, 0.07)
+	Audio.play("scoop_draw", 0.9 if big else 1.1, -12.0 if big else -15.0, 0.07, "scoop")
 	_sfx("servo", (1.2 if big else 1.8) + _rng.randf_range(-0.1, 0.1), -19.0, 0.12)
 	if big:
 		EventBus.shake_requested.emit(0.05)

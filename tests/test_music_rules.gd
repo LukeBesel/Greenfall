@@ -311,7 +311,7 @@ func test_a_file_that_will_not_load_is_skipped_and_never_stalls() -> void:
 	for i: int in 8:
 		d.tick(0.1)
 	assert_eq(d.current(), MAIN, "nothing in the pool will play: the title falls back to the main theme")
-	assert_false(d._start("t_broken", 1.0, false), "a damaged file does not start")
+	assert_false(d._start("t_broken", 1.0), "a damaged file does not start")
 	assert_false(Tunes.has_file("t_broken"), "the damaged file is skipped from now on")
 	assert_false(Tunes.has_file("t_nofile"))
 	d.set_context("none")

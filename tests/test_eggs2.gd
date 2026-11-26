@@ -157,6 +157,7 @@ func test_jukebox_hushes_music_until_lumi_walks_away() -> void:
 	assert_eq(Audio.get_hush(), 1.0)
 	var mus: int = AudioServer.get_bus_index("Music")
 	assert_true(AudioServer.is_bus_mute(mus), "background music fully out while the jukebox plays")
+	assert_true(AudioServer.is_bus_mute(AudioServer.get_bus_index("Songs")), "the jukebox also fades out recorded songs")
 	eggs.update_jukebox(Vector3(5, 0, 0))
 	assert_true(Audio.is_music_hushed(), "still playing close by")
 	eggs.update_jukebox(Vector3(EasterEggs.JUKEBOX_LEAVE_M + 1.0, 0, 0))

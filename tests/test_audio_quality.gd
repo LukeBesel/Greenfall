@@ -104,6 +104,16 @@ func test_score_air_bed_is_not_rumble() -> void:
 	assert_lt(_sub80(air["pcm"]), 0.3, "the score's air bed is not mostly sub-bass")
 
 
+func test_work_cues_have_headroom_and_little_sub_bass() -> void:
+	for sound: String in ["scoop_draw", "bin_spill", "robot_start", "crunch", "roar"]:
+		var takes: Array = Audio.streams_of(sound)
+		assert_gte(takes.size(), 3, "%s varies between plays" % sound)
+		for stream: AudioStreamWAV in takes:
+			var pcm: PackedFloat32Array = _pcm_of(stream)
+			assert_lt(_peak_dc(pcm).x, 0.75, "%s leaves headroom for other sources" % sound)
+			assert_lt(_sub80(pcm), 0.25, "%s still reads on small speakers" % sound)
+
+
 ## The envelope's strongest 15-45 Hz component, relative to its mean (a steady chop's depth).
 static func _chop_depth(b: PackedFloat32Array) -> float:
 	var hop: int = int(RATE / 400.0)

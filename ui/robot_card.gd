@@ -269,11 +269,7 @@ func refresh() -> void:
 
 
 func _on_build() -> void:
-	var r: Robot = fleet.build(type_id, build_at.call())
-	if r:
-		Audio.play("buy", 1.0, -2.0)
-		Audio.play("confirm", 1.0, -6.0)
-	else:
+	if fleet.build(type_id, build_at.call()) == null:
 		Audio.play("buzz", 1.2, -8.0)
 		Refuse.say("")  # [v9d] say why
 	refresh()

@@ -11,6 +11,7 @@ extends VBoxContainer
 ##   name, desc, lv, max (pips; max 0 = none), price ({cubes/parts/seeds}),
 ##   state: "ready" | "short" | "locked" | "done" | "busy",
 ##   table: [[label, value], ...], requires: "" or text, action: button text, act: Callable() -> bool,
+##   purchase_sound: optional false when the successful action supplies its own sound,
 ##   custom: optional Callable(world) -> Control shown in the detail panel instead of the table.
 ## `categories`: [[id, name], ...] in tab order. `counter`: Callable() -> String for the corner.
 
@@ -591,8 +592,9 @@ func _do(id: String) -> void:
 		Refuse.say(why if why != "" else (ListDetail.short_text(it.get("price", {})) if it.get("price") is Dictionary else ""))
 		return
 	if bool((act as Callable).call()):
-		Audio.play("buy", 1.0, -3.0)
-		Audio.play("confirm", 1.05, -7.0)
+		if bool(it.get("purchase_sound", true)):
+			Audio.play("buy", 1.0, -3.0)
+			Audio.play("confirm", 1.05, -7.0)
 		acted.emit(id)
 	else:
 		Audio.play("buzz", 1.2, -8.0)

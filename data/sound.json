@@ -46,8 +46,8 @@
  "_doc_sound_db_v10": "[v10snd] Measured in play (autoplay, --sound-log, loudest 400 ms of each sound + the dB it is played at): the scoop's clink sits at -34 dB; before this pass buy was at -18..-22, fanfare -23, chime -25 (up to -20), coin -27, ding -29, the score's stingers peaked at -11 dBFS, and the baler's crunch, pop, hydraulic, clunk and groan sat at -22..-24. Now the reward sounds land at about -30 (-32 with the Reward sounds slider at its start level), a little over the scoop; the machine sounds come 3-4 dB down. sting_db: the score's stingers (upgrade, level up, robot built, hex clean).",
  "sting_db": -6.0,
  "sound_db": {
-  "scoop:blip": -80.0,
   "scoop:pop": 0.0,
+  "click": -3.0,
   "buy": -11.0,
   "fanfare": -7.0,
   "chime": -8.0,
@@ -58,11 +58,14 @@
   "hydraulic": -4.0,
   "clunk": -3.0,
   "groan": -3.0,
+  "roar": -4.0,
   "dig": -3.0,
   "thunk": -2.0
  },
  "min_gap_s": {
   "_default": 0.04,
+  "click": 0.06,
+  "scoop:scoop_draw": 0.55,
   "scoop:clink": 0.07,
   "scoop:servo": 0.5,
   "scoop:sparkle": 0.7,
@@ -77,8 +80,9 @@
  },
  "_doc_variety": "[v9s] Repetition (owner 2026-11-13: \"super annoying to hear the same bird chirp so many times over and over ... lively but just peaceful\"). Every sound with more than one take never plays the same take twice running. Keys are \"sound\" or \"tag:sound\" (the tag wins), else \"_default\". max_voices: at most this many of the sound sounding at once (a new play is dropped). soften: [window s, dB, max dB]: a play within window s of the last one of the same key is dB softer per play in the run, at most max dB, so fast repeats are a patter, not a hammer; a pause longer than the window resets it. pitch_spread: the least random pitch spread (+- share, 0.05 = 5%). ladder_roots: semitones a new scoop combo's rising ladder starts on (one picked per combo, never the same twice running). Check: tools/check_audio.py --repeat (docs/ADJUSTING.md, Listen by numbers).",
  "variety": {
-  "max_voices": {"chime": 2, "sparkle": 3, "fanfare": 1, "ding": 2},
+  "max_voices": {"chime": 2, "sparkle": 3, "fanfare": 1, "ding": 2, "click": 1, "coin": 2, "scoop_draw": 1, "bin_spill": 1, "robot_start": 1, "roar": 3},
   "soften": {
+   "scoop:scoop_draw": [2.0, 1.5, 4.5],
    "scoop:clink": [0.9, 1.0, 5.0],
    "scoop:pop": [1.2, 1.5, 6.0],
    "scoop:servo": [1.5, 1.5, 6.0],
@@ -147,14 +151,14 @@
   "ochre": {
    "theme": "ochre",
    "ambience": {
-    "level_db": 0.0,
+    "level_db": -3.0,
     "loops": {
      "wind_warm": [1.0, 0.55],
      "heat_buzz": [0.3, 0.12],
      "cicadas": [0.0, 0.5]
     },
     "events": [
-     ["whoosh", 8.0, 18.0, -15.0, 0.35, 0.5, 1.0, 0.4],
+     ["whoosh", 35.0, 85.0, -18.0, 0.35, 0.5, 1.0, 0.4],
      ["song", 5.0, 12.0, -19.0, 0.9, 1.1, 0.0, 1.0],
      ["chirp", 4.0, 9.0, -21.0, 0.9, 1.15, 0.0, 0.8]
     ]
@@ -163,7 +167,7 @@
   "tidewell": {
    "theme": "tidewell",
    "ambience": {
-    "level_db": 0.0,
+    "level_db": -3.0,
     "loops": {
      "waves": [1.0, 0.85],
      "wind_sea": [0.45, 0.25],
@@ -172,7 +176,7 @@
     },
     "events": [
      ["gull", 5.0, 12.0, -13.0, 0.9, 1.1, 1.0, 1.0],
-     ["amb_buoy", 9.0, 20.0, -17.0, 0.95, 1.05, 1.0, 0.6],
+     ["amb_buoy", 40.0, 100.0, -20.0, 0.95, 1.05, 1.0, 0.6],
      ["song", 6.0, 13.0, -20.0, 0.9, 1.1, 0.0, 0.9],
      ["frog", 20.0, 45.0, -20.0, 0.9, 1.1, 0.0, 0.6]
     ]
@@ -181,14 +185,14 @@
   "rime": {
    "theme": "rime",
    "ambience": {
-    "level_db": 0.0,
+    "level_db": -3.0,
     "loops": {
      "wind_eerie": [1.0, 0.5],
      "water": [0.0, 0.65]
     },
     "events": [
-     ["amb_creak", 4.0, 11.0, -13.0, 0.8, 1.2, 1.0, 0.35],
-     ["amb_geyser", 14.0, 30.0, -12.0, 0.9, 1.1, 1.0, 0.6],
+     ["amb_creak", 45.0, 110.0, -17.0, 0.8, 1.2, 1.0, 0.35],
+     ["amb_geyser", 55.0, 125.0, -17.0, 0.9, 1.1, 1.0, 0.6],
      ["song", 6.0, 14.0, -21.0, 1.0, 1.2, 0.0, 0.7],
      ["chirp", 5.0, 11.0, -22.0, 1.0, 1.2, 0.0, 0.6]
     ]
@@ -197,16 +201,16 @@
   "anvil": {
    "theme": "anvil",
    "ambience": {
-    "level_db": 0.0,
+    "level_db": -3.0,
     "loops": {
      "wind_dust": [1.0, 0.5],
      "water": [0.0, 0.55],
      "crickets": [0.0, 0.45]
     },
     "events": [
-     ["groan", 7.0, 16.0, -13.0, 0.45, 0.65, 1.0, 0.2],
-     ["clunk", 10.0, 22.0, -21.0, 0.5, 0.7, 1.0, 0.2],
-     ["amb_devil", 15.0, 35.0, -11.0, 0.9, 1.1, 1.0, 0.3],
+     ["groan", 48.0, 110.0, -17.0, 0.45, 0.65, 1.0, 0.2],
+     ["clunk", 55.0, 130.0, -23.0, 0.5, 0.7, 1.0, 0.2],
+     ["amb_devil", 60.0, 135.0, -16.0, 0.9, 1.1, 1.0, 0.3],
      ["song", 5.0, 12.0, -19.0, 0.9, 1.1, 0.0, 1.0],
      ["chirp", 4.0, 9.0, -21.0, 0.9, 1.15, 0.0, 0.8]
     ]

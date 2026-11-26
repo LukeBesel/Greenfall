@@ -282,6 +282,60 @@ func test_director_plays_title_and_intro_songs() -> void:
 	d.set_context("none")
 
 
+func test_radio_keeps_playing_the_same_cd_when_selected_during_its_first_play() -> void:
+	_all_files()
+	var d: Node = Director.new()
+	d.manual = true
+	add_child_autofree(d)
+	d.set_context("play")
+	var starts: Array[String] = []
+	d.song_started.connect(func(id: String) -> void: starts.append(id))
+	assert_true(d.play_now("sunbaked"))
+	d.tick(5.0)
+	d.set_radio("sunbaked")
+	d.tick(0.1)
+	assert_eq(d.current(), "sunbaked")
+	assert_almost_eq(d.position(), 5.1, 0.01, "selecting the first CD keeps its playhead")
+	assert_eq(starts, ["sunbaked"], "only the original stream started")
+
+
+func test_switching_away_from_the_first_cd_starts_the_replacement_once() -> void:
+	_all_files()
+	var d: Node = Director.new()
+	d.manual = true
+	add_child_autofree(d)
+	d.set_context("play")
+	var starts: Array[String] = []
+	d.song_started.connect(func(id: String) -> void: starts.append(id))
+	assert_true(d.play_now("sunbaked"))
+	d.tick(1.0)
+	d.set_radio("morning_shift")
+	d.tick(0.1)
+	d.tick(0.1)
+	assert_eq(d.current(), "morning_shift")
+	assert_almost_eq(d.position(), 0.2, 0.01)
+	assert_eq(starts, ["sunbaked", "morning_shift"], "the old music cue does not stop the radio")
+
+
+func test_radio_repeat_waits_for_the_track_end() -> void:
+	_all_files()
+	var d: Node = Director.new()
+	d.manual = true
+	add_child_autofree(d)
+	d.set_context("play")
+	d.set_radio("sunbaked")
+	var slot: Dictionary = d._slot[d._main]
+	var end: float = slot["len"]
+	slot["t"] = end - 2.0
+	d.tick(0.1)
+	assert_almost_eq(d.position(), end - 1.9, 0.01, "the head does not start over the audible tail")
+	d.tick(2.0)
+	d.tick(0.1)
+	assert_eq(d.current(), "sunbaked", "radio still repeats at the end")
+	assert_almost_eq(d.position(), 0.1, 0.01)
+	assert_eq(d._slot[1 - d._main]["id"], "", "only one copy is active")
+
+
 func test_title_plays_random_songs_with_main_first() -> void:
 	_all_files()
 	var d: Node = Director.new()

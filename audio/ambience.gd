@@ -1,6 +1,6 @@
 extends Node
-## [sound] Planet ambience beds on the "Ambience" bus (which sends to "SFX", so the SFX slider
-## governs it). Each planet has a few seamless loops plus random one-shot events; every entry has
+## [sound] Planet beds follow the "Wind and animals" slider on the Ambience bus.
+## Each planet has a few seamless loops plus random one-shot events; every entry has
 ## a ruined and a restored weight, so restoration crossfades the dead world (wind, groans, creaks)
 ## into a living one (birds, insects, water). Verdance's bed is empty in the data: its wildlife
 ## ambience is fauna/fauna.gd and the town life's dirty-to-clean bed (v6life), on the same bus. Driven by Audio.set_planet_theme() / Audio.set_restoration().
@@ -89,9 +89,10 @@ func _retarget() -> void:
 	if planet == "":
 		return
 	var defs: Dictionary = _bed["loops"]
+	var level: float = db_to_linear(_level_db)
 	for lid: String in defs:
 		var w: Array = defs[lid]
-		var target: float = lerpf(float(w[0]), float(w[1]), restoration)
+		var target: float = lerpf(float(w[0]), float(w[1]), restoration) * level
 		if target > 0.0:
 			_ensure_loop(lid)
 		if _loops.has(lid):
@@ -160,7 +161,7 @@ func _process(delta: float) -> void:
 			if float(l["w"]) <= 0.0:
 				gone.append(lid)
 			continue
-		AudioVol.set_db(p, linear_to_db(cur) + LOOP_DB + _level_db)  # [qafix] crash fix: no per-frame volume churn
+		AudioVol.set_db(p, linear_to_db(cur) + LOOP_DB)  # [qafix] crash fix: no per-frame volume churn
 		if not p.playing:
 			p.play(_rng.randf() * maxf(0.0, p.stream.get_length() - 0.1))
 	for lid: String in gone:
@@ -183,9 +184,14 @@ func _fire(snd: String, db: float, pitch: float) -> void:
 	var list: Array = _shot_cache.get(snd, []) if snd.begins_with("amb_") else Audio.streams_of(snd)
 	if list.is_empty():
 		return
+	var category: String = str(Fauna.SND_CAT.get(snd, ""))
+	if category in ["call", "gull", "quack"]:
+		var night: float = 1.0 if Audio.get_music_mood() == "night" else 0.0
+		if not Fauna.bird_call_ok(night, snd):
+			return
 	var p: AudioStreamPlayer = _shots[_next_shot]
 	_next_shot = (_next_shot + 1) % _shots.size()
-	p.stream = list[_rng.randi() % list.size()]
+	p.stream = list[Audio.pick_take(snd, list.size())]
 	p.pitch_scale = pitch
 	p.volume_db = db + _level_db + _rng.randf_range(-3.0, 1.0)
 	p.play()

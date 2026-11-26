@@ -1,6 +1,6 @@
 extends Node
-## Procedural audio. Every SFX is synthesized at startup (original, no external files) with
-## at least 3 variations. Final assets can replace any sound by name via `override(name, streams)`.
+## Procedural audio. Built-in effects are synthesized at startup or on first use.
+## Final assets can replace any sound by name via `override(name, streams)`.
 ##
 ## Music: a generative, layered ambient score (audio/music_director.gd, instruments from
 ## audio/music_synth.gd) on the "Music" bus. Drive it with `set_music_mood()` ("explore",
@@ -182,8 +182,10 @@ func apply_volumes() -> void:
 	_set_bus_level(AudioServer.get_bus_index("SFX"), Settings.sfx_volume, SoundCfg.bus_trim_db("SFX"))
 	_set_bus_level(AudioServer.get_bus_index("UI"), Settings.ui_volume, SoundCfg.bus_trim_db("UI"))
 	_set_bus_level(AudioServer.get_bus_index("Jingles"), Settings.jingle_volume, SoundCfg.bus_trim_db("Jingles"))
-	_set_bus_level(AudioServer.get_bus_index("Music"), Settings.music_volume * (1.0 - _hush),
-		SoundCfg.bus_trim_db("Music") + SoundCfg.duck("music_db", DUCK_MUSIC_DB) * _duck)  # [eggs2] hush
+	var music_level: float = Settings.music_volume * (1.0 - _hush)
+	var music_duck_db: float = SoundCfg.duck("music_db", DUCK_MUSIC_DB) * _duck
+	for bus_name: String in ["Music", "Songs"]:
+		_set_bus_level(AudioServer.get_bus_index(bus_name), music_level, SoundCfg.bus_trim_db(bus_name) + music_duck_db)
 	_set_bus_level(AudioServer.get_bus_index("Ambience"), Settings.ambience_volume,
 		SoundCfg.bus_trim_db("Ambience") + SoundCfg.duck("ambience_db", DUCK_AMB_DB) * _duck)
 
@@ -483,6 +485,12 @@ func release_theme() -> void:
 	_apply_theme(_theme_world, _resto_world)
 
 
+## The world has exited. Fade out its ambient bed while the next scene chooses its planet.
+func fade_planet_ambience() -> void:
+	if _ambience:
+		_ambience.call("set_planet", "")
+
+
 ## Busy play (cleaning, building) nudges the score toward its upbeat tracks. MusicHooks calls it.
 func music_activity(amount: float) -> void:
 	if _music:
@@ -584,7 +592,7 @@ func get_music_intensity() -> float:
 ## Short musical stinger built from the current chord: "upgrade", "hex_clean", "first_sprout",
 ## "robot_built", "level_up". Routed to the Jingles bus ([v10snd]; was Music).
 func music_sting(sting_name: String) -> void:
-	if _tunes_hush and Tunes.now_playing() != "":  # [tunes] no synth stingers over a song
+	if is_music_hushed() or (_tunes_hush and Tunes.now_playing() != ""):
 		return
 	if _music:
 		_music.call("sting", sting_name)
@@ -742,17 +750,16 @@ func _generate_all() -> void:
 			var t: float = float(i) / RATE
 			b[i] = (sin(TAU * f * t) + 0.5 * sin(TAU * f * 2.76 * t) + 0.25 * sin(TAU * f * 5.4 * t)) * exp(-t * 28.0) * 0.32
 		_add("clink", b)
-	# Crunch: compaction. Low thump + crackle.
+	# Crunch: a press bite with a short chassis ring and a grainy scrap tail.
 	for v: int in 3:
 		var b := _buf(0.45)
 		var lp: float = 0.0
 		for i: int in b.size():
 			var t: float = float(i) / RATE
-			var thump: float = sin(TAU * (90.0 - 50.0 * t) * t) * exp(-t * 9.0) * 0.7
-			var n: float = _rng.randf_range(-1.0, 1.0)
-			lp += (n - lp) * (0.35 + 0.1 * v)
-			var crackle: float = lp * (0.6 if _rng.randf() < 0.08 else 0.18) * exp(-t * 5.0)
-			b[i] = thump + crackle
+			var thump: float = sin(TAU * (115.0 + 8.0 * v - 45.0 * t) * t) * exp(-t * 12.0) * 0.46
+			var ring: float = sin(TAU * (355.0 + 47.0 * v) * t) * exp(-t * 19.0) * 0.14
+			lp = lerpf(lp, _rng.randf_range(-1.0, 1.0), 0.29 + 0.08 * v)
+			b[i] = thump + ring + lp * exp(-t * 7.0) * 0.30
 		_add("crunch", b)
 	# Steam hiss.
 	for v: int in 3:
@@ -783,13 +790,14 @@ func _generate_all() -> void:
 				var t: float = float(i - start) / RATE
 				b[i] += (sin(TAU * f * t) + 0.3 * sin(TAU * f * 3.0 * t)) * exp(-t * 3.2) * 0.16
 		_add("chime", b)
-	# Coin: cash-in blip.
+	# Coin: the scale's short rising readout, also used for other cash-ins.
 	for f: float in [988.0, 1046.5, 1108.7]:
 		var b := _buf(0.22)
+		var phase: float = 0.0
 		for i: int in b.size():
 			var t: float = float(i) / RATE
-			var ff: float = f if t < 0.05 else f * 1.335
-			b[i] = (sin(TAU * ff * t) + 0.25 * sin(TAU * ff * 3.0 * t)) * exp(-t * 14.0) * 0.32
+			phase += TAU * lerpf(f, f * 1.335, smoothstep(0.048, 0.054, t)) / RATE
+			b[i] = (sin(phase) + 0.2 * sin(phase * 3.0)) * exp(-t * 14.0) * 0.29
 		_add("coin", b)
 	# Click: UI and button presses.
 	for f: float in [2200.0, 2600.0, 1900.0]:
@@ -957,6 +965,45 @@ func _generate_all() -> void:
 	_add("fanfare", fan)
 	_generate_rocket()
 	_generate_feel()  # [first]
+	_generate_work_cues()
+
+
+func _generate_work_cues() -> void:
+	for take: int in 3:
+		var draw := _buf(0.19)
+		var phase: float = 0.0
+		var noise: float = 0.0
+		for i: int in draw.size():
+			var t: float = float(i) / RATE
+			phase += TAU * (290.0 + 35.0 * take + 240.0 * t / 0.19) / RATE
+			noise = lerpf(noise, _rng.randf_range(-1.0, 1.0), 0.22)
+			var env: float = smoothstep(0.0, 0.045, t) * (1.0 - smoothstep(0.10, 0.19, t))
+			draw[i] = (noise * 0.22 + (sin(phase) + 0.25 * sin(2.0 * phase)) * 0.08) * env
+		_add("scoop_draw", draw)
+
+		var bin := _buf(0.37)
+		var fast: float = 0.0
+		var slow: float = 0.0
+		for i: int in bin.size():
+			var t: float = float(i) / RATE
+			fast = lerpf(fast, _rng.randf_range(-1.0, 1.0), 0.32)
+			slow = lerpf(slow, fast, 0.026)
+			var spill: float = smoothstep(0.0, 0.035, t) * exp(-t * 9.0)
+			var hit: float = maxf(0.0, t - (0.085 + 0.012 * take))
+			var metal: float = sin(TAU * (178.0 + 17.0 * take) * hit) + 0.42 * sin(TAU * (550.0 + 31.0 * take) * hit)
+			bin[i] = (fast - slow) * spill * 0.46 + metal * exp(-hit * 24.0) * 0.27
+		_add("bin_spill", bin)
+
+		var boot := _buf(0.43)
+		var root: float = 525.0 + 28.0 * take
+		for i: int in boot.size():
+			var t: float = float(i) / RATE
+			var latch: float = sin(TAU * 212.0 * t) * exp(-t * 49.0) * 0.24
+			var first: float = maxf(0.0, t - 0.06)
+			var second: float = maxf(0.0, t - 0.16)
+			var chirp: float = sin(TAU * root * first) * exp(-first * 19.0) + sin(TAU * root * 1.5 * second) * exp(-second * 17.0)
+			boot[i] = latch + chirp * 0.17
+		_add("robot_start", boot)
 
 
 ## [first] Core-loop feedback: a soft two-note upgrade confirm, a deep bale thunk, a tiny tick for
@@ -1000,22 +1047,23 @@ func _generate_feel() -> void:
 		_add("sweep", _declick(b))
 
 
-## Rocket launch layer: a deep rumbling roar (overlap several for a sustained burn), a two-tone
+## Rocket launch layer: a filtered thruster roar (overlap for a sustained burn), a two-tone
 ## launch siren, and an energy charge-up whine.
 func _generate_rocket() -> void:
-	for v: int in 2:
+	for v: int in 3:
 		var b := _buf(2.6)
 		var lp: float = 0.0
 		var lp2: float = 0.0
+		var low: float = 0.0
 		for i: int in b.size():
 			var t: float = float(i) / RATE
 			var n: float = _rng.randf_range(-1.0, 1.0)
 			lp += (n - lp) * (0.04 + 0.01 * v)
 			lp2 += (lp - lp2) * 0.2
-			var crackle: float = n * (0.5 if _rng.randf() < 0.012 else 0.04)
-			var rum: float = sin(TAU * (38.0 + 4.0 * v) * t + sin(TAU * 3.0 * t) * 2.0) * 0.25
+			low = lerpf(low, lp2, 0.036)
+			var rum: float = sin(TAU * (112.0 + 13.0 * v) * t + sin(TAU * 2.0 * t) * 1.3) * 0.12
 			var env: float = smoothstep(0.0, 0.25, t) * (1.0 - smoothstep(2.0, 2.6, t))
-			b[i] = tanh((lp2 * 5.0 + rum + crackle) * 1.4) * 0.55 * env
+			b[i] = tanh((lp2 - low) * 4.0 + rum) * 0.52 * env
 		_add("roar", b)
 	var sb := _buf(1.6)
 	var ph: float = 0.0

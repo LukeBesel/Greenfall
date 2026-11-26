@@ -3,13 +3,14 @@ extends Node
 ## score (audio/music_director.gd). A child of the Audio autoload ("TunesDirector").
 ##
 ## Contexts (set_context):
-## - "menu": the main theme on the title screen, looping with a crossfade.
+## - "menu": the title playlist, crossfading between different tracks.
 ## - "intro": The Fall of LM-1 from the intro's first frame (intro_start), paused with the
 ##   cinematic (set_paused), faded out at the landing (intro_land).
 ## - "play": the background shuffle. Owned songs that fit the planet and the moment, one at a time,
 ##   with quiet gaps (only the ambience bed) between them. Story moods (cinematic, homecoming) hand
 ##   the music back to the synth score. The radio (set_radio) overrides it: one song on repeat,
-##   or the whole collection shuffled back to back with crossfades. [v10snd] Before the first CD
+##   or the whole collection shuffled back to back with crossfades. A repeat fades at the seam
+##   without overlapping its own tail. [v10snd] Before the first CD
 ##   is found (Tunes.first_cd_found) no song plays; finding it plays its song at once (play_now).
 ## While a song plays or the shuffle owns the silence, the synth score is hushed
 ## (Audio.tunes_hush), so the two never play over each other. When no song file fits, nothing is
@@ -24,6 +25,7 @@ signal scratch_finished(id: String)
 
 const BUS: String = "Songs"
 const SONG_DB: float = -7.0  # fallback for cfg "song_db": the songs are mastered much louder than the synth score
+const END_FADE_S: float = 0.25
 const THEMED: Array[String] = ["explore", "base", "night"]
 
 var context: String = "none"
@@ -51,11 +53,10 @@ var _ending_played: bool = false
 var _crackle: AudioStreamPlayer
 
 var _p: Array[AudioStreamPlayer] = []
-var _slot: Array[Dictionary] = []  # per player: id, t, len, gain, target, rate, loop
+var _slot: Array[Dictionary] = []  # per player: id, t, len, gain, target, rate, db
 var _main: int = 0
 var _last_us: int = 0
 var _was_loading: bool = false
-var _bus_db: float = 999.0
 var _pool_t: float = 0.0
 var _pool_ok: bool = false
 
@@ -117,7 +118,7 @@ func play_once(id: String) -> bool:
 	scratch = id
 	_scratch_t = 0.0
 	_crackle.play()
-	_start(id, 1.6, false)
+	_start(id, 1.6)
 	print("[tunes] scratched CD: %s (last play)" % id)
 	scratch_started.emit(id)
 	return true
@@ -142,7 +143,7 @@ func _exit_tree() -> void:
 
 
 static func _empty() -> Dictionary:
-	return {"id": "", "t": 0.0, "len": 0.0, "gain": 0.0, "target": 0.0, "rate": 1.0, "loop": false}
+	return {"id": "", "t": 0.0, "len": 0.0, "gain": 0.0, "target": 0.0, "rate": 1.0}
 
 
 # --- Public ------------------------------------------------------------------------------
@@ -167,15 +168,29 @@ func set_radio(mode: String) -> void:
 	print("[tunes] CD player: %s" % (mode if mode != "" else "off"))
 	if scratch != "":
 		return  # the scratched CD finishes its one play first
+	# An explicit radio choice takes over from the first-CD or story cue immediately.
+	moment = ""
+	_moment_id = ""
 	if mode == "":
 		_fade_all(2.0)
 		_start_gap(true)
 	elif mode == Tunes.OFF:  # [v10snd] Stop
 		_fade_all(1.5)
-	elif mode != Tunes.SHUFFLE:
-		_start(mode, 1.5, true)
 	else:
-		_start(Tunes.pick_any(recent, rng), 1.5, false)
+		var id: String = Tunes.pick_any(recent, rng) if mode == Tunes.SHUFFLE else mode
+		_select_radio_song(id)
+
+
+func _select_radio_song(id: String) -> void:
+	# A song may still be fading from the last selection. Bring that player back up in place.
+	for i: int in _slot.size():
+		var slot: Dictionary = _slot[i]
+		if id != "" and slot["id"] == id:
+			_fade_all(1.5)
+			slot["target"] = 1.0
+			_main = i
+			return
+	_start(id, 1.5)
 
 
 ## The intro's first frame: The Fall of LM-1 from the top.
@@ -184,7 +199,7 @@ func intro_start() -> void:
 	paused = false
 	var pool: Array[String] = Tunes.moment_songs("intro", _planet())
 	if not pool.is_empty():
-		_start(pool[0], 0.25, false)
+		_start(pool[0], 0.25)
 
 
 ## [v6sound] Plays a song marked for a story moment ("launch", "ending", "base_restored") once,
@@ -195,7 +210,7 @@ func play_moment(m: String) -> bool:
 	var pool: Array[String] = Tunes.moment_songs(m, _planet())
 	while not pool.is_empty():
 		var id: String = Tunes._weighted(pool, recent, rng, func(x: String) -> float: return float(Tunes.song(x).get("weight", 1.0)))
-		if _start(id, 2.0, false):
+		if _start(id, 2.0):
 			moment = m
 			_moment_id = id
 			return true
@@ -206,7 +221,7 @@ func play_moment(m: String) -> bool:
 ## [v10snd] The first CD: its song plays now, once, whatever the shuffle was doing; then the
 ## usual quiet and the random songs. False when the file will not load.
 func play_now(id: String) -> bool:
-	if scratch != "" or not _start(id, 1.5, false):
+	if scratch != "" or not _start(id, 1.5):
 		return false
 	moment = "first_cd"
 	_moment_id = id
@@ -258,7 +273,6 @@ func tick(dt: float) -> void:
 	if not loading:
 		_drive(dt)
 	_advance(dt)
-	_apply_bus()
 	var want: bool = _wants_hush()
 	if want != hush:
 		hush = want
@@ -294,8 +308,8 @@ func _drive(dt: float) -> void:
 		"menu":
 			if not playing or float(s["t"]) >= float(s["len"]) - xf:
 				var id: String = _pick_menu()
-				if id != "":
-					_start(id, xf if playing else 2.5, false)
+				if id != "" and (not playing or id != str(s["id"])):
+					_start(id, xf if playing else 2.5)
 		"play":
 			if not THEMED.has(Audio.get_music_mood()):
 				if Audio.get_music_mood() == "homecoming" and not _ending_played:  # [v6sound]
@@ -321,7 +335,7 @@ func _drive(dt: float) -> void:
 				gap_left = 4.0
 				return
 			var id: String = Tunes.pick_next(_planet(), Audio.get_music_mood(), Audio.get_restoration(), recent, rng)
-			if id == "" or not _start(id, 2.0, false):
+			if id == "" or not _start(id, 2.0):
 				gap_left = 5.0  # nothing fits (yet), or the file would not load: look again soon
 
 
@@ -331,12 +345,10 @@ func _drive_radio(s: Dictionary, playing: bool, xf: float) -> void:
 	if radio == Tunes.SHUFFLE:
 		if not playing or float(s["t"]) >= float(s["len"]) - xf:
 			var id: String = Tunes.pick_any(recent, rng)
-			if id != "":
-				_start(id, xf if playing else 1.5, false)
+			if id != "" and (not playing or id != str(s["id"])):
+				_start(id, xf if playing else END_FADE_S)
 	elif not playing:
-		_start(radio, 1.5, true)
-	elif float(s["t"]) >= float(s["len"]) - xf:
-		_start(radio, xf, true)
+		_start(radio, END_FADE_S)
 
 
 ## Songs for the title screen. `first` plays first if set; `main_weight` favours the main theme.
@@ -375,13 +387,18 @@ func _advance(dt: float) -> void:
 		if not paused:
 			s["t"] = float(s["t"]) + dt
 		s["gain"] = move_toward(float(s["gain"]), float(s["target"]), dt * float(s["rate"]))
-		var p: AudioStreamPlayer = _p[i]
-		AudioVol.set_db(p, float(s.get("db", SONG_DB)) + linear_to_db(maxf(float(s["gain"]) * mul, 0.0001)))  # [qafix] crash fix
-		var over: bool = float(s["len"]) > 0.0 and float(s["t"]) >= float(s["len"])
-		if (float(s["gain"]) <= 0.0 and float(s["target"]) <= 0.0) or over:
-			p.stop()
-			p.stream = null
-			_slot[i] = _empty()
+		var remaining: float = float(s["len"]) - float(s["t"])
+		if (float(s["gain"]) <= 0.0 and float(s["target"]) <= 0.0) or remaining <= 0.0:
+			_clear_slot(i)
+			continue
+		var gain: float = minf(float(s["gain"]), remaining / END_FADE_S)
+		AudioVol.set_db(_p[i], float(s.get("db", SONG_DB)) + linear_to_db(maxf(gain * mul, 0.0001)))
+
+
+func _clear_slot(i: int) -> void:
+	_p[i].stop()
+	_p[i].stream = null
+	_slot[i] = _empty()
 
 
 ## Pre-Glim the CD player is a box in the yard: full volume near it, a soft 30% across the map.
@@ -391,18 +408,6 @@ func _radio_falloff() -> float:
 		return 1.0
 	var d: float = radio_source.global_position.distance_to(listener.global_position)
 	return lerpf(1.0, 0.3, smoothstep(18.0, 70.0, d))
-
-
-func _apply_bus() -> void:
-	var idx: int = AudioServer.get_bus_index(BUS)
-	if idx < 0:
-		return
-	var v: float = clampf(Settings.music_volume, 0.0, 1.0)
-	var db: float = maxf(-80.0, linear_to_db(maxf(v, 0.0001))) - 7.0 * Audio.get_duck()
-	if absf(db - _bus_db) > 0.05:
-		_bus_db = db
-		AudioServer.set_bus_mute(idx, v <= 0.0001)
-		AudioServer.set_bus_volume_db(idx, db)
 
 
 func _wants_hush() -> bool:
@@ -457,7 +462,7 @@ func _fade_all(fade: float) -> void:
 
 ## Starts `id` on the free player and crossfades the old one out over `fade` seconds. False when
 ## the song has no file or it will not load (Tunes then skips it from now on).
-func _start(id: String, fade: float, loop: bool) -> bool:
+func _start(id: String, fade: float) -> bool:
 	if id == "":
 		return false
 	var st: AudioStream = Tunes.stream(id)
@@ -465,12 +470,16 @@ func _start(id: String, fade: float, loop: bool) -> bool:
 		return false
 	_fade_all(fade)
 	var k: int = 1 - _main
+	# The intro and story cues deliberately restart at zero. Drop any old copy first.
+	for i: int in _slot.size():
+		if _slot[i]["id"] == id:
+			_clear_slot(i)
 	if str(_slot[k]["id"]) != "":
-		_p[k].stop()
+		_clear_slot(k)
 	_main = k
 	var len_s: float = st.get_length()
 	_slot[k] = {"id": id, "t": 0.0, "len": len_s if len_s > 1.0 else 180.0, "gain": 0.0, "target": 1.0,
-		"rate": 1.0 / maxf(fade, 0.05), "loop": loop,
+		"rate": 1.0 / maxf(fade, 0.05),
 		"db": float(Tunes.cfg().get("song_db", SONG_DB)) + Tunes.trim_db(id)}
 	_p[k].stream = st
 	_p[k].stream_paused = paused

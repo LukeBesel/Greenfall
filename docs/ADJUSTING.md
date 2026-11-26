@@ -92,11 +92,11 @@ A new planet: add a block with its id there (and a folder if you like).
 | Where the six sliders in Settings start for a new player (Master, Music, Sound effects, Reward sounds, Wind and animals, Interface) | `volumes` (0 to 1): `master`, `music`, `sfx`, `jingles`, `ambience`, `ui` |
 | A fixed trim under a slider (Music, Songs, Ambience, SFX, UI, Jingles) | `bus_trim_db` |
 | Which slider a sound follows (menu clicks: Interface; animal calls and wind: Wind and animals; fanfare, chime, ding, coin, sparkle, buy: Reward sounds; the rest: Sound effects) | `bus_of` |
-| How loud the score's stingers are (upgrade, level up, robot built, hex clean; they follow Reward sounds) | `sting_db` |
+| How loud the score's stingers are (upgrade, level up and hex clean, on Reward sounds) | `sting_db` |
 | One sound louder or quieter everywhere | `sound_db`: `"chime": -3` |
 | A sound that repeats too fast: the shortest time between two plays, in seconds | `min_gap_s`: `"clink": 0.2` |
 | The same, only where one thing plays it: `tag:sound`. Tags: `scoop` (pieces flying into Lumi), `lumi` (start/stop squeak), `sweep` (litter), `lights` (street lights coming on), `robot` (robots at work) | `min_gap_s`: `"robot:servo": 2.0`, `sound_db`: `"scoop:pop": -3` |
-| Mute a sound in one place (e.g. the beep on every scooped piece) | `sound_db`: `"scoop:blip": -80` (delete the line to bring it back) |
+| Mute a sound in one place, such as the scoop's intake sweep | `sound_db`: `"scoop:scoop_draw": -80` (delete the line to bring it back) |
 | How far music and ambience dip while WREN speaks | `duck` |
 | A planet's ambience (wind, water, animal calls) and how it changes from ruined to restored | `planets`.`<id>`.`ambience` |
 | Which built-in score a planet uses when no song plays (a new planet can borrow one) | `planets`.`<id>`.`theme` |

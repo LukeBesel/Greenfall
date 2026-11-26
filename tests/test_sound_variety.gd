@@ -75,6 +75,19 @@ func test_one_species_never_calls_twice_within_its_gap() -> void:
 	assert_true(Fauna.bird_call_ok(0.0, "song"), "another species may call")
 
 
+func test_planet_ambience_birds_share_the_wildlife_clock() -> void:
+	var ambience: Node = Audio._ambience
+	FaunaSounds.ensure()
+	assert_true(Fauna.bird_call_ok(0.0, "song"))
+	var next: int = ambience._next_shot
+	ambience._fire("gull", -20.0, 1.0)
+	assert_eq(ambience._next_shot, next, "a planet-bed gull waits after a wildlife call")
+	Fauna._call_next_s = -1.0
+	ambience._fire("gull", -20.0, 1.0)
+	assert_ne(ambience._next_shot, next, "the gull plays when the clock is clear")
+	assert_false(Fauna.bird_call_ok(0.0, "chirp"), "the gull also reserves the shared gap")
+
+
 func test_bird_calls_capped_per_minute() -> void:
 	var cap: int = int(Fauna.wild_cfg().get("calls_per_min", 3))
 	var n: int = 0

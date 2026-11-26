@@ -313,9 +313,9 @@ static func dump_compartment(patch: Node3D, at: Vector3, into: Object = null) ->
 	# [v1guide] Owner 2026-11-08 #19: the toss needs a glint and a sound you always hear, and the
 	# cubes should visibly tick into the counter (not just vanish).
 	var up: Vector3 = OrbitUp.up(at)
-	Audio.play("thunk", 1.0, -3.0)
-	Audio.play("crunch", 1.2, -7.0)
-	Audio.play("coin", 1.15, -2.0, 0.0)
+	Audio.play("bin_spill", 1.0, -7.0)
+	if paid > 0.0:
+		Audio.play("coin", 1.15, -5.0, 0.0)
 	Vfx.burst("dust", at, Color(0.6, 0.55, 0.5, 0.5), 0.6)
 	Vfx.burst("sparkle", at + up * 0.25, Color(1.0, 0.82, 0.4), 1.4)
 	Vfx.ring(at - up * 0.75, 1.5, Color(1.0, 0.8, 0.35, 0.85), 0.55)

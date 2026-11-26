@@ -27,7 +27,7 @@ func test_every_group_has_a_bus_and_a_slider() -> void:
 		var idx: int = AudioServer.get_bus_index(bus)
 		assert_gt(idx, 0, "%s bus exists" % bus)
 		assert_eq(str(AudioServer.get_bus_send(idx)), "Master", "%s goes straight to Master (its own slider)" % bus)
-	var sliders: Dictionary = {"Music": "music_volume", "Ambience": "ambience_volume", "SFX": "sfx_volume", "UI": "ui_volume", "Jingles": "jingle_volume"}
+	var sliders: Dictionary = {"Music": "music_volume", "Songs": "music_volume", "Ambience": "ambience_volume", "SFX": "sfx_volume", "UI": "ui_volume", "Jingles": "jingle_volume"}
 	for bus: String in sliders:
 		var idx: int = AudioServer.get_bus_index(bus)
 		Settings.set(str(sliders[bus]), 0.0)
@@ -41,7 +41,7 @@ func test_every_group_has_a_bus_and_a_slider() -> void:
 		Audio.apply_volumes()
 		assert_almost_eq(AudioServer.get_bus_volume_db(idx), linear_to_db(0.5) + SoundCfg.bus_trim_db(bus), 0.01)
 		for other: String in sliders:
-			if other != bus:
+			if sliders[other] != sliders[bus]:
 				assert_false(AudioServer.is_bus_mute(AudioServer.get_bus_index(other)), "%s does not touch %s" % [bus, other])
 
 
