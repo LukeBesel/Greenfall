@@ -53,7 +53,8 @@ const KINDS: Array = [
 ]
 const ITEM_SLOTS: Array[int] = [1, 2, 1, 2, 3, 1, 2, 3, 1]  # the nine tiny-item draws -> bottle, can, tin
 const LOGIC_MESHES: int = 13  # the piece stream still draws among 4 sheets + 9 items
-const SHEET_TILT: float = 0.35  # share of the old tilt a (larger, flatter) sheet keeps
+const SHEET_TILT: float = 0.5  # share of the old tilt a (larger, flatter) sheet keeps
+const SHEET_LIFT: float = 0.035  # metres: the drawn ground can stand a few cm over the height the carpet is laid on
 var _art: bool = false
 var _litter_mat: ShaderMaterial
 
@@ -134,7 +135,9 @@ func _process(_delta: float) -> void:
 
 ## [art3] The new carpet's meshes: one sheet (a shallow tent, 4 triangles) and three small items.
 func _build_meshes() -> void:
-	if not JunkLooks.enabled() or DevHooks.has("no-litter-art"):
+	# Off by default until it has been seen in a rendered game frame: the first render showed no sheets
+	# (laid under the drawn ground); SHEET_LIFT is the fix, not yet looked at. `--litter-art` turns it on.
+	if not JunkLooks.enabled() or not DevHooks.has("litter-art"):
 		await super()
 		return
 	_art = true
@@ -143,7 +146,7 @@ func _build_meshes() -> void:
 	var pts: Array[Vector3] = [Vector3(-0.5, 0, -0.5), Vector3(0.5, 0, -0.5), Vector3(0.5, 0, 0.5), Vector3(-0.5, 0, 0.5)]
 	var top := Vector3(0.06, 0.05, -0.04)
 	for k: int in 4:
-		for p: Vector3 in [pts[k], top, pts[(k + 1) % 4]]:
+		for p: Vector3 in [pts[k], pts[(k + 1) % 4], top]:
 			st.set_color(Color.WHITE)
 			st.set_uv(Vector2(p.x + 0.5, p.z + 0.5))
 			st.set_normal(Vector3.UP)
@@ -297,6 +300,7 @@ func _compute_cell(c: int) -> Dictionary:
 				if pick <= 0.0:
 					kind = ki
 					break
+			y += SHEET_LIFT
 			var kd2: Array = KINDS[kind]
 			var grow: float = scl * lerpf(0.8, 1.05, drift)
 			bas = bas.rotated(Vector3.RIGHT, tilt * SHEET_TILT) * Basis.from_scale(Vector3(float(kd2[0]) * grow, (float(kd2[0]) + float(kd2[1])) * 0.5 * grow, float(kd2[1]) * grow))

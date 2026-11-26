@@ -44,7 +44,7 @@ func _ready() -> void:
 	var cam := Camera3D.new()
 	cam.fov = 40
 	root3.add_child(cam)
-	cam.transform = Transform3D(Basis.looking_at(Vector3(0, -3.6, -4.2), Vector3.UP), o + Vector3(2.4, 3.6, 6.0))
+	cam.transform = Transform3D(Basis.looking_at(Vector3(0, -4.2, -4.6), Vector3.UP), o + Vector3(2.4, 4.2, 7.2))
 	cam.current = true
 	# junk looks, a row per 6
 	var looks: PackedStringArray = JunkLooks.all_looks()
@@ -68,7 +68,7 @@ func _ready() -> void:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var pts: Array[Vector3] = [Vector3(-0.5, 0, -0.5), Vector3(0.5, 0, -0.5), Vector3(0.5, 0, 0.5), Vector3(-0.5, 0, 0.5)]
 	for q: int in 4:
-		for p: Vector3 in [pts[q], Vector3(0.06, 0.05, -0.04), pts[(q + 1) % 4]]:
+		for p: Vector3 in [pts[q], pts[(q + 1) % 4], Vector3(0.06, 0.05, -0.04)]:
 			st.set_color(Color.WHITE)
 			st.set_uv(Vector2(p.x + 0.5, p.z + 0.5))
 			st.set_normal(Vector3.UP)
@@ -82,7 +82,7 @@ func _ready() -> void:
 	for i: int in 16:
 		var kd: Array = SphereLitter.KINDS[i]
 		var b := Basis.from_scale(Vector3(float(kd[0]) * 1.4, 0.3, float(kd[1]) * 1.4))
-		mm.set_instance_transform(i, Transform3D(b, Vector3((i % 8) * 0.7, 0.02, 3.6 + (i / 8) * 0.7)))
+		mm.set_instance_transform(i, Transform3D(b, Vector3((i % 8) * 0.7, 0.02, 4.4 + (i / 8) * 0.7)))
 		mm.set_instance_color(i, Color(0.9, 0.9, 0.9, (i + 0.5) / 16.0))
 	var mmi := MultiMeshInstance3D.new()
 	mmi.multimesh = mm
