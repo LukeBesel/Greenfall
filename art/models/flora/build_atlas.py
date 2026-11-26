@@ -118,7 +118,7 @@ def pine(seed):
             for s in (-1, 1):
                 na = a + s * r.uniform(0.6, 1.1)
                 l2 = ln * r.uniform(0.7, 1.15) * (1.0 - 0.35 * t)
-                c = jitter((38 * shade, 84 * shade, 52 * shade), r, 0.22, 0.06)
+                c = jitter((54 * shade, 108 * shade, 62 * shade), r, 0.22, 0.06)
                 d.line([(x, y), (x + math.cos(na) * l2, y + math.sin(na) * l2)], fill=rgb(c), width=max(2, int(T * 0.008)))
         d.line([(x0, y0), (x1, y1)], fill=(64, 46, 30, 255), width=max(2, int(T * 0.012)))
     x0, y0, x1, y1 = T * 0.04, T * 0.5, T * 0.97, T * 0.5
@@ -163,15 +163,15 @@ def blades(seed):
     im = Image.new("RGBA", (T, T), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     bl = []
-    for i in range(46):
-        x = T * r.uniform(0.06, 0.94)
-        h = T * r.uniform(0.35, 0.97) * (1.0 - 0.5 * abs(x / T - 0.5))
-        lean = r.uniform(-0.3, 0.3) + (x / T - 0.5) * 0.7
+    for i in range(84):
+        x = T * r.uniform(0.04, 0.96)
+        h = T * r.uniform(0.3, 0.97) * (1.0 - 0.45 * abs(x / T - 0.5))
+        lean = r.uniform(-0.3, 0.3) + (x / T - 0.5) * 0.6
         bl.append((h, x, lean))
     bl.sort(reverse=True)
     for h, x, lean in bl:
-        w = T * r.uniform(0.012, 0.024)
-        dry = r.random() < 0.22
+        w = T * r.uniform(0.007, 0.014)
+        dry = r.random() < 0.14
         segs = 10
         L, R = [], []
         for s in range(segs + 1):
@@ -181,8 +181,8 @@ def blades(seed):
             ww = w * (1.0 - t ** 1.6)
             L.append((cx - ww, cy))
             R.append((cx + ww, cy))
-        base = (58, 104, 34) if not dry else (120, 122, 52)
-        tip = (128, 176, 62) if not dry else (196, 180, 96)
+        base = (30, 64, 24) if not dry else (84, 92, 40)
+        tip = (80, 120, 44) if not dry else (146, 142, 72)
         for s in range(segs):
             t = (s + 0.5) / segs
             c = tuple(base[i] + (tip[i] - base[i]) * t for i in range(3))
@@ -200,18 +200,18 @@ def seedgrass(seed):
         h = T * r.uniform(0.6, 0.95)
         lean = r.uniform(-0.35, 0.35)
         pts = [(x + lean * h * (s / 12) ** 2, T - h * s / 12) for s in range(13)]
-        d.line(pts, fill=(150, 150, 74, 255), width=4)
+        d.line(pts, fill=(112, 116, 56, 255), width=4)
         # the head: small spikelets down the top third
         for s in range(8, 13):
             px, py = pts[s]
             for k in range(4):
                 a = -math.pi / 2 + r.uniform(-1.0, 1.0)
                 l2 = T * r.uniform(0.02, 0.045)
-                d.line([(px, py), (px + math.cos(a) * l2, py + math.sin(a) * l2)], fill=rgb(jitter((206, 186, 112), r, 0.1)), width=5)
+                d.line([(px, py), (px + math.cos(a) * l2, py + math.sin(a) * l2)], fill=rgb(jitter((168, 148, 88), r, 0.1)), width=5)
     for i in range(16):  # low leaves
         x = T * r.uniform(0.25, 0.75)
         a = -math.pi / 2 + r.uniform(-0.9, 0.9)
-        draw_leaf(d, x, T * 0.99, a, T * r.uniform(0.2, 0.42), T * 0.03, jitter((92, 132, 50), r), rib=False)
+        draw_leaf(d, x, T * 0.99, a, T * r.uniform(0.2, 0.42), T * 0.03, jitter((50, 86, 32), r), rib=False)
     return im
 
 
@@ -257,7 +257,7 @@ def bark():
 def ramps():
     """Four vertical ramps (v = 0 at the tile's bottom): blade, dry blade, stem, seed/tan."""
     px = np.zeros((T, T, 4), np.float32)
-    cols = [((34, 70, 22), (140, 186, 70)), ((92, 98, 40), (206, 190, 104)), ((44, 78, 28), (110, 150, 60)), ((120, 100, 60), (214, 196, 130))]
+    cols = [((26, 56, 20), (84, 124, 46)), ((70, 78, 34), (150, 144, 76)), ((36, 66, 24), (84, 120, 48)), ((100, 84, 50), (170, 152, 96))]
     rs = np.random.RandomState(9)
     t = np.linspace(1.0, 0.0, T)[:, None, None]  # row 0 = top = tip
     for i, (a, b) in enumerate(cols):
@@ -380,8 +380,8 @@ def moss(seed):
     sp = np.repeat(np.repeat(rs.rand(n // 4, n // 4), 4, axis=0), 4, axis=1)
     sp2 = np.repeat(np.repeat(rs.rand(n // 16, n // 16), 16, axis=0), 16, axis=1)
     v = 0.55 + 0.5 * sp + 0.25 * sp2 + 0.35 * f
-    a = np.array((56, 92, 30), np.float32)
-    b = np.array((134, 164, 58), np.float32)
+    a = np.array((34, 62, 22), np.float32)
+    b = np.array((84, 112, 40), np.float32)
     col = a + (b - a) * np.clip(f * 0.8 + sp2 * 0.5 - 0.2, 0, 1)[..., None]
     col *= v[..., None] * 0.8
     alpha = np.clip((f - 0.2 + (sp - 0.5) * 0.2) * 9.0, 0, 1) * 255

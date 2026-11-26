@@ -10,6 +10,8 @@ render_mode cull_disabled, world_vertex_coords, depth_draw_opaque;
 uniform sampler2D atlas : source_color, filter_linear_mipmap, repeat_disable;
 uniform float wind = 1.0;
 uniform float cut = 0.42;
+uniform float gain = 1.5;
+uniform float leaf_gain = 1.5;
 // 0 = this plant's own colours; towards 1 the far crowns sink into the ground's green.
 uniform float lush = 1.0;
 
@@ -33,7 +35,7 @@ void vertex() {
 	// gust bands, 100-200 m apart, rolling downwind; a slower swell bends their front
 	float g = sin(dot(origin, W1) * 0.045 - TIME * 0.85 + 2.2 * sin(dot(origin, W2) * 0.019 - TIME * 0.23));
 	g = 0.5 + 0.5 * g;
-	float strength = 0.22 + 0.95 * g * g;
+	float strength = 0.3 + 1.0 * g * sqrt(g);
 	float ph = rnd * 6.283 + dot(origin, W1) * 0.35;
 	float swing = sin(TIME * (1.5 + 0.9 * rnd) + ph);
 	float swing2 = sin(TIME * (2.3 + 0.7 * rnd) + ph * 1.7);
@@ -51,8 +53,14 @@ void vertex() {
 
 void fragment() {
 	vec4 t = texture(atlas, UV);
+	// the normals are the crown's or the clump's own (puffed), the same for both faces of a card:
+	// undo the flip the renderer gives a two-sided material's back faces
+	if (!FRONT_FACING) {
+		NORMAL = -NORMAL;
+	}
 	ALPHA = t.a;
-	ALPHA_SCISSOR_THRESHOLD = cut;
+	// far cards keep their cover as the mipmaps thin the blades out
+	ALPHA_SCISSOR_THRESHOLD = mix(cut, 0.16, smoothstep(8.0, 45.0, length(VERTEX)));
 	vec3 col = t.rgb;
 	float leaf = step(0.25, vc.a);
 	float petal = step(0.75, vc.a);
@@ -62,10 +70,11 @@ void fragment() {
 	float white = petal * (1.0 - smoothstep(0.1, 0.32, (mx - mn) / max(mx, 0.001)));
 	col = mix(col, col * tint, white);
 	// leaves: every plant a little its own green, drier or lusher in patches
-	vec3 var_c = mix(vec3(1.12, 1.04, 0.72), vec3(0.8, 0.98, 0.92), clamp(rnd * 0.7 + patchy * 0.4 + 0.15, 0.0, 1.0)) * mix(0.82, 1.12, fract(rnd * 7.3));
+	vec3 var_c = mix(vec3(1.08, 1.03, 0.8), vec3(0.82, 0.98, 0.92), clamp(rnd * 0.7 + patchy * 0.4 + 0.15, 0.0, 1.0)) * mix(0.82, 1.12, fract(rnd * 7.3));
 	col = mix(col, col * var_c, leaf * (1.0 - white));
-	col *= mix(0.38, 1.0, vc.g);
-	ALBEDO = col * lush;
+	col *= mix(0.5, 1.0, vc.g);
+	// leaves are painted at their true (dark) reflectance; the game's ground is graded brighter
+	ALBEDO = col * gain * mix(1.0, leaf_gain, leaf) * lush;
 	ROUGHNESS = mix(0.9, 0.62, leaf);
 	SPECULAR = mix(0.1, 0.28, leaf);
 }
@@ -76,5 +85,7 @@ void light() {
 	float leaf = step(0.25, vc.a);
 	float wrap = clamp((ndl + 0.35) / 1.35, 0.0, 1.0);
 	float through = (max(-ndl, 0.0) * 0.45 + pow(max(dot(VIEW, -LIGHT), 0.0), 3.0) * 1.1) * leaf * (0.35 + 0.65 * vc.g);
-	DIFFUSE_LIGHT += LIGHT_COLOR * ATTENUATION * (vec3(wrap) + through * vec3(1.25, 1.2, 0.42)) / PI;
+	// a crown is not a wall: a third of the light finds its way through the leaves above
+	float att = mix(ATTENUATION, 1.0, 0.34 * leaf * vc.g);
+	DIFFUSE_LIGHT += LIGHT_COLOR * att * (vec3(wrap) + through * vec3(1.25, 1.2, 0.42)) / PI;
 }

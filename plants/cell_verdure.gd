@@ -249,6 +249,7 @@ func _build_meshes() -> void:
 func _kind(nm: String, count: int, mat: Material, shadow: bool) -> void:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true  # white, never changed: on the Compatibility renderer custom data alone reads as 1
 	mm.use_custom_data = true
 	mm.mesh = FloraKit.mesh(nm)
 	mm.instance_count = count
@@ -386,7 +387,7 @@ func _make_cache(c: int, small: bool, deadline_us: int = 0x7FFFFFFFFFFFFFFF) -> 
 		var r0 := RandomNumberGenerator.new()
 		r0.seed = c * 7919 + 13
 		var x0: Array[Transform3D] = []
-		var n_tree: int = (1 if r0.randf() < 0.5 else 0) + (1 if r0.randf() < 0.14 else 0)
+		var n_tree: int = (1 if r0.randf() < 0.62 else 0) + (1 if r0.randf() < 0.2 else 0)
 		var n_bush: int = int(r0.randf() * 2.7)
 		# three drift centres for the flowers of this cell (tangent metres from its middle)
 		var d0 := PackedVector2Array()
@@ -517,8 +518,8 @@ func _write_block(c: int, deadline_us: int = 0x7FFFFFFFFFFFFFFF) -> bool:
 				if s <= 0.0:
 					continue
 				nm = "grass_a" if zone == 0 else "grass_lod"
-				var w: float = (0.5 + 0.35 * s) * (0.8 + 0.5 * rr)
-				sc = Vector3(w, (0.2 + 0.26 * s) * gg * (0.7 + 0.8 * rr * rr), w)
+				var w: float = (0.75 + 0.45 * s) * (0.8 + 0.5 * rr)
+				sc = Vector3(w, (0.2 + 0.3 * s) * gg * (0.65 + 0.9 * rr * rr), w)
 			C_TALL:
 				var s: float = smoothstep(0.02, 0.3, k)
 				if s <= 0.0:
@@ -533,7 +534,7 @@ func _write_block(c: int, deadline_us: int = 0x7FFFFFFFFFFFFFFF) -> bool:
 				var kind: int = _area_pick(o, 0.045, 3.1, FloraKit.FLOWERS.size(), rr)
 				nm = FloraKit.FLOWERS[kind]
 				tint = PETALS[(_area_pick(o, 0.06, 9.7, PETALS.size(), rr) + kind) % PETALS.size()]
-				var fs: float = (0.3 + 0.7 * s) * (0.5 if kind != 3 else 0.72)
+				var fs: float = (0.3 + 0.7 * s) * (0.55 if kind != 3 else 0.8)
 				sc = Vector3(fs, fs, fs)
 			C_MOSS:
 				var s: float = smoothstep(-0.45, -0.2, k) * smoothstep(0.0, 0.08, g)
@@ -588,6 +589,7 @@ func _write_block(c: int, deadline_us: int = 0x7FFFFFFFFFFFFFFF) -> bool:
 			elif int(kd["top"]) < int(kd["cap"]):
 				slot = kd["top"]
 				kd["top"] = slot + 1
+				(kd["mm"] as MultiMesh).set_instance_color(slot, Color.WHITE)
 				(kd["mm"] as MultiMesh).visible_instance_count = slot + 1
 			else:
 				continue

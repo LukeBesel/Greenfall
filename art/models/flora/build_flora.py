@@ -59,7 +59,7 @@ class Mb:
         self.f.append((a, b, c))
         self.f.append((a, c, d))
 
-    def card(self, centre, right, up, tile, col, n=None, n_spread=0.0, uvr=(0, 0, 1, 1), sway_up=0.0):
+    def card(self, centre, right, up, tile, col, n=None, n_spread=0.0, uvr=(0, 0, 1, 1), sway_up=0.0, ao_up=0.0):
         """A textured quad: centre, half-extent vectors. col = (r, g, b, a); sway_up adds weight
         along the card's up (a hanging or standing card moves more at its free end)."""
         centre, right, up = V(centre, float), V(right, float), V(up, float)
@@ -71,6 +71,7 @@ class Mb:
             v = uvr[1] + (uvr[3] - uvr[1]) * (sy * 0.5 + 0.5)
             cc = list(col)
             cc[0] = col[0] + sway_up * (sy * 0.5 + 0.5)
+            cc[1] = min(1.0, col[1] + ao_up * (sy * 0.5 + 0.5))
             ids.append(self.vert(p, nn + nrm(p - centre) * n_spread, tile_uv(tile, u, v), cc))
         self.quad(*ids)
 
@@ -147,16 +148,30 @@ class Mb:
 
 # --- small plants (about 1 unit tall, scaled per instance) ---------------------------------------
 
+def grass_cards(m, r, n_mid, n_out, tile=5):
+    """A patch of sward about 1.4 units across: crossed blade cards in the middle and satellites
+    leaning out round them (so it reads from the play camera above as well as from the side)."""
+    for k in range(n_mid):
+        a = k * math.pi / n_mid + r.uniform(-0.2, 0.2)
+        m.card((0, 0, 0.5), V([math.cos(a), math.sin(a), 0]) * 0.55, (0, 0, 0.5), tile, (0.0, 0.5, r.random(), 0.5), n=(0, 0, 1), sway_up=0.34, ao_up=0.5)
+    for k in range(n_out):
+        a = math.tau * k / n_out + r.uniform(-0.4, 0.4)
+        out = V([math.cos(a), math.sin(a), 0])
+        side = nrm(np.cross(out, (0, 0, 1)))
+        lean = r.uniform(0.3, 0.55)
+        up = nrm(V([0, 0, 1.0]) + out * lean) * r.uniform(0.36, 0.48)
+        c = out * r.uniform(0.38, 0.55) + up
+        m.card(c, side * r.uniform(0.42, 0.55), up, tile, (0.0, 0.5, r.random(), 0.5), n=(0, 0, 1), sway_up=0.34, ao_up=0.5)
+
+
 def grass_a(seed):
     r = random.Random(seed)
     m = Mb()
-    for b in range(10):
-        a = math.tau * b / 10 + r.uniform(-0.3, 0.3)
+    grass_cards(m, r, 3, 3)
+    for b in range(6):  # a few real blades standing clear of the cards
+        a = math.tau * b / 6 + r.uniform(-0.4, 0.4)
         out = V([math.cos(a), math.sin(a), 0])
-        m.blade(out * r.uniform(0.02, 0.3), out, r.uniform(0.55, 1.0), r.uniform(0.035, 0.055), r.uniform(0.1, 0.5), 1 if r.random() < 0.25 else 0, 0.5, 0.45)
-    for k in range(2):  # the clump's body: crossed blade cards
-        a = k * math.pi / 2 + 0.4
-        m.card((0, 0, 0.36), V([math.cos(a), math.sin(a), 0]) * 0.5, (0, 0, 0.36), 5, (0.0, 0.75, 0.3, 0.5), n=(0, 0, 1), sway_up=0.3)
+        m.blade(out * r.uniform(0.1, 0.6), out, r.uniform(0.7, 1.1), r.uniform(0.014, 0.024), r.uniform(0.15, 0.5), 1 if r.random() < 0.3 else 0, 0.5, 0.42)
     return m
 
 
@@ -165,19 +180,18 @@ def grass_b(seed):
     m = Mb()
     for k in range(3):
         a = k * math.pi / 3 + 0.2
-        m.card((0, 0, 0.5), V([math.cos(a), math.sin(a), 0]) * 0.42, (0, 0, 0.5), 15, (0.0, 0.8, 0.6, 0.5), n=(0, 0, 1), sway_up=0.55)
-    for b in range(5):
-        a = math.tau * b / 5 + r.uniform(-0.3, 0.3)
+        m.card((0, 0, 0.5), V([math.cos(a), math.sin(a), 0]) * 0.42, (0, 0, 0.5), 15, (0.0, 0.6, r.random(), 0.5), n=(0, 0, 1), sway_up=0.55, ao_up=0.4)
+    for b in range(4):
+        a = math.tau * b / 4 + r.uniform(-0.3, 0.3)
         out = V([math.cos(a), math.sin(a), 0])
-        m.blade(out * r.uniform(0.03, 0.2), out, r.uniform(0.35, 0.6), 0.04, r.uniform(0.15, 0.4), 0, 0.5, 0.35)
+        m.blade(out * r.uniform(0.03, 0.2), out, r.uniform(0.35, 0.6), 0.022, r.uniform(0.15, 0.4), 0, 0.5, 0.35)
     return m
 
 
 def grass_lod(seed):
+    r = random.Random(seed)
     m = Mb()
-    for k in range(3):
-        a = k * math.pi / 3 + 0.5
-        m.card((0, 0, 0.4), V([math.cos(a), math.sin(a), 0]) * 0.55, (0, 0, 0.4), 5, (0.0, 0.75, 0.4, 0.5), n=(0, 0, 1), sway_up=0.3)
+    grass_cards(m, r, 2, 3)
     return m
 
 
@@ -232,7 +246,7 @@ def fern(seed):
 def flower(seed, kind):
     r = random.Random(seed)
     m = Mb()
-    stems = {"daisy": 4, "poppy": 3, "umbel": 3, "lupin": 3, "aster": 6}[kind]
+    stems = {"daisy": 5, "poppy": 4, "umbel": 3, "lupin": 4, "aster": 7}[kind]
     for k in range(stems):
         a = math.tau * k / stems + r.uniform(-0.4, 0.4)
         out = V([math.cos(a), math.sin(a), 0])
@@ -242,11 +256,11 @@ def flower(seed, kind):
             c = base + out * 0.04 + V([0, 0, h * 0.5])
             for q in range(2):
                 b = a + q * math.pi / 2
-                m.card(c, V([math.cos(b), math.sin(b), 0]) * 0.13, (0, 0, h * 0.5), 11, (0.0, 0.95, r.random(), 1.0), n=(0, 0, 1), sway_up=0.3)
+                m.card(c, V([math.cos(b), math.sin(b), 0]) * 0.19, (0, 0, h * 0.5), 11, (0.0, 0.95, r.random(), 1.0), n=(0, 0, 1), sway_up=0.3)
             continue
         h = {"daisy": r.uniform(0.6, 0.9), "poppy": r.uniform(0.75, 1.0), "umbel": r.uniform(0.8, 1.0), "aster": r.uniform(0.3, 0.5)}[kind]
         top = m.blade(base, out, h, 0.018, r.uniform(0.06, 0.22), 2, 0.0, 0.34, segs=1)
-        size, tile, tilt = {"daisy": (0.17, 8, 0.75), "poppy": (0.2, 9, 0.6), "umbel": (0.27, 10, 1.05), "aster": (0.13, 8, 0.9)}[kind]
+        size, tile, tilt = {"daisy": (0.24, 8, 0.8), "poppy": (0.28, 9, 0.65), "umbel": (0.36, 10, 1.05), "aster": (0.18, 8, 0.95)}[kind]
         flower_head(m, top + V([0, 0, 0.01]), out, size * r.uniform(0.85, 1.1), tile, r, tilt)
     for k in range(3):  # a few leaves at the foot
         a = r.uniform(0, math.tau)

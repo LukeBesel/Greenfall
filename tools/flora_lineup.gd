@@ -9,7 +9,7 @@ var _cam: Camera3D
 var _sun: DirectionalLight3D
 var _step: int = 0
 var _wait: int = 0
-const VIEWS: Array = [["trees", Vector3(13, 5.5, 26), Vector3(13, 2.6, 0), 150.0, -38.0], ["small", Vector3(4.6, 2.4, 9.4), Vector3(4.6, 0.3, 3.4), 150.0, -38.0],
+const VIEWS: Array = [["trees", Vector3(13, 5.5, 26), Vector3(13, 2.6, 0), 150.0, -38.0], ["small", Vector3(4.6, 2.2, 10.4), Vector3(4.6, 0.2, 5.6), 150.0, -38.0], ["grass", Vector3(0.9, 1.6, 9.0), Vector3(0.9, 0.2, 6.0), 150.0, -38.0],
 	["back", Vector3(13, 3.0, 24), Vector3(13, 3.0, 0), 5.0, -14.0], ["lod", Vector3(53, 5.5, 26), Vector3(53, 2.6, 0), 150.0, -38.0]]
 
 
@@ -59,8 +59,10 @@ func _ready() -> void:
 			x += 1.2 + age * 1.3
 	x = 0.0
 	for nm: String in ["grass_a", "grass_b", "grass_lod", "moss", "weed", "fern", "flower_daisy", "flower_poppy", "flower_umbel", "flower_lupin", "flower_aster"]:
-		_put(holder, nm, Vector3(x, 0, 6), 0.45, Color(1.0, 0.75, 0.2) if nm == "weed" else Color(0.75, 0.5, 1.0) if nm.ends_with("lupin") or nm.ends_with("aster") else Color(1.0, 0.25, 0.15) if nm.ends_with("poppy") else Color.WHITE)
+		_put(holder, nm, Vector3(x, 0, 6), 0.45 if not nm.begins_with("grass") else 0.7, Color(1.0, 0.75, 0.2) if nm == "weed" else Color(0.75, 0.5, 1.0) if nm.ends_with("lupin") or nm.ends_with("aster") else Color(1.0, 0.25, 0.15) if nm.ends_with("poppy") else Color.WHITE)
 		x += 0.75
+	_put(holder, "flower_poppy", Vector3(x, 0, 6), 0.45, Color(0.1, 1.0, 0.1))
+	x += 0.75
 	for nm: String in FloraKit.BUSHES:
 		_put(holder, nm, Vector3(x + 0.6, 0, 5.2), 1.0, Color(1.0, 0.8, 0.9))
 		x += 2.0
@@ -76,10 +78,12 @@ func _ready() -> void:
 func _put(holder: Node3D, nm: String, at: Vector3, sc: float, tint: Color = Color.WHITE) -> void:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
 	mm.use_custom_data = true
 	mm.mesh = FloraKit.mesh(nm)
 	mm.instance_count = 1
 	mm.set_instance_transform(0, Transform3D(Basis.from_scale(Vector3(sc, sc, sc)), at))
+	mm.set_instance_color(0, Color.WHITE)
 	mm.set_instance_custom_data(0, Color(tint.r, tint.g, tint.b, fposmod(at.x * 0.37 + at.z * 0.11, 1.0)))
 	var mi := MultiMeshInstance3D.new()
 	mi.multimesh = mm

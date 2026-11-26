@@ -173,6 +173,18 @@ Check with `godot --headless --path . -- --fresh --orbit --no-intro --life-clean
 and its lit lights). More dev hooks are listed at the top of `planet/sites/life_dev.gd`. Tests:
 `tests/test_town_life.gd`, `tests/test_cell_verdure.gd`.
 
+The plants themselves (art stage 7) are a kit built in code: `python3 art/models/flora/build_atlas.py`
+paints `flora_atlas.png` (leaf sprays, blades, bark, flower heads), `blender -b --python
+art/models/flora/build_flora.py` writes `flora.glb` (grass, moss, weeds, ferns, five flowers, three
+bushes, four tree species at three ages with far twins), then `godot --headless --import --path .`.
+`python3 art/models/flora/preview_flora.py OUT` renders the kit alone (Cycles, no GL);
+`res://tools/flora_lineup.tscn -- --out=PREFIX` (rendered) shows it under the game's own shader,
+`plants/flora.gdshader`: `wind` (0 = still), `leaf_gain`/`gain` (brightness), `cut` (alpha cut).
+What stands where, and at which stage of the green, is in `plants/cell_verdure.gd` ("The plants":
+`TREE_AT`, `FAR_RINGS`, `PIONEERS`, the scales in `_write_block`). `ground.tufts_per_cell` now counts
+grass patches (each about a metre across). `--life-green=F` (dev) shows every cell at F of its
+green, to look at an early stage. Test: `tests/test_flora_kit.gd`.
+
 ## Pacing, prices and gates (v6pace)
 
 Measure after a change: `flock /tmp/gf-autoplay.lock godot --headless --path . -- --fresh --orbit --autoplay --time-scale=8 --quit-after=2700`
