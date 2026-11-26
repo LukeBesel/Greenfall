@@ -51,7 +51,7 @@ const GLOW: Dictionary = {
 ## Wear parameters per state.
 const WEAR: Dictionary = {
 	"broken": {"edge_wear": 0.72, "patch_wear": 0.55, "rust": 0.85, "fade": 0.6, "grime": 0.85, "dust": 0.6, "streaks": 0.8},
-	"repaired": {"edge_wear": 0.42, "patch_wear": 0.1, "rust": 0.35, "fade": 0.08, "grime": 0.45, "dust": 0.2, "streaks": 0.3},
+	"repaired": {"edge_wear": 0.5, "patch_wear": 0.2, "rust": 0.5, "fade": 0.22, "grime": 0.62, "dust": 0.3, "streaks": 0.5},  # [art4] aged: used and patched, not fresh
 	"restored": {"edge_wear": 0.24, "patch_wear": 0.0, "rust": 0.06, "fade": 0.0, "grime": 0.25, "dust": 0.06, "streaks": 0.08},
 }
 
@@ -157,7 +157,7 @@ static func rusty(state: String = "broken") -> ShaderMaterial:
 
 
 ## Concrete (foundations, kerbs, plinths). painted: optional colour for painted concrete.
-static func concrete(state: String = "repaired", tint: Color = Color(0.86, 0.84, 0.8)) -> ShaderMaterial:
+static func concrete(state: String = "repaired", tint: Color = Color(0.64, 0.62, 0.58)) -> ShaderMaterial:  # [art4] was (0.86, 0.84, 0.8): pale slabs blew out at noon
 	var key: String = "concrete:%s:%s" % [state, tint.to_html(false)]
 	if _cache.has(key):
 		return _cache[key]
