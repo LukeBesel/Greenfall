@@ -2233,19 +2233,19 @@ msgstr "CRADLE"
 msgid "WE'LL BE BACK"
 msgstr "NOUS REVIENDRONS"
 
-#: systems/achievements.gd:167
+#: systems/achievements.gd:171
 msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
 msgstr "%d succès débloqués. Retrouve-les dans le Codex ({open_codex})."
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:446
+#: systems/achievements.gd:178 ui/notify_stack.gd:38 ui/subtitles.gd:446
 msgid "Achievement: %s. %s"
 msgstr "Succès : %s. %s"
 
-#: systems/achievements.gd:179
+#: systems/achievements.gd:183
 msgid "Codex: %d new entries."
 msgstr "Codex : %d nouvelles entrées."
 
-#: systems/achievements.gd:182
+#: systems/achievements.gd:186
 msgid "Codex entry: %s"
 msgstr "Entrée du Codex : %s"
 
@@ -2983,11 +2983,11 @@ msgstr "Débloque les graines : %s"
 msgid "Unlocks: %s"
 msgstr "Débloque : %s"
 
-#: systems/research.gd:646
+#: systems/research.gd:657
 msgid "New robot plans: %s. %s"
 msgstr "Nouveaux plans de robot : %s. %s"
 
-#: systems/research.gd:651
+#: systems/research.gd:662
 msgid "Research complete: %s."
 msgstr "Recherche terminée : %s."
 

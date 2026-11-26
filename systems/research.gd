@@ -605,11 +605,22 @@ static func award_data(base: float) -> float:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: award_data(reward("hex_cleaned")))
-	EventBus.hex_restored.connect(func(_h: int) -> void: award_data(reward("hex_restored")))
+	# [v9a] Methods, not lambdas: a lambda that uses no member of this node is bound to the script, so
+	# it outlived the node on the EventBus autoload and every world load added one more (home walk:
+	# after 12 world loads a robot's hex paid its field notes 12 times, 1,200 cubes instead of 100).
+	EventBus.hex_cleaned.connect(_on_hex_cleaned)
+	EventBus.hex_restored.connect(_on_hex_restored)
 	for k: String in ["plants_bloomed", "shards_found", "robot_bales"]:
 		_seen[k] = float(GameState.stats.get(k, 0.0))
 	EventBus.research_completed.connect(_on_completed)
+
+
+func _on_hex_cleaned(_h: int, _p: Vector3, _b: BigNum) -> void:
+	award_data(reward("hex_cleaned"))
+
+
+func _on_hex_restored(_h: int) -> void:
+	award_data(reward("hex_restored"))
 
 
 func _process(delta: float) -> void:

@@ -102,6 +102,8 @@ static func _on_cubes(id: String, v: BigNum) -> void:
 		from.append("%s:%d %s" % [src, int(f.get("line", 0)), str(f.get("function", ""))])
 	if _since_set.size() < 80:
 		_since_set.append("%+.2f %s" % [d, " < ".join(from.slice(0, 3))])
+	if _since_load.size() < 40:
+		_since_load.append("%+.2f %s" % [d, " < ".join(from.slice(0, 2))])
 	if DevHooks.has("walk-home-paylog"):  # dev: every payment as it comes
 		print("[walk-home] pay %+.2f (now %.2f) step %s from %s" % [d, now, _step_id() if ob != null and is_instance_valid(ob) else "-", " < ".join(from)])
 	if d >= 300.0:
@@ -112,6 +114,7 @@ static func _on_cubes(id: String, v: BigNum) -> void:
 ## their sums: [spent, earned].
 static var _since_set: Array[String] = []
 static var _since_set_sum: Array[float] = [0.0, 0.0]
+static var _since_load: Array[String] = []  # every change of cubes since the last load came up
 
 
 ## [v9a] A Lumi level pays a reward scaled to the cubes earned so far (systems/lumi_level.gd).
@@ -136,6 +139,7 @@ static func _wait_world() -> bool:
 	if ll and not ll.leveled.is_connected(_on_level):
 		ll.leveled.connect(_on_level)
 	_cubes_seen = GameState.get_currency("cubes").to_float()  # a load sets them without a signal
+	_since_load.clear()
 	return ob != null and p != null and not bool(w.get("building"))
 
 
@@ -277,9 +281,17 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var kept_money: bool = absf(cubes_loaded - cubes_file) <= 1.0 or hexes_loaded > hexes_file
 	var earned: bool = pc > 0.0 and float(b["_cubes"]) >= pc and float(a["_cubes"]) < pc and kept_money
 	var away: float = (Time.get_ticks_msec() - saved_ms) / 1000.0
+	# [v9a] Saving up: the load gave back the cubes the save held, and the game paid more in play while
+	# the card faded in (a run: 200 saved, 200 on load, 717 three seconds later, two robot hexes). The
+	# card counts what he has now.
+	var saving: bool = pc > 0.0 and absf(cubes_loaded - cubes_file) <= 1.0 and float(b["_cubes"]) > cubes_loaded + 0.5 and float(b["_cubes"]) < pc \
+		and str(pb[1]) == "%s / %s" % [Currencies.have_text(float(b["_cubes"])), Settings.fmt(BigNum.from_float(pc))]
 	if earned:
 		print("[walk-home] note: %s: the price %s was earned in play (cubes %.0f at the snapshot, %.0f in the save, %.0f on load, %.0f now; hexes cleaned %.0f saved, %.0f now): the card shows the step's count %s" % [tag,
 			str(pa[1]), float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), hexes_file, float(GameState.stats.get("hexes_cleaned", 0.0)), str(pb[1])])
+	elif saving:
+		print("[walk-home] note: %s: the game paid %.2f in play after the load (save and load agree at %.0f); the card counts it: %s -> %s; paid since the load: %s" % [tag,
+			float(b["_cubes"]) - cubes_loaded, cubes_loaded, str(pa[1]), str(pb[1]), str(_since_load)])
 	elif absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
 		diff.append("count %s -> %s (cubes %.0f at the snapshot, %.0f in the save, %.0f on load, %.0f compared, %.0f s away)" % [str(pa), str(pb), float(a["_cubes"]), cubes_file, cubes_loaded, float(b["_cubes"]), away])
 	# The outline is picked afresh on load (the most-cleared hex near Lumi): another hex is fine if

@@ -15,7 +15,7 @@ permissions:
 jobs:
   export:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 150
     env:
       GODOT_VERSION: 4.7.2
     steps:

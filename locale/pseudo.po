@@ -2230,19 +2230,19 @@ msgstr "[ÇŔÀÐĻÉ ~]"
 msgid "WE'LL BE BACK"
 msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ~~]"
 
-#: systems/achievements.gd:167
+#: systems/achievements.gd:171
 msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
 msgstr "[%d àçĥîévéméñţš ûñļôçķéð. Šéé ţĥém îñ ţĥé Çôðéx ({open_codex}). ~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:446
+#: systems/achievements.gd:178 ui/notify_stack.gd:38 ui/subtitles.gd:446
 msgid "Achievement: %s. %s"
 msgstr "[Àçĥîévéméñţ: %s. %s ~~~~]"
 
-#: systems/achievements.gd:179
+#: systems/achievements.gd:183
 msgid "Codex: %d new entries."
 msgstr "[Çôðéx: %d ñéŵ éñţŕîéš. ~~~~~]"
 
-#: systems/achievements.gd:182
+#: systems/achievements.gd:186
 msgid "Codex entry: %s"
 msgstr "[Çôðéx éñţŕý: %s ~~]"
 
@@ -2980,11 +2980,11 @@ msgstr "[Ûñļôçķš %s šééðš ~~~]"
 msgid "Unlocks: %s"
 msgstr "[Ûñļôçķš: %s ~]"
 
-#: systems/research.gd:646
+#: systems/research.gd:657
 msgid "New robot plans: %s. %s"
 msgstr "[Ñéŵ ŕôbôţ þļàñš: %s. %s ~~~~~]"
 
-#: systems/research.gd:651
+#: systems/research.gd:662
 msgid "Research complete: %s."
 msgstr "[Ŕéšéàŕçĥ çômþļéţé: %s. ~~~~~]"
 
