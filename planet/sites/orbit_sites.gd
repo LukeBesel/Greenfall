@@ -72,6 +72,8 @@ func _setup() -> void:
 		WalkTravel.run_dev(so)
 	if DevHooks.has("walk-goals"):  # [v9d] dev: every goal can complete, one of each kind played with real input (tools/walk_goals.gd)
 		WalkGoals.run_dev(so)
+	if DevHooks.has("walk-map"):  # [v10ui] dev: the map turned, zoomed and closed with a real mouse (tools/walk_map.gd)
+		WalkMap.run_dev(so)
 	if DevHooks.has("step-shots"):  # [v9d] dev: a rendered frame as each story step starts (tools/step_shots.gd)
 		StepShots.run_dev(so)
 	if DevHooks.has("walk-radio"):  # [v10snd] dev: the first CD and the radio, real input (tools/walk_radio.gd)

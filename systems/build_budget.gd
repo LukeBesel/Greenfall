@@ -235,11 +235,41 @@ static func _flush_for_workers() -> void:
 	OS.delay_msec(1)
 
 
+## [v12load] May a loader thread or worker task make rendering resources (meshes, multimeshes,
+## materials, shaders, textures) while another thread makes its own? Not on the headless dummy
+## renderer (--headless: the tests and tools). In Godot 4.7 its resource owners are not
+## thread-safe (servers/rendering/dummy/storage: RID_Owner<T> without THREAD_SAFE; the GL and
+## RD renderers' owners are), and a resource's RID is allocated on the thread that creates it, so
+## two threads making meshes at once could be handed the same slot and one mesh's RID then
+## pointed at nothing: "Attempting to use an uninitialized RID", 'Parameter "m" is null', a town
+## kit piece with no surfaces (SCRIPT ERROR in AssetLib.lite, now and then in the save round
+## trip). There, files load and meshes are made on the main thread instead: the same results,
+## only longer frames behind the loader. A player's renderer is never the dummy one.
+static func threads_ok() -> bool:
+	if _threads_ok < 0:
+		_threads_ok = 0 if DisplayServer.get_name() == "headless" else 1  # (the rendering method still reads the project's there)
+		if DevHooks.has("rid-threads"):  # tools/rid_race_stress.gd: the old threaded paths, to show the fault
+			_threads_ok = 1
+	return _threads_ok == 1
+
+
+static var _threads_ok: int = -1
+
+
+## [v12load] A worker task that makes meshes: on a worker thread, yielding frames meanwhile
+## (join), or right here on the main thread where threads_ok() says no.
+static func run_mesh_task(c: Callable, label: String) -> void:
+	if not threads_ok():
+		c.call()
+		return
+	await join(add_task(c, label))
+
+
 ## Loads a resource file on a loader thread while the loading screen keeps drawing, and returns
 ## it (hold it until it is used: then load(path) is a cache hit). Without a budget, or when it is
 ## cached already, it returns null at once and the caller's own load() does the work.
 static func fetch(path: String) -> Resource:
-	if current == null or ResourceLoader.has_cached(path) or not ResourceLoader.exists(path):
+	if current == null or ResourceLoader.has_cached(path) or not ResourceLoader.exists(path) or not threads_ok():  # [v12load]
 		return null
 	if ResourceLoader.load_threaded_request(path) != OK:
 		return null

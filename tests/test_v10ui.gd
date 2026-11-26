@@ -367,3 +367,120 @@ func test_card_steps_say_base() -> void:
 		var t: String = str(d.get("text", "")).to_lower()
 		for w: String in ["station", "district", " hub"]:
 			assert_false(t.contains(w), "%s: \"%s\" says \"base\", not \"%s\"" % [d["id"], d.get("text", ""), w.strip_edges()])
+
+
+# --- Owner, 20 Nov: the map is turned with the mouse ----------------------------------------
+
+func test_map_view_brings_any_place_to_the_front() -> void:
+	for c: Vector3 in [Vector3(0, 0, 1), Vector3(1, 0, 0), Vector3(1, 1, 0).normalized(), Vector3(-0.4, 0.6, -0.69).normalized(), Vector3(0.3, -0.8, 0.52).normalized()]:
+		var v: Vector2 = GlobeView.view_of(c)
+		var front: Vector3 = GlobeView.turn_basis(v.x, v.y) * c
+		assert_almost_eq(front.z, 1.0, 0.001, "%s faces the viewer (it missed away from the zero meridian)" % str(c))
+	var pole: Vector2 = GlobeView.view_of(Vector3.UP)
+	assert_almost_eq(pole.y, GlobeView.PITCH_MAX, 0.0001, "the view stops short of the pole")
+
+
+func test_map_up_down_drag_tips_toward_the_screen_at_any_spin() -> void:
+	for yaw: float in [0.0, 1.2, PI * 0.5, 2.9, -2.0]:
+		var step: Basis = GlobeView.turn_basis(yaw, 0.5) * GlobeView.turn_basis(yaw, 0.3).inverse()
+		var axis: Vector3 = step.get_rotation_quaternion().get_axis()
+		assert_almost_eq(absf(axis.x), 1.0, 0.001, "spun %.1f: an up-down drag turns about the screen's left-right line (it rolled sideways)" % yaw)
+		var north: Vector3 = GlobeView.turn_basis(yaw, GlobeView.PITCH_MAX) * Vector3.UP
+		assert_gt(north.y, 0.1, "spun %.1f: tipped as far as it goes, north is still up" % yaw)
+
+
+func test_map_drag_keeps_the_ground_under_the_cursor() -> void:
+	# A point at the front of a globe of radius r seen from d: turned by k rad it moves r*k sideways,
+	# which is r*k / ((d - r) * tan(fov / 2)) * h / 2 pixels. One pixel of drag must move it one pixel.
+	for cfg: Array in [[0.38, 2.0, 55.0, 540.0], [1.0, 3.2, 40.0, 720.0], [0.38, 1.3, 55.0, 1080.0]]:
+		var r: float = cfg[0]
+		var d: float = cfg[1]
+		var k: float = GlobeView.turn_per_px(r, d, cfg[2], cfg[3])
+		var px: float = r * k / ((d - r) * tan(deg_to_rad(float(cfg[2])) * 0.5)) * float(cfg[3]) * 0.5
+		assert_almost_eq(px, 1.0, 0.01, "globe %.2f at %.1f on a %d px screen" % [r, d, int(cfg[3])])
+
+
+func test_map_wheel_steps_and_first_hint_strings() -> void:
+	var notch := InputEventMouseButton.new()
+	assert_almost_eq(GlobeView._wheel_step(notch), 1.0, 0.001, "a wheel notch is one step")
+	notch.factor = 0.2
+	assert_almost_eq(GlobeView._wheel_step(notch), 0.2, 0.001, "a smooth wheel's small step is a small step")
+	notch.factor = 40.0
+	assert_almost_eq(GlobeView._wheel_step(notch), 3.0, 0.001, "a wild step is capped")
+	for loc: String in LOCALES:
+		TranslationServer.set_locale(loc)
+		for t: String in ["Drag to turn the planet. Scroll to zoom.", "Find Lumi", "Play", "New profile", "Start over"]:
+			if loc != "en":
+				assert_ne(TranslationServer.translate(t), t, "%s: \"%s\" is translated" % [loc, t])
+	TranslationServer.set_locale("en")
+
+
+func test_map_root_reads_the_mouse_itself() -> void:
+	var g := GlobeView.new()
+	g.planet = PlanetData.new()
+	add_child_autofree(g)
+	assert_true(g._root.gui_input.is_connected(g._on_root_input), "the map's root hands its mouse events to the globe")
+	assert_eq(g._root.mouse_filter, Control.MOUSE_FILTER_STOP, "and keeps them from the game behind")
+
+
+func test_title_has_no_new_game_button() -> void:
+	var src: String = FileAccess.get_file_as_string("res://ui/main_menu.gd") + FileAccess.get_file_as_string("res://ui/profile_picker.gd")
+	assert_false(src.contains("tr(\"New Game\")"), "no New Game button on the title or the Profiles page")
+	assert_true(src.contains("tr(\"Start over\")"), "starting over is per profile")
+
+
+## The fault: the map's full-screen root took every mouse press, and the drag code sat in
+## _unhandled_input where it never saw one. The root's own mouse handler turns the globe now
+## (tools/walk_map.gd sends the events through the window; here: what the handler does with them).
+func test_map_root_mouse_turns_the_globe_and_not_from_the_card() -> void:
+	var g := GlobeView.new()
+	g.areas_fn = func() -> Array: return _areas()
+	g.planet = PlanetData.new()
+	add_child_autofree(g)
+	g._root.visible = true
+	g.is_open = true
+	g._refresh_text()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var free_spot: Vector2 = Vector2(g._root.size.x * 0.75, g._root.size.y * 0.7)
+	assert_false(g._on_ui(free_spot), "the test's free spot is off the cards")
+	for at: Vector2 in [g._pct.get_global_rect().get_center(), free_spot]:
+		var on_card: bool = g._on_ui(at)
+		var mv := InputEventMouseMotion.new()
+		mv.position = at
+		mv.global_position = at
+		g._on_root_input(mv)
+		var ev := InputEventMouseButton.new()
+		ev.button_index = MOUSE_BUTTON_LEFT
+		ev.pressed = true
+		ev.position = at
+		ev.global_position = at
+		g._on_root_input(ev)
+		assert_eq(g._drag, not on_card, "a press %s" % ("on the card does not take the globe" if on_card else "on the globe takes hold of it"))
+		var y0: float = g._yaw
+		var drag := InputEventMouseMotion.new()
+		drag.position = at + Vector2(30, 0)
+		drag.global_position = drag.position
+		drag.relative = Vector2(30, 0)
+		drag.button_mask = MOUSE_BUTTON_MASK_LEFT
+		g._on_root_input(drag)
+		if on_card:
+			assert_eq(g._yaw, y0, "and a drag from the card does not turn it")
+		else:
+			assert_gt(g._yaw, y0, "and the drag turns it")
+		ev = ev.duplicate()
+		ev.pressed = false
+		g._on_root_input(ev)
+		assert_false(g._drag, "letting go lets go")
+	var pan := InputEventPanGesture.new()
+	pan.position = free_spot
+	pan.delta = Vector2(0, -1.0)
+	g._on_root_input(pan)
+	assert_almost_eq(g._zoom_to, GlobeView.ZOOM_HOME * exp(-0.08), 0.001, "a two-finger scroll zooms, once per event")
+	var mag := InputEventMagnifyGesture.new()
+	mag.position = free_spot
+	mag.factor = 1.25
+	g._zoom_to = GlobeView.ZOOM_HOME
+	g._on_root_input(mag)
+	assert_almost_eq(g._zoom_to, GlobeView.ZOOM_HOME / 1.25, 0.001, "a pinch zooms, once per event")
+	g.is_open = false

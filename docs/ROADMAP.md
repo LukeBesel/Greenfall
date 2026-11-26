@@ -2,7 +2,7 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
-## 26 Nov: planting out, one goal line, travel checked (v13goals, owner item 114)
+## 26 Nov: planting out, one goal line, travel checked (v13goals, owner item 116)
 
 - **The player only cleans; clean ground greens by itself** (plants/auto_grow.gd, data/plants.json
   `player_planting` false + `auto_grow`, data/hex_levels.json `auto_levels`). The garden sows its own
@@ -16,12 +16,19 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
   branch serves the lakes and the Skimmer; Seedling/Drip blueprints became Sorting Arms / Haul Harness.
 - **Goal line:** "Buy Scoop Size", "Clean 2 hexes", "Plant the first seed" and "Look at the map" are
   cut; the planting goals (seed, plant, bloom, hex levels, stipend, Seedling, Drip, restore) are out
-  of data/goals.json (before/after chain: docs/OWNER_FEEDBACK.md item 114). A save keeps its place
+  of data/goals.json (before/after chain: docs/OWNER_FEEDBACK.md item 116). A save keeps its place
   by step id (Objectives.ORDER_V4, flag objectives_v5). WREN's tower brief is two lines.
 - Checks: tests/test_planting_gone.gd, tests/test_auto_grow.gd, tools/check_old_planting_save.sh (in
   check_exit, replaces seed_walk), walk_home part "green" (replaces "garden" and "map"), GoalAudit
   SOURCES mark plants_planted and seeds_unlocked closed.
 - **Open:** see the hand-off (pacing, renders, travel findings).
+## 20 Nov, v10ui: map mouse control (owner item 114), title without New Game (item 115)
+
+- **Map (M):** the globe is turned by dragging (the ground follows the cursor, a short coast, pole limits), zoomed by wheel / two-finger scroll / pinch, and "Find Lumi" (button, V, double-click) goes back to the opening view. The cause was the map's root Control swallowing the mouse. Proof: `--walk-map` (in tools/check_exit.sh), rendered frames looked at.
+- **Title:** no New Game button. The title lists the played profiles (CONTINUE for the last one, a button each for the others), PLAY on a first launch, NEW PROFILE while a slot is free; Start over and Delete are per profile on the Profiles page, each behind a question. Proof: `--menu --title-walk` (in tools/check_exit.sh), rendered frames looked at.
+- **HUD base name (critic 7):** the 72516d7 change never reached the HUD (the HUD asks the slice, the method was on the round-world object); wired through and checked on the pad by `--walk-map`.
+- **Follow-up (24 Nov):** Lumi no longer dozes off while holding the map (a snore's "z" floated over the globe in a rendered run; `--walk-map` checks it). The title no longer logs "Couldn't open directory" for never-played profiles. `--walk-home` failed twice here on the money the game pays while the walk reads the card (a bale pressed in a salvage surge pays over 1K): main's v9a fixes cover both (the shuttle's count and "price is paid" checks, a reload that saves up while the card fades in); this branch's own versions were dropped at the merge. Found, not fixed: a world event running when the game is saved is not saved, and its countdown stays at 0, so a new random event (toast, WREN line) starts the moment the game loads (systems/events.gd: only `_finish` resets `next_in`); 6 of 18 loads in one home walk started a Salvage Surge.
+- **Open:** real MacBook trackpad feel (drag speed, coast, scroll speed) and a real controller on the new title list are not verified here. v10snd's `walk_radio` and v11film's rewatch option must use the title's `_continue` / `_play` buttons (there is no `_new_game` any more).
 
 ## Walks reliable, 20-24 Nov (v9a, task 195)
 
