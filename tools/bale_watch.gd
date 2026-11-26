@@ -58,6 +58,23 @@ func _process(delta: float) -> void:
 					hb += 1
 					hm.append("%s%s%s" % [str(u["mode"]), ("/" + str(u.get("idle", ""))) if str(u.get("idle", "")) != "" else "", "" if u["bot"] != null else " far"])
 		home = "  base 1: %d waiting, %d cleaners, %d haulers %s, cashed %.0f cubes in all" % [c.bales_waiting(c.hub_cell), sc, hb, str(hm), c.cashed]
+		# [v14travel] every crew bale by its nearest base and how far out (the haulers take only those
+		# within region_m + 60 m of their own base): "base:in reach/out of reach"
+		var by: Dictionary = {}
+		var lim: float = c.region_m() + 60.0
+		for bl: Dictionary in c.bales:
+			var bc: int = int(bl["cell"])
+			var hb_: int = c.nearest_hub(c.grid.centers[bc])
+			var key: String = str(hb_)
+			var v: Array = by.get(key, [0, 0, 0.0])
+			var dm: float = c.grid.distance_m(bc, hb_)
+			v[0 if dm <= lim else 1] = int(v[0 if dm <= lim else 1]) + 1
+			v[2] = maxf(float(v[2]), dm)
+			by[key] = v
+		var parts_b: PackedStringArray = []
+		for k2: String in by:
+			parts_b.append("hub cell %s: %d in reach, %d out (farthest %.0f m)" % [k2, int(by[k2][0]), int(by[k2][1]), float(by[k2][2])])
+		home += "  | bales by base (reach %.0f m): %s" % [lim, "; ".join(parts_b)]
 	print("[bales] %.1f min  pad %d (crew %d, loose %d)  in air %d  top %.1f m  on E spots %d  records %d  robots pressed %d, still lying %d, sold or carried %d%s" % [
 		float(GameState.stats.get("time_played", 0.0)) / 60.0, int(r["pad"]), int(r["crew"]), int(r["loose"]), int(r["air"]), float(r["top"]),
 		int(r["e_spots"]), int(r["records"]), pressed, int(r["all_records"]), maxi(pressed - int(r["all_records"]), 0), (("  near: " + str(r["where"])) if int(r["pad"]) > 0 else "") + home])

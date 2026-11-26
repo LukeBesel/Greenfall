@@ -533,7 +533,11 @@ func _refresh() -> void:
 			body = step_text(site, d)
 		else:
 			var nx: int = HubPlan.next_site(planet)
-			if nx >= 0 and HubPlan.is_main(planet, nx):
+			if nx >= 0 and HubPlan.is_main(planet, nx) and HubPlan.at_limit(planet) and not HubPlan.seen(nx):
+				# [v14travel] the next base is locked in the rocket's list until the rocket's next tier:
+				# "take the rocket to X" sent the player to a Fly button that is off
+				body = limit_text()
+			elif nx >= 0 and HubPlan.is_main(planet, nx):
 				body = tr("Restored. Next: take the rocket to %s.") % HubPlan.hub_name(planet, nx)
 			elif HubPlan.is_main(planet, site) and HubPlan.restored_main(planet) >= HubPlan.main_total(planet):
 				# [v9c] The drive is built from this rocket's list (E, Other planets); "fly home" sent

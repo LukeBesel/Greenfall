@@ -52,9 +52,8 @@ static func run(so: SliceOrbit) -> void:
 	for k: int in 3:
 		crew.spawn("scoopie" if k < 2 else "haulbug", 0, around[(k + 3) % around.size()], home_cell, "Home-%d" % k)
 	await WalkTravel._wait(tree, 2.0)
-	var home0: int = _junk_left(so, 0)
 	var cash0: float = crew.cashed
-	print("%s   all: home has %d robots, %d pieces of junk round it" % [TAG, crew.hub_robots(home_cell).size(), home0])
+	print("%s   all: home has %d robots" % [TAG, crew.hub_robots(home_cell).size()])
 	var yard: Dictionary = WalkTravel._yard(so)
 	var shown: Dictionary = WalkTravel._yard_shown(yard)
 	var had: Dictionary = {}
@@ -70,7 +69,7 @@ static func run(so: SliceOrbit) -> void:
 	# A robot of Garden Row's own (it works there while Lumi is elsewhere).
 	var gr_cell: int = int(so.globe.sites[9]["cell"])
 	crew.spawn("scoopie", 0, so.globe.grid.cells_around(gr_cell, 2)[4], gr_cell, "Garden-0")
-	var gr0: int = _junk_left(so, 9)
+	var gr0: int = hp.clean_cells(9)
 	so = await _reload(so, 9, "at Garden Row")
 	if so == null:
 		return
@@ -92,17 +91,19 @@ static func run(so: SliceOrbit) -> void:
 	hp = so.sites.purpose
 	ob = so.w.get("objectives") as Objectives
 	crew = _crew(so)
+	var home0: float = _work_done(crew, home_cell)  # the robots' own logs start again with each load
+	var gr_work0: float = _work_done(crew, gr_cell)
 	# 3. Gantry Works -> Garden Row (back to a woken base): its robot and its keepers worked on.
 	await _fly(so, 9, "Gantry Works -> Garden Row")
 	await _arrival(so, 9, false)
 	await WalkTravel._wait(tree, 3.0)
-	WalkTravel._check(_junk_left(so, 9) < gr0, "Garden Row kept cleaning while Lumi was away: %d -> %d pieces of junk round it" % [gr0, _junk_left(so, 9)])
+	WalkTravel._check(hp.clean_cells(9) > gr0 and _work_done(crew, gr_cell) > gr_work0, "Garden Row kept cleaning while Lumi was away: its clean hexes %d -> %d (its keepers), its robot's pieces and hexes %.0f -> %.0f" % [gr0, hp.clean_cells(9), gr_work0, _work_done(crew, gr_cell)])
 	await _far_bench_row(so, 9, "signal tower")
 	# 4. Garden Row -> home: the yard stands, the home robots worked on.
 	await _fly(so, 0, "Garden Row -> home")
 	await _arrival(so, 0, false)
 	await WalkTravel._wait(tree, 3.0)
-	WalkTravel._check(_junk_left(so, 0) < home0, "the home robots kept cleaning while Lumi was away: %d -> %d pieces of junk round it" % [home0, _junk_left(so, 0)])
+	WalkTravel._check(_work_done(crew, home_cell) > home0, "the home robots kept working while Lumi was away: pieces scooped, hexes, bales and hauls %.0f -> %.0f" % [home0, _work_done(crew, home_cell)])
 	print("%s   all: crew cubes cashed this session %.0f (was %.0f)" % [TAG, crew.cashed, cash0])
 	await WalkTravel._home_check(so, had, shown, "home from the far bases")
 	# 5. Mk II at the bench (the fourth base needs it), then home -> Signal Heights with a quit and
@@ -180,13 +181,12 @@ static func run(so: SliceOrbit) -> void:
 	print("%s   all: the walk took %.0f s (%.0f s since the game started)" % [TAG, (Time.get_ticks_msec() - _t0) / 1000.0, Time.get_ticks_msec() / 1000.0])
 
 
-## Junk pieces still lying in base `site`'s region (the crews and keepers take them away).
-static func _junk_left(so: SliceOrbit, site: int) -> int:
-	var f: SphereField = so.globe.field
-	var n: int = 0
-	for c: int in so.sites.sm.regions[site]:
-		for q: int in f.hex_pieces[c]:
-			n += 1 if f.piece_alive[q] != 0 else 0
+## What the robots of a base have done (their logs: pieces scooped, hexes, bales pressed, bales hauled).
+static func _work_done(crew: SphereCrew, hub_cell: int) -> float:
+	var n: float = 0.0
+	for u: Dictionary in crew.hub_robots(hub_cell):
+		for k: String in ["junk", "cells", "bales", "hauled"]:
+			n += float((u["log"] as Dictionary).get(k, 0.0))
 	return n
 
 
@@ -291,6 +291,13 @@ static func _arrival(so: SliceOrbit, site: int, first: bool) -> void:
 	if site > 0 and not HubPlan.woken(site):
 		WalkTravel._check(wt is Vector3 and far_from < 160.0, "%s: the beam points at this base's step (%s, %.0f m from the pad)" % [nm, to, far_from])
 	if site > 0 and HubPlan.woken(site):
+		var nx: int = HubPlan.next_site(hp.planet)
+		if nx >= 0 and hp.card_text.contains(HubPlan.hub_name(hp.planet, nx)):  # the card sends Lumi to a base: its Fly must be on
+			var locked: String = ""
+			for e: Dictionary in os_.destinations():
+				if int(e["site"]) == nx:
+					locked = str(e.get("locked", ""))
+			WalkTravel._check(locked == "", "%s: the base card's next stop can be flown to ('%s'%s)" % [nm, hp.card_text, "" if locked == "" else "; its row: " + locked])
 		var lm: Dictionary = hp.landmark(site)
 		WalkTravel._check(lm.is_empty() or not (wt is Vector3 and (wt as Vector3).distance_to(lm["pos"]) < 1.0), "%s: nothing points at its woken landmark" % nm)
 	# Lumi drives off the landing spot.
