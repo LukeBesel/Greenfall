@@ -11,6 +11,8 @@ var _cam: Camera3D
 var _t: float = 0.0
 var _out: String
 var _view: String
+var _turn_ship: ShipModel
+var _turn_i: int = 0
 
 
 func _ready() -> void:
@@ -48,6 +50,16 @@ func _ready() -> void:
 				add_child(under)
 				_cam.position = Vector3(40.0, -18.0, -46.0)
 				_cam.look_at(Vector3(0, 9.0, -1.0), Vector3.UP)
+		"turn":  # [art5] one ship in daylight from several sides: <out>_0..N.png (--ship-tier, --legs=0..1, --lift=0..1, --canopy)
+			_turn_ship = ShipModel.new()
+			add_child(_turn_ship)
+			_turn_ship.build(int(DevHooks.get_f("ship-tier", 1.0)))
+			_turn_ship.set_legs(DevHooks.get_f("legs", 1.0))
+			_turn_ship.set_lift(DevHooks.get_f("lift", 0.0))
+			_turn_ship.set_canopy(DevHooks.get_f("canopy", 0.0))
+			_turn_ship.plume.power = DevHooks.get_f("thrust", 0.0)
+			_turn_ship.position.y = DevHooks.get_f("alt", 0.0)
+			_turn_ship.set_airborne(DevHooks.get_f("alt", 0.0) > 0.0)
 		"pair":
 			var w2: float = _row([1, 7] as Array[int], 10.5, 32.0)
 			_frame(w2, 27.0, 26.0)
@@ -272,6 +284,29 @@ func _self_check() -> void:
 func _process(delta: float) -> void:
 	_t += delta
 	if _out == "":
+		return
+	if _turn_ship != null:
+		# az, el, dist, look-at height, look-at z
+		var views: Array = [[35, 14, 9.5, 1.0, 0.0], [145, 12, 9.0, 1.0, -0.4], [215, 30, 9.5, 1.0, 0.0], [90, 4, 8.5, 0.9, 0.0], [20, 8, 4.2, 1.2, 1.6], [160, -6, 4.6, 0.8, -1.6], [80, 3, 3.6, 0.6, 0.6], [0, 80, 10.0, 0.8, 0.0]]
+		var only: String = DevHooks.get_s("views", "")
+		var k: int = _turn_i
+		if k >= views.size():
+			get_tree().quit()
+			return
+		var v: Array = views[k]
+		var tg := Vector3(0, float(v[3]) + _turn_ship.position.y, float(v[4]))
+		var a: float = deg_to_rad(float(v[0]))
+		var e: float = deg_to_rad(float(v[1]))
+		_cam.fov = 38.0
+		_cam.position = tg + Vector3(sin(a) * cos(e), sin(e), cos(a) * cos(e)) * float(v[2])
+		_cam.look_at(tg, Vector3.UP if absf(float(v[1])) < 75.0 else Vector3.FORWARD)
+		if only != "" and not (str(k) in only.split(",")):
+			_turn_i += 1
+			return
+		if _t > DevHooks.get_f("wait", 5.0):
+			DevHooks.save_viewport("%s_%d.png" % [_out, k])
+			_turn_i += 1
+			_t = DevHooks.get_f("wait", 5.0) - 1.2
 		return
 	if _t > DevHooks.get_f("wait", 6.0):
 		DevHooks.save_viewport("%s.png" % _out)

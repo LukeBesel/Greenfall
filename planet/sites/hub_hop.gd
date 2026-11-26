@@ -34,6 +34,17 @@ const APPROACH_PITCH: float = -0.16
 const APPROACH_DIST: float = 20.0
 var _skipped: bool = false
 var _shot_done: Dictionary = {}
+## Dev: where the flight's frames go (tools/shuttle_shots.gd), and at which leg fractions (--hop-marks=a,b,...).
+var shot_prefix: String = ""
+
+
+static func _marks() -> Array:
+	if not DevHooks.has("hop-marks"):
+		return [0.4, 0.8]
+	var out: Array = []
+	for m: String in DevHooks.get_s("hop-marks", "").split(",", false):
+		out.append(float(m))
+	return out
 var _skip_hint: CanvasLayer
 
 
@@ -167,6 +178,7 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	var b: Transform3D = sm.pad_xf(to_i)
 	ship.global_transform = b
 	ship.set_lift(0.0)
+	_touch_down(b)
 	var step: Vector3 = b * Vector3(4.5, 0, 3.0)
 	var north: Vector3 = -SphereGrid.frame(step.normalized()).z
 	lumi.process_mode = Node.PROCESS_MODE_INHERIT
@@ -252,6 +264,7 @@ func _step_off(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerr
 	var b: Transform3D = sm.pad_xf(to_i)
 	ship.global_transform = b
 	ship.set_lift(0.0)
+	_touch_down(b)
 	var step: Vector3 = b * Vector3(4.5, 0, 3.0)
 	var north: Vector3 = -SphereGrid.frame(step.normalized()).z
 	lumi.process_mode = Node.PROCESS_MODE_INHERIT
@@ -369,17 +382,54 @@ func _leg(dir_a: Vector3, axis: Vector3, a0: float, a1: float, outbound: bool, t
 		if turn > 0.99:
 			nose_dot_min = minf(nose_dot_min, ship.global_basis.z.normalized().dot(fwd.normalized()))
 		ship.set_lift(smoothstep(0.0, 0.25, k) if outbound else 1.0 - smoothstep(0.7, 1.0, k))
+		_fly_look(pos, land_at, k, outbound)  # [art5] look only: gear, main engines, the ground effects
 		_focus.global_position = pos + d * 2.0
 		lumi.global_position = pos
 		prev = pos
-		if DevHooks.has("hop-shots"):  # dev: --hop-shots=PREFIX saves the flight's key frames
-			for mark: float in [0.4, 0.8]:
-				var key: String = "%s_%d" % ["out" if outbound else "in", int(mark * 10)]
+		if DevHooks.has("hop-shots") or shot_prefix != "":  # dev: --hop-shots=PREFIX saves the flight's key frames
+			for mark: float in _marks():
+				var key: String = ("%s_%02d" if DevHooks.has("hop-marks") else "%s_%d") % ["out" if outbound else "in", int(round(mark * (100.0 if DevHooks.has("hop-marks") else 10.0)))]
 				if k >= mark and not _shot_done.has(key):
 					_shot_done[key] = true
 					await RenderingServer.frame_post_draw
-					DevHooks.save_viewport("%s_%s.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), key])
+					DevHooks.save_viewport("%s_%s.png" % [shot_prefix if shot_prefix != "" else DevHooks.get_s("hop-shots", "screenshots/hop"), key])
 		await get_tree().process_frame
+
+
+## [art5] The flight's look (never its path): the main engines burn on the way, the gear hangs
+## and folds once clear of the pad and comes down before the landing, and the lift engines blow
+## dust along the ground near the pad (art/shuttle_fx.gd, laid out on the pad's local up).
+func _fly_look(pos: Vector3, pad: Vector3, k: float, outbound: bool) -> void:
+	var up: Vector3 = pad.normalized()
+	var alt: float = maxf((pos - pad).dot(up), 0.0)
+	var off: float = (pos - pad - up * alt).length()
+	ship.plume.power = smoothstep(0.22, 0.5, k) if outbound else 1.0 - smoothstep(0.3, 0.62, k)
+	ship.set_legs(1.0 - smoothstep(0.1, 0.32, k) if outbound else smoothstep(0.42, 0.7, k))
+	ship.set_airborne(alt > 0.04)
+	if fx == null:
+		fx = ShuttleFx.new()
+		add_child(fx)
+	if not _marked and outbound:  # lift-off: a puff and a scorch where it stood
+		_marked = true
+		fx.tint(ShipStyle.glow_color())
+		fx.mark(Transform3D(_pad_basis if _pad_basis != Basis() else SphereGrid.frame(up), pad), 0.7)
+	fx.fly(pos, pos - up * alt, up, alt + off * 0.25, ship.lift)
+
+
+## [art5] The ship is down on the pad at `xf`: the gear takes the weight, the engines stop, the pad is scorched.
+func _touch_down(xf: Transform3D) -> void:
+	_marked = false
+	ship.plume.power = 0.0
+	ship.set_legs(1.0)
+	ship.set_airborne(false, 0.9)
+	if fx:
+		fx.stop()
+		fx.mark(xf, 1.0)
+
+
+## [art5] The ground effects of a flight (built on the first one, reused after).
+var fx: ShuttleFx
+var _marked: bool = false
 
 
 ## Sky-blue veil over the screen (a = 0 clear, 1 covered).
