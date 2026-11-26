@@ -219,7 +219,8 @@ func refresh() -> void:
 	else:
 		var rate: float = GameState.income_rate()
 		var need: float = cost.sub(money).to_float()
-		_eta.text = (tr("need %s · ~%s") % [Settings.fmt(BigNum.from_float(need)), _fmt_time(need / rate)]) if rate > 0.01 else tr("need %s") % Settings.fmt(BigNum.from_float(need))  # [ui2] the missing amount
+		var need_txt: String = Currencies.missing_text("cubes", cost.to_float())  # [v14qa] the price as shown minus the balance as shown (49.6 of 55: "need 6", not 5)
+		_eta.text = (tr("need %s · ~%s") % [need_txt, _fmt_time(need / rate)]) if rate > 0.01 else tr("need %s") % need_txt  # [ui2] the missing amount
 	_tag.visible = is_best_value and _affordable and Settings.best_value_tags
 	var lines: Array[String] = []
 	for b: Dictionary in Economy.stat_breakdown(def["stat"]):
