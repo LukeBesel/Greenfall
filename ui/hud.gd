@@ -438,6 +438,7 @@ func _update_context(delta: float, minimal: bool) -> void:
 	# the goals card and the outpost itself. It shows for a few seconds after it changes, while
 	# carrying, or while the signal is strong, in every HUD mode.
 	var text: String = ""
+	var h: int = patch.focus_hex()
 	var hex_text: String = _ground_line()
 	var strong: bool = _signal_text != "" and (_signal_strength >= 0.5 or not minimal)
 	if not patch.carried.is_empty():
