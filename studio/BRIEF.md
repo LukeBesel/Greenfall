@@ -25,3 +25,5 @@ Hand-off in stages; stage 1 = light and atmosphere.
 
 Target machine (owner, 26 Nov): a 2025 MacBook Pro. Character target: art/concept/lumi_concept.png, to be matched exactly (owner).
 Helpers: as many as the lead sees fit (owner, 26 Nov); brief in studio/HELPER_BRIEF.md.
+Owner, 26 Nov ~12:50 UTC: start NO more helpers (any chat); let the running ones finish. Any later
+helper needs his say first, and must be set to the Fable model explicitly.
