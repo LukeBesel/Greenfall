@@ -295,6 +295,11 @@ func current() -> Dictionary:
 	if not revealed:
 		return {}
 	if step < chain.size():
+		var fd: Dictionary = _far_step(chain[step])
+		if not fd.is_empty():  # [v13goals] at the far base: the card says what to do there now
+			var dd: Dictionary = (chain[step] as Dictionary).duplicate()
+			dd["desc"] = fd["text"]
+			return dd
 		return chain[step]
 	var gi: int = _goal_index()
 	if gi < 0:
@@ -452,6 +457,11 @@ func progress() -> Array:
 		if need > 0.0:
 			var have: float = minf(GameState.get_currency("cubes").to_float(), need)
 			return [have / need, "%s / %s" % [Currencies.have_text(have), Settings.fmt(BigNum.from_float(need))]]
+	var fs: Dictionary = _far_step(def)
+	if not fs.is_empty() and int(fs.get("need", 0)) > 0:  # [v13goals] the far base's own count (clean N hexes, repair an outpost)
+		var fn: int = int(fs["need"])
+		var fh: int = mini(int(fs["have"]), fn)
+		return [float(fh) / float(fn), "%d / %d" % [fh, fn]]
 	var tgt: float = target_of(def)
 	var v: float = minf(value_of(def), tgt)
 	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower", "flag", "build"]:
@@ -469,6 +479,27 @@ func progress() -> Array:
 		# number, so "Wake station 6 of 6 [4 / 5]" and "Build the Mk V drive [0 / 5]" read wrong. Price covered: full bar, no count.
 		return [1.0, ""]
 	return [v / maxf(tgt, 0.0001), ("%d / %d" % [int(v), int(tgt)]) if tgt > 1.0 else ""]
+
+
+## [v13goals] Far-bases helper: "Wake base N of 6" said nothing while its hexes were cleaned. On a
+## wake step, standing at that far base before it is woken: {text, have, need} of the base's current
+## step (HubPurpose.step_text: "Dig the landmark out. Clean hexes here: 3 / 8", the outpost, the
+## wake and its price), else {}.
+func _far_step(def: Dictionary) -> Dictionary:
+	if str(def.get("key", "")) != "hubs_woken" or world == null:
+		return {}
+	var os_: OrbitSites = OrbitSites.of(world)
+	if os_ == null or os_.purpose == null or os_.purpose.site <= 0 or HubPlan.woken(os_.purpose.site):
+		return {}
+	var hp: HubPurpose = os_.purpose
+	var st: Dictionary = hp.current_step(hp.site)
+	if st.is_empty():
+		return {}
+	var need: int = int(st.get("need", 0)) if str(st.get("do", "")) in ["clean", "outposts"] else 0
+	var txt: String = hp.step_text(hp.site, st)
+	if str(st.get("do", "")) == "clean":  # the count is the card's own: one plain line
+		txt = tr("Clean hexes round this base. Then wake its %s.") % HubPlan.landmark_name(hp.planet, hp.site)
+	return {"text": txt, "have": int(st.get("have", 0)), "need": need}
 
 
 func hex_fraction() -> float:
@@ -1048,6 +1079,8 @@ func _narrate() -> void:
 		return
 	said.append(id)
 	GameState.flags["wren_steps"] = said
+	if (def.get("lines", []) as Array).is_empty() and str(def.get("key", "")) in ["hubs_seen", "hubs_woken", "rocket_tier"]:
+		return  # [v13goals] a station step's why is on the card already: WREN does not read it out again (the wake was a burst)
 	var ls: Array = step_lines(def)
 	if not ls.is_empty():
 		# [v6story] dropped unsaid if the step is already done when her turn comes

@@ -746,7 +746,7 @@ msgstr "ロケットが物資を届けられる基地は %d つまで。作業�
 msgid "Waking the %s needs %s."
 msgstr "起こすには（%s）%s が必要。"
 
-#: planet/sites/hub_purpose.gd:349
+#: planet/sites/hub_purpose.gd:350
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s が目を覚ました。旅立ったあとも、%s は掃除を続ける。"
 
@@ -2051,63 +2051,67 @@ msgstr "エンジンがやられた。追いかけられない。"
 msgid "Lumi— I will find you— I will find—"
 msgstr "Lumi— 必ず見つける— 必ず見つ—"
 
-#: story/objectives.gd:306
+#: story/objectives.gd:311
 msgid "Reward: %s"
 msgstr "報酬：%s"
 
-#: story/objectives.gd:545
+#: story/objectives.gd:501
+msgid "Clean hexes round this base. Then wake its %s."
+msgstr "この基地のまわりのヘックスを きれいにしよう。それから%sを起こそう。"
+
+#: story/objectives.gd:576
 msgid "Objective complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:572
+#: story/objectives.gd:603
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:1064
+#: story/objectives.gd:1097
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "ベーラー設置！チェストを満たして [%s] でベールを作ろう。"
 
-#: story/objectives.gd:1086 story/objectives.gd:1315 tools/walk_opening.gd:918
+#: story/objectives.gd:1119 story/objectives.gd:1348 tools/walk_opening.gd:918
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:1102
+#: story/objectives.gd:1135
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:1104
+#: story/objectives.gd:1137
 msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr "近くにパーツが埋まっている！ピッと鳴るまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:1316
+#: story/objectives.gd:1349
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:1333 story/objectives.gd:1349
+#: story/objectives.gd:1366 story/objectives.gd:1382
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
-#: story/objectives.gd:1339
+#: story/objectives.gd:1372
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:1343
+#: story/objectives.gd:1376
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:1343
+#: story/objectives.gd:1376
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:1359
+#: story/objectives.gd:1392
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
-#: story/objectives.gd:1360
+#: story/objectives.gd:1393
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:1371
+#: story/objectives.gd:1404
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 

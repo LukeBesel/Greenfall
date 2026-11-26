@@ -342,13 +342,13 @@ func wake(i: int, free: bool = false) -> bool:
 	var tl: String = HubPlan.trade_line()  # the per-hub multiplier (v6pace's Hub.trade_mult, off SiteManager.built)
 	if tl != "":
 		lines.append(tl)
-	Audio.play("thud", 0.8, -4.0)
-	Audio.music_sting("level_up")
+	Audio.music_sting("level_up")  # [v13goals] one sound for the moment (the thud went)
 	HubPlan.opt_static("res://systems/tunes.gd", "play_moment", ["base_restored"])  # v6sound: a song for the moment, once one is marked
 	EventBus.shake_requested.emit(0.25)
-	EventBus.toast.emit(tr("%s is awake. %s keeps cleaning when you fly on.") % [HubPlan.landmark_name(planet, i), HubPlan.hub_name(planet, i)], "story")
-	for ln: String in lines:  # [v9d] one short line each (the toast queue shows them in turn)
-		EventBus.toast.emit(ln, "story")
+	# [v13goals] Far-bases helper: the wake was six toasts at once. One toast: the line, then what it
+	# gave on one row under it.
+	var head: String = tr("%s is awake. %s keeps cleaning when you fly on.") % [HubPlan.landmark_name(planet, i), HubPlan.hub_name(planet, i)]
+	EventBus.toast.emit(head + ("\n" + "  ·  ".join(lines) if not lines.is_empty() else ""), "story")
 	print("[hubs] woke site %d (%s): level %d, bases %d/%d, gave %s" % [i, str(HubPlan.entry(planet, i).get("id", "")), sm.levels[i], HubPlan.restored_main(planet), HubPlan.main_total(planet), str(lines)])
 	woke.emit(i)
 	_lm_site = -1

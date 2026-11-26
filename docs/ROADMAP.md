@@ -21,7 +21,24 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - Checks: tests/test_planting_gone.gd, tests/test_auto_grow.gd, tools/check_old_planting_save.sh (in
   check_exit, replaces seed_walk), walk_home part "green" (replaces "garden" and "map"), GoalAudit
   SOURCES mark plants_planted and seeds_unlocked closed.
-- **Open:** see the hand-off (pacing, renders, travel findings).
+- **Pacing** (autoplay, bot minutes; a person is about 2x slower): main 72648c6 left Verdance at
+  106.4; this branch before rebalancing at 77.4 (the planting chores were part of the length), after
+  at 103.2 (screenshots/autoplay_report_v13_auto2.json). First robot 27.8 -> 7.4 (Bot Bay 180 cubes +
+  35 parts, Scoopie 150 + 30), Haul Bug 36.3 -> 23.4, shuttle 44.9 -> 34.9, base 4 / 5 / the sixth
+  station / Mk III / Mk V drive x1.4 (84K, 210K, 280K, 140K, 700K). Longest goal gaps left: 30.1-49.3
+  (the first two far bases: clean, wake) and 80.0-91.6 (saving for base 5).
+- **Renders** (play camera, Low, 960x540, `--life-clean=5,1 --time-scale=20 --life-tour`):
+  screenshots/v13green/regrow_1..3.png (grass coming in, then a lush lawn) and r2_3.png (a Thriving
+  hex: grass, flowers, ferns, bushes). Correct and readable; the art session owns how it looks.
+- **Travel and bases (read, walked with walk_travel):** the rocket picker lists HOME first and the
+  NEXT STOP with why to go, the far base's card says the step (clean N hexes, repair an outpost, wake
+  the landmark with its price), the wake says the base keeps cleaning, and the rocket brings you home
+  from any pad. Fixed here: Garden Row's reason (the broken seed vault, not an empty seed tin). Left for
+  main / the base helpers: a station wake is a burst (six toasts and a WREN line at once); "Dig the
+  landmark out" (item 101, v10base); "Upgrade it at the workbench" for the rocket's base limit was not
+  played; the two far-base stretches above are the longest quiet parts of the line.
+- **Not done:** the Homecoming's "Plant the last seed" (one E press at the very end) is kept as the
+  story's last beat; frontier/other-planet greenhouse and Water Tank mechanics were only re-worded.
 ## 20 Nov, v10ui: map mouse control (owner item 114), title without New Game (item 115)
 
 - **Map (M):** the globe is turned by dragging (the ground follows the cursor, a short coast, pole limits), zoomed by wheel / two-finger scroll / pinch, and "Find Lumi" (button, V, double-click) goes back to the opening view. The cause was the map's root Control swallowing the mouse. Proof: `--walk-map` (in tools/check_exit.sh), rendered frames looked at.

@@ -743,7 +743,7 @@ msgstr "[Ţĥé ŕôçķéţ çàñ çàŕŕý šûþþļîéš ţô %d bàšé�
 msgid "Waking the %s needs %s."
 msgstr "[Ŵàķîñĝ ţĥé %s ñééðš %s. ~~~~~]"
 
-#: planet/sites/hub_purpose.gd:349
+#: planet/sites/hub_purpose.gd:350
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "[%s îš àŵàķé. %s ķééþš çļéàñîñĝ ŵĥéñ ýôû ƒļý ôñ. ~~~~~~~~~~~~~]"
 
@@ -2054,63 +2054,67 @@ msgstr "[Mý éñĝîñéš àŕé ĝôñé. Î çàñ'ţ çômé àƒţéŕ ý�
 msgid "Lumi— I will find you— I will find—"
 msgstr "[Ļûmî— Î ŵîļļ ƒîñð ýôû— Î ŵîļļ ƒîñð— ~~~~~~~~~]"
 
-#: story/objectives.gd:306
+#: story/objectives.gd:311
 msgid "Reward: %s"
 msgstr "[Ŕéŵàŕð: %s ~]"
 
-#: story/objectives.gd:545
+#: story/objectives.gd:501
+msgid "Clean hexes round this base. Then wake its %s."
+msgstr "[Çļéàñ ĥéxéš ŕôûñð ţĥîš bàšé. Ţĥéñ ŵàķé îţš %s. ~~~~~~~~~~~~~]"
+
+#: story/objectives.gd:576
 msgid "Objective complete  ·  %s"
 msgstr "[Ôbĵéçţîvé çômþļéţé  ·  %s ~~~~~~]"
 
-#: story/objectives.gd:572
+#: story/objectives.gd:603
 msgid "Goal complete  ·  %s"
 msgstr "[Ĝôàļ çômþļéţé  ·  %s ~~~~]"
 
-#: story/objectives.gd:1064
+#: story/objectives.gd:1097
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "[Bàļéŕ îñ! Fîļļ ýôûŕ çĥéšţ, ţĥéñ þŕéšš [%s] ƒôŕ à bàļé. ~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1086 story/objectives.gd:1315 tools/walk_opening.gd:918
+#: story/objectives.gd:1119 story/objectives.gd:1348 tools/walk_opening.gd:918
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Þŕéšš [%s] ţô màķé à bàļé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1102
+#: story/objectives.gd:1135
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "[Ýôûŕ ðéţéçţôŕ'š ƒôûñð à ŕôbôţ þàŕţ bûŕîéð ñéàŕbý. Fôļļôŵ ţĥé BÛŔÎÉÐ ÞÀŔŢ ŕéàðîñĝ; îţ bééþš ôñçé ýôû'ŕé ŕîĝĥţ ôñ ţôþ ôƒ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1104
+#: story/objectives.gd:1137
 msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr "[À þàŕţ îš bûŕîéð ñéàŕbý! Ŵàļķ ţôŵàŕð îţ ûñţîļ îţ bééþš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1316
+#: story/objectives.gd:1349
 msgid "Your chest is full. Bring it to the bin."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Bŕîñĝ îţ ţô ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:1333 story/objectives.gd:1349
+#: story/objectives.gd:1366 story/objectives.gd:1382
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "[Ţôô ĥéàvý. Ûþĝŕàðé Ļîƒţ àţ ţĥé béñçĥ. ~~~~~~~~~~]"
 
-#: story/objectives.gd:1339
+#: story/objectives.gd:1372
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Ĥéàð ĥômé: ţĥé bîñ îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1343
+#: story/objectives.gd:1376
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "[Çàŕŕý ýôûŕ bàļé ĥômé: ţĥé šçàļé îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1343
+#: story/objectives.gd:1376
 msgid "Carry your bale to the scale by the bin."
 msgstr "[Çàŕŕý ýôûŕ bàļé ţô ţĥé šçàļé bý ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:1359
+#: story/objectives.gd:1392
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "[Ţĥé ŕôçķéţ ŵàîţš ôñ ţĥé þàð. Ĥômé îš ƒîŕšţ ôñ îţš ļîšţ. ~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1360
+#: story/objectives.gd:1393
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "[Ĥéàð ĥômé: ƒôļļôŵ ţĥé béàm ţô ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1371
+#: story/objectives.gd:1404
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "[Ñôţĥîñĝ ţô þîçķ ûþ ĥéŕé. Ŵàļķ ţô môŕé ţŕàšĥ. ~~~~~~~~~~~~]"
 

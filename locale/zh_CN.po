@@ -746,7 +746,7 @@ msgstr "火箭最多能给 %d 个基地运送补给。去工作台升级火箭�
 msgid "Waking the %s needs %s."
 msgstr "唤醒（%s）需要 %s。"
 
-#: planet/sites/hub_purpose.gd:349
+#: planet/sites/hub_purpose.gd:350
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s 醒来了。你飞走以后，%s 会继续清理。"
 
@@ -2051,63 +2051,67 @@ msgstr "我的引擎坏了。我没法去追你。"
 msgid "Lumi— I will find you— I will find—"
 msgstr "Lumi—我会找到你—我会找—"
 
-#: story/objectives.gd:306
+#: story/objectives.gd:311
 msgid "Reward: %s"
 msgstr "奖励：%s"
 
-#: story/objectives.gd:545
+#: story/objectives.gd:501
+msgid "Clean hexes round this base. Then wake its %s."
+msgstr "清理这个基地周围的地块。然后唤醒它的%s。"
+
+#: story/objectives.gd:576
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:572
+#: story/objectives.gd:603
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:1064
+#: story/objectives.gd:1097
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "打包机装好了！装满箱子，然后按 [%s] 打包。"
 
-#: story/objectives.gd:1086 story/objectives.gd:1315 tools/walk_opening.gd:918
+#: story/objectives.gd:1119 story/objectives.gd:1348 tools/walk_opening.gd:918
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:1102
+#: story/objectives.gd:1135
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:1104
+#: story/objectives.gd:1137
 msgid "A part is buried nearby! Walk toward it until it beeps, then dig it up."
 msgstr "附近埋着一个零件！朝它走，听到哔哔声就把它挖出来。"
 
-#: story/objectives.gd:1316
+#: story/objectives.gd:1349
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:1333 story/objectives.gd:1349
+#: story/objectives.gd:1366 story/objectives.gd:1382
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
-#: story/objectives.gd:1339
+#: story/objectives.gd:1372
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:1343
+#: story/objectives.gd:1376
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:1343
+#: story/objectives.gd:1376
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:1359
+#: story/objectives.gd:1392
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
-#: story/objectives.gd:1360
+#: story/objectives.gd:1393
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:1371
+#: story/objectives.gd:1404
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
