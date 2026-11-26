@@ -10,8 +10,8 @@ render_mode cull_disabled, world_vertex_coords, depth_draw_opaque;
 uniform sampler2D atlas : source_color, filter_linear_mipmap, repeat_disable;
 uniform float wind = 1.0;
 uniform float cut = 0.42;
-uniform float gain = 1.15;
-uniform float leaf_gain = 1.5;
+uniform float gain = 1.0;
+uniform float leaf_gain = 0.95;
 // 0 = this plant's own colours; towards 1 the far crowns sink into the ground's green.
 uniform float lush = 1.0;
 
