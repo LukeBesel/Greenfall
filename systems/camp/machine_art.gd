@@ -62,6 +62,12 @@ static func sign_def(id: String) -> Dictionary:
 	return out
 
 
+## A paint colour a step toward grey and darker (old enamel, not fresh plastic).
+static func _aged(c: Color, amount: float) -> Color:
+	var l: float = c.get_luminance()
+	return c.lerp(Color(l, l, l), amount).darkened(amount * 0.4)
+
+
 static func _hex(v: Variant, fallback: Color) -> Color:
 	return Color.html(v as String) if v is String and (v as String).is_valid_html_color() else fallback
 
@@ -76,19 +82,21 @@ static func put_sign(k: YardArt.Kit, id: String, pos: Vector3, rot: Vector3 = Ve
 		return
 	var size: float = float(d.get("size", SIGN_BASE))
 	var u: float = size / SIGN_BASE
-	var rim: Color = _hex(d.get("rim"), YardArt.ORANGE)
-	var face: Color = _hex(d.get("face"), YardArt.CREAM)
+	# [art4] Old enamel signs: the data's colours taken down a step (candy rims read as cartoon), a
+	# thinner pressed rim; the kit's wear chips and rusts them like the machines they stand on.
+	var rim: Color = _aged(_hex(d.get("rim"), YardArt.ORANGE), 0.35)
+	var face: Color = _aged(_hex(d.get("face"), YardArt.CREAM), 0.15)
 	var ink: Color = _hex(d.get("ink"), YardArt.DARK)
-	var accent: Color = _hex(d.get("accent"), rim)
+	var accent: Color = _aged(_hex(d.get("accent"), rim), 0.25)
 	var r: float = size * 0.5
 	k.push(ProcMesh.xf(pos, rot))
-	k.cyl(r, 0.07, Vector3.ZERO, rim, Vector3(90, 0, 0), 0.02, 24)
+	k.cyl(r, 0.056, Vector3.ZERO, rim, Vector3(90, 0, 0), 0.012, 24)
 	for i: int in 8:  # rim bolts
 		var a: float = TAU * (i + 0.5) / 8.0
-		k.bolt(Vector3(cos(a) * (r - 0.028 * u), sin(a) * (r - 0.028 * u), 0.035), Vector3.BACK, YardArt.STEEL, 0.012 * u)
+		k.bolt(Vector3(cos(a) * (r - 0.022 * u), sin(a) * (r - 0.022 * u), 0.028), Vector3.BACK, YardArt.STEEL, 0.012 * u)
 	for side: int in (2 if two_sided else 1):
 		k.push(Transform3D(Basis(Vector3.UP, PI * side), Vector3.ZERO))
-		k.cyl(r - 0.055 * u, 0.02, Vector3(0, 0, 0.036), face, Vector3(90, 0, 0), 0.006, 24)
+		k.cyl(r - 0.042 * u, 0.02, Vector3(0, 0, 0.036), face, Vector3(90, 0, 0), 0.006, 24)
 		_icon(k, str(d.get("icon", id)), u, ink, accent, face)
 		k.pop()
 	k.pop()

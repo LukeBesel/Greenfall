@@ -239,6 +239,7 @@ func _apply() -> void:
 		var roofed: bool = fr != null and fr.visible
 		_roof_sign.visible = roofed
 		_bench_sign.visible = not roofed
+	OutpostPad.set_powered(get_tree() if is_inside_tree() else null, YardBuilds.built("generator"))  # [art4] deck-edge lights
 	var lamps: bool = YardBuilds.built("lamps")
 	for h: Node3D in _extra_lamps:
 		_show(h, lamps)
@@ -304,17 +305,14 @@ func _bin_bay() -> void:
 	add_child(bay)
 	var sz := Vector2(4.6, absf(dep.z - bin.z) + 4.4)  # x across, z along
 	var k := YardArt.Kit.new()
-	for side: int in 4:  # a dark band inside the paint, so the bay reads against the pale pad
-		var ax: bool = side < 2
-		var sg: float = -1.0 if side % 2 == 0 else 1.0
-		k.box(Vector3(sz.x, 0.01, 0.5) if ax else Vector3(0.5, 0.01, sz.y), Vector3(0, 0.005, sg * (sz.y * 0.5 - 0.25)) if ax else Vector3(sg * (sz.x * 0.5 - 0.25), 0.005, 0), Color(0.24, 0.25, 0.26))
-	for side: int in 4:  # the painted border
-		var along_x: bool = side < 2
-		var sgn: float = -1.0 if side % 2 == 0 else 1.0
-		var len_: float = sz.x if along_x else sz.y
-		var p := Vector3(0, 0.035, sgn * (sz.y * 0.5 - 0.09)) if along_x else Vector3(sgn * (sz.x * 0.5 - 0.09), 0.035, 0)
-		k.hazard(Vector3(len_, 0.012, 0.16) if along_x else Vector3(0.16, 0.012, len_), p)
-	k.decal("chevrons", Vector2(1.2, 0.36), Vector3(sz.x * 0.5 - 0.5, 0.045, 0), Vector3(-90, 90, 0))
+	# [art4] The bay's hazard bands and arrows are painted on the quay itself now (worn, in the pad's
+	# own maps: art/models/outpost/build_pad_maps.py BAY); here only its steel corner studs remain.
+	for sx: float in [-1.0, 1.0]:
+		for gz: float in [-1.0, 1.0]:
+			if sx < 0.0:
+				continue  # the west side is the quay's kerb
+			k.box(Vector3(0.16, 0.022, 0.16), Vector3(sx * (sz.x * 0.5 - 0.11), 0.016, gz * (sz.y * 0.5 - 0.11)), YardArt.GUNMETAL, Vector3.ZERO, 0.006)
+			k.box(Vector3(0.07, 0.012, 0.07), Vector3(sx * (sz.x * 0.5 - 0.11), 0.03, gz * (sz.y * 0.5 - 0.11)), YardArt.YELLOW, Vector3.ZERO, 0.004)
 	bay.add_child(k.mi(0.2, "BayPaint"))
 	var post := Node3D.new()
 	post.name = "BayLamp"
