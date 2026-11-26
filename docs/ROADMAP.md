@@ -2,6 +2,23 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+## Art guard, 26 Nov (v14integ)
+
+- `tools/art_guard.sh` (docs/ART_BASELINE.md): proves an art drop did not break the game against
+  `docs/art_baseline.json` (main 72648c6, software GL here): mesh vs collider in the start yard and town
+  (walk-through props, invisible walls), walkable area and reach, targets, load time / longest frame /
+  hitches, triangles per model and per procedural build, texture import settings, LODs, default-white
+  surfaces, Lumi's rig contract (members the code uses), every Locker choice still changing Lumi, the
+  opening film's cues / anchors / looked-up nodes, lighting / sky / water settings (WARN), and
+  (`ART_GUARD_RENDER=1`) draw calls and frames at 10 fixed views by day, dusk and night.
+  Each world check caught a planted fault (`--fault=all`); clean main passes. Not in check_exit
+  (five globe builds); main runs it on each art merge.
+- Found on main by the guard (baseline, not fixed): 15 walk-through spots (the bench's pegboard
+  "Upper" and the workbench, 13 street furniture pieces, a landmark body, the pod's door edge) and 31
+  invisible walls (mostly street-lamp posts whose lamp is a MultiMesh the headless audit cannot read,
+  the Locker cabinet's collider, a First Seed prop). The Locker's "side" colour and the "holo" held
+  item change nothing on Lumi.
+
 ## Walks reliable, 20-24 Nov (v9a, task 195)
 
 What the failing walks were, by evidence (logs under screenshots/, spot tests in tools/walk_opening.gd):
