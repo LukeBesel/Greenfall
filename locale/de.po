@@ -646,7 +646,7 @@ msgstr "GEMEINSAM ERBLÜHEN"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LICHT  WASSER  LEBEN"
 
-#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:251 robots/sphere/command_overlay.gd:195
+#: planet/orbit_layers.gd:182 planet/sites/orbit_sites.gd:253 robots/sphere/command_overlay.gd:195
 msgid "Base %d"
 msgstr "Basis %d"
 
@@ -804,31 +804,31 @@ msgstr "Alle %d Basen stehen. Bau den Antrieb an der Rakete."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:132
+#: planet/sites/orbit_sites.gd:134
 msgid "The rocket is in flight."
 msgstr "Die Rakete ist unterwegs."
 
-#: planet/sites/orbit_sites.gd:154
+#: planet/sites/orbit_sites.gd:156
 msgid "Bases restored: %d of %d"
 msgstr "Basen wiederhergestellt: %d von %d"
 
-#: planet/sites/orbit_sites.gd:192
+#: planet/sites/orbit_sites.gd:194
 msgid "E   Rocket: choose a destination"
 msgstr "E   Rakete: Ziel wählen"
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:232
 msgid "HOME"
 msgstr "ZUHAUSE"
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:232
 msgid "NEXT STOP"
 msgstr "NÄCHSTER HALT"
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:234
 msgid "Upgrade the rocket first"
 msgstr "Erst die Rakete aufrüsten"
 
-#: planet/sites/orbit_sites.gd:250
+#: planet/sites/orbit_sites.gd:252
 msgid "%s site"
 msgstr "Ort: %s"
 
@@ -920,79 +920,79 @@ msgstr "VERGRABENES TEIL  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "VERGRABENES TEIL  ·  SIGNAL %d%%"
 
-#: player/patch.gd:323
+#: player/patch.gd:330
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi rattert zurück auf den Hof. Das war seltsam."
 
-#: player/patch.gd:391
+#: player/patch.gd:398
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi kann nicht schwimmen. Mit Schwebedüsen von der Werkbank schwebt er über Seen."
 
-#: player/patch.gd:524
+#: player/patch.gd:531
 msgid "Get the seed tin first: follow the beam to the greenhouse."
 msgstr "Hol zuerst die Samendose: Folge dem Strahl zum Gewächshaus."
 
-#: player/patch.gd:525
+#: player/patch.gd:532
 msgid "No seeds yet. Keep cleaning."
 msgstr "Noch keine Samen. Weiter aufräumen."
 
-#: player/patch.gd:568 player/patch.gd:596
+#: player/patch.gd:575 player/patch.gd:603
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Keine Samen mehr. Blühende Pflanzen geben neue."
 
-#: player/patch.gd:575
+#: player/patch.gd:582
 msgid "Plant first: press  {tool_plant}  for the seed"
 msgstr "Erst pflanzen: Drück  {tool_plant}  für den Samen"
 
-#: player/patch.gd:579
+#: player/patch.gd:586
 msgid "Watering can is empty. Refill at the base."
 msgstr "Gießkanne leer. An der Basis nachfüllen."
 
-#: player/patch.gd:598
+#: player/patch.gd:605
 msgid "Clean this hex first. Seeds need clean ground."
 msgstr "Mach dieses Feld zuerst sauber. Samen brauchen sauberen Boden."
 
-#: player/patch.gd:600
+#: player/patch.gd:607
 msgid "Something is growing here already. Try a free spot."
 msgstr "Hier wächst schon etwas. Such dir einen freien Platz."
 
-#: player/patch.gd:601
+#: player/patch.gd:608
 msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
 msgstr "Samen brauchen Erde, keine Straße und keine Plattform. Versuch es in den Gewächshausbeeten."
 
-#: player/patch.gd:602
+#: player/patch.gd:609
 msgid "Seeds need soil, not road or the pad."
 msgstr "Samen brauchen Erde, keine Straße und keine Plattform."
 
-#: player/patch.gd:763
+#: player/patch.gd:770
 msgid "Your chest is empty. Scoop some trash first."
 msgstr "Deine Truhe ist leer. Sammle zuerst etwas Müll."
 
-#: player/patch.gd:803
+#: player/patch.gd:810
 msgid "PERFECT BALE  %s"
 msgstr "PERFEKTER BALLEN  %s"
 
-#: player/patch.gd:809
+#: player/patch.gd:816
 msgid "OVERSTUFFED  %s"
 msgstr "ÜBERSTOPFT  %s"
 
-#: player/patch.gd:813
+#: player/patch.gd:820
 msgid "PURE  %s"
 msgstr "REIN  %s"
 
-#: player/patch.gd:815
+#: player/patch.gd:822
 msgid "SURGE  %s"
 msgstr "SCHUB  %s"
 
-#: player/patch.gd:818
+#: player/patch.gd:825
 msgid "  (streak +%d%%)"
 msgstr "  (Serie +%d%%)"
 
-#: player/patch.gd:869
+#: player/patch.gd:876
 msgid "Salvaged: %s"
 msgstr "Geborgen: %s"
 
-#: player/patch.gd:900
+#: player/patch.gd:907
 msgid "Recovered: %s"
 msgstr "Gefunden: %s"
 
