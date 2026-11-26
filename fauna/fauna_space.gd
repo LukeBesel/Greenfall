@@ -172,7 +172,7 @@ func scan_step(budget_us: int) -> bool:
 						continue
 					var bb: AABB = ixf * aabb
 					if perch_sized(bb):
-						perches.append(ixf * top_point(mm.mesh))
+						perches.append(ixf * top_point(mm.mesh, mmi))
 					if prop_sized(bb):
 						_stamp_bb(bb)
 						_n += 1
@@ -183,7 +183,7 @@ func scan_step(budget_us: int) -> bool:
 			if mi.mesh and (reach == INF or Vector2(mxf.origin.x, mxf.origin.z).distance_to(center) <= reach):
 				var bb2: AABB = mxf * mi.mesh.get_aabb()
 				if perch_sized(bb2):
-					perches.append(mxf * top_point(mi.mesh))
+					perches.append(mxf * top_point(mi.mesh, mi))
 				if prop_sized(bb2):
 					_stamp_bb(bb2)
 					_n += 1
@@ -200,7 +200,7 @@ static func perch_sized(bb: AABB) -> bool:
 
 
 ## The middle of a mesh's highest vertices (local space): where a bird stands on it.
-static func top_point(m: Mesh) -> Vector3:
+static func top_point(m: Mesh, who: Node = null) -> Vector3:
 	var k: int = m.get_rid().get_id()
 	if _tops.has(k):
 		return _tops[k]
@@ -227,7 +227,8 @@ static func top_point(m: Mesh) -> Vector3:
 	if n == 0:
 		if not _told_empty:  # once: which mesh it was
 			_told_empty = true
-			print("[fauna] perch scan: a %s (%s, %d surfaces) has no vertex arrays in the renderer" % [m.get_class(), m.resource_name if m.resource_name != "" else m.resource_path, m.get_surface_count()])
+			print("[fauna] perch scan: a %s (%s, %d surfaces) has no vertex arrays in the renderer%s" % [m.get_class(), m.resource_name if m.resource_name != "" else m.resource_path, m.get_surface_count(),
+				(" (node %s, aabb %s)" % [str(who.get_path()) if who.is_inside_tree() else str(who.name), str(m.get_aabb())]) if who != null else ""])  # [v14qa] which mesh
 		return out  # not cached: read again once the renderer holds it
 	out.y = top
 	_tops[k] = out

@@ -665,7 +665,7 @@ static func _spot_test() -> void:
 						continue
 					var c2: JunkCube = e[0]
 					var moved: float = (c2.global_position - (e[1] as Vector3)).length()
-					print("%s spot farbale %.0f m: moved %.2f m, %.1f m from Lumi, frozen far %s" % [TAG, e[2], moved, c2.global_position.distance_to(_p.global_position), str(c2.get("far_frozen"))])
+					print("%s spot farbale %.0f m: moved %.2f m, %.1f m from Lumi, parked %s" % [TAG, e[2], moved, c2.global_position.distance_to(_p.global_position), str(c2.get("parked"))])
 					_check(moved < 1.5, "farbale: a bale %.0f m from Lumi stays where it lies (moved %.1f m)" % [e[2], moved])
 				_check(int(GameState.stats.get("cubes_fell", 0)) == fell0, "farbale: no bale fell into the planet (%d)" % (int(GameState.stats.get("cubes_fell", 0)) - fell0))
 				var near: Array = put[1]
@@ -675,8 +675,8 @@ static func _spot_test() -> void:
 				await _secs(8.0)
 				var c3: JunkCube = near[0]
 				var moved3: float = (c3.global_position - (near[1] as Vector3)).length()
-				print("%s spot farbale: Lumi walked up to the 150 m bale: frozen far %s, moved %.2f m" % [TAG, str(c3.get("far_frozen")), moved3])
-				_check(not bool(c3.get("far_frozen")) and moved3 < 1.5, "farbale: with Lumi near it the bale is a loose bale again, on the ground")
+				print("%s spot farbale: Lumi walked up to the 150 m bale: parked %s, moved %.2f m" % [TAG, str(c3.get("parked")), moved3])
+				_check(not bool(c3.get("parked")) and moved3 < 1.5, "farbale: with Lumi near it the bale is a loose bale again, on the ground")
 				continue
 			if goal == "shackwall":  # [v14qa] the lean-to built: W held into each wall from outside never takes Lumi through it
 				var shack: Node3D = null

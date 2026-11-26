@@ -22,23 +22,6 @@ var _spawn_time: float = 0.0
 var _unstick_frames: int = 0  # [world2] check for a spawn/drop inside the ground for this many ticks
 ## [world2] What a loose bale must never be found inside.
 const STICK_MASK: int = PhysLayers.WORLD | PhysLayers.PROP | PhysLayers.MOUND
-## [v14qa] On the globe the ground has colliders only round Lumi (SphereStreamer.collide_m, 70 m).
-## A loose bale further out than FAR_M holds still where it lies (frozen) instead of falling into
-## the planet and being put back on Lumi's head; it wakes again within NEAR_M. Play-critic item 1:
-## after a flight or a Continue every bale left lying elsewhere dropped onto Lumi (39 on the home
-## pad after the flight home in a 60-minute autoplay).
-const FAR_M: float = 55.0
-const NEAR_M: float = 45.0
-var far_frozen: bool = false
-var _far_t: float = 0.0
-static var _old: int = -1
-
-
-## Dev (--bale-fault=fall): the old rule, to show the check fails without the fix.
-static func _old_fall() -> bool:
-	if _old < 0:
-		_old = 1 if DevHooks.get_s("bale-fault", "") == "fall" else 0
-	return _old == 1
 
 
 static func create(p_value: BigNum, p_info: Dictionary) -> JunkCube:
@@ -116,21 +99,6 @@ func _physics_process(delta: float) -> void:
 		_unstick_frames -= 1
 		unstick()
 	if planet_radius > 0.0:  # [orbit] round planet: fell into it (radial gravity, planet/orbit/)
-		_far_t -= delta
-		if _far_t <= 0.0 and not carried and not _old_fall():  # [v14qa] no ground out there: hold still until Lumi comes near
-			_far_t = 0.25 + randf() * 0.1
-			var lp: Node3D = get_tree().get_first_node_in_group("patch") as Node3D
-			if lp:
-				var d: float = lp.global_position.distance_to(global_position)
-				if not far_frozen and not freeze and d > FAR_M:
-					far_frozen = true
-					freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
-					freeze = true
-				elif far_frozen and d < NEAR_M:
-					far_frozen = false
-					freeze = false
-					sleeping = false
-					_unstick_frames = 2
 		if not carried and global_position.length() < planet_radius - 40.0:
 			var lumi: Node3D = get_tree().get_first_node_in_group("patch") as Node3D
 			var u: Vector3 = (lumi.global_position if lumi else global_position).normalized()
@@ -290,7 +258,6 @@ func flash() -> void:
 ## Switches between physical and carried (kinematic, no collision).
 func set_carried(on: bool) -> void:
 	carried = on
-	far_frozen = false  # [v14qa]
 	if on:
 		# Off the ground: a hauler's reservation no longer applies (Patch may grab a bale a
 		# Haul Bug was heading for, and put it down somewhere else).
