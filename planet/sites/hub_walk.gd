@@ -304,6 +304,8 @@ static func _fill_chain(hp: HubPurpose, i: int) -> void:
 				need += int(s.get("hexes", 8))
 			"outposts":
 				HubPlan.state(i)["outposts"] = int(s.get("count", 1))
+			"build":  # [v10base] the base's own machine, as bought on its spot
+				FarYard.mark_built(i, str(s.get("id", "bench")))
 	need -= hp.cleaned_here(i)
 	for c: int in hp.sm.regions[i]:
 		if need <= 0:

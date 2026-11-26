@@ -85,6 +85,11 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	if not cells_state.is_empty() and not cells.apply_dict(cells_state):
 		push_warning("[orbit] saved cells didn't match this planet; starting its state fresh.")
 		_clear_sites()
+	elif not cells_state.is_empty():
+		for s: Dictionary in sites:  # [v10base] the far pads' keep-out (a fresh game adds it in _clear_site)
+			_far_pad(s, int(s["index"]))
+		if refill_old_pads:
+			print("[orbit] far pads: %d cells round the far stations got their junk back (an older save)" % refill_far_pads())
 	if before_field.is_valid():
 		before_field.call(self)
 	stats["hubs_ms"] = Time.get_ticks_msec() - tq
@@ -183,6 +188,7 @@ func _place_hubs(n: int, fresh: bool, saved := PackedInt32Array()) -> void:
 
 func _clear_site(s: Dictionary, hub_cell: int, i: int) -> void:
 	var ko: YardKeepOut = yard_keep_out() if i == 0 else null  # [v1yard] only the pad's own cells go clean
+	var far_ko: YardKeepOut = _far_pad(s, i)
 	for c: int in s["cells"]:
 		cells.set_flag(c, SphereCells.F_SITE)
 		if ko:
@@ -191,10 +197,53 @@ func _clear_site(s: Dictionary, hub_cell: int, i: int) -> void:
 				cells.junk[c] = 0.0
 				cells.flags[c] |= SphereCells.F_HUB
 			continue
+		if far_ko and not DevHooks.has("pads-old"):  # [v10base] a far station: only the cells wholly on its pad go clean (--pads-old: the old 60 m clear, to compare)
+			# (and, as before, no lake within 60 m: the town and its landmark stand on that ground)
+			if far_ko.cell_inside(grid, c) or (planet.state[c] == WATER and grid.distance_m(c, hub_cell) < 60.0):
+				cells.state[c] = 1
+				cells.junk[c] = 0.0
+				cells.flags[c] |= SphereCells.F_HUB
+			continue
 		if grid.distance_m(c, hub_cell) < (60.0 if i > 0 else 22.0):
 			cells.state[c] = 1
 			cells.junk[c] = 0.0
 			cells.flags[c] |= SphereCells.F_HUB
+
+
+## [v10base] The keep-out with far hub i's pad in it (towns-kit planets), else null.
+func _far_pad(s: Dictionary, i: int) -> YardKeepOut:
+	var ko: YardKeepOut = yard_keep_out() if i > 0 else null
+	if ko:
+		ko.add_pad(i, s["transform"] if s.has("transform") else terrain.site_transform(s))
+	return ko
+
+
+## [v10base] A save from before the far pads kept their junk (every cell within 60 m of a far hub
+## was hub ground): those cells get the planet's own junk back, once, so the trash stands at the
+## pad's edge there too. Cells under the town's buildings go clean again when it is built
+## (SiteManager._clear_footprints, the probe).
+const OLD_FAR_CLEAR_M: float = 60.0
+const PADS_V: int = 2  # saved as orbit.pads: 2 = the far pads keep their junk
+var refill_old_pads: bool = false
+
+
+func refill_far_pads() -> int:
+	var n: int = 0
+	for s: Dictionary in sites:
+		var i: int = int(s["index"])
+		var ko: YardKeepOut = _far_pad(s, i)
+		if ko == null:
+			continue
+		for c: int in s["cells"]:
+			if grid.distance_m(c, int(s["cell"])) >= OLD_FAR_CLEAR_M or not cells.has_flag(c, SphereCells.F_HUB):
+				continue
+			if ko.cell_inside(grid, c) or planet.state[c] == WATER or planet.junk[c] <= 0.0:
+				continue
+			cells.flags[c] &= ~SphereCells.F_HUB
+			cells.state[c] = planet.state[c]
+			cells.junk[c] = planet.junk[c]
+			n += 1
+	return n
 
 
 func _clear_sites() -> void:
@@ -367,6 +416,8 @@ func from_dirh(a: Array) -> Vector3:
 ## Cubes fall toward the planet's centre: one point-gravity area around the whole globe.
 func _build_gravity() -> void:
 	JunkCube.planet_radius = grid.radius_m
+	JunkCube.ground_fn = terrain.ground  # [v10base] bales left behind sleep where they lie (automation/junk_cube.gd)
+	JunkCube.near_fn = body_near
 	var area := Area3D.new()
 	area.name = "PlanetGravity"
 	area.gravity_space_override = Area3D.SPACE_OVERRIDE_REPLACE
@@ -388,6 +439,21 @@ func _build_gravity() -> void:
 
 func _exit_tree() -> void:
 	JunkCube.planet_radius = 0.0
+	JunkCube.ground_fn = Callable()
+	JunkCube.near_fn = Callable()
+
+
+## [v10base] Whether a tracked body (Lumi, a robot: the streamer's physics centres, whose ground
+## has colliders) is within BODY_NEAR_M of a world point.
+const BODY_NEAR_M: float = 48.0
+
+
+func body_near(p: Vector3) -> bool:
+	for k: String in trackers:
+		var b: Node3D = trackers[k]
+		if is_instance_valid(b) and b.is_inside_tree() and b.global_position.distance_squared_to(p) < BODY_NEAR_M * BODY_NEAR_M:
+			return true
+	return false
 
 
 # --- Loop ---------------------------------------------------------------------------------

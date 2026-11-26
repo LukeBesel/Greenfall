@@ -140,6 +140,14 @@ static func _icon(k: YardArt.Kit, icon: String, u: float, ink: Color, accent: Co
 			k.pop()
 			_dot(k, u, 0.065, -0.15, 0.13, accent, 0, 6)
 			_dot(k, u, 0.026, -0.15, 0.13, face, 1, 12)
+		"locker":  # [v10base] the locker: a tall two-door cabinet with handles and vents
+			_bar(k, u, 0.3, 0.42, 0.0, 0.0, ink)
+			_bar(k, u, 0.014, 0.36, 0.0, 0.0, face, 0.0, 1)
+			for x: float in [-0.035, 0.035]:
+				_dot(k, u, 0.02, x, -0.02, accent, 1)
+			for x2: float in [-0.08, 0.08]:
+				_bar(k, u, 0.07, 0.018, x2, 0.13, face, 0.0, 1)
+				_bar(k, u, 0.07, 0.018, x2, 0.1, face, 0.0, 1)
 		"bin":  # the trash bin: an arrow down into a bin
 			_bar(k, u, 0.27, 0.2, 0.0, -0.15, ink)
 			_bar(k, u, 0.34, 0.05, 0.0, -0.02, ink)

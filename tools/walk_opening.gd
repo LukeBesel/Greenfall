@@ -325,7 +325,7 @@ static func _power() -> void:
 	for k: int in 4:
 		if int(GameState.stats.get("cubes_cashed", 0)) >= 3:
 			break
-		await _make_and_sell_bale("power, %d bale%s sold, one carried" % [int(GameState.stats.get("cubes_cashed", 0)), "" if int(GameState.stats.get("cubes_cashed", 0)) == 1 else "s"] if k == 1 else "")
+		await _make_and_sell_bale("power, %d bale%s sold, one carried" % [int(GameState.stats.get("cubes_cashed", 0)), "" if int(GameState.stats.get("cubes_cashed", 0)) == 1 else "s"] if k == 1 else "", k == 0)
 	await _done("power")
 
 
@@ -1045,9 +1045,21 @@ static func _dig_part(range_m: float = 60.0) -> bool:
 	return true
 
 
-static func _make_and_sell_bale(reload_label: String = "") -> void:
+static func _make_and_sell_bale(reload_label: String = "", on_part: bool = false) -> void:
 	await _scoop_load(0.95, 60.0)
 	await _wait(func() -> bool: return _p.compartment.pending <= 0.0, 3.0)  # the last pieces fly in
+	# [v10base] A bale pressed while standing on a buried part: the prompt says "pick up", and E dug
+	# the part instead (seen as "bale: E picks it up" failing in one run of three, wherever the
+	# chest happened to fill within the detector's dig range).
+	var det: PartDetector = _p.get("detector") as PartDetector
+	if on_part and det != null:
+		var f: HexField = _w.get("field") as HexField
+		var pi: int = f.nearest_part(_p.global_position, 60.0) if f else -1
+		if pi >= 0 and f.part_found[pi] == 0:
+			var at: Vector3 = f.part_pos[pi]
+			await _walk_to(func() -> Vector3: return at, func() -> bool: return det.can_dig(), "a buried part (to press a bale on it)", 0.8)
+		else:
+			print("%s note: no buried part within 60 m to press a bale on" % TAG)
 	var made0: int = int(GameState.stats.get("cubes_made", 0))
 	var before: Array[Node] = _tree.get_nodes_in_group("junk_cube")
 	await _tap("cube")
@@ -1081,10 +1093,25 @@ static func _make_and_sell_bale(reload_label: String = "") -> void:
 	if not price.is_empty() and not GameState.can_afford_all(price):
 		await _secs(0.6)
 		_check(_card_costs().contains(" / "), "%s: saving up with a bale on the ground, the card still shows what is missing (%s)" % [str(_ob.current().get("id", "")), _card_costs()])
+	var dig_too: bool = det != null and det.can_dig() and bale != null and _p.nearest_loose_cube() == bale
+	var parts_b: float = GameState.get_currency("parts").to_float()
+	if on_part:
+		_check(dig_too, "bale on a buried part: Lumi stands on a part with the bale at his feet")
+	if dig_too:
+		_check(str(_p.prompt) == "pick_up", "bale on a buried part: the prompt is the bale's (%s)" % str(_p.prompt))
 	await _tap("interact")
+	if dig_too:
+		await _secs(2.0)  # a dig takes 1.3 s to pay
+		_check(not _p.carried.is_empty() and GameState.get_currency("parts").to_float() <= parts_b,
+			"bale on a buried part: E does what the prompt says, it picks the bale up (carrying %d, parts %+.0f)" % [_p.carried.size(), GameState.get_currency("parts").to_float() - parts_b])
 	if not price.is_empty() and not GameState.can_afford_all(price):
 		await _secs(0.6)
 		_check(_card_costs().contains(" / "), "%s: carrying a bale while saving up, the card keeps the price (%s)" % [str(_ob.current().get("id", "")), _card_costs()])
+	if _p.carried.is_empty():  # what held the pick-up
+		print("%s debug bale E: prompt '%s' dig %s digging %s cubing %s input %s fresh %s near_bench %s nearest %s bale carried %s claimed %s parked %s freeze %s parts %+.0f" % [TAG, str(_p.prompt),
+			str(det.can_dig()) if det else "-", str(det.digging) if det else "-", str(_p.get("_cubing")), str(_input_on()), str((_p.input as PlayerInput)._fresh()) if _p.input is PlayerInput else "-",
+			str(_w.call("near_bench")), str(_p.nearest_loose_cube() == bale), str(bale.carried) if bale else "-", str(bale.claimed) if bale else "-", str(bale.parked) if bale else "-", str(bale.freeze) if bale else "-",
+			GameState.get_currency("parts").to_float() - parts_b])
 	_check(not _p.carried.is_empty(), "bale: E picks it up (bale %s m away)" % ("%.1f" % _flat(bale.global_position - _p.global_position).length() if bale else "none"))
 	if reload_label != "" and not _p.carried.is_empty():
 		await _reload(reload_label)

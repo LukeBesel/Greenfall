@@ -150,12 +150,16 @@ static func chain(planet: String, site: int) -> Array:
 	var own: Variant = e.get("chain", null)
 	if own is Array:
 		for s: Variant in own:
-			if s is Dictionary and str((s as Dictionary).get("do", "")) in ["clean", "outposts"]:
+			if s is Dictionary and str((s as Dictionary).get("do", "")) in ["clean", "outposts", "build"]:
 				out.append(s)
 	else:
 		var df: Dictionary = defaults(planet)
 		if int(df.get("clean_hexes", 8)) > 0:
 			out.append({"do": "clean", "hexes": int(df.get("clean_hexes", 8))})
+		var bl: Variant = df.get("build", [])  # [v10base] the base's own machines to build before the wake (FarYard ids)
+		if bl is Array:
+			for b: Variant in bl:
+				out.append({"do": "build", "id": str(b)})
 		if int(df.get("outposts", 0)) > 0:
 			out.append({"do": "outposts", "count": int(df.get("outposts", 0))})
 	out.append({"do": "wake"})

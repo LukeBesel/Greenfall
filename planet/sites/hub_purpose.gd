@@ -34,7 +34,6 @@ var _t: float = 0.0
 var _lvl_t: float = 0.0
 var _spot: Node3D           # the landmark's interact anchor
 var _beacon: Node3D
-var _bench: Node3D
 var _way: Waypoint
 var _layer: CanvasLayer
 var _card: PanelContainer
@@ -235,6 +234,9 @@ func steps(i: int) -> Array:
 				d["need"] = int(s.get("count", 1))
 				d["have"] = mini(_outposts_here(i), int(d["need"]))
 				HubPlan.state(i)["outposts"] = int(d["have"])
+			"build":  # [v10base] this base's own machine on its marked spot (FarYard)
+				d["id"] = str(s.get("id", "bench"))
+				d["have"] = 1 if FarYard.is_built(i, str(d["id"])) else 0
 			"wake":
 				d["have"] = 1 if HubPlan.woken(i) else 0
 		d["done"] = HubPlan.woken(i) or int(d["have"]) >= int(d["need"])
@@ -259,9 +261,13 @@ func can_wake(i: int) -> bool:
 func step_text(i: int, d: Dictionary) -> String:
 	match str(d.get("do", "")):
 		"clean":
-			return tr("Dig the landmark out. Clean hexes here: %d / %d") % [int(d["have"]), int(d["need"])]
+			# [v10base] It names the landmark and says what the cleaning is for ("Dig the landmark
+			# out" read as a buried thing to find: owner playtest 3 #101).
+			return tr("Clean hexes here to wake the %s: %d / %d") % [HubPlan.landmark_name(planet, i), int(d["have"]), int(d["need"])]
 		"outposts":
 			return tr("Repair an outpost here: %d / %d") % [int(d["have"]), int(d["need"])]
+		"build":
+			return tr("Build on the marked spot: %s (%s)") % [FarYard.title(str(d.get("id", "bench"))), Currencies.cost_text(FarYard.cost(planet, str(d.get("id", "bench"))))]
 		"wake":
 			if HubPlan.at_limit(planet):
 				return tr("Upgrade the rocket, then wake the %s") % HubPlan.landmark_name(planet, i)
@@ -398,6 +404,13 @@ func crew_summary(i: int) -> Dictionary:
 
 func crew_line(i: int) -> String:
 	var s: Dictionary = crew_summary(i)
+	# [v10base] Play-tester item 10: the wake says "keeps cleaning when you fly on" and the rocket's
+	# list said "No robots here yet" for the same base. A woken base with no robots of its own does
+	# clean (planet/sites/base_keepers.gd): say so, with how fast.
+	if i > 0 and HubPlan.woken(i) and int(s.get("robots", 0)) <= 0:
+		var per_min: float = BaseKeepers.rate(sm.levels[i] if i < sm.levels.size() else 2, 0)
+		if per_min > 0.0:
+			return tr("Cleans by itself: %d hexes a minute") % int(round(per_min))
 	if str(s.get("text", "")) != "":
 		return str(s["text"])
 	var n: int = int(s.get("robots", 0))
@@ -470,6 +483,15 @@ func outpost_target() -> Variant:
 	return best
 
 
+## [v10base] Where to stand for the base's "build" step (in front of its marked spot), or null.
+func build_target() -> Variant:
+	var d: Dictionary = current_step(site) if site > 0 else {}
+	if str(d.get("do", "")) != "build":
+		return null
+	var fy: FarYard = sites.get_node_or_null("FarYard") as FarYard
+	return fy.spot_point(site, str(d.get("id", "bench"))) if fy else null
+
+
 ## For goal steps (story/objectives.gd step targets): where the beam should stand for
 ## "rocket" (the parked rocket: fly to the next hub, or upgrade it) and "landmark" (the landmark of
 ## the far hub Lumi is at). Null when there is nothing to point at.
@@ -483,12 +505,11 @@ func goal_target(kind: String) -> Variant:
 	return null
 
 
-## Where the workbench is for Lumi now: the field bench of the woken far hub he is at, else null
-## (the home bench).
+## Where the workbench is for Lumi now: the far base's own bench once it is built on its marked
+## spot (planet/sites/far_yard.gd), else null (the home bench).
 func bench_point() -> Variant:
-	if site > 0 and HubPlan.woken(site) and _bench and _bench.visible:
-		return _bench.global_position
-	return null
+	var fy: FarYard = sites.get_node_or_null("FarYard") as FarYard
+	return fy.bench_point() if fy and site > 0 else null
 
 
 func _refresh() -> void:
@@ -501,7 +522,7 @@ func _refresh() -> void:
 	var ready_now: bool = far and not lm.is_empty() and can_wake(site)
 	_way.set_target(lm["pos"] if ready_now else null)
 	_show_beacon(far and not lm.is_empty() and HubPlan.woken(site), lm)
-	_show_bench(far and HubPlan.woken(site))
+	_show_mark(far and not lm.is_empty() and not HubPlan.woken(site), lm)
 	# The card.
 	var title: String = ""
 	var body: String = ""
@@ -569,28 +590,82 @@ func _show_beacon(on: bool, lm: Dictionary) -> void:
 		_beacon.global_transform = Transform3D(_up_basis(up), lm["top"])
 
 
+## [v10base] Owner playtest 3 #101 ("Dig landmark out but there is no landmark"): the landmark
+## stands 50 m off in the ruined town, broken and dark, and nothing marked it until the hexes were
+## done. While it sleeps a big teal pin bobs over its top on a tall thin light, so it can be seen
+## from the pad over the roofs from the moment Lumi lands. (The gold beacon is the woken one.)
+const MARK_H: float = 70.0
+var _mark: Node3D
+var _mark_site: int = -1
+
+
+func mark_node() -> Node3D:
+	return _mark if _mark and _mark.visible else null
+
+
+func _show_mark(on: bool, lm: Dictionary) -> void:
+	if not on:
+		if _mark:
+			_mark.visible = false
+		return
+	if _mark == null:
+		_mark = Node3D.new()
+		_mark.name = "LandmarkMark"
+		add_child(_mark)
+		var beam := MeshInstance3D.new()
+		var cm := CylinderMesh.new()
+		cm.top_radius = 0.35
+		cm.bottom_radius = 0.35
+		cm.height = MARK_H
+		cm.radial_segments = 8
+		cm.rings = 1
+		cm.cap_top = false
+		cm.cap_bottom = false
+		beam.mesh = cm
+		beam.position = Vector3(0, MARK_H * 0.5, 0)
+		var bm := StandardMaterial3D.new()
+		bm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		bm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		bm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		bm.cull_mode = BaseMaterial3D.CULL_DISABLED
+		bm.albedo_color = Color(TEAL, 0.3)
+		bm.disable_fog = true
+		beam.material_override = bm
+		beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_mark.add_child(beam)
+		var pin := MeshInstance3D.new()  # a fat arrow head pointing down at the landmark
+		pin.name = "Pin"
+		var pm := CylinderMesh.new()
+		pm.top_radius = 2.4
+		pm.bottom_radius = 0.0
+		pm.height = 4.4
+		pm.radial_segments = 6
+		pin.mesh = pm
+		var pmat := StandardMaterial3D.new()
+		pmat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		pmat.albedo_color = TEAL
+		pmat.disable_fog = true
+		pin.material_override = pmat
+		pin.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		pin.position = Vector3(0, 5.0, 0)
+		_mark.add_child(pin)
+		var tw := create_tween().set_loops()
+		tw.tween_property(pin, "position:y", 7.0, 0.9).set_trans(Tween.TRANS_SINE)
+		tw.tween_property(pin, "position:y", 5.0, 0.9).set_trans(Tween.TRANS_SINE)
+	_mark.visible = true
+	if _mark_site != site or _mark.global_position.distance_to(lm["top"]) > 0.5:
+		_mark_site = site
+		_mark.global_transform = Transform3D(_up_basis(lm["up"]), lm["top"])
+
+
 static func _up_basis(up: Vector3) -> Basis:
 	var x: Vector3 = up.cross(Vector3.FORWARD if absf(up.dot(Vector3.FORWARD)) < 0.9 else Vector3.RIGHT).normalized()
 	return Basis(x, up, x.cross(up).normalized())
 
 
-## The field bench the rocket carries: stands by the pad of a woken far hub.
-func _show_bench(on: bool) -> void:
-	if not on:
-		if _bench:
-			_bench.visible = false
-		return
-	if _bench == null:
-		_bench = _make_bench()
-		add_child(_bench)
-	var pad: Transform3D = sm.pad_xf(site)
-	var at: Vector3 = pad * Vector3(-5.5, 0.0, 4.0)
-	var up: Vector3 = at.normalized()
-	var g: Vector3 = sm.terrain.ground(up) if sm.terrain else at
-	var b: Basis = _up_basis(up)
-	if not _bench.visible or _bench.global_position.distance_to(g) > 0.3:
-		_bench.global_transform = Transform3D(b, g)
-	_bench.visible = true
+## [v10base] A far base's workbench model (it stands on that base's build spot once built).
+func make_bench() -> Node3D:
+	return _make_bench()
 
 
 func _make_bench() -> Node3D:
@@ -830,6 +905,8 @@ func _dev_chain(i: int) -> void:
 	for s: Dictionary in HubPlan.chain(planet, i):
 		if str(s["do"]) == "outposts":
 			HubPlan.state(i)["outposts"] = int(s.get("count", 1))
+		elif str(s["do"]) == "build":
+			FarYard.mark_built(i, str(s.get("id", "bench")))
 	GameState.add_all(HubPlan.wake_cost(planet))
 	_refresh()
 	var lmd: Dictionary = landmark(i)
