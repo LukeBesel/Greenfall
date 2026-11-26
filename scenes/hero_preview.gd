@@ -21,6 +21,9 @@ var _t: float = 0.0
 var _can: Node3D
 var _lasers: Array[MeshInstance3D] = []
 var _settle: float = 8.0
+## [art2] Turnaround: the lights hang on this rig, which turns with the camera (a turntable under a
+## fixed studio light, as on the concept sheet: every view is lit from the viewer's upper left).
+var _rig: Node3D
 const BLINK_PHASES := [-1.0, 0.05, 0.09, 0.17]
 ## [art2] The concept turnaround's five views (art/concept/aurora_turnaround.png), eye level like the
 ## sheet: [camera yaw in degrees (0 = from the front, negative = round toward his left side),
@@ -52,10 +55,12 @@ func _ready() -> void:
 		sm.ground_bottom_color = Color(0.06, 0.04, 0.03)
 		sm.sun_angle_max = 30.0
 	else:
-		sm.sky_top_color = Color(0.06, 0.06, 0.065)
-		sm.sky_horizon_color = Color(0.2, 0.17, 0.15)
-		sm.ground_horizon_color = Color(0.14, 0.12, 0.11)
-		sm.ground_bottom_color = Color(0.04, 0.04, 0.045)
+		# [art2] The sheet's studio: neutral light from above, warm bounce from the sides and below
+		# (its shell reads near white on top and warm beige on the upright faces).
+		sm.sky_top_color = Color(0.2, 0.2, 0.21)
+		sm.sky_horizon_color = Color(0.3, 0.22, 0.17)
+		sm.ground_horizon_color = Color(0.24, 0.16, 0.11)
+		sm.ground_bottom_color = Color(0.08, 0.055, 0.04)
 	sm.sky_energy_multiplier = 1.0
 	sky.sky_material = sm
 	env.sky = sky
@@ -88,18 +93,28 @@ func _ready() -> void:
 	key.light_energy = 2.6 if portrait else 1.7
 	key.shadow_enabled = true
 	key.directional_shadow_max_distance = 12.0
-	add_child(key)
+	_rig = Node3D.new()
+	add_child(_rig)
+	_rig.add_child(key)
 	key.look_at_from_position(Vector3(3.0, 2.2, 0.7), Vector3.ZERO, Vector3.UP)
+	if not portrait:
+		key.light_color = Color(1.0, 0.97, 0.94)
+		key.light_energy = 1.5
+		key.look_at_from_position(Vector3(1.7, 2.8, -2.4), Vector3.ZERO, Vector3.UP)  # the viewer's upper left
 	var rim := DirectionalLight3D.new()
 	rim.light_color = Color(1.0, 0.6, 0.32) if portrait else Color(0.7, 0.85, 1.0)
 	rim.light_energy = 2.6 if portrait else 0.8
 	rim.light_specular = 1.2
-	add_child(rim)
+	_rig.add_child(rim)
 	rim.look_at_from_position(Vector3(-1.5, 2.6, 3.0), Vector3.ZERO, Vector3.UP)  # [hero v2] sun behind and above (concept)
+	if not portrait:
+		rim.light_color = Color(1.0, 0.72, 0.5)   # the sheet's warm edge light from behind, viewer's right
+		rim.light_energy = 0.9
+		rim.look_at_from_position(Vector3(-2.4, 1.4, 2.6), Vector3.ZERO, Vector3.UP)
 	var fill := DirectionalLight3D.new()
 	fill.light_color = Color(0.62, 0.74, 1.0)
 	fill.light_energy = 0.35
-	add_child(fill)
+	_rig.add_child(fill)
 	fill.look_at_from_position(Vector3(-2.5, 0.8, -3.0), Vector3.ZERO, Vector3.UP)
 	# Ground: dusty dirt (portrait) or a dark studio floor (turnaround).
 	var ground := MeshInstance3D.new()
@@ -285,3 +300,5 @@ func _set_view(i: int) -> void:
 		return
 	_cam.position = v[0]
 	_cam.look_at(v[1], Vector3.UP)
+	if _view == "turn":
+		_rig.rotation.y = -deg_to_rad(TURN_VIEWS[i][0])

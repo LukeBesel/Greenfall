@@ -118,11 +118,11 @@ const ACC_FIT := {
 const SLOT_DEFAULTS := {"head": "head", "visor": "visor", "ears": "ears", "finger": "finger", "finger_tip": "finger_tip"}
 ## Per-part colours a variant may override (defaults are Aurora's, sampled from the concept).
 const COLOR_DEFAULTS := {"dark": Color(0.114, 0.125, 0.141), "fin": Color(0.2, 0.225, 0.245), "claw": Color(0.6, 0.58, 0.555), "cable": Color(0.06, 0.062, 0.068)}
-const ARM_REST := Vector3(-0.25, -0.9, 0.5)
+const ARM_REST := Vector3(-0.2, -0.75, 0.55)
 ## [hero v2] The concept's arms and claws are chunkier than the modelled ones: scale the whole arm
 ## from the shoulder socket, and the claws again on top (fingers spread a little wider).
-const ARM_SCALE := 0.86
-const CLAW_SCALE := 1.25
+const ARM_SCALE := 0.85
+const CLAW_SCALE := 1.15
 const BLINK_CLOSE := 0.07
 const BLINK_HOLD := 0.04
 const BLINK_OPEN := 0.11
@@ -370,7 +370,7 @@ func _build() -> void:
 	# [art2] Measured on the turnaround (tools/hero/overlay.py): ring diameter 0.55 of the visor's height,
 	# a thin stroke, the two centres 0.36 of the head's width apart.
 	_face_mat.set_shader_parameter("half_width", 0.3)
-	_face_mat.set_shader_parameter("half_height", 0.185)
+	_face_mat.set_shader_parameter("half_height", 0.178)
 	_face_mat.set_shader_parameter("eye_radius", 0.55)
 	_face_mat.set_shader_parameter("ring_inner", 0.7)
 	_face_mat.set_shader_parameter("eye_spacing", 0.8)

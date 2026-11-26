@@ -20,7 +20,9 @@ concept per band, as a share of the body height; then per-part measures for the 
 render (head height/width, head share of the body height, torso width as a share of head width,
 pod width, eye ring diameter and stroke as a share of visor height, ear ring diameter as a share of
 head height). Writes a sheet: concept row, render row, overlay row (concept red, render cyan,
-overlap white)."""
+overlap white).
+Board: tools/hero/overlay.py --board OUT.jpg R1_SHEET [RENDER_PREFIX] writes three labelled rows:
+the concept, the render row of an earlier sheet (docs/art/lumi_overlay_r1.jpg) and the renders."""
 import sys
 import numpy as np
 from PIL import Image, ImageFilter, ImageDraw
@@ -231,7 +233,36 @@ def measures(view, im, m):
 	return out
 
 
+def board(out_path, r1_sheet, prefix):
+	concept = concept_figures()
+	r1 = Image.open(r1_sheet).convert("RGB")
+	rh = (r1.height - 8) // 3
+	r1 = r1.crop((0, rh + 4, r1.width, 2 * rh + 4)).resize((W * 5, int(rh * W * 5 / r1.width)), Image.LANCZOS)
+	lab = 26
+	out = Image.new("RGB", (W * 5, H * 2 + r1.height + lab * 3), (12, 12, 14))
+	d = ImageDraw.Draw(out)
+	y = 0
+	for title, row in (("Concept (art/concept/aurora_turnaround.png)", 0), ("Round 1 (before this pass; its own camera angles)", 1), ("Now (the concept's angles, eye level)", 2)):
+		d.text((10, y + 7), title, fill=(235, 235, 235))
+		y += lab
+		if row == 1:
+			out.paste(r1, (0, y))
+			y += r1.height
+			continue
+		for i in range(5):
+			if row == 0:
+				im, _m = normalise(*concept[i])
+			else:
+				im, _m = normalise(*render_figure("%s_%d.png" % (prefix, i)), backdrop=(30, 29, 29))
+			out.paste(im, (i * W, y))
+		y += H
+	out.save(out_path, quality=88)
+
+
 def main():
+	if sys.argv[1] == "--board":
+		board(sys.argv[2], sys.argv[3], sys.argv[4] if len(sys.argv) > 4 else "screenshots/hero/turn_nf")
+		return
 	out_path = sys.argv[1]
 	prefix = sys.argv[2] if len(sys.argv) > 2 else "screenshots/hero/turn_nf"
 	sheet = Image.new("RGB", (W * 5, H * 3 + 8), (10, 10, 12))

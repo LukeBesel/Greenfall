@@ -314,10 +314,10 @@ HEAD_P = Vector((0, 0.56, 0))
 # figure's height, 0.73 as tall as wide WITH the ear modules (0.82 to 0.86 from the other sides), nearly
 # as deep as it is wide; the body height (crown to the bottom of the hover unit) stays 1.10 m.
 HC = 0.885                         # head centre height
-HA, HB, HCZ = 0.35, 0.325, 0.335  # head half sizes (x, y, z)
-E_H, E_V = 3.0, 2.35              # superellipsoid exponents: horizontal (x-z), vertical
+HA, HB, HCZ = 0.36, 0.325, 0.315 # head half sizes (x, y, z)
+E_H, E_V = 2.7, 3.0               # superellipsoid exponents: horizontal (x-z), vertical
 E_V_LOW = 3.1                     # the underside is flatter, with fuller lower corners
-HEAD_TAPER = 0.035                # the crown is a little narrower than the cheeks
+HEAD_TAPER = 0.03                 # the crown is a little narrower than the cheeks
 HW, HH, HD = HA * 2, HB * 2, HCZ * 2
 
 
@@ -393,7 +393,7 @@ def on_shell(x, y, z_sign=-1):
 
 # Visor: one curved glossy black screen across nearly the whole front; the shell is a thick band
 # below it and a thinner one above and at the sides (portrait).
-VA, VB, VN = 0.3, 0.185, 3.3      # [art2] visor: 0.59 of the head's height, wrapping round the front (turnaround)
+VA, VB, VN = 0.3, 0.178, 3.6      # [art2] visor: 0.59 of the head's height, wrapping round the front (turnaround)
 VCY = HC + 0.015
 
 
@@ -503,7 +503,7 @@ NECK_W = 0.36
 cut = rbox("neck_cut", (NECK_W, 0.26, 0.34), (0, HC - HB + 0.04, 0.2), 0.08, "trim", sub=1)
 boolean(head, cut)
 # Ear sockets: a shallow round seat in each side for the ear module.
-EAR_Y, EAR_R, EAR_X, EAR_Z = HC + 0.0, 0.17, 0.3, 0.035
+EAR_Y, EAR_R, EAR_X, EAR_Z = HC + 0.0, 0.16, 0.32, 0.025
 for s in (-1, 1):
 	cut = cyl("ear_cut", EAR_R + 0.006, 0.2, (s * (EAR_X + 0.1), EAR_Y, EAR_Z), "trim", axis='X', verts=64)
 	boolean(head, cut)
@@ -667,7 +667,7 @@ visor = conform("visor", "face", lambda s_: 0.03 - 0.022 * (1 - s_ * s_) - 0.004
 body_parts = []
 TY, TH, TW, TD = 0.415, 0.32, 0.52, 0.385
 T_TOP, T_BOT = TY + TH * 0.5, TY - TH * 0.5
-TAPER = 0.2
+TAPER = 0.13
 
 
 def tf(y):
@@ -868,15 +868,15 @@ hatch = join("hatch", [
 # a cream guard, chunky dark elbow drum with steel caps, a cream forearm with a dark band, a dark
 # wrist and palm; pistons and cable bundles across the joints; chunky segmented claws.
 S = Vector((side_x(0.5) + 0.03, 0.5, 0.0))
-E = S + Vector((0.07, -0.105, -0.045))
-W = E + Vector((0.0, -0.025, -0.145))
+E = S + Vector((0.065, -0.09, -0.04))
+W = E + Vector((0.0, -0.02, -0.118))
 shoulder = join("arm_shoulder", [
 	cyl("sh_drum", 0.06, 0.07, S + Vector((0.0, 0, 0)), "dark", axis='X', bevel=0.016, segs=3),
 	torus("sh_ring", 0.06, 0.005, S + Vector((0.035, 0, 0)), "steel", axis='X', major=40, minor=6),
-	rbox("sh_cap", (0.1, 0.105, 0.12), S + Vector((0.055, 0.02, 0.0)), 0.04, "paint", segs=4, sub=1),
-	screw(S + Vector((0.106, 0.02, 0.0)), (1, 0, 0), r=0.008),
+	rbox("sh_cap", (0.112, 0.118, 0.134), S + Vector((0.058, 0.02, 0.0)), 0.045, "paint", segs=4, sub=1),
+	screw(S + Vector((0.115, 0.02, 0.0)), (1, 0, 0), r=0.008),
 	tube("upper_core", [S + Vector((0.05, -0.03, -0.01)), E], 0.03, "dark", sides=16),
-	rbox("upper_guard", (0.075, 0.06, 0.075), (S + E) * 0.5 + Vector((0.028, -0.008, -0.012)), 0.022, "paint", segs=3, sub=1, rot=(-24, 0, 24)),
+	rbox("upper_guard", (0.092, 0.076, 0.092), (S + E) * 0.5 + Vector((0.028, -0.008, -0.012)), 0.022, "paint", segs=3, sub=1, rot=(-24, 0, 24)),
 	tube("sh_piston", [S + Vector((0.02, -0.055, 0.04)), E + Vector((-0.022, 0.0, 0.032))], 0.0065, "steel", sides=8),
 	tube("sh_cable_a", [S + Vector((-0.03, -0.04, 0.03)), S + Vector((0.02, -0.08, 0.05)), E + Vector((-0.01, 0.02, 0.045))], 0.0055, "dark", sides=8),
 	tube("sh_cable_b", [S + Vector((-0.03, -0.05, 0.015)), S + Vector((0.025, -0.09, 0.035)), E + Vector((0.0, 0.015, 0.04))], 0.0045, "cable", sides=8),
@@ -884,12 +884,12 @@ shoulder = join("arm_shoulder", [
 elbow = join("arm_elbow", [
 	cyl("el_drum", 0.044, 0.095, E, "dark", axis='X', bevel=0.013, segs=3),
 	cyl("el_cap", 0.026, 0.1, E, "steel", axis='X', bevel=0.004),
-	rbox("fore_armor", (0.098, 0.088, 0.13), E + Vector((0.004, -0.01, -0.082)), 0.032, "paint", segs=4, sub=1, rot=(8, 0, 0)),
-	rbox("fore_band", (0.101, 0.092, 0.02), E + Vector((0.004, -0.012, -0.124)), 0.008, "trim", sub=0, segs=2, rot=(8, 0, 0)),
-	screw(E + Vector((0.054, -0.008, -0.07)), (1, 0, 0), r=0.007),
-	screw(E + Vector((0.054, -0.008, -0.1)), (1, 0, 0), r=0.006),
-	tube("el_piston", [E + Vector((-0.034, -0.042, -0.02)), E + Vector((-0.034, -0.038, -0.135))], 0.0065, "steel", sides=8),
-	tube("el_cable", [E + Vector((-0.02, 0.035, 0.0)), E + Vector((-0.04, 0.02, -0.06)), E + Vector((-0.03, -0.01, -0.14))], 0.005, "cable", sides=8),
+	rbox("fore_armor", (0.12, 0.108, 0.114), E + Vector((0.004, -0.008, -0.068)), 0.038, "paint", segs=4, sub=1, rot=(8, 0, 0)),
+	rbox("fore_band", (0.123, 0.112, 0.018), E + Vector((0.004, -0.01, -0.102)), 0.008, "trim", sub=0, segs=2, rot=(8, 0, 0)),
+	screw(E + Vector((0.065, -0.008, -0.056)), (1, 0, 0), r=0.007),
+	screw(E + Vector((0.065, -0.008, -0.082)), (1, 0, 0), r=0.006),
+	tube("el_piston", [E + Vector((-0.034, -0.042, -0.02)), E + Vector((-0.034, -0.036, -0.11))], 0.0065, "steel", sides=8),
+	tube("el_cable", [E + Vector((-0.02, 0.035, 0.0)), E + Vector((-0.04, 0.02, -0.05)), E + Vector((-0.03, -0.008, -0.114))], 0.005, "cable", sides=8),
 ])
 wrist = join("arm_wrist", [
 	cyl("wr_ring", 0.042, 0.02, W + Vector((0, 0, 0.02)), "dark", axis='Z', bevel=0.006),
