@@ -178,6 +178,10 @@ func test_bales_on_a_pad_or_by_the_depot_stay_put() -> void:
 	crew.spawn("haulbug", 0, 100)
 	assert_eq(crew.bale_view.adopt_loose(5.0), 0, "right by the scale: Lumi is cashing it himself")
 	assert_eq(c.get_parent(), w._cubes_root)
+	# [v14qa] Left lying there (not on the scale, which takes only what is on it): nobody sold it and
+	# bales put down by the bin piled up on the home pad. After 20 s still it is the haulers'.
+	assert_eq(crew.bale_view.adopt_loose(16.0), 1, "left lying by the scale: the haulers take it")
+	assert_eq(c.get_parent(), crew.bale_view)
 
 
 # --- 54: Hover Jets -----------------------------------------------------------------------------

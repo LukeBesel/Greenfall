@@ -644,6 +644,30 @@ static func _spot_test() -> void:
 				await _walk_to(func() -> Vector3: return gp, func() -> bool: return _flat(_p.global_position - gp).length() < 1.6, "the point %s" % goal, 1.2)
 				print("%s spot %s -> %s: %.1f game s, ends %.1f m from it" % [TAG, sp, goal, _gt() - tp, _flat(gp - _p.global_position).length()])
 				continue
+			if goal.begins_with("into:"):  # [v14qa] "into:x:z": W held 3 s from the spot straight at yard point x,z (no steering); prints where he stops
+				var gi: PackedStringArray = goal.split(":")
+				var tp: Vector3 = _so.globe.terrain.ground((xf * Vector3(float(gi[1]), 0.0, float(gi[2]))).normalized())
+				_stand(at, tp)
+				_so.cam.reset_frame(_p.forward())
+				_so.cam.snap()
+				await _secs(3.0)  # far spots: the town's colliders stream in round him
+				_stand(at, tp)
+				await _secs(0.3)
+				var best: float = INF
+				var t_e: float = _gt() + 3.0
+				while _gt() < t_e:
+					_hold_action("move_forward", true)
+					await _frames(1)
+					best = minf(best, _flat(tp - _p.global_position).length())
+				_release_all()
+				var hits: Array = (_p.get("sphere_motor") as SphereMotor).hits
+				var what: String = ""
+				for h: Variant in hits:
+					var col: Variant = (h as KinematicCollision3D).get_collider() if h is KinematicCollision3D else null
+					if col is Node:
+						what = str((col as Node).get_path()).get_slice("/root/", 1).right(90)
+				print("%s spot %s into %s: closest %.2f m, ends %s, touching %s" % [TAG, sp, goal, best, _yard(_p.global_position).split(" =")[0], what if what != "" else "-"])
+				continue
 			if goal == "farbale":  # [v14qa] bales left lying far from Lumi stay where they lie (no ground collider out there)
 				var fell0: int = int(GameState.stats.get("cubes_fell", 0))
 				var put: Array = []
