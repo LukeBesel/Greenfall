@@ -24,6 +24,9 @@ var _cell_props: Dictionary = {}   # [orbB] cell -> Node3D (its landmark)
 # camera with hysteresis; ring changes are applied under a per-frame piece budget.
 var _groups: Dictionary = {}       # model -> group index
 var _g_model: Array[String] = []
+var _g_look: Array[String] = []    # [art3] group -> look id ("" = the model's own scan), JunkLooks
+var _g_drop := PackedFloat32Array()  # [art3] group -> how far a lying piece of it is drawn lower (scale-1 metres)
+var _g_flat := PackedByteArray()   # [art3] group -> 1: a lying piece is drawn flat on its base
 var _g_heavy := PackedByteArray()
 var _g_mm: Array[MultiMesh] = []   # 2 per group: [near, far]
 var _g_mmi: Array[MultiMeshInstance3D] = []
@@ -69,19 +72,30 @@ func _process(delta: float) -> void:
 			update_bands(cam.global_position)
 
 
-func _group_for(model: String, vol: float) -> int:
-	if _groups.has(model):
-		return _groups[model]
+## [art3] look: the piece's look (JunkLooks.pick): "" draws the model's scan, "<model>#k" a piece of
+## the junk kit fitted into the model's box. One group (two MultiMeshes) per look.
+func _group_for(model: String, vol: float, look: String = "") -> int:
+	var gkey: String = look if look != "" else model
+	if _groups.has(gkey):
+		return _groups[gkey]
 	var g: int = _g_model.size()
-	_groups[model] = g
+	_groups[gkey] = g
 	_g_model.append(model)
 	var has: bool = model != "" and AssetLib.has_model(model)
-	var near_mesh: Mesh = AssetLib.model_mesh_lite(model, [320, 500, 700, 700][quality]) if has else null
+	var kit_mesh: Mesh = JunkLooks.look_mesh(look, 0) if look != "" and has else null
+	if kit_mesh == null:
+		look = ""
+	_g_look.append(look)
+	_g_drop.append(JunkLooks.lie_drop(look) if look != "" else 0.0)
+	_g_flat.append(1 if look != "" and JunkLooks.is_flat(look) else 0)
+	var near_mesh: Mesh = kit_mesh
+	if near_mesh == null and has:
+		near_mesh = JunkLooks.dressed(AssetLib.model_mesh_lite(model, [320, 500, 700, 700][quality]), model)
 	if near_mesh == null:
 		var bm := BoxMesh.new()
 		bm.size = Vector3(0.4, 0.4, 0.4)
 		near_mesh = bm
-	var heavy: bool = JunkLod._tris(near_mesh) > JunkLod.HEAVY_TRIS if has else false
+	var heavy: bool = JunkLod._tris(near_mesh) > JunkLod.HEAVY_TRIS if has and kit_mesh == null else false
 	_g_heavy.append(1 if heavy else 0)
 	var far_mesh: Mesh = near_mesh  # until _process builds the light one (JunkLod.far_mesh is slow)
 	if has:
@@ -92,7 +106,7 @@ func _group_for(model: String, vol: float) -> int:
 		mm.mesh = near_mesh if k == 0 else far_mesh
 		mm.instance_count = 0
 		var mmi := MultiMeshInstance3D.new()
-		mmi.name = "Junk_%s%s" % [model, "" if k == 0 else "_far"]
+		mmi.name = "Junk_%s%s" % [gkey.replace("#", "_"), "" if k == 0 else "_far"]
 		mmi.multimesh = mm
 		mmi.extra_cull_margin = 4.0
 		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if vol >= 1.2 and k == 0 else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -115,6 +129,21 @@ func _grow_pid_arrays() -> void:
 			_grp[pid] = -1
 
 
+## [art3] Where a piece is DRAWN: its own transform, except a lying piece of a kit look, which is
+## set down on the ground (the kit piece is not as deep as the model it stands in for) and, for a
+## flat look (keyboard, paper), laid on its base again. The piece itself (SphereField) is untouched.
+func _xf(pid: int) -> Transform3D:
+	var xf: Transform3D = sfield.piece_xf[pid]
+	var g: int = _grp[pid] if pid < _grp.size() else -1
+	if g < 0 or _g_look[g] == "" or sfield.piece_pose[pid] == 0:
+		return xf
+	if _g_flat[g] == 1:
+		xf.basis = xf.basis * Basis(Vector3.RIGHT, -PI * 0.5)
+	if _g_drop[g] != 0.0:
+		xf.origin -= xf.origin.normalized() * (_g_drop[g] * xf.basis.x.length())
+	return xf
+
+
 ## 1 = near buffer, 2 = far, for a piece of group g in a cell of this band.
 func _want(g: int, band: int) -> int:
 	return 1 if band == 2 or (band == 1 and _g_heavy[g] == 0) else 2
@@ -129,9 +158,9 @@ func _append(pid: int, where: int) -> void:
 	if i >= mm.instance_count:  # grow (resizing clears the buffer: write the packed ones back)
 		mm.instance_count = maxi(64, mm.instance_count * 2)
 		for k: int in i:
-			mm.set_instance_transform(k, sfield.piece_xf[list[k]])
+			mm.set_instance_transform(k, _xf(list[k]))
 	list.append(pid)
-	mm.set_instance_transform(i, sfield.piece_xf[pid])
+	mm.set_instance_transform(i, _xf(pid))
 	mm.visible_instance_count = i + 1
 	_g_mmi[b].visible = true
 	_g_pids[b] = list
@@ -151,7 +180,7 @@ func _remove(pid: int) -> void:
 		var moved: int = list[last]
 		list[i] = moved
 		_slot[moved] = i
-		mm.set_instance_transform(i, sfield.piece_xf[moved])
+		mm.set_instance_transform(i, _xf(moved))
 	mm.set_instance_transform(last, _hidden_xf)
 	list.resize(last)
 	mm.visible_instance_count = last
@@ -252,6 +281,22 @@ func rebuild_async(near: PackedInt32Array) -> void:
 			for m: String in marks:
 				AssetLib.model_mesh_lite(m, lm_tris)
 		await BuildBudget.join(BuildBudget.add_task(warm, "junk meshes"))
+		# [art3] The looks, on the main thread (materials and small meshes): the scans in the piece
+		# shader, near and far, and the junk kit's pieces, so a model first met in play costs nothing.
+		if JunkLooks.enabled():
+			await JunkLooks.fetch()
+			for m: String in todo:
+				var nm2: Mesh = AssetLib.model_mesh_lite(m, [320, 500, 700, 700][q])
+				JunkLooks.dressed(nm2, m)
+				var fm2: Mesh = JunkLod.far_mesh(m, JunkLod.FAR_TRIS[q] * (4 if JunkLod._tris(nm2) > JunkLod.HEAVY_TRIS else 1))
+				if not DevHooks.has("no-far-single"):
+					JunkLooks.far(JunkFarSingle.single(fm2), m)
+				await BuildBudget.check("junk looks")
+			for look: String in JunkLooks.all_looks():
+				if AssetLib.has_model(JunkLooks.host(look)):
+					JunkLooks.look_mesh(look, 0)
+					JunkLooks.look_mesh(look, 1)
+				await BuildBudget.check("junk looks")
 		AssetLib.tracing = was_tracing
 	while not _queue.is_empty():
 		_pump(40)
@@ -262,8 +307,11 @@ func rebuild_async(near: PackedInt32Array) -> void:
 
 
 func _build_far(g: int) -> void:
+	if _g_look[g] != "":  # [art3] a kit piece: its own light mesh, the kit's one material
+		_g_mm[g * 2 + 1].mesh = JunkLooks.look_mesh(_g_look[g], 1)
+		return
 	var fm: Mesh = JunkLod.far_mesh(_g_model[g], JunkLod.FAR_TRIS[quality] * (4 if _g_heavy[g] == 1 else 1))
-	_g_mm[g * 2 + 1].mesh = fm if DevHooks.has("no-far-single") else JunkFarSingle.single(fm)  # [orbE] one draw per far model
+	_g_mm[g * 2 + 1].mesh = fm if DevHooks.has("no-far-single") else JunkLooks.far(JunkFarSingle.single(fm), _g_model[g])  # [orbE] one draw per far model
 
 
 ## budget_us > 0 [v5load]: also stop once this call has used that much time (play: 2.5 ms a frame).
@@ -286,11 +334,14 @@ func _pump(max_pieces: int, budget_us: int = 0) -> void:
 			_ensure_extras(c)  # [orbB] heaps and wrecks of the near ring (made once, kept)
 			var band: int = _band_for(c, cam.global_position, 0) if cam else 2
 			_band[c] = band
+			var k: int = -1
 			for pid: int in sfield.pieces_in(c):
+				k += 1
 				if sfield.piece_alive[pid] == 0:
 					continue
 				if _grp[pid] < 0:
-					_grp[pid] = _group_for(sfield.piece_model[pid], sfield.piece_vol[pid])
+					var model: String = sfield.piece_model[pid]
+					_grp[pid] = _group_for(model, sfield.piece_vol[pid], JunkLooks.pick(model, c * 4096 + k))
 				_append(pid, _want(_grp[pid], band))
 				done += 1
 		else:
@@ -358,11 +409,14 @@ func counts() -> Vector2i:
 
 
 func piece_transform(pid: int) -> Transform3D:
-	return sfield.piece_xf[pid]
+	return _xf(pid)
 
 
 func piece_mesh(pid: int) -> Mesh:
 	var m: String = sfield.piece_model[pid]
+	var g: int = _grp[pid] if pid < _grp.size() else -1
+	if g >= 0 and _g_look[g] != "":  # [art3] the piece flies off as what it was drawn as
+		return JunkLooks.look_mesh(_g_look[g], 0)
 	return AssetLib.model_mesh(m) if m != "" and AssetLib.has_model(m) else BoxMesh.new()
 
 
@@ -393,7 +447,7 @@ func move_piece(pid: int, pos: Vector3) -> void:
 
 func _set_xf(pid: int) -> void:
 	if pid < _where.size() and _where[pid] != 0:
-		_g_mm[_grp[pid] * 2 + _where[pid] - 1].set_instance_transform(_slot[pid], sfield.piece_xf[pid])
+		_g_mm[_grp[pid] * 2 + _where[pid] - 1].set_instance_transform(_slot[pid], _xf(pid))
 
 
 var focus_cell: int = -1
