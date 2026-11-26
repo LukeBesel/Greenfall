@@ -658,14 +658,19 @@ for pre in ("sc", "hb"):
 		attr = o.data.color_attributes.new("Col", 'FLOAT_COLOR', 'POINT')
 		for i, d in enumerate(attr.data):
 			c = cur[i]
-			edge = min(1.0, sstep(22.0, 75.0, c) + 0.4 * sstep(4.0, 14.0, c))
+			# These parts are a few chamfered faces each: nearly every vertex lies on an edge, and the
+			# mask is interpolated across whole faces. A full-strength edge value would strip the
+			# paint off entire parts, so it is scaled down and broken up by position.
+			q_ = o.data.vertices[i].co * 23.0
+			brk = 0.55 + 0.45 * math.sin(q_.x * 1.7 + math.sin(q_.y * 2.3) * 2.0 + q_.z * 1.3)
+			edge = min(1.0, sstep(22.0, 75.0, c) + 0.4 * sstep(4.0, 14.0, c)) * 0.34 * brk
 			p = o.data.vertices[i].co
 			low = sstep(0.42, 0.1, p.y) if o in group else 0.3   # dirt from the ground up
 			cav = min(1.0, sstep(6.0, 30.0, -c) + 0.55 * low)
 			j = 0.0
 			for J in JOINTS[pre + "_"]:
 				j = max(j, sstep(0.13, 0.04, (p - J).length))
-			d.color = (a[i], edge, cav, 1.0 - 0.8 * j)
+			d.color = (a[i], edge, cav, 1.0 - 0.45 * j)
 	print(pre, "masks done")
 
 # ---------------------------------------------------------------- pivots, axis conversion, export

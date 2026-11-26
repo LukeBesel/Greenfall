@@ -246,7 +246,9 @@ static func crew_tour(w: Node, lumi: Node3D, cam: SphereCam, crew: SphereCrew) -
 			(sky as SkyDirector).frozen = true
 		await DevHooks.wait_wall_for(float(a[2]) if a.size() > 2 else 4.0)
 		DevHooks.save_viewport("%s_%d.png" % [prefix, k])
-		print("[crew-tour] stop %d: %s  %s %s" % [k, stop, u["name"], u["mode"]])
+		var b2: SphereBot = u.get("bot") as SphereBot
+		print("[crew-tour] stop %d: %s  %s %s, %.1f m from Lumi, bot %s" % [k, stop, u["name"], u["mode"],
+			lumi.global_position.distance_to(crew.surface.ground(crew.unit_dir(u))), "near" if b2 != null and b2.visible else "far or hidden"])
 		k += 1
 	w.get_tree().quit()
 

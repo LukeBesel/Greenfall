@@ -407,10 +407,10 @@ const WORKER_FAR := preload("res://art/shaders/worker_far.gdshader")
 ## draw) and its part animation rests.
 const FAR_M: float = 34.0
 const WORKER_LOOKS := {
-	"salvage": {"cover": 0.6, "rust": 0.75, "grime": 0.9, "dust": 0.65, "specks": 1.0, "edge": 0.9, "coat": 0.0, "glow": AMBER, "ring": 1.2},
-	"restored": {"cover": 0.86, "rust": 0.35, "grime": 0.6, "dust": 0.45, "specks": 0.8, "edge": 0.65, "coat": 0.25, "glow": WARM, "ring": 1.8},
-	"modern": {"cover": 0.93, "rust": 0.15, "grime": 0.4, "dust": 0.3, "specks": 0.5, "edge": 0.45, "coat": 0.7, "glow": LIME, "ring": 2.4},
-	"hover": {"cover": 0.95, "rust": 0.1, "grime": 0.35, "dust": 0.25, "specks": 0.4, "edge": 0.4, "coat": 0.8, "glow": MINT, "ring": 2.8},
+	"salvage": {"cover": 0.74, "rust": 0.75, "grime": 0.9, "dust": 0.65, "specks": 1.0, "edge": 0.9, "coat": 0.0, "glow": AMBER, "ring": 1.2},
+	"restored": {"cover": 0.88, "rust": 0.35, "grime": 0.6, "dust": 0.45, "specks": 0.8, "edge": 0.65, "coat": 0.25, "glow": WARM, "ring": 1.8},
+	"modern": {"cover": 0.94, "rust": 0.15, "grime": 0.4, "dust": 0.3, "specks": 0.5, "edge": 0.45, "coat": 0.7, "glow": LIME, "ring": 2.4},
+	"hover": {"cover": 0.96, "rust": 0.1, "grime": 0.35, "dust": 0.25, "specks": 0.4, "edge": 0.4, "coat": 0.8, "glow": MINT, "ring": 2.8},
 }
 ## [shell, accent] per type and look: the shell stays pale (it reads small and far), the accent is
 ## the type's own colour (Scoopie yellow, Haul Bug orange).
@@ -513,7 +513,8 @@ static func _load_wparts() -> void:
 	var g := Gradient.new()
 	g.set_color(0, Color(1, 1, 1, 1))
 	g.set_color(1, Color(0, 0, 0, 1))
-	g.add_point(0.4, Color(0.3, 0.3, 0.3, 1))
+	g.add_point(0.3, Color(0.55, 0.55, 0.55, 1))
+	g.add_point(0.6, Color(0.16, 0.16, 0.16, 1))
 	_glow_tex = GradientTexture2D.new()
 	_glow_tex.gradient = g
 	_glow_tex.fill = GradientTexture2D.FILL_RADIAL
@@ -590,8 +591,8 @@ func _build_worker(base_type: String) -> void:
 	_status_mat = Mats.lamp(glow, 1.0)
 	_mats = {
 		"paint": _hero(cols[0], 3.0, lk, 0.0, 0.36),
-		"accent": _hero(cols[1], 11.0, lk, 0.0, 0.38, -0.04),
-		"bucket": _hero(cols[1], 17.0, lk, 0.1, 0.4, -0.14),
+		"accent": _hero(cols[1], 11.0, lk, 0.0, 0.38, -0.02),
+		"bucket": _hero(cols[1], 17.0, lk, 0.1, 0.4, -0.08),
 		"trim": _hero(Color(0.16, 0.17, 0.19), 7.0, lk, 0.35, 0.42, 0.05),
 		"dark": _hero(Color(0.1, 0.105, 0.115), 5.0, lk, 0.85, 0.3, 0.1),
 		"steel": Mats.metal("steel"),
@@ -602,6 +603,13 @@ func _build_worker(base_type: String) -> void:
 		"eye": _eye_mat,
 	}
 	(_mats["bucket"] as ShaderMaterial).set_shader_parameter("edge_wear", 1.0)
+	# The mechanics chip to dark steel, not to the shell's warm primer, and rust less.
+	for key: String in ["trim", "dark"]:
+		var dm: ShaderMaterial = _mats[key]
+		dm.set_shader_parameter("chip_color", Color(0.2, 0.19, 0.185))
+		dm.set_shader_parameter("rust_amount", float(lk["rust"]) * 0.4)
+		dm.set_shader_parameter("paint_coverage", clampf(float(lk["cover"]) + 0.14, 0.0, 0.98))
+		dm.set_shader_parameter("dust", float(lk["dust"]) * 0.6)
 	# Unsprung: axles and wheels (hover pods hang on the body instead). The body rides above.
 	_base = _node(self, Vector3.ZERO)
 	move_child(_base, 0)
@@ -702,7 +710,7 @@ func _build_worker(base_type: String) -> void:
 	# The ring's light on the ground (the owner's world target: a robot's glow on the ground under it).
 	_ground = MeshInstance3D.new()
 	var q := PlaneMesh.new()
-	q.size = Vector2(2.3, 2.6) if base_type == "haulbug" else Vector2(2.1, 2.3)
+	q.size = Vector2(1.9, 2.4) if base_type == "haulbug" else Vector2(1.8, 2.0)
 	_ground.mesh = q
 	_ground_mat = StandardMaterial3D.new()
 	_ground_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -742,7 +750,7 @@ func _tint_ground() -> void:
 	if _ring_mat == null or _ground_mat == null:
 		return
 	var c: Color = _ring_mat.emission
-	var k: float = float(_ring_mat.get_meta("base")) * (0.34 if hover else 0.26)
+	var k: float = 0.36 + 0.1 * float(_ring_mat.get_meta("base"))
 	_ground_mat.albedo_color = Color(c.r * k, c.g * k, c.b * k, 1.0)
 	if _far_mat != null:
 		_far_mat.set_shader_parameter("glow", c)
