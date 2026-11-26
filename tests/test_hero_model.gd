@@ -260,10 +260,13 @@ func test_eye_ring_is_large_and_thin() -> void:
 func test_glow_does_not_clip_to_white() -> void:
 	var m := _model()
 	m._process(0.016)
-	for k: String in ["glow", "glow_soft", "thruster", "thruster_core"]:
+	for k: String in ["glow", "glow_soft", "thruster", "latch", "lamp_accent"]:
 		var mat: StandardMaterial3D = m._mats[k]
-		assert_lt(mat.emission_energy_multiplier, 1.8, k)
+		assert_lt(mat.emission_energy_multiplier, 1.5, k)
 		assert_gt(mat.emission_energy_multiplier, 0.8, k + " still glows")
+		assert_eq(mat.metallic, 1.0, k + ": no diffuse wash over the glow colour")
+	# The emitter disc under the hover ring is the one light meant to run hot (white-cyan on the concept).
+	assert_lt((m._mats["thruster_core"] as StandardMaterial3D).emission_energy_multiplier, 2.4)
 	m.flash()
 	m._process(0.016)
 	assert_gt((m._mats["thruster"] as StandardMaterial3D).emission_energy_multiplier, 2.0, "a flash still flares the ring")

@@ -65,7 +65,7 @@ func _ready() -> void:
 	sky.sky_material = sm
 	env.sky = sky
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_energy = 0.55 if portrait else 0.7
+	env.ambient_light_energy = 0.55 if portrait else 0.6
 	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
 	env.tonemap_mode = Environment.TONE_MAPPER_AGX
 	env.ssao_enabled = true
@@ -83,7 +83,7 @@ func _ready() -> void:
 		env.background_mode = Environment.BG_COLOR  # plain dark studio backdrop; the sky still lights/reflects
 		env.background_color = Color(0.07, 0.065, 0.065)
 		if DevHooks.has("no-floor"):
-			env.background_color = Color(0.0, 0.5, 0.0)  # [art2] key backdrop: a clean outline for tools/hero/overlay.py
+			env.background_color = Color(0.0, 0.12, 0.0)  # [art2] key backdrop: a clean outline for tools/hero/overlay.py
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
@@ -99,7 +99,7 @@ func _ready() -> void:
 	key.look_at_from_position(Vector3(3.0, 2.2, 0.7), Vector3.ZERO, Vector3.UP)
 	if not portrait:
 		key.light_color = Color(1.0, 0.97, 0.94)
-		key.light_energy = 1.5
+		key.light_energy = 1.15
 		key.look_at_from_position(Vector3(1.7, 2.8, -2.4), Vector3.ZERO, Vector3.UP)  # the viewer's upper left
 	var rim := DirectionalLight3D.new()
 	rim.light_color = Color(1.0, 0.6, 0.32) if portrait else Color(0.7, 0.85, 1.0)

@@ -140,16 +140,16 @@ void fragment() {
 	float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 4.0);
 	vec3 glass = vec3(0.006, 0.008, 0.011);
 	ALBEDO = glass * (1.0 - core) + eye_color.rgb * 0.12 * core;
-	ROUGHNESS = 0.04;
+	ROUGHNESS = 0.07;
 	METALLIC = 0.0;
-	SPECULAR = 0.85;
-	CLEARCOAT = 1.0;
+	SPECULAR = 0.5;   // [art2] the concept's visor stays black: a mirror finish turned half of it sky-coloured
+	CLEARCOAT = 0.45;
 	CLEARCOAT_ROUGHNESS = 0.03;
 	vec3 cyan = eye_color.rgb;
 	// One solid shape: even cyan, a touch lighter along the middle of the stroke (no separate ring).
 	// Kept under the clip point so the ring stays the eye colour (the concept's saturated cyan), not white.
-	vec3 eye_e = mix(cyan * 0.8, mix(cyan, vec3(1.0), 0.22), shade * shade) * core;
-	EMISSION = eye_e * energy * 0.36
+	vec3 eye_e = mix(cyan * 0.8, mix(cyan, vec3(1.0), 0.12), shade * shade) * core;
+	EMISSION = eye_e * energy * 0.27
 		+ cyan * halo * energy * 0.11
 		+ mix(cyan, vec3(1.0), 0.35) * glint * energy * 0.4
 		+ vec3(1.0, 0.72, 0.5) * streak * 0.16 + vec3(0.5, 0.7, 0.8) * streak2 * 0.06

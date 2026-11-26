@@ -18,7 +18,7 @@ extends Node3D
 # procedural extras (holo, butterfly, case); icon: chest screen icon; happy: resting smile (0..1).
 # l10n:begin
 const VARIANTS: Dictionary = {
-	"aurora": {"name": "Aurora", "paint": Color(0.8, 0.735, 0.685), "trim": Color(0.412, 0.435, 0.471), "glow": Color(0.25, 0.886, 0.94), "accent": Color(0.945, 0.42, 0.012), "lamp": Color(0.973, 0.686, 0.035), "paddle": Color(0.953, 0.753, 0.251), "icon": "recycle", "grime": 0.75, "acc": ["antenna"]},
+	"aurora": {"name": "Aurora", "paint": Color(0.78, 0.71, 0.655), "trim": Color(0.412, 0.435, 0.471), "glow": Color(0.25, 0.886, 0.94), "accent": Color(0.945, 0.42, 0.012), "lamp": Color(0.973, 0.686, 0.035), "paddle": Color(0.9, 0.6, 0.13), "icon": "recycle", "grime": 0.75, "acc": ["antenna"]},
 	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.7, 0.1), "trim": Color(0.32, 0.29, 0.24), "glow": Color(1.0, 0.68, 0.18), "accent": Color(0.95, 0.72, 0.12), "lamp": Color(1.0, 0.6, 0.12), "icon": "recycle", "coverage": 0.8, "grime": 0.85, "stripes": 1.0, "acc": ["antenna", "acc_pad_r", "acc_pad_l", "gear"]},
 	"sprout": {"name": "Sprout", "paint": Color(0.47, 0.53, 0.23), "trim": Color(0.33, 0.35, 0.22), "glow": Color(0.52, 1.0, 0.36), "accent": Color(0.86, 0.62, 0.22), "lamp": Color(0.6, 1.0, 0.35), "icon": "leaf", "grime": 0.7, "moss": 0.6, "acc": ["acc_sprout"]},
 	"pixel": {"name": "Pixel", "paint": Color(0.8, 0.15, 0.14), "trim": Color(0.6, 0.12, 0.12), "glow": Color(1.0, 0.33, 0.5), "accent": Color(0.93, 0.91, 0.88), "lamp": Color(1.0, 0.4, 0.55), "icon": "recycle", "happy": 1.0, "acc": ["acc_pixel", "butterfly"]},
@@ -117,7 +117,7 @@ const ACC_FIT := {
 }
 const SLOT_DEFAULTS := {"head": "head", "visor": "visor", "ears": "ears", "finger": "finger", "finger_tip": "finger_tip"}
 ## Per-part colours a variant may override (defaults are Aurora's, sampled from the concept).
-const COLOR_DEFAULTS := {"dark": Color(0.114, 0.125, 0.141), "fin": Color(0.2, 0.225, 0.245), "claw": Color(0.6, 0.58, 0.555), "cable": Color(0.06, 0.062, 0.068)}
+const COLOR_DEFAULTS := {"dark": Color(0.114, 0.125, 0.141), "fin": Color(0.12, 0.3, 0.35), "claw": Color(0.6, 0.58, 0.555), "cable": Color(0.06, 0.062, 0.068)}
 const ARM_REST := Vector3(-0.2, -0.75, 0.55)
 ## [hero v2] The concept's arms and claws are chunkier than the modelled ones: scale the whole arm
 ## from the shoulder socket, and the claws again on top (fingers spread a little wider).
@@ -143,9 +143,9 @@ var core_glow: float = 1.0
 const EYE_MIN_ENERGY: float = 2.8  # [v2feel]
 ## [art2] Light strips, ear rings and the hover unit glow in saturated colour: an emission much
 ## above 1 clips to white on screen (the concept's cyan is (64,226,240) to (155,235,246)).
-const GLOW_E: float = 1.35
-const GLOW_SOFT_E: float = 1.25
-const RING_E: float = 1.45
+const GLOW_E: float = 1.0
+const GLOW_SOFT_E: float = 0.95
+const RING_E: float = 1.1
 
 
 ## Set before adding to the tree to build a given design (previews) instead of the worn one.
@@ -255,6 +255,21 @@ func _paint(c: Color, seed_: float, coverage: float = 0.88, metal: float = 0.0, 
 	return m
 
 
+## [art2] A light surface that keeps its COLOUR on screen: no diffuse (scene light on a pale lamp
+## washes it out; metallic also keeps that true when the Locker recolours the albedo) and a
+## saturated emission near 1 (far above 1 clips to white).
+static func _lamp(c: Color, energy: float) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	var sat: Color = Color.from_hsv(c.h, minf(c.s * 1.15 + 0.08, 1.0), c.v)
+	m.albedo_color = Color(sat.r * 0.2, sat.g * 0.2, sat.b * 0.2)
+	m.metallic = 1.0
+	m.roughness = 0.55
+	m.emission_enabled = true
+	m.emission = sat
+	m.emission_energy_multiplier = energy
+	return m
+
+
 ## Instance a baked part (mesh vertices are relative to its pivot) with per-surface materials.
 ## `remap` swaps material keys for this instance (the ears' housings use the Locker's "side").
 func _part(parent: Node3D, part: String, pos: Vector3 = Vector3.ZERO, remap: Dictionary = {}) -> MeshInstance3D:
@@ -311,7 +326,7 @@ func _build() -> void:
 	var glow: Color = v["glow"]
 	var accent_c: Color = v["accent"]
 	_paint_mats.clear()
-	_ring_mat = Mats.lamp(glow, RING_E)
+	_ring_mat = _lamp(glow, RING_E)
 	var screen := Mats.glass(Color(0.02, 0.03, 0.04, 1.0), 0.08)
 	var cover: float = float(v.get("coverage", 0.9))
 	var lamp_c: Color = v.get("lamp", accent_c)
@@ -325,17 +340,17 @@ func _build() -> void:
 		# (LumiStyle._recolor); the trim colour until it is set. Same dark metal finish as "dark".
 		"side": _paint((v["trim"] as Color).darkened(0.45), 9.0, 0.8, 0.85, 0.26),
 		"steel": Mats.metal("steel"),
-		"glow": Mats.lamp(glow, GLOW_E),
-		"lamp_accent": Mats.lamp(lamp_c, 1.3),  # [hero v2] saturated amber, not blown out
+		"glow": _lamp(glow, GLOW_E),
+		"lamp_accent": _lamp(lamp_c, 1.0),  # saturated amber, not blown out
 		# [hero] Rebuild: side-module ring lenses and the hatch frame (thinner, dimmer than the eyes),
 		# the raised chest plate, the fin and the claws.
-		"glow_soft": Mats.lamp(glow, GLOW_SOFT_E),
+		"glow_soft": _lamp(glow, GLOW_SOFT_E),
 		"plate": _paint((v["paint"] as Color).lightened(0.05), 17.0, cover, 0.2, 0.3, 0.5),
 		"fin": _paint(_col(v, "fin"), 19.0, 0.97, 0.9, 0.28),  # concept: dark teal-grey stalk
 		"claw": _paint(_col(v, "claw"), 23.0, 0.85, 0.3, 0.34),  # [hero v2] light worn-grey finger armour (concept)
 		"paddle": _paint(v.get("paddle", accent_c), 29.0, 0.97, 0.1, 0.3, 0.6),
-		"paddle_edge": Mats.lamp((v.get("paddle", accent_c) as Color).lightened(0.12), 1.1),
-		"latch": Mats.lamp(accent_c, 1.4),  # [hero v2] saturated orange (sampled #F16B03)
+		"paddle_edge": _lamp((v.get("paddle", accent_c) as Color).lightened(0.1), 0.9),
+		"latch": _lamp(accent_c, 1.0),  # saturated orange (sampled #F16B03)
 		"cable": _paint(_col(v, "cable"), 31.0, 1.0, 0.0, 0.55),
 		# Design add-on materials (designs.glb).
 		"rust": _paint(Color(0.42, 0.36, 0.3), 13.0, 0.45, 0.5, 0.5),
@@ -344,7 +359,7 @@ func _build() -> void:
 		"wing": _wing_mat(glow),
 		"screen": screen,
 		"thruster": _ring_mat,
-		"thruster_core": Mats.lamp(glow.lightened(0.25), 1.5),
+		"thruster_core": _lamp(glow.lightened(0.2), 1.9),  # the lit lower disc is the brightest thing on him (concept)
 	}
 	# [hero] The chest plate stays readable: lighter edge wear than the shell.
 	(_mats["plate"] as ShaderMaterial).set_shader_parameter("edge_wear", 0.25)
@@ -359,6 +374,10 @@ func _build() -> void:
 		m.set_shader_parameter("moss", float(v.get("moss", 0.0)))
 	(_mats["paddle"] as ShaderMaterial).set_shader_parameter("grime", 0.2)
 	(_mats["claw"] as ShaderMaterial).set_shader_parameter("specks", 0.5)
+	# [art2] Rust-orange wear belongs to the cream shell; the dark metal keeps mostly dark chips.
+	for k: String in ["dark", "side", "trim", "cable", "fin", "claw"]:
+		(_mats[k] as ShaderMaterial).set_shader_parameter("rust_stain", 0.2)
+		(_mats[k] as ShaderMaterial).set_shader_parameter("rust_chips", 0.25)
 	_acc_mats.clear()
 	if ResourceLoader.exists(MASK_PATH):
 		var mask: Texture2D = load(MASK_PATH)
@@ -370,10 +389,10 @@ func _build() -> void:
 	# [art2] Measured on the turnaround (tools/hero/overlay.py): ring diameter 0.55 of the visor's height,
 	# a thin stroke, the two centres 0.36 of the head's width apart.
 	_face_mat.set_shader_parameter("half_width", 0.3)
-	_face_mat.set_shader_parameter("half_height", 0.178)
-	_face_mat.set_shader_parameter("eye_radius", 0.55)
+	_face_mat.set_shader_parameter("half_height", 0.19)
+	_face_mat.set_shader_parameter("eye_radius", 0.53)
 	_face_mat.set_shader_parameter("ring_inner", 0.7)
-	_face_mat.set_shader_parameter("eye_spacing", 0.8)
+	_face_mat.set_shader_parameter("eye_spacing", 0.71)
 	_face_mat.set_shader_parameter("eye_shape", maxi(EYE_SHAPES.find(str(v.get("eyes", "crescent"))), 0))
 	_mats["face"] = _face_mat
 	_root = Node3D.new()

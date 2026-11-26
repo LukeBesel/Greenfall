@@ -210,14 +210,15 @@ def measures(view, im, m):
 				strokes = [r[1] - r[0] for r in row + col]
 				if strokes:
 					st.append(float(np.median(strokes)))
-				# Visor height: up and down from the eye until the glass ends (a light shell pixel).
-				up = ey
-				while up > TOP and (lum[up, ex] < 95 or cy[up, ex]):
+				# Visor height: the run of glass through the eye in its column. Glass = dark, or lit
+				# blue by the eye; a sheen up to 10 px (3% of the body height) does not end the run.
+				col = (lum[:, ex] < 70) | (a[:, ex, 2] > a[:, ex, 0] + 25)
+				up = dn = ey
+				while up > TOP and col[max(up - 10, 0):up].any():
 					up -= 1
-				dn = ey
-				while dn < neck and (lum[dn, ex] < 95 or cy[dn, ex]):
+				while dn < neck and col[dn + 1:dn + 11].any():
 					dn += 1
-				vh.append(dn - up)
+				vh.append(dn - up + 1)
 			out["eye d/visor h"] = float(np.mean(d)) / float(np.mean(vh))
 			if st:
 				out["eye stroke/visor h"] = float(np.mean(st)) / float(np.mean(vh))

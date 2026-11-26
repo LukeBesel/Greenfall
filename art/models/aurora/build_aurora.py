@@ -393,7 +393,7 @@ def on_shell(x, y, z_sign=-1):
 
 # Visor: one curved glossy black screen across nearly the whole front; the shell is a thick band
 # below it and a thinner one above and at the sides (portrait).
-VA, VB, VN = 0.3, 0.178, 3.6      # [art2] visor: 0.59 of the head's height, wrapping round the front (turnaround)
+VA, VB, VN = 0.3, 0.19, 3.6       # [art2] visor: 0.59 of the head's height, wrapping round the front (turnaround)
 VCY = HC + 0.015
 
 
@@ -695,7 +695,7 @@ for s in (-1, 1):
 groove(upper, (0.8, 0.4, 0.008), (0, TY, 0.05), depth=0.008)
 groove(upper, (0.27, 0.008, 0.3), (0, 0.535, 0.2), depth=0.008)        # back panel top
 # Top-front bay: a dark recess of machinery just under the head, lit along its lip.
-cut = taper(rbox("bay_cut", (0.25, 0.07, 0.1), (0, T_TOP - 0.01, -TD * 0.5 + 0.02), 0.02, "trim", sub=1))
+cut = taper(rbox("bay_cut", (0.25, 0.05, 0.1), (0, T_TOP - 0.005, -TD * 0.5 + 0.02), 0.018, "trim", sub=1))
 boolean(upper, cut)
 # Dark keel: the middle of the lower hull is dark between the cream hip plates (front and back).
 for zs in (-1, 1):
@@ -735,13 +735,13 @@ def side_x(y, z=0.0):
 
 # Cyan light: one strip along the top front edge (the turnaround's bright bar under the head) and a
 # thin line down each side of the chest plate.
-STRIP_Y = T_TOP - 0.03
-strip = [(x, STRIP_Y, front_z(x, STRIP_Y) - 0.001) for x in [-0.155 + 0.31 * k / 12 for k in range(13)]]
-body_parts.append(tube("light_band", strip, 0.0075, "glow", sides=8))
+STRIP_Y = T_TOP - 0.042
+strip = [(x, STRIP_Y, front_z(x, STRIP_Y) - 0.003) for x in [-0.125 + 0.25 * k / 12 for k in range(13)]]
+body_parts.append(tube("light_band", strip, 0.011, "glow", sides=8))
 for s in (-1, 1):
 	x = s * 0.128
-	line = [(x, y, front_z(x, y) + 0.004) for y in (0.52, 0.47, 0.42, 0.372)]
-	body_parts.append(tube("light_line", line, 0.0045, "glow", sides=6))
+	line = [(x, y, front_z(x, y) + 0.001) for y in (0.525, 0.47, 0.42, 0.37)]
+	body_parts.append(tube("light_line", line, 0.0062, "glow", sides=6))
 for k in range(4):
 	x = -0.084 + k * 0.056
 	body_parts.append(cyl("bay_drum", 0.015, 0.04, (x, T_TOP - 0.022, -TD * 0.5 + 0.05), "dark", axis='X', verts=12, bevel=0.003))
