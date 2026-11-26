@@ -27,7 +27,7 @@ var _scorch_age: PackedFloat32Array = PackedFloat32Array([0.0, 0.0])
 var _next: int = 0
 var _strength: float = 0.0
 var _live: float = 0.0
-var _dust_col: Color = Color(0.62, 0.6, 0.56, 0.5)
+var _dust_col: Color = Color(0.82, 0.78, 0.72, 0.95)
 var _glow: Color = Color(0.5, 0.9, 1.0)
 
 
@@ -35,7 +35,7 @@ func _ready() -> void:
 	name = "ShuttleFx"
 	var soft: GradientTexture2D = _radial(Color(1, 1, 1, 1), 0.3)
 	# The skirt: big soft billboards born in a ring under the engines and driven outward along the ground.
-	_dust = _emitter(72, 1.5, _billboard(soft, false, 1.3))
+	_dust = _emitter(120, 1.5, _billboard(soft, false, 1.7))
 	_dust.emission_shape = CPUParticles3D.EMISSION_SHAPE_RING
 	_dust.emission_ring_axis = Vector3.UP
 	_dust.emission_ring_radius = 2.2
@@ -45,14 +45,14 @@ func _ready() -> void:
 	_dust.spread = 25.0
 	_dust.initial_velocity_min = 0.2
 	_dust.initial_velocity_max = 0.9
-	_dust.radial_accel_min = 16.0
-	_dust.radial_accel_max = 30.0
-	_dust.damping_min = 2.2
-	_dust.damping_max = 3.6
+	_dust.radial_accel_min = 9.0
+	_dust.radial_accel_max = 17.0
+	_dust.damping_min = 3.0
+	_dust.damping_max = 4.5
 	_dust.scale_amount_min = 0.9
 	_dust.scale_amount_max = 1.8
 	_dust.scale_amount_curve = _curve([0.0, 0.35, 0.3, 1.0, 1.0, 1.9])
-	_dust.color_ramp = _ramp([0.0, 0.0, 0.12, 0.55, 0.5, 0.32, 1.0, 0.0])
+	_dust.color_ramp = _ramp([0.0, 0.0, 0.1, 0.8, 0.5, 0.45, 1.0, 0.0])
 	_dust.angle_min = 0.0
 	_dust.angle_max = 360.0
 	# Grit: small dark bits kicked up and falling back.
@@ -98,7 +98,7 @@ func _ready() -> void:
 	_puff.scale_amount_min = 1.0
 	_puff.scale_amount_max = 2.0
 	_puff.scale_amount_curve = _curve([0.0, 0.4, 0.4, 1.0, 1.0, 1.7])
-	_puff.color_ramp = _ramp([0.0, 0.0, 0.1, 0.5, 0.6, 0.25, 1.0, 0.0])
+	_puff.color_ramp = _ramp([0.0, 0.0, 0.1, 0.75, 0.6, 0.35, 1.0, 0.0])
 	# The engines' light on the ground: a soft additive pool and one unshadowed lamp.
 	_wash = MeshInstance3D.new()
 	var q := QuadMesh.new()
@@ -148,7 +148,7 @@ func tint(c: Color) -> void:
 ## `alt` = metres above the ground, `lift` = the lift engines 0..1.
 func fly(at: Vector3, ground: Vector3, up: Vector3, alt: float, lift: float) -> void:
 	var near: float = clampf(1.0 - alt / NEAR_M, 0.0, 1.0)
-	_strength = lift * near * near
+	_strength = lift * pow(near, 1.4)
 	var on: bool = _strength > 0.03
 	if on:
 		var b: Basis = _frame(up)
@@ -157,12 +157,12 @@ func fly(at: Vector3, ground: Vector3, up: Vector3, alt: float, lift: float) -> 
 		_grit.global_transform = skirt
 		_dust.gravity = up * 0.6
 		_grit.gravity = up * -9.8
-		_dust.color = Color(_dust_col.r, _dust_col.g, _dust_col.b, _dust_col.a * _strength)
-		_wash.global_transform = Transform3D(b, ground + up * 0.06)
-		_wash_mat.albedo_color = Color(_glow.r, _glow.g, _glow.b, 0.5 * _strength)
+		_dust.color = Color(_dust_col.r, _dust_col.g, _dust_col.b, _dust_col.a * minf(_strength * 1.6, 1.0))
+		_wash.global_transform = Transform3D(b, ground + up * 0.15)
+		_wash_mat.albedo_color = Color(_glow.r, _glow.g, _glow.b, 0.8 * _strength)
 		_light.global_position = ground + up * clampf(alt * 0.6, 0.9, 3.0)
 		_light.light_color = _glow.lerp(Color.WHITE, 0.35)
-		_light.light_energy = 5.0 * _strength
+		_light.light_energy = 8.0 * _strength
 	_dust.emitting = on
 	_grit.emitting = _strength > 0.35
 	_wash.visible = on
@@ -184,7 +184,7 @@ func mark(xf: Transform3D, strength: float = 1.0) -> void:
 		if _scorch[k].visible and _scorch[k].global_position.distance_to(xf.origin) < 2.0:
 			i = k
 	_next = (i + 1) % 2
-	_scorch[i].global_transform = Transform3D(xf.basis.orthonormalized(), xf.origin + up * 0.025)
+	_scorch[i].global_transform = Transform3D(xf.basis.orthonormalized(), xf.origin + up * 0.085)
 	var was: float = scorch_left(i)
 	_scorch_k[i] = clampf(was + strength, 0.0, 1.0)
 	_scorch_t[i] = SCORCH_S

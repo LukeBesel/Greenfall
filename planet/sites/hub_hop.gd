@@ -404,6 +404,9 @@ func _fly_look(pos: Vector3, pad: Vector3, k: float, outbound: bool) -> void:
 	var alt: float = maxf((pos - pad).dot(up), 0.0)
 	var off: float = (pos - pad - up * alt).length()
 	ship.plume.power = smoothstep(0.22, 0.5, k) if outbound else 1.0 - smoothstep(0.3, 0.62, k)
+	# The lift engines carry the ship whenever it is slow: full from the first moment of a launch
+	# and until the feet are down on a landing, eased back while the main engines push it along.
+	ship.set_lift(smoothstep(0.0, 0.035, k) * (1.0 - 0.6 * smoothstep(0.35, 0.7, k)) if outbound else 0.4 + 0.6 * smoothstep(0.35, 0.62, k))
 	ship.set_legs(1.0 - smoothstep(0.1, 0.32, k) if outbound else smoothstep(0.42, 0.7, k))
 	ship.set_airborne(alt > 0.04)
 	if fx == null:

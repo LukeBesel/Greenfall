@@ -216,6 +216,7 @@ func build(p_tier: int) -> void:
 		_belly.omni_range = 7.0
 		_belly.omni_attenuation = 1.4
 		_belly.shadow_enabled = false
+		_belly.light_specular = 0.15  # no hot glint on a wet pad
 		_belly.position = Vector3(0, 0.62, 0.3 + _front * 0.5)
 		add_child(_belly)
 	for c: Node in get_children():
@@ -241,7 +242,7 @@ func _make_mats() -> void:
 	var t: int = tier
 	var u: float = float(t - 1) / 6.0                      # 0 at Mk I .. 1 at Mk VII
 	var wear: float = lerpf(0.9, 0.4, u)
-	var dirt: float = lerpf(1.0, 0.45, u)
+	var dirt: float = lerpf(1.3, 0.5, u)
 	var pearl := _paint(ShipStyle.paint_color(), lerpf(0.5, 0.26, u), wear, dirt)  # [ui7] Locker ship looks
 	pearl.set_shader_parameter("pearl", lerpf(0.08, 0.6, u))
 	pearl.set_shader_parameter("flake", lerpf(0.2, 0.6, u))

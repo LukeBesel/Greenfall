@@ -5,7 +5,7 @@ extends RefCounted
 ## at --hop-marks along each leg (planet/sites/hub_hop.gd): 0 -> 1 at noon, back at dusk, out again
 ## at night. Quits when done. tools/shuttle_shots.sh runs it inside the render lock.
 ##   --shuttle-shots-start=S  wall seconds before the first frame (default 105)
-##   --shuttle-shots-hops=N   how many of the three hops to fly (default 3)
+##   --shuttle-shots-hops=0,2 which of noon / dusk / night get a hop (default 0,1,2)
 ##   --shuttle-shots-tier=N   the parked ship's look
 ##   --shuttle-shots-stills=0 skips the pad stills
 
@@ -32,13 +32,14 @@ static func run_dev(so: Node) -> void:
 			# The ship alone (Lumi hidden for the frame): front quarter and tail.
 			var patch: Patch = so.get("w").get("patch")
 			patch.visible = false
-			for hv: Array in [["hero", Vector3(-4.4, 0, 5.4), 2.4, -0.06], ["tail", Vector3(4.6, 0, -6.2), 2.4, -0.08], ["side", Vector3(7.2, 0, 0.4), 1.6, -0.04]]:
+			for hv: Array in [["hero", Vector3(-2.7, 0, 4.7), 0.9, -0.02], ["tail", Vector3(2.9, 0, -4.9), 0.8, -0.03], ["side", Vector3(4.7, 0, 0.3), 0.5, 0.0], ["gear", Vector3(2.6, 0, 2.9), 0.3, -0.01]]:
 				_stand(so, os_, hv[1], float(hv[2]), float(hv[3]))
 				await DevHooks.wait_wall_for(3.0)
 				await _save(tree, "%s_%s_%s.png" % [prefix, hv[0], tm[0]])
 			patch.visible = true
-	var hops: int = int(DevHooks.get_f("shuttle-shots-hops", 3.0))
-	for k: int in mini(hops, TIMES.size()):
+	# --shuttle-shots-hops=0,2 picks which of TIMES get a hop (default all three, in order).
+	for ks: String in DevHooks.get_s("shuttle-shots-hops", "0,1,2").split(",", false):
+		var k: int = clampi(int(ks), 0, TIMES.size() - 1)
 		_time(so, float(TIMES[k][1]))
 		_stand(so, os_, Vector3(4.5, 0, 3.0), 6.2, -0.3)
 		for f: int in 4:

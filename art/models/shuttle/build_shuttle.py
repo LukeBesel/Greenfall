@@ -547,7 +547,7 @@ def rcs(dst, a, z):
 	c = hull_pt(a, z)
 	n = (hull_pt(a, z, 0.1) - c).normalized()
 	M = aim(c - n * 0.02, c + n)
-	box(dst, (0.17, 0.035, 0.09), (0, 0.012, 0), "steel", 0.008, M, heat=0.55)
+	box(dst, (0.17, 0.035, 0.09), (0, 0.012, 0), "steel", 0.008, M, heat=0.26)
 	for k in (-1, 0, 1):
 		lathe(dst, [(0.022, 0.03), (0.019, 0.034), (0.016, 0.008), (0, 0.008)], "dark", 8, M @ tr(k * 0.052, 0, 0))
 
@@ -677,7 +677,7 @@ def bell(dst, r, length, heat_k=1.0, petals=0):
 		rr = r * (0.36 + 0.64 * math.sin(u * math.pi * 0.5) ** 0.8)
 		prof.append((rr, -0.06 - length * u))
 	inner = [(rr - th, y) for (rr, y) in reversed(prof)]
-	hf = lambda p: heat_k * min(1.0, max(0.0, (-p.y - 0.06) / length) ** 0.7 + 0.12)
+	hf = lambda p: heat_k * min(1.0, 0.14 + 0.8 * max(0.0, (-p.y - 0.06) / length) ** 1.3)
 	for f in lathe(dst, prof + [(prof[-1][0] - th * 0.5, prof[-1][1] - 0.006)], "steel", 20, heat=hf):
 		f.normal_update()
 		c = f.calc_center_median()

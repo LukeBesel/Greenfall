@@ -2,7 +2,7 @@ shader_type spatial;
 // [art5] The scorch the shuttle's lift engines leave on a pad (art/shuttle_fx.gd): two sooty
 // blooms under the wing ducts with streaks blown outward, a paler smear between them. A quad
 // lying on the pad (UV 0..1 over 7.5 m, the ship's nose toward +V); `amount` fades it out.
-render_mode blend_mix, depth_draw_never, cull_back, unshaded, shadows_disabled;
+render_mode blend_mix, depth_draw_never, cull_back, unshaded, shadows_disabled, world_vertex_coords;
 
 uniform float amount : hint_range(0.0, 1.0) = 1.0;
 uniform float seed = 0.0;
@@ -30,8 +30,14 @@ float bloom(vec2 p, vec2 c, float r) {
 	return pow(clamp(1.0 - l / reach, 0.0, 1.0), 1.6);
 }
 
+void vertex() {
+	// Drawn a hand's width nearer along the eye's own ray: it wins the depth test against the pad
+	// it lies on at any distance, and does not shift on screen.
+	VERTEX += normalize(CAMERA_POSITION_WORLD - VERTEX) * 0.12;
+}
+
 void fragment() {
-	vec2 p = (UV - 0.5) * size_m;      // metres on the pad: x right, y = toward the nose (+Z)
+	vec2 p = (UV - 0.5) * size_m * vec2(1.0, -1.0);      // metres on the pad: x right, y = toward the nose (+Z)
 	float s = bloom(p, vec2(1.72, -0.95), 1.9) + bloom(p, vec2(-1.72, -0.95), 1.9);
 	s += 0.45 * bloom(p, vec2(0.0, -0.6), 2.6);
 	s += 0.5 * bloom(p, vec2(0.0, -3.0), 1.5);          // the main engines' wash behind the tail

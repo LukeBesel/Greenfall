@@ -50,7 +50,7 @@ void fragment() {
 	float dirt_v = COLOR.a;
 	// 1 base: two tones over big patches, then a narrow speckle.
 	float tone = n3(opos * 1.3) * 0.65 + n3(opos * 4.1) * 0.35;
-	vec3 c = paint_color.rgb * mix(0.86, 1.0, tone);
+	vec3 c = paint_color.rgb * mix(0.76, 0.9, tone);
 	c *= mix(0.94, 1.03, n3(opos * 38.0));
 	// sun-faded and chalky on top faces is left to the light; a faint pearl stays for the Locker looks.
 	float facing = clamp(dot(NORMAL, VIEW), 0.0, 1.0);
@@ -62,7 +62,9 @@ void fragment() {
 	// a little creeps out of every seam.
 	float streak = n3(vec3(opos.x * 9.0, opos.y * 0.9, opos.z * 9.0)) * 0.6 + n3(vec3(opos.x * 23.0, opos.y * 2.0, opos.z * 23.0)) * 0.4;
 	float blot = n3(opos * 2.6 + 7.0);
-	float g = clamp(dirt_v * (0.55 + 0.9 * streak) + (blot - 0.62) * 0.5 + cav * 0.25, 0.0, 1.0) * grime;
+	// rain marks: thin dark runs down every side face, whatever the height
+	float runs = smoothstep(0.62, 0.9, n3(vec3(opos.x * 31.0, opos.y * 0.7, opos.z * 31.0))) * smoothstep(0.3, 0.7, n3(opos * 1.9 + 11.0));
+	float g = clamp(dirt_v * (0.55 + 0.9 * streak) + (blot - 0.62) * 0.5 + cav * 0.25 + runs * 0.3, 0.0, 1.0) * grime;
 	g = smoothstep(0.12, 0.85, g);
 	c = mix(c, grime_color.rgb * mix(0.7, 1.15, streak), g * 0.78);
 	// 4 wear: paint chipped on convex edges, primer first, bare alloy at the very edge.

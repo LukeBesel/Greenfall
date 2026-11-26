@@ -12,6 +12,7 @@ var _t: float = 0.0
 var _out: String
 var _view: String
 var _turn_ship: ShipModel
+var _turn_fx: ShuttleFx
 var _turn_i: int = 0
 
 
@@ -60,6 +61,10 @@ func _ready() -> void:
 			_turn_ship.plume.power = DevHooks.get_f("thrust", 0.0)
 			_turn_ship.position.y = DevHooks.get_f("alt", 0.0)
 			_turn_ship.set_airborne(DevHooks.get_f("alt", 0.0) > 0.0)
+			if DevHooks.has("fx"):  # the hop's ground effects under it (art/shuttle_fx.gd)
+				_turn_fx = ShuttleFx.new()
+				add_child(_turn_fx)
+				_turn_fx.mark(Transform3D.IDENTITY, 1.0)
 		"pair":
 			var w2: float = _row([1, 7] as Array[int], 10.5, 32.0)
 			_frame(w2, 27.0, 26.0)
@@ -285,6 +290,8 @@ func _process(delta: float) -> void:
 	_t += delta
 	if _out == "":
 		return
+	if _turn_fx != null:
+		_turn_fx.fly(_turn_ship.position, Vector3.ZERO, Vector3.UP, _turn_ship.position.y, _turn_ship.lift)
 	if _turn_ship != null:
 		# az, el, dist, look-at height, look-at z
 		var views: Array = [[35, 14, 9.5, 1.0, 0.0], [145, 12, 9.0, 1.0, -0.4], [215, 30, 9.5, 1.0, 0.0], [90, 4, 8.5, 0.9, 0.0], [20, 8, 4.2, 1.2, 1.6], [160, -6, 4.6, 0.8, -1.6], [80, 3, 3.6, 0.6, 0.6], [0, 80, 10.0, 0.8, 0.0]]
